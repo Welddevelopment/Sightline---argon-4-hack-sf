@@ -1,0 +1,12 @@
+(node:27040) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[20:11:18] prompt chars 151332 video https://generativelanguage.googleapis.com/v1beta/files/yh4xrqu35tfm max_output_tokens 160000
+[20:11:20] created v1_ChdaMkxlYXJhMk5ORFQwX2dQbkl1d3lRcxIXWjJMZWFyYTJOTkRUMF9nUG5JdXd5UXM in_progress
+[20:11:51] 33s in_progress {}
+[20:12:23] 64s in_progress {}
+[20:12:53] 95s in_progress {}
+[20:13:24] 126s in_progress {}
+[20:13:55] 157s in_progress {}
+[20:14:26] 188s in_progress {}
+[20:14:59] 220s in_progress {}
+[20:15:30] 251s in_progress {}

@@ -497,7 +497,7 @@ async function cmdValidate(round) {
 
 // ------------------------------------------------------------------ main
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const round = Number(opt('round', 0));
+  const round = opt('round', '0');
   if (cmd === 'gen') await cmdGen();
   else if (cmd === 'prompt') { const R = REGIONS.find((r) => r.id === (opt('id') || 'r1_crossover')); console.log(await buildPrompt(R)); }
   else if (cmd === 'validate') await cmdValidate(round);

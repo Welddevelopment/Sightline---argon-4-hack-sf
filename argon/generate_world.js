@@ -100,7 +100,7 @@ export async function generateWorld({ caseId = defaultCaseId(), version = 1,
       outcome = 'reference_fallback';
       source = `// FALLBACK: Argon's world for case "${caseId}" failed validation (see cases/${caseId}/cache/world_validation.json); ` +
         `this is worlds/reference_world.js.\n` + fs.readFileSync(REFERENCE, 'utf8');
-      v = await validateWorldSource(source, { caseId });
+      v = await validateWorldSource(source, { caseId, advisory: true });   // code-built fallback: only fatal problems count
       console.warn(`[generate_world] FALLING BACK to worlds/reference_world.js for case ${caseId}`);
     }
   }

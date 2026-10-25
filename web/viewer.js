@@ -636,7 +636,36 @@ function applyCamera() {
     scene.fog = fogCfg;
     if (planLight) planLight.visible = false;
   }
+  aerialMode(camId === 'overhead');
   camera.updateMatrixWorld(true);
+}
+
+// ---------- per-case aerial photo (cases/<id>/exhibits/aerial): under the 3D road in the overhead view ----------
+let aerial = null;
+function aerialMode(on) {
+  if (!aerial || !world) return;
+  aerial.visible = on;
+  world.root.traverse((o) => { if (o.userData?.assetType === 'groundPlane') o.visible = !on; });
+  envGroup.children.forEach((c) => { if (c.name === '__ground') c.visible = on || !world.root.getObjectByProperty?.('name', 'ground'); });
+}
+async function loadAerial(url, assets) {
+  if (aerial) { scene.remove(aerial); aerial = null; }
+  if (params.get('aerial') === '0') return;
+  const caseId = params.get('case') || (/\/cases\/([^/]+)\/worlds\//.exec(url) || [])[1];
+  if (!caseId) return;
+  try {
+    const A = await import('./assets/aerial.js');
+    let meta = await A.loadCaseAerial(caseId);
+    if (!meta) {
+      const base = '/cases/' + encodeURIComponent(caseId) + '/exhibits/aerial/';
+      const r = await fetch(base + 'bounds.json'); if (!r.ok) return;
+      const b = await r.json(); meta = { url: base + (b.image || 'aerial.jpg'), boundsMeters: b.boundsMeters, calibration: b.calibration };
+    }
+    const g = A.aerialGround(THREE, { url: meta.url, boundsMeters: meta.boundsMeters, calibration: meta.calibration, heightFn: assets?.terrain ? (x, z) => assets.terrain.roadHeight(x, z) : undefined });
+    await Promise.race([g.userData.ready, new Promise((res) => setTimeout(res, 8000))]);
+    g.name = '__aerial'; g.receiveShadow = true; g.castShadow = false;
+    aerial = g; scene.add(g); aerialMode(camId === 'overhead');
+  } catch (e) { console.warn('aerial unavailable', e); }
 }
 
 // ---------- occlusion x-ray (witness cameras) + banner ----------
@@ -822,6 +851,7 @@ async function loadWorld(url) {
       envGroup.children.forEach((c) => { if (c.isHemisphereLight) c.visible = false; });
     }
   }
+  await loadAerial(url, assets);
   addHeadlights();
   // render quality (web/render_quality.js): tone mapping/exposure, single shadowed sun fit to the ROI, PMREM sky fill, AA
   sl.renderQuality = applyRenderQuality(renderer, scene, { quality: RENDER_QUALITY, lighting: kind, sun, roi: bounds, world,

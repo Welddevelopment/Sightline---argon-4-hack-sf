@@ -742,6 +742,96 @@ export function turnArrow(opts = {}) {
 }
 
 
+
+// ------------------------------------------------------------------ site pads, parking lots, driveways
+/** sitePad({id, position:[x,z], heading, width (local X), depth (local Z), paved=true, feather=12, surface='asphalt'|'concrete'|null})
+ *  Flattens the natural terrain under a building / lot (registers with terrainHeight + groundPlane) and, when
+ *  `surface` is set, lays a paved slab. Returns a Group whose local frame is the pad (u = local X, s = -local Z). */
+export function sitePad(opts = {}) {
+  const { id, width = 20, depth = 20, paved = true, feather = 12, surface = paved ? 'asphalt' : null, mowRing = 6 } = opts;
+  const g = new THREE.Group(); placeGroup(g, opts);
+  const W = width / 2, D = depth / 2;
+  const fn = (u, s) => {
+    const du = Math.max(0, Math.abs(u) - W), ds = Math.max(0, Math.abs(s) - D), d = Math.hypot(du, ds);
+    if (d > feather + 2) return null;
+    if (d === 0) return paved ? { paved: true, d: -Math.min(W - Math.abs(u), D - Math.abs(s)), rel: 0, w: 1, mow: 1 } : { paved: false, d: 0, rel: -0.02, w: 1, mow: 1 };
+    return { paved: false, d, rel: -0.03 - Math.min(0.05, d * 0.01), w: 1 - smooth(0, feather, d), median: false, mow: 1 - smooth(mowRing * 0.6, mowRing, d) };
+  };
+  if (surface) {
+    const sm = surface === 'concrete' ? surfaceMaterial('concrete', { polygonOffset: -1 }) : asphaltMat(0xf2f0ec);
+    g.add(meshOf(polygon([[-W, -D], [W, -D], [W, D], [-W, D]], 0.0), sm, 'pad_surface'));
+  }
+  const corridor = { group: g, fn, inv: new THREE.Matrix4(), mw: new THREE.Matrix4(), last: null, drapedFor: 0 };
+  TERRAIN.corridors.push(corridor); TERRAIN.version++;
+  tag(g, id, 'sitePad', { length: depth, width, height: 0 }, { paved });
+  g.updateMatrixWorld(true); syncCorridors();
+  return g;
+}
+
+/** parkingLot({id, position, heading, width, depth, stallWidth=2.74, stallDepth=5.5, rows=2, aisle=7.3, accessible=1,
+ *   surface='asphalt'}) — paved lot with 4-inch white stall lines (90-degree parking). Row 1 sits along the local -Z
+ *  edge (the building side when the lot is placed in front of a building rotated to face it), further rows follow
+ *  across `aisle`-wide drive aisles. Wheel stops on row 1. */
+export function parkingLot(opts = {}) {
+  const { width = 30, depth = 24, stallWidth = 2.74, stallDepth = 5.5, rows = 2, aisle = 7.3, accessible = 1 } = opts;
+  const g = sitePad({ ...opts, paved: true, surface: opts.surface || 'asphalt' });
+  g.userData.assetType = 'parkingLot';
+  const W = width / 2, D = depth / 2, lw = 0.1;
+  const nSt = Math.floor((width - 1) / stallWidth), u0 = -nSt * stallWidth / 2;
+  const geos = [];
+  const rowsS = [];
+  let sTop = D - 0.3;
+  for (let r = 0; r < rows; r++) {
+    const s1 = sTop, s0 = s1 - stallDepth; if (s0 < -D + 0.3) break;
+    rowsS.push([s0, s1, r]);
+    for (let k = 0; k <= nSt; k++) { const u = u0 + k * stallWidth; geos.push(ribbon({ s0, s1, u0: u - lw / 2, u1: u + lw / 2, step: 10, lift: 0.003, uvMode: 'across' })); }
+    sTop = r % 2 === 0 ? s0 : s0 - aisle; // double-loaded rows share the head line; aisles between pairs
+  }
+  if (geos.length) g.add(meshOf(mergeGeos(geos), paintMat(US.white), 'lot_stall_lines'));
+  // accessible stalls (blue lines + 1.5 m access aisle hatch) at the first row's west end
+  if (accessible && rowsS.length) {
+    const [s0, s1] = rowsS[0], bl = mat('paintBlue', () => { const m = paintMat(US.white).clone(); m.color.setHex(0x2a5bb8); return m; });
+    const ag = [];
+    for (let k = 0; k < Math.min(accessible, nSt - 1); k++) { const u = u0 + k * stallWidth; for (const uu of [u, u + stallWidth]) ag.push(ribbon({ s0, s1, u0: uu - lw / 2, u1: uu + lw / 2, step: 10, lift: 0.0035, uvMode: 'across' })); }
+    g.add(meshOf(mergeGeos(ag), bl, 'lot_accessible'));
+  }
+  // concrete wheel stops on row 1
+  if (rowsS.length) {
+    const [, s1] = rowsS[0];
+    const ws = new THREE.InstancedMesh(new THREE.BoxGeometry(1.83, 0.12, 0.15), surfaceMaterial('concrete'), nSt);
+    const o = new THREE.Object3D();
+    for (let k = 0; k < nSt; k++) { o.position.set(u0 + (k + 0.5) * stallWidth, 0.06, -(s1 - 0.75)); o.updateMatrix(); ws.setMatrixAt(k, o.matrix); }
+    ws.castShadow = ws.receiveShadow = true; ws.name = 'lot_wheel_stops'; g.add(ws);
+  }
+  g.userData.stalls = nSt * rowsS.length;
+  redrape(g);
+  return g;
+}
+
+/** driveway({id, position:[x,z] (centre of the throat at the road edge), heading (direction INTO the site), width=7.3,
+ *   length=12, radius=4.5}) — paved apron from a road edge into a site, with flared radius returns. */
+export function driveway(opts = {}) {
+  const { width = 7.3, length = 12, radius = 4.5 } = opts;
+  const g = new THREE.Group(); placeGroup(g, opts);
+  const W = width / 2, R = radius, pts = [[-W - R, 0]];
+  for (let k = 0; k <= 8; k++) { const a = (k / 8) * Math.PI / 2; pts.push([-W - R + R * Math.sin(a), R - R * Math.cos(a)]); }
+  pts.push([-W, length], [W, length]);
+  for (let k = 8; k >= 0; k--) { const a = (k / 8) * Math.PI / 2; pts.push([W + R - R * Math.sin(a), R - R * Math.cos(a)]); }
+  pts.push([W + R, 0]);
+  g.add(meshOf(polygon(pts.slice().reverse(), 0.0), asphaltMat(0xf2f0ec), 'driveway_apron'));
+  const fn = (u, s) => {
+    if (s < -1 || s > length + 10 || Math.abs(u) > W + R + 10) return null;
+    const inside = s >= 0 && s <= length && (Math.abs(u) <= W || (s <= R && Math.hypot(Math.abs(u) - W - R, s - R) >= R && Math.abs(u) <= W + R));
+    if (inside) return { paved: true, d: -0.5, rel: 0, w: 1, mow: 1 };
+    const d = Math.max(0, Math.abs(u) - W - (s < R ? R - s : 0), s - length);
+    return { paved: false, d, rel: -0.03, w: 1 - smooth(0, 8, d), mow: 1 };
+  };
+  TERRAIN.corridors.push({ group: g, fn, inv: new THREE.Matrix4(), mw: new THREE.Matrix4(), last: null, drapedFor: 0 }); TERRAIN.version++;
+  tag(g, opts.id, 'driveway', { length, width: width + 2 * R, height: 0 });
+  g.updateMatrixWorld(true); syncCorridors();
+  return g;
+}
+
 // ------------------------------------------------------------------ curbs along a path, W-beam guardrail, canvas decals
 /** curbStrip(pts[[u,s]...], {height, width, name}) — raised curb following a polyline in a road's local frame (draped).
  *  The curb's face is on the LEFT of the direction of travel along pts. Painted yellow (median noses) unless color given. */

@@ -73,4 +73,13 @@ H. Marks: mark_impact (small subtle ground decal + thin vertical marker), mark_r
 
 Every element: cite the scene-spec citation strings (or v2 citation strings) in its objects entry. Fictional dressing must say "fictional" or "assumed" in its citation.
 
+
+==================================================================
+7. HARD RULES AND LENGTH BUDGET
+==================================================================
+- EVERY key of `objects` MUST start with one of: veh_ occ_ sig_ road_ mark_ bld_ (no other prefixes: shoulders are road_, the ground is road_ground or occ_terrain, signs are sig_). Objects with kind 'signal' MUST have state(t) returning 'red'|'yellow'|'green'|'off' (a stop or speed sign uses kind 'sign', not 'signal', and needs no state). Minor dressing (individual trees, fence panels, wires, grass) does NOT need an objects entry — put it under root in named groups.
+- This is a long-form generation. A previous attempt stopped at ~45,000 tokens: that is far too short and too coarse. Spend the budget on fidelity, approximately:
+  sedan ~16k tokens (lofted body cross-sections along the length, separate door/hood/trunk panels with gaps, greenhouse, full interior, lamps with reflector+lens, rims, tires, brakes, underbody); truck-tractor ~16k; semitrailer ~12k; road surfaces, shoulders, crossover, turn lane, NE 140th Ct with canvas asphalt texture painter and all MUTCD markings ~14k; curbs, delineators, RPMs, signs (canvas-painted faces), poles, crossarms, insulators, catenary wires ~10k; feed store + lot + shelter + props ~12k; vegetation system (bark/leaf texture painters, branching trees, instanced leaf cards, shrubs, grass tufts, distant tree lines) ~14k; terrain + crest + fences ~8k; sky dome shader, sun, lights, haze ~5k; kinematics, witnesses, facts, objects registry ~10k.
+  Total ~120k tokens. Keep writing detailed, non-repetitive code until every section has received its budget. Do not end the module before then.
+
 Begin the module now. First line: a comment header. Write the whole thing.

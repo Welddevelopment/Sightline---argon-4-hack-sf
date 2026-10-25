@@ -124,7 +124,11 @@ async function runtimeCheck(file, rules = {}) {
 
   // required keys
   const m = world.meta || {};
-  for (const k of ['caseId', 'title', 'timeOfDay', 'lighting', 'source']) if (!m[k]) errors.push(`meta.${k} missing`);
+  const envIsoTime = calls.some((c) => c.method === 'environment' && /^\d{4}-\d{2}-\d{2}T\d{1,2}:\d{2}/.test(String(c.args[0]?.date || '')));
+  for (const k of ['caseId', 'title', 'timeOfDay', 'lighting', 'source']) if (!m[k]) {
+    if (k === 'timeOfDay' && envIsoTime) warnings.push('meta.timeOfDay missing (time taken from the environment() ISO date)');
+    else errors.push(`meta.${k} missing`);
+  }
   if (m.lighting && !['dawn', 'day', 'dusk', 'night'].includes(m.lighting)) errors.push(`meta.lighting "${m.lighting}" must be dawn|day|dusk|night`);
   if (m.timeOfDay && !/^\d{1,2}:\d{2}/.test(String(m.timeOfDay))) errors.push(`meta.timeOfDay "${m.timeOfDay}" must be "HH:MM" (24 h, from the evidence)`);
   if (m.lighting && m.timeOfDay && /^\d/.test(m.timeOfDay)) {
@@ -281,10 +285,22 @@ async function runtimeCheck(file, rules = {}) {
 
 // ---------------------------------------------------------------- public API
 /** Validate a module file. opts.timeoutMs (default 60 s) bounds the isolated child run. */
-export async function validateWorldFile(file, { timeoutMs = 60000, rules = null, caseId = null } = {}) {
+export async function validateWorldFile(file, { timeoutMs = 60000, rules = null, caseId = null, advisory = null } = {}) {
   rules = rules || caseRules(caseId);
   const abs = path.resolve(file);
   const src = fs.readFileSync(abs, 'utf8');
+  // ADVISORY mode = code-built fallback (worlds/reference_world.js, or a module carrying the generate_world FALLBACK header):
+  // only fatal problems fail it (does not parse/load/run); Argon authoring rules are reported as "advisory:" warnings.
+  if (advisory === null) advisory = path.basename(abs) === 'reference_world.js' || /^\/\/ FALLBACK: .*reference_world\.js/.test(src);
+  const res = await validateCore(abs, src, timeoutMs, rules);
+  if (!advisory) return res;
+  const fatal = res.errors.filter((e) => FATAL.test(e));
+  return { ...res, ok: fatal.length === 0, advisory: true, errors: fatal,
+    warnings: dedupe([...res.errors.filter((e) => !FATAL.test(e)).map((e) => 'advisory: ' + e), ...res.warnings]) };
+}
+const FATAL = /^(syntax error|module failed|isolated import failed|no default export|createWorld threw|createWorld returned nothing|createWorld\/setTime did not finish|root must be|setTime\(t\) missing|setTime threw|objects missing|module must `export default)/;
+
+async function validateCore(abs, src, timeoutMs, rules) {
   const st = staticScan(src);
   const errors = [...st.errors], warnings = [...st.warnings];
   const syn = syntaxCheck(abs);
@@ -301,12 +317,12 @@ export async function validateWorldFile(file, { timeoutMs = 60000, rules = null,
 }
 
 /** Validate module source text (written to a temp file next to the case cache). */
-export async function validateWorldSource(src, { caseId, dir } = {}) {
+export async function validateWorldSource(src, { caseId, dir, advisory = null } = {}) {
   const d = dir || (caseId ? path.join(ROOT, 'cases', caseId, 'cache') : path.join(ROOT, 'cache'));
   fs.mkdirSync(d, { recursive: true });
   const tmp = path.join(d, `.validate_${crypto.createHash('sha1').update(src).digest('hex').slice(0, 10)}.mjs`);
   fs.writeFileSync(tmp, src);
-  try { return await validateWorldFile(tmp, { caseId }); } finally { try { fs.unlinkSync(tmp); } catch {} }
+  try { return await validateWorldFile(tmp, { caseId, advisory }); } finally { try { fs.unlinkSync(tmp); } catch {} }
 }
 
 const dedupe = (a) => [...new Set(a)];
@@ -350,7 +366,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === SELF) {
     const v = await validateWorldFile(file, { caseId });
     if (process.argv.includes('--json')) console.log(JSON.stringify(v, null, 2));
     else {
-      console.log(`${v.ok ? 'VALID' : 'INVALID'} ${file}: ${v.errors.length} error(s), ${v.warnings.length} warning(s)`);
+      console.log(`${v.ok ? 'VALID' : 'INVALID'}${v.advisory ? ' (advisory: code-built fallback)' : ''} ${file}: ${v.errors.length} error(s), ${v.warnings.length} warning(s)`);
       for (const e of v.errors) console.log('  ERROR ' + e);
       for (const w of v.warnings) console.log('  warn  ' + w);
       console.log('  stats ' + JSON.stringify(v.stats));

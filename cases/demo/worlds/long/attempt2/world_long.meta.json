@@ -1,0 +1,11 @@
+{
+  "interactionId": "v1_ChdaMkxlYXJhMk5ORFQwX2dQbkl1d3lRcxIXWjJMZWFyYTJOTkRUMF9nUG5JdXd5UXM",
+  "model": "gemini-4-argon",
+  "caseId": "demo",
+  "maxOutputTokens": 160000,
+  "thinkingLevel": "low",
+  "promptChars": 151332,
+  "video": "https://generativelanguage.googleapis.com/v1beta/files/yh4xrqu35tfm",
+  "kinematicsFrom": "cases/demo/worlds/world_v2.js",
+  "startedAt": "2026-10-25T20:11:18.943Z"
+}

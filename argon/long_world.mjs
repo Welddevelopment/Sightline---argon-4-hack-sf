@@ -15,7 +15,8 @@ const maxTok = Number((args.find((a) => a.startsWith('--max=')) || '--max=160000
 const resumeId = (args.find((a) => a.startsWith('--resume=')) || '').split('=')[1];
 const MODEL = process.env.ARGON_MODEL || 'gemini-4-argon';
 const CASE = path.join(ROOT, 'cases', caseId);
-const OUT = path.join(CASE, 'worlds', 'long');
+const tag = (args.find((a) => a.startsWith('--tag=')) || '').split('=')[1];
+const OUT = path.join(CASE, 'worlds', 'long', ...(tag ? [tag] : []));
 fs.mkdirSync(OUT, { recursive: true });
 
 const rd = (p) => fs.readFileSync(p, 'utf8');
@@ -32,7 +33,7 @@ function buildPrompt() {
   const files = ['facts.txt', 'police_report.txt', 'witness_A.txt', 'witness_C.txt', 'deposition_transcript.txt'];
   const evidence = [`case.json:\n${caseJson}`, ...files.filter((f) => fs.existsSync(path.join(textDir, f))).map((f) => `----- ${f} -----\n${rd(path.join(textDir, f))}`)].join('\n\n');
   const kin = latestWorld();
-  const reviewPath = process.env.LONG_WORLD_REVIEW || path.join(OUT, 'reference_review.md');
+  const reviewPath = process.env.LONG_WORLD_REVIEW || path.join(CASE, 'worlds', 'long', 'reference_review.md');
   const review = fs.existsSync(reviewPath) ? rd(reviewPath) : '(not available)';
   let p = rd(path.join(ROOT, 'argon', 'prompts', 'long_world.md'));
   p = p.replace('{{EVIDENCE}}', `SPEC world contract (original v1 text):\n${contract}\n\n${evidence}`)
@@ -80,17 +81,9 @@ if (resumeId) {
 }
 
 function outputText(r) {
-  const parts = [];
-  const walk = (x) => {
-    if (!x) return;
-    if (Array.isArray(x)) return x.forEach(walk);
-    if (typeof x === 'object') {
-      if (x.type === 'text' && typeof x.text === 'string') parts.push(x.text);
-      else for (const k of ['outputs', 'steps', 'content', 'output']) if (x[k]) walk(x[k]);
-    }
-  };
-  walk(r.outputs || r.steps);
-  return parts.join('');
+  if (typeof r.output_text === 'string' && r.output_text) return r.output_text;
+  return (r.steps || r.outputs || []).filter((s) => s.type === 'model_output' || s.type === 'text')
+    .flatMap((s) => (s.content ? s.content : [s])).filter((c) => c && c.type === 'text').map((c) => c.text).join('');
 }
 
 let r = it;

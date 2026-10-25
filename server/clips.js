@@ -176,16 +176,24 @@ export function mountClips(app, ctx = {}) {
       fs.writeFileSync(tmp, JSON.stringify({ ...job, base, fps: FPS, width: W, height: H }));
       const t0 = Date.now();
       try {
-        const out = await new Promise((resolve, reject) => {
+        const once = () => new Promise((resolve, reject) => {
           const ch = spawn(path.join(ROOT, 'scripts', 'render_lock.sh'), [process.execPath, path.join(ROOT, 'server', 'clips.js'), '--job', tmp],
             { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] });
           let so = '', se = '';
           ch.stdout.on('data', (d) => { so += d; });
           ch.stderr.on('data', (d) => { se += d; });
           const killer = setTimeout(() => ch.kill('SIGKILL'), 15 * 60 * 1000);
-          ch.on('close', (code, sig) => { clearTimeout(killer); if (code !== 0) se += ` [signal ${sig}]`; code === 0 ? resolve(so) : reject(new Error(`clip render failed (exit ${code}): ${(se || so).slice(-800)}`)); });
+          ch.on('close', (code, sig) => { clearTimeout(killer); if (sig) se += ` [signal ${sig}]`; code === 0 ? resolve(so) : reject(new Error(`clip render failed (exit ${code}): ${(se || so).slice(-800)}`)); });
           ch.on('error', reject);
         });
+        // scripts/render_lock.sh gives up after 600 s of lock contention (flock exits 1, no output): retry a few times
+        let out;
+        for (let attempt = 1; ; attempt++) {
+          try { out = await once(); break; } catch (e) {
+            if (attempt < 4 && /exit 1\): \s*$/.test(errMsg(e)) && !fs.existsSync(job.file)) { console.warn(`[clips] ${job.name}: render lock busy, retry ${attempt}`); continue; }
+            throw e;
+          }
+        }
         if (!fs.existsSync(job.file)) throw new Error('clip render produced no file: ' + out.slice(-400));
         return { seconds: (Date.now() - t0) / 1000 };
       } finally { fs.rmSync(tmp, { force: true }); }
