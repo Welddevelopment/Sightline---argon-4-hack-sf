@@ -8,3 +8,4 @@
 - 20:55Z validator: 7 errors -> ONE repair call (113 s, 7/7 search/replace edits) -> VALID; saved world_v3.js + provenance
 - 20:56Z checks v3: wit_witness_B CLEAR 0/25 (Argon read her Exhibit-4 mark as (7.5,12), obsT 9.5 s), wit_witness_A BLOCKED by its own pickup (self-occlusion), C/D clear-partial -> critique round next
 - 20:58Z aerial for demo-full verified: exhibits/aerial copied; origin identical (POI = EB outside lane centre at NE 140th Ct); viewer loadAerial drapes it
+- 14:25 local: checks fix (observer's own vehicle excluded: checks.js observerVehicles + robustness.js) — tests 19/19 + 19/19 pass; v3 now A blocked by veh_truck_tractor (t=7), B clear 0/25, C clear 0/25, D blocked by store. Waiting for render lock for critique-input stills

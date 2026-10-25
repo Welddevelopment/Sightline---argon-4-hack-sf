@@ -38,13 +38,13 @@
     if (info.running) return 4;
     if (page === 'cases') return forced === 4 ? 4 : 1;
     if (page === 'review') {
-      if (!info.has.extraction || info.extractActive) return 2;
-      return forced === 2 ? 2 : 3;
+      if (!info.has.extraction || info.extractActive) { sawExtracting = true; return 2; }
+      return forced === 2 && !sawExtracting ? 2 : 3; // an extraction that finished on this page advances to step 3
     }
     return forced === 6 || forced === 7 ? forced : 5;
   }
 
-  let info = null, timer = null, focusedFor = null;
+  let info = null, timer = null, focusedFor = null, sawExtracting = false;
   let bar = null, note = null;
 
   function mount() {
@@ -139,7 +139,8 @@
       if (r.ok) { info = await r.json(); render(); }
     } catch { /* server offline: keep last bar */ }
     const active = info && (info.extractActive || info.running);
-    timer = setTimeout(refresh, active ? 500 : 4000);
+    const waiting = info && page === 'review' && !info.has.extraction; // extraction may start any moment: poll faster
+    timer = setTimeout(refresh, active ? 500 : waiting ? 1000 : 4000);
   }
 
   // Page scripts switch cases with history.replaceState/pushState: follow them.
@@ -183,6 +184,8 @@
     };
   }
 
+  // run buttons → pick up the replay log / running state right away
+  document.addEventListener('click', (e) => { if (e.target.closest && e.target.closest('#runExt, #runBtn, #confirmBtn')) setTimeout(refresh, 400); }, true);
   const boot = () => { refresh(); demoCard(); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();

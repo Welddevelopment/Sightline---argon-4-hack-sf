@@ -1,0 +1,11 @@
+{
+  "id": "full_checks",
+  "type": "full_checks",
+  "why": "Independent clean-machine rerun of the whole checks suite.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "status": "error",
+  "ok": false,
+  "error": " Unable to make request: TypeError: fetch failed",
+  "wallMs": 6145,
+  "doneAtMs": 6146
+}

@@ -153,16 +153,18 @@ const RECIPES = {
       const fine = smooth(0.05, 0.25, g2 - g1);
       const blot = fbm(u, v, 5, 4, 3);                    // decimetre blotches
       const grain = hash2(Math.floor(u * 4096), Math.floor(v * 4096), 5);
-      const binder = 72 + blot * 22;
-      const stoneTone = 92 + id * 78 + (id > 0.93 ? 40 : 0); // a few bright quartz/limestone chips
-      let g = lerp(binder, stoneTone, stone * 0.85);
-      g = lerp(g, g + (gid - 0.5) * 36, fine * 0.5);
+      // charcoal binder (~#33363b mean): aggregate kept for close-up texture but at low contrast so the road reads dark
+      // against the white/yellow markings at any distance
+      const binder = 37 + blot * 12;
+      const stoneTone = 53 + id * 42 + (id > 0.93 ? 30 : 0); // a few bright quartz/limestone chips
+      let g = lerp(binder, stoneTone, stone * 0.6);
+      g = lerp(g, g + (gid - 0.5) * 22, fine * 0.5);
       const pit = f1 > 0.62 && edge < 0.05 ? 1 : 0;       // voids between stones
-      g = g * (1 - pit * 0.35) + (grain - 0.5) * 14;
-      const warm = (blot - 0.5) * 6;
-      p.r = g + 1 + warm; p.g = g + warm * 0.6; p.b = g - 2;
+      g = g * (1 - pit * 0.35) + (grain - 0.5) * 9;
+      const warm = (blot - 0.5) * 4;
+      p.r = g - 2 + warm; p.g = g + 1 + warm * 0.6; p.b = g + 5;
       p.h = 0.35 + stone * 0.45 * (0.7 + id * 0.3) + fine * 0.12 - pit * 0.3;
-      p.ro = 0.93 - stone * 0.16 * id - blot * 0.04;
+      p.ro = 0.92 - stone * 0.08 * id - blot * 0.03;   // ~0.88 mean
     },
   },
   // Broom-finished Portland cement concrete (curbs, sidewalks, some crossovers).
@@ -244,6 +246,24 @@ const RECIPES = {
     },
   },
 };
+// Pine-flatwoods forest floor: rust-brown pine straw with darker humus, scattered cones/twigs and sparse green (palmetto
+// litter / wiregrass). For ground under tree belts (surfaceMaterial('forest_floor'); anti-tiling applies).
+RECIPES.forest_floor = {
+  size: 512, tile: 3.0, normal: 3,
+  gen(u, v, p) {
+    const mid = fbm(u, v, 8, 3, 121), fine = fbm(u, v, 36, 2, 122);
+    const straw = fbm2(u, v, 140, 18, 2, 123);                 // needle streaks
+    const humus = smooth(0.55, 0.75, fbm(u, v, 14, 3, 124));
+    const green = smooth(0.7, 0.85, fbm(u, v, 10, 3, 125));
+    let r = lerp(112, 138, mid), g = lerp(82, 98, mid), b = lerp(52, 60, mid);
+    const sh = 0.78 + straw * 0.3 + (fine - 0.5) * 0.12; r *= sh; g *= sh; b *= sh;
+    r = lerp(r, 62, humus * 0.6); g = lerp(g, 50, humus * 0.6); b = lerp(b, 38, humus * 0.6);
+    r = lerp(r, 92, green * 0.5); g = lerp(g, 104, green * 0.5); b = lerp(b, 58, green * 0.5);
+    p.r = r; p.g = g; p.b = b;
+    p.h = straw * 0.6 + fine * 0.3 - humus * 0.2;
+    p.ro = 0.95;
+  },
+};
 RECIPES.grass_mowed = RECIPES.grass;
 
 function buildSurface(kind) {
@@ -280,7 +300,7 @@ export function surfaceMaterial(kind, opts = {}) {
     vertexColors: !!opts.vertexColors,
   });
   if (opts.polygonOffset) { m.polygonOffset = true; m.polygonOffsetFactor = opts.polygonOffset; m.polygonOffsetUnits = opts.polygonOffset * 2; }
-  if (/^(grass|pasture)/.test(kind)) antiTile(m);
+  if (/^(grass|pasture|forest_floor)/.test(kind)) antiTile(m);
   m.name = 'surface_' + kind;
   matCache.set(key, m);
   return m;
@@ -326,7 +346,7 @@ export function laneWearTextures() {
       let r = 0, g = 0, b = 0, a = 0, ro = 0.85;
       // wheel paths: lighter, worn binder, smoother
       const wpa = wp * (0.10 + streak * 0.10);
-      r = 146; g = 145; b = 141; a = wpa; ro = lerp(0.9, 0.62, wp);
+      r = 104; g = 106; b = 108; a = wpa; ro = lerp(0.9, 0.66, wp);   // polished binder, subtle on charcoal asphalt
       // oil drip band: dark, blotchy
       const oa = oil * 0.30;
       if (oa > a * 0.6) { r = 38; g = 37; b = 35; a = Math.max(a, oa); ro = 0.7; }
@@ -344,7 +364,7 @@ export function laneWearTextures() {
       }
       // faint large stains
       const stain = smooth(0.62, 0.8, fbm2(u, v, 1, 6, 4, 317));
-      if (stain * 0.14 > a) { r = 52; g = 51; b = 49; a = stain * 0.14; }
+      if (stain * 0.14 > a) { r = 32; g = 33; b = 34; a = stain * 0.14; }
       const o = i * 4; color[o] = r; color[o + 1] = g; color[o + 2] = b; color[o + 3] = clamp01(a) * 255;
       rough[i] = ro;
     }

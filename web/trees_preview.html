@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flatwood Trees Preview</title>
+<style>
+  :root { --bg: #b8c8d6; --fg: #1d2328; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1a1f24; --fg: #e4e8eb; } }
+  :root[data-theme="dark"] { --bg: #1a1f24; --fg: #e4e8eb; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); overflow: hidden; font: 13px system-ui, sans-serif; }
+  canvas { display: block; }
+  #hud { position: fixed; left: 10px; top: 8px; background: rgba(0,0,0,.45); color: #fff; padding: 5px 9px; border-radius: 6px; }
+  #hud a { color: #cfe6ff; margin-right: 8px; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "/node_modules/three/build/three.module.js",
+  "three/addons/": "/node_modules/three/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="hud">Florida pine flatwood edge ·
+  <a href="?view=eye">eye</a><a href="?view=oblique">oblique</a><a href="?view=edge">edge</a><a href="?view=lineup">lineup</a><a href="?view=over">overhead</a> <span id="stat"></span></div>
+<script type="module">
+// Trees preview: US-27A-like divided rural highway (EB z 7..14.5, WB z -14.5..-7) with web/assets/trees.js forest bands
+// whose edges sit 30-60 m from the highway, mown grass between. Query: ?view=eye|oblique|edge|lineup|over &w=&h= &clean=1
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { Sky } from 'three/addons/objects/Sky.js';
+import { environment, configureRenderer } from './assets/environment.js';
+import * as L from './assets/landscape.js';
+import * as TR from './assets/trees.js';
+
+const q = new URLSearchParams(location.search);
+const view = q.get('view') || 'eye', W = +(q.get('w') || innerWidth), H = +(q.get('h') || innerHeight);
+if (q.get('clean')) document.getElementById('hud').style.display = 'none';
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(q.get('w') ? 1 : Math.min(2, devicePixelRatio)); renderer.setSize(W, H);
+configureRenderer(THREE, renderer);
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(view === 'eye' ? 50 : 45, W / H, 0.3, 5000);
+
+const T0 = performance.now();
+const env = environment(THREE, { date: '2016-05-07T16:36:12-04:00', lat: 29.4106, lon: -82.5398, Sky, center: [40, 0], radius: 160, shadowMapSize: 4096 });
+scene.add(env.group); scene.fog = env.fog; if (!env.sky) scene.background = env.background;
+
+// ground: library pasture (mown ROW) + asphalt carriageways with edge/lane lines
+const flat = () => 0;
+scene.add(L.pastureGround(THREE, { size: 4000, terrainHeight: flat, roads: [] }));
+const asphalt = new THREE.MeshStandardMaterial({ color: 0x4a4a4c, roughness: 0.92 });
+const paint = (c) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.6 });
+function strip(z0, z1, mat, y = 0.02, x0 = -2000, x1 = 2000) { const m = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, z1 - z0), mat); m.rotation.x = -Math.PI / 2; m.position.set((x0 + x1) / 2, y, (z0 + z1) / 2); m.receiveShadow = true; scene.add(m); }
+for (const s of [1, -1]) {
+  strip(s * 7, s * 14.5, asphalt);
+  strip(s * 7.4, s * 7.55, paint(0xd9b23a), 0.03);            // yellow left edge
+  strip(s * 14.0, s * 14.15, paint(0xe8e8e2), 0.03);          // white right edge
+  for (let x = -2000; x < 2000; x += 12.2) strip(s * 10.75 - 0.06, s * 10.75 + 0.06, paint(0xe8e8e2), 0.03, x, x + 3.05);
+}
+
+// forest edges: north 38-58 m, south 32-52 m from centreline, wandering; depth 80 m behind the edge
+const north = [], south = [];
+for (let x = -900; x <= 900; x += 30) {
+  north.push([x, -(48 + 9 * Math.sin(x / 140 + 1) + 4 * Math.sin(x / 47))]);
+  south.push([x, 42 + 9 * Math.sin(x / 120 + 4) + 4 * Math.sin(x / 53 + 2)]);
+}
+const tB = performance.now();
+const bandN = TR.forestBand(THREE, { id: 'forest_n', polyline: north, side: 'left', depth: 80, seed: 3, floor: true });   // west->east line: left = north (-Z)
+const bandS = TR.forestBand(THREE, { id: 'forest_s', polyline: south, side: 'right', depth: 80, seed: 7, floor: true, mix: { pine: 0.65, oak: 0.35 } });
+const bandMs = performance.now() - tB;
+scene.add(bandN, bandS);
+// lineup row for asset QA
+if (view === 'lineup') {
+  const kinds = [['pine', 21], ['pine', 15], ['pine', 9], ['oak', 11], ['laurel_oak', 15], ['live_oak', 10, true], ['shrub', 3], ['palmetto', 1.4]];
+  kinds.forEach(([k, h, moss], i) => { const t = TR.tree(THREE, { kind: k, height: h, seed: i + 1, moss }); t.position.set(-60 + i * 15, 0, 25); scene.add(t); });
+}
+
+const views = {
+  eye: { p: [0, 1.55, 12.6], t: [400, 3, 9] },            // driver eye, EB outside lane, looking east
+  oblique: { p: [-150, 55, 120], t: [80, 0, -10] },
+  edge: { p: [20, 1.6, 16], t: [40, 9, 60] },              // looking across the mown ROW at the south edge
+  lineup: { p: [-8, 5, -18], t: [-8, 7, 25] },
+  over: { p: [0, 420, 60], t: [0, 0, 0] },
+};
+const v = views[view] || views.eye;
+camera.position.set(...v.p); camera.lookAt(...v.t);
+const controls = new OrbitControls(camera, renderer.domElement); controls.target.set(...v.t); controls.update();
+if (view === 'lineup') { camera.position.set(-5, 6, -22); controls.target.set(-8, 7, 25); controls.update(); }
+
+let frames = 0, last = performance.now(), fps = 0;
+const stat = document.getElementById('stat');
+function frame() {
+  env.update(camera);
+  renderer.render(scene, camera);
+  frames++;
+  const now = performance.now(); if (now - last > 1000) { fps = frames * 1000 / (now - last); frames = 0; last = now; }
+  const i = renderer.info.render;
+  stat.textContent = `${bandN.userData.count + bandS.userData.count} plants · ${i.calls} draws · ${(i.triangles / 1e6).toFixed(2)}M tris · ${fps.toFixed(0)} fps`;
+}
+renderer.setAnimationLoop(frame);
+// warm-up + readiness flag for headless capture
+for (let k = 0; k < 3; k++) frame();
+const tr = performance.now();
+for (let k = 0; k < 3; k++) frame();
+window.__stats = { view, plants: bandN.userData.count + bandS.userData.count, countsN: bandN.userData.counts, countsS: bandS.userData.counts, bandMs: Math.round(bandMs),
+  totalMs: Math.round(performance.now() - T0), frameMs: Math.round((performance.now() - tr) / 3), calls: renderer.info.render.calls, tris: renderer.info.render.triangles };
+console.warn('TREES_STATS ' + JSON.stringify(window.__stats));
+window.__ready = true;
+</script>
+</body>
+</html>

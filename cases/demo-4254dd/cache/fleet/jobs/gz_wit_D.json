@@ -1,0 +1,64 @@
+{
+  "id": "gz_wit_D",
+  "type": "gaze",
+  "witness": "wit_D",
+  "why": "Gaze angle for wit_D. (added for coverage)",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_ChdPSFRlYXFiWEx2RzF4ZElQOGJuSDhRZxIXT0hUZWFxYlhMdkcxeGRJUDhibkg4UWc",
+  "dispatchedAtMs": 3252,
+  "createMs": 215924,
+  "status": "completed",
+  "environmentId": "41c002c2d0cd3bbf539552f221924520",
+  "usage": {
+    "total": 90839,
+    "input": 88160,
+    "cached": 64726
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"gz_wit_D\",\"ok\":true,\"ms\":1161}",
+    "interpretation": "Assuming Witness D was looking toward the point of impact, Vehicle A was directly within their central field of view at an off-axis angle of only 1.2 degrees at observation time 10.43 seconds."
+  },
+  "result": {
+    "task": {
+      "id": "gz_wit_D",
+      "type": "gaze",
+      "witness": "wit_D",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_A",
+      "tObs": 10.43,
+      "gaze": {
+        "offAxisDeg": 1.2,
+        "assumed": true,
+        "cameraFovDeg": 60,
+        "peripheral": false,
+        "source": "mark_poi"
+      },
+      "altGazeDegByMark": {
+        "mark_poi": 1.24,
+        "mark_pole_poi": 131.92,
+        "mark_tire_impression": 1.61
+      }
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 1161,
+      "worldSha": "526ea902d593",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 525363,
+  "doneAtMs": 528615
+}

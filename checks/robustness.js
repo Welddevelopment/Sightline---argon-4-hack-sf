@@ -1,7 +1,7 @@
 // Sightline credibility checks: position robustness + gaze angle (SPEC "CREDIBILITY v1").
 // Independent geometry only; reuses the ray-cast from checks.js. No case-specific data.
 import * as THREE from 'three';
-import { castRay, findWitness, prep, resolveTarget, witnessEye } from './checks.js';
+import { castRay, findWitness, prep, resolveTarget, witnessEye, observerVehicles } from './checks.js';
 
 export const ROBUST_RADIUS_M = 2;
 export const ROBUST_SAMPLES = 25;
@@ -30,10 +30,11 @@ export function sightlineRobustness(world, witnessId, targetId, t) {
   const resolved = resolveTarget(world, targetId);
   const [ex, ey, ez] = witnessEye(w);
   const offsets = robustnessOffsets();
+  const exclude = observerVehicles(world, w);   // own vehicle never blocks, also for jittered eye samples
   let blocked = 0;
   const blockers = {};
   for (const o of offsets) {
-    const r = castRay(world, [ex + o.dx, ey + o.dy, ez + o.dz], targetId, t, { prepared: true, resolved });
+    const r = castRay(world, [ex + o.dx, ey + o.dy, ez + o.dz], targetId, t, { prepared: true, resolved, exclude });
     if (!r.visible) {
       blocked++;
       blockers[r.blockedBy] = (blockers[r.blockedBy] || 0) + 1;

@@ -1,6 +1,6 @@
 // render_view.mjs — self-contained software renderer + independent verdicts for ONE viewpoint.
 // Runs inside a Gemini managed-agent sandbox (no GPU, no browser): pure Node + `three` (math/scene graph only).
-//   node render_view.mjs --world world.js --view overhead|<witnessId> --out out/<view> [--fps 5] [--w 480] [--h 270] [--t 6.5]
+//   node render_view.mjs [--repo /workspace/repo] --world world.js --view overhead|<witnessId> --out out/<view> [--fps 5] [--w 480] [--h 270] [--t 6.5]
 // Writes: out/<view>/frames/f0000.png..., out/<view>/still.png, out/<view>/verdict.json
 // Camera conventions match web/viewer.js (witness: eye at eyeHeight looking at lookAt, 60° (75° if close); overhead: ortho, north up).
 import fs from 'node:fs';
@@ -23,10 +23,11 @@ if (typeof globalThis.document === 'undefined') {
   globalThis.document = { createElement: () => ({ width: 64, height: 64, getContext: () => ctx, style: {} }) };
 }
 
-const THREE = await import('three');
-const { default: createWorld } = await import(pathToFileURL(WORLD).href);
-const world = createWorld(THREE);
-const checks = await import(pathToFileURL(path.resolve(path.dirname(new URL(import.meta.url).pathname), 'checks.js')).href);
+// --repo <dir>: use that checkout's checks/ + asset loader (WORLD CONTRACT v2 worlds need createWorld(THREE, assets)).
+const REPO = path.resolve(arg('repo', path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..')));
+const { THREE, instantiateWorld } = await import(pathToFileURL(path.join(REPO, 'checks', 'load_world.js')).href);
+const world = await instantiateWorld(await import(pathToFileURL(WORLD).href));
+const checks = await import(pathToFileURL(path.join(REPO, 'checks', 'checks.js')).href);
 fs.mkdirSync(path.join(OUT, 'frames'), { recursive: true });
 
 // ---------- lighting (same table as the viewer) ----------
@@ -209,23 +210,34 @@ function png(file, hud) {
 }
 
 // ---------- independent pixel visibility (item buffer) ----------
+// Dedicated zoom camera from the witness eye, FOV fitted to the target (so a car 400+ m away still covers pixels).
+// Two scene passes: `fraction` honours occludes:false like the ray-cast (e.g. the witness's own cab), `rawFraction` counts every mesh.
 function pixelVisibility(t) {
   if (!witness || typeof witness.lookAt !== 'string' || !world.objects[witness.lookAt]) return null;
   world.setTime(t); world.root.updateMatrixWorld(true);
-  const cam = makeCamera();
-  const tIdx = ids.indexOf(witness.lookAt) + 1;
   const tNode = world.objects[witness.lookAt].node;
+  const eye = new THREE.Vector3(witness.position[0], witness.eyeHeight ?? witness.position[1] ?? 1.6, witness.position[2]);
+  const tb = nodeBox(tNode), tc = tb.getCenter(new THREE.Vector3()), rad = tb.getSize(new THREE.Vector3()).length() / 2;
+  const d = Math.max(0.5, eye.distanceTo(tc));
+  const fov = Math.min(60, Math.max(0.3, (2 * Math.atan(rad / d) * 180) / Math.PI * 1.6));
+  const cam = new THREE.PerspectiveCamera(fov, W / H, 0.1, 3000);
+  cam.position.copy(eye); cam.lookAt(tc); cam.updateProjectionMatrix(); cam.updateMatrixWorld(true);
+  const tIdx = ids.indexOf(witness.lookAt) + 1;
   const inTarget = (m) => { for (let n = m; n; n = n.parent) if (n === tNode) return true; return false; };
-  // pass 1: target alone -> its screen footprint; pass 2: full scene -> who owns those pixels
+  const occluding = (m) => { if (inTarget(m)) return true; const i = ownerIndex(m); return !(i && world.objects[ids[i - 1]]?.occludes === false); };
   const mask = new Uint8Array(W * H);
   render(cam, { filter: inTarget, onlyId: true });
   let alone = 0; for (let p = 0; p < W * H; p++) if (item[p]) { mask[p] = 1; alone++; }
-  render(cam, { onlyId: true });
-  let seen = 0; const blockers = {};
-  for (let p = 0; p < W * H; p++) if (mask[p]) { if (item[p] === tIdx || inTargetIdx(item[p], tNode)) seen++; else if (item[p]) blockers[ids[item[p] - 1]] = (blockers[ids[item[p] - 1]] || 0) + 1; }
-  const frac = alone ? seen / alone : 0;
-  const top = Object.entries(blockers).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([id, px]) => ({ id, fraction: +(px / alone).toFixed(3) }));
-  return { target: witness.lookAt, t, targetPixels: alone, visiblePixels: seen, visibleFraction: +frac.toFixed(3), blockers: top };
+  const pass = (filter) => {
+    render(cam, { filter, onlyId: true });
+    let seen = 0; const blockers = {};
+    for (let p = 0; p < W * H; p++) if (mask[p]) { if (item[p] === tIdx || inTargetIdx(item[p], tNode)) seen++; else if (item[p]) blockers[ids[item[p] - 1]] = (blockers[ids[item[p] - 1]] || 0) + 1; }
+    return { seen, top: Object.entries(blockers).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([id, px]) => ({ id, fraction: alone ? +(px / alone).toFixed(3) : 0 })) };
+  };
+  const occ = pass(occluding), raw = pass(() => true);
+  return { target: witness.lookAt, t, zoomFovDeg: +fov.toFixed(2), distance: +d.toFixed(1), targetPixels: alone, visiblePixels: occ.seen,
+    visibleFraction: alone ? +(occ.seen / alone).toFixed(3) : 0, blockers: occ.top,
+    rawVisibleFraction: alone ? +(raw.seen / alone).toFixed(3) : 0, rawBlockers: raw.top };
 }
 function inTargetIdx(i, tNode) { const id = ids[i - 1]; if (!id) return false; for (let n = world.objects[id].node; n; n = n.parent) if (n === tNode) return true; return false; }
 

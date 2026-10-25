@@ -645,8 +645,10 @@ function update(cam) {
       placed.push(q);
     }
     // amber dashed "inferred" boxes and the all-witness overhead rays: full mode only (minimal = the active sight line)
-    if (!full) scene.traverse((o) => { if ((o.isLineSegments && /^inferred_/.test(o.name || '')) || (o.name === '__sl_rays' && w && r)) o.visible = false; });
+    if (!full) scene.traverse((o) => { if (o.name === '__sl_rays' && w && r) o.visible = false; });
   }
+  // amber dashed "inferred" outlines (viewer rebuilds them every frame): full mode only, in every view
+  if (!full) scene.traverse((o) => { if (o.isLineSegments && /^inferred_/.test(o.name || '')) o.visible = false; });
 
   // ---- (full) stopping distance / brake point bars on the road, one-word tags; the sentence is in the card ----
   const stop = info.stop;
@@ -760,6 +762,7 @@ function update(cam) {
     q.x = Math.max(6, Math.min(W - L.w - 6, q.x));
     for (let k = 0; k < 10 && placed.some((z) => rectsHit(z, q)); k++) q.y += overhead ? L.h + 4 : -(L.h + 4);
     q.y = Math.max(4, Math.min(H - L.h - 30, q.y));
+    if (placed.some((z) => rectsHit(z, q, 1))) continue; // no free spot: drop the tag rather than overlap (speed is in the HUD)
     placed.push(q);
     const ly = overhead ? q.y : q.y + L.h;
     svg.push(`<line class="slo-lead${L.hidden ? ' hid' : ''}" x1="${L.s.x.toFixed(1)}" y1="${L.s.y.toFixed(1)}" x2="${(q.x + q.w / 2).toFixed(1)}" y2="${ly.toFixed(1)}"/><circle class="slo-anc" cx="${L.s.x.toFixed(1)}" cy="${L.s.y.toFixed(1)}" r="2"/>`);

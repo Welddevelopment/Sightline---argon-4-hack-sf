@@ -1,0 +1,12 @@
+{
+  "id": "r_wit_A",
+  "type": "render",
+  "view": "wit_A",
+  "why": "POV render for wit_A.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node render_view.mjs --repo /workspace/job/repo --world /workspace/job/world.js --view wit_A --out /workspace/job/out/wit_A --fps 2 --w 480 --h 270",
+  "status": "error",
+  "ok": false,
+  "error": " Unable to make request: TypeError: fetch failed",
+  "wallMs": 7205,
+  "doneAtMs": 11454
+}

@@ -609,12 +609,14 @@ function applyCamera() {
     const o = world.objects[vid];
     camera = persp;
     persp.up.set(0, 1, 0);
-    if (persp.fov !== 60) { persp.fov = 60; persp.updateProjectionMatrix(); }
+    if (persp.fov !== 45) { persp.fov = 45; persp.updateProjectionMatrix(); }
     if (o) {
+      // broadcast-style chase: centred directly behind the car, 7.5 m back, 2.2 m above the ground, 45 deg FOV
       const dir = vehicleDir(vid);
-      const p = nodeBox(o.node, new THREE.Box3()).getCenter(new THREE.Vector3());
-      persp.position.copy(p).addScaledVector(dir, -10).add(new THREE.Vector3(0, 4, 0));
-      persp.lookAt(p.clone().addScaledVector(dir, 12).add(new THREE.Vector3(0, 1.2, 0)));
+      const bb = nodeBox(o.node, new THREE.Box3());
+      const p = bb.getCenter(new THREE.Vector3()); p.y = bb.min.y;
+      persp.position.copy(p).addScaledVector(dir, -7.5).add(new THREE.Vector3(0, 2.2, 0));
+      persp.lookAt(p.clone().addScaledVector(dir, 14).add(new THREE.Vector3(0, 1.1, 0)));
     }
     scene.fog = fogCfg;
     if (planLight) planLight.visible = false;

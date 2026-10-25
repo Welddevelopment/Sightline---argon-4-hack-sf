@@ -1,0 +1,113 @@
+{
+  "id": "r_overhead",
+  "type": "render",
+  "view": "overhead",
+  "why": "Overhead render. (added for coverage)",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node render_view.mjs --repo /workspace/job/repo --world /workspace/job/world.js --view overhead --out /workspace/job/out/overhead --fps 2 --w 480 --h 270",
+  "interactionId": "v1_ChdTWFRlYXB5NU10NjV4ZElQMVBxSy1BOBIXU1hUZWFweTVNdDY1eGRJUDFQcUstQTg",
+  "dispatchedAtMs": 3500,
+  "createMs": 232535,
+  "status": "completed",
+  "environmentId": "06fa79ae6b94f260ad5109fb031f266d",
+  "usage": {
+    "total": 67275,
+    "input": 64649,
+    "cached": 46343
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"view\":\"overhead\",\"frames\":51,\"renderMs\":19215,\"verdict\":\"8/10 pass\"}",
+    "interpretation": "The overhead view successfully rendered 51 frames and verified that 8 out of 10 scene checks passed."
+  },
+  "result": {
+    "view": "overhead",
+    "world": "world.js",
+    "frames": 51,
+    "fps": 2,
+    "size": [
+      480,
+      270
+    ],
+    "stillT": 12.5,
+    "renderMs": 19215,
+    "node": "v22.23.4",
+    "host": "",
+    "runAll": [
+      {
+        "check": "sightline",
+        "subject": "wit_A",
+        "pass": true,
+        "blockedBy": null,
+        "t": 4.5,
+        "detail": "From Witness A's marked position (witness_A.md p.1; HAR-17/02 p.1–2, p.29–30) Witness A had line of sight to veh_A at t=4.5s (distance 466.8 m); target 3° from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness A's mark. Claim: \"Saw dark car come over the hill eastbound before truck turned; once trailer crossed eastbound lanes it blocked view of the car.\""
+      },
+      {
+        "check": "sightline",
+        "subject": "wit_B",
+        "pass": false,
+        "blockedBy": "veh_T_tractor",
+        "t": 9.8,
+        "detail": "From Witness B's marked position (Depo Witness B 41:10, 52:00, 1:54:30 (Exhibit 4 mark #2)) the line of sight to veh_A is blocked by veh_T_tractor at t=9.8s (distance 30.2 m). Blocked from 21 of 25 positions within 2 m of Witness B's mark; the result depends on Witness B's exact position. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\""
+      },
+      {
+        "check": "sightline",
+        "subject": "wit_C",
+        "pass": true,
+        "blockedBy": null,
+        "t": 10.43,
+        "detail": "From Witness C's marked position (witness_C.md p.1) Witness C had line of sight to veh_T_trailer at t=10.4s (distance 32.5 m); target 7° from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness C's mark. Claim: \"Stopped in WB inside lane ~18 m west of crossover; watched truck creep across EB lanes and saw car emerge on far side after loud crunch.\""
+      },
+      {
+        "check": "sightline",
+        "subject": "wit_D",
+        "pass": false,
+        "blockedBy": "occ_store_front",
+        "t": 10.43,
+        "detail": "From Witness D's marked position (Depo Witness D 07:38, 08:08, 18:02, 18:42) the line of sight to veh_A is blocked by occ_store_front at t=10.4s (distance 33.3 m). Blocked from 25 of 25 positions within 2 m of Witness D's mark. Claim: \"Inside behind the register at the back of the counter; could not see the highway due to cooler and window posters, only heard the bang.\""
+      },
+      {
+        "check": "timing",
+        "subject": "veh_A",
+        "pass": true,
+        "blockedBy": null,
+        "detail": "The driver of Vehicle A had a continuous line of sight to Vehicle T Semitrailer for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Vehicle T Semitrailer came within 3 m of the centerline of this driver's remaining path 2.38 s before impact. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation."
+      },
+      {
+        "check": "timing",
+        "subject": "veh_T_tractor",
+        "pass": true,
+        "blockedBy": null,
+        "detail": "The driver of Vehicle T Tractor had a continuous line of sight to Vehicle A for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation."
+      },
+      {
+        "check": "plausibility",
+        "subject": "veh_A",
+        "pass": true,
+        "detail": "Vehicle A moves plausibly: peak speed 76.8 mph, peak acceleration 0 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 1.12 g at t=19.00 s (consistent with secondary impacts during run-out; not counted)."
+      },
+      {
+        "check": "plausibility",
+        "subject": "veh_T_tractor",
+        "pass": true,
+        "detail": "Vehicle T Tractor moves plausibly: peak speed 13.9 mph, peak acceleration 0.22 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle T Tractor took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.12 g at t=21.85 s."
+      },
+      {
+        "check": "plausibility",
+        "subject": "veh_T_trailer",
+        "pass": true,
+        "detail": "Vehicle T Semitrailer moves plausibly: peak speed 13.4 mph, peak acceleration 0.23 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle T Semitrailer took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.12 g at t=21.85 s."
+      },
+      {
+        "check": "plausibility",
+        "subject": "veh_witA",
+        "pass": true,
+        "detail": "Witness A Pickup moves plausibly: peak speed 60 mph, peak acceleration 0.37 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within ±0.5 s of it are excluded."
+      }
+    ]
+  },
+  "still": "cases/demo-4254dd/cache/fleet/renders/overhead.png",
+  "ok": true,
+  "wallMs": 514753,
+  "doneAtMs": 518253
+}
