@@ -1,0 +1,914 @@
+[
+ {
+  "speaker": "Attorney",
+  "text": "I want to shift gears a little and go over some follow-up topics. First, the written statement you mentioned earlier. When did you give that statement?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A few days after. I think it was the Tuesday or the Wednesday. A deputy called me and asked if I'd come by and write down what I saw."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you go to the sheriff's office, or did the deputy come to you?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I went there. To the substation. My sister drove me."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did your sister go in with you?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "She came in and sat in the lobby. She didn't come in the room."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Who was in the room with you when you wrote it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Just the deputy. He gave me a form and a pen and said take my time."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was it the same deputy you talked to at the scene that afternoon?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I don't think so. The one at the scene was older. This one was younger. I could be wrong, there were a lot of them out there that day."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Fair enough. Did the deputy ask you questions before you started writing?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "He asked me to just write it in my own words. Then after, he read it and asked me a couple of things."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you remember what he asked?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "He asked what time it was, about. And he asked if I'd ever met anybody involved. I said no."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Had you?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I didn't know anybody. I was just there."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did he ask you to add anything to the statement after he read it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. He said it was fine. I signed it and dated it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How long was the statement, roughly?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not long. Maybe a page. Most of a page. My handwriting's big."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You reviewed that statement before today, correct?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. You all sent me a copy and I read it last week."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And when you read it last week, was there anything in it you thought was wrong?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. It's what I wrote. It's what happened."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is there anything you'd change about it today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Maybe I'd write more. I was nervous. But I wouldn't change anything that's in there."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "In that statement, you wrote, quote, \"I saw the whole thing,\" end quote. Do you remember writing that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What did you mean by that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I meant I saw it. The car coming, the truck turning, and then when it happened. I saw the whole thing."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You can answer."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I did answer. That's what I meant."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did anyone suggest that phrase to you, \"I saw the whole thing\"?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Those are my words."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did the deputy tell you what to write in any way?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. He didn't tell me anything except to take my time and write what I saw."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you use any notes when you wrote the statement?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I didn't have any notes. I didn't write anything down that day. I was too shook up."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Between the afternoon of the collision and the day you wrote the statement, did you talk with anybody about what you'd seen?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "My sister, mostly. She picked me up right after, so she was the first one I really talked to."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What did you tell her?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Just that I saw a wreck. That a car went under a truck and kept going. I was crying, honestly. I wasn't real detailed."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did she ask you questions about it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Some. She asked was I okay. She asked did I need to go to the doctor. I said no, I just wanted to go home."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you talk with anyone else before you wrote the statement?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "My husband, that night. And my daughter called me the next day because my sister told her."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did any of them tell you anything about the collision that they had heard from somewhere else?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "My daughter said it was on the news. I told her I didn't want to hear about it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did she tell you what was on the news?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "She started to and I stopped her. I said I was there, I don't need to hear it from the TV."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you watch any news coverage of the collision at any point?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I turned it off when it came on. I didn't want to see it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you read anything about it, in the paper or online?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. People would send me things and I wouldn't open them."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Who sent you things?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Just people I know. Somebody from church. A cousin. I'd see the picture and I'd just close it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So you may have seen a picture?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Like a little picture on my phone, a thumbnail. I didn't look at it. I didn't read it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you remember what that picture showed?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I closed it. I'm not trying to be difficult, I just didn't look."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "That's fine. Have you ever looked at any photographs of the scene taken by anyone else?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Not until you all, I guess, if there's some today. I haven't seen any."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you looked at any maps or diagrams of the intersection since the collision?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you gone back to that intersection since?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I've driven through it. I have to. It's the way to my sister's. But I haven't stopped at the store since."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You haven't been back to the store at all?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I just don't want to."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you drive through the intersection now, do you look at it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I try not to. I just go."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you talked with anyone who was at the scene that day, other than the people you've mentioned?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The lady from the store. The one who came out. I talked to her that afternoon."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "After that afternoon, have you talked with her again?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I haven't seen her since."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you talked with anyone from either side of this case, other than the attorneys, before today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "An investigator called me once. I think he was from your side. I told him basically what I told the deputy."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you give that investigator a written or recorded statement?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. It was just a phone call. Maybe ten minutes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did anyone from the trucking company or its insurer contact you?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that I know of. I got a letter about today. That's it."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "For the record, that letter was the notice of deposition."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Thank you. Ma'am, did anyone, at any time, tell you what to say today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you meet with anyone to prepare for today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I talked to your office on the phone to set up the time. And they told me to just tell the truth and say if I don't know something."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did anyone go over the substance of your testimony with you?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. They just said read your statement if you want to. So I did."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "All right. Let me ask you some questions about your eyesight. Do you wear glasses?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Reading glasses. Only for reading. For close up."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How long have you worn reading glasses?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Maybe six or seven years. Since my forties."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you need glasses or contacts for distance?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. My distance is fine. I drive without glasses. My license doesn't have any restriction."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When was your last eye exam?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Last year, I think. Maybe a little more. They said my distance was good and gave me a new reading prescription."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And before the collision, when was your last exam?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The one before that was maybe two years before. Same thing. Distance was fine."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you ever been told you have any problem with your eyes, other than needing reading glasses?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Nothing."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Any trouble with glare, or seeing in bright light?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No more than anybody. If it's real bright I squint like anybody."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you wearing your reading glasses that afternoon?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. They were in my purse. I'd used them in the store to read a label and then I put them away."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So at the time of the collision, your reading glasses were in your purse."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And you weren't wearing sunglasses."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I don't think I even had them with me. I'd left them in my sister's car the week before."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you wearing a hat or anything over your eyes?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. No hat."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How tall are you?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Five foot six."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you wearing any kind of heels or anything that day?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Flat sandals. I don't wear heels. My feet won't let me."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So you were standing at about your normal height."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Five six. Same as now."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you standing the whole time, or were you sitting at some point?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Standing. I'd been inside a while shopping and then I went out to wait, and I was standing."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "At the moment the car reached the intersection, were you standing or sitting?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Standing."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you on any kind of step, or curb, or raised area?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I don't think so. It was just the ground out front. Maybe the concrete in front of the store, I don't remember a step."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "All right. Now I want to ask about what, if anything, was between you and the highway. When you were standing outside, out front of the store, what objects were around you?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "There was a couple of signs. Like the store signs, a sign by the road. And there was a bench shelter thing out front. A little covered bench. And the gas, or the ice box, I think there was an ice box by the door."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let's take those one at a time. The signs. What kind of signs?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "One was the store sign, up on a pole, a tall one. And there were some little signs, like the kind that stick in the ground, advertising stuff. Bait, I think, and something about a sale."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How big were the small signs?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Small. Like yard signs. Down low, knee high maybe."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And the tall sign on the pole. Where was the sign itself, up high or down low?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Up high. Way up. You'd have to look up to see it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "The bench shelter you mentioned. Can you describe it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It's a little roof over a bench. Like a bus stop kind of thing, but I don't think a bus stops there. Posts on the corners, a roof. Open on the sides mostly."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was it enclosed in any way?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "There was a back on it, I think. Part of a back. But you could see through the sides."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What was it made of, if you know?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Metal posts, I think. A metal roof. I didn't really pay attention to it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How tall was it, approximately?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Taller than me. Maybe seven feet. I don't know exactly."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was anybody sitting on the bench?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that I remember. I don't think so."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Anything else between you and the highway? Any vehicles parked in front of the store?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "There might have been a car or two parked. I'm not sure. There wasn't anything big. No trucks parked out there that I remember."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Any trees or bushes?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not really out front. There's some trees further off, toward the back and along the side. Not in front."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Any fences?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not right there. There were fences further down, the ones the car went through. Those are down the road."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So summarizing, between you and the highway there were a couple of signs, the bench shelter, and possibly a parked car or two?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Mischaracterizes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'll rephrase. In your own words, what was between you and the highway?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A couple of signs, a bench shelter thing, nothing big. That's what I remember."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did any of those things block your view of the highway?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Like I said, nothing was in the way."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let me ask about the sun. Do you remember where the sun was that afternoon?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It was up. Still pretty high. It was a sunny day."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was it in front of you, behind you, to the side?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It wasn't in my eyes. I remember it was hot on my arms, but it wasn't in my eyes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you have to shade your eyes at any point?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I don't remember doing that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you squinting?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. It wasn't like that. It wasn't in my face."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Asked and answered."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were there any shadows or anything like that, that made it hard to see the road?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. It was just a bright clear day. You could see everything."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was there any haze, dust, smoke, anything in the air?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. It was clear. It hadn't rained."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Now, you told us earlier you were waiting for your sister. At the time of the collision, where was your attention, if you remember?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "On the road. I was looking for her car. She comes from the west, so I was looking that way, up the road toward the hill."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. I want to come back to your written statement for a moment. Besides \"I saw the whole thing,\" do you recall what else you wrote?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I wrote that the car came down the hill fast, that the truck was turning, and that the car went under it and kept going and hit a pole. And then I wrote the truck stopped down the side road."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you write anything about where you were?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I wrote I was outside the store waiting on my sister. Out front."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you write anything more specific than that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Just out front of the store. That's all he asked."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did the deputy draw anything, or ask you to draw anything?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. No drawing. Just writing."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did the deputy show you any map or photo?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you write how fast you thought the car was going?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I wrote fast. I think I wrote \"real fast.\" I didn't put a number."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to foundation."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you put a number anywhere in the statement?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Maybe the time. I put around four thirty. That's the only number, I think, besides the date."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is there anything that you remember now, sitting here today, that you didn't put in that statement?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Little things. Like the store lady coming out. Calling my sister. I didn't put all that. I just put the wreck."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is there anything you remember now that's different from what you wrote?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Nothing different. Just more."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Has your memory of that afternoon changed over time, in your view?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. If anything I remember it too well. I still think about it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you have any difficulty with your memory generally?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I keep track of all my clients' medications. I'd lose my job if I forgot things."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let me ask about the period after the statement. Have you discussed the collision with anyone in the time since you wrote it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not much. It comes up sometimes with my family. I don't like to talk about it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When it comes up with your family, does anyone tell you things they've heard about it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "They know not to. I asked them not to."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you ever posted anything about it online?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Never. I don't do that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did anyone ever offer you anything in connection with your testimony? Money, anything at all?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Nothing. I'm not getting anything. I took off work to be here."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I appreciate that. Do you have any relationship with the store, other than being a customer?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I just shop there sometimes. Used to."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Any relationship with any trucking company?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. My brother-in-law drives for a moving company, but that's nothing to do with this."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Does your brother-in-law work for the company that's the defendant in this case?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Not as far as I know. It's a different company. Little local outfit."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you ever been involved in a lawsuit yourself?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "All right. Let me go back to one more thing on eyesight. At the distance of the highway from the front of the store, could you read, for example, a license plate?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Foundation."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I didn't try to read any license plate. I could see the cars fine. I could see colors and shapes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Could you tell the color of the car?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Dark. Black or real dark blue. Dark."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Could you tell the color of the trailer?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "White. All white. Big and white."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. Ma'am, would you like a short break, or are you okay to keep going?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I'm okay. Let's keep going. I'd rather just get it done."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Some water there if you need it."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Thank you."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Between the collision and five o'clock, did you stay outside the store?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. I stayed out front. I didn't go anywhere. The store lady came out and stood with me for a while."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you ever go inside during that time?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Maybe for a minute, to get some water. She brought me inside for a minute and then I went back out because I was waiting for my sister."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "All right. I think that covers that area. Thank you, ma'am."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "You're welcome."
+ }
+]

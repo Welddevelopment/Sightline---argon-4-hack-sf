@@ -1,0 +1,834 @@
+[
+ {
+  "speaker": "Videographer",
+  "text": "We are now on the record. This is the videotaped deposition of Witness B, taken in connection with the wrongful death action arising from the collision on U.S. Highway 27A at Northeast 140th Court on May 7, 2016. Today's date is the fourteenth. The time on the video monitor is 9:02 a.m. Will counsel please state their appearances for the record."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Good morning. I represent the estate of the driver of Vehicle A, the plaintiff in this matter, and I'll be conducting the examination today."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Good morning. I appear on behalf of the defendant motor carrier and the driver of Vehicle T. We'll reserve all objections except as to form until the time of trial, and the witness will read and sign."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "That's agreed. Is there anyone else present in the room that should be noted?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "No one else on our side."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Nor on ours. Would the court reporter please swear the witness."
+ },
+ {
+  "speaker": "Videographer",
+  "text": "Let the record reflect the witness has been sworn by the court reporter. Counsel, you may proceed."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Thank you. Good morning."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Good morning."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Could you please state your name for the record. For purposes of this video we'll refer to you as Witness B, and that's how you'll be identified in the transcript."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Okay. I understand. I gave my full name to the reporter before we started."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "That's fine. You understand that you've just taken an oath to tell the truth?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, I do."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And that oath is the same oath you would take if you were testifying in a courtroom in front of a judge and a jury?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, I understand that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you ever had your deposition taken before?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. This is my first time. I've never been in anything like this."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you ever testified in court, in any kind of case?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I got called for jury duty one time, years ago, but they sent me home the first day."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you ever been a party to a lawsuit? Meaning you sued someone or someone sued you?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No, never."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "All right. Since this is your first deposition, let me go through a few ground rules. They help keep the record clean, and frankly they make the day go faster. Is that okay?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Sure."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "The court reporter is taking down everything that's said in this room, and the camera is recording you. So it's important that you answer out loud. A nod of the head or a shrug doesn't show up in the transcript. Do you understand?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Along the same lines, try to avoid answers like uh-huh or huh-uh. They look nearly the same on paper. Yes or no is better when it fits."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Okay. I'll try. I'm a talker, so you might have to remind me."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "That's perfectly fine. Second, please let me finish my question before you start your answer, even if you think you know where I'm going. And I'll do my best to let you finish your answer before I ask the next one. If we talk over each other, the reporter can't take us both down. Fair?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "That's fair."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Third, if you don't understand a question, please tell me, and I'll rephrase it. If you go ahead and answer, I'm going to assume you understood the question. Is that reasonable?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Fourth, I don't want you to guess. If you know something, tell me. If you don't know, it's perfectly fine to say I don't know or I don't remember. Do you understand the difference between a guess and an estimate?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I think so. Can you explain what you mean?"
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Sure. If I asked you how long this table is, you probably couldn't tell me exactly, but you could look at it and give me a reasonable estimate. That's fine. What I don't want is for you to make something up about something you never saw or heard."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Okay. That makes sense. So if I don't know, I just say so."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Exactly. And if you're giving me an estimate, it helps if you tell me that it's an estimate."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "All right."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "From time to time the other attorney may object to one of my questions. Unless you're instructed not to answer, you should go ahead and answer the question after the objection. The objection is just for the record. Understood?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "So I still answer even when he objects."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Correct, unless you're told otherwise."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Okay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "If you need a break at any time, just let me know. The only thing I'd ask is that you not take a break while a question is pending. Answer the question, and then we can take a break. All right?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "That's fine. I'm okay for now."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Are you taking any medication today, or is there anything else that would affect your ability to understand my questions or give truthful and complete answers?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Nothing like that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "That's understandable. Is there any reason at all you can't give your best testimony today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I can do it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Good. Let's start with a little background. Where do you currently live? I don't need a street address, just generally."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I live here in the county. Out on the west side, kind of in between towns."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How long have you lived in the county?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "About fourteen years now. Going on fifteen."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And before that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Before that I lived a couple of counties north. I moved down here when my sister did. We're close, so we wanted to be near each other."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you live with anyone?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Just me now. My son lived with me until a few years ago, but he's grown and moved out."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Where did you go to school?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I went to high school up north, where I grew up. I graduated. And then later I took classes at the community college for my certificate."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What certificate is that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "For home health. I'm a certified home health aide."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is that what you do for work?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. I've done it for about eleven years."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Can you describe for the jury what a home health aide does?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I go to people's houses, mostly older folks, and help them with daily things. Getting around the house, meals, light housekeeping, making sure they take their medicine on time. Some days it's just keeping somebody company."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you work for an agency or for yourself?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "For an agency. They give me my clients and my schedule."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How many clients do you typically see in a week?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It changes. Usually three or four regular clients. Sometimes more if someone's out and they need me to fill in."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Are your clients spread out around the county?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, all over. That's a big part of the job, really. I'm in the car a lot, going from one house to the next."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "About how many miles would you say you drive in a typical week for work?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Oh, a lot. I'd guess a few hundred. I don't keep exact track. The agency reimburses some of it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So that's an estimate."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, that's an estimate. A few hundred."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you working as a home health aide in May of 2016?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. Same agency."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you working on Saturday, May 7, 2016?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. That was my day off. I usually have Saturdays."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "We'll come back to that day in a little while. I want to finish up some background first. Do you have a driver's license?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How long have you been driving?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Since I was sixteen. So a long time."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you need glasses or contact lenses to drive?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I have reading glasses, for close-up things. Paperwork, my phone, that kind of thing. But I don't need anything for driving or for seeing far away."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is there a restriction on your license for corrective lenses?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No, there's no restriction."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When was the last time you had your eyes checked?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Before this happened, it would have been maybe a year or so before. They told me my distance vision was fine. That's when they said I could use the readers for close up."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You can answer. Let me ask it more simply. As of May 2016, did you wear any glasses for seeing at a distance?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Only the reading glasses, and only for reading."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you have them with you today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "They're in my purse. I might need them if you show me papers."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "That's fine. Feel free to use them whenever you need to. Do you have any problems with your hearing?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. My hearing is good."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Now, before today, did you do anything to prepare for this deposition?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I looked over my statement. The one I wrote for the deputy."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let's talk about that. You said a statement you wrote for the deputy. What is that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A few days after the accident, a deputy from the sheriff's office called me and asked if I would come in and write down what I saw. So I did. It's about a page, handwritten."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you remember about how many days after the crash that was?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I think it was three or four days after. It was the next week, during the week. I remember I had to move a client's visit around to go in."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And you wrote that statement yourself, in your own handwriting?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. The deputy gave me a form and I wrote it out. He asked me a couple of questions, but I wrote it myself."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did anyone tell you what to write?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. He just said write down what you saw, in your own words."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you sign it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, I signed it at the bottom and dated it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When did you review it in preparation for today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I read it again last night, and once a couple of weeks ago when I got the paper saying I had to come in."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "The paper you're referring to, is that the subpoena?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. The subpoena."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Where did you get the copy of the statement that you reviewed?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I kept a copy. The deputy made me a copy that day, and I put it in a folder at home with the other papers."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Other than your written statement, did you review any other documents to prepare for today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Just that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you look at any photographs of the scene?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Any maps or diagrams?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Any news articles, videos, anything on the internet about the crash?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I've stayed away from all that on purpose."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Why is that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Because I was there. I don't need to watch it on the news. It was hard enough the first time."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I understand. Did you meet with any attorney before today to prepare for this deposition?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I talked to somebody from your office on the phone once to set up the date, but that was about scheduling."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you discuss the substance of what you saw during that call?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Just the date and the time and where to come."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you spoken with anyone from the motor carrier, or any attorney representing them?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Has anyone ever asked you to change anything in your statement?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Nobody."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Having reread your statement last night, is there anything in it that you believe is wrong or that you'd like to change today?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You can answer."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I wrote what I remembered, and I still remember it the same way."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you talked to anyone else about today's deposition? Family, friends, coworkers?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "My sister knows I'm here. She drove me, actually. And I told my supervisor I needed the morning off. That's about it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you discuss the details of what you saw with your sister in preparing for today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not to prepare, no. We talked about it right after it happened, of course. But not about today."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "We'll get into those conversations later. I'd like to turn now to the location. Are you familiar with U.S. Highway 27A in this county?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, very."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How are you familiar with it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I drive it all the time. It's the main road out my way. Several of my clients are off of it, and it's the way to get into town for groceries and the pharmacy."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Specifically, are you familiar with the stretch of 27A near the intersection with Northeast 140th Court?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. I go right through there."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How often, back in 2016, would you say you drove through that particular stretch?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "At least once a week. Usually more. I had a client back then who lived a few miles past there, and I went out to her every Tuesday and Thursday."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So at least weekly, and often twice a week?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. At least weekly. Sometimes more if I was running errands."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And today, do you still drive through there?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I do. Not as much as I used to. I'll be honest, I go another way sometimes now if I can."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you drove that stretch, which direction were you usually going?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Both. Going out to my client I'd go one way, and coming back the other. So both directions."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How long have you been driving that stretch of road?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Since I moved down here. So about fourteen years."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, plenty of times. It's a little country store. I'd stop for a drink or gas or a snack between clients."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Before May 7, 2016, had you ever seen an accident at that intersection?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I'd never seen one there myself."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Had you ever been in an accident anywhere on 27A?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you ever been in any car accident, as a driver or a passenger?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "One time, a long time ago, somebody backed into me in a parking lot. Nobody was hurt. That's it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Other than that parking lot incident, have you ever witnessed a serious crash before May 7, 2016?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Never like that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Now, I'm going to ask you some general questions about the road itself. I'm not asking about that day yet, just about the road as you know it from driving it. All right?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Okay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is 27A in that area a divided highway?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. It's two lanes going each way with grass in the middle."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And what's the speed limit in that area, if you know?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I believe it's sixty-five. That's what I've always gone by. I think there's a sign for it, but I couldn't swear to exactly where it is."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to foundation."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You can answer, though I think you have. You said you believe it's sixty-five?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, I believe so. That's my understanding from driving it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is that stretch generally straight or curvy?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Pretty straight through there. There's a hill to the west, coming toward the store from the west side. Not a big hill, but it rises up and then you come down toward the intersection."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "We'll talk about the layout in more detail a little later. For now, generally, would you describe traffic on that stretch as heavy or light?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It depends on the time of day. During the week, mornings and afternoons it can be busy. Weekends it's usually lighter. There are a lot of trucks, too."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Thank you. Let me ask you about yourself for a moment. How tall are you?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "About five foot six."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was that the same in May of 2016?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. I haven't grown any."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Fair enough. Do you have any medical condition that affects your balance or your ability to stand for long periods?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I'm on my feet all day at work. Standing is no problem."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let me ask you about one more document before we move on. You mentioned the folder at home where you kept a copy of your statement. Is there anything else in that folder relating to this crash?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The subpoena. And a card the deputy gave me with his name and number. That's all."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you ever write down any notes of your own, apart from the statement for the deputy?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I didn't write anything else."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you ever take any photographs that day, with a phone or a camera?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I didn't take any pictures."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you received any payment or anything of value for your testimony today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Nobody's paid me anything. I lost a morning of work, if anything."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you have any relationship with the family of the driver of Vehicle A?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I didn't know anybody involved."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Any relationship with the motor carrier, or anyone who works for it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you have any interest in the outcome of this case?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I just came because I was asked to say what I saw. I don't have anything riding on it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Before I move on to the afternoon itself, I want to make sure we're on the same page about one thing. When I use the term Vehicle A, I'm referring to the dark four-door sedan that was involved in the collision. When I use the term Vehicle T, I'm referring to the tractor with the white trailer. Will you understand those terms if I use them?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. The car and the truck."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Exactly. And if at any point you're not sure which vehicle I mean, ask me."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I will."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And when I refer to the intersection, I mean where 27A meets Northeast 140th Court, by the store. Is that clear?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, that's clear."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "All right. One last question on background. Is there anything about that day, May 7, 2016, that makes it stand out in your mind, apart from the crash itself?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. It was just a normal Saturday. I was off, I went shopping, I was waiting on my sister. If it hadn't been for what happened, I wouldn't remember anything about that day."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "But you do remember it."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I remember it very well. I don't think I'll ever forget it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Thank you. I want to turn now to that afternoon in more detail."
+ }
+]

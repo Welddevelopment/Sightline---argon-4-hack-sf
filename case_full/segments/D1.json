@@ -1,0 +1,543 @@
+[
+ {
+  "speaker": "Videographer",
+  "text": "We are now on the record. This is the videotaped deposition of Witness D, taken in connection with the wrongful death action arising from the collision on U.S. Highway 27A at Northeast 140th Court in Levy County, Florida, on May 7, 2016. Today's date is the fifteenth. The time is 1:30 p.m. Will counsel please state their appearances for the record.",
+  "anchor_sec": 0
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I represent the estate of the driver of Vehicle A, and I'll be conducting the examination this afternoon."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Appearing on behalf of the defendant motor carrier and the driver of Vehicle T. Same stipulations as yesterday, all objections reserved except as to form, and the witness will read and sign."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Agreed. The witness has been sworn by the court reporter off camera. Good afternoon."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Good afternoon."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You understand that you're under oath, the same oath you'd take in a courtroom in front of a judge and jury?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes, sir. I understand."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you ever had your deposition taken before?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. I've never even been inside a courtroom except to pay a ticket one time."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "That's all right. Let me go over some ground rules so the record comes out clean. The court reporter is taking down everything we say, and the camera's recording too. So I need you to answer out loud. Nods and shakes of the head don't show up on a transcript. Okay?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Okay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And if you say uh-huh or uh-uh, the reporter can't always tell which one you meant, so try to say yes or no."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. Sorry. I'll try."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "No need to apologize. Please let me finish my question before you answer, even if you think you know where I'm headed, and I'll try to let you finish your answer. Fair enough?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Fair enough."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "If you don't understand a question, tell me, and I'll rephrase it. If you go ahead and answer, I'm going to assume you understood it. Is that all right?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "That's fine."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I don't want you to guess. If you know something, tell me. If you don't know, or don't remember, that's a perfectly good answer. But I am entitled to your best estimate if you have one. Do you understand the difference?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I think so. Like if you ask me how long something took, I can say about how long, but I shouldn't just make up a number."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "That's exactly right. The other attorney may object from time to time. Unless someone instructs you not to answer, you can go ahead and answer after the objection. Understood?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Understood."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "If you need a break, just tell us. The only thing I ask is that you answer any question that's pending before we take one."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Okay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is there any medication you're taking, or any illness or other reason, that would keep you from giving full and truthful testimony today?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. I'm nervous, but I'm fine."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Everybody is the first time. What did you do to prepare for today?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I talked to you on the phone once, maybe twenty minutes. And I read the statement I wrote for the deputy. That's about it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you meet with anyone else about your testimony?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you review any photographs, maps, or videos before today?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. Just my statement. It's one page."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Thank you. Let's get a little background. Where do you live, generally? I don't need a street address."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Here in the county. About fifteen minutes from the store, out toward the east."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How long have you lived in the county?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Most of my life. I moved away for a few years and came back."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Where were you working in May of 2016?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "At the store on the corner there, at the highway and 140th. The little store on the southeast side."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Can you describe what kind of store it is?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "It's a small country store. Some groceries, drinks, snacks, bait, a little bit of feed and hardware. People stop in on the way to the lake or on the way home from work."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How long had you worked there as of May 7, 2016?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "About two years. A little over, I think. I started in the spring two years before."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What was your job there?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Counter clerk. I ran the register, stocked shelves, did the coffee, mopped up at closing. Whatever needed doing."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Are you still working there?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. I left the next year. I work at a different place now, in town."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What shift were you working that Saturday?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I worked noon to close on Saturdays. Close was eight."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you the only employee working at the time?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "In the afternoon, yes. The owner sometimes came by, but that day it was just me after about two o'clock."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I want to spend some time on the layout of the store. Let's start with the building itself. Which way does the front of the store face?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "North. Toward the highway."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How far is the front of the building from the edge of the highway, approximately?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Foundation."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "If you know."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I don't know in feet. There's the parking lot in front, room for maybe a row of cars and the gas island, and then the grass and the road. It's not far. You can hear the trucks real well."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Where is the front door?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "On the front, on the north side, kind of toward the middle. It's a glass door with a bell on it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is there any other door that customers use?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. There's a back door for deliveries, but customers come in the front."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Does the front of the store have windows?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. Two big windows, one on each side of the door."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "In May of 2016, what, if anything, was on or in front of those windows?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Posters, mostly. Sale signs, drink ads, lottery signs, the hunting license sign, a sign for the bait. They cover most of the glass. And on the inside, on the one side, there's the big drink cooler pushed up against the window, and on the other side there's shelving, chips and that kind of thing."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How much of the glass, if any, could you see through from inside the store?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Not much. Little strips here and there, between the posters. Up at the very top, maybe. Mostly you can tell whether it's light or dark out, and you can see a car pull up close to the door. That's about it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was that true on May 7, 2016, as far as you recall?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. It was like that the whole time I worked there. The owner liked the signs up."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Where is the register located inside the store?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "On the right as you come in. The counter runs along the side, kind of sideways to the door, and the register sits at the end of the counter toward the back."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you are standing at the register, which way are you facing?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Mostly toward the door and the aisles. Kind of facing west, toward the front corner. I can see who comes in."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "From the register, could you see the highway?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. Not really. The cooler's in the way on one side and the posters are on the windows. If the door was propped open I could see a little bit of the parking lot."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was the door propped open that afternoon?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. The air was on. We kept it closed when the air was on."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "From the register, could you see the eastbound lanes of the highway, the lanes closest to the store?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. I couldn't see them from the register."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What about the westbound lanes, the far side of the median?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. If I can't see the near side, I definitely can't see the far side."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Could you see the side road, 140th Court, from the register?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. That's off to the side of the building. There's no window on that side, just the wall with the ice machine outside it."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let me ask it this way. Is there any window on the west side of the store, the side facing 140th?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. It's a solid wall. The ice machine and the propane cage are out there."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let's talk about the outside of the store. Can you describe what's in front of the store, between the building and the highway?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "There's the parking lot, it's gravel and some blacktop. There's one gas island, two pumps. There's the store sign up on a pole near the road. And there's the bench, the little shelter with the bench."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Tell me about the bench shelter."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "It's a little roof on posts with a bench under it. Kind of like a bus stop, but there's no bus out there. People sit and wait for rides, or eat their lunch out there, or smoke."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was that bench shelter there in May of 2016?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. It was there when I started."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Approximately how big is it?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Not big. Maybe as long as a pickup, and tall enough you can stand under it. It's got a roof and a back to it, I think the back is sheet metal, and the sides are open."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Where is it, generally, relative to the store?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Out front, toward the road. Out in front of the store."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is it closer to the building or closer to the highway?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I'd say it's out by the edge of the lot. I couldn't tell you in feet. It's out front."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "That's fine. Besides the sign pole, the gas island, and the shelter, is there anything else out in front of the store?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "A trash can or two. The air machine for tires. A newspaper box, I think, back then. Some flower pots the owner's wife put out."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you driven that stretch of the highway yourself?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Every day I worked. I came in from the east."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So from your own driving, can you describe the road there in front of the store?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "It's two lanes each way with the big grass median in between. There's a crossover at 140th so you can turn across. The westbound side has a turn lane for turning left into 140th or into the store."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What's the terrain like to the west of the store?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "There's a hill. Not a big one, but if you're going east you come over the top and then it goes down toward the store. When I'd leave going west I'd go up it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is 140th Court paved?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. It's a two-lane road that goes south, back to some houses and a farm and some businesses. Trucks use it sometimes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Without getting into May 7 yet, did you see trucks turning at that crossover in the course of your work?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I know they did, because they'd come into the lot sometimes or I'd hear them. But from inside I didn't really see the crossover. Mostly I'd see it driving in."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "All right. Let's turn to Saturday, May 7, 2016. What time did you arrive at work that day?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "A little before noon. Maybe quarter till."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you recall what the weather was like?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "It was a nice day. Sunny, warm. Dry. It hadn't rained."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How busy was the store that afternoon?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Slow. Saturdays could go either way, but that afternoon was slow. A few people for gas, a few for drinks and ice. I had time to restock the cooler and do the coffee pots."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Approximately how many customers would you estimate came in between noon and four-thirty?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I don't know exactly. Maybe twenty, twenty-five. It's not a big place."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were there any customers inside the store around four-thirty?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I don't think so. I think it was just me inside right then. People came and went, but right around then it was quiet."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What were you doing around that time, as best you recall?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I was at the counter. I'd been doing the cigarette count and I was behind the register, putting cartons up on the rack behind me."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "From where you were, could you hear the traffic on the highway?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. You always hear the traffic. Especially the trucks. You get used to it and kind of stop noticing it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see a dark-colored four-door car on the highway at any point that afternoon before about four-thirty?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. I didn't see the highway at all from where I was."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see a tractor-trailer with a long white trailer at any point before about four-thirty?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. Not before. I didn't see anything on the road."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So as of about four-thirty, you were inside, behind the register, and you could not see the eastbound lanes from where you were. Is that fair?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Leading."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You can answer."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. That's fair. I was inside and I couldn't see the road."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Had anything unusual happened that afternoon, up to that point?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. It was just a regular, slow Saturday."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. I'm going to move now to what happened next, starting with what, if anything, you heard."
+ }
+]

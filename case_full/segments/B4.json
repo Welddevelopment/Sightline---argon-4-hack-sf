@@ -1,0 +1,834 @@
+[
+ {
+  "speaker": "Attorney",
+  "text": "All right. I want to shift now from the car to the truck. Is that okay with you?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "That's fine."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "At some point that afternoon, before the crash, did you notice a large truck near the intersection?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. A big white truck. A tractor with a long trailer behind it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you remember when you first noticed it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not to the minute. It was a little while before everything happened. I just noticed it sitting over there on the other side."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you say the other side, what do you mean?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The westbound side. Across the median from the store. The lanes going the other direction, toward town."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was it in one of the westbound travel lanes, or somewhere else?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It was in the turn lane. The little left-turn lane they have there for the crossover."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Just so the record is clear, that's the turn lane on the westbound side that lets you turn left across the median toward 140th?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. That one."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How did you know it was in the turn lane and not the regular lane?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Because it was over on the left, by the median, where the lane cuts in. The regular lanes were to the right of it, and cars were going by it in those."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see cars going by it in the westbound lanes?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A couple, I think. Not a lot. It wasn't busy."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Tell me what you remember about the truck itself. Start with the trailer."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The trailer was white. Long. A box trailer, all closed in. Like a big metal box on wheels."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you notice anything on the front of the trailer?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "There was a unit up on the front of it, up high, behind the cab. A refrigeration thing, I'd guess. I could hear it running."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What did it sound like?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A hum. Kind of a steady hum, like a big air conditioner. You hear them at truck stops."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Could you hear that hum from where you were outside the store?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You can answer."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. Once things got quiet between cars, you could hear it. It's a constant sound."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What about the cab, the tractor part. What do you remember about that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It was darker than the trailer. I don't remember the exact color. A regular big rig cab. Not one of the flat-front ones, it had a hood."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you have any estimate of how long the trailer was?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Long. The regular long kind. I couldn't give you feet. I'm not good with distances, I said that before."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "That's fine. Would you say it was the size of trailer you typically see on the highway, the big ones?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Leading."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, the big ones. Not a short one. The full size."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you first noticed the truck in the turn lane, was it stopped, or was it moving?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I really can't tell you for sure. It was either stopped or just barely rolling. Creeping, maybe."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What makes you say it might have been creeping?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It just didn't seem totally still to me. But I wasn't staring at it. It could have been stopped. I don't want to say one way or the other."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I understand. I don't want you to guess. Is it fair to say you don't know whether it was stopped or creeping?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "That's fair. It was one or the other. Sitting there or close to it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you know how long it was in the turn lane before it began its turn?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. It was there when I noticed it. I don't know how long it had been there."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were there any other vehicles in that turn lane, in front of it or behind it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that I remember. Just the truck."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. At some point did the truck begin to turn?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Describe for me what you saw it do."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It started coming across. It pulled out of the turn lane, into the crossover, the gap in the median, and then the front of it started across the eastbound lanes. Toward our side. Toward 140th."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you say our side, you mean the south side of the highway, the side the store is on?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. The store side."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Which part of the truck came across first?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The cab. The front. Then the trailer follows behind it, the way they do. It kind of swings around."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Describe the path of the cab, as best you can."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It came out of the median and angled across, toward the side road. Heading for 140th. It was turning left, so it was curving toward my left as I looked at it. Toward the south."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'll rephrase. From where you were, which way did the cab appear to be heading as it crossed?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Toward 140th. Toward the side road that goes down past the store."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did it appear to you to be making a normal left turn into 140th?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Foundation."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "If you can answer."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It looked like a regular left turn to me. It was going where the road goes. I'm not an expert in trucks."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How fast was the truck moving as it turned?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Slow."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Can you give me any sense of how slow?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Slow like a big truck turning. A little faster than somebody walking, maybe. Not much. They don't go fast when they're turning like that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did the speed change as it went through the turn?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that I could tell. It was kind of steady. Slow and steady. Maybe it picked up a little once it was moving. I really don't know."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see it stop at any point during the turn, before the crash?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I didn't see it stop. Once it started across, it kept going."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How long, from when it started moving out of the turn lane, did the turn take?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A few seconds. I don't know. It felt slow. It wasn't like a car whipping across. It took its time."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you say a few seconds, are you able to put any number on that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I'd be making it up. Several seconds. It was slow. That's all I can tell you."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'm not asking you to make anything up. If you don't know, that's a fine answer."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Then I don't know the exact number. It was a few seconds, and it was slow."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "As the truck turned, did you hear anything from it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The engine. You could hear the engine working, like a low rumble when they pull out. And that hum from the trailer."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did the engine noise change during the turn?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It got a little louder when it started pulling. Then it was just steady. Like a big diesel. That's all I remember."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you hear the truck's horn at any point?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I don't remember any horn."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you hear any air brakes, that hiss trucks make?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I didn't hear brakes. Not from the truck, not from anybody."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you hear any other sounds from the truck, any squeal, anything like that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Just the engine and the hum."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you notice whether the truck had any lights on?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I didn't notice lights. It was broad daylight. I wasn't looking for that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you notice a turn signal on the truck?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I don't remember. I didn't notice it either way. I'm not saying it was or wasn't on."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Understood. Now, as the truck came across the eastbound lanes, where did the trailer end up relative to those lanes?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Across them. The trailer was stretched across the road. Both eastbound lanes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Both lanes?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Both. The inside lane and the outside lane. It was long enough that it covered the whole thing, more or less."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you say covered, do you mean the trailer was across both of the eastbound lanes at the same moment?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. At one point it was across both of them. The cab was over toward 140th and the trailer was back across the road behind it."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let me break that down. At the moment the trailer was across both lanes, where was the cab?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The cab was mostly across already. Up near the edge of the road on our side, starting into 140th, or close to it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And the back of the trailer, where was that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Still back in the median area, I think. Back toward where it came from. The back wheels were still coming through the crossover."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Are you confident about where the back of the trailer was?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not exactly confident. It was back there somewhere. In the median or right near it. I wasn't looking at the back wheels."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. Was the trailer moving or stopped when it was across both lanes?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Moving. Slow, still moving. It was still turning."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was the trailer straight across the road, or at an angle?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "At an angle, I'd say. Because it was still bending around the turn. Not straight across like a wall, more slanted."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Slanted in which direction, if you can say?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I can't really say better than that. It was angled. The front was ahead of the back. That's how they turn."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Fair enough. Which side of the trailer was facing the oncoming eastbound traffic?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Foundation."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "If you know."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The side of it. The long side. Coming from the west you'd be looking at the long side. The right side of it, I guess, if you're the truck."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. Let me go back a step. When the truck started its turn, where was the car, if you know?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Coming down the hill. Coming east. It had already come over the top, I think, when the truck started moving."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You think, or you know?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I think. I believe the car was already over the hill when the truck pulled out. That's how I remember it. But I wouldn't swear to the second."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "In your earlier testimony this morning you said you first noticed the car as it came over the hill. Was the truck still in the turn lane at that moment?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I think it was still in the turn lane, or just starting. It started across after, or about the same time. Not long after."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So the sequence you recall is the car comes over the hill, and then the truck begins across, or about the same time?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Asked and answered."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You can answer."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. That's my memory. Car over the hill, truck starts across, about together or right after."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see the truck at any point stop, back up, or pause once it was in the eastbound lanes?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. It kept coming across."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were there any other eastbound vehicles anywhere near the intersection while the truck was turning?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Just the car. I don't remember anybody else coming east right then."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And westbound, while the truck was turning?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I think a car went by westbound, maybe one. I really don't remember for sure. It was quiet."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let's talk about the car's position relative to the truck. As the truck moved across, which lane was the car in?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The right lane. The outside one, nearest the store. Like I said before."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did the car stay in that lane while the truck was turning?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. It stayed right there. Straight."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see the car move toward the left lane, or toward the shoulder, at any point while the truck was crossing?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. It didn't move over. It just kept straight in its lane."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did the car appear to you to slow down as the truck crossed in front of it?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Foundation."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'm asking only what you saw."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I didn't see it slow down. It kept coming the same as it was. I didn't see any change."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you hear any braking from the car? Tires, anything?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. No tires, no squealing. Nothing until the crash itself."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you hear a horn from the car?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. No horn from anybody."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Now, I'm going to ask you about the last moment before the impact, but I'm not going to ask you yet about the impact itself. We'll get there. Okay?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Okay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Just before the impact, where was the truck?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Across the road. The cab was over on our side, heading into 140th, and the trailer was across the eastbound lanes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was the truck still moving at that moment?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I think so. Still slow. Still going."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And the car, just before the impact, where was it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Right there. In the right lane, coming up to the trailer."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Which part of the truck did the car come up on? The cab, the trailer?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The trailer. The side of the trailer. Not the cab. The cab was already past."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you know about where along the trailer? Front, middle, back?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Somewhere in the middle, more toward the back maybe. Behind the cab, ahead of the back wheels. I couldn't tell you exactly."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. We'll come back to that. I want to ask a few more general things about the truck. Had you seen that truck before that day, at the store or on the road?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Not that I know of. Lots of trucks go through there. I wouldn't know one from another."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Going back to that afternoon. While the truck was in the turn lane, before it started across, did you see anything about the truck that seemed unusual to you?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. It was just a truck waiting to turn. Nothing stood out. I didn't think anything of it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see any doors open on it, anything loose, anything like that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Nothing like that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. Did the trailer at any point cross into the area of 140th itself, before the crash?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The front part of the truck was going into 140th. The trailer was still mostly on the highway when it happened."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How much of the truck, if any, was on 140th at the moment of the crash, if you can say?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The cab, maybe. Starting onto it. Maybe a little of the front of the trailer. I can't say exactly."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. Let me ask it this way. Was the cab on the highway or past the highway when the crash happened?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "At the edge, or just past it. Going onto 140th. It was most of the way through the turn with the front end."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And you're describing the cab's position there based on what you saw at the time?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. Based on what I saw."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. One moment."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I want to make sure I have the timeline straight. You noticed the truck sitting in the westbound turn lane, stopped or creeping, correct?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You don't know how long it had been there?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "At about the time the car came over the hill, the truck began its turn?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Mischaracterizes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is that a fair summary of what you said?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "About that time, or right after. Yes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "The truck moved out of the turn lane, through the crossover, and across the eastbound lanes, toward 140th?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Slowly?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Slowly."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Without stopping, that you saw?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Without stopping that I saw."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And at some point the trailer was across both eastbound lanes?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. Both of them."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And during that time, you didn't hear a horn and you didn't hear brakes?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No horn. No brakes. Just the engine and the hum."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is there anything about the truck's movements that you remember that I haven't asked you about?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I don't think so. That's what I remember. It came across slow, and the trailer was across the road."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you say anything out loud, or call out, while the truck was turning?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. There wasn't time to say anything, and I don't know who I would have said it to. I was just standing there."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was anyone else outside the store with you during the truck's turn?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not right with me. I don't remember anybody else outside right then. The girl who worked there was inside."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How do you know she was inside?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Because she came out after. After the crash. She came out the door."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "We'll get to that. Before the crash, did you see anyone else on the store property, in the lot?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "There might have been a car parked. I don't remember people. It was quiet."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Just a few more about the truck. After the truck got across, and we'll talk about this more later, did you see where it ended up?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It went on down 140th. It kept going a ways and stopped down there past the store."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "We'll come back to exactly where. Did it stop right away, or keep going?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It kept going a little. It didn't stop right at the highway. It went down some and then stopped."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. We'll pick that up later this morning. I'm going to move now to the moment of impact, which is the next area."
+ }
+]

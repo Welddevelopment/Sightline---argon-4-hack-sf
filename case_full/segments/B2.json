@@ -1,0 +1,898 @@
+[
+ {
+  "speaker": "Attorney",
+  "text": "I'd like to turn now to the afternoon of Saturday, May 7, 2016. Do you remember that day?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. I remember it very well. I don't think I'll forget it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Why were you in the area of US-27A and Northeast 140th Court that afternoon?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I was waiting for my sister. She was supposed to pick me up at the store there after I finished my shopping."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Which store are we talking about?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The little store on the corner there, on the south side of the highway. They sell a bit of everything. Feed, drinks, snacks, some hardware."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And how did you get to the store that day?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A neighbor dropped me off. My car was in the shop that week, so I was getting rides from people."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "About what time did your neighbor drop you off?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Around ten after four. Maybe a minute or two either way."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How do you know it was around ten after four?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Because my sister texted me she'd be there around five, and I remember thinking I had close to an hour to kill."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did your sister in fact arrive around five?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. Right about five. A little after, maybe, because of everything that was going on by then."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "We'll get to that later. When you were dropped off, what did you do first?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I went inside and did my shopping. I picked up a few things. Some bread, a jug of tea, some batteries, and a bag of birdseed for my mother."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "About how long were you inside the store?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Fifteen minutes, maybe. Not long. It's not a big store."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you pay for your items?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. At the counter."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And after you paid, where did you go?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I went back outside. Out front of the store, to wait for my sister."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Why did you wait outside rather than inside?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It was a nice day. And it's a little stuffy in there. I'd rather be outside than stand around in the aisles."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So from the time you finished shopping until the collision, you were outside?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. Outside, out front of the store."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you go back inside the store at any point before the collision?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I stayed outside."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you sit down at any point while you were waiting?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Off and on. I can't tell you exactly when. I was mostly standing."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let me ask it differently. At the time of the collision, do you recall whether you were standing or sitting?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I was standing."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let's talk about the conditions that afternoon. What was the weather like?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Clear. Sunny. No rain at all. It was warm but not hot like summer gets."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were there any clouds that you recall?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Maybe a few way off. Nothing over us. It was a bright, clear afternoon."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Had it rained earlier that day, to your knowledge?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that I know of. The road was dry. Everything was dry."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How do you know the road was dry?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I could see it. There weren't any puddles, nothing shiny. It looked like a dry road on a sunny day."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What about the light? Was it full daylight?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. Full daylight. The sun was still pretty high."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you recall where the sun was in the sky, generally?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Up and kind of over to the west. Behind the traffic coming from the west, I'd say. It wasn't down low yet."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was there any haze, smoke, or fog in the area?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. None of that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Any wind that you noticed?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A little breeze. Nothing to speak of."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Now, how would you describe the traffic on the highway while you were waiting?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Light. It's a Saturday afternoon out there. You'd get a few cars, then nothing for a while, then a few more."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were there trucks as well as cars?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Some. Mostly cars and pickups. Every so often a bigger truck."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Can you estimate how many vehicles passed in, say, a minute?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Calls for speculation."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "If you can."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I really can't give you a number. It wasn't busy. Sometimes a minute would go by and nothing passed at all."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What about noise? What could you hear while you were standing outside?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The cars going by, mainly. They make that whoosh at highway speed. Some birds. A radio from inside the store when the door opened."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was there any construction or machinery running nearby?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Not that I remember."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was it loud enough that you'd have had trouble hearing someone talk to you?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Only when a truck went by. Otherwise it was pretty quiet out there."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'd like you to describe the road for us in words. We'll look at a map later in the day, but for now, just in your own words. Can you do that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I'll try."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Start with the highway itself. How many lanes are there?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Four. Two going east and two going west."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is there anything separating the eastbound lanes from the westbound lanes?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. A big grassy median in between. It's wide. Wider than a lot of roads around here."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Can you estimate how wide the median is?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I'm not good with feet. Wide enough you could park a couple of trucks end to end across it, maybe. Sixty feet? I don't know."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Fair enough. Which side of the highway is the store on?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The south side. The eastbound side."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So the lanes nearest the store are the eastbound lanes?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. The eastbound lanes are closest. Then the median, then the westbound lanes on the far side."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is there a place where you can cross the median at that intersection?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. There's a crossover. A cut in the median where you can go across from one side to the other."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is there a traffic light at that crossover?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. No light. No stop light, no blinking light. Just the cut through the median."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Are there stop signs?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I think there's a stop sign on the side road coming up to the highway. Not on the highway itself."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "On the highway, are there turn lanes near the crossover?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. There's a left-turn lane on each side, I believe. It's kind of cut into the median before the crossover so people can get out of the fast lane to turn."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let's focus on the westbound side. Is there a left-turn lane for westbound traffic?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. If you're heading west and want to turn left onto 140th, you pull into that turn lane in the median and wait there."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And from that westbound turn lane, a vehicle turning left would cross what?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It'd go through the crossover and across both of the eastbound lanes, and then onto 140th."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Tell me about 140th Court. Which direction does it run from the highway?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "South. It goes south off the highway, right there by the store."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Does 140th Court continue north of the highway?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that I've ever seen. I've only ever known it to go south."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What's 140th Court like? Is it paved?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It's paved. It's a smaller road. Two lanes, one each way, no median. Some houses and fields down it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Where is the store in relation to 140th Court?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It's right on the corner. On the east side of 140th, where it meets the highway."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So the store sits at the southeast corner of the intersection?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. That's right."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Now I'd like to ask about the area to the west of the intersection. What's the land like in that direction?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "There's a hill. The highway comes over a rise to the west and then comes down toward the intersection."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How far west is the top of that hill, roughly?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Foundation."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Just your best sense, if you have one."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A good ways. A quarter mile maybe. I've never measured it. When you drive it, you come over the top and then you can see the store down the hill in front of you."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is it a steep hill?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Gentle. It's not a big hill. It's just enough that you can't see what's past the top."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And when you drive east on that stretch yourself, as you said you do weekly, what do you see when you come over that rise?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "You see the road go down and the intersection ahead, and the store on the right. It's pretty open from the top on down."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What about east of the intersection? What is it like in that direction?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Flatter. The highway runs on straight. There are fences, some yards and houses back off the road, some power poles along the side."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Are there trees along the highway near the intersection?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Some, back from the road. Not right on the shoulder. It's mostly grass along the edges."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Are there any buildings at the intersection besides the store?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not right there, no. The store is the main thing. There are houses further off."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is there a parking area at the store?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. A gravel and dirt lot in front and along the side. People pull in off the highway or off 140th."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How many cars were parked there while you were waiting?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A couple. One or two. It wasn't busy. People would pull in, run in, and leave."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were there any vehicles parked between the store and the highway while you were outside?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that I remember. Not big ones. Maybe a car came and went."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'll move on. Is the shoulder of the eastbound lanes paved?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "There's a paved strip along the edge and then grass. Then the store lot."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is there a speed limit sign anywhere near there that you know of?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "There's one somewhere back up the road. I believe it's sixty-five out there, but don't hold me to it."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object. Foundation."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You're not certain of the posted limit?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No, I'm not certain. That's just what I think it is from driving it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let me go back to what you had with you that afternoon. When you went outside after shopping, what were you carrying?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "My purse, and a shopping bag. One of those plastic bags from the store with my things in it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Just one bag?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Just the one. The birdseed was the heaviest thing. I had it all in one bag."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Which hand were you holding it in?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I'd switch. It was heavy. I think I had it in my left hand most of the time, with my purse on my right shoulder."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you set the bag down at any point?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I might have, on and off. I don't remember exactly. When everything happened, I know I still had it, because I remember it banging against my leg when I jumped."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you say you jumped, what do you mean?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "From the noise. The crash. It made me jump. That's all."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "We'll come to the crash in detail later. Did you have a cell phone with you that afternoon?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. In my purse."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you using your phone while you were waiting outside?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not right then. Earlier I'd read my sister's text, when I first got there. After that it was in my purse."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So in the minutes before the collision, were you looking at your phone?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. It was in my purse. I wasn't on it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you talking to anyone on the phone in the minutes before the collision?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I called my sister after. Not before."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you texting, reading, or doing anything with the phone?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I know people will say I was on my phone, but I wasn't. I was just standing there watching the road."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Move to strike the last part as nonresponsive."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you listening to anything? Earbuds, headphones, music?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Nothing in my ears."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you wearing glasses that afternoon?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I only wear reading glasses, and those were in my purse."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you need glasses to see things at a distance?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. My distance vision is fine. I just need the readers for small print."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you wearing sunglasses?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I didn't have sunglasses with me that day."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did the sun bother you at all while you were waiting?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. It wasn't in my face. I could see fine."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you wearing a hat or anything with a brim?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No hat. Just my hair pulled back."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was anyone with you while you were outside?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I was by myself."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you talking with anyone in person while you waited?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not really. A man said hello going into the store. That's about it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you know who that man was?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Never seen him before. Just somebody stopping in."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see where he went after that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Inside. I don't know after that. I wasn't paying him any attention."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "While you were waiting, what were you doing, generally?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Just waiting. Watching the road, watching for my sister's car. She'd be coming from the west, so I kept looking that way."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Why would your sister be coming from the west?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Because she lives west of there. She'd come down the highway over that hill, same as anybody coming from that direction."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So you were watching westbound or eastbound traffic for her?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Eastbound. She'd be heading east toward me, coming down the hill."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What kind of car does your sister drive?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A little silver hatchback. I was looking for that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you watch the cars that came over the hill while you waited?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Every one of them. Every time something came over I'd look to see if it was her."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was there anything that afternoon, before the collision, that seemed unusual to you about the traffic?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. It was just a normal afternoon. Cars going by. Nothing unusual until it happened."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you notice any vehicles pulling into or out of the store lot in the few minutes before the collision?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I don't remember any right then. It was quiet."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you notice anyone walking along the highway, or crossing it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Nobody walking."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Any bicycles or motorcycles?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that I remember."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Any emergency vehicles, police cars, anything with lights, before the collision?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Not before. Afterward, yes, a lot of them."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let me ask one more general question about where you were. Throughout the time you were waiting, where were you?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Outside. Out front of the store. I've said that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You have. I'm just making sure the record is clear. Did you go around to the side or back of the store at any point?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I stayed out front."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you walk out toward the highway at any point before the collision?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I stayed by the store."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you cross 140th Court at any point before the collision?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Had you ever waited outside that store before, on another day?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A few times. When I've gotten rides. It's an easy place for people to pick me up."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So you were familiar with what the intersection looks like from the store?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. I know what it looks like from there."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Before May 7, had you ever seen a collision at that intersection?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Never. I'd heard people say it's a bad crossing, but I'd never seen anything."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object. Move to strike as hearsay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'll ask you just about what you saw yourself. Before that day, had you yourself seen any near misses there?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that I can remember. Nothing that stuck with me."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "All right. In the minutes leading up to the collision, about how long had you been standing outside?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Ten minutes. Maybe a little more. I'd finished shopping at around twenty-five after, so ten or twelve minutes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And how are you estimating that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "From when I got there and how long I was inside. I didn't look at a clock. It's my best guess."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Understood. Did anything distract you in those minutes before? Any noise, anything that pulled your attention away from the road?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Nothing like that. I was just looking at the road for my sister."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you hungry, tired, not feeling well, anything of that sort that day?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I felt fine. I'd had lunch. I was a little tired from the week, but nothing out of the ordinary."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Had you had anything to drink that day other than water or tea?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Tea and water. That's all."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you taking any medication that affects your vision or your memory?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Nothing like that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. I think that covers the background of the afternoon. Next I want to move to the traffic you saw coming from the west, beginning with the first time you noticed the car. Before I do, is there anything about the conditions or the road we've discussed that you want to add or correct?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I think I've said it. It was clear, it was quiet, and I was out front waiting."
+ }
+]
