@@ -421,9 +421,14 @@ function buildTractor(T) {
     B.cyl('trim', 'y', 0.006, 0.25, [s * 1.12, 1.62, -2.75], 6);
     B.add('trim', new T.SphereGeometry(0.07, 12, 8), [s * 1.14, 1.76, -2.76], [0, 0, 0], [0.5, 1, 1]);
     // air cleaner canister (chrome) at the cowl
-    B.cyl('chrome', 'y', 0.2, 0.85, [s * 1.0, 1.85, -1.48], 24);
-    B.cyl('chrome', 'y', 0.215, 0.05, [s * 1.0, 2.28, -1.48], 24);
-    B.cyl('chrome', 'y', 0.215, 0.05, [s * 1.0, 1.42, -1.48], 24);
+    B.cyl('chrome', 'y', 0.18, 0.66, [s * 0.98, 1.72, -1.47], 28);
+    B.add('chrome', new T.SphereGeometry(0.18, 24, 8, 0, Math.PI * 2, 0, Math.PI / 2), [s * 0.98, 2.05, -1.47], [0, 0, 0], [1, 0.35, 1]);
+    B.cyl('trim', 'y', 0.186, 0.035, [s * 0.98, 1.84, -1.47], 28);
+    B.cyl('trim', 'z', 0.07, 0.3, [s * 0.82, 1.62, -1.35], 12);
+    // hood side louvres (dark vent with chrome surround)
+    B.box('chrome', [s * 0.672, s * 0.69].sort((a, b) => a - b), [1.5, 1.86], [-2.05, -1.45]);
+    B.box('grille', [s * 0.68, s * 0.695].sort((a, b) => a - b), [1.53, 1.83], [-2.02, -1.48]);
+    for (let y = 1.56; y < 1.82; y += 0.045) B.box('chrome', [s * 0.69, s * 0.7].sort((a, b) => a - b), [y, y + 0.012], [-2.0, -1.5]);
     // exhaust stack + heat shield behind the cab corners
     B.cyl('chrome', 'y', 0.065, 2.2, [s * 1.19, 2.45, 1.92], 16);
     B.cyl('alum', 'y', 0.085, 0.9, [s * 1.19, 2.2, 1.92], 16);

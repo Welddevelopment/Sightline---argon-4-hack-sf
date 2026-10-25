@@ -1,0 +1,10 @@
+{
+  "name": "Jogger on NE 140th Ct",
+  "position": [-4.0, 0, 17.64],
+  "eyeHeight": 1.6,
+  "lookAt": "veh_A",
+  "observationTime": 10.43,
+  "claim": "I was jogging on the shoulder of 140th, maybe 50 feet south of the highway, and saw the car hit the trailer.",
+  "confidence": "medium",
+  "assumptions": "Placed on the west shoulder of NE 140th Court (x = -4.0 m, just outside the 7.2 m wide road centered at x = 0; west shoulder chosen to avoid the truck occupying x = 0 at impact) and 50 ft (15.24 m) south of the US-27A eastbound south edge (z = 2.4 m + 15.24 m = 17.64 m). Observation time set to impact (t = 10.43 s) looking at veh_A."
+}

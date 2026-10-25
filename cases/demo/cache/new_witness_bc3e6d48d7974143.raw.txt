@@ -1,1 +1,10 @@
-{"name":"New Witness","position":[4.5,0,17.6],"eyeHeight":1.6,"lookAt":"veh_A","observationTime":10.43,"claim":"I was jogging on the shoulder of 140th, maybe 50 feet south of the highway, and saw the car hit the trailer.","confidence":"medium","assumptions":"Placed on the east shoulder of NE 140th Court (x = 4.5 m, just outside the 7.2 m wide road) and 50 feet (15.24 m) south of the US-27A eastbound road edge (z = 2.4 + 15.24 = 17.6 m). Observation time set to the moment of impact at t = 10.43 s, looking at the car (veh_A)."}
+{
+  "name": "Jogger on NE 140th Ct",
+  "position": [-4.1, 0, 17.6],
+  "eyeHeight": 1.6,
+  "lookAt": "veh_A",
+  "observationTime": 10.43,
+  "claim": "I was jogging on the shoulder of 140th, maybe 50 feet south of the highway, and saw the car hit the trailer.",
+  "confidence": "medium",
+  "assumptions": "Placed on the west shoulder of NE 140th Court (road width 7.2 m centered at x=0, so x=-4.1 m is just outside the travel lane) at z=17.6 m, which is 50 ft (15.24 m) south of the eastbound highway's south edge (z=2.4 m). Observation time set to impact at t=10.43 s, when the tractor is at [0, 10.5] and may occlude a view from near x=0; west shoulder chosen over east shoulder since which side was not specified."
+}

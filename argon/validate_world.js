@@ -114,7 +114,8 @@ async function runtimeCheck(file) {
     if (typeof o.label !== 'string' || !o.label) errors.push(`${id}: label missing`);
     if (typeof o.occludes !== 'boolean') errors.push(`${id}: occludes must be true/false`);
     citeCheck(id, o.citation);
-    if (o.kind === 'signal' || typeof o.state === 'function') {   // signs (sig_ + kind 'sign') need no state
+    const isSign = o.node.userData?.assetType === 'sign' || o.kind === 'sign';
+    if ((o.kind === 'signal' && !isSign) || typeof o.state === 'function') {   // signs need no state(t)
       if (typeof o.state !== 'function') errors.push(`${id}: traffic signal (kind 'signal') needs state(t)`);
       else for (let t = 0; t <= (world.duration || 0); t += Math.max(0.25, world.duration / 40)) {
         let s; try { s = o.state(t); } catch (e) { errors.push(`${id}: state(${t}) threw ${e.message}`); break; }

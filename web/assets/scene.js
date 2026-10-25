@@ -528,8 +528,8 @@ export function road(opts = {}) {
     for (const sg of [1, -1]) {
       const ue = outerR, ranges = subtractRanges(s0, s1, sideRoadGaps(sg > 0 ? 'right' : 'left'));
       for (const [r0, r1] of ranges) {
-        const cols = sg > 0 ? [ue - 0.35, ue, ue + 0.55] : [-(ue + 0.55), -ue, -(ue - 0.35)];
-        const colUV = sg > 0 ? [0, 0.39, 1] : [1, 0.39, 0];
+        const cols = sg > 0 ? [ue - 0.12, ue, ue + 0.4] : [-(ue + 0.4), -ue, -(ue - 0.12)];
+        const colUV = sg > 0 ? [0, 0.23, 1] : [1, 0.23, 0];
         const gg = ribbon({ s0: r0, s1: r1, cols, colUV, step: 8, liftFn: (u, s, k) => (sg > 0 ? k <= 1 : k >= 1) ? 0.0015 : -0.022 });
         group.add(meshOf(gg, fringeMat(), 'road_edge_fringe'));
       }
@@ -833,11 +833,12 @@ export function groundPlane(opts = {}) {
         let y = cs.paved ? base - 0.06 : base + cs.rel * cs.w + natural(x, z) * (1 - cs.w);
         if (cs.median) y -= 0.08;           // the road's own median mesh shows; keep ground below it
         p.setY(i, y);
-        // macro colour: pasture patches (dry/green/sandy) vs mowed right-of-way
-        const n1 = vnoise(x / 60 + 99, z / 60 + 99, BIG, 31), n2 = vnoise(x / 17 + 9, z / 17 + 9, BIG, 32), n3 = vnoise(x / 230, z / 230, BIG, 33);
-        let r = 0.92 + (n1 - 0.5) * 0.28 + (n2 - 0.5) * 0.12, gg = 0.95 + (n1 - 0.5) * 0.18 + (n3 - 0.5) * 0.15, b = 0.9 + (n2 - 0.5) * 0.1;
-        const dry = Math.max(0, n3 - 0.55) * 1.2; r += dry * 0.25; gg += dry * 0.05;
-        if (cs.mow > 0) { const t = cs.mow; r = r * (1 - t) + (0.98 + (n2 - 0.5) * 0.06) * t; gg = gg * (1 - t) + (1.04 + (n2 - 0.5) * 0.06) * t; b = b * (1 - t) + 0.95 * t; }
+        // macro colour (non-repeating): dry straw patches vs greener swales, mottling, mowed right-of-way
+        const patch = vnoise(x / 45 + 99, z / 45 + 99, BIG, 31), mott = vnoise(x / 11 + 9, z / 11 + 9, BIG, 32), broad = vnoise(x / 190, z / 190, BIG, 33);
+        const dry = smooth(0.35, 0.8, broad * 0.6 + patch * 0.4);
+        let r = 0.9 + dry * 0.24, gg = 0.97 + dry * 0.05, b = 0.9 - dry * 0.04;
+        const br = 0.9 + mott * 0.18 + (patch - 0.5) * 0.08; r *= br; gg *= br; b *= br;
+        if (cs.mow > 0) { const t = cs.mow; const mb = 0.97 + (mott - 0.5) * 0.06; r = r * (1 - t) + 0.98 * mb * t; gg = gg * (1 - t) + 1.02 * mb * t; b = b * (1 - t) + 0.92 * mb * t; }
         const ditchWet = cs.rel < -0.35 && !cs.paved ? Math.min(1, (-cs.rel - 0.35) * 2) * cs.w : 0;
         c.setXYZ(i, r * (1 - ditchWet * 0.25), gg * (1 - ditchWet * 0.12), b * (1 - ditchWet * 0.2));
       }
@@ -864,33 +865,39 @@ export function treeline(opts = {}) {
   const g = new THREE.Group();
   const rnd = (() => { let s = seed * 9301 + 49297; return () => ((s = (s * 9301 + 49297) % 233280) / 233280); })();
   const crowns = [], trunks = [];
+  const C = (r, g, b) => [r, g, b];
   for (let i = 1; i < points.length; i++) {
     const [x0, z0] = points[i - 1], [x1, z1] = points[i];
     const len = Math.hypot(x1 - x0, z1 - z0), tx = (x1 - x0) / len, tz = (z1 - z0) / len;
-    for (let d = 0; d < len; d += spacing * (0.6 + rnd() * 0.8)) {
-      for (let row = 0; row < Math.max(1, Math.round(depth / spacing)); row++) {
-        const off = (row / Math.max(1, Math.round(depth / spacing)) - 0.5) * depth + (rnd() - 0.5) * spacing;
+    const rows = Math.max(1, Math.round(depth / spacing));
+    for (let d = 0; d < len; d += spacing * (0.6 + rnd() * 0.7)) {
+      for (let row = 0; row < rows; row++) {
+        const off = (row / rows - 0.5) * depth + (rnd() - 0.5) * spacing;
         const x = x0 + tx * d - tz * off, z = z0 + tz * d + tx * off, y0 = TERRAIN.profiles.length ? profileH(x, z) : 0;
-        const h = height * (0.65 + rnd() * 0.6);
-        if (rnd() < pineRatio) {
-          trunks.push({ x, z, y: y0, h: h * 1.25, r: 0.18 });
-          const cr = 2 + rnd() * 1.5;
-          crowns.push({ x, z, y: y0 + h * 1.25 - cr * 0.8, sx: cr * 1.2, sy: cr * 0.9, sz: cr * 1.2, c: [0.17, 0.24, 0.12] });
-        } else {
-          const w = h * (0.5 + rnd() * 0.3);
-          trunks.push({ x, z, y: y0, h: h * 0.45, r: 0.3 });
-          for (let k = 0; k < 4; k++) crowns.push({ x: x + (rnd() - 0.5) * w * 0.8, z: z + (rnd() - 0.5) * w * 0.8, y: y0 + h * (0.45 + rnd() * 0.35), sx: w * (0.4 + rnd() * 0.25), sy: h * (0.22 + rnd() * 0.12), sz: w * (0.4 + rnd() * 0.25), c: [0.2 + rnd() * 0.06, 0.27 + rnd() * 0.07, 0.13 + rnd() * 0.04] });
+        const h = height * (0.7 + rnd() * 0.55);
+        if (rnd() < pineRatio) {             // slash pine: tall bare trunk, small irregular crown on top
+          const H = h * 1.35;
+          trunks.push({ x, z, y: y0, h: H, r: 0.2 });
+          for (let k = 0; k < 3; k++) { const cr = 1.6 + rnd() * 1.4; crowns.push({ x: x + (rnd() - 0.5) * 2.5, z: z + (rnd() - 0.5) * 2.5, y: y0 + H - 1.2 - k * 1.4 - rnd(), sx: cr * 1.3, sy: cr * 0.7, sz: cr * 1.3, c: C(0.24 + rnd() * 0.05, 0.28 + rnd() * 0.05, 0.16) }); }
+        } else {                              // live oak / laurel oak mass: broad, low, overlapping crowns
+          const w = h * (0.7 + rnd() * 0.4);
+          trunks.push({ x, z, y: y0, h: h * 0.35, r: 0.32 });
+          const n = 5 + Math.floor(rnd() * 4);
+          for (let k = 0; k < n; k++) crowns.push({ x: x + (rnd() - 0.5) * w * 0.9, z: z + (rnd() - 0.5) * w * 0.9, y: y0 + h * (0.42 + rnd() * 0.38), sx: w * (0.28 + rnd() * 0.2), sy: h * (0.18 + rnd() * 0.12), sz: w * (0.28 + rnd() * 0.2),
+            c: C(0.22 + rnd() * 0.07, 0.27 + rnd() * 0.07, 0.15 + rnd() * 0.04) });
         }
+        // understory (palmetto, wax myrtle, young oaks) hides trunk gaps
+        if (row === 0 || rnd() < 0.4) for (let k = 0; k < 2; k++) { const sw = 2 + rnd() * 3; crowns.push({ x: x + (rnd() - 0.5) * spacing, z: z + (rnd() - 0.5) * spacing, y: y0 + sw * 0.35, sx: sw, sy: sw * (0.45 + rnd() * 0.3), sz: sw, c: C(0.25 + rnd() * 0.06, 0.29 + rnd() * 0.06, 0.16 + rnd() * 0.04) }); }
       }
     }
   }
   const crownGeo = new THREE.IcosahedronGeometry(1, 2);
   // lumpy crowns
   { const p = crownGeo.getAttribute('position'); for (let i = 0; i < p.count; i++) { const v = new THREE.Vector3().fromBufferAttribute(p, i); const k = 0.82 + vnoise(v.x * 2.3 + 5, v.y * 2.3 + v.z * 1.7 + 5, 1 << 20, 3) * 0.36; p.setXYZ(i, v.x * k, v.y * k, v.z * k); } crownGeo.computeVertexNormals(); }
-  const cm = new THREE.InstancedMesh(crownGeo, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.95, map: getTextureSet('grass').map }), crowns.length);
+  const cm = new THREE.InstancedMesh(crownGeo, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.92, normalMap: getTextureSet('gravel').normalMap, normalScale: new THREE.Vector2(1.5, 1.5) }), crowns.length);
   const tm = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.7, 1, 1, 6), new THREE.MeshStandardMaterial({ color: 0x4a3f33, roughness: 1 }), trunks.length);
   const o = new THREE.Object3D(), col = new THREE.Color();
-  crowns.forEach((c, i) => { o.position.set(c.x, c.y, c.z); o.scale.set(c.sx, c.sy, c.sz); o.rotation.set(0, i, 0); o.updateMatrix(); cm.setMatrixAt(i, o.matrix); cm.setColorAt(i, col.setRGB(c.c[0] * 1.6, c.c[1] * 1.6, c.c[2] * 1.6)); });
+  crowns.forEach((c, i) => { o.position.set(c.x, c.y, c.z); o.scale.set(c.sx, c.sy, c.sz); o.rotation.set(0, i, 0); o.updateMatrix(); cm.setMatrixAt(i, o.matrix); cm.setColorAt(i, col.setRGB(c.c[0], c.c[1], c.c[2], THREE.SRGBColorSpace)); });
   trunks.forEach((t, i) => { o.position.set(t.x, t.y + t.h / 2, t.z); o.scale.set(t.r, t.h, t.r); o.rotation.set(0, 0, 0); o.updateMatrix(); tm.setMatrixAt(i, o.matrix); });
   cm.castShadow = true; cm.receiveShadow = true; tm.castShadow = true;
   cm.name = 'treeline_crowns'; tm.name = 'treeline_trunks';

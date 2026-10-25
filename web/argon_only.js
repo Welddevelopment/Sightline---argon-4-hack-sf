@@ -1,8 +1,8 @@
 // ARGON-ONLY UI: make "only Argon can do this" visible.
 //  1. Case-size banner (viewer stage + case page): tokens · video · pages · documents · read in one pass.
 //  2. Key finding: witness-eye render at the key time next to the deposition frame where she marks the map.
-//  3. "Same inputs" baseline card (cases/<id>/cache/baseline_fair.json; falls back to the old #compare card).
-// Data preference: cases/<id>/argon_only.json (via /api/cases/:id/size .argonOnly) > /size estimate/meta > baseline_fair.json.
+//  3. The existing Flash card (#compare, ui.js, cache/baseline.json) gets a precise label of what that baseline was.
+// Data preference: cases/<id>/argon_only.json (via /api/cases/:id/size .argonOnly) > /size meta/estimate.
 // Plain script, no imports; injects its own stylesheet; survives ui.js / cases.js re-rendering via MutationObserver.
 (function () {
   'use strict';
@@ -41,20 +41,19 @@
   const relUrl = (id, p) => !p ? null : (/^(\/|https?:|data:)/.test(p) ? p : `/cases/${encodeURIComponent(id)}/${String(p).replace(/^\.?\//, '')}`);
 
   // ---------- data ----------
-  let D = null;          // { id, size, ao, fair, findings, key, world }
+  let D = null;          // { id, size, ao, findings, key, world, frames }
   let loadingFor = null;
 
   async function load(id) {
     loadingFor = id;
-    const [size, fair, st] = await Promise.all([
+    const [size, st] = await Promise.all([
       tryJson('/api/cases/' + encodeURIComponent(id) + '/size'),
-      tryJson('/cases/' + encodeURIComponent(id) + '/cache/baseline_fair.json'),
       IS_VIEWER && !new URLSearchParams(location.search).get('case') ? tryJson('/api/state') : tryJson('/api/cases/' + encodeURIComponent(id)).then((c) => c && (c.state || null)),
     ]);
     if (loadingFor !== id) return;
     const findings = (st && st.findings) || [];
     const key = findings.find((f) => String(f.status || '').toLowerCase() === 'contradiction') || null;
-    D = { id, size, ao: (size && size.argonOnly) || null, fair, findings, key, world: st && st.world, frames: null };
+    D = { id, size, ao: (size && size.argonOnly) || null, findings, key, world: st && st.world, frames: null };
     D.frames = await keyFrames(D);
     if (loadingFor !== id) return;
     paint();
@@ -90,12 +89,18 @@
       out.render = { src: relUrl(d.id, kf.render_png), t: Number(kf.render_t), wit, witName };
     } else if (wit) {
       const t = rc ? rc.t : null;
-      const worldName = d.world ? String(d.world).split('/').pop().replace(/\.js$/, '') : '';
-      const cands = [];
-      if (worldName) cands.push(`/cases/${encodeURIComponent(d.id)}/renders/${worldName}/${wit}.png`);
-      cands.push(`/renders/${wit}.png`);
-      for (const u of cands) if (await exists(u)) { out.render = { src: u, t, wit, witName }; break; }
-      if (!out.render && IS_VIEWER) out.render = { src: null, t, wit, witName, live: true };
+      // clean witness-eye still: snapshot cached by the viewer (POST /eyeframe), else the live viewer snapshots now,
+      // else the recorded render PNG (a full-UI capture, cropped to the 3D stage by CSS)
+      const eye = t != null ? `/cases/${encodeURIComponent(d.id)}/cache/frames/eye_${wit}_${Number(t).toFixed(1)}.jpg` : null;
+      const eyeOk = eye && await exists(eye);
+      if (IS_VIEWER) out.render = { src: eyeOk ? eye : null, t, wit, witName, live: true };
+      else if (eyeOk) out.render = { src: eye, t, wit, witName };
+      else {
+        const worldName = d.world ? String(d.world).split('/').pop().replace(/\.js$/, '') : '';
+        const cands = [];
+        if (worldName) cands.push(`/cases/${encodeURIComponent(d.id)}/renders/${worldName}/${wit}.png`);
+        for (const u of cands) if (await exists(u)) { out.render = { src: u, t, wit, witName, uishot: true }; break; }
+      }
     }
     // deposition frame at the mark
     if (kf && kf.depo_png) {
@@ -178,7 +183,7 @@
     return `<div class="ao-frames-h">What she said she saw <span>vs</span> what her marked position sees</div>
       <div class="ao-frames">
         ${d ? fig(d.src, 'ao-depo', dCap, dSub, d.t != null ? ` data-seek="${esc(d.tc)}" title="Click to open the deposition at ${esc(d.tc)}"` : '') : ''}
-        ${r ? fig(r.src, 'ao-render', rCap, rSub, ' title="Click to enlarge"') : ''}
+        ${r ? fig(r.src, 'ao-render' + (r.uishot ? ' ao-uishot' : ''), rCap, rSub, ' title="Click to enlarge"') : ''}
       </div>`;
   }
   function wireFrames(box) {
@@ -205,101 +210,53 @@
     lb.innerHTML = `<figure><img src="${esc(src)}" alt=""><figcaption>${capHtml}</figcaption></figure>`;
     lb.hidden = false;
   }
+  function worldReady(r) {
+    const sl = window.sl;
+    if (!sl || !sl.world || !r.wit) return false;
+    if (D.world && sl.worldUrl && String(sl.worldUrl).replace(/^\/+/, '') !== String(D.world).replace(/^\/+/, '')) return false;
+    return (sl.world.witnesses || []).some((w) => w.id === r.wit);
+  }
+  function maybeSnapshot() {
+    const r = D && D.frames && D.frames.render;
+    if (!r || !r.live || r.snapped || !worldReady(r)) return;
+    r.snapped = true;
+    const snap = liveSnapshot(r);
+    if (!snap) return;
+    r.src = snap; r.uishot = false;
+    fetch('/api/cases/' + encodeURIComponent(D.id) + '/eyeframe', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ wit: r.wit, t: r.t, dataUrl: snap, world: D.world }) }).catch(() => {});
+    paint();
+  }
+  let snapTimer = null;
+  function scheduleSnapshot(ms) { clearTimeout(snapTimer); snapTimer = setTimeout(maybeSnapshot, ms); }
   function paintFrames() {
     if (!D.key) return;
-    const fr = D.frames;
-    if (fr && fr.render && fr.render.live && !fr.render.src && window.sl && window.sl.world) {
-      const snap = liveSnapshot(fr.render);
-      if (snap) fr.render.src = snap;
-    }
     const html = framesHtml();
     if (!html) return;
     let host = null;
     if (IS_VIEWER) host = document.querySelector(`#findings .finding[data-id="${CSS.escape(String(D.key.id))}"]`);
     else host = Array.from(document.querySelectorAll('#content .finds li')).find((li) => (li.querySelector('.fid') || {}).textContent === String(D.key.id));
-    if (!host || host.querySelector('.ao-keyframes')) return;
-    const box = document.createElement('div');
-    box.className = 'ao-keyframes';
-    box.innerHTML = html;
-    wireFrames(box);
-    const chips = host.querySelector('.chips');
-    if (chips) chips.before(box); else host.appendChild(box);
+    if (!host) return;
+    let box = host.querySelector('.ao-keyframes');
+    if (!box) {
+      box = document.createElement('div');
+      box.className = 'ao-keyframes';
+      wireFrames(box);
+      const chips = host.querySelector('.chips');
+      if (chips) chips.before(box); else host.appendChild(box);
+    }
+    if (box.dataset.k !== html) { box.innerHTML = html; box.dataset.k = html; }
+    const r = D.frames && D.frames.render;
+    if (r && r.live && !r.snapped) scheduleSnapshot(2500);
   }
 
-  // ---------- 3. same-inputs baseline ----------
-  function normFair(fair) {
-    if (!fair || typeof fair !== 'object') return null;
-    let rows = [];
-    const src = fair.models || fair.results || fair.runs || fair;
-    if (Array.isArray(src)) rows = src.filter((r) => r && typeof r === 'object').map((r) => ({ ...r, model: r.model || r.name }));
-    else for (const [k, v] of Object.entries(src)) if (v && typeof v === 'object' && !Array.isArray(v) && ('answer' in v || 'foundMark' in v || 'concludedBlocked' in v)) rows.push({ model: v.model || k, ...v });
-    if (!rows.length) return null;
-    const inputTokens = Number(fair.inputTokens || fair.tokens || (fair.inputs && (fair.inputs.tokens || fair.inputs.totalTokens))) || Math.max(...rows.map((r) => Number(r.tokens && (r.tokens.prompt || r.tokens.input)) || Number(r.tokens) || 0));
-    rows.sort((a, b) => (/argon/i.test(a.model) ? 1 : 0) - (/argon/i.test(b.model) ? 1 : 0));
-    return { rows, inputTokens, inputs: fair.inputs, at: fair.at || fair.generatedAt };
-  }
-  const yn = (v, yes, no) => v == null ? `<span class="ao-q">— ${esc(no)}</span>` : (v ? `<span class="ao-y">✓ ${esc(yes)}</span>` : `<span class="ao-n">✗ ${esc(no)}</span>`);
-  function rowTokens(r) { const t = r.tokens; if (t == null) return null; if (typeof t === 'object') return Number(t.prompt || t.input || t.total) || null; return Number(t) || null; }
-  function fairHtml(F) {
-    const mark = D.key && markCitation(D.key);
-    const claim = D.key && citesOf(D.key).map((e) => e.citation || '').find((c) => /claim/i.test(c) && /\d+:\d{2}/.test(c));
-    const claimTc = claim ? /(\d+:\d{2}(?::\d{2})?)/.exec(claim)[1] : '';
-    const anyBlocked = F.rows.filter((r) => !/argon/i.test(r.model) && r.concludedBlocked);
-    const cols = F.rows.map((r) => {
-      const isArgon = /argon/i.test(r.model);
-      const verdict = r.concludedBlocked == null ? 'No verdict' : (r.concludedBlocked ? 'View blocked: contradiction' : 'Clear view: consistent');
-      const vcls = r.concludedBlocked ? 'contradiction' : (r.concludedBlocked == null ? 'unverifiable' : 'consistent');
-      const tok = rowTokens(r);
-      const meta = [r.latencyS != null ? `${Number(r.latencyS).toFixed(0)} s` : '', tok ? `${fmtTokens(tok)} tokens in` : ''].filter(Boolean).join(' · ');
-      const ans = String(r.answer || '').trim();
-      return `<div class="ao-col${isArgon ? ' argon' : ''}">
-        <div class="ao-mname">${esc(prettyModel(r.model))}${meta ? `<span>${esc(meta)}</span>` : ''}</div>
-        <span class="cmp-verdict ${vcls}">${esc(verdict)}</span>
-        <ul class="ao-checks">
-          <li>${yn(r.foundMark, `found the map mark${mark ? ' (' + mark.tc + ')' : ''}`, 'missed the map mark')}</li>
-          <li>${yn(r.foundClaim, `found the “clear view” claim${claimTc ? ' (' + claimTc + ')' : ''}`, 'missed the “clear view” claim')}</li>
-        </ul>
-        ${ans ? `<details class="ao-ans"><summary>Answer</summary><p>${esc(ans.length > 900 ? ans.slice(0, 900) + '…' : ans)}</p></details>` : ''}
-      </div>`;
-    }).join('');
-    const note = anyBlocked.length
-      ? `<div class="ao-note">${esc(anyBlocked.map((r) => prettyModel(r.model)).join(', '))} also concluded the view was blocked on these inputs.</div>`
-      : '';
-    return `<div class="ao-bh">Same inputs, one prompt</div>
-      <div class="ao-bsub">All documents + all video${F.inputTokens ? ` (${esc(fmtTokens(F.inputTokens))} tokens)` : ''} sent unchanged to each model</div>
-      <div class="ao-cols">${cols}</div>${note}`;
-  }
-  function aoBaselineHtml(b) {
-    // argon_only.json: baseline {model, inputs, verdict}; the Argon column is the key finding itself
-    const inputs = typeof b.inputs === 'string' ? b.inputs : (b.inputs && (b.inputs.label || b.inputs.description)) || 'All documents + all video';
-    const tok = (D.ao && D.ao.tokens_total) || (b.inputs && b.inputs.tokens);
-    const v = String(b.verdict || '');
-    const vcls = /contradict|block/i.test(v) ? 'contradiction' : (/consistent|clear/i.test(v) ? 'consistent' : 'unverifiable');
-    return `<div class="ao-bh">Same inputs, one prompt</div>
-      <div class="ao-bsub">${esc(inputs)}${tok ? ` (${esc(fmtTokens(tok))} tokens)` : ''} sent unchanged to each model</div>
-      <div class="ao-cols">
-        <div class="ao-col"><div class="ao-mname">${esc(prettyModel(b.model || 'baseline'))}</div><span class="cmp-verdict ${vcls}">${esc(vcls === 'contradiction' ? 'Contradiction' : vcls === 'consistent' ? 'Consistent' : 'No verdict')}</span><p class="ao-why">${esc(v)}</p></div>
-        <div class="ao-col argon"><div class="ao-mname">${esc(prettyModel((D.size && D.size.model) || 'gemini-4-argon'))}</div><span class="cmp-verdict contradiction">Contradiction</span><p class="ao-why">${esc(D.key ? D.key.summary : '')}</p></div>
-      </div>${vcls === 'contradiction' ? `<div class="ao-note">${esc(prettyModel(b.model))} also reached the contradiction on these inputs.</div>` : ''}`;
-  }
-  function paintBaseline() {
-    const aoB = D.ao && D.ao.baseline;
-    const F = aoB ? null : normFair(D.fair);
-    if (!aoB && !F) return;                       // keep the old baseline.json card (#compare) as is
-    const html = aoB ? aoBaselineHtml(aoB) : fairHtml(F);
-    let el = document.getElementById('aoBaseline');
-    if (IS_VIEWER) {
-      const cmp = document.getElementById('compare');
-      if (!cmp) return;
-      if (!el) { el = document.createElement('details'); el.id = 'aoBaseline'; el.className = 'ao-baseline'; el.open = true; cmp.before(el); }
-      cmp.classList.add('ao-hidden');
-    } else {
-      const sect = Array.from(document.querySelectorAll('#content .sect')).find((s) => s.querySelector('.finds'));
-      if (!sect) return;
-      if (!el || !sect.parentNode.contains(el)) { el = document.createElement('div'); el.id = 'aoBaseline'; el.className = 'ao-baseline sect'; sect.after(el); }
-    }
-    const body = IS_VIEWER ? `<summary>Weaker model, same inputs</summary><div class="ao-bbody">${html}</div>` : `<h3>Weaker model, same inputs</h3><div class="ao-bbody">${html}</div>`;
-    if (el.dataset.k !== body) { el.innerHTML = body; el.dataset.k = body; }
+  // ---------- 3. existing Flash card (#compare, from cache/baseline.json): label it precisely ----------
+  // Per lead/user decision: no "same inputs" card; baseline_fair.json is not read by the UI.
+  const FLASH_LABEL = '<b>Gemini Flash</b>chunk-and-summarize pipeline over the transcript · no video';
+  function labelCompare() {
+    if (!IS_VIEWER) return;
+    const m = document.querySelector('#compare .cmp-grid .cmp-col:first-child .cmp-model');
+    if (m && m.innerHTML !== FLASH_LABEL && /flash/i.test(m.textContent)) m.innerHTML = FLASH_LABEL;
   }
 
   // ---------- paint + observe ----------
@@ -307,7 +264,7 @@
   function paint() {
     if (!D || painting) return;
     painting = true;
-    try { paintBanner(); paintFrames(); paintBaseline(); } catch (e) { console.warn('[argon_only]', e); }
+    try { paintBanner(); paintFrames(); labelCompare(); } catch (e) { console.warn('[argon_only]', e); }
     finally { painting = false; }
   }
   const obsTargets = IS_VIEWER ? ['findings', 'compare'] : ['content'];
@@ -326,7 +283,10 @@
     observe();
     check();
     if (IS_CASES) setInterval(check, 500);         // cases.js switches case with history.replaceState
-    if (IS_VIEWER && window.sl && window.sl.ready) window.sl.ready.then(() => setTimeout(paint, 300)).catch(() => {});
+    if (IS_VIEWER && window.sl && window.sl.ready) {
+      window.sl.ready.then(() => setTimeout(paint, 300)).catch(() => {});
+      if (window.sl.events) window.sl.events.addEventListener('loaded', () => { if (D && D.frames && D.frames.render && !D.frames.render.snapped) scheduleSnapshot(2500); });
+    }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();

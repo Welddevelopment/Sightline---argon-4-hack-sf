@@ -1,7 +1,7 @@
 // Sightline PRODUCT-C slice: per-camera witness-view clip export ("take it away").
 //
 //   GET /api/cases/:id/clips/:camera.mp4?t0=&t1=[&download=1][&fresh=1]
-//       -> MP4 (H.264 veryfast, 1280x720, CLIP_FPS fps, default 24) of that camera's view,
+//       -> MP4 (H.264 veryfast, 1280x720, CLIP_FPS fps, default 12 (2 shared CPUs, SwiftShader)) of that camera's view,
 //          rendered headless from the viewer in clean mode (WebGL canvas + HUD/labels DOM overlay),
 //          plus a burned-in caption strip (case, camera, clip window, SIMULATED/FICTIONAL, sightline check).
 //       Defaults: t0 = observationTime - 3 s, t1 = observationTime + 1 s (observation time from the
@@ -23,7 +23,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ROOT_DEFAULT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const W = +(process.env.CLIP_W || 1280), H = +(process.env.CLIP_H || 720);
-const FPS = Math.max(1, Math.min(30, +(process.env.CLIP_FPS || 24)));
+const FPS = Math.max(1, Math.min(30, +(process.env.CLIP_FPS || 12)));
 const MAX_LEN = 30; // seconds per clip
 const FONT = ['/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf']
   .find((f) => fs.existsSync(f)) || null;
@@ -255,12 +255,19 @@ async function renderJob(job) {
     const errs = [];
     page.on('pageerror', (e) => errs.push(String(e)));
     const hasExtra = (job.extraWitnesses || []).some((w) => w.id === job.camera);
-    const u = `${job.base}/index.html?clean=1&world=${encodeURIComponent(job.worldUrl)}&cam=${encodeURIComponent(hasExtra ? 'overhead' : job.camera)}&t=${job.t0}${process.env.CLIP_QUALITY ? '&quality=' + encodeURIComponent(process.env.CLIP_QUALITY) : ''}`;
+    const u = `${job.base}/?clean=1&world=${encodeURIComponent(job.worldUrl)}&cam=${encodeURIComponent(hasExtra ? 'overhead' : job.camera)}&t=${job.t0}${process.env.CLIP_QUALITY ? '&quality=' + encodeURIComponent(process.env.CLIP_QUALITY) : ''}`;
     await page.goto(u, { waitUntil: 'load' });
     try {
-      await page.waitForFunction(() => window.sl && window.sl.ready, null, { timeout: 60000 });
+      await page.waitForFunction(() => window.sl && window.sl.ready, null, { timeout: 180000 });
       await page.evaluate(() => window.sl.ready);
     } catch (e) { throw new Error(`viewer not ready for ${u}: ${e.message}\n${errs.join('\n')}`); }
+    // async assets (GLB vehicles, sky) - same hooks record.js waits on
+    await page.evaluate(async (ms) => {
+      const sl = window.sl, w = sl && sl.world;
+      const hooks = [sl && sl.assetsReady, sl && sl.assets && sl.assets.ready, w && w.assets && w.assets.ready, w && w.ready, sl && sl.renderQuality && sl.renderQuality.ready];
+      const jobs = hooks.filter(Boolean).map((h) => { try { return Promise.resolve(typeof h === 'function' ? h.call((w && w.assets) || sl) : h); } catch (_) { return null; } });
+      await Promise.race([Promise.allSettled(jobs), new Promise((r) => setTimeout(r, ms))]);
+    }, 20000);
     if (job.extraWitnesses && job.extraWitnesses.length) {
       await page.evaluate(({ ws, cam }) => {
         const list = window.sl.world.witnesses || (window.sl.world.witnesses = []);
@@ -272,7 +279,7 @@ async function renderJob(job) {
     for (let i = 0; i < n; i++) {
       const t = Math.min(job.t0 + i / job.fps, job.t1);
       await page.evaluate((tt) => { window.sl.setTime(tt); window.sl.renderFrame(); }, t);
-      await page.screenshot({ path: path.join(framesDir, `f${String(i + 1).padStart(5, '0')}.jpg`), type: 'jpeg', quality: 92 });
+      await page.screenshot({ path: path.join(framesDir, `f${String(i + 1).padStart(5, '0')}.jpg`), type: 'jpeg', quality: 92, timeout: 180000 });
       nFrames++;
     }
   } finally { await browser.close(); }

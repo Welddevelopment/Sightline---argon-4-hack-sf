@@ -46,7 +46,7 @@
   "63edd7a5e67738d1": {
     "statement": "I was driving west, about 100 yards from the crossover, when the truck started its turn. I could see the eastbound car coming the entire time.",
     "witness": {
-      "name": "Westbound driver (100 yd from crossover)",
+      "name": "Westbound Driver (100 yd east)",
       "position": [
         91.44,
         0,
@@ -55,15 +55,15 @@
       "eyeHeight": 1.2,
       "lookAt": "veh_A",
       "observationTime": 2,
-      "claim": "I could see the eastbound car coming the entire time as the truck started its turn.",
+      "claim": "I was driving west about 100 yards from the crossover when the truck started its turn, and I could see the eastbound car coming the entire time.",
       "confidence": "medium",
-      "assumptions": "Mapped 'driving west, about 100 yards from the crossover' to x = 91.44 m (100 yards east of the crossover center at x = 0, approaching westbound) in the center of the westbound lanes (z = -32.9 m) with car driver eye height (1.2 m). Set observationTime to t = 2 s when the tractor begins deflecting south out of the turn lane (z = -26.4 m) to start its turn.",
+      "assumptions": "Placed in the westbound lanes (z = -32.9 m) 100 yards (91.44 m) east of the crossover center (x = 0 m) since they are driving west toward it, with a standard car driver eye height of 1.2 m. Set observationTime to t = 2 s, the moment in the trajectory table when the truck begins turning south out of the left-turn lane.",
       "citation": "Live statement",
       "model": "gemini-4-argon"
     },
     "model": "gemini-4-argon",
-    "seconds": 4.494,
-    "at": "2026-10-25T19:30:47.869Z"
+    "seconds": 9.607,
+    "at": "2026-10-25T19:33:08.292Z"
   },
   "e0ddbd29052b7390": {
     "statement": "I was standing in front of the store, about 20 meters from the stop sign, and the truck was blocking nothing.",
@@ -90,31 +90,31 @@
   "ece46586511f9fd1": {
     "statement": "I was nearby and I saw everything. The car never slowed down.",
     "witness": {
-      "name": "Witness F",
+      "name": "Nearby Witness",
       "position": [
-        18,
+        8,
         0,
-        8
+        7.8
       ],
       "eyeHeight": 1.6,
       "lookAt": "veh_A",
       "observationTime": 10,
-      "claim": "I was nearby and I saw everything; the car never slowed down.",
+      "claim": "I was nearby and saw everything, and the car never slowed down.",
       "confidence": "low",
-      "assumptions": "The statement 'nearby' is completely vague with no specific landmark or side of the road mentioned, so I placed the pedestrian witness in front of the retail store on the SE corner at [18, 0, 8]. The observation time is set to t=10s just before impact to test their claim of seeing the car's final approach without slowing down.",
+      "assumptions": "The statement gives only 'nearby' with no specific landmark or side of the road, so the witness is placed as a standing pedestrian (1.6 m eye height) at the covered bench shelter near the SE corner [8, 0, 7.8]; observationTime is set to t=10.0 s just before impact to test their claim of seeing the car not slowing down.",
       "citation": "Live statement",
       "model": "gemini-4-argon"
     },
     "model": "gemini-4-argon",
-    "seconds": 6.66,
-    "at": "2026-10-25T19:27:52.148Z"
+    "seconds": 10.094,
+    "at": "2026-10-25T19:33:32.328Z"
   },
   "bc3e6d48d7974143": {
     "statement": "I was jogging on the shoulder of 140th, maybe 50 feet south of the highway, and saw the car hit the trailer.",
     "witness": {
-      "name": "New Witness",
+      "name": "Jogger on NE 140th Ct",
       "position": [
-        4.5,
+        -4.1,
         0,
         17.6
       ],
@@ -123,12 +123,12 @@
       "observationTime": 10.43,
       "claim": "I was jogging on the shoulder of 140th, maybe 50 feet south of the highway, and saw the car hit the trailer.",
       "confidence": "medium",
-      "assumptions": "Placed on the east shoulder of NE 140th Court (x = 4.5 m, just outside the 7.2 m wide road) and 50 feet (15.24 m) south of the US-27A eastbound road edge (z = 2.4 + 15.24 = 17.6 m). Observation time set to the moment of impact at t = 10.43 s, looking at the car (veh_A).",
+      "assumptions": "Placed on the west shoulder of NE 140th Court (road width 7.2 m centered at x=0, so x=-4.1 m is just outside the travel lane) at z=17.6 m, which is 50 ft (15.24 m) south of the eastbound highway's south edge (z=2.4 m). Observation time set to impact at t=10.43 s, when the tractor is at [0, 10.5] and may occlude a view from near x=0; west shoulder chosen over east shoulder since which side was not specified.",
       "citation": "Live statement",
       "model": "gemini-4-argon"
     },
     "model": "gemini-4-argon",
-    "seconds": 4.419,
-    "at": "2026-10-25T19:30:56.996Z"
+    "seconds": 9.084,
+    "at": "2026-10-25T19:33:55.815Z"
   }
 }
