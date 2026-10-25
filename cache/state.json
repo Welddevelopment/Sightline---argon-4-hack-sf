@@ -6,7 +6,7 @@
       "id": "F1",
       "severity": "high",
       "summary": "Witness B could not have watched the car up to impact from where she marked she was standing: Vehicle T's tractor, then its semitrailer, block her view from about t=9.1s.",
-      "detail": "Her eye-level render at t=9.9s shows the tractor filling the direction of the approaching car; the overhead render shows the truck crossing between her X and the eastbound lanes. The ray-cast agrees (blocked by veh_T_trailer, 28.3 m to the car). She testified \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\" (Depo 27:46).",
+      "detail": "Her eye-level render at t=9.9s shows the tractor filling the direction of the approaching car; the overhead render shows the truck crossing between her X and the eastbound lanes. The ray-cast agrees (blocked by veh_T_trailer, 28.4 m to the car). She testified \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\" (Depo 27:46).",
       "evidence": [
         {
           "source": "deposition.mp4",
@@ -135,20 +135,20 @@
       "check": "sightline",
       "subject": "wit_A",
       "pass": true,
-      "detail": "From Witness A's marked position (Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account) Witness A had line of sight to veh_A at t=2s (distance 639.5 m); target 2° from gaze (gaze assumed toward mark_impact). Clear from all 25 positions within 2 m of Witness A's mark. Claim: \"Saw the car come over the hill and approach before the truck began its turn; once the truck pulled across, the trailer blocked my view of the car.\"",
+      "detail": "From Witness A's marked position (Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account) Witness A had line of sight to veh_A at t=2s (distance 641.5 m); target 3° from gaze (gaze assumed toward mark_impact). Clear from all 25 positions within 2 m of Witness A's mark. Claim: \"Saw the car come over the hill and approach before the truck began its turn; once the truck pulled across, the trailer blocked my view of the car.\"",
       "citation": "Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account",
       "blockedBy": null,
       "target": "veh_A",
       "t": 2,
-      "distance": 639.5330980884527,
+      "distance": 641.5200484366743,
       "from": [
         357.2,
         1.5,
         -34.75
       ],
       "to": [
-        -281.38783297572195,
-        0.7249993640184402,
+        -283.37144064979566,
+        4.439297541608527,
         -1.1102230246251565e-16
       ],
       "hitPoint": null,
@@ -162,7 +162,7 @@
         "blockers": {}
       },
       "gaze": {
-        "offAxisDeg": 2.4,
+        "offAxisDeg": 2.5,
         "assumed": true,
         "cameraFovDeg": 60,
         "peripheral": false,
@@ -173,25 +173,25 @@
       "check": "sightline",
       "subject": "wit_B",
       "pass": false,
-      "detail": "From Witness B's marked position (Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter') the line of sight to veh_A is blocked by veh_T_trailer at t=9.9s (distance 28.3 m). Blocked from 25 of 25 positions within 2 m of Witness B's mark. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
+      "detail": "From Witness B's marked position (Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter') the line of sight to veh_A is blocked by veh_T_trailer at t=9.9s (distance 28.4 m). Blocked from 25 of 25 positions within 2 m of Witness B's mark. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
       "citation": "Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter'",
       "blockedBy": "veh_T_trailer",
       "target": "veh_A",
       "t": 9.9,
-      "distance": 28.315870822549947,
+      "distance": 28.409431339034242,
       "from": [
         7.5,
         1.6,
         6.5
       ],
       "to": [
-        -20.045832975721886,
-        0.7249993640184402,
+        -20.14199999999999,
+        0.7249999958276748,
         -1.1102230246251565e-16
       ],
       "hitPoint": [
-        1.117844007148352,
-        1.3972691347689272,
+        1.0955628530132726,
+        1.3972692811542298,
         4.9940003814697285
       ],
       "robustness": {
@@ -292,7 +292,7 @@
       "observerId": "veh_T_tractor",
       "targetId": "veh_A",
       "impactT": 10.43,
-      "availableS": 10.4,
+      "availableS": 10.43,
       "rangeS": [
         1,
         2.5
@@ -300,18 +300,18 @@
       "typicalS": 1.5,
       "verdict": "sufficient",
       "method": "sightline",
-      "firstVisibleT": 0.03,
+      "firstVisibleT": 0,
       "conflictT": null,
       "conflictS": null,
-      "cappedAtStart": false,
-      "blockedBy": "occ_crest",
-      "detail": "The driver of Vehicle T had a continuous line of sight to Vehicle A for 10.40 s before impact (t=0.03–10.43 s); before that it was blocked by occ_crest. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
+      "cappedAtStart": true,
+      "blockedBy": null,
+      "detail": "The driver of Vehicle T had a continuous line of sight to Vehicle A for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
       "impactSource": "meta.impactT",
       "pass": true,
       "citation": "meta.impactT",
       "target": "veh_A",
       "prt": {
-        "availableS": 10.4,
+        "availableS": 10.43,
         "rangeS": [
           1,
           2.5
@@ -324,14 +324,14 @@
       "check": "plausibility",
       "subject": "veh_A",
       "pass": true,
-      "maxAccelG": 0.02,
-      "maxSpeedMph": 74.1,
+      "maxAccelG": 0.03,
+      "maxSpeedMph": 74.6,
       "issues": [],
-      "detail": "Vehicle A moves plausibly: peak speed 74.1 mph, peak acceleration 0.02 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 1.11 g at t=21.80 s (consistent with secondary impacts during run-out; not counted).",
+      "detail": "Vehicle A moves plausibly: peak speed 74.6 mph, peak acceleration 0.03 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 1.11 g at t=21.80 s (consistent with secondary impacts during run-out; not counted).",
       "citation": "inferred: NTSB/HAR-17/02 p.1 (910 ft post-impact), p.2 & p.15 (74 mph, no braking, headlights off), p.5 (no pre-impact marks); dims: typical full-size sedan, assumed",
-      "maxAccelT": 4.75,
+      "maxAccelT": 0.8,
       "maxSpeedT": 4.5,
-      "impactAccelG": 1.01,
+      "impactAccelG": 1.04,
       "involvedInImpact": true,
       "postImpactAccelG": 1.11,
       "postImpactAccelT": 21.8,
@@ -382,32 +382,31 @@
     {
       "round": 1,
       "world": "/cases/demo/worlds/world_v1.js",
-      "startedAt": "2026-10-25T19:21:58.934Z",
+      "startedAt": "2026-10-25T20:07:00.259Z",
       "contractProblems": [],
       "renders": {
         "videos": [],
         "stills": []
       },
-      "renderError": "viewer not ready for http://127.0.0.1:35411/?world=%2Fcases%2Fdemo%2Fworlds%2Fworld_v1.js&cam=overhead&quality=render&clean=1: page.waitForFunction: Timeout 30000ms exceeded.",
       "checks": [
         {
           "check": "sightline",
           "subject": "wit_A",
           "pass": true,
-          "detail": "From Witness A's marked position (Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account) Witness A had line of sight to veh_A at t=2s (distance 639.5 m); target 2° from gaze (gaze assumed toward mark_impact). Clear from all 25 positions within 2 m of Witness A's mark. Claim: \"Saw the car come over the hill and approach before the truck began its turn; once the truck pulled across, the trailer blocked my view of the car.\"",
+          "detail": "From Witness A's marked position (Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account) Witness A had line of sight to veh_A at t=2s (distance 641.5 m); target 3° from gaze (gaze assumed toward mark_impact). Clear from all 25 positions within 2 m of Witness A's mark. Claim: \"Saw the car come over the hill and approach before the truck began its turn; once the truck pulled across, the trailer blocked my view of the car.\"",
           "citation": "Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account",
           "blockedBy": null,
           "target": "veh_A",
           "t": 2,
-          "distance": 639.5330980884527,
+          "distance": 641.5200484366743,
           "from": [
             357.2,
             1.5,
             -34.75
           ],
           "to": [
-            -281.38783297572195,
-            0.7249993640184402,
+            -283.37144064979566,
+            4.439297541608527,
             -1.1102230246251565e-16
           ],
           "hitPoint": null,
@@ -421,7 +420,7 @@
             "blockers": {}
           },
           "gaze": {
-            "offAxisDeg": 2.4,
+            "offAxisDeg": 2.5,
             "assumed": true,
             "cameraFovDeg": 60,
             "peripheral": false,
@@ -432,21 +431,21 @@
           "check": "sightline",
           "subject": "wit_B",
           "pass": true,
-          "detail": "From Witness B's marked position (Deposition of Witness B (fictional): position marked on Exhibit 4 at 27:04; claim 'clear view of the car the whole way in' (27:46) evaluated mid-approach at t=8.5s) Witness B had line of sight to veh_A at t=8.5s (distance 74.1 m); target 37° from gaze (peripheral; gaze assumed toward mark_impact). Clear from all 25 positions within 2 m of Witness B's mark. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
+          "detail": "From Witness B's marked position (Deposition of Witness B (fictional): position marked on Exhibit 4 at 27:04; claim 'clear view of the car the whole way in' (27:46) evaluated mid-approach at t=8.5s) Witness B had line of sight to veh_A at t=8.5s (distance 74.6 m); target 37° from gaze (peripheral; gaze assumed toward mark_impact). Clear from all 25 positions within 2 m of Witness B's mark. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
           "citation": "Deposition of Witness B (fictional): position marked on Exhibit 4 at 27:04; claim 'clear view of the car the whole way in' (27:46) evaluated mid-approach at t=8.5s",
           "blockedBy": null,
           "target": "veh_A",
           "t": 8.5,
-          "distance": 74.1484667271185,
+          "distance": 74.57648519527412,
           "from": [
             7.5,
             1.6,
             6.5
           ],
           "to": [
-            -66.35783297572189,
-            0.7249993640184402,
-            -1.1102230246251565e-16
+            -66.7881478283681,
+            0.7794902124483325,
+            0
           ],
           "hitPoint": null,
           "robustness": {
@@ -459,7 +458,7 @@
             "blockers": {}
           },
           "gaze": {
-            "offAxisDeg": 36.7,
+            "offAxisDeg": 36.8,
             "assumed": true,
             "cameraFovDeg": 60,
             "peripheral": true,
@@ -544,7 +543,7 @@
           "observerId": "veh_T_tractor",
           "targetId": "veh_A",
           "impactT": 10.43,
-          "availableS": 10.4,
+          "availableS": 10.43,
           "rangeS": [
             1,
             2.5
@@ -552,18 +551,18 @@
           "typicalS": 1.5,
           "verdict": "sufficient",
           "method": "sightline",
-          "firstVisibleT": 0.03,
+          "firstVisibleT": 0,
           "conflictT": null,
           "conflictS": null,
-          "cappedAtStart": false,
-          "blockedBy": "occ_crest",
-          "detail": "The driver of Vehicle T had a continuous line of sight to Vehicle A for 10.40 s before impact (t=0.03–10.43 s); before that it was blocked by occ_crest. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
+          "cappedAtStart": true,
+          "blockedBy": null,
+          "detail": "The driver of Vehicle T had a continuous line of sight to Vehicle A for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
           "impactSource": "meta.impactT",
           "pass": true,
           "citation": "meta.impactT",
           "target": "veh_A",
           "prt": {
-            "availableS": 10.4,
+            "availableS": 10.43,
             "rangeS": [
               1,
               2.5
@@ -576,14 +575,14 @@
           "check": "plausibility",
           "subject": "veh_A",
           "pass": true,
-          "maxAccelG": 0.02,
-          "maxSpeedMph": 74.1,
+          "maxAccelG": 0.03,
+          "maxSpeedMph": 74.6,
           "issues": [],
-          "detail": "Vehicle A moves plausibly: peak speed 74.1 mph, peak acceleration 0.02 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 1.11 g at t=21.80 s (consistent with secondary impacts during run-out; not counted).",
+          "detail": "Vehicle A moves plausibly: peak speed 74.6 mph, peak acceleration 0.03 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 1.11 g at t=21.80 s (consistent with secondary impacts during run-out; not counted).",
           "citation": "inferred: NTSB/HAR-17/02 p.1 (910 ft post-impact), p.2 & p.15 (74 mph, no braking, headlights off), p.5 (no pre-impact marks); dims: typical full-size sedan, assumed",
-          "maxAccelT": 4.75,
+          "maxAccelT": 0.8,
           "maxSpeedT": 4.5,
-          "impactAccelG": 1.01,
+          "impactAccelG": 1.04,
           "involvedInImpact": true,
           "postImpactAccelG": 1.11,
           "postImpactAccelT": 21.8,
@@ -891,37 +890,36 @@
         "world": "/cases/demo/worlds/world_v2.js",
         "problems": []
       },
-      "finishedAt": "2026-10-25T19:23:26.948Z"
+      "finishedAt": "2026-10-25T20:07:02.945Z"
     },
     {
       "round": 2,
       "world": "/cases/demo/worlds/world_v2.js",
-      "startedAt": "2026-10-25T19:23:26.948Z",
+      "startedAt": "2026-10-25T20:07:02.946Z",
       "contractProblems": [],
       "renders": {
         "videos": [],
         "stills": []
       },
-      "renderError": "viewer not ready for http://127.0.0.1:42171/?world=%2Fcases%2Fdemo%2Fworlds%2Fworld_v2.js&cam=overhead&quality=render&clean=1: page.waitForFunction: Timeout 30000ms exceeded.",
       "checks": [
         {
           "check": "sightline",
           "subject": "wit_A",
           "pass": true,
-          "detail": "From Witness A's marked position (Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account) Witness A had line of sight to veh_A at t=2s (distance 639.5 m); target 2° from gaze (gaze assumed toward mark_impact). Clear from all 25 positions within 2 m of Witness A's mark. Claim: \"Saw the car come over the hill and approach before the truck began its turn; once the truck pulled across, the trailer blocked my view of the car.\"",
+          "detail": "From Witness A's marked position (Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account) Witness A had line of sight to veh_A at t=2s (distance 641.5 m); target 3° from gaze (gaze assumed toward mark_impact). Clear from all 25 positions within 2 m of Witness A's mark. Claim: \"Saw the car come over the hill and approach before the truck began its turn; once the truck pulled across, the trailer blocked my view of the car.\"",
           "citation": "Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account",
           "blockedBy": null,
           "target": "veh_A",
           "t": 2,
-          "distance": 639.5330980884527,
+          "distance": 641.5200484366743,
           "from": [
             357.2,
             1.5,
             -34.75
           ],
           "to": [
-            -281.38783297572195,
-            0.7249993640184402,
+            -283.37144064979566,
+            4.439297541608527,
             -1.1102230246251565e-16
           ],
           "hitPoint": null,
@@ -935,7 +933,7 @@
             "blockers": {}
           },
           "gaze": {
-            "offAxisDeg": 2.4,
+            "offAxisDeg": 2.5,
             "assumed": true,
             "cameraFovDeg": 60,
             "peripheral": false,
@@ -946,25 +944,25 @@
           "check": "sightline",
           "subject": "wit_B",
           "pass": false,
-          "detail": "From Witness B's marked position (Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter') the line of sight to veh_A is blocked by veh_T_trailer at t=9.9s (distance 28.3 m). Blocked from 25 of 25 positions within 2 m of Witness B's mark. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
+          "detail": "From Witness B's marked position (Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter') the line of sight to veh_A is blocked by veh_T_trailer at t=9.9s (distance 28.4 m). Blocked from 25 of 25 positions within 2 m of Witness B's mark. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
           "citation": "Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter'",
           "blockedBy": "veh_T_trailer",
           "target": "veh_A",
           "t": 9.9,
-          "distance": 28.315870822549947,
+          "distance": 28.409431339034242,
           "from": [
             7.5,
             1.6,
             6.5
           ],
           "to": [
-            -20.045832975721886,
-            0.7249993640184402,
+            -20.14199999999999,
+            0.7249999958276748,
             -1.1102230246251565e-16
           ],
           "hitPoint": [
-            1.117844007148352,
-            1.3972691347689272,
+            1.0955628530132726,
+            1.3972692811542298,
             4.9940003814697285
           ],
           "robustness": {
@@ -1065,7 +1063,7 @@
           "observerId": "veh_T_tractor",
           "targetId": "veh_A",
           "impactT": 10.43,
-          "availableS": 10.4,
+          "availableS": 10.43,
           "rangeS": [
             1,
             2.5
@@ -1073,18 +1071,18 @@
           "typicalS": 1.5,
           "verdict": "sufficient",
           "method": "sightline",
-          "firstVisibleT": 0.03,
+          "firstVisibleT": 0,
           "conflictT": null,
           "conflictS": null,
-          "cappedAtStart": false,
-          "blockedBy": "occ_crest",
-          "detail": "The driver of Vehicle T had a continuous line of sight to Vehicle A for 10.40 s before impact (t=0.03–10.43 s); before that it was blocked by occ_crest. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
+          "cappedAtStart": true,
+          "blockedBy": null,
+          "detail": "The driver of Vehicle T had a continuous line of sight to Vehicle A for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
           "impactSource": "meta.impactT",
           "pass": true,
           "citation": "meta.impactT",
           "target": "veh_A",
           "prt": {
-            "availableS": 10.4,
+            "availableS": 10.43,
             "rangeS": [
               1,
               2.5
@@ -1097,14 +1095,14 @@
           "check": "plausibility",
           "subject": "veh_A",
           "pass": true,
-          "maxAccelG": 0.02,
-          "maxSpeedMph": 74.1,
+          "maxAccelG": 0.03,
+          "maxSpeedMph": 74.6,
           "issues": [],
-          "detail": "Vehicle A moves plausibly: peak speed 74.1 mph, peak acceleration 0.02 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 1.11 g at t=21.80 s (consistent with secondary impacts during run-out; not counted).",
+          "detail": "Vehicle A moves plausibly: peak speed 74.6 mph, peak acceleration 0.03 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 1.11 g at t=21.80 s (consistent with secondary impacts during run-out; not counted).",
           "citation": "inferred: NTSB/HAR-17/02 p.1 (910 ft post-impact), p.2 & p.15 (74 mph, no braking, headlights off), p.5 (no pre-impact marks); dims: typical full-size sedan, assumed",
-          "maxAccelT": 4.75,
+          "maxAccelT": 0.8,
           "maxSpeedT": 4.5,
-          "impactAccelG": 1.01,
+          "impactAccelG": 1.04,
           "involvedInImpact": true,
           "postImpactAccelG": 1.11,
           "postImpactAccelT": 21.8,
@@ -1159,7 +1157,7 @@
             "id": "F1",
             "severity": "high",
             "summary": "Witness B could not have watched the car up to impact from where she marked she was standing: Vehicle T's tractor, then its semitrailer, block her view from about t=9.1s.",
-            "detail": "Her eye-level render at t=9.9s shows the tractor filling the direction of the approaching car; the overhead render shows the truck crossing between her X and the eastbound lanes. The ray-cast agrees (blocked by veh_T_trailer, 28.3 m to the car). She testified \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\" (Depo 27:46).",
+            "detail": "Her eye-level render at t=9.9s shows the tractor filling the direction of the approaching car; the overhead render shows the truck crossing between her X and the eastbound lanes. The ray-cast agrees (blocked by veh_T_trailer, 28.4 m to the car). She testified \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\" (Depo 27:46).",
             "evidence": [
               {
                 "source": "deposition.mp4",
@@ -1290,7 +1288,7 @@
           "id": "F1",
           "severity": "high",
           "summary": "Witness B could not have watched the car up to impact from where she marked she was standing: Vehicle T's tractor, then its semitrailer, block her view from about t=9.1s.",
-          "detail": "Her eye-level render at t=9.9s shows the tractor filling the direction of the approaching car; the overhead render shows the truck crossing between her X and the eastbound lanes. The ray-cast agrees (blocked by veh_T_trailer, 28.3 m to the car). She testified \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\" (Depo 27:46).",
+          "detail": "Her eye-level render at t=9.9s shows the tractor filling the direction of the approaching car; the overhead render shows the truck crossing between her X and the eastbound lanes. The ray-cast agrees (blocked by veh_T_trailer, 28.4 m to the car). She testified \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\" (Depo 27:46).",
           "evidence": [
             {
               "source": "deposition.mp4",
@@ -1414,10 +1412,10 @@
           "status": "unverifiable"
         }
       ],
-      "finishedAt": "2026-10-25T19:25:26.808Z"
+      "finishedAt": "2026-10-25T20:07:04.761Z"
     }
   ],
   "verdict": "contradiction_found",
   "mode": "mock",
-  "updatedAt": "2026-10-25T19:25:26.808Z"
+  "updatedAt": "2026-10-25T20:07:04.761Z"
 }

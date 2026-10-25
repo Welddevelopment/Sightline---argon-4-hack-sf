@@ -1,0 +1,754 @@
+[
+  {
+    "asset": "sedan",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        0.609,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 6.657382901786374,
+      "kind": "vehicle",
+      "dims": [
+        4.9,
+        1.9,
+        1.45
+      ],
+      "color": "#a9adb2",
+      "current": [
+        "vehicle",
+        "sedan"
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/sedan_current.png"
+  },
+  {
+    "asset": "sedan",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        0.609,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 6.657382901786374,
+      "kind": "vehicle",
+      "dims": [
+        4.9,
+        1.9,
+        1.45
+      ],
+      "color": "#a9adb2",
+      "current": [
+        "vehicle",
+        "sedan"
+      ]
+    },
+    "src": "/renders/asset_forge/work/sedan.r0.js?v=1792958740032",
+    "out": "/home/claude/sightline/renders/asset_forge/sedan_r0.png"
+  },
+  {
+    "asset": "suv",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        0.735,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 6.677790220509366,
+      "kind": "vehicle",
+      "dims": [
+        4.8,
+        1.95,
+        1.75
+      ],
+      "color": "#1d3f7a",
+      "current": [
+        "vehicle",
+        "suv"
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/suv_current.png"
+  },
+  {
+    "asset": "suv",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        0.735,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 6.677790220509366,
+      "kind": "vehicle",
+      "dims": [
+        4.8,
+        1.95,
+        1.75
+      ],
+      "color": "#1d3f7a",
+      "current": [
+        "vehicle",
+        "suv"
+      ]
+    },
+    "src": "/renders/asset_forge/work/suv.r0.js?v=1792958740032",
+    "out": "/home/claude/sightline/renders/asset_forge/suv_r0.png"
+  },
+  {
+    "asset": "pickup",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        0.7979999999999999,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 7.9532786847821635,
+      "kind": "vehicle",
+      "dims": [
+        5.9,
+        2,
+        1.9
+      ],
+      "color": "#e9eaea",
+      "current": [
+        "vehicle",
+        "pickup"
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/pickup_current.png"
+  },
+  {
+    "asset": "pickup",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        0.7979999999999999,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 7.9532786847821635,
+      "kind": "vehicle",
+      "dims": [
+        5.9,
+        2,
+        1.9
+      ],
+      "color": "#e9eaea",
+      "current": [
+        "vehicle",
+        "pickup"
+      ]
+    },
+    "src": "/renders/asset_forge/work/pickup.r0.js?v=1792958740032",
+    "out": "/home/claude/sightline/renders/asset_forge/pickup_r0.png"
+  },
+  {
+    "asset": "truck_tractor",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        1.512,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 9.573200313733148,
+      "kind": "vehicle",
+      "dims": [
+        6.5,
+        2.5,
+        3.6
+      ],
+      "color": "#9b1b1e",
+      "current": [
+        "vehicle",
+        "truck_tractor"
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/truck_tractor_current.png"
+  },
+  {
+    "asset": "truck_tractor",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        1.512,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 9.573200313733148,
+      "kind": "vehicle",
+      "dims": [
+        6.5,
+        2.5,
+        3.6
+      ],
+      "color": "#9b1b1e",
+      "current": [
+        "vehicle",
+        "truck_tractor"
+      ]
+    },
+    "src": "/renders/asset_forge/work/truck_tractor.r0.js?v=1792958740032",
+    "out": "/home/claude/sightline/renders/asset_forge/truck_tractor_r0.png"
+  },
+  {
+    "asset": "semitrailer_box",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        1.7219999999999998,
+        0.5
+      ],
+      "az": 145,
+      "el": 12,
+      "d": 18.16566609885928,
+      "kind": "vehicle",
+      "dims": [
+        16.2,
+        2.6,
+        4.1
+      ],
+      "color": "#e9eaea",
+      "current": [
+        "vehicle",
+        "semitrailer"
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/semitrailer_box_current.png"
+  },
+  {
+    "asset": "semitrailer_box",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        1.7219999999999998,
+        0.5
+      ],
+      "az": 145,
+      "el": 12,
+      "d": 18.16566609885928,
+      "kind": "vehicle",
+      "dims": [
+        16.2,
+        2.6,
+        4.1
+      ],
+      "color": "#e9eaea",
+      "current": [
+        "vehicle",
+        "semitrailer"
+      ]
+    },
+    "src": "/renders/asset_forge/work/semitrailer_box.r0.js?v=1792958740032",
+    "out": "/home/claude/sightline/renders/asset_forge/semitrailer_box_r0.png"
+  },
+  {
+    "asset": "signal_mast",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        4.3,
+        3.9,
+        0
+      ],
+      "az": 28,
+      "el": 7,
+      "d": 19.5,
+      "kind": "object",
+      "dims": [
+        0.9,
+        9.6,
+        7.5
+      ],
+      "current": [
+        "signal",
+        {
+          "heads": 2,
+          "armLength": 9,
+          "id": "signal_mast"
+        }
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/signal_mast_current.png"
+  },
+  {
+    "asset": "signal_mast",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        4.3,
+        3.9,
+        0
+      ],
+      "az": 28,
+      "el": 7,
+      "d": 19.5,
+      "kind": "object",
+      "dims": [
+        0.9,
+        9.6,
+        7.5
+      ],
+      "current": [
+        "signal",
+        {
+          "heads": 2,
+          "armLength": 9,
+          "id": "signal_mast"
+        }
+      ]
+    },
+    "src": "/renders/asset_forge/work/signal_mast.r0.js?v=1792958740032",
+    "out": "/home/claude/sightline/renders/asset_forge/signal_mast_r0.png"
+  },
+  {
+    "asset": "bus_shelter",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        1.05,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 5.562498654460185,
+      "kind": "object",
+      "dims": [
+        1.5,
+        3.5,
+        2.5
+      ],
+      "current": [
+        "shelter",
+        {
+          "id": "bus_shelter"
+        }
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/bus_shelter_current.png"
+  },
+  {
+    "asset": "bus_shelter",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        1.05,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 5.562498654460185,
+      "kind": "object",
+      "dims": [
+        1.5,
+        3.5,
+        2.5
+      ],
+      "current": [
+        "shelter",
+        {
+          "id": "bus_shelter"
+        }
+      ]
+    },
+    "src": "/renders/asset_forge/work/bus_shelter.r0.js?v=1792958740032",
+    "out": "/home/claude/sightline/renders/asset_forge/bus_shelter_r0.png"
+  },
+  {
+    "asset": "utility_pole",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        6.2,
+        0
+      ],
+      "az": 35,
+      "el": 8,
+      "d": 16,
+      "kind": "object",
+      "dims": [
+        0.5,
+        2.44,
+        10.7
+      ],
+      "current": [
+        "pole",
+        {
+          "height": 10.5,
+          "id": "utility_pole"
+        }
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/utility_pole_current.png"
+  },
+  {
+    "asset": "utility_pole",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        6.2,
+        0
+      ],
+      "az": 35,
+      "el": 8,
+      "d": 16,
+      "kind": "object",
+      "dims": [
+        0.5,
+        2.44,
+        10.7
+      ],
+      "current": [
+        "pole",
+        {
+          "height": 10.5,
+          "id": "utility_pole"
+        }
+      ]
+    },
+    "src": "/renders/asset_forge/work/utility_pole.r0.js?v=1792958740032",
+    "out": "/home/claude/sightline/renders/asset_forge/utility_pole_r0.png"
+  },
+  {
+    "asset": "oak_tree",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        4.2299999999999995,
+        0
+      ],
+      "az": 35,
+      "el": 6,
+      "d": 19.332607983624523,
+      "kind": "object",
+      "dims": [
+        10,
+        10,
+        9
+      ],
+      "current": [
+        "tree",
+        {
+          "kind": "oak",
+          "height": 9,
+          "id": "oak_tree"
+        }
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/oak_tree_current.png"
+  },
+  {
+    "asset": "oak_tree",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        4.2299999999999995,
+        0
+      ],
+      "az": 35,
+      "el": 6,
+      "d": 19.332607983624523,
+      "kind": "object",
+      "dims": [
+        10,
+        10,
+        9
+      ],
+      "current": [
+        "tree",
+        {
+          "kind": "oak",
+          "height": 9,
+          "id": "oak_tree"
+        }
+      ]
+    },
+    "src": "/renders/asset_forge/work/oak_tree.r0.js?v=1792958740032",
+    "out": "/home/claude/sightline/renders/asset_forge/oak_tree_r0.png"
+  },
+  {
+    "asset": "pine_tree",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        8.459999999999999,
+        0
+      ],
+      "az": 35,
+      "el": 6,
+      "d": 22.95011561183225,
+      "kind": "object",
+      "dims": [
+        6,
+        6,
+        18
+      ],
+      "current": [
+        "tree",
+        {
+          "kind": "pine",
+          "height": 18,
+          "id": "pine_tree"
+        }
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/pine_tree_current.png"
+  },
+  {
+    "asset": "pine_tree",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        8.459999999999999,
+        0
+      ],
+      "az": 35,
+      "el": 6,
+      "d": 22.95011561183225,
+      "kind": "object",
+      "dims": [
+        6,
+        6,
+        18
+      ],
+      "current": [
+        "tree",
+        {
+          "kind": "pine",
+          "height": 18,
+          "id": "pine_tree"
+        }
+      ]
+    },
+    "src": "/renders/asset_forge/work/pine_tree.r0.js?v=1792958740032",
+    "out": "/home/claude/sightline/renders/asset_forge/pine_tree_r0.png"
+  },
+  {
+    "asset": "road_surface_material",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        0,
+        -3.5
+      ],
+      "az": 0,
+      "el": 22,
+      "d": 9.5,
+      "material": true,
+      "kind": "material",
+      "current": [
+        "surface",
+        "asphalt"
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/road_surface_material_current.png"
+  },
+  {
+    "asset": "road_surface_material",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        0,
+        -3.5
+      ],
+      "az": 0,
+      "el": 22,
+      "d": 9.5,
+      "material": true,
+      "kind": "material",
+      "current": [
+        "surface",
+        "asphalt"
+      ]
+    },
+    "src": "/renders/asset_forge/work/road_surface_material.r0.js?v=1792958740032",
+    "out": "/home/claude/sightline/renders/asset_forge/road_surface_material_r0.png"
+  },
+  {
+    "asset": "grass_material",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        0,
+        -3.5
+      ],
+      "az": 0,
+      "el": 22,
+      "d": 9.5,
+      "material": true,
+      "kind": "material",
+      "current": [
+        "surface",
+        "grass"
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/grass_material_current.png"
+  },
+  {
+    "asset": "grass_material",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        0,
+        -3.5
+      ],
+      "az": 0,
+      "el": 22,
+      "d": 9.5,
+      "material": true,
+      "kind": "material",
+      "current": [
+        "surface",
+        "grass"
+      ]
+    },
+    "src": "/renders/asset_forge/work/grass_material.r0.js?v=1792958740032",
+    "out": "/home/claude/sightline/renders/asset_forge/grass_material_r0.png"
+  },
+  {
+    "asset": "gas_station_canopy",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        2.6,
+        0
+      ],
+      "az": 30,
+      "el": 16,
+      "d": 34,
+      "kind": "object",
+      "dims": [
+        12,
+        24,
+        5.6
+      ],
+      "current": [
+        "box",
+        [
+          12,
+          24,
+          5.6
+        ]
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/gas_station_canopy_current.png"
+  },
+  {
+    "asset": "gas_station_canopy",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        2.6,
+        0
+      ],
+      "az": 30,
+      "el": 16,
+      "d": 34,
+      "kind": "object",
+      "dims": [
+        12,
+        24,
+        5.6
+      ],
+      "current": [
+        "box",
+        [
+          12,
+          24,
+          5.6
+        ]
+      ]
+    },
+    "src": "/renders/asset_forge/work/gas_station_canopy.r0.js?v=1792958740032",
+    "out": "/home/claude/sightline/renders/asset_forge/gas_station_canopy_r0.png"
+  },
+  {
+    "asset": "pedestrian",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        0.88,
+        0
+      ],
+      "az": 30,
+      "el": 6,
+      "d": 4.2,
+      "kind": "object",
+      "dims": [
+        0.3,
+        0.5,
+        1.7
+      ],
+      "color": "#3b5b8a",
+      "current": [
+        "vehicle",
+        "pedestrian"
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/pedestrian_current.png"
+  },
+  {
+    "asset": "pedestrian",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        0.88,
+        0
+      ],
+      "az": 30,
+      "el": 6,
+      "d": 4.2,
+      "kind": "object",
+      "dims": [
+        0.3,
+        0.5,
+        1.7
+      ],
+      "color": "#3b5b8a",
+      "current": [
+        "vehicle",
+        "pedestrian"
+      ]
+    },
+    "src": "/renders/asset_forge/work/pedestrian.r0.js?v=1792958740032",
+    "out": "/home/claude/sightline/renders/asset_forge/pedestrian_r0.png"
+  }
+]

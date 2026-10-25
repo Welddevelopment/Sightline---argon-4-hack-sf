@@ -1,4 +1,4 @@
-/* ARGON-ONLY UI: case-size banner, key-frame pair, same-inputs baseline card. Uses style.css tokens. */
+/* ARGON-ONLY UI: case-size banner, key-frame pair. Uses style.css tokens. */
 
 /* ---------- case-size banner ---------- */
 .ao-banner { display: flex; align-items: center; gap: 10px; font: 500 12px/1.3 var(--sans); color: #c9d1dd; min-width: 0; }
@@ -48,3 +48,6 @@
 
 /* recorded render PNGs are full-UI captures: crop to the 3D stage (approx. 960x540 layout) */
 .ao-fig.ao-uishot img { object-view-box: inset(12% 30% 12% 23%); object-fit: cover; }
+
+/* exact Flash baseline label: "Gemini Flash · chunk-and-summarize pipeline over the transcript · no video" on one run of text */
+#compare .cmp-model.ao-flash-label b.ao-inl { display: inline; }

@@ -51,5 +51,24 @@
       "textPath": "text/deposition_transcript.txt"
     }
   ],
-  "status": "new"
+  "status": "new",
+  "worldRules": {
+    "minApproach": [
+      {
+        "role": "car",
+        "meters": 345,
+        "toleranceM": 1,
+        "citation": "facts.md F10, F28; police_report.md (crest 1,132 ft W of the intersection)",
+        "why": "the car is first visible to the truck driver at the vertical crest 345 m west; all cited sight-time events start there"
+      }
+    ]
+  },
+  "scene": {
+    "date": "2016-05-07",
+    "time": "16:36:12",
+    "location": "US-27A at NE 140th Court, near mile marker 29, Levy County (about 5 mi W of Williston), Florida",
+    "weather": "clear",
+    "lighting": "day",
+    "citation": "police_report.md p.1 (date, time 16:36:12.7, location, daylight, clear)"
+  }
 }

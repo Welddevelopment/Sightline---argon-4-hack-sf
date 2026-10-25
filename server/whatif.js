@@ -70,9 +70,13 @@ export function mountWhatIf(app, ctx = {}) {
 
       const analysis = core.retimeWorld(world, { object, targetMph });
       const results = await checks.runAll(world);
-      // the as-reconstructed sight-line results, for side-by-side wording
-      const { world: orig } = await loadWorld(id, url);
-      const baseline = (await checks.runAll(orig)).filter((c) => c.check === 'sightline');
+      // the as-reconstructed sight-line results (cached case checks when they are for this world; else recomputed)
+      const st = readJson(path.join(ROOT, 'cases', id, 'cache', 'state.json'));
+      let baseline = st && st.world === url && Array.isArray(st.checks) ? st.checks.filter((c) => c.check === 'sightline') : null;
+      if (!baseline || !baseline.length) {
+        const { world: orig } = await loadWorld(id, url);
+        baseline = (await checks.runAll(orig)).filter((c) => c.check === 'sightline');
+      }
       const changed = results.filter((c) => c.check === 'sightline').map((c) => {
         const b = baseline.find((x) => x.subject === c.subject);
         return b && b.pass !== c.pass ? { subject: c.subject, before: b.pass ? 'clear' : `blocked by ${b.blockedBy}`, after: c.pass ? 'clear' : `blocked by ${c.blockedBy}` } : null;

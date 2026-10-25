@@ -10,8 +10,9 @@
 // userData {assetType:'vehicle', vehicleType, dims, driverEye, setLights(on), wheels, roll(dist)},
 // child meshes headlight_L/R, taillight_L/R. No brand marks; plates are blank.
 import {
-  surfacePatch, getMaterials, makeWheel, loft, curve, roundedBox, cachedGeo, makeLamp, attachLightAPI, finalizeVehicle, smoothstep,
+  surfacePatch, getMaterials, makeWheel, loft, curve, roundedBox, cachedGeo, makeLamp, attachLightAPI, finalizeVehicle, smoothstep, makeInterior,
 } from './vehicle_parts.js';
+import * as GV from './gltf_vehicle.js';
 
 let heavy = null, small = null;
 try { heavy = await import('./vehicles_heavy.js'); } catch { heavy = null; }
@@ -43,7 +44,7 @@ export function normalizeType(type) {
 const S = { PAINT: 0, TRIM: 1, UNDER: 2, GLASS: 3, PLASTIC: 4, INTERIOR: 5, GLOSS: 6, SATIN: 7 };
 function slotMats(THREE, color) {
   const M = getMaterials(THREE);
-  return [M.paint(color), M.trim, M.underbody, M.glass, M.plastic, M.interior, M.trimGloss, M.alloy];
+  return [M.paint(color), M.trim, M.underbody, M.glassTint || M.glass, M.plastic, M.interior, M.trimGloss, M.alloy];
 }
 
 // ------------------------------------------------------------------ car configurations (u = metres from front bumper)
@@ -62,7 +63,7 @@ const CARS = {
     eye: { u: 2.85, y: 1.16, x: -0.36 },
     head: { y: 0.68, patch: { u: [0.012, 0.36], t0: [0.2, 0.66], t1: [1.02, 1.0] } },
     tail: { y: 0.86, patch: { u: [4.62, 4.897], t0: [0.42, 0.1], t1: [0.78, 1.22] } },
-    grille: { y: 0.55, w: 0.86, h: 0.17, intake: { y: 0.36, w: 1.1, h: 0.1 } },
+    grille: { y: 0.5, w: 0.8, h: 0.13, intake: { y: 0.37, w: 1.0, h: 0.08 } },
     plateF: 0.44, plateR: 0.63,
     mirror: { u: 1.98, y: 1.03 },
   },
@@ -191,6 +192,7 @@ function buildBodyGeo(THREE, cfg) {
       const ar = f.arch(u); if (ar > 0 && y < ar + 0.012) return S.UNDER;
       const side = Math.abs(s) < 0.75;
       const seam = seamAt(u);
+      if (s > 0.72 && u > cfg.gh.u0 + 0.06 && u < Math.min(cfg.gh.u1, cfg.gh.cTop + 0.1) - 0.06 && Math.abs(c) * sec.hw < sec.hw - 0.07) return S.INTERIOR; // cabin floor/dash top at the belt
       if (seam) {
         if (seam.top && s > 0.6) return S.TRIM;
         if (!seam.top && side && y > seam.y0 && y < seam.y1) return S.TRIM;
@@ -323,21 +325,16 @@ function buildCarTemplate(THREE, type) {
   const uEnd = cfg.bodyEnd || L;
   addMesh(roundedBox(THREE, cfg.bodyW - 0.5, 0.08, uEnd - 1.3, 0.03), M.underbody, 'floorpan', [0, f.bot(L / 2) - 0.02, z(uEnd / 2)]);
 
-  // interior: dark tub at belt + headrests so glass reads as glass, not paint
+  // interior: dash, steering wheel, seats (driver-seat views look past the wheel + A-pillar through tinted glass)
   const g = cfg.gh;
-  const beltMid = f.top((g.u0 + g.cTop) / 2);
-  const cabLen = Math.min(g.cTop, g.u1 - 0.15) - g.aTop + 0.5;
-  addMesh(roundedBox(THREE, 2 * (f.sideX((g.aTop + g.cTop) / 2, beltMid) - 0.06), 0.03, cabLen, 0.01), M.interior, 'interior_tub', [0, beltMid + 0.02, z(g.aTop - 0.35 + cabLen / 2)]);
-  const eyeZ = z(cfg.eye.u);
-  const seatsRows = type === 'pickup' ? [cfg.eye.u + 0.18, cfg.eye.u + 0.95 > g.cTop ? null : cfg.eye.u + 0.95] : type === 'van' ? [cfg.eye.u + 0.18] : [cfg.eye.u + 0.18, cfg.eye.u + 1.0];
-  for (const su of seatsRows) {
-    if (!su || su > g.cTop + 0.2) continue;
-    for (const sx of [-1, 1]) {
-      addMesh(roundedBox(THREE, 0.5, 0.55, 0.12, 0.05), M.interior, 'seat', [sx * 0.38, cfg.eye.y - 0.42, z(su) + 0.05]);
-      addMesh(roundedBox(THREE, 0.26, 0.2, 0.1, 0.04), M.interior, 'headrest', [sx * 0.38, cfg.eye.y - 0.02, z(su) + 0.08]);
-    }
+  {
+    const beltMid = f.top((g.u0 + g.cTop) / 2);
+    const rows = type === 'sedan' || type === 'suv' ? 2 : 1;
+    const inter = makeInterior(THREE, { eye: [cfg.eye.x, cfg.eye.y, z(cfg.eye.u)], width: 2 * (f.sideX((g.aTop + g.cTop) / 2, beltMid) - 0.08),
+      floorY: beltMid - 0.45, dashZ: z(Math.max(g.u0 + 0.12, cfg.eye.u - 0.95)), rearZ: z(Math.min(g.cTop, g.u1 - 0.15)), rows, swDrop: 0.31,
+      mirrorY: f.ghTop(g.aTop) - 0.08, mirrorZ: z(g.aTop + 0.08) });
+    root.add(inter);
   }
-  void eyeZ;
   if (type === 'van') addMesh(roundedBox(THREE, cfg.bodyW - 0.2, 0.8, 0.04, 0.01), M.interior, 'bulkhead', [0, f.top(2.4) + 0.4, z(2.45)]);
 
   const ghY = (u, x) => {
@@ -399,16 +396,21 @@ function buildCarTemplate(THREE, type) {
     buildBed(THREE, cfg, f, root, addMesh, z);
   }
 
-  // ---- mirrors (housing reaches exactly W/2)
+  // ---- mirrors: housing on a short, deep sail at the A-pillar base (housing reaches exactly W/2)
   for (const s of [-1, 1]) {
-    const mu = cfg.mirror.u, big = cfg.mirror.big, my = f.top(cfg.mirror.u) + (big ? 0.1 : 0.075);
-    const hx = big ? 0.12 : 0.16, hy = big ? 0.26 : 0.11, hz = big ? 0.08 : 0.1;
+    const mu = cfg.mirror.u, big = cfg.mirror.big, belt = f.top(mu);
+    const hx = big ? 0.12 : 0.15, hy = big ? 0.26 : 0.12, hz = big ? 0.08 : 0.085;
+    const my = belt + (big ? 0.18 : 0.085);
     const cx = s * (cfg.W / 2 - hx / 2);
-    addMesh(roundedBox(THREE, hx, hy, hz, 0.035), big ? M.trimGloss : mats[0], 'mirror_housing', [cx, my + (big ? 0.08 : 0), z(mu)], [0, -s * 0.12, 0], big ? null : 0);
-    addMesh(roundedBox(THREE, hx * 0.86, hy * 0.82, 0.01, 0.02), M.mirror, 'mirror_glass', [cx, my + (big ? 0.08 : 0), z(mu) + hz / 2 + 0.002], [0, -s * 0.12, 0]);
-    const sx = f.sideX(mu, f.top(mu) - 0.04);
-    const sy = Math.min(my - 0.03, f.top(mu) + 0.03);
-    addMesh(roundedBox(THREE, Math.max(0.02, Math.abs(cx) - hx / 2 - sx + 0.06), 0.035, 0.06, 0.012), big ? M.trimGloss : M.trim, 'mirror_stalk', [s * ((Math.abs(cx) - hx / 2 + sx - 0.06) / 2), sy, z(mu) + 0.02]);
+    const rotY = [0, -s * 0.1, 0];
+    addMesh(roundedBox(THREE, hx, hy, hz, big ? 0.03 : 0.028), big ? M.trimGloss : mats[0], 'mirror_housing', [cx, my, z(mu)], rotY, big ? null : 0);
+    addMesh(roundedBox(THREE, hx * 0.88, hy * 0.8, 0.008, 0.015), M.mirror, 'mirror_glass', [cx - s * 0.004, my, z(mu) + hz / 2 + 0.002], rotY);
+    const sx = f.sideX(mu, belt - 0.02) - 0.02;
+    const armW = Math.max(0.03, Math.abs(cx) - hx * 0.35 - sx);
+    // sail: deep, low wedge from the door top to the housing (no thin stalk)
+    addMesh(roundedBox(THREE, armW, big ? 0.05 : 0.06, big ? 0.07 : 0.15, 0.015), big ? M.trimGloss : M.trimGloss, 'mirror_sail',
+      [s * (sx + armW / 2), big ? my - 0.08 : belt + 0.035, z(mu) + (big ? 0 : 0.03)]);
+    if (!big) addMesh(roundedBox(THREE, 0.03, 0.07, 0.1, 0.01), mats[0], 'mirror_neck', [s * (Math.abs(cx) - hx * 0.3), belt + 0.06, z(mu) + 0.005], null, 0);
   }
   // ---- door handles (gloss black, flush)
   const handles = type === 'van' ? [1.6, 2.75] : type === 'pickup' ? [2.25, 2.95] : type === 'suv' ? [2.55, 3.6] : [2.62, 3.62];
@@ -512,14 +514,46 @@ export function createCar(THREE, type, opts = {}) {
     root.add(w); wheels.push(w);
   }
   const dims = VEHICLE_DIMS[type];
-  attachLightAPI(THREE, root, { headY: cfg.head.y, frontZ: -L / 2 - 0.05 });
+  const lightOpts = { headY: cfg.head.y, frontZ: -L / 2 - 0.05 };
+  attachLightAPI(THREE, root, lightOpts);
+  root.userData._relight = () => { delete root.userData.setLights; attachLightAPI(THREE, root, lightOpts); };
   finalizeVehicle(THREE, root, { type, id: opts.id || type, dims, wheels,
     driverEye: [cfg.eye.x, cfg.eye.y, cfg.eye.u - L / 2] });
   root.userData.color = '#' + paint.color.getHexString();
   root.userData.procedural = true;
   if (opts.lights) root.userData.setLights(true, { spot: opts.spot });
+  const spec = modelSpec(type, opts);
+  if (spec) GV.swapInGLB(THREE, root, spec, (clone) => {
+    clone.traverse(o => { if (o.isMesh && o.userData.paintSlot === 0) o.material = paint; });
+  });
   return root;
 }
+
+// ------------------------------------------------------------------ GLB model choice (mirrors web/models/manifest.json)
+// source:'glb' swaps a fitted GLB into the procedural placeholder when it loads (browser only; Node keeps procedural).
+export const MODEL_CHOICE = {
+  sedan: { source: 'procedural' },
+  suv: { source: 'procedural' },
+  pickup: { source: 'procedural' },
+  van: { source: 'procedural' },
+};
+const MODEL_BASE = new URL('../models/', import.meta.url).href;
+function modelSpec(type, opts) {
+  const ch = MODEL_CHOICE[type] || {};
+  const url = opts.model || (opts.source === 'procedural' ? null : (opts.source === 'glb' || ch.source === 'glb') ? ch.url : null);
+  if (!url) return null;
+  return { url: new URL(url, MODEL_BASE).href, modelId: url, dims: VEHICLE_DIMS[type], front: ch.front || 'auto', mats: ch.mats,
+    interior: (T, r) => addInterior(T, type, r) };
+}
+function addInterior(THREE, type, root) {
+  void THREE; void type; void root;
+}
+/** Start fetching the chosen GLB models now (call early). Resolves when they are fitted. */
+export function preloadVehicleModels(THREE, types = Object.keys(MODEL_CHOICE)) {
+  return Promise.all(types.map(t => { const s = modelSpec(t, {}); return s ? GV.warmTemplate(THREE, s) : null; }));
+}
+/** Resolves when every pending GLB load/swap has settled (await before the first still/frame). */
+export const ready = GV.ready;
 
 const PALETTE = ['silver', 'white', 'black', 'gray', 'blue', 'red', 'darkgray', 'navy', 'maroon', 'champagne'];
 function defaultColor(type, id) {

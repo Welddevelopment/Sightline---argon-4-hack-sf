@@ -15,9 +15,9 @@
 // solid yellow left edge line on divided roads; double solid / dashed yellow centre line on two-way roads;
 // solid white stop bars; turn-lane lines + arrows; raised pavement markers every 12.2 m (40 ft).
 import * as THREE from 'three';
-import { surfaceMaterial, laneWearTextures, markingTexture, skidTexture, edgeFringeTexture, sprayTexture, getTextureSet, _noise } from './textures.js';
+import { surfaceMaterial, laneWearTextures, markingTexture, skidTexture, edgeFringeTexture, sprayTexture, getTextureSet, foliageMaterial, foliageClusterGeometry, decalTexture, _noise } from './textures.js';
 
-export { getTextureSet, surfaceMaterial, setAnisotropy } from './textures.js';
+export { getTextureSet, surfaceMaterial, setAnisotropy, foliageMaterial, foliageClusterGeometry, decalTexture } from './textures.js';
 
 const { vnoise } = _noise;
 const FT = 0.3048;
@@ -287,7 +287,11 @@ function subtractRanges(s0, s1, gaps) {
 
 // ------------------------------------------------------------------ markings
 /** add a painted line along s, centred at u = uc(s), optionally dashed [on, off] with phase (m). */
-function paintLine(group, { uc, width = US.lineWidth, s0, s1, color = US.white, dash = null, phase = 0, gaps = [], lift = 0.003, name = 'mark_line' }) {
+function paintLine(group, { uc, width = US.lineWidth, s0, s1, color = US.white, dash = null, phase = 0, gaps = [], lift = 0.003, name = 'mark_line', _across = null }) {
+  if (_across !== null) { // a line running across the road (along u) at s = _across, from u = s0 .. s1
+    const m = meshOf(polygon([[s0, _across - width / 2], [s1, _across - width / 2], [s1, _across + width / 2], [s0, _across + width / 2]], lift), paintMat(color), name);
+    group.add(m); return m;
+  }
   const UC = typeof uc === 'function' ? uc : () => uc;
   const ranges = subtractRanges(s0, s1, gaps);
   const segs = [];
@@ -434,6 +438,19 @@ export function road(opts = {}) {
         const fp = [[sg * (uIn + 0.05), op.at + ds * hw], [sg * (uIn + 0.05), op.at + ds * (hw + R)]];
         for (let k = 0; k <= N; k++) { const ang = (k / N) * Math.PI / 2; fp.push([sg * (uIn - R + R * Math.cos(ang)), op.at + ds * (hw + R - R * Math.sin(ang))]); }
         group.add(meshOf(polygon(fp, 0), surfMat, 'road_crossover_fillet'));
+      }
+      // raised concrete median-nose curb with yellow paint (op.curb) and median stop bars for crossing traffic (op.stopBars)
+      if (op.curb) for (const ds of [1, -1]) {
+        const pts = [];
+        for (let k = 0; k <= N; k++) { const ang = (k / N) * Math.PI / 2; pts.push([uIn - R + R * Math.cos(ang), op.at + ds * (hw + R - R * Math.sin(ang))]); }
+        for (let k = N; k >= 0; k--) { const ang = (k / N) * Math.PI / 2; pts.push([-(uIn - R + R * Math.cos(ang)), op.at + ds * (hw + R - R * Math.sin(ang))]); }
+        group.add(curbStrip(ds > 0 ? pts : pts.reverse(), { height: op.curbHeight ?? 0.15, width: 0.3, name: 'road_median_nose' }));
+      }
+      if (op.stopBars) {
+        const off = op.curb ? 0.35 : 0.1;
+        paintLine(group, { uc: -(uIn - 1.4), width: US.stopBarWidth, s0: op.at + 0.3, s1: op.at + hw - off, name: 'mark_median_stop_bar' });
+        paintLine(group, { uc: uIn - 1.4, width: US.stopBarWidth, s0: op.at - hw + off, s1: op.at - 0.3, name: 'mark_median_stop_bar' });
+        if (op.centerLine !== false) paintLine(group, { uc: 0, width: 0.1, s0: -uIn + 1.4, s1: uIn - 1.4, color: US.yellow, name: 'mark_crossover_center', _across: op.at });
       }
     }
   } else {
@@ -724,6 +741,184 @@ export function turnArrow(opts = {}) {
   redrape(g); return g;
 }
 
+
+
+// ------------------------------------------------------------------ site pads, parking lots, driveways
+/** sitePad({id, position:[x,z], heading, width (local X), depth (local Z), paved=true, feather=12, surface='asphalt'|'concrete'|null})
+ *  Flattens the natural terrain under a building / lot (registers with terrainHeight + groundPlane) and, when
+ *  `surface` is set, lays a paved slab. Returns a Group whose local frame is the pad (u = local X, s = -local Z). */
+export function sitePad(opts = {}) {
+  const { id, width = 20, depth = 20, paved = true, feather = 12, surface = paved ? 'asphalt' : null, mowRing = 6 } = opts;
+  const g = new THREE.Group(); placeGroup(g, opts);
+  const W = width / 2, D = depth / 2;
+  const fn = (u, s) => {
+    const du = Math.max(0, Math.abs(u) - W), ds = Math.max(0, Math.abs(s) - D), d = Math.hypot(du, ds);
+    if (d > feather + 2) return null;
+    if (d === 0) return paved ? { paved: true, d: -Math.min(W - Math.abs(u), D - Math.abs(s)), rel: 0, w: 1, mow: 1 } : { paved: false, d: 0, rel: -0.02, w: 1, mow: 1 };
+    return { paved: false, d, rel: -0.03 - Math.min(0.05, d * 0.01), w: 1 - smooth(0, feather, d), median: false, mow: 1 - smooth(mowRing * 0.6, mowRing, d) };
+  };
+  if (surface) {
+    const sm = surface === 'concrete' ? surfaceMaterial('concrete', { polygonOffset: -1 }) : asphaltMat(0xf2f0ec);
+    g.add(meshOf(polygon([[-W, -D], [W, -D], [W, D], [-W, D]], 0.0), sm, 'pad_surface'));
+  }
+  const corridor = { group: g, fn, inv: new THREE.Matrix4(), mw: new THREE.Matrix4(), last: null, drapedFor: 0 };
+  TERRAIN.corridors.push(corridor); TERRAIN.version++;
+  tag(g, id, 'sitePad', { length: depth, width, height: 0 }, { paved });
+  g.updateMatrixWorld(true); syncCorridors();
+  return g;
+}
+
+/** parkingLot({id, position, heading, width, depth, stallWidth=2.74, stallDepth=5.5, rows=2, aisle=7.3, accessible=1,
+ *   surface='asphalt'}) — paved lot with 4-inch white stall lines (90-degree parking). Row 1 sits along the local -Z
+ *  edge (the building side when the lot is placed in front of a building rotated to face it), further rows follow
+ *  across `aisle`-wide drive aisles. Wheel stops on row 1. */
+export function parkingLot(opts = {}) {
+  const { width = 30, depth = 24, stallWidth = 2.74, stallDepth = 5.5, rows = 2, aisle = 7.3, accessible = 1 } = opts;
+  const g = sitePad({ ...opts, paved: true, surface: opts.surface || 'asphalt' });
+  g.userData.assetType = 'parkingLot';
+  const W = width / 2, D = depth / 2, lw = 0.1;
+  const nSt = Math.floor((width - 1) / stallWidth), u0 = -nSt * stallWidth / 2;
+  const geos = [];
+  const rowsS = [];
+  let sTop = D - 0.3;
+  for (let r = 0; r < rows; r++) {
+    const s1 = sTop, s0 = s1 - stallDepth; if (s0 < -D + 0.3) break;
+    rowsS.push([s0, s1, r]);
+    for (let k = 0; k <= nSt; k++) { const u = u0 + k * stallWidth; geos.push(ribbon({ s0, s1, u0: u - lw / 2, u1: u + lw / 2, step: 10, lift: 0.003, uvMode: 'across' })); }
+    sTop = r % 2 === 0 ? s0 : s0 - aisle; // double-loaded rows share the head line; aisles between pairs
+  }
+  if (geos.length) g.add(meshOf(mergeGeos(geos), paintMat(US.white), 'lot_stall_lines'));
+  // accessible stalls (blue lines + 1.5 m access aisle hatch) at the first row's west end
+  if (accessible && rowsS.length) {
+    const [s0, s1] = rowsS[0], bl = mat('paintBlue', () => { const m = paintMat(US.white).clone(); m.color.setHex(0x2a5bb8); return m; });
+    const ag = [];
+    for (let k = 0; k < Math.min(accessible, nSt - 1); k++) { const u = u0 + k * stallWidth; for (const uu of [u, u + stallWidth]) ag.push(ribbon({ s0, s1, u0: uu - lw / 2, u1: uu + lw / 2, step: 10, lift: 0.0035, uvMode: 'across' })); }
+    g.add(meshOf(mergeGeos(ag), bl, 'lot_accessible'));
+  }
+  // concrete wheel stops on row 1
+  if (rowsS.length) {
+    const [, s1] = rowsS[0];
+    const ws = new THREE.InstancedMesh(new THREE.BoxGeometry(1.83, 0.12, 0.15), surfaceMaterial('concrete'), nSt);
+    const o = new THREE.Object3D();
+    for (let k = 0; k < nSt; k++) { o.position.set(u0 + (k + 0.5) * stallWidth, 0.06, -(s1 - 0.75)); o.updateMatrix(); ws.setMatrixAt(k, o.matrix); }
+    ws.castShadow = ws.receiveShadow = true; ws.name = 'lot_wheel_stops'; g.add(ws);
+    if (opts.position) ws.position.y = profileH(opts.position[0], opts.position[opts.position.length > 2 ? 2 : 1]);
+  }
+  g.userData.stalls = nSt * rowsS.length;
+  redrape(g);
+  return g;
+}
+
+/** driveway({id, position:[x,z] (centre of the throat at the road edge), heading (direction INTO the site), width=7.3,
+ *   length=12, radius=4.5}) — paved apron from a road edge into a site, with flared radius returns. */
+export function driveway(opts = {}) {
+  const { width = 7.3, length = 12, radius = 4.5 } = opts;
+  const g = new THREE.Group(); placeGroup(g, opts);
+  const W = width / 2, R = radius, pts = [[-W - R, 0]];
+  for (let k = 0; k <= 8; k++) { const a = (k / 8) * Math.PI / 2; pts.push([-W - R + R * Math.sin(a), R - R * Math.cos(a)]); }
+  pts.push([-W, length], [W, length]);
+  for (let k = 8; k >= 0; k--) { const a = (k / 8) * Math.PI / 2; pts.push([W + R - R * Math.sin(a), R - R * Math.cos(a)]); }
+  pts.push([W + R, 0]);
+  g.add(meshOf(polygon(pts.slice().reverse(), 0.0), asphaltMat(0xf2f0ec), 'driveway_apron'));
+  const fn = (u, s) => {
+    if (s < -1 || s > length + 10 || Math.abs(u) > W + R + 10) return null;
+    const inside = s >= 0 && s <= length && (Math.abs(u) <= W || (s <= R && Math.hypot(Math.abs(u) - W - R, s - R) >= R && Math.abs(u) <= W + R));
+    if (inside) return { paved: true, d: -0.5, rel: 0, w: 1, mow: 1 };
+    const d = Math.max(0, Math.abs(u) - W - (s < R ? R - s : 0), s - length);
+    return { paved: false, d, rel: -0.03, w: 1 - smooth(0, 8, d), mow: 1 };
+  };
+  TERRAIN.corridors.push({ group: g, fn, inv: new THREE.Matrix4(), mw: new THREE.Matrix4(), last: null, drapedFor: 0 }); TERRAIN.version++;
+  tag(g, opts.id, 'driveway', { length, width: width + 2 * R, height: 0 });
+  g.updateMatrixWorld(true); syncCorridors();
+  return g;
+}
+
+// ------------------------------------------------------------------ curbs along a path, W-beam guardrail, canvas decals
+/** curbStrip(pts[[u,s]...], {height, width, name}) — raised curb following a polyline in a road's local frame (draped).
+ *  The curb's face is on the LEFT of the direction of travel along pts. Painted yellow (median noses) unless color given. */
+function curbStrip(pts, { height = 0.15, width = 0.3, name = 'curb_strip', color = 0xd8a62a } = {}) {
+  const pos = [], lift = [], uv = [];
+  const P = pts.map(([u, s]) => new THREE.Vector2(u, s));
+  const quad = (a, b, c, d, la, lb, lc, ld) => { for (const [v, l] of [[a, la], [b, lb], [c, lc], [a, la], [c, lc], [d, ld]]) { pos.push(v.x, 0, -v.y); lift.push(l); uv.push(v.x, v.y); } };
+  const offs = P.map((p, i) => { const a = P[Math.max(0, i - 1)], b = P[Math.min(P.length - 1, i + 1)]; const t = b.clone().sub(a).normalize(); return new THREE.Vector2(t.y, -t.x); }); // right normal
+  for (let i = 0; i < P.length - 1; i++) {
+    const a = P[i], b = P[i + 1], na = offs[i], nb = offs[i + 1];
+    const aI = a.clone(), bI = b.clone(), aO = a.clone().addScaledVector(na, width), bO = b.clone().addScaledVector(nb, width);
+    // top (CCW seen from above in (u,s) -> up-facing after the u,s -> x,-z map)
+    quad(aI, aO, bO, bI, height, height, height, height);
+    quad(aI, bI, bI, aI, 0.0, 0.0, height, height); // face (left side, toward the opening)
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setAttribute('lift', new THREE.Float32BufferAttribute(lift, 1));
+  for (let i = 0; i < pos.length; i += 3) pos[i + 1] = lift[i / 3];
+  g.getAttribute('position').array.set(pos); g.computeVertexNormals();
+  const m = new THREE.Mesh(g, mat('curbPaint' + color, () => new THREE.MeshStandardMaterial({ color, roughness: 0.72, side: THREE.DoubleSide, name: 'curb_paint' })));
+  m.name = name; m.castShadow = true; m.receiveShadow = true; m.userData.drape = true; m.userData.smoothNormals = false;
+  return m;
+}
+
+/** guardrail({id, points:[[x,z],...] WORLD, postSpacing=1.905, railTop=0.79, side:'left'|'right' (blockout side),
+ *  endTreatment:'turndown'|'none'}) — MGS/W-beam guardrail: galvanised W6x9 posts, routed blockouts, 12-ga W-beam,
+ *  following terrainHeight(). Ends turn down to grade over 7.6 m (buried terminal) by default. */
+export function guardrail(opts = {}) {
+  const { id, points = [[-20, 0], [20, 0]], postSpacing = 1.905, railTop = 0.79, side = 'right', endTreatment = 'turndown' } = opts;
+  const g = new THREE.Group();
+  const galv = mat('galvRail', () => new THREE.MeshStandardMaterial({ color: 0xa9aeb0, metalness: 0.8, roughness: 0.38, side: THREE.DoubleSide, name: 'galv' }));
+  const wood = mat('blockout', () => new THREE.MeshStandardMaterial({ color: 0x5e5246, roughness: 0.95 }));
+  // resample the polyline
+  const P = points.map(p => new THREE.Vector2(p[0], p[1]));
+  const samples = []; let tot = 0;
+  for (let i = 0; i < P.length - 1; i++) { const a = P[i], b = P[i + 1], L = a.distanceTo(b), n = Math.max(1, Math.round(L / postSpacing)); for (let k = i ? 1 : 0; k <= n; k++) { const t = k / n; samples.push({ p: a.clone().lerp(b, t), d: tot + L * t }); } tot += L; }
+  const sgn = side === 'right' ? 1 : -1, beamH = 0.31, cY = railTop - beamH / 2;
+  const drop = d => endTreatment === 'turndown' ? Math.min(1, d / 7.6, (tot - d) / 7.6) : 1;
+  const ys = samples.map(s => terrainHeight(s.p.x, s.p.y) + 0.02);
+  const dirs = samples.map((s, i) => { const a = samples[Math.max(0, i - 1)].p, b = samples[Math.min(samples.length - 1, i + 1)].p; return b.clone().sub(a).normalize(); });
+  // posts + blockouts
+  const post = new THREE.InstancedMesh(new THREE.BoxGeometry(0.15, 1, 0.152), galv, samples.length);
+  const blk = new THREE.InstancedMesh(new THREE.BoxGeometry(0.2, 0.36, 0.15), wood, samples.length);
+  const o = new THREE.Object3D();
+  samples.forEach((s, i) => {
+    const dr = dirs[i], nx = dr.y * sgn, nz = -dr.x * sgn, ang = Math.atan2(-dr.x, -dr.y);
+    const k = drop(s.d), top = Math.max(0.2, (railTop + 0.05) * k);
+    o.position.set(s.p.x, ys[i] + top / 2 - 0.0, s.p.y); o.rotation.set(0, ang, 0); o.scale.set(1, top, 1); o.updateMatrix(); post.setMatrixAt(i, o.matrix);
+    o.position.set(s.p.x + nx * 0.17, ys[i] + Math.max(0.15, cY * k), s.p.y + nz * 0.17); o.scale.set(k > 0.4 ? 1 : 0.001, 1, 1); o.updateMatrix(); blk.setMatrixAt(i, o.matrix);
+  });
+  post.castShadow = blk.castShadow = true; post.receiveShadow = blk.receiveShadow = true; post.name = 'guardrail_posts'; blk.name = 'guardrail_blockouts';
+  // W-beam: sweep the corrugated profile along the samples (offset to the blockout face)
+  const prof = [[0, -0.155], [0.035, -0.12], [0.083, -0.085], [0.083, -0.045], [0.03, -0.012], [0.03, 0.012], [0.083, 0.045], [0.083, 0.085], [0.035, 0.12], [0, 0.155]];
+  const pos = [], idx = [], NP = prof.length;
+  samples.forEach((s, i) => {
+    const dr = dirs[i], nx = dr.y * sgn, nz = -dr.x * sgn, k = drop(s.d), yc = ys[i] + Math.max(0.12, cY * k);
+    for (const [dd, dy] of prof) { const off = 0.27 + dd; pos.push(s.p.x + nx * off, yc + dy, s.p.y + nz * off); }
+    if (i) for (let j = 0; j < NP - 1; j++) { const a = (i - 1) * NP + j, b = a + 1, c = a + NP, d = c + 1; idx.push(a, c, b, b, c, d); }
+  });
+  const bg = new THREE.BufferGeometry(); bg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); bg.setIndex(idx); bg.computeVertexNormals();
+  const beam = new THREE.Mesh(bg, galv); beam.castShadow = true; beam.receiveShadow = true; beam.name = 'guardrail_beam';
+  g.add(post, blk, beam);
+  for (const m of [post, blk]) { m.computeBoundingBox(); m.computeBoundingSphere(); }
+  tag(g, id, 'guardrail', { length: tot, width: 0.5, height: railTop }, { points, postSpacing });
+  return g;
+}
+
+/** roadDecal({id, kind, position:[x,z], heading, w, h, color}) — high-resolution CanvasTexture pavement marking
+ *  (see textures.decalTexture kinds), draped on the road surface. Arrows point along local -Z (direction of heading).
+ *  Uses renderer max anisotropy via setAnisotropy(). */
+export function roadDecal(opts = {}) {
+  const { id, kind = 'arrow_through', color } = opts;
+  const g = new THREE.Group(); placeGroup(g, opts);
+  const t = decalTexture(kind, { ...(opts.w ? { w: opts.w } : {}), ...(opts.h ? { h: opts.h } : {}), ...(color ? { color } : {}) });
+  const w = t?.w ?? opts.w ?? 2, h = t?.h ?? opts.h ?? 2;
+  const material = t ? mat('decal:' + t.map.uuid, () => new THREE.MeshStandardMaterial({ map: t.map, transparent: true, depthWrite: false, roughness: 0.6, metalness: 0,
+    polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -8, name: 'decal_' + kind })) : paintMat(color === 'yellow' ? US.yellow : US.white);
+  const geo = ribbon({ s0: 0, s1: h, u0: -w / 2, u1: w / 2, step: Math.max(1, h / 6), lift: 0.004, uvMode: 'across' });
+  const uv = geo.getAttribute('uv'); for (let i = 0; i < uv.count; i++) uv.setY(i, uv.getY(i) / h);
+  const m = meshOf(geo, material, 'decal_' + kind); m.renderOrder = 1; g.add(m);
+  tag(g, id, 'roadDecal', { length: h, width: w, height: 0 }, { kind });
+  redrape(g); return g;
+}
+
 // ------------------------------------------------------------------ evidence decals
 /** skidMark({id, points:[[x,z],...] (WORLD coords), width=0.25, pair=false, track=1.6, darkness=1}) — tire marks
  *  draped on the road surface. pair:true draws left+right tire marks `track` apart, centred on the polyline. */
@@ -878,30 +1073,42 @@ export function treeline(opts = {}) {
         if (rnd() < pineRatio) {             // slash pine: tall bare trunk, small irregular crown on top
           const H = h * 1.35;
           trunks.push({ x, z, y: y0, h: H, r: 0.2 });
-          for (let k = 0; k < 3; k++) { const cr = 1.6 + rnd() * 1.4; crowns.push({ x: x + (rnd() - 0.5) * 2.5, z: z + (rnd() - 0.5) * 2.5, y: y0 + H - 1.2 - k * 1.4 - rnd(), sx: cr * 1.3, sy: cr * 0.7, sz: cr * 1.3, c: C(0.24 + rnd() * 0.05, 0.28 + rnd() * 0.05, 0.16) }); }
+          for (let k = 0; k < 3; k++) { const cr = 1.6 + rnd() * 1.4; crowns.push({ k: 'pine', x: x + (rnd() - 0.5) * 2.5, z: z + (rnd() - 0.5) * 2.5, y: y0 + H - 1.2 - k * 1.4 - rnd(), sx: cr * 1.3, sy: cr * 0.7, sz: cr * 1.3, c: C(0.24 + rnd() * 0.05, 0.28 + rnd() * 0.05, 0.16) }); }
         } else {                              // live oak / laurel oak mass: broad, low, overlapping crowns
           const w = h * (0.7 + rnd() * 0.4);
           trunks.push({ x, z, y: y0, h: h * 0.35, r: 0.32 });
           const n = 5 + Math.floor(rnd() * 4);
-          for (let k = 0; k < n; k++) crowns.push({ x: x + (rnd() - 0.5) * w * 0.9, z: z + (rnd() - 0.5) * w * 0.9, y: y0 + h * (0.42 + rnd() * 0.38), sx: w * (0.28 + rnd() * 0.2), sy: h * (0.18 + rnd() * 0.12), sz: w * (0.28 + rnd() * 0.2),
+          for (let k = 0; k < n; k++) crowns.push({ k: 'oak', x: x + (rnd() - 0.5) * w * 0.9, z: z + (rnd() - 0.5) * w * 0.9, y: y0 + h * (0.42 + rnd() * 0.38), sx: w * (0.28 + rnd() * 0.2), sy: h * (0.18 + rnd() * 0.12), sz: w * (0.28 + rnd() * 0.2),
             c: C(0.22 + rnd() * 0.07, 0.27 + rnd() * 0.07, 0.15 + rnd() * 0.04) });
         }
         // understory (palmetto, wax myrtle, young oaks) hides trunk gaps
-        if (row === 0 || rnd() < 0.4) for (let k = 0; k < 2; k++) { const sw = 2 + rnd() * 3; crowns.push({ x: x + (rnd() - 0.5) * spacing, z: z + (rnd() - 0.5) * spacing, y: y0 + sw * 0.35, sx: sw, sy: sw * (0.45 + rnd() * 0.3), sz: sw, c: C(0.25 + rnd() * 0.06, 0.29 + rnd() * 0.06, 0.16 + rnd() * 0.04) }); }
+        if (row === 0 || rnd() < 0.4) for (let k = 0; k < 2; k++) { const sw = 2 + rnd() * 3; crowns.push({ k: 'shrub', x: x + (rnd() - 0.5) * spacing, z: z + (rnd() - 0.5) * spacing, y: y0 + sw * 0.35, sx: sw, sy: sw * (0.45 + rnd() * 0.3), sz: sw, c: C(0.25 + rnd() * 0.06, 0.29 + rnd() * 0.06, 0.16 + rnd() * 0.04) }); }
       }
     }
   }
-  const crownGeo = new THREE.IcosahedronGeometry(1, 2);
-  // lumpy crowns
-  { const p = crownGeo.getAttribute('position'); for (let i = 0; i < p.count; i++) { const v = new THREE.Vector3().fromBufferAttribute(p, i); const k = 0.82 + vnoise(v.x * 2.3 + 5, v.y * 2.3 + v.z * 1.7 + 5, 1 << 20, 3) * 0.36; p.setXYZ(i, v.x * k, v.y * k, v.z * k); } crownGeo.computeVertexNormals(); }
-  const cm = new THREE.InstancedMesh(crownGeo, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.92, normalMap: getTextureSet('gravel').normalMap, normalScale: new THREE.Vector2(1.5, 1.5) }), crowns.length);
+  // crowns: instanced clusters of alpha-clipped leaf cards (alphaTest 0.5, cast alpha-tested shadows), one
+  // InstancedMesh per species; a dark inner core (shrunk, opaque) stops the sky showing through dense masses.
   const tm = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.7, 1, 1, 6), new THREE.MeshStandardMaterial({ color: 0x4a3f33, roughness: 1 }), trunks.length);
   const o = new THREE.Object3D(), col = new THREE.Color();
-  crowns.forEach((c, i) => { o.position.set(c.x, c.y, c.z); o.scale.set(c.sx, c.sy, c.sz); o.rotation.set(0, i, 0); o.updateMatrix(); cm.setMatrixAt(i, o.matrix); cm.setColorAt(i, col.setRGB(c.c[0], c.c[1], c.c[2], THREE.SRGBColorSpace)); });
-  trunks.forEach((t, i) => { o.position.set(t.x, t.y + t.h / 2, t.z); o.scale.set(t.r, t.h, t.r); o.rotation.set(0, 0, 0); o.updateMatrix(); tm.setMatrixAt(i, o.matrix); });
-  cm.castShadow = true; cm.receiveShadow = true; tm.castShadow = true;
-  cm.name = 'treeline_crowns'; tm.name = 'treeline_trunks';
-  g.add(cm, tm);
+  const SPEC = { oak: { cards: 14, flat: 0.7, size: 0.85 }, pine: { cards: 12, flat: 0.55, size: 0.9 }, shrub: { cards: 10, flat: 0.75, size: 0.8 } };
+  const coreMat = mat('treeCore', () => new THREE.MeshStandardMaterial({ color: 0x27331c, roughness: 1 }));
+  const coreGeo = new THREE.IcosahedronGeometry(0.62, 1);
+  for (const kind of Object.keys(SPEC)) {
+    const list = crowns.filter(c => c.k === kind); if (!list.length) continue;
+    const cmK = new THREE.InstancedMesh(foliageClusterGeometry({ ...SPEC[kind], seed: kind.length + seed }), foliageMaterial(kind === 'pine' ? 'pine' : kind), list.length);
+    const core = new THREE.InstancedMesh(coreGeo, coreMat, list.length);
+    list.forEach((c, i) => {
+      o.position.set(c.x, c.y, c.z); o.scale.set(c.sx, c.sy, c.sz); o.rotation.set(0, i * 2.39, 0); o.updateMatrix(); cmK.setMatrixAt(i, o.matrix);
+      o.scale.multiplyScalar(0.92); o.updateMatrix(); core.setMatrixAt(i, o.matrix);
+      cmK.setColorAt(i, col.setRGB(0.86 + (c.c[0] - 0.24) * 3, 0.9 + (c.c[1] - 0.29) * 3, 0.82 + (c.c[2] - 0.16) * 3));
+    });
+    cmK.castShadow = true; cmK.receiveShadow = true; cmK.name = 'treeline_leaves_' + kind; cmK.computeBoundingSphere();
+    core.castShadow = true; core.receiveShadow = true; core.name = 'treeline_core_' + kind; core.computeBoundingSphere();
+    g.add(cmK, core);
+  }
+  tm.castShadow = true;
+  tm.name = 'treeline_trunks'; tm.computeBoundingSphere();
+  g.add(tm);
   tag(g, id, 'treeline', { length: 0, width: depth, height }, { count: trunks.length });
   return g;
 }

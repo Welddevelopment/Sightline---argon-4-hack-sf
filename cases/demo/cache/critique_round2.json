@@ -7,7 +7,7 @@
       "id": "F1",
       "severity": "high",
       "summary": "Witness B could not have watched the car up to impact from where she marked she was standing: Vehicle T's tractor, then its semitrailer, block her view from about t=9.1s.",
-      "detail": "Her eye-level render at t=9.9s shows the tractor filling the direction of the approaching car; the overhead render shows the truck crossing between her X and the eastbound lanes. The ray-cast agrees (blocked by veh_T_trailer, 28.3 m to the car). She testified \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\" (Depo 27:46).",
+      "detail": "Her eye-level render at t=9.9s shows the tractor filling the direction of the approaching car; the overhead render shows the truck crossing between her X and the eastbound lanes. The ray-cast agrees (blocked by veh_T_trailer, 28.4 m to the car). She testified \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\" (Depo 27:46).",
       "evidence": [
         {
           "source": "deposition.mp4",

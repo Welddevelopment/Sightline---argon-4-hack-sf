@@ -1,0 +1,50 @@
+{
+  "round": 0,
+  "file": "/home/claude/sightline/renders/asset_forge/work/sedan.r0.js",
+  "png": "/home/claude/sightline/renders/asset_forge/sedan_r0.png",
+  "finish": "STOP",
+  "usage": {
+    "promptTokenCount": 6035,
+    "candidatesTokenCount": 19743,
+    "totalTokenCount": 25778,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 6035
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 19743
+      }
+    ]
+  },
+  "seconds": 185.8,
+  "defects": null,
+  "validation": {
+    "ok": true,
+    "errors": [],
+    "warnings": [],
+    "buildMs": 142.1,
+    "tris": 25512,
+    "meshes": 195,
+    "bbox": {
+      "min": [
+        -0.97,
+        0,
+        -2.458
+      ],
+      "max": [
+        0.97,
+        1.463,
+        2.455
+      ],
+      "size": {
+        "length": 4.913,
+        "width": 1.94,
+        "height": 1.463
+      }
+    }
+  }
+}

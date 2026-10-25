@@ -429,6 +429,8 @@ function updateMarkersAndLabels() {
   for (const sp of order) {
     sp.visible = overhead && showLabels;
     if (!sp.visible) continue;
+    // with callouts on, overlays.js draws each vehicle's name + speed; skip the duplicate sprite
+    if (sp.userData.kind === 'object' && sl.overlays && sl.overlays.enabled && (world.objects[sp.userData.ref] || {}).kind === 'vehicle') { sp.visible = false; continue; }
     const isW = sp.userData.kind === 'witness';
     const s = hgt * (isW ? 1.1 : 0.85);
     const w = s * sp.userData.aspect;
@@ -634,7 +636,36 @@ function applyCamera() {
     scene.fog = fogCfg;
     if (planLight) planLight.visible = false;
   }
+  aerialMode(camId === 'overhead');
   camera.updateMatrixWorld(true);
+}
+
+// ---------- per-case aerial photo (cases/<id>/exhibits/aerial): under the 3D road in the overhead view ----------
+let aerial = null;
+function aerialMode(on) {
+  if (!aerial || !world) return;
+  aerial.visible = on;
+  world.root.traverse((o) => { if (o.userData?.assetType === 'groundPlane') o.visible = !on; });
+  envGroup.children.forEach((c) => { if (c.name === '__ground') c.visible = on || !world.root.getObjectByProperty?.('name', 'ground'); });
+}
+async function loadAerial(url, assets) {
+  if (aerial) { scene.remove(aerial); aerial = null; }
+  if (params.get('aerial') === '0') return;
+  const caseId = params.get('case') || (/\/cases\/([^/]+)\/worlds\//.exec(url) || [])[1];
+  if (!caseId) return;
+  try {
+    const A = await import('./assets/aerial.js');
+    let meta = await A.loadCaseAerial(caseId);
+    if (!meta) {
+      const base = '/cases/' + encodeURIComponent(caseId) + '/exhibits/aerial/';
+      const r = await fetch(base + 'bounds.json'); if (!r.ok) return;
+      const b = await r.json(); meta = { url: base + (b.image || 'aerial.jpg'), boundsMeters: b.boundsMeters, calibration: b.calibration };
+    }
+    const g = A.aerialGround(THREE, { url: meta.url, boundsMeters: meta.boundsMeters, calibration: meta.calibration, heightFn: assets?.terrain ? (x, z) => assets.terrain.roadHeight(x, z) : undefined });
+    await Promise.race([g.userData.ready, new Promise((res) => setTimeout(res, 8000))]);
+    g.name = '__aerial'; g.receiveShadow = true; g.castShadow = false;
+    aerial = g; scene.add(g); aerialMode(camId === 'overhead');
+  } catch (e) { console.warn('aerial unavailable', e); }
 }
 
 // ---------- occlusion x-ray (witness cameras) + banner ----------
@@ -776,7 +807,8 @@ function renderFrame() {
   updateEyePanel();
   hudCam.textContent = cameraLabel();
   hudTime.textContent = 't = ' + curT.toFixed(2) + ' s';
-  renderer.render(scene, camera);
+  // render_quality: AO composer (world) + overlays in UI colours; plain render when unavailable / ?rq=off
+  if (sl.renderQuality && sl.renderQuality.render) sl.renderQuality.render(camera); else renderer.render(scene, camera);
 }
 
 // ---------- public API ----------
@@ -787,6 +819,7 @@ async function loadWorld(url) {
   const mod = await import(full);
   // WORLD CONTRACT v2: pass the shared asset library (v1 worlds ignore it). Missing/broken facade → undefined.
   const assets = await (sl._assetsP ||= import('./assets.js').then((m) => m.loadAssets(THREE)).catch((e) => { console.warn('assets.js unavailable:', e); return undefined; }));
+  try { assets?.beginWorld?.(); } catch {}   // clear terrain left by a previously loaded world
   const w = mod.default(THREE, assets);
   if (!w || !w.root || typeof w.setTime !== 'function') throw new Error('Bad world module: ' + url);
   w.objects = w.objects || {};
@@ -807,6 +840,18 @@ async function loadWorld(url) {
     fitOverhead(ts.length ? ts[Math.floor(ts.length / 2)] : world.duration * 0.5); }
   const kind = (world.meta.lighting || 'day').toLowerCase();
   setupLighting(kind);
+  { // v2 worlds: adopt the library environment (sky/fog/hemisphere) and terrain ground instead of the viewer presets
+    let envG = null, hasGround = false;
+    world.root.traverse((o) => { if (o.userData?.isEnvironment) envG = envG || o; if (o.userData?.assetType === 'groundPlane') hasGround = true; });
+    if (hasGround) envGroup.children.forEach((c) => { if (c.name === '__ground') c.visible = false; });
+    if (envG) {
+      const sk = envG.userData.sky || {};
+      if (sk.fog) fogCfg = sk.fog;
+      if (sk.background?.isColor && !sk.skyMesh) scene.background = sk.background;
+      envGroup.children.forEach((c) => { if (c.isHemisphereLight) c.visible = false; });
+    }
+  }
+  await loadAerial(url, assets);
   addHeadlights();
   // render quality (web/render_quality.js): tone mapping/exposure, single shadowed sun fit to the ROI, PMREM sky fill, AA
   sl.renderQuality = applyRenderQuality(renderer, scene, { quality: RENDER_QUALITY, lighting: kind, sun, roi: bounds, world,

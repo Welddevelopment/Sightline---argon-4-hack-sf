@@ -1,0 +1,145 @@
+{
+  "world": "cases/demo/worlds/world_v2.js",
+  "t": 9.9,
+  "meta": {
+    "caseId": "HWY16FH018",
+    "title": "Car into turning tractor-semitrailer at an uncontrolled median crossover, US-27A near Williston, Florida (2016)",
+    "timeOfDay": "16:36",
+    "lighting": "day",
+    "impactT": 10.43,
+    "source": "NTSB/HAR-17/02 (HWY16FH018) physical facts + fictional witnesses",
+    "contract": "v2"
+  },
+  "cameras": [
+    {
+      "id": "wit_A",
+      "node": "cam_wit_A",
+      "label": "Witness A (fictional)",
+      "position": [
+        357.2,
+        1.5,
+        -34.75
+      ],
+      "lookAt": [
+        -20.01799999999999,
+        0.7249999958276748,
+        -1.1102230246251565e-16
+      ],
+      "fovDeg": 60,
+      "aspect": 1.7777777777777777
+    },
+    {
+      "id": "wit_B",
+      "node": "cam_wit_B",
+      "label": "Witness B (fictional)",
+      "position": [
+        7.5,
+        1.6,
+        6.5
+      ],
+      "lookAt": [
+        -20.01799999999999,
+        0.7249999958276748,
+        -1.1102230246251565e-16
+      ],
+      "fovDeg": 60,
+      "aspect": 1.7777777777777777
+    },
+    {
+      "id": "wit_C",
+      "node": "cam_wit_C",
+      "label": "Witness C (fictional)",
+      "position": [
+        -18,
+        1.6,
+        -40.5
+      ],
+      "lookAt": [
+        1.1102230246251565e-16,
+        1.8125000049546363,
+        7.321500004936013
+      ],
+      "fovDeg": 60,
+      "aspect": 1.7777777777777777
+    },
+    {
+      "id": "oblique",
+      "node": "cam_oblique",
+      "label": "Oblique (SW, elevated)",
+      "position": [
+        -38,
+        22,
+        40
+      ],
+      "lookAt": [
+        4,
+        0,
+        -10
+      ],
+      "fovDeg": 60,
+      "aspect": 1.7777777777777777
+    },
+    {
+      "id": "overhead",
+      "node": "cam_overhead",
+      "label": "Overhead",
+      "position": [
+        0,
+        120,
+        0.01
+      ],
+      "lookAt": [
+        0,
+        0,
+        0
+      ],
+      "fovDeg": 60,
+      "aspect": 1.7777777777777777
+    },
+    {
+      "id": "hero_oblique",
+      "node": "cam_hero_oblique",
+      "label": "Hero oblique (SW, over the turning truck)",
+      "position": [
+        -30,
+        14.2,
+        29.66650000493601
+      ],
+      "lookAt": [
+        1.1102230246251565e-16,
+        1.2,
+        -0.3334999950639874
+      ],
+      "fovDeg": 60,
+      "aspect": 1.7777777777777777
+    },
+    {
+      "id": "chase",
+      "node": "cam_chase",
+      "label": "Chase (behind veh_A, low)",
+      "position": [
+        -28.51799999999999,
+        1.05,
+        -1.199999999999998
+      ],
+      "lookAt": [
+        9.98200000000001,
+        1.4,
+        -6.661338147750939e-15
+      ],
+      "fovDeg": 60,
+      "aspect": 1.7777777777777777
+    }
+  ],
+  "sun": {
+    "dirThree": [
+      -0.7036225617354481,
+      0.7079536560528703,
+      0.06096647847973055
+    ],
+    "elevationDeg": 45.06866213149167,
+    "azimuthDeg": 265.04788564215903,
+    "intensity": 3.710681041753964
+  },
+  "frame": "three.js: +X east, -Z north, Y up (glTF importer maps to Blender X east, +Y north, Z up)"
+}

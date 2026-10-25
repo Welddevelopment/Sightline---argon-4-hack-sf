@@ -9,9 +9,10 @@
 //       clamped to [0, duration]. overhead: window spanning every witness observation (min-3 .. max+1).
 //   GET /api/cases/:id/clips  -> JSON index: cameras, default windows, check results, cached clip URLs.
 //
-// Cache: cases/<id>/exports/clips/<camera>__<world>.<hash8>__<t0>-<t1>.mp4 (+ .json sidecar), keyed by
-// (case, world content, camera [+ live-witness definition], t0, t1). Mock mode serves the cache when present
-// (and, if a render fails, falls back to any cached clip of that camera).
+// Cache: cases/<id>/exports/clips/<camera>__<world>.<sha256:12>__<t0>-<t1>.mp4 (+ .json sidecar), keyed by
+// (case, sha256 of the world file, camera [+ live-witness definition], t0, t1) - re-seeding/upgrading the world
+// changes the key, so stale clips are never served. Mock mode serves the cache when present (and, if a render
+// fails, falls back to a cached clip of that camera for the SAME world sha256 only).
 // Rendering runs in a child process under scripts/render_lock.sh (shared 2-CPU box):
 //   scripts/render_lock.sh node server/clips.js --job <job.json>
 import fs from 'node:fs';
@@ -66,7 +67,8 @@ export function mountClips(app, ctx = {}) {
   async function worldMeta(id, worldUrl) {
     const file = worldFile(worldUrl);
     const src = fs.readFileSync(file);
-    const hash = crypto.createHash('sha1').update(src).digest('hex').slice(0, 8);
+    const sha256 = crypto.createHash('sha256').update(src).digest('hex');
+    const hash = sha256.slice(0, 12);
     const extras = extraWitnesses(id);
     const key = file + ':' + hash + ':' + JSON.stringify(extras.map((w) => w.id));
     if (metaCache.has(key)) return metaCache.get(key);
@@ -78,7 +80,7 @@ export function mountClips(app, ctx = {}) {
     const wits = [...(world.witnesses || [])];
     for (const w of extras) { const i = wits.findIndex((x) => x.id === w.id); if (i >= 0) wits[i] = w; else wits.push(w); }
     const labels = Object.fromEntries(Object.entries(world.objects || {}).map(([k, o]) => [k, (o && o.label) || k]));
-    const m = { file, hash, tag: path.basename(file).replace(/\.m?js$/, '') + '.' + hash, duration: +world.duration || 0, labels,
+    const m = { file, hash, sha256, tag: path.basename(file).replace(/\.m?js$/, '') + '.' + hash, duration: +world.duration || 0, labels,
       witnesses: wits.map((w) => ({ id: w.id, name: w.name || w.label || w.id, observationTime: w.observationTime, lookAt: w.lookAt })) };
     metaCache.set(key, m);
     return m;
@@ -156,12 +158,12 @@ export function mountClips(app, ctx = {}) {
     const title = (manifest && manifest.title) || id;
     const camLabel = camera === 'overhead' ? 'Overhead view' : `View of ${wit.name}`;
     const caption = [
-      `SIMULATED / FICTIONAL RECONSTRUCTION  |  case: ${id}  |  ${camLabel}`,
+      `SIMULATED / FICTIONAL WITNESS \u2014 analysis draft, not evidence  |  case: ${id}  |  ${camLabel}`,
       `${checkText(chk, meta) || (camera === 'overhead' ? 'Overhead: all vehicles and witness positions' : 'Sightline check: not available')}  |  clip t=${fmt(t0)}-${fmt(t1)} s of ${fmt(meta.duration)} s`,
     ];
     return {
       id, camera, t0, t1, name, file: path.join(clipDir(id), name), worldUrl: '/' + path.relative(ROOT, meta.file).split(path.sep).join('/'),
-      title, caption, check: chk ? { pass: !!chk.pass, target: chk.target, blockedBy: chk.blockedBy || null, t: chk.t, text: checkText(chk, meta) } : null,
+      title, caption, worldSha256: meta.sha256, check: chk ? { pass: !!chk.pass, target: chk.target, blockedBy: chk.blockedBy || null, t: chk.t, text: checkText(chk, meta) } : null,
       extraWitnesses: extraWitnesses(id), duration: meta.duration,
     };
   }
@@ -174,16 +176,24 @@ export function mountClips(app, ctx = {}) {
       fs.writeFileSync(tmp, JSON.stringify({ ...job, base, fps: FPS, width: W, height: H }));
       const t0 = Date.now();
       try {
-        const out = await new Promise((resolve, reject) => {
+        const once = () => new Promise((resolve, reject) => {
           const ch = spawn(path.join(ROOT, 'scripts', 'render_lock.sh'), [process.execPath, path.join(ROOT, 'server', 'clips.js'), '--job', tmp],
             { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] });
           let so = '', se = '';
           ch.stdout.on('data', (d) => { so += d; });
           ch.stderr.on('data', (d) => { se += d; });
           const killer = setTimeout(() => ch.kill('SIGKILL'), 15 * 60 * 1000);
-          ch.on('close', (code) => { clearTimeout(killer); code === 0 ? resolve(so) : reject(new Error(`clip render failed (exit ${code}): ${(se || so).slice(-800)}`)); });
+          ch.on('close', (code, sig) => { clearTimeout(killer); if (sig) se += ` [signal ${sig}]`; code === 0 ? resolve(so) : reject(new Error(`clip render failed (exit ${code}): ${(se || so).slice(-800)}`)); });
           ch.on('error', reject);
         });
+        // scripts/render_lock.sh gives up after 600 s of lock contention (flock exits 1, no output): retry a few times
+        let out;
+        for (let attempt = 1; ; attempt++) {
+          try { out = await once(); break; } catch (e) {
+            if (attempt < 4 && /exit 1\): \s*$/.test(errMsg(e)) && !fs.existsSync(job.file)) { console.warn(`[clips] ${job.name}: render lock busy, retry ${attempt}`); continue; }
+            throw e;
+          }
+        }
         if (!fs.existsSync(job.file)) throw new Error('clip render produced no file: ' + out.slice(-400));
         return { seconds: (Date.now() - t0) / 1000 };
       } finally { fs.rmSync(tmp, { force: true }); }
@@ -224,11 +234,15 @@ export function mountClips(app, ctx = {}) {
       try {
         ({ seconds } = await runRender(job, `http://127.0.0.1:${req.socket.localPort}`));
       } catch (e) {
-        // mock mode: any cached clip of this camera beats an error
+        console.warn(`[clips] render ${job.name} failed: ${errMsg(e).slice(0, 600)}`);
+        if (fs.existsSync(job.file)) { cache = 'miss'; } else {
+        // mock mode: a cached clip of this camera (same world sha) beats an error
         const dir = clipDir(job.id);
-        const alt = MODE === 'mock' && fs.existsSync(dir) && fs.readdirSync(dir).filter((f) => f.startsWith(job.camera + '__') && f.endsWith('.mp4')).sort().pop();
+        const pre = job.name.split('__').slice(0, 2).join('__') + '__'; // same camera + same world sha
+        const alt = MODE === 'mock' && fs.existsSync(dir) && fs.readdirSync(dir).filter((f) => f.startsWith(pre) && f.endsWith('.mp4')).sort().pop();
         if (!alt) return res.status(500).json({ error: errMsg(e) });
         job.file = path.join(dir, alt); cache = 'fallback';
+        }
       }
     }
     const side = readJson(job.file.replace(/\.mp4$/, '.json'), {});
@@ -293,6 +307,9 @@ async function renderJob(job) {
       filters.push(`drawtext=fontfile=${FONT}:textfile=${tf}:expansion=none:fontsize=${i ? 17 : 18}:fontcolor=${i ? (job.check && !job.check.pass ? '0xff8a80' : '0xb9f6ca') : '0xffd54f'}:x=14:y=${10 + i * 26}`);
     });
     filters.unshift('drawbox=x=0:y=0:w=iw:h=62:color=black@0.62:t=fill');
+    // running scene time (top-right): t0 + frame time
+    const T = `(t+${(+job.t0).toFixed(3)})`;
+    filters.push(`drawtext=fontfile=${FONT}:text='t = %{eif\\:floor(${T})\\:d}.%{eif\\:mod(floor(${T}*100+0.5)\\,100)\\:d\\:2} s':fontsize=18:fontcolor=white:x=w-tw-14:y=10`);
   }
   const tmpOut = job.file.replace(/\.mp4$/, `.tmp${process.pid}.mp4`);
   const r = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(job.fps), '-i', path.join(framesDir, 'f%05d.jpg'),
@@ -305,7 +322,7 @@ async function renderJob(job) {
   const renderSeconds = +((Date.now() - started) / 1000).toFixed(1);
   fs.writeFileSync(job.file.replace(/\.mp4$/, '.json'), JSON.stringify({
     caseId: job.id, camera: job.camera, world: job.worldUrl, t0: job.t0, t1: job.t1, fps: job.fps, width: job.width, height: job.height,
-    frames: nFrames, caption: job.caption, check: job.check, renderSeconds, renderedAt: new Date().toISOString(),
+    worldSha256: job.worldSha256, frames: nFrames, caption: job.caption, check: job.check, renderSeconds, renderedAt: new Date().toISOString(),
     label: 'SIMULATED / FICTIONAL reconstruction - not a recording of real events',
   }, null, 2));
   return { file: job.file, frames: nFrames, renderSeconds };

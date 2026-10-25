@@ -1,0 +1,53 @@
+{
+  "round": 0,
+  "file": "/home/claude/sightline/renders/asset_forge/work/oak_tree.r0.js",
+  "png": "/home/claude/sightline/renders/asset_forge/oak_tree_r0.png",
+  "finish": "STOP",
+  "usage": {
+    "promptTokenCount": 5818,
+    "candidatesTokenCount": 12773,
+    "totalTokenCount": 18591,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 5818
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 12773
+      }
+    ]
+  },
+  "seconds": 120.1,
+  "defects": null,
+  "validation": {
+    "ok": false,
+    "errors": [
+      "length(Z) 10.56 m vs target 10 m (tol ±0.50)",
+      "width(X) 10.58 m vs target 10 m (tol ±0.50)"
+    ],
+    "warnings": [],
+    "buildMs": 542.6,
+    "tris": 62688,
+    "meshes": 2,
+    "bbox": {
+      "min": [
+        -5.31,
+        -0.009,
+        -5.173
+      ],
+      "max": [
+        5.267,
+        9.185,
+        5.392
+      ],
+      "size": {
+        "length": 10.565,
+        "width": 10.577,
+        "height": 9.194
+      }
+    }
+  }
+}

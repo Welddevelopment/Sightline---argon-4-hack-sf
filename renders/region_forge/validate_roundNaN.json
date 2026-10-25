@@ -1,0 +1,160 @@
+{
+  "at": "2026-10-25T20:01:35.328Z",
+  "regions": {
+    "r1_crossover": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "tris": 6766,
+      "meshes": 145,
+      "instanced": 4,
+      "children": 6,
+      "bbox": {
+        "min": [
+          -45,
+          -1,
+          -38.2
+        ],
+        "max": [
+          45,
+          3.3,
+          16
+        ]
+      },
+      "buildMs": 161,
+      "bytes": 60875
+    },
+    "r2_west": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "tris": 15800,
+      "meshes": 88,
+      "instanced": 4,
+      "children": 6,
+      "bbox": {
+        "min": [
+          -900,
+          0.7,
+          -40.8
+        ],
+        "max": [
+          -45,
+          7.5,
+          7.6
+        ]
+      },
+      "buildMs": 63,
+      "bytes": 39675
+    },
+    "r3_east": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "tris": 16029,
+      "meshes": 153,
+      "instanced": 5,
+      "children": 4,
+      "bbox": {
+        "min": [
+          45,
+          -3,
+          -41.3
+        ],
+        "max": [
+          800,
+          0.8,
+          11.2
+        ]
+      },
+      "buildMs": 53,
+      "bytes": 47464
+    },
+    "r4_north": {
+      "ok": false,
+      "errors": [
+        "region is empty (no meshes)"
+      ],
+      "warnings": [],
+      "tris": 0,
+      "meshes": 0,
+      "instanced": 0,
+      "children": 0,
+      "bbox": null,
+      "buildMs": 0,
+      "bytes": 189
+    },
+    "r5_south": {
+      "ok": false,
+      "errors": [
+        "region is empty (no meshes)"
+      ],
+      "warnings": [],
+      "tris": 0,
+      "meshes": 0,
+      "instanced": 0,
+      "children": 0,
+      "bbox": null,
+      "buildMs": 1,
+      "bytes": 189
+    },
+    "r6_terrain": {
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "triangle count 314526 above budget 280000"
+      ],
+      "tris": 314526,
+      "meshes": 18,
+      "instanced": 4,
+      "children": 5,
+      "bbox": {
+        "min": [
+          -3200,
+          -3.3,
+          -3000
+        ],
+        "max": [
+          3000,
+          30.1,
+          3000
+        ]
+      },
+      "buildMs": 430,
+      "bytes": 49420
+    }
+  },
+  "totalTris": 353121,
+  "site": {
+    "children": 6,
+    "errors": [],
+    "tris": 353121,
+    "regions": [
+      {
+        "id": "r1_crossover",
+        "ms": 14
+      },
+      {
+        "id": "r2_west",
+        "ms": 19
+      },
+      {
+        "id": "r3_east",
+        "ms": 31
+      },
+      {
+        "id": "r4_north",
+        "ms": 0
+      },
+      {
+        "id": "r5_south",
+        "ms": 0
+      },
+      {
+        "id": "r6_terrain",
+        "ms": 225
+      }
+    ]
+  },
+  "underBudget": true
+}

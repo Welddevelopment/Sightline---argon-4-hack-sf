@@ -19,7 +19,7 @@
 </head>
 <body>
 <div id="labels"></div>
-<div id="hud">1 m grid · dimensions L × W × H (m) · ?view=lineup|side|rear|close|closebt|closebus|closesb|underride · &amp;art=0.35 · &amp;night=1</div>
+<div id="hud">1 m grid · dimensions L × W × H (m) · ?view=lineup|side|rear|reardoor|marker|close|closebt|closebus|closesb|underride · &amp;art=0.35 · &amp;night=1</div>
 <script type="module">
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
@@ -96,18 +96,24 @@ envG.position.set(van.position.x - 2.0, 0.725, van.position.z - 3.4); scene.add(
 const envAnchor = new THREE.Object3D(); envAnchor.position.set(envG.position.x, 0, envG.position.z); envAnchor.userData.dims = { length: 4.9, width: 1.9, height: 1.45 }; scene.add(envAnchor);
 if (view === 'side' || view === 'underride') label(envAnchor, 'sedan envelope', '1.45 m roof', 0.3);
 
-if (view === 'side' || view === 'underride') { bt.visible = false; sb.visible = false; }
+if (view === 'side' || view === 'underride') { for (const o of [bt, sb, tr2, fb, tb]) o.visible = false; }
+if (view === 'side') {   // vertical 1 m grid behind the pair, for reading heights
+  const vg = new THREE.GridHelper(40, 40, 0x9aa2a8, 0xb6bcc1); vg.rotation.x = Math.PI / 2; vg.position.set(-6, 0, 12); scene.add(vg);
+  const vg5 = new THREE.GridHelper(40, 8, 0x7d858c, 0x7d858c); vg5.rotation.x = Math.PI / 2; vg5.position.set(-6, 0, 11.99); scene.add(vg5);
+}
 if (night) for (const o of [tractor, van, bt, tr2, fb, tb, sb]) o.userData.setLights(true, { beams: true });
 
 // cameras
 const cam = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, 0.1, 500);
 const P = {
   lineup: [[-42, 17, -15], [-3, 0.5, 12.5]],
-  side: [[-2, 3.0, -30], [-2, 1.8, 9]],
+  side: [[-6, 2.1, -27], [-6, 2.1, 9]],
   rear: [[26, 7, -8], [4, 1.5, 6]],
   close: [[-20.5, 3.0, 2.2], [-12.5, 1.7, 9]],
   closebt: [[-21, 2.6, -6.5], [-14, 1.5, 0]],
-  closebus: [[-14, 3.0, 20.5], [-6, 1.6, 27]],
+  closebus: [[-21, 3.2, 20.0], [-9, 1.5, 26.5]],
+  reardoor: [[11.5, 2.3, 3.6], [4.0, 2.0, 9.2]],
+  marker: [[-3, 1.8, 2.8], [-6, 1.4, 9]],
   closesb: [[-8.5, 3.0, -6.5], [0, 1.6, 0]],
   underride: [[-2.5, 1.0, 1.5], [3, 1.0, 9]],
 }[view] || [[-42, 17, -15], [-3, 0.5, 12.5]];

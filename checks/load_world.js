@@ -25,7 +25,9 @@ export async function nodeAssets({ fresh = false, onCall } = {}) {
 export async function instantiateWorld(mod, opts = {}) {
   const fn = typeof mod === 'function' ? mod : mod?.default;
   if (typeof fn !== 'function') throw new Error('world module has no default export createWorld(THREE, assets)');
-  return fn(THREE, opts.assets ?? await nodeAssets());
+  const assets = opts.assets ?? await nodeAssets();
+  try { assets?.beginWorld?.(); } catch {}
+  return fn(THREE, assets);
 }
 
 /** Import a world file fresh (cache-busted) and instantiate it. */

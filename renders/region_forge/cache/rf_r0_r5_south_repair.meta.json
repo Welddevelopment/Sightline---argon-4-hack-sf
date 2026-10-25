@@ -1,0 +1,33 @@
+{
+  "name": "rf_r0_r5_south_repair",
+  "model": "gemini-4-argon",
+  "hash": "387d97aac2378428",
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 40354,
+    "candidatesTokenCount": 21738,
+    "totalTokenCount": 63159,
+    "cachedContentTokenCount": 14481,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 40354
+      }
+    ],
+    "cacheTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 14481
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 21738
+      }
+    ],
+    "thoughtsTokenCount": 1067
+  },
+  "seconds": 180.3,
+  "at": "2026-10-25T20:03:14.976Z"
+}

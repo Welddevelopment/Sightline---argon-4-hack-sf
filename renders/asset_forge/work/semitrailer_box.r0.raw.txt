@@ -1,0 +1,997 @@
+- **Dimensions**: 16.20 m length (`z: -8.10` to `+8.10`), 2.60 m width (`x: -1.30` to `+1.30`), 4.10 m height (`y: 0.00` to `4.10`).
+- **Side Underride & Subframe**: Open underbody clearance (`y: 1.17 m` underside) between landing gear (`z = -3.90`) and tandem bogie (`z = +5.55`), exposing 46 transverse I-beam cross-members (0.30 m pitch) and longitudinal main rails.
+- **Kingpin & Coupler**: Upper coupler rub plate at `y = 1.22 m` with forged SAE 2-inch kingpin at `z = -7.19 m` (0.91 m behind nose).
+- **Landing Gear**: Two-speed telescopic square legs at `z = -3.90 m` with cross-bracing, gearbox, folded crank handle, and low-profile sand shoes above ground.
+- **Sliding Tandem & Dual Wheels**: Slider subframe (`z: +4.2` to `+7.3`) with air-ride trailing arms, brake chambers, and axles at `z = +5.55 m` and `+6.80 m`; 8 dual 295/75R22.5 tires (1.03 m OD) on 10-lug Alcoa-style rims grouped into 4 spin-ready wheel hubs.
+- **Rear ICC Underride Guard**: DOT-compliant horizontal tube bumper (`2.48 m` wide, bottom edge at `y = 0.50 m`, `z = +7.85 m`) supported by heavy vertical struts and diagonal gussets.
+- **Conspicuity & Lighting**: True 3D/procedural DOT-C2 300 mm red / 450 mm white retroreflective tape along lower rub rails, rear ICC guard, and rear door perimeter + upper inverted-L corners; amber front/mid markers, red rear side markers, 3-lamp ID cluster, and dual oval `taillight_L` / `taillight_R` assemblies controlled by `setLights(on)`.
+- **Rear Barn Doors & Sheet-and-Post Body**: Extruded radiused front corner caps, gladhand air/electrical nosebox, 26 vertical external/rivet-line post strips (0.60 m spacing), extruded aluminum top/bottom rails, and twin swing doors with 8 hinges, 4 locking rods, cam keepers, and latches.
+
+```js
+import * as THREE_NS from 'three'; // unused fallback comment - actual code strictly uses passed THREE parameter
+
+const CACHE = new WeakMap();
+
+function getShared(THREE) {
+  if (CACHE.has(THREE)) return CACHE.get(THREE);
+
+  // --- Procedural Textures ---
+  // 1. DOT-C2 Conspicuity Tape Texture (300mm Red / 450mm White = 2:3 ratio + retroreflective micro-prism grid)
+  const dotWidth = 256, dotHeight = 64;
+  const dotData = new Uint8Array(dotWidth * dotHeight * 4);
+  for (let y = 0; y < dotHeight; y++) {
+    for (let x = 0; x < dotWidth; x++) {
+      const idx = (y * dotWidth + x) * 4;
+      const u = x / dotWidth;
+      const isRed = u < 0.4; // 0.30 / (0.30 + 0.45) = 0.40
+      // Diamond micro-prism pattern
+      const diamond = ((x + y) % 8 === 0 || (x - y + 256) % 8 === 0) ? -18 : 8;
+      // Thin silver border at top/bottom
+      const border = (y < 4 || y >= dotHeight - 4);
+      if (border) {
+        dotData[idx] = 210; dotData[idx + 1] = 215; dotData[idx + 2] = 220; dotData[idx + 3] = 255;
+      } else if (isRed) {
+        dotData[idx] = Math.min(255, Math.max(0, 215 + diamond));
+        dotData[idx + 1] = Math.min(255, Math.max(0, 22 + diamond));
+        dotData[idx + 2] = Math.min(255, Math.max(0, 22 + diamond));
+        dotData[idx + 3] = 255;
+      } else {
+        dotData[idx] = Math.min(255, Math.max(0, 245 + diamond));
+        dotData[idx + 1] = Math.min(255, Math.max(0, 246 + diamond));
+        dotData[idx + 2] = Math.min(255, Math.max(0, 248 + diamond));
+        dotData[idx + 3] = 255;
+      }
+    }
+  }
+  const dotTex = new THREE.DataTexture(dotData, dotWidth, dotHeight, THREE.RGBAFormat);
+  dotTex.wrapS = THREE.RepeatWrapping;
+  dotTex.wrapT = THREE.ClampToEdgeWrapping;
+  if (THREE.SRGBColorSpace) dotTex.colorSpace = THREE.SRGBColorSpace;
+  dotTex.needsUpdate = true;
+
+  // 2. Tire Tread & Sidewall Texture
+  const tireW = 256, tireH = 128;
+  const tireData = new Uint8Array(tireW * tireH * 4);
+  for (let y = 0; y < tireH; y++) {
+    for (let x = 0; x < tireW; x++) {
+      const idx = (y * tireW + x) * 4;
+      // 5-rib highway commercial tread
+      const rib = (x > 25 && x < 42) || (x > 75 && x < 92) || (x > 120 && x < 136) || (x > 164 && x < 181) || (x > 214 && x < 231);
+      const siping = ((y % 16 < 3) && (x % 32 < 16));
+      let v = rib ? 16 : (siping ? 24 : 34);
+      tireData[idx] = v; tireData[idx + 1] = v; tireData[idx + 2] = v + 2; tireData[idx + 3] = 255;
+    }
+  }
+  const tireTex = new THREE.DataTexture(tireData, tireW, tireH, THREE.RGBAFormat);
+  tireTex.wrapS = THREE.ClampToEdgeWrapping;
+  tireTex.wrapT = THREE.RepeatWrapping;
+  tireTex.repeat.set(1, 14);
+  if (THREE.SRGBColorSpace) tireTex.colorSpace = THREE.SRGBColorSpace;
+  tireTex.needsUpdate = true;
+
+  // 3. Riveted Sheet-and-Post Side Normal/Bump/Color Texture
+  const panelW = 128, panelH = 512;
+  const panelData = new Uint8Array(panelW * panelH * 4);
+  for (let y = 0; y < panelH; y++) {
+    for (let x = 0; x < panelW; x++) {
+      const idx = (y * panelW + x) * 4;
+      let val = 248;
+      // Vertical seam at x=0/127 and subtle stiffening crease near edges
+      if (x < 3 || x > 124) val = 215;
+      else if (x === 14 || x === 113) val = 236;
+      // Rivet line along x=7 and x=120 every 16 pixels vertically
+      const ry = y % 16;
+      const rx1 = x - 7, rx2 = x - 120, dy = ry - 8;
+      if (rx1 * rx1 + dy * dy <= 5 || rx2 * rx2 + dy * dy <= 5) {
+        val = (dy < 0) ? 255 : 195;
+      }
+      // Subtle horizontal brushed grain
+      val += ((y * 13 + x * 7) % 5) - 2;
+      val = Math.min(255, Math.max(0, val));
+      panelData[idx] = val; panelData[idx + 1] = val; panelData[idx + 2] = val; panelData[idx + 3] = 255;
+    }
+  }
+  const panelTex = new THREE.DataTexture(panelData, panelW, panelH, THREE.RGBAFormat);
+  panelTex.wrapS = THREE.RepeatWrapping;
+  panelTex.wrapT = THREE.RepeatWrapping;
+  panelTex.repeat.set(26, 2);
+  if (THREE.SRGBColorSpace) panelTex.colorSpace = THREE.SRGBColorSpace;
+  panelTex.needsUpdate = true;
+
+  // --- Shared Base Materials ---
+  const mats = {
+    extrudedAlum: new THREE.MeshStandardMaterial({
+      color: 0xd4d8dc,
+      metalness: 0.72,
+      roughness: 0.32
+    }),
+    brightChrome: new THREE.MeshStandardMaterial({
+      color: 0xecfoff,
+      metalness: 0.92,
+      roughness: 0.14
+    }),
+    galvanizedSteel: new THREE.MeshStandardMaterial({
+      color: 0x9aa0a6,
+      metalness: 0.65,
+      roughness: 0.42
+    }),
+    chassisBlack: new THREE.MeshStandardMaterial({
+      color: 0x1e2024,
+      metalness: 0.35,
+      roughness: 0.72
+    }),
+    fifthWheelGrease: new THREE.MeshStandardMaterial({
+      color: 0x121316,
+      metalness: 0.25,
+      roughness: 0.45
+    }),
+    woodUnderfloor: new THREE.MeshStandardMaterial({
+      color: 0x3b3127,
+      metalness: 0.05,
+      roughness: 0.88
+    }),
+    rubberTire: new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      map: tireTex,
+      metalness: 0.05,
+      roughness: 0.88
+    }),
+    rubberBlack: new THREE.MeshStandardMaterial({
+      color: 0x161719,
+      metalness: 0.05,
+      roughness: 0.90
+    }),
+    wheelAlcoa: new THREE.MeshStandardMaterial({
+      color: 0xdce0e4,
+      metalness: 0.85,
+      roughness: 0.20
+    }),
+    wheelHub: new THREE.MeshStandardMaterial({
+      color: 0x22252a,
+      metalness: 0.5,
+      roughness: 0.5
+    }),
+    dotTapeSide: new THREE.MeshPhysicalMaterial({
+      map: dotTex,
+      metalness: 0.25,
+      roughness: 0.22,
+      clearcoat: 0.9,
+      clearcoatRoughness: 0.1,
+      emissive: 0x221111,
+      emissiveMap: dotTex,
+      emissiveIntensity: 0.15
+    }),
+    dotWhite: new THREE.MeshPhysicalMaterial({
+      color: 0xf4f6f8,
+      metalness: 0.3,
+      roughness: 0.2,
+      clearcoat: 0.9,
+      emissive: 0xffffff,
+      emissiveIntensity: 0.12
+    }),
+    gladhandRed: new THREE.MeshStandardMaterial({ color: 0xc81e1e, roughness: 0.4, metalness: 0.3 }),
+    gladhandBlue: new THREE.MeshStandardMaterial({ color: 0x1e5ac8, roughness: 0.4, metalness: 0.3 }),
+    licensePlate: new THREE.MeshStandardMaterial({ color: 0xeeeff2, roughness: 0.35, metalness: 0.2 })
+  };
+
+  // Clone dotTape texture with different repeats for various strips
+  const makeTapeMat = (lengthMeters) => {
+    const t = dotTex.clone();
+    t.wrapS = THREE.RepeatWrapping;
+    t.wrapT = THREE.ClampToEdgeWrapping;
+    t.repeat.set(lengthMeters / 0.75, 1);
+    t.needsUpdate = true;
+    return new THREE.MeshPhysicalMaterial({
+      map: t,
+      metalness: 0.25,
+      roughness: 0.22,
+      clearcoat: 0.9,
+      clearcoatRoughness: 0.1,
+      emissive: 0xffffff,
+      emissiveMap: t,
+      emissiveIntensity: 0.12
+    });
+  };
+
+  const shared = { mats, panelTex, makeTapeMat };
+  CACHE.set(THREE, shared);
+  return shared;
+}
+
+function enableShadows(obj, cast = true, receive = true) {
+  obj.traverse((c) => {
+    if (c.isMesh) {
+      if (c.userData.noCastShadow) {
+        c.castShadow = false;
+        c.receiveShadow = false;
+      } else {
+        c.castShadow = cast;
+        c.receiveShadow = receive;
+      }
+    }
+  });
+}
+
+export default function create(THREE, opts = {}) {
+  const shared = getShared(THREE);
+  const { mats, panelTex, makeTapeMat } = shared;
+
+  const group = new THREE.Group();
+  group.name = opts.id ?? 'semitrailer_box';
+
+  const bodyColor = new THREE.Color(opts.color ?? '#e9eaea');
+  const bodyPaintMat = new THREE.MeshPhysicalMaterial({
+    color: bodyColor,
+    map: panelTex,
+    metalness: 0.25,
+    roughness: 0.32,
+    clearcoat: 0.65,
+    clearcoatRoughness: 0.18
+  });
+  const smoothBodyMat = new THREE.MeshPhysicalMaterial({
+    color: bodyColor,
+    metalness: 0.25,
+    roughness: 0.28,
+    clearcoat: 0.75,
+    clearcoatRoughness: 0.12
+  });
+
+  // Per-instance lamp materials so setLights(on) only toggles this trailer
+  const tailLightMat = new THREE.MeshStandardMaterial({
+    color: 0xaa0808,
+    emissive: 0xff1a0a,
+    emissiveIntensity: 0.15,
+    roughness: 0.18,
+    metalness: 0.1
+  });
+  const redMarkerMat = new THREE.MeshStandardMaterial({
+    color: 0x990808,
+    emissive: 0xff1500,
+    emissiveIntensity: 0.15,
+    roughness: 0.2,
+    metalness: 0.1
+  });
+  const amberMarkerMat = new THREE.MeshStandardMaterial({
+    color: 0xcc6600,
+    emissive: 0xff9900,
+    emissiveIntensity: 0.15,
+    roughness: 0.2,
+    metalness: 0.1
+  });
+
+  // Target Dimensions: L=16.20m (z: -8.10 to +8.10), W=2.60m (x: -1.30 to +1.30), H=4.10m (y: 0.00 to 4.10)
+  const L = 16.20;
+  const W = 2.60;
+  const H = 4.10;
+  const halfL = L / 2; // 8.10
+  const halfW = W / 2; // 1.30
+  const floorBottomY = 1.17;
+  const boxBottomY = 1.21;
+  const boxTopY = 4.10;
+  const boxH = boxTopY - boxBottomY; // 2.89m
+
+  // =========================================================================
+  // 1. MAIN BOX BODY (Sheet-and-post sides, roof, extruded rails, corner caps)
+  // =========================================================================
+  const bodyGroup = new THREE.Group();
+  bodyGroup.name = 'box_body';
+  group.add(bodyGroup);
+
+  const cornerR = 0.12;
+  const mainBoxLen = L - cornerR - 0.08; // leaves 0.12m at nose for radiused corners and 0.08m at rear frame
+  const mainBoxCenterZ = -halfL + cornerR + mainBoxLen / 2;
+
+  // Main Cargo Core (slightly inset by 6mm so external posts, rails, and rear frame stand proud)
+  const coreGeo = new THREE.BoxGeometry(W - 0.012, boxH - 0.14, mainBoxLen);
+  const coreMesh = new THREE.Mesh(coreGeo, bodyPaintMat);
+  coreMesh.position.set(0, boxBottomY + 0.08 + (boxH - 0.14) / 2, mainBoxCenterZ);
+  bodyGroup.add(coreMesh);
+
+  // Translucent/Galvanized Roof Sheet + Roof Bows
+  const roofGeo = new THREE.BoxGeometry(W - 0.04, 0.025, L - cornerR);
+  const roofMesh = new THREE.Mesh(roofGeo, mats.extrudedAlum);
+  roofMesh.position.set(0, boxTopY - 0.0125, cornerR / 2);
+  bodyGroup.add(roofMesh);
+
+  // Hardwood / Undercoated Floor Underside Plane (visible at y = 1.29m above cross-members)
+  const floorDeckGeo = new THREE.BoxGeometry(W - 0.08, 0.035, L - 0.10);
+  const floorDeck = new THREE.Mesh(floorDeckGeo, mats.woodUnderfloor);
+  floorDeck.position.set(0, 1.305, 0);
+  bodyGroup.add(floorDeck);
+
+  // Rounded Front Nose Corner Caps (-Z end) + Front Wall
+  const noseShape = new THREE.Shape();
+  const nw = halfW - 0.004;
+  noseShape.moveTo(-nw, 0);
+  noseShape.lineTo(-nw, -cornerR + 0.08);
+  noseShape.quadraticCurveTo(-nw, -cornerR, -nw + 0.10, -cornerR);
+  noseShape.lineTo(nw - 0.10, -cornerR);
+  noseShape.quadraticCurveTo(nw, -cornerR, nw, -cornerR + 0.08);
+  noseShape.lineTo(nw, 0);
+  noseShape.closePath();
+
+  const noseExtrude = new THREE.ExtrudeGeometry(noseShape, {
+    depth: boxH - 0.02,
+    bevelEnabled: true,
+    bevelThickness: 0.01,
+    bevelSize: 0.004,
+    bevelSegments: 2,
+    curveSegments: 12
+  });
+  noseExtrude.rotateX(-Math.PI / 2);
+  const noseMesh = new THREE.Mesh(noseExtrude, smoothBodyMat);
+  noseMesh.position.set(0, boxBottomY + 0.01, -halfL + cornerR);
+  bodyGroup.add(noseMesh);
+
+  // Polished Aluminum Nose Corner Caps (left & right vertical corner armor)
+  const capRadius = 0.095;
+  const capGeo = new THREE.CylinderGeometry(capRadius, capRadius, boxH - 0.04, 12, 1, false, 0, Math.PI / 2);
+  const capL = new THREE.Mesh(capGeo, mats.extrudedAlum);
+  capL.rotation.y = Math.PI;
+  capL.position.set(-halfW + capRadius - 0.002, boxBottomY + boxH / 2, -halfL + capRadius - 0.002);
+  const capR = new THREE.Mesh(capGeo, mats.extrudedAlum);
+  capR.rotation.y = Math.PI / 2;
+  capR.position.set(halfW - capRadius + 0.002, boxBottomY + boxH / 2, -halfL + capRadius - 0.002);
+  bodyGroup.add(capL, capR);
+
+  // Top & Bottom Extruded Aluminum Side Rails (Left and Right)
+  const railLen = L - cornerR;
+  const railCenterZ = cornerR / 2;
+  const topRailGeo = new THREE.BoxGeometry(0.018, 0.095, railLen);
+  const botRailGeo = new THREE.BoxGeometry(0.024, 0.155, railLen);
+
+  for (const side of [-1, 1]) {
+    const topRail = new THREE.Mesh(topRailGeo, mats.extrudedAlum);
+    topRail.position.set(side * (halfW - 0.009), boxTopY - 0.048, railCenterZ);
+    bodyGroup.add(topRail);
+
+    const botRail = new THREE.Mesh(botRailGeo, mats.extrudedAlum);
+    botRail.position.set(side * (halfW - 0.010), boxBottomY + 0.0775, railCenterZ);
+    bodyGroup.add(botRail);
+  }
+
+  // Vertical Sheet-and-Post Strips (every 0.60m along both sides, plus nose posts)
+  const numSidePosts = 26;
+  const postPitch = 0.60;
+  const postStartZ = -halfL + 0.45;
+  const postGeo = new THREE.BoxGeometry(0.010, boxH - 0.24, 0.044);
+  const sidePostsInst = new THREE.InstancedMesh(postGeo, smoothBodyMat, numSidePosts * 2);
+  const dummy = new THREE.Object3D();
+  let pIdx = 0;
+  for (let i = 0; i < numSidePosts; i++) {
+    const z = postStartZ + i * postPitch;
+    for (const side of [-1, 1]) {
+      dummy.position.set(side * (halfW - 0.003), boxBottomY + 0.15 + (boxH - 0.24) / 2, z);
+      dummy.rotation.set(0, 0, 0);
+      dummy.updateMatrix();
+      sidePostsInst.setMatrixAt(pIdx++, dummy.matrix);
+    }
+  }
+  sidePostsInst.instanceMatrix.needsUpdate = true;
+  bodyGroup.add(sidePostsInst);
+
+  // Front Wall Vertical Stiffener Posts & Gladhand / Electrical Nosebox
+  for (let x = -0.90; x <= 0.901; x += 0.45) {
+    const fPost = new THREE.Mesh(new THREE.BoxGeometry(0.055, boxH - 0.16, 0.012), mats.extrudedAlum);
+    fPost.position.set(x, boxBottomY + boxH / 2, -halfL + 0.002);
+    bodyGroup.add(fPost);
+  }
+
+  // Nosebox (Air gladhands + 7-way electrical socket + manifest holder)
+  const noseBoxGroup = new THREE.Group();
+  noseBoxGroup.position.set(-0.35, 1.68, -halfL - 0.015);
+  const jBox = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.22, 0.05), mats.galvanizedSteel);
+  noseBoxGroup.add(jBox);
+  const ghGeo = new THREE.CylinderGeometry(0.028, 0.028, 0.06, 12);
+  ghGeo.rotateX(Math.PI / 2);
+  const ghEmergency = new THREE.Mesh(ghGeo, mats.gladhandRed);
+  ghEmergency.position.set(-0.08, -0.02, -0.035);
+  const ghService = new THREE.Mesh(ghGeo, mats.gladhandBlue);
+  ghService.position.set(0.08, -0.02, -0.035);
+  const elecPlug = new THREE.Mesh(new THREE.CylinderGeometry(0.024, 0.024, 0.055, 12).rotateX(Math.PI / 2), mats.chassisBlack);
+  elecPlug.position.set(0, 0.05, -0.032);
+  noseBoxGroup.add(ghEmergency, ghService, elecPlug);
+  bodyGroup.add(noseBoxGroup);
+
+  // =========================================================================
+  // 2. UPPER COUPLER, KINGPIN, AND OPEN SUBFRAME / CROSS-MEMBERS (SIDE UNDERRIDE)
+  // =========================================================================
+  const chassisGroup = new THREE.Group();
+  chassisGroup.name = 'chassis_subframe';
+  group.add(chassisGroup);
+
+  // Upper Coupler Plate (Nose z=-8.10 to z=-6.30, bottom at y=1.22m)
+  const couplerLen = 1.80;
+  const couplerPlateGeo = new THREE.BoxGeometry(W - 0.12, 0.07, couplerLen);
+  const couplerPlate = new THREE.Mesh(couplerPlateGeo, mats.fifthWheelGrease);
+  couplerPlate.position.set(0, 1.22 + 0.035, -halfL + 0.05 + couplerLen / 2);
+  chassisGroup.add(couplerPlate);
+
+  // Angled Front Pick-Up Apron Lip
+  const apronGeo = new THREE.BoxGeometry(W - 0.14, 0.02, 0.14);
+  const apron = new THREE.Mesh(apronGeo, mats.fifthWheelGrease);
+  apron.rotation.x = -0.32;
+  apron.position.set(0, 1.245, -halfL + 0.05);
+  chassisGroup.add(apron);
+
+  // Forged SAE 2-inch Kingpin at z = -7.19m (0.91m behind nose), top at y = 1.22m
+  const kingpinZ = -7.19;
+  const kpGroup = new THREE.Group();
+  kpGroup.name = 'kingpin';
+  kpGroup.position.set(0, 1.22, kingpinZ);
+  const kpCollar = new THREE.Mesh(new THREE.CylinderGeometry(0.052, 0.052, 0.042, 16), mats.chassisBlack);
+  kpCollar.position.y = -0.021;
+  const kpJournal = new THREE.Mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.036, 16), mats.chassisBlack);
+  kpJournal.position.y = -0.060;
+  const kpFlange = new THREE.Mesh(new THREE.CylinderGeometry(0.040, 0.038, 0.016, 16), mats.chassisBlack);
+  kpFlange.position.y = -0.086;
+  kpGroup.add(kpCollar, kpJournal, kpFlange);
+  chassisGroup.add(kpGroup);
+
+  // CRITICAL FORENSIC DETAIL 1: Transverse I-Beam Floor Cross-Members (every 0.30m)
+  // Underside at y = 1.17m, height = 0.115m (top meets floor deck at y = 1.285m).
+  // Open daylight between cross-members along the entire side underride zone!
+  const crossStartZ = -6.25;
+  const crossEndZ = 7.85;
+  const crossPitch = 0.30;
+  const numCross = Math.floor((crossEndZ - crossStartZ) / crossPitch) + 1;
+
+  // Build authentic I-beam profile for cross-members
+  const ibeamShape = new THREE.Shape();
+  const ibW = 0.056, ibH = 0.115, flT = 0.012, webT = 0.009;
+  ibeamShape.moveTo(-ibW / 2, 0);
+  ibeamShape.lineTo(ibW / 2, 0);
+  ibeamShape.lineTo(ibW / 2, flT);
+  ibeamShape.lineTo(webT / 2, flT);
+  ibeamShape.lineTo(webT / 2, ibH - flT);
+  ibeamShape.lineTo(ibW / 2, ibH - flT);
+  ibeamShape.lineTo(ibW / 2, ibH);
+  ibeamShape.lineTo(-ibW / 2, ibH);
+  ibeamShape.lineTo(-ibW / 2, ibH - flT);
+  ibeamShape.lineTo(-webT / 2, ibH - flT);
+  ibeamShape.lineTo(-webT / 2, flT);
+  ibeamShape.lineTo(-ibW / 2, flT);
+  ibeamShape.closePath();
+
+  const crossSpan = W - 0.05;
+  const crossGeo = new THREE.ExtrudeGeometry(ibeamShape, { depth: crossSpan, bevelEnabled: false });
+  crossGeo.translate(0, 0, -crossSpan / 2);
+  crossGeo.rotateY(Math.PI / 2);
+
+  const crossInst = new THREE.InstancedMesh(crossGeo, mats.chassisBlack, numCross);
+  for (let i = 0; i < numCross; i++) {
+    const cz = crossStartZ + i * crossPitch;
+    dummy.position.set(0, floorBottomY, cz);
+    dummy.rotation.set(0, 0, 0);
+    dummy.updateMatrix();
+    crossInst.setMatrixAt(i, dummy.matrix);
+  }
+  crossInst.instanceMatrix.needsUpdate = true;
+  chassisGroup.add(crossInst);
+
+  // Longitudinal Main Subframe Rails (visible under floor between landing gear and rear tandem)
+  const mainRailLen = L - 2.10;
+  const mainRailGeo = new THREE.BoxGeometry(0.065, 0.11, mainRailLen);
+  for (const side of [-1, 1]) {
+    const mRail = new THREE.Mesh(mainRailGeo, mats.chassisBlack);
+    mRail.position.set(side * 0.52, floorBottomY + 0.055, 0.85);
+    chassisGroup.add(mRail);
+  }
+
+  // Brake Air Reservoir Tank & ABS Valve Module mounted under subframe forward of tandem
+  const airTank = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.72, 16).rotateZ(Math.PI / 2), mats.chassisBlack);
+  airTank.position.set(0, 1.04, 3.85);
+  chassisGroup.add(airTank);
+
+  // =========================================================================
+  // 3. LANDING GEAR ASSEMBLY (z ≈ -3.90m, 3.3m behind kingpin)
+  // =========================================================================
+  const lgZ = -3.90;
+  const lgGroup = new THREE.Group();
+  lgGroup.name = 'landing_gear';
+  lgGroup.position.set(0, 0, lgZ);
+  chassisGroup.add(lgGroup);
+
+  const legX = 0.94;
+  for (const side of [-1, 1]) {
+    // Upper outer square housing leg (y = 0.56 to 1.24)
+    const upperLeg = new THREE.Mesh(new THREE.BoxGeometry(0.125, 0.68, 0.125), mats.chassisBlack);
+    upperLeg.position.set(side * legX, 0.90, 0);
+    lgGroup.add(upperLeg);
+
+    // Gusset mounting plate to cross-members
+    const mountPlate = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.24, 0.42), mats.chassisBlack);
+    mountPlate.position.set(side * (legX - side * 0.02), 1.12, 0);
+    lgGroup.add(mountPlate);
+
+    // Lower telescoping inner leg (y = 0.20 to 0.60)
+    const lowerLeg = new THREE.Mesh(new THREE.BoxGeometry(0.095, 0.40, 0.095), mats.galvanizedSteel);
+    lowerLeg.position.set(side * legX, 0.40, 0);
+    lgGroup.add(lowerLeg);
+
+    // Sand shoe foot pad (retracted in highway travel position at y = 0.17m)
+    const shoeBase = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.035, 0.28), mats.chassisBlack);
+    shoeBase.position.set(side * legX, 0.185, 0);
+    const shoeRibs = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.045, 0.16), mats.chassisBlack);
+    shoeRibs.position.set(side * legX, 0.22, 0);
+    lgGroup.add(shoeBase, shoeRibs);
+
+    // Fore-aft diagonal strut brace
+    const foreBrace = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.62, 8), mats.chassisBlack);
+    foreBrace.position.set(side * legX, 0.92, -0.22);
+    foreBrace.rotation.x = 0.68;
+    lgGroup.add(foreBrace);
+  }
+
+  // K-Brace Cross Struts between left and right legs
+  for (const sign of [-1, 1]) {
+    const kStrut = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 1.92, 8), mats.chassisBlack);
+    kStrut.position.set(0, 0.88, 0);
+    kStrut.rotation.z = sign * 1.24;
+    lgGroup.add(kStrut);
+  }
+  // Cross drive shaft
+  const crossShaft = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, legX * 2 + 0.15, 10).rotateZ(Math.PI / 2), mats.chassisBlack);
+  crossShaft.position.set(0, 0.96, 0);
+  lgGroup.add(crossShaft);
+
+  // Crank Handle on Left (-X) Side (folded in travel hanger)
+  const crankGroup = new THREE.Group();
+  crankGroup.position.set(-legX - 0.08, 0.96, 0);
+  const crankArm1 = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.12, 8).rotateZ(Math.PI / 2), mats.chassisBlack);
+  crankArm1.position.set(-0.05, 0, 0);
+  const crankShaft = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.42, 8), mats.chassisBlack);
+  crankShaft.position.set(-0.10, -0.20, 0.04);
+  crankShaft.rotation.x = -0.18;
+  const crankGrip = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.14, 10), mats.rubberBlack);
+  crankGrip.position.set(-0.14, -0.40, 0.08);
+  crankGrip.rotation.z = Math.PI / 2;
+  crankGroup.add(crankArm1, crankShaft, crankGrip);
+  lgGroup.add(crankGroup);
+
+  // =========================================================================
+  // 4. SLIDING TANDEM AXLE BOGIE & DUAL WHEELS (z = +5.55m and +6.80m)
+  // =========================================================================
+  const axleZs = [5.55, 6.80];
+  const tireRadius = 0.515; // 295/75R22.5 diameter = 1.03m
+  const bogieGroup = new THREE.Group();
+  bogieGroup.name = 'sliding_tandem_bogie';
+  chassisGroup.add(bogieGroup);
+
+  // Slider Subframe Rails with Locking Pin Holes (z: +3.90 to +7.45)
+  const sliderLen = 3.55;
+  const sliderCenterZ = 5.68;
+  for (const side of [-1, 1]) {
+    const sliderRail = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.16, sliderLen), mats.chassisBlack);
+    sliderRail.position.set(side * 0.55, 1.09, sliderCenterZ);
+    bogieGroup.add(sliderRail);
+
+    // Lower bogie frame rail
+    const bogieRail = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.14, 2.55), mats.chassisBlack);
+    bogieRail.position.set(side * 0.55, 0.96, 6.18);
+    bogieGroup.add(bogieRail);
+  }
+
+  // Per-axle suspension hangers, trailing arms, air springs, axle beams, and brake chambers
+  for (const az of axleZs) {
+    // Solid steel axle tube
+    const axleTube = new THREE.Mesh(new THREE.CylinderGeometry(0.064, 0.064, 1.96, 16).rotateZ(Math.PI / 2), mats.chassisBlack);
+    axleTube.position.set(0, tireRadius, az);
+    bogieGroup.add(axleTube);
+
+    for (const side of [-1, 1]) {
+      const sx = side * 0.55;
+      // Forward suspension hanger bracket
+      const hanger = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.30, 0.22), mats.chassisBlack);
+      hanger.position.set(sx, 0.78, az - 0.44);
+      bogieGroup.add(hanger);
+
+      // Trailing arm beam connecting hanger to axle and rear air spring pad
+      const trailArm = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.11, 0.78), mats.chassisBlack);
+      trailArm.position.set(sx, 0.58, az - 0.12);
+      trailArm.rotation.x = 0.24;
+      bogieGroup.add(trailArm);
+
+      // Air ride bellows (behind axle)
+      const airBag = new THREE.Mesh(new THREE.CylinderGeometry(0.145, 0.135, 0.28, 16), mats.rubberBlack);
+      airBag.position.set(sx, 0.74, az + 0.22);
+      bogieGroup.add(airBag);
+
+      // Shock absorber
+      const shock = new THREE.Mesh(new THREE.CylinderGeometry(0.032, 0.032, 0.42, 10), mats.chassisBlack);
+      shock.position.set(sx + side * 0.08, 0.74, az - 0.08);
+      shock.rotation.x = -0.25;
+      bogieGroup.add(shock);
+
+      // Spring brake chamber canister
+      const chamber = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.085, 0.18, 14).rotateX(Math.PI / 2), mats.chassisBlack);
+      chamber.position.set(side * 0.42, tireRadius + 0.08, az - 0.14);
+      bogieGroup.add(chamber);
+    }
+  }
+
+  // Shared Dual Wheel & Tire Geometry Builder (295/75R22.5, OD = 1.03m, width = 0.295m)
+  const tireWidth = 0.295;
+  const rimRadius = 0.286; // 22.5" rim
+  const tireShape = new THREE.Shape();
+  const hw = tireWidth / 2;
+  constbev = 0.032;
+  // Lathe profile: X is radial distance from axle, Y is axial offset along X
+  tireShape.moveTo(rimRadius - 0.01, -hw + 0.02);
+  tireShape.lineTo(tireRadius - thev(), -hw + 0.015);
+  tireShape.quadraticCurveTo(tireRadius, -hw + 0.005, tireRadius, -hw + 0.045);
+  tireShape.lineTo(tireRadius, hw - 0.045);
+  tireShape.quadraticCurveTo(tireRadius, hw - 0.005, tireRadius - thev(), hw - 0.015);
+  tireShape.lineTo(rimRadius - 0.01, hw - 0.02);
+  tireShape.closePath();
+
+  function thev() { return 0.022; }
+
+  const singleTireGeo = new THREE.LatheGeometry(tireShape.getPoints(16), 36);
+  singleTireGeo.rotateZ(Math.PI / 2); // align revolution axis with X axle
+
+  // Alcoa-style Dish Rim + Brake Drum + 10 Lug Nuts + Hubcap
+  const rimDishPts = [
+    new THREE.Vector2(0.11, -0.08),
+    new THREE.Vector2(0.18, -0.07),
+    new THREE.Vector2(0.25, 0.02),
+    new THREE.Vector2(rimRadius, 0.06),
+    new THREE.Vector2(rimRadius, 0.13),
+    new THREE.Vector2(rimRadius - 0.018, 0.13),
+    new THREE.Vector2(0.23, 0.00),
+    new THREE.Vector2(0.11, -0.05)
+  ];
+  const outerRimGeo = new THREE.LatheGeometry(rimDishPts, 32);
+  outerRimGeo.rotateZ(Math.PI / 2);
+
+  const innerRimGeo = new THREE.CylinderGeometry(rimRadius, rimRadius, 0.52, 32, 1, true).rotateZ(Math.PI / 2);
+  const brakeDrumGeo = new THREE.CylinderGeometry(0.22, 0.22, 0.44, 24).rotateZ(Math.PI / 2);
+  const hubCapGeo = new THREE.CylinderGeometry(0.095, 0.105, 0.16, 20).rotateZ(Math.PI / 2);
+  const lugGeo = new THREE.CylinderGeometry(0.014, 0.014, 0.035, 8).rotateZ(Math.PI / 2);
+
+  const wheels = [];
+  const dualInnerCenter = 0.805;
+  const dualOuterCenter = 1.135; // outer tire edge = 1.135 + 0.1475 = 1.2825m (inside 1.30m width)
+  const hubMidX = (dualInnerCenter + dualOuterCenter) / 2; // 0.97m
+
+  for (let aIdx = 0; aIdx < axleZs.length; aIdx++) {
+    const az = axleZs[aIdx];
+    for (const side of [-1, 1]) {
+      const wheelGroup = new THREE.Group();
+      wheelGroup.name = `wheel_${aIdx + 1}_${side < 0 ? 'L' : 'R'}`;
+      wheelGroup.position.set(side * hubMidX, tireRadius, az);
+
+      const inOffset = side * (dualInnerCenter - hubMidX);
+      const outOffset = side * (dualOuterCenter - hubMidX);
+
+      // Inner and Outer Tires
+      const innerTire = new THREE.Mesh(singleTireGeo, mats.rubberTire);
+      innerTire.position.x = inOffset;
+      const outerTire = new THREE.Mesh(singleTireGeo, mats.rubberTire);
+      outerTire.position.x = outOffset;
+      wheelGroup.add(innerTire, outerTire);
+
+      // Inner barrel & brake drum
+      const barrel = new THREE.Mesh(innerRimGeo, mats.wheelAlcoa);
+      const drum = new THREE.Mesh(brakeDrumGeo, mats.chassisBlack);
+      drum.position.x = inOffset * 0.4;
+      wheelGroup.add(barrel, drum);
+
+      // Deep-dish outer Alcoa rim
+      const dish = new THREE.Mesh(outerRimGeo, mats.wheelAlcoa);
+      dish.position.x = outOffset;
+      if (side < 0) dish.rotation.y = Math.PI;
+      wheelGroup.add(dish);
+
+      // Oil-bath hubcap & 10 lug nuts + 10 ventilation holes
+      const hub = new THREE.Mesh(hubCapGeo, mats.wheelHub);
+      hub.position.x = outOffset + side * 0.01;
+      wheelGroup.add(hub);
+
+      const lugRadius = 0.142;
+      const holeRadius = 0.215;
+      const holeGeo = new THREE.CylinderGeometry(0.022, 0.022, 0.03, 10).rotateZ(Math.PI / 2);
+      for (let k = 0; k < 10; k++) {
+        const ang = (k / 10) * Math.PI * 2;
+        const ly = Math.cos(ang) * lugRadius;
+        const lz = Math.sin(ang) * lugRadius;
+        const lug = new THREE.Mesh(lugGeo, mats.brightChrome);
+        lug.position.set(outOffset - side * 0.045, ly, lz);
+        wheelGroup.add(lug);
+
+        const hy = Math.cos(ang + 0.314) * holeRadius;
+        const hz = Math.sin(ang + 0.314) * holeRadius;
+        const vHole = new THREE.Mesh(holeGeo, mats.chassisBlack);
+        vHole.position.set(outOffset + side * 0.01, hy, hz);
+        wheelGroup.add(vHole);
+      }
+
+      group.add(wheelGroup);
+      wheels.push(wheelGroup);
+    }
+  }
+
+  // Mudflaps Behind Rear Tandem (at z = +7.48m)
+  for (const side of [-1, 1]) {
+    const mfBracket = new THREE.Mesh(new THREE.BoxGeometry(0.66, 0.04, 0.04), mats.chassisBlack);
+    mfBracket.position.set(side * hubMidX, 1.12, 7.48);
+    const mudflap = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.78, 0.012), mats.rubberBlack);
+    mudflap.position.set(side * hubMidX, 0.72, 7.48);
+    // Bottom anti-sail chrome weights on mudflaps
+    const mfWeight = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.055, 0.016), mats.brightChrome);
+    mfWeight.position.set(side * hubMidX, 0.36, 7.48);
+    chassisGroup.add(mfBracket, mudflap, mfWeight);
+  }
+
+  // =========================================================================
+  // 5. REAR FRAME, SWING BARN DOORS, LOCKING BARS & REAR ICC UNDERRIDE GUARD
+  // =========================================================================
+  const rearGroup = new THREE.Group();
+  rearGroup.name = 'rear_assembly';
+  group.add(rearGroup);
+
+  const rearZ = halfL - 0.04; // +8.06m frame plane (hardware extends to +8.10m)
+  // Rear Stainless/Galvanized Portal Frame (Header, Sill/Bumper Bolster, Corner Posts)
+  const rearFrameW = 0.095;
+  const bolsterH = 0.16;
+  const headerH = 0.10;
+  const bolster = new THREE.Mesh(new THREE.BoxGeometry(W, bolsterH, 0.10), mats.galvanizedSteel);
+  bolster.position.set(0, boxBottomY + bolsterH / 2 - 0.02, rearZ - 0.01);
+  const header = new THREE.Mesh(new THREE.BoxGeometry(W, headerH, 0.09), mats.galvanizedSteel);
+  header.position.set(0, boxTopY - headerH / 2, rearZ - 0.005);
+  rearGroup.add(bolster, header);
+
+  for (const side of [-1, 1]) {
+    const rPost = new THREE.Mesh(new THREE.BoxGeometry(rearFrameW, boxH, 0.09), mats.galvanizedSteel);
+    rPost.position.set(side * (halfW - rearFrameW / 2), boxBottomY + boxH / 2, rearZ - 0.005);
+    rearGroup.add(rPost);
+
+    // Rubber dock bumpers at outer ends of rear bolster
+    const dockBumper = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.13, 0.06), mats.rubberBlack);
+    dockBumper.position.set(side * (halfW - 0.09), boxBottomY + 0.06, rearZ + 0.03);
+    rearGroup.add(dockBumper);
+  }
+
+  // Twin Swing Barn Doors
+  const doorOpenW = W - rearFrameW * 2;
+  const singleDoorW = doorOpenW / 2 - 0.012;
+  const doorH = boxH - bolsterH - headerH + 0.02;
+  const doorCenterY = boxBottomY + bolsterH + doorH / 2 - 0.01;
+  const doorZ = rearZ + 0.006;
+
+  for (const side of [-1, 1]) {
+    const dx = side * (singleDoorW / 2 + 0.006);
+    const doorPanel = new THREE.Mesh(new THREE.BoxGeometry(singleDoorW, doorH, 0.028), smoothBodyMat);
+    doorPanel.position.set(dx, doorCenterY, doorZ);
+    rearGroup.add(doorPanel);
+
+    // Black EPDM Perimeter Weather Seal Gasket
+    const vSeal = new THREE.Mesh(new THREE.BoxGeometry(0.014, doorH + 0.01, 0.032), mats.rubberBlack);
+    vSeal.position.set(side * 0.005, doorCenterY, doorZ);
+    rearGroup.add(vSeal);
+
+    // 4 Heavy-Duty Door Hinges per side
+    for (let h = 0; h < 4; h++) {
+      const hy = boxBottomY + bolsterH + 0.26 + h * ((doorH - 0.52) / 3);
+      const hingeLeaf = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.065, 0.022), mats.galvanizedSteel);
+      hingeLeaf.position.set(side * (halfW - rearFrameW - 0.06), hy, doorZ + 0.016);
+      const hingePin = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.085, 10), mats.galvanizedSteel);
+      hingePin.position.set(side * (halfW - rearFrameW + 0.01), hy, doorZ + 0.02);
+      rearGroup.add(hingeLeaf, hingePin);
+    }
+  }
+
+  // 4 Vertical Locking Bars with Cam Keepers, Bearing Brackets & Latch Handles
+  const lockBarXs = [-0.82, -0.26, 0.26, 0.82];
+  const lockBarH = doorH + 0.09;
+  const lockBarGeo = new THREE.CylinderGeometry(0.016, 0.016, lockBarH, 12);
+  for (const lx of lockBarXs) {
+    const bar = new THREE.Mesh(lockBarGeo, mats.brightChrome);
+    bar.position.set(lx, doorCenterY, doorZ + 0.034);
+    rearGroup.add(bar);
+
+    // Top & Bottom Cam Keepers
+    for (const cy of [boxBottomY + bolsterH - 0.03, boxTopY - headerH + 0.02]) {
+      const keeper = new THREE.Mesh(new THREE.BoxGeometry(0.065, 0.075, 0.055), mats.galvanizedSteel);
+      keeper.position.set(lx, cy, doorZ + 0.028);
+      rearGroup.add(keeper);
+    }
+
+    // 3 Guide Brackets per rod
+    for (const by of [doorCenterY - 0.75, doorCenterY + 0.1, doorCenterY + 0.85]) {
+      const clamp = new THREE.Mesh(new THREE.BoxGeometry(0.055, 0.04, 0.042), mats.galvanizedSteel);
+      clamp.position.set(lx, by, doorZ + 0.024);
+      rearGroup.add(clamp);
+    }
+
+    // Latch Handle & Keeper Hasps at ergonomic height (y = 1.62m)
+    const dir = lx < 0 ? -1 : 1;
+    const handle = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.032, 0.018), mats.brightChrome);
+    handle.position.set(lx + dir * 0.15, 1.62, doorZ + 0.050);
+    const hasp = new THREE.Mesh(new THREE.BoxGeometry(0.055, 0.065, 0.035), mats.galvanizedSteel);
+    hasp.position.set(lx + dir * 0.25, 1.62, doorZ + 0.030);
+    rearGroup.add(handle, hasp);
+  }
+
+  // Blank License Plate & Holder on Left Rear Bolster
+  const plateBacking = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.17, 0.012), mats.chassisBlack);
+  plateBacking.position.set(-0.58, boxBottomY + 0.07, rearZ + 0.045);
+  const plateMesh = new THREE.Mesh(new THREE.BoxGeometry(0.30, 0.15, 0.006), mats.licensePlate);
+  plateMesh.position.set(-0.58, boxBottomY + 0.07, rearZ + 0.052);
+  rearGroup.add(plateBacking, plateMesh);
+
+  // CRITICAL FORENSIC DETAIL 2: Rear Impact (ICC / Underride) Guard
+  // Horizontal steel bumper 0.10m (Z) x 0.20m (Y) spanning width (2.48m),
+  // bottom edge 0.50m above ground (center Y = 0.60m), set ~0.25m forward of rear (z = +7.85m).
+  const iccZ = halfL - 0.25; // +7.85m
+  const iccGroup = new THREE.Group();
+  iccGroup.name = 'rear_icc_underride_guard';
+  rearGroup.add(iccGroup);
+
+  const iccBarW = W - 0.12; // 2.48m (within 100mm of side extremities per FMVSS 223/224)
+  const iccBar = new THREE.Mesh(new THREE.BoxGeometry(iccBarW, 0.16, 0.10), mats.galvanizedSteel);
+  iccBar.position.set(0, 0.58, iccZ); // bottom edge at 0.58 - 0.08 = 0.50m above ground
+  iccGroup.add(iccBar);
+
+  // 4 Vertical Upright Struts + Forward Diagonal Energy-Absorbing Gussets
+  for (const ux of [-0.96, -0.46, 0.46, 0.96]) {
+    const strutH = boxBottomY - 0.50 + 0.05; // 0.76m
+    const strut = new THREE.Mesh(new THREE.BoxGeometry(0.085, strutH, 0.10), mats.galvanizedSteel);
+    strut.position.set(ux, 0.50 + strutH / 2, iccZ);
+    iccGroup.add(strut);
+
+    // Diagonal forward gusset tube to chassis subframe
+    const diagBrace = new THREE.Mesh(new THREE.BoxGeometry(0.065, 0.68, 0.075), mats.galvanizedSteel);
+    diagBrace.position.set(ux, 0.92, iccZ - 0.22);
+    diagBrace.rotation.x = 0.62;
+    iccGroup.add(diagBrace);
+  }
+
+  // =========================================================================
+  // 6. DOT-C2 RETROREFLECTIVE CONSPICUITY TAPE & LIGHT CLUSTERS
+  // =========================================================================
+  const tapeGroup = new THREE.Group();
+  tapeGroup.name = 'dot_conspicuity_tape';
+  group.add(tapeGroup);
+
+  // Side Bottom Rail DOT-C2 Tape (0.30m Red / 0.45m White continuous along full length)
+  const sideTapeLen = L - 0.24;
+  const sideTapeMat = makeTapeMat(sideTapeLen);
+  const sideTapeGeo = new THREE.BoxGeometry(0.004, 0.052, sideTapeLen);
+  for (const side of [-1, 1]) {
+    const sTape = new THREE.Mesh(sideTapeGeo, sideTapeMat);
+    sTape.position.set(side * (halfW + 0.001), boxBottomY + 0.065, 0.06);
+    sTape.userData.noCastShadow = true;
+    tapeGroup.add(sTape);
+  }
+
+  // Rear Door Lower Horizontal DOT-C2 Tape Strip (across both doors)
+  const doorTapeMat = makeTapeMat(1.15);
+  for (const side of [-1, 1]) {
+    const dTape = new THREE.Mesh(new THREE.BoxGeometry(1.12, 0.052, 0.004), doorTapeMat);
+    dTape.position.set(side * 0.60, boxBottomY + 0.22, doorZ + 0.016);
+    dTape.userData.noCastShadow = true;
+    tapeGroup.add(dTape);
+  }
+
+  // Rear ICC Underride Guard Horizontal DOT-C2 Tape Strip
+  const iccTapeMat = makeTapeMat(iccBarW - 0.04);
+  const iccTape = new THREE.Mesh(new THREE.BoxGeometry(iccBarW - 0.04, 0.052, 0.004), iccTapeMat);
+  iccTape.position.set(0, 0.58, iccZ + 0.052);
+  iccTape.userData.noCastShadow = true;
+  tapeGroup.add(iccTape);
+
+  // Rear Upper Corner White Retroreflective Inverted "L" Outlines (300mm x 300mm)
+  for (const side of [-1, 1]) {
+    const horizL = new THREE.Mesh(new THREE.BoxGeometry(0.30, 0.05, 0.004), mats.dotWhite);
+    horizL.position.set(side * (halfW - rearFrameW - 0.18), boxTopY - headerH - 0.06, doorZ + 0.016);
+    horizL.userData.noCastShadow = true;
+
+    const vertL = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.30, 0.004), mats.dotWhite);
+    vertL.position.set(side * (halfW - rearFrameW - 0.055), boxTopY - headerH - 0.185, doorZ + 0.016);
+    vertL.userData.noCastShadow = true;
+    tapeGroup.add(horizL, vertL);
+  }
+
+  // --- LIGHTING (Taillights, 3 ID Lights, Side & Corner Clearance Markers) ---
+  // Rear Taillights: exact names 'taillight_L' (-X) and 'taillight_R' (+X)
+  // Each assembly is a single merged/grouped mesh or main named mesh with dual oval lenses
+  const tailY = boxBottomY + 0.08;
+  const tailZ = rearZ + 0.042;
+
+  function buildTaillightCluster(name, xPos) {
+    // Bezel backing
+    const bezel = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.11, 0.016), mats.chassisBlack);
+    bezel.position.set(xPos, tailY, tailZ - 0.005);
+    rearGroup.add(bezel);
+
+    // Main named taillight mesh (slightly proud so both oval lenses illuminate together via setLights)
+    const lensGeo = new THREE.BoxGeometry(0.32, 0.075, 0.014);
+    const lensMesh = new THREE.Mesh(lensGeo, tailLightMat);
+    lensMesh.name = name;
+    lensMesh.position.set(xPos, tailY, tailZ + 0.004);
+    lensMesh.userData.noCastShadow = true;
+    rearGroup.add(lensMesh);
+
+    // Center divider bridge to create dual-oval appearance
+    const divider = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.085, 0.018), mats.chassisBlack);
+    divider.position.set(xPos, tailY, tailZ + 0.005);
+    rearGroup.add(divider);
+  }
+
+  buildTaillightCluster('taillight_L', -0.92);
+  buildTaillightCluster('taillight_R', 0.92);
+
+  // Rear 3-Lamp Identification (ID) Cluster (Center Top Header & Center Bottom Sill)
+  for (const mx of [-0.18, 0, 0.18]) {
+    const topId = new THREE.Mesh(new THREE.BoxGeometry(0.065, 0.028, 0.015), redMarkerMat);
+    topId.position.set(mx, boxTopY - 0.05, rearZ + 0.042);
+    topId.userData.noCastShadow = true;
+
+    const botId = new THREE.Mesh(new THREE.BoxGeometry(0.065, 0.028, 0.015), redMarkerMat);
+    botId.position.set(mx, tailY, tailZ);
+    botId.userData.noCastShadow = true;
+    rearGroup.add(topId, botId);
+  }
+
+  // Side Marker & Clearance Lamps (Amber at front nose & mid-length; Red at rear corners)
+  const sideMarkerGeo = new THREE.BoxGeometry(0.014, 0.036, 0.095);
+  for (const side of [-1, 1]) {
+    const sx = side * (halfW + 0.002);
+    // Front lower & upper amber clearance markers
+    const fLow = new THREE.Mesh(sideMarkerGeo, amberMarkerMat);
+    fLow.position.set(sx, boxBottomY + 0.07, -halfL + 0.35);
+    fLow.userData.noCastShadow = true;
+
+    const fHigh = new THREE.Mesh(sideMarkerGeo, amberMarkerMat);
+    fHigh.position.set(sx, boxTopY - 0.05, -halfL + 0.35);
+    fHigh.userData.noCastShadow = true;
+
+    // Mid-length amber turn/marker lamp (required on trailers >= 30 ft)
+    const midMarker = new THREE.Mesh(sideMarkerGeo, amberMarkerMat);
+    midMarker.position.set(sx, boxBottomY + 0.05, 0.0);
+    midMarker.userData.noCastShadow = true;
+
+    // Rear lower & upper red side clearance markers
+    const rLow = new THREE.Mesh(sideMarkerGeo, redMarkerMat);
+    rLow.position.set(sx, boxBottomY + 0.07, halfL - 0.35);
+    rLow.userData.noCastShadow = true;
+
+    const rHigh = new THREE.Mesh(sideMarkerGeo, redMarkerMat);
+    rHigh.position.set(sx, boxTopY - 0.05, halfL - 0.35);
+    rHigh.userData.noCastShadow = true;
+
+    group.add(fLow, fHigh, midMarker, rLow, rHigh);
+  }
+
+  // Enable shadows on all meshes except emissive lamp lenses
+  enableShadows(group, true, true);
+
+  // =========================================================================
+  // 7. FORENSIC METADATA & LIGHT CONTROL CONTRACT
+  // =========================================================================
+  const setLights = (on) => {
+    const active = Boolean(on);
+    tailLightMat.emissiveIntensity = active ? 3.5 : 0.15;
+    redMarkerMat.emissiveIntensity = active ? 2.5 : 0.15;
+    amberMarkerMat.emissiveIntensity = active ? 2.5 : 0.15;
+  };
+
+  group.userData = {
+    assetType: 'vehicle',
+    vehicleType: 'semitrailer_box',
+    dims: { length: L, width: W, height: H },
+    kingpinOffset: -7.19,
+    kingpin: [0, 1.22, -7.19],
+    driverEye: [-0.55, 2.45, -7.19],
+    wheels,
+    setLights
+  };
+
+  if (opts.lightsOn !== undefined) {
+    setLights(opts.lightsOn);
+  }
+
+  return group;
+}
+```

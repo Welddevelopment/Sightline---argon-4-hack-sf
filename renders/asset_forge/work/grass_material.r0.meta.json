@@ -1,0 +1,38 @@
+{
+  "round": 0,
+  "file": "/home/claude/sightline/renders/asset_forge/work/grass_material.r0.js",
+  "png": "/home/claude/sightline/renders/asset_forge/grass_material_r0.png",
+  "finish": "STOP",
+  "usage": {
+    "promptTokenCount": 5769,
+    "candidatesTokenCount": 7529,
+    "totalTokenCount": 13298,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 5769
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7529
+      }
+    ]
+  },
+  "seconds": 70.8,
+  "defects": null,
+  "validation": {
+    "ok": true,
+    "errors": [],
+    "warnings": [],
+    "buildMs": 683.1,
+    "material": {
+      "type": "MeshStandardMaterial",
+      "name": "argon_grass",
+      "hasMap": true,
+      "hasNormal": true,
+      "hasRough": true
+    }
+  }
+}

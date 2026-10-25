@@ -1,0 +1,33 @@
+{
+  "round": 0,
+  "file": "/home/claude/sightline/renders/asset_forge/work/semitrailer_box.r0.js",
+  "png": "/home/claude/sightline/renders/asset_forge/semitrailer_box_r0.png",
+  "finish": "STOP",
+  "usage": {
+    "promptTokenCount": 6271,
+    "candidatesTokenCount": 16583,
+    "totalTokenCount": 22854,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 6271
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 16583
+      }
+    ]
+  },
+  "seconds": 150.4,
+  "defects": null,
+  "validation": {
+    "ok": false,
+    "errors": [
+      "forbidden import/require/fetch/eval",
+      "import failed: Invalid or unexpected token"
+    ],
+    "warnings": []
+  }
+}

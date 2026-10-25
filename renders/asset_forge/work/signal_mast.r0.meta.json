@@ -1,0 +1,50 @@
+{
+  "round": 0,
+  "file": "/home/claude/sightline/renders/asset_forge/work/signal_mast.r0.js",
+  "png": "/home/claude/sightline/renders/asset_forge/signal_mast_r0.png",
+  "finish": "STOP",
+  "usage": {
+    "promptTokenCount": 6006,
+    "candidatesTokenCount": 12299,
+    "totalTokenCount": 18305,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 6006
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 12299
+      }
+    ]
+  },
+  "seconds": 111.4,
+  "defects": null,
+  "validation": {
+    "ok": true,
+    "errors": [],
+    "warnings": [],
+    "buildMs": 69.1,
+    "tris": 19626,
+    "meshes": 121,
+    "bbox": {
+      "min": [
+        -0.45,
+        0,
+        -0.503
+      ],
+      "max": [
+        9.21,
+        7.499,
+        0.45
+      ],
+      "size": {
+        "length": 0.953,
+        "width": 9.66,
+        "height": 7.499
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "rf_r0_r4_north_repair",
+  "model": "gemini-4-argon",
+  "hash": "46d8e43a8c340c97",
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 32236,
+    "candidatesTokenCount": 15644,
+    "totalTokenCount": 48417,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 32236
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 15644
+      }
+    ],
+    "thoughtsTokenCount": 537
+  },
+  "seconds": 126,
+  "at": "2026-10-25T20:00:59.767Z"
+}

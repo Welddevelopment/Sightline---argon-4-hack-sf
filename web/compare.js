@@ -197,16 +197,22 @@ export function retimeWorld(world, { object, targetMph, base } = {}) {
   const d = new THREE.Vector3(b.dir[0], 0, b.dir[1]);
   const ghost = { position: new THREE.Vector3(), quaternion: new THREE.Quaternion() };
   const st = { freezeT: Infinity };
+  // the object's original local pose sampled every 0.025 s (one pass), so the wrapper costs ~1 original setTime
+  const LDT = 0.025, nL = Math.ceil(b.impactT / LDT) + 1;
+  const lutP = [], lutQ = [];
+  for (let i = 0; i < nL; i++) { origSet.call(world, Math.min(i * LDT, b.impactT, origDur)); lutP.push(node.position.clone()); lutQ.push(node.quaternion.clone()); }
   const pos = new THREE.Vector3(), quat = new THREE.Quaternion();
   const wrapped = function setTime(t) {
     t = Math.min(Math.max(+t || 0, 0), newDur);
     const tc = Math.min(t, st.freezeT);
-    if (tc <= T1) { origSet.call(world, Math.min(tc * k, origDur)); pos.copy(node.position); quat.copy(node.quaternion); }
-    else { pos.copy(pImp).addScaledVector(d, v1mps * (tc - T1)); quat.copy(qImp); }
+    if (tc <= T1) {
+      const f = Math.min(tc * k, b.impactT) / LDT, i = Math.min(Math.floor(f), nL - 1), j = Math.min(i + 1, nL - 1), u = f - i;
+      pos.copy(lutP[i]).lerp(lutP[j], u); quat.copy(lutQ[i]).slerp(lutQ[j], u);
+    } else { pos.copy(pImp).addScaledVector(d, v1mps * (tc - T1)); quat.copy(qImp); }
     origSet.call(world, Math.min(t, origDur));
     ghost.position.copy(node.position); ghost.quaternion.copy(node.quaternion);
     node.position.copy(pos); node.quaternion.copy(quat);
-    world.root.updateMatrixWorld(true);
+    node.updateMatrixWorld(true);
   };
   world.setTime = wrapped;
   world.duration = newDur;
@@ -263,7 +269,8 @@ export function whatIfSentence(world, r) {
   let tail;
   if (r.contact) tail = ` The footprints still meet: contact with ${nounFor(world, r.contact.with)} at t=${r.contact.t.toFixed(1)} s.`;
   else tail = ` No footprint contact in the re-timed paths${r.minGap ? ` (closest ${r.minGap.m.toFixed(1)} m to ${nounFor(world, r.minGap.with)} at t=${r.minGap.t.toFixed(1)} s)` : ''}.`;
-  return head + mid + tail;
+  const be = r.breakEvenMph != null && r.breakEvenMph < r.origMph ? ` From the same start, arriving after ${other} had cleared needs ${Math.floor(r.breakEvenMph)} mph or less.` : '';
+  return head + mid + tail + be;
 }
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -515,7 +522,31 @@ async function boot() {
       } else html += resultHtml(orig, 'Independent check');
       cap.innerHTML = html;
     }
+    renderEvidenceCaption();
   }
+  // overhead pane: the physical evidence (marks in the world + cited physical facts) and the non-witness checks
+  function renderEvidenceCaption() {
+    const cap = $('capO'); if (!cap) return;
+    const marks = Object.entries(world.objects).filter(([id, o]) => o && (o.kind === 'mark' || /^mark_/.test(id)));
+    const facts = (Array.isArray(world.facts) ? world.facts : []).filter((f) => /position|distance|skid|speed/i.test(f.kind || '')).slice(0, 3);
+    const items = marks.map(([id, o]) => ({ claim: shortObjLabel(o, id).full, cite: o.citation || '' }))
+      .concat(facts.map((f) => ({ claim: f.text, cite: f.citation || '' }))).slice(0, 4);
+    let html = items.length
+      ? `<ul class="cmp-ev">${items.map((x) => `<li><span>${esc(x.claim)}</span><span class="cmp-cite">${esc(x.cite)}</span></li>`).join('')}</ul>`
+      : '<div class="muted">No physical evidence objects in this world.</div>';
+    const list = whatIf ? (serverRes && serverRes.targetMph === mph ? serverRes.checks : null) : baseChecks;
+    const other = (list || []).filter((c) => c.check !== 'sightline');
+    if (whatIf && !list) html += `<div class="cmp-res pend">What-if ${mph} mph · timing & plausibility checks running…</div>`;
+    else if (other.length) {
+      const bad = other.filter((c) => !c.pass);
+      const tag = whatIf ? `What-if ${mph} mph · independent check` : 'Independent check';
+      html += `<div class="cmp-res ${bad.length ? 'bad' : 'ok'}"><span class="cmp-tag">${esc(tag)}</span> ` +
+        (bad.length ? `<b>${bad.length} of ${other.length}</b> timing/plausibility checks fail: ${esc(bad.map((c) => `${c.check} ${speedNameSafe(c.subject)}`).join(', '))}`
+          : `<b>${other.length} of ${other.length}</b> timing/plausibility checks pass`) + '</div>';
+    }
+    cap.innerHTML = html;
+  }
+  const speedNameSafe = (id) => (id && world.objects[id] ? speedName(world, id) : id || '');
 
   // ---------- timeline ticks ----------
   function renderTicks() {

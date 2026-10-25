@@ -1,0 +1,50 @@
+{
+  "round": 0,
+  "file": "/home/claude/sightline/renders/asset_forge/work/suv.r0.js",
+  "png": "/home/claude/sightline/renders/asset_forge/suv_r0.png",
+  "finish": "STOP",
+  "usage": {
+    "promptTokenCount": 5968,
+    "candidatesTokenCount": 21474,
+    "totalTokenCount": 27442,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 5968
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 21474
+      }
+    ]
+  },
+  "seconds": 203.5,
+  "defects": null,
+  "validation": {
+    "ok": true,
+    "errors": [],
+    "warnings": [],
+    "buildMs": 107.4,
+    "tris": 24662,
+    "meshes": 209,
+    "bbox": {
+      "min": [
+        -0.985,
+        -0.045,
+        -2.427
+      ],
+      "max": [
+        0.985,
+        1.762,
+        2.426
+      ],
+      "size": {
+        "length": 4.853,
+        "width": 1.97,
+        "height": 1.807
+      }
+    }
+  }
+}
