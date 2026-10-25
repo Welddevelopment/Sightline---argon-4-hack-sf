@@ -11,7 +11,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
 const caseId = args.find((a) => !a.startsWith('--')) || 'demo';
 const noVideo = args.includes('--no-video');
-const maxTok = Number((args.find((a) => a.startsWith('--max=')) || '--max=160000').split('=')[1]);
+const maxTok = Number((args.find((a) => a.startsWith('--max=')) || '--max=180000').split('=')[1]);
 const resumeId = (args.find((a) => a.startsWith('--resume=')) || '').split('=')[1];
 const MODEL = process.env.ARGON_MODEL || 'gemini-4-argon';
 const CASE = path.join(ROOT, 'cases', caseId);
@@ -100,8 +100,8 @@ const fence = /```(?:javascript|js)?\s*\n([\s\S]*?)(?:```|$)/.exec(text);
 if (fence && !/^\s*(\/\/|export|\/\*)/.test(text)) text = fence[1];
 fs.writeFileSync(path.join(OUT, 'world_long.js'), text);
 Object.assign(meta, {
-  status: r.status, finishReason: r.status === 'completed' ? (r.usage?.total_output_tokens >= meta.maxOutputTokens ? 'MAX_TOKENS?' : 'completed') : r.status,
-  usage: r.usage || null, wallSec: Math.round(wall), outputChars: text.length, outputLines: text.split('\n').length, finishedAt: new Date().toISOString(),
+  status: r.status, finishReason: r.status === 'incomplete' ? 'MAX_TOKENS (status incomplete: hit max_output_tokens cap)' : r.status === 'completed' ? 'completed (natural stop)' : r.status,
+  totalOutputTokens: r.usage?.total_output_tokens ?? null, usage: r.usage || null, wallSec: Math.round(wall), outputChars: text.length, outputLines: text.split('\n').length, finishedAt: new Date().toISOString(),
 });
 fs.writeFileSync(path.join(OUT, 'world_long.meta.json'), JSON.stringify(meta, null, 2));
 log('DONE', r.status, 'wall', meta.wallSec + 's', 'chars', text.length, 'usage', JSON.stringify(r.usage || {}));

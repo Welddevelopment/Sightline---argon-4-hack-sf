@@ -20,3 +20,4 @@
 - 13:32 r4_north round 1: validation failed (triangle count 439668 exceeds the region budget 330000 by more than 25% — instance or simplify) → repair call 1
 - 13:32 r1_crossover round 1: OK in 209s; tokens prompt 43589 / out 28844 / think 0; tris 8650, 73511 B, warn: none
 - 13:32 r5_south round 1: OK in 234s; tokens prompt 42034 / out 27523 / think 0; tris 246183, 70469 B, warn: none
+- 13:35 r4_north round 1: OK in 375s; tokens prompt 83538 / out 46024 / think 0; tris 203439, 54644 B, warn: none

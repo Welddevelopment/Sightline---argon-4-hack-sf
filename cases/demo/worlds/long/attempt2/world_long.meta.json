@@ -9,7 +9,7 @@
   "kinematicsFrom": "cases/demo/worlds/world_v2.js",
   "startedAt": "2026-10-25T20:11:18.943Z",
   "status": "completed",
-  "finishReason": "completed",
+  "finishReason": "completed (natural stop; 63079 of 160000 max_output_tokens used)",
   "usage": {
     "total_tokens": 246782,
     "total_input_tokens": 183703,
@@ -47,5 +47,6 @@
   "wallSec": 593,
   "outputChars": 155021,
   "outputLines": 4266,
-  "finishedAt": "2026-10-25T20:21:11.979Z"
+  "finishedAt": "2026-10-25T20:21:11.979Z",
+  "totalOutputTokens": 63079
 }
