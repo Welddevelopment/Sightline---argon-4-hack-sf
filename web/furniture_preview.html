@@ -46,9 +46,9 @@ document.body.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(night ? 0x0b1018 : 0xbfd0dc);
 scene.fog = new THREE.Fog(scene.background, 120, 320);
-const pm = new THREE.PMREMGenerator(renderer);
+const pm = new THREE.PMREMGenerator(renderer); const TP = performance.now();
 scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture;
-scene.environmentIntensity = night ? 0.05 : 0.55;
+scene.environmentIntensity = night ? 0.05 : 0.55; console.warn('pmrem ms', Math.round(performance.now() - TP));
 
 const sun = new THREE.DirectionalLight(0xfff1e0, night ? 0.05 : 2.6);
 sun.position.set(-40, 60, -25); sun.castShadow = true;
@@ -73,7 +73,8 @@ function label(text, x, z) {
   m.rotation.x = -Math.PI / 2; m.position.set(x, 0.02, z); scene.add(m);
 }
 const items = [];
-function put(obj, x, z, ry = 0, txt) { obj.position.set(x, 0, z); obj.rotation.y = ry; scene.add(obj); items.push(obj); if (txt) label(txt, x, z + 1.6); return obj; }
+let TL = performance.now(); const TIMES = [];
+function put(obj, x, z, ry = 0, txt) { TIMES.push(obj.name + ':' + Math.round(performance.now() - TL)); TL = performance.now(); obj.position.set(x, 0, z); obj.rotation.y = ry; scene.add(obj); items.push(obj); if (txt) label(txt, x, z + 1.6); return obj; }
 
 // Row A (z=0, faces -Z toward the road at z=-6): signs at 1.6 m spacing
 const signKinds = [['stop', { streetName: 'NE 140TH CT', streetName2: 'US 27 ALT' }], ['yield'], ['speed_limit', { speed: 55 }], ['intersection'], ['side_road_right'], ['signal_ahead'], ['stop_ahead'], ['curve_right'], ['route_shield', { text: '27' }], ['street_name', { text: 'NE 140TH CT' }], ['generic', { text: 'NO\nOUTLET' }]];
@@ -116,7 +117,7 @@ function setView(v) { const [p, t] = VIEWS[v] || VIEWS.overview; cam.position.se
 window.__setView = setView;
 setView(view);
 addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
-console.warn('build ms', Math.round(performance.now() - T0));
+console.warn(TIMES.join(' ')); console.warn('build ms', Math.round(performance.now() - T0));
 // render on demand (headless SwiftShader is slow); orbit re-renders on change
 controls.addEventListener('change', () => renderer.render(scene, cam));
 requestAnimationFrame(() => { renderer.render(scene, cam); requestAnimationFrame(() => { window.__ready = true; console.warn('first frame ms', Math.round(performance.now() - T0)); }); });

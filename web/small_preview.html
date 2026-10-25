@@ -71,7 +71,7 @@ wheel.position.set(0, 0.36, -0.42); wheel.rotation.x = -0.45; hp.add(wheel);
 // eye markers (small red dots) to verify userData eye positions
 const dot = new THREE.Mesh(new THREE.SphereGeometry(0.018, 10, 8), new THREE.MeshBasicMaterial({ color: 0xff2020 }));
 for (const o of items) {
-  const e = o.userData.eye || o.userData.driverEye; if (!e) continue;
+  const e = o.userData.eye || (o.userData.rider && o.userData.driverEye); if (!e) continue;
   const d = dot.clone(); d.position.set(...e); o.add(d);
 }
 { const d = dot.clone(); d.position.set(...occ.userData.eye); occ.add(d); }

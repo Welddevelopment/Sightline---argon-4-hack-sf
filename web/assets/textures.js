@@ -8,7 +8,7 @@
 import * as THREE from 'three';
 
 const IS_BROWSER = typeof document !== 'undefined' && typeof document.createElement === 'function';
-const NODE_SCALE = 8;
+const NODE_SCALE = (typeof process !== 'undefined' && process.env && process.env.SL_TEX_FULL) ? 1 : 8;
 let ANISO = 8;
 const cache = new Map();
 const matCache = new Map();
@@ -179,38 +179,39 @@ const RECIPES = {
       p.ro = 0.88 + (n - 0.5) * 0.1;
     },
   },
-  // Mowed right-of-way grass (bahia/St Augustine mix): yellow-green with dry straw flecks.
+  // Mowed right-of-way grass (bahia/St Augustine, end of the May dry season): dull olive with straw flecks.
+  // Large-scale colour variation is deliberately weak here (it would repeat every tile); groundPlane adds it per vertex.
   grass: {
     size: 512, tile: 4.0, normal: 3,
     gen(u, v, p) {
-      const big = fbm(u, v, 3, 4, 61), mid = fbm(u, v, 14, 3, 62);
+      const mid = fbm(u, v, 12, 3, 62), fine = fbm(u, v, 48, 2, 66);
       const blade = fbm2(u, v, 160, 40, 2, 63);
       const fleck = hash2(Math.floor(u * 1024), Math.floor(v * 1024), 64);
-      const dry = smooth(0.55, 0.8, big * 0.6 + mid * 0.4);
-      const gap = smooth(0.62, 0.8, fbm(u, v, 40, 2, 65));  // soil showing between tufts
-      let r = lerp(88, 132, dry), g = lerp(112, 128, dry), b = lerp(44, 64, dry);
-      const shade = 0.78 + blade * 0.36 + (mid - 0.5) * 0.18;
+      const dry = smooth(0.35, 0.75, mid * 0.6 + fine * 0.4);
+      const gap = smooth(0.64, 0.8, fbm(u, v, 40, 2, 65));  // soil showing between tufts
+      let r = lerp(100, 134, dry), g = lerp(110, 124, dry), b = lerp(56, 72, dry);
+      const shade = 0.8 + blade * 0.34 + (fine - 0.5) * 0.12;
       r *= shade; g *= shade; b *= shade;
-      if (fleck > 0.985) { r = 170; g = 156; b = 102; }   // straw
-      r = lerp(r, 104, gap * 0.45); g = lerp(g, 92, gap * 0.45); b = lerp(b, 66, gap * 0.45);
+      if (fleck > 0.982) { r = 168; g = 156; b = 108; }   // straw
+      r = lerp(r, 118, gap * 0.4); g = lerp(g, 106, gap * 0.4); b = lerp(b, 80, gap * 0.4);
       p.r = r; p.g = g; p.b = b;
-      p.h = blade * 0.7 + mid * 0.3 - gap * 0.3;
+      p.h = blade * 0.7 + fine * 0.3 - gap * 0.3;
       p.ro = 0.96;
     },
   },
-  // Florida improved pasture: taller, patchier, browner, sandy bare spots.
+  // Florida improved pasture: taller, tuftier and browner than the mowed strip; sandy bare spots.
   pasture: {
-    size: 512, tile: 6.0, normal: 3.5,
+    size: 512, tile: 5.0, normal: 3.5,
     gen(u, v, p) {
-      const big = fbm(u, v, 2, 5, 71), mid = fbm(u, v, 10, 3, 72);
-      const tuft = worley(u, v, 90, 73), clump = smooth(0.0, 0.5, tuft[0]);
+      const mid = fbm(u, v, 10, 3, 72), fine = fbm(u, v, 40, 2, 76);
+      const tuft = worley(u, v, 70, 73), clump = smooth(0.0, 0.5, tuft[0]), tid = tuft[2];
       const blade = fbm2(u, v, 120, 30, 2, 74);
-      const dry = smooth(0.4, 0.85, big * 0.55 + mid * 0.45);
-      const sand = smooth(0.7, 0.86, fbm(u, v, 8, 4, 75));
-      let r = lerp(84, 140, dry), g = lerp(104, 124, dry), b = lerp(42, 66, dry);
-      const shade = 0.72 + blade * 0.32 + (1 - clump) * 0.12 + tuft[2] * 0.08;
+      const dry = smooth(0.3, 0.8, mid * 0.55 + fine * 0.25 + tid * 0.2);
+      const sand = smooth(0.74, 0.86, fbm(u, v, 9, 3, 75));
+      let r = lerp(98, 142, dry), g = lerp(106, 124, dry), b = lerp(54, 74, dry);
+      const shade = 0.74 + blade * 0.3 + (1 - clump) * 0.14;
       r *= shade; g *= shade; b *= shade;
-      r = lerp(r, 168, sand * 0.6); g = lerp(g, 150, sand * 0.6); b = lerp(b, 112, sand * 0.6);
+      r = lerp(r, 160, sand * 0.45); g = lerp(g, 146, sand * 0.45); b = lerp(b, 112, sand * 0.45);
       p.r = r; p.g = g; p.b = b;
       p.h = (1 - clump) * 0.5 + blade * 0.4 - sand * 0.3;
       p.ro = 0.97;
@@ -293,10 +294,10 @@ const dims = (w, h) => IS_BROWSER ? [w, h] : [Math.max(8, w / NODE_SCALE), Math.
  *  occasional transverse sealed cracks ("tar snakes") and patch stains. Returns {map, roughnessMap, tile}. */
 export function laneWearTextures() {
   return cachedTex('lanewear', () => {
-    const [w, h] = dims(256, 2048), tile = 64;
+    const [w, h] = dims(128, 1024), tile = 96;
     const color = new Uint8ClampedArray(w * h * 4), rough = new Float32Array(w * h);
     const cracks = [];
-    for (let k = 0; k < 7; k++) cracks.push({ v: hash2(k, 1, 301), amp: 0.004 + hash2(k, 2, 301) * 0.01, ph: hash2(k, 3, 301) * 6.28, len: 0.4 + hash2(k, 4, 301) * 0.6, start: hash2(k, 5, 301) * 0.4 });
+    for (let k = 0; k < 3; k++) cracks.push({ v: (k + 0.2 + hash2(k, 1, 301) * 0.6) / 3, amp: 0.0006 + hash2(k, 2, 301) * 0.0012, ph: hash2(k, 3, 301) * 6.28, len: 0.25 + hash2(k, 4, 301) * 0.5, start: 0.05 + hash2(k, 5, 301) * 0.4 });
     for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
       const u = x / w, v = y / h, i = y * w + x;
       const along = fbm2(u, v, 2, 24, 4, 311);
@@ -305,26 +306,26 @@ export function laneWearTextures() {
       const oil = Math.exp(-(((u - 0.5) / (0.055 + along * 0.03)) ** 2)) * smooth(0.25, 0.75, fbm2(u, v, 4, 96, 3, 313));
       let r = 0, g = 0, b = 0, a = 0, ro = 0.85;
       // wheel paths: lighter, worn binder, smoother
-      const wpa = wp * (0.20 + streak * 0.12);
-      r = g = b = 150; a = wpa; ro = lerp(0.9, 0.62, wp);
+      const wpa = wp * (0.10 + streak * 0.10);
+      r = 146; g = 145; b = 141; a = wpa; ro = lerp(0.9, 0.62, wp);
       // oil drip band: dark, blotchy
-      const oa = oil * 0.42;
+      const oa = oil * 0.30;
       if (oa > a * 0.6) { r = 38; g = 37; b = 35; a = Math.max(a, oa); ro = 0.7; }
       // sealed longitudinal joint just inside the lane line (u ~ 0.03) — wavy dark band
       const jx = 0.03 + (fbm2(u, v, 1, 40, 2, 314) - 0.5) * 0.03;
       const joint = Math.exp(-(((u - jx) / 0.012) ** 2)) * smooth(0.3, 0.5, fbm2(u, v, 1, 8, 2, 315));
-      if (joint > 0.25) { r = 24; g = 24; b = 24; a = Math.max(a, joint * 0.85); ro = 0.45; }
+      if (joint > 0.25) { r = 34; g = 34; b = 33; a = Math.max(a, joint * 0.5); ro = 0.5; }
       // transverse tar snakes
       for (const c of cracks) {
         if (u < c.start || u > c.start + c.len) continue;
-        const cv = c.v + Math.sin(u * 18 + c.ph) * c.amp + (fbm2(u, v, 8, 1, 1, 316) - 0.5) * 0.004;
+        const cv = c.v + Math.sin(u * 9 + c.ph) * c.amp + (fbm2(u, c.v, 6, 1, 2, 316) - 0.5) * 0.003;
         let dv = Math.abs(v - cv); dv = Math.min(dv, 1 - dv);
-        const t = Math.exp(-((dv / 0.0012) ** 2));
-        if (t > 0.3) { r = 22; g = 22; b = 22; a = Math.max(a, t * 0.9); ro = 0.4; }
+        const t = Math.exp(-((dv / 0.0007) ** 2)) * smooth(0, 0.05, u - c.start) * smooth(0, 0.05, c.start + c.len - u);
+        if (t > 0.3) { r = 30; g = 30; b = 29; a = Math.max(a, t * 0.55); ro = 0.45; }
       }
       // faint large stains
       const stain = smooth(0.62, 0.8, fbm2(u, v, 1, 6, 4, 317));
-      if (stain > a) { r = 52; g = 51; b = 49; a = Math.max(a, stain * 0.22); }
+      if (stain * 0.14 > a) { r = 52; g = 51; b = 49; a = stain * 0.14; }
       const o = i * 4; color[o] = r; color[o + 1] = g; color[o + 2] = b; color[o + 3] = clamp01(a) * 255;
       rough[i] = ro;
     }
@@ -376,8 +377,8 @@ export function edgeFringeTexture() {
       const n = fbm2(u, v, 2, 64, 4, 601), g = hash2(x, y, 602);
       const prof = smooth(0.0, 0.25, u) * (1 - smooth(0.35 + n * 0.5, 0.95, u));
       const a = clamp01(prof * (0.5 + n * 0.7) + (g - 0.5) * 0.2);
-      const t = 150 + (n - 0.5) * 40 + (g - 0.5) * 24;
-      color[o] = t + 10; color[o + 1] = t; color[o + 2] = t - 22; color[o + 3] = a * 255;
+      const t = 128 + (n - 0.5) * 30 + (g - 0.5) * 24;
+      color[o] = t + 8; color[o + 1] = t; color[o + 2] = t - 16; color[o + 3] = a * 0.7 * 255;
     }
     return { tile, map: makeTexture(color, w, h, { srgb: true, repeat: 1, repeatY: 1 / tile }) };
   });

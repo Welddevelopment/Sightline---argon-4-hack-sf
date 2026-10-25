@@ -57,10 +57,10 @@ sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.02;
 scene.add(sun);
 
 // ground + 1 m grid (5 m major lines)
-const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshStandardMaterial({ color: night ? 0x22262a : 0xd3d7da, roughness: 0.95 }));
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshStandardMaterial({ color: night ? 0x22262a : 0xc4c9cd, roughness: 0.95 }));
 ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
-const g1 = new THREE.GridHelper(100, 100, 0xb4babf, 0xbfc5ca); g1.position.y = 0.002; scene.add(g1);
-const g5 = new THREE.GridHelper(100, 20, 0x8f979e, 0x8f979e); g5.position.y = 0.003; scene.add(g5);
+const g1 = new THREE.GridHelper(100, 100, 0xa9b0b6, 0xb2b8bd); g1.position.y = 0.002; scene.add(g1);
+const g5 = new THREE.GridHelper(100, 20, 0x858d94, 0x858d94); g5.position.y = 0.003; scene.add(g5);
 
 const labels = [];
 function label(obj, title, extra, dy = 0.5) {
@@ -102,7 +102,7 @@ if (night) for (const o of [tractor, van, bt, tr2, fb, tb, sb]) o.userData.setLi
 // cameras
 const cam = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, 0.1, 500);
 const P = {
-  lineup: [[-46, 26, -26], [-2, 0.5, 12]],
+  lineup: [[-42, 17, -15], [-3, 0.5, 12.5]],
   side: [[-2, 3.0, -30], [-2, 1.8, 9]],
   rear: [[26, 7, -8], [4, 1.5, 6]],
   close: [[-20.5, 3.0, 2.2], [-12.5, 1.7, 9]],
@@ -110,7 +110,7 @@ const P = {
   closebus: [[-14, 3.0, 20.5], [-6, 1.6, 27]],
   closesb: [[-8.5, 3.0, -6.5], [0, 1.6, 0]],
   underride: [[-2.5, 1.0, 1.5], [3, 1.0, 9]],
-}[view] || [[-46, 26, -26], [-2, 0.5, 12]];
+}[view] || [[-42, 17, -15], [-3, 0.5, 12.5]];
 if (view === 'side') cam.fov = 24;
 if (view === 'underride') cam.fov = 50;
 cam.updateProjectionMatrix();

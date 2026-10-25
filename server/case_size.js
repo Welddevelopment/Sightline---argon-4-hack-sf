@@ -196,6 +196,30 @@ export function mountCaseSize(app, ctx = {}) {
     } catch (e) { res.status(500).json({ error: errMsg(e) }); }
   });
 
+  // The viewer snapshots the witness-eye view from window.sl (clean canvas, no UI chrome) and caches it here,
+  // so the case page can show the same still: cases/<id>/cache/frames/eye_<wit>_<t>.jpg
+  app.post('/api/cases/:id/eyeframe', (req, res) => {
+    const id = req.params.id;
+    const { wit, t, dataUrl, world } = req.body || {};
+    if (!validId(id) || !fs.existsSync(path.join(ROOT, 'cases', id, 'case.json'))) return res.status(404).json({ error: 'no such case' });
+    if (!/^wit_[\w-]{1,40}$/.test(String(wit || ''))) return res.status(400).json({ error: 'bad wit' });
+    const tt = Number(t);
+    if (!Number.isFinite(tt) || tt < 0 || tt > 3600) return res.status(400).json({ error: 'bad t' });
+    const m = /^data:image\/jpeg;base64,([A-Za-z0-9+/=]+)$/.exec(String(dataUrl || ''));
+    if (!m) return res.status(400).json({ error: 'dataUrl must be a base64 JPEG' });
+    const buf = Buffer.from(m[1], 'base64');
+    if (buf.length < 2000 || buf.length > 1.5e6 || buf[0] !== 0xff || buf[1] !== 0xd8) return res.status(400).json({ error: 'bad image' });
+    const outDir = path.join(ROOT, 'cases', id, 'cache', 'frames');
+    const name = `eye_${wit}_${tt.toFixed(1)}.jpg`;
+    try {
+      fs.mkdirSync(outDir, { recursive: true });
+      fs.writeFileSync(path.join(outDir, name + '.tmp'), buf);
+      fs.renameSync(path.join(outDir, name + '.tmp'), path.join(outDir, name));
+      fs.writeFileSync(path.join(outDir, name.replace(/\.jpg$/, '.json')), JSON.stringify({ wit, t: tt, world: world || null, at: new Date().toISOString(), by: 'viewer window.sl snapshot' }, null, 2));
+    } catch (e) { return res.status(500).json({ error: errMsg(e) }); }
+    res.json({ url: `/cases/${encodeURIComponent(id)}/cache/frames/${name}` });
+  });
+
   app.get('/api/cases/:id/frame', (req, res) => {
     const id = req.params.id;
     if (!validId(id)) return res.status(400).json({ error: 'bad case id' });

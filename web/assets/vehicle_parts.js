@@ -176,6 +176,7 @@ export function loft(THREE, spec) {
       const fy = (y - s.yb) / (2 * hh);
       x *= 1 - (s.tumble || 0) * fy * fy - (s.flare || 0) * (1 - fy) * (1 - fy);
       if (open && stt < 0) y = s.yb - (spec.sinkY || 0) * Math.min(1, -stt / 0.12);
+      if (spec.clampY) y = spec.clampY(z, cx + x, y);
       pos.push(cx + x, y, z);
       uvs.push(j / (R - 1), i / (N - 1));
     }
@@ -218,6 +219,40 @@ export function loft(THREE, spec) {
   geo.setIndex(idx);
   geo.computeVertexNormals();
   return geo;
+}
+
+// point on a loft section (same formula as loft); t = ring angle; off = outward offset (m)
+export function sectionPoint(s, t, off = 0) {
+  const spow = (v, e) => Math.sign(v) * Math.pow(Math.abs(v), e);
+  const yb = s.yb - off, yt = s.yt + off, hw = s.hw + off;
+  const yc = (yb + yt) / 2, hh = Math.max(1e-4, (yt - yb) / 2);
+  const st = Math.sin(t), n = st >= 0 ? (s.nTop || s.n || 4) : (s.nBot || s.n || 4);
+  const y = yc + hh * spow(st, 2 / n);
+  let x = hw * spow(Math.cos(t), 2 / n);
+  const fy = (y - yb) / (2 * hh);
+  x *= 1 - (s.tumble || 0) * fy * fy - (s.flare || 0) * (1 - fy) * (1 - fy);
+  return [(s.cx || 0) + x, y];
+}
+
+/** surfacePatch: a conforming skin patch over a loft (lamps, badges-free trim, decals).
+ *  spec = { stations:[z...], section(z), range(z) -> [t0, t1] | null, nT = 8, off = 0.004 } */
+export function surfacePatch(THREE, spec) {
+  const nT = spec.nT || 8, off = spec.off ?? 0.004, pos = [], idx = [];
+  let rows = 0;
+  for (const z of spec.stations) {
+    const r = spec.range(z); if (!r) continue;
+    const sct = spec.section(z);
+    for (let k = 0; k <= nT; k++) { const t = r[0] + (r[1] - r[0]) * (k / nT); const [x, y] = sectionPoint(sct, t, off); pos.push(x, y, z); }
+    rows++;
+  }
+  for (let i = 0; i < rows - 1; i++) for (let k = 0; k < nT; k++) {
+    const a = i * (nT + 1) + k, b = a + 1, c = a + nT + 1, d = c + 1;
+    idx.push(a, b, c, b, d, c);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setIndex(idx); g.computeVertexNormals();
+  return g;
 }
 
 // ---------------------------------------------------------------- wheels

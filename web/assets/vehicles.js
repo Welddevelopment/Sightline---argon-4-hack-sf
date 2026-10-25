@@ -10,7 +10,7 @@
 // userData {assetType:'vehicle', vehicleType, dims, driverEye, setLights(on), wheels, roll(dist)},
 // child meshes headlight_L/R, taillight_L/R. No brand marks; plates are blank.
 import {
-  getMaterials, makeWheel, loft, curve, roundedBox, cachedGeo, makeLamp, attachLightAPI, finalizeVehicle, smoothstep,
+  surfacePatch, getMaterials, makeWheel, loft, curve, roundedBox, cachedGeo, makeLamp, attachLightAPI, finalizeVehicle, smoothstep,
 } from './vehicle_parts.js';
 
 let heavy = null, small = null;
@@ -60,8 +60,8 @@ const CARS = {
       aTop: 2.62, cTop: 3.38, b: [2.93, 3.03], nTop: 3.0, tumble: 0.2, cPillarPaint: true, quarter: [3.42, 3.62] },
     seams: [{ u: 1.86, y0: 0.3, y1: 0.99 }, { u: 2.98, y0: 0.27, y1: 0.99 }, { u: 3.9, y0: 0.4, y1: 0.99 }, { u: 0.17, top: true }, { u: 4.02, top: true }],
     eye: { u: 2.85, y: 1.16, x: -0.36 },
-    head: { u: 0.1, y: 0.665, x: 0.62, w: 0.40, h: 0.095, d: 0.30, yaw: 0.42 },
-    tail: { u: 4.86, y: 0.84, x: 0.6, w: 0.34, h: 0.1, d: 0.16, yaw: 0.5 },
+    head: { y: 0.68, patch: { u: [0.012, 0.36], t0: [0.2, 0.66], t1: [1.02, 1.0] } },
+    tail: { y: 0.86, patch: { u: [4.62, 4.897], t0: [0.42, 0.1], t1: [0.78, 1.22] } },
     grille: { y: 0.55, w: 0.86, h: 0.17, intake: { y: 0.36, w: 1.1, h: 0.1 } },
     plateF: 0.44, plateR: 0.63,
     mirror: { u: 1.98, y: 1.03 },
@@ -79,8 +79,8 @@ const CARS = {
     seams: [{ u: 1.75, y0: 0.42, y1: 1.12 }, { u: 2.91, y0: 0.4, y1: 1.12 }, { u: 3.88, y0: 0.6, y1: 1.12 }, { u: 0.2, top: true }],
     cladding: true, roofRails: true,
     eye: { u: 2.75, y: 1.42, x: -0.37 },
-    head: { u: 0.12, y: 0.82, x: 0.63, w: 0.40, h: 0.11, d: 0.34, yaw: 0.38 },
-    tail: { u: 4.74, y: 1.06, x: 0.72, w: 0.24, h: 0.2, d: 0.3, yaw: 0.6 },
+    head: { y: 0.84, patch: { u: [0.015, 0.34], t0: [0.22, 0.62], t1: [1.0, 0.98] } },
+    tail: { y: 1.0, patch: { u: [4.56, 4.797], t0: [0.35, 0.05], t1: [0.85, 1.1] } },
     grille: { y: 0.68, w: 0.95, h: 0.24, intake: { y: 0.47, w: 1.15, h: 0.11 } },
     plateF: 0.53, plateR: 0.78,
     mirror: { u: 1.86, y: 1.18 },
@@ -114,8 +114,8 @@ const CARS = {
       aTop: 1.55, cTop: 5.3, b: [1.9, 2.0], nTop: 5.0, tumble: 0.07, flatBack: true, van: true },
     seams: [{ u: 0.96, y0: 0.62, y1: 1.12 }, { u: 1.95, y0: 0.36, y1: 1.12 }, { u: 3.18, y0: 0.36, y1: 1.12 }, { u: 5.28, y0: 0.4, y1: 1.12 }],
     eye: { u: 1.98, y: 1.58, x: -0.45 },
-    head: { u: 0.08, y: 0.86, x: 0.66, w: 0.34, h: 0.15, d: 0.3, yaw: 0.45 },
-    tail: { u: 5.29, y: 1.0, x: 0.88, w: 0.09, h: 0.4, d: 0.08, yaw: 0 },
+    head: { y: 0.86, patch: { u: [0.02, 0.3], t0: [0.05, 0.5], t1: [0.98, 0.92] } },
+    tail: { y: 0.9, patch: { u: [5.22, 5.297], t0: [-0.55, -0.6], t1: [0.5, 0.5] } },
     grille: { y: 0.72, w: 0.95, h: 0.22, intake: { y: 0.47, w: 1.1, h: 0.1 } },
     plateF: 0.5, plateR: 0.55,
     mirror: { u: 1.08, y: 1.3, big: true },
@@ -125,6 +125,7 @@ const CARS = {
 // ------------------------------------------------------------------ geometry builders
 function prep(cfg) {
   if (cfg._f) return cfg._f;
+  if (!cfg.type) cfg.type = Object.keys(CARS).find(k => CARS[k] === cfg) || 'car';
   const f = { top: curve(cfg.top), bot: curve(cfg.bot), hw: curve(cfg.hw), ghTop: curve(cfg.gh.top) };
   const r = cfg.wheel.r;
   f.Ra = r + 0.055; f.yc = r + 0.015;
@@ -135,7 +136,7 @@ function prep(cfg) {
   };
   f.section = (u) => {
     const yt = f.top(u);
-    const yb = Math.min(Math.max(f.bot(u), f.arch(u)), yt - 0.03);
+    const yb = Math.min(f.bot(u), yt - 0.03);
     return { yb, yt, hw: f.hw(u), nTop: cfg.nTop, nBot: cfg.nBot, tumble: cfg.tumble, flare: cfg.flare };
   };
   // x of the body surface at height y (same formula as loft)
@@ -181,11 +182,13 @@ function buildBodyGeo(THREE, cfg) {
   const geo = loft(THREE, {
     stations: st.map(u => u - L / 2), ring: 44,
     section: (z) => f.section(z + L / 2),
+    clampY: (z, x, y) => { const a = f.arch(z + L / 2); return a > y ? a : y; },
     capMaterial: (end) => (end === 'rear' && cfg.bodyEnd ? S.PAINT : S.PAINT),
     material: (z, t, y) => {
       const u = z + L / 2, s = Math.sin(t), c = Math.cos(t);
       const sec = f.section(u);
       if (s < -0.86) return S.UNDER;
+      const ar = f.arch(u); if (ar > 0 && y < ar + 0.012) return S.UNDER;
       const side = Math.abs(s) < 0.75;
       const seam = seamAt(u);
       if (seam) {
@@ -259,6 +262,25 @@ function buildGreenhouseGeo(THREE, cfg) {
 function placeLamp(THREE, cfg, f, spec, kind, sideSign, rear) {
   const L = cfg.L;
   const name = (kind === 'tail' ? 'taillight_' : 'headlight_') + (sideSign > 0 ? 'R' : 'L');
+  if (spec.patch) {
+    const P = spec.patch, M = getMaterials(THREE);
+    const geo = cachedGeo(THREE, `lamp|${cfg.type}|${kind}|${sideSign}`, () => {
+      const zs = []; for (let k = 0; k <= 14; k++) zs.push(P.u[0] + (P.u[1] - P.u[0]) * (k / 14) - L / 2);
+      const lerp = (a, b, k) => a + (b - a) * k;
+      return surfacePatch(THREE, {
+        stations: zs, section: (z) => f.section(z + L / 2), nT: 10, off: 0.005,
+        range: (z) => {
+          const k = (z + L / 2 - P.u[0]) / (P.u[1] - P.u[0]);
+          let t0 = lerp(P.t0[0], P.t0[1], k), t1 = lerp(P.t1[0], P.t1[1], k);
+          if (sideSign < 0) { const a = Math.PI - t1, b = Math.PI - t0; t0 = a; t1 = b; }
+          return [t0, t1];
+        },
+      });
+    });
+    const mesh = new THREE.Mesh(geo, kind === 'tail' ? M.lightTail : M.lightHead);
+    mesh.name = name; mesh.userData.lampKind = kind;
+    return mesh;
+  }
   const lamp = makeLamp(THREE, { name, kind, w: spec.w, h: spec.h, d: spec.d, r: Math.min(spec.w, spec.h) * 0.35 });
   const y = spec.y, u = f.noseU(y, rear);
   // outward surface normal in the (z,y) plane from the profile slope
