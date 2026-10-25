@@ -1,0 +1,50 @@
+{
+  "round": 0,
+  "file": "/home/claude/sightline/renders/asset_forge/work/utility_pole.r0.js",
+  "png": "/home/claude/sightline/renders/asset_forge/utility_pole_r0.png",
+  "finish": "STOP",
+  "usage": {
+    "promptTokenCount": 5884,
+    "candidatesTokenCount": 13648,
+    "totalTokenCount": 19532,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 5884
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 13648
+      }
+    ]
+  },
+  "seconds": 125.1,
+  "defects": null,
+  "validation": {
+    "ok": true,
+    "errors": [],
+    "warnings": [],
+    "buildMs": 142.2,
+    "tris": 14788,
+    "meshes": 122,
+    "bbox": {
+      "min": [
+        -1.224,
+        0,
+        -0.35
+      ],
+      "max": [
+        1.224,
+        10.709,
+        0.195
+      ],
+      "size": {
+        "length": 0.546,
+        "width": 2.448,
+        "height": 10.709
+      }
+    }
+  }
+}

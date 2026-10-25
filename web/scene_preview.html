@@ -27,7 +27,7 @@
 <div id="hud"><b>Scene kit preview</b> <span id="info">loading…</span>
   <div id="views">
     <a href="?view=eye">eye (EB shoulder)</a><a href="?view=driver">driver EB</a><a href="?view=intersection">at side road</a>
-    <a href="?view=crest">toward crest</a><a href="?view=overhead">overhead</a><a href="?view=wide">overhead wide</a>
+    <a href="?view=crossover">crossover oblique</a><a href="?view=gas">gas station</a><a href="?view=crest">toward crest</a><a href="?view=overhead">overhead</a><a href="?view=wide">overhead wide</a>
   </div>
 </div>
 <script type="module">
@@ -59,7 +59,7 @@ K.hillCrest({ at: [-345, zC], heading: -Math.PI / 2, gradeUp: 0.02, lengthUp: 40
 
 const hw = K.road({ id: 'road_us27a', lanes: 4, laneWidth: 12 * FT, divided: true, medianWidth: medianW, length: 1700,
   shoulderWidth: 5 * FT, leftShoulderWidth: 2 * FT, position: [100, zC], heading: -Math.PI / 2,
-  openings: [{ at: -100, width: 130 * FT, radius: 6 }],
+  openings: [{ at: -100, width: 130 * FT, radius: 6, curb: true, stopBars: true }],
   turnLanes: [{ carriageway: 'reverse', stopAt: -100 + 65 * FT, length: 550 * FT - 15, taper: 15 }],
   sideRoads: [{ at: -100, side: 'right', width: 6.1, radius: 9 }] });
 scene.add(hw);
@@ -85,12 +85,21 @@ try {
     const segs = zf > 0 ? [[-800, -14], [40, 800]] : [[-800, 800]];
     for (const [a, b] of segs) { const p = pts.filter(([x]) => x >= a && x <= b); if (p.length > 1) { const f = K.fence({ id: 'fence_' + a, points: p.map(([x, z]) => [x, z]) }); f.position.y = 0; scene.add(f); } }
   }
-  for (let x = -760; x <= 800; x += 46) if (x < -8 || x > 30) add(K.pole({ id: 'pole_' + x, height: 10.7 }), x, zC + 31, 0);
-  add(K.sign('stop', { id: 'sig_stop' }), 4.2, 6.2, Math.PI);
-  add(K.building({ id: 'bld_store', w: 18, d: 11.4, h: 4.2, kind: 'store' }), 18.2, 19.6, 0);
-  add(K.shelter({ id: 'occ_shelter', open: true }), 8.4, 7.9, 0);
-  for (const [x, z, h, k] of [[34, 30, 10, 'oak'], [-22, 26, 12, 'oak'], [-40, 40, 18, 'pine'], [60, -64, 9, 'oak'], [-120, 52, 17, 'pine'], [140, 48, 10, 'oak']])
-    add(K.tree({ id: 'tree_' + x, kind: k, height: h }), x, z, x);
+  // pole line (wood, crossarm + conductors spanning to the previous pole), south right-of-way
+  let prev = null;
+  for (let x = -760; x <= 800; x += 46) { if (x > -8 && x < 30) continue; add(K.pole({ id: 'pole_' + x, height: 10.7, ...(prev !== null ? { span: x - prev } : {}), transformer: x === 68 }), x, zC + 31, Math.PI / 2); prev = x; }
+  // MUTCD signs: stop + street-name blades on the side road, speed limit and side-road warning on US-27A
+  add(K.sign('stop', { id: 'sig_stop', streetName: 'NE 140TH CT', streetName2: 'US 27 ALT' }), 4.6, sideStart + 3.4, Math.PI);
+  add(K.sign('speed_limit', { id: 'sig_speed', speed: 60, rural: true }), -260, zC + outer + 2.5, Math.PI / 2);
+  add(K.sign('side_road_right', { id: 'sig_warn', rural: true }), -320, zC + outer + 2.5, Math.PI / 2);
+  add(K.sign('route_shield', { id: 'sig_route', text: '27', rural: true }), 120, zC - outer - 2.5, -Math.PI / 2);
+  add(K.sign('stop', { id: 'sig_stop_med_a', rural: true }), -100 + 65 * FT + 1.6, zC - 5.4, Math.PI);
+  // gas station on the SE corner (canopy toward the highway) + paved apron
+  scene.add(K.intersection({ id: 'apron_gas', width: 30, length: 9, position: [26, sideStart + 4.5] }));
+  add(K.building({ id: 'bld_gas', style: 'gas_station', w: 24, d: 28 }), 26, sideStart + 9 + 14, 0);
+  add(K.building({ id: 'bld_house', style: 'house', w: 12, d: 9 }), -38, sideStart + 40, 0);
+  for (const [x, z, h, k] of [[44, 18, 8, 'palm'], [8, 16, 9, 'palm'], [-22, 26, 12, 'oak'], [-40, 22, 18, 'pine'], [60, -64, 9, 'oak'], [-120, 52, 17, 'pine'], [140, 48, 10, 'oak'], [-14, 46, 11, 'oak'], [50, 46, 1.3, 'shrub'], [47, 44, 1.1, 'shrub']])
+    add(K.tree({ id: 'tree_' + x, kind: k, height: h, moss: k === 'oak' }), x, z, x);
 } catch (e) { console.warn('furniture', e); }
 
 // ---------------------------------------------------------------- environment (sun, sky, fog for 2016-05-07 16:36 EDT, Levy County FL)
@@ -112,7 +121,9 @@ const VIEWS = {
   eye: () => eye(-150, 2.6, 60, 0.5),                               // standing on EB shoulder, looking east toward the crossover
   driver: () => { cam.fov = 60; eye(-110, -0.4, 0, -0.2, 1.15); },   // driver eye, EB outside lane
   intersection: () => eye(-2.5, 30, 0, -40, 1.6),                    // on NE 140th Ct looking north across the highway
-  crest: () => eye(60, -1.2, -400, -1.2, 1.6),                       // looking west up to the crest
+  crest: () => eye(60, -1.2, -400, -1.2, 1.6),
+  crossover: () => { cam.fov = 45; cam.position.set(-160, 34, 40); cam.lookAt(-100, 0, zC); },
+  gas: () => eye(-40, 2.6, 26, 18, 1.6),                       // looking west up to the crest
   overhead: () => { cam.position.set(0, 120, zC + 10); cam.up.set(0, 0, -1); cam.lookAt(0, 0, zC + 10); },
   wide: () => { cam.position.set(-60, 520, zC); cam.up.set(0, 0, -1); cam.lookAt(-60, 0, zC); },
 };

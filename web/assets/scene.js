@@ -287,7 +287,11 @@ function subtractRanges(s0, s1, gaps) {
 
 // ------------------------------------------------------------------ markings
 /** add a painted line along s, centred at u = uc(s), optionally dashed [on, off] with phase (m). */
-function paintLine(group, { uc, width = US.lineWidth, s0, s1, color = US.white, dash = null, phase = 0, gaps = [], lift = 0.003, name = 'mark_line' }) {
+function paintLine(group, { uc, width = US.lineWidth, s0, s1, color = US.white, dash = null, phase = 0, gaps = [], lift = 0.003, name = 'mark_line', _across = null }) {
+  if (_across !== null) { // a line running across the road (along u) at s = _across, from u = s0 .. s1
+    const m = meshOf(polygon([[s0, _across - width / 2], [s1, _across - width / 2], [s1, _across + width / 2], [s0, _across + width / 2]], lift), paintMat(color), name);
+    group.add(m); return m;
+  }
   const UC = typeof uc === 'function' ? uc : () => uc;
   const ranges = subtractRanges(s0, s1, gaps);
   const segs = [];
@@ -434,6 +438,19 @@ export function road(opts = {}) {
         const fp = [[sg * (uIn + 0.05), op.at + ds * hw], [sg * (uIn + 0.05), op.at + ds * (hw + R)]];
         for (let k = 0; k <= N; k++) { const ang = (k / N) * Math.PI / 2; fp.push([sg * (uIn - R + R * Math.cos(ang)), op.at + ds * (hw + R - R * Math.sin(ang))]); }
         group.add(meshOf(polygon(fp, 0), surfMat, 'road_crossover_fillet'));
+      }
+      // raised concrete median-nose curb with yellow paint (op.curb) and median stop bars for crossing traffic (op.stopBars)
+      if (op.curb) for (const ds of [1, -1]) {
+        const pts = [];
+        for (let k = 0; k <= N; k++) { const ang = (k / N) * Math.PI / 2; pts.push([uIn - R + R * Math.cos(ang), op.at + ds * (hw + R - R * Math.sin(ang))]); }
+        for (let k = N; k >= 0; k--) { const ang = (k / N) * Math.PI / 2; pts.push([-(uIn - R + R * Math.cos(ang)), op.at + ds * (hw + R - R * Math.sin(ang))]); }
+        group.add(curbStrip(ds > 0 ? pts : pts.reverse(), { height: op.curbHeight ?? 0.15, width: 0.3, name: 'road_median_nose' }));
+      }
+      if (op.stopBars) {
+        const off = op.curb ? 0.35 : 0.1;
+        paintLine(group, { uc: -(uIn - 1.4), width: US.stopBarWidth, s0: op.at + 0.3, s1: op.at + hw - off, name: 'mark_median_stop_bar' });
+        paintLine(group, { uc: uIn - 1.4, width: US.stopBarWidth, s0: op.at - hw + off, s1: op.at - 0.3, name: 'mark_median_stop_bar' });
+        if (op.centerLine !== false) paintLine(group, { uc: 0, width: 0.1, s0: -uIn + 1.4, s1: uIn - 1.4, color: US.yellow, name: 'mark_crossover_center', _across: op.at });
       }
     }
   } else {
@@ -721,6 +738,93 @@ export function turnArrow(opts = {}) {
   const g = new THREE.Group(); placeGroup(g, opts);
   addArrow(g, kind, 0, -1.5, 1);
   tag(g, id, 'turnArrow', { length: 3, width: 1.5, height: 0 });
+  redrape(g); return g;
+}
+
+
+// ------------------------------------------------------------------ curbs along a path, W-beam guardrail, canvas decals
+/** curbStrip(pts[[u,s]...], {height, width, name}) — raised curb following a polyline in a road's local frame (draped).
+ *  The curb's face is on the LEFT of the direction of travel along pts. Painted yellow (median noses) unless color given. */
+function curbStrip(pts, { height = 0.15, width = 0.3, name = 'curb_strip', color = 0xd8a62a } = {}) {
+  const pos = [], lift = [], uv = [];
+  const P = pts.map(([u, s]) => new THREE.Vector2(u, s));
+  const quad = (a, b, c, d, la, lb, lc, ld) => { for (const [v, l] of [[a, la], [b, lb], [c, lc], [a, la], [c, lc], [d, ld]]) { pos.push(v.x, 0, -v.y); lift.push(l); uv.push(v.x, v.y); } };
+  const offs = P.map((p, i) => { const a = P[Math.max(0, i - 1)], b = P[Math.min(P.length - 1, i + 1)]; const t = b.clone().sub(a).normalize(); return new THREE.Vector2(t.y, -t.x); }); // right normal
+  for (let i = 0; i < P.length - 1; i++) {
+    const a = P[i], b = P[i + 1], na = offs[i], nb = offs[i + 1];
+    const aI = a.clone(), bI = b.clone(), aO = a.clone().addScaledVector(na, width), bO = b.clone().addScaledVector(nb, width);
+    // top (CCW seen from above in (u,s) -> up-facing after the u,s -> x,-z map)
+    quad(aI, aO, bO, bI, height, height, height, height);
+    quad(aI, bI, bI, aI, 0.0, 0.0, height, height); // face (left side, toward the opening)
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setAttribute('lift', new THREE.Float32BufferAttribute(lift, 1));
+  for (let i = 0; i < pos.length; i += 3) pos[i + 1] = lift[i / 3];
+  g.getAttribute('position').array.set(pos); g.computeVertexNormals();
+  const m = new THREE.Mesh(g, mat('curbPaint' + color, () => new THREE.MeshStandardMaterial({ color, roughness: 0.72, side: THREE.DoubleSide, name: 'curb_paint' })));
+  m.name = name; m.castShadow = true; m.receiveShadow = true; m.userData.drape = true; m.userData.smoothNormals = false;
+  return m;
+}
+
+/** guardrail({id, points:[[x,z],...] WORLD, postSpacing=1.905, railTop=0.79, side:'left'|'right' (blockout side),
+ *  endTreatment:'turndown'|'none'}) — MGS/W-beam guardrail: galvanised W6x9 posts, routed blockouts, 12-ga W-beam,
+ *  following terrainHeight(). Ends turn down to grade over 7.6 m (buried terminal) by default. */
+export function guardrail(opts = {}) {
+  const { id, points = [[-20, 0], [20, 0]], postSpacing = 1.905, railTop = 0.79, side = 'right', endTreatment = 'turndown' } = opts;
+  const g = new THREE.Group();
+  const galv = mat('galvRail', () => new THREE.MeshStandardMaterial({ color: 0xa9aeb0, metalness: 0.8, roughness: 0.38, side: THREE.DoubleSide, name: 'galv' }));
+  const wood = mat('blockout', () => new THREE.MeshStandardMaterial({ color: 0x5e5246, roughness: 0.95 }));
+  // resample the polyline
+  const P = points.map(p => new THREE.Vector2(p[0], p[1]));
+  const samples = []; let tot = 0;
+  for (let i = 0; i < P.length - 1; i++) { const a = P[i], b = P[i + 1], L = a.distanceTo(b), n = Math.max(1, Math.round(L / postSpacing)); for (let k = i ? 1 : 0; k <= n; k++) { const t = k / n; samples.push({ p: a.clone().lerp(b, t), d: tot + L * t }); } tot += L; }
+  const sgn = side === 'right' ? 1 : -1, beamH = 0.31, cY = railTop - beamH / 2;
+  const drop = d => endTreatment === 'turndown' ? Math.min(1, d / 7.6, (tot - d) / 7.6) : 1;
+  const ys = samples.map(s => terrainHeight(s.p.x, s.p.y) + 0.02);
+  const dirs = samples.map((s, i) => { const a = samples[Math.max(0, i - 1)].p, b = samples[Math.min(samples.length - 1, i + 1)].p; return b.clone().sub(a).normalize(); });
+  // posts + blockouts
+  const post = new THREE.InstancedMesh(new THREE.BoxGeometry(0.15, 1, 0.152), galv, samples.length);
+  const blk = new THREE.InstancedMesh(new THREE.BoxGeometry(0.2, 0.36, 0.15), wood, samples.length);
+  const o = new THREE.Object3D();
+  samples.forEach((s, i) => {
+    const dr = dirs[i], nx = dr.y * sgn, nz = -dr.x * sgn, ang = Math.atan2(-dr.x, -dr.y);
+    const k = drop(s.d), top = Math.max(0.2, (railTop + 0.05) * k);
+    o.position.set(s.p.x, ys[i] + top / 2 - 0.0, s.p.y); o.rotation.set(0, ang, 0); o.scale.set(1, top, 1); o.updateMatrix(); post.setMatrixAt(i, o.matrix);
+    o.position.set(s.p.x + nx * 0.17, ys[i] + Math.max(0.15, cY * k), s.p.y + nz * 0.17); o.scale.set(k > 0.4 ? 1 : 0.001, 1, 1); o.updateMatrix(); blk.setMatrixAt(i, o.matrix);
+  });
+  post.castShadow = blk.castShadow = true; post.receiveShadow = blk.receiveShadow = true; post.name = 'guardrail_posts'; blk.name = 'guardrail_blockouts';
+  // W-beam: sweep the corrugated profile along the samples (offset to the blockout face)
+  const prof = [[0, -0.155], [0.035, -0.12], [0.083, -0.085], [0.083, -0.045], [0.03, -0.012], [0.03, 0.012], [0.083, 0.045], [0.083, 0.085], [0.035, 0.12], [0, 0.155]];
+  const pos = [], idx = [], NP = prof.length;
+  samples.forEach((s, i) => {
+    const dr = dirs[i], nx = dr.y * sgn, nz = -dr.x * sgn, k = drop(s.d), yc = ys[i] + Math.max(0.12, cY * k);
+    for (const [dd, dy] of prof) { const off = 0.27 + dd; pos.push(s.p.x + nx * off, yc + dy, s.p.y + nz * off); }
+    if (i) for (let j = 0; j < NP - 1; j++) { const a = (i - 1) * NP + j, b = a + 1, c = a + NP, d = c + 1; idx.push(a, c, b, b, c, d); }
+  });
+  const bg = new THREE.BufferGeometry(); bg.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); bg.setIndex(idx); bg.computeVertexNormals();
+  const beam = new THREE.Mesh(bg, galv); beam.castShadow = true; beam.receiveShadow = true; beam.name = 'guardrail_beam';
+  g.add(post, blk, beam);
+  for (const m of [post, blk]) { m.computeBoundingBox(); m.computeBoundingSphere(); }
+  tag(g, id, 'guardrail', { length: tot, width: 0.5, height: railTop }, { points, postSpacing });
+  return g;
+}
+
+/** roadDecal({id, kind, position:[x,z], heading, w, h, color}) — high-resolution CanvasTexture pavement marking
+ *  (see textures.decalTexture kinds), draped on the road surface. Arrows point along local -Z (direction of heading).
+ *  Uses renderer max anisotropy via setAnisotropy(). */
+export function roadDecal(opts = {}) {
+  const { id, kind = 'arrow_through', color } = opts;
+  const g = new THREE.Group(); placeGroup(g, opts);
+  const t = decalTexture(kind, { ...(opts.w ? { w: opts.w } : {}), ...(opts.h ? { h: opts.h } : {}), ...(color ? { color } : {}) });
+  const w = t?.w ?? opts.w ?? 2, h = t?.h ?? opts.h ?? 2;
+  const material = t ? mat('decal:' + t.map.uuid, () => new THREE.MeshStandardMaterial({ map: t.map, transparent: true, depthWrite: false, roughness: 0.6, metalness: 0,
+    polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -8, name: 'decal_' + kind })) : paintMat(color === 'yellow' ? US.yellow : US.white);
+  const geo = ribbon({ s0: 0, s1: h, u0: -w / 2, u1: w / 2, step: Math.max(1, h / 6), lift: 0.004, uvMode: 'across' });
+  const uv = geo.getAttribute('uv'); for (let i = 0; i < uv.count; i++) uv.setY(i, uv.getY(i) / h);
+  const m = meshOf(geo, material, 'decal_' + kind); m.renderOrder = 1; g.add(m);
+  tag(g, id, 'roadDecal', { length: h, width: w, height: 0 }, { kind });
   redrape(g); return g;
 }
 

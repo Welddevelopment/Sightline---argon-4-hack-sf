@@ -39,7 +39,7 @@ export const SOURCES = {
   naip_export: {
     label: 'USDA NAIP via USGS The National Map (ImageServer exportImage)',
     host: 'imagery.nationalmap.gov',
-    attribution: 'USGS The National Map; imagery: USDA Farm Service Agency NAIP',
+    attribution: 'USGS The National Map', credit: 'USGS The National Map: USGSNAIPImagery (USDA Farm Service Agency NAIP)',
     license: 'Public domain (USDA FSA NAIP / USGS).',
     terms: 'https://www.usgs.gov/faqs/what-are-terms-uselicensing-map-services-and-data-national-map',
     url: (b, w, h) => `https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer/exportImage?bbox=${b.join(',')}&bboxSR=3857&imageSR=3857&size=${w},${h}&format=jpgpng&interpolation=RSP_BilinearInterpolation&f=image`,
@@ -59,7 +59,8 @@ export const OPTIONAL_HOSTS = ['gis.apfo.usda.gov', 'naip-analytic.s3.amazonaws.
 
 // Demo default: US-27A at NE 140th Court, Williston FL (approximate; refine with calibration.offsetX/Z after viewing).
 export const SITE_DEFAULTS = {
-  demo: { lat: 29.4106, lon: -82.5393, note: 'US-27A at NE 140th Court, Williston FL (approx. site coordinates; world origin = initial point of impact, taken as this point)' },
+  // measured on NAIP (EB outside-lane centre at the NE 140th Ct centreline); the brief's approx. site point was 29.4106, -82.5393
+  demo: { lat: 29.4105889, lon: -82.5397747, note: 'US-27A at NE 140th Court, Williston FL: initial point of impact, measured on NAIP imagery' },
 };
 
 // ---------------------------------------------------------------- geodesy
@@ -301,7 +302,7 @@ export async function fetchAerial({ ROOT = DEFAULT_ROOT, caseId, origin, widthM 
   if (!origin) throw new Error(`no origin for case ${caseId}: add geo.origin {lat, lon} to cases/${caseId}/case.json`);
   const outDir = path.join(ROOT, 'cases', caseId, 'exhibits', 'aerial');
   fs.mkdirSync(outDir, { recursive: true });
-  const order = source === 'auto' ? ['usgs_export', 'naip_export', 'usgs_tiles'] : [source];
+  const order = source === 'auto' ? ['naip_export', 'usgs_export', 'usgs_tiles'] : [source];   // NAIP export is the sharpest here; the USGS tile cache stops at z16 at this site
   const errors = [];
   for (const sid of order) {
     try {

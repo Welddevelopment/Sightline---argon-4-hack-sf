@@ -335,13 +335,13 @@ async function forgeOne(R, round, partsBuilder) {
     let stage = path.join(STAGE, `${R.id}.r${round}.js`);
     fs.writeFileSync(stage, code);
     let v = await validateModule(stage, R);
-    if (!v.ok) {
-      log(`${R.id} round ${round}: validation failed (${v.errors.join(' ; ').slice(0, 300)}) → repair call`);
-      const rname = `${name}_repair`;
+    for (let k = 1; k <= 2 && !v.ok; k++) {
+      log(`${R.id} round ${round}: validation failed (${v.errors.join(' ; ').slice(0, 300)}) → repair call ${k}`);
+      const rname = `${name}_repair${k > 1 ? k : ''}`;
       const parts = [textPart(await buildPrompt(R, `# REPAIR\nYour previous module for this region failed validation in Node (headless: ctx.makeCanvas returns null):\n${v.errors.map((e) => '- ' + e).join('\n')}\n\nReturn the COMPLETE corrected module (same scope and detail), fixing these errors. Previous module:\n\`\`\`js\n${code}\n\`\`\``))];
       ({ code, meta } = await argonModule(rname, parts));
       rec.calls.push({ name: rname, usage: meta?.usage, seconds: meta?.seconds, finish: meta?.finishReason });
-      stage = path.join(STAGE, `${R.id}.r${round}.repair.js`);
+      stage = path.join(STAGE, `${R.id}.r${round}.repair${k}.js`);
       fs.writeFileSync(stage, code);
       v = await validateModule(stage, R);
     }

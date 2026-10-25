@@ -1,0 +1,389 @@
+[
+  {
+    "id": "r1_crossover",
+    "round": 0,
+    "calls": [
+      {
+        "name": "rf_r0_r1_crossover",
+        "usage": {
+          "promptTokenCount": 16063,
+          "candidatesTokenCount": 23812,
+          "totalTokenCount": 39875,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 16063
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 23812
+            }
+          ]
+        },
+        "seconds": 196,
+        "finish": "STOP"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "tris": 6766,
+      "meshes": 145,
+      "instanced": 4,
+      "children": 6,
+      "bbox": {
+        "min": [
+          -45,
+          -1,
+          -38.2
+        ],
+        "max": [
+          45,
+          3.3,
+          16
+        ]
+      },
+      "buildMs": 18,
+      "bytes": 60875
+    },
+    "ok": true,
+    "seconds": 196,
+    "tokens": {
+      "out": 23812,
+      "think": 0,
+      "prompt": 16063
+    }
+  },
+  {
+    "id": "r2_west",
+    "round": 0,
+    "calls": [
+      {
+        "name": "rf_r0_r2_west",
+        "usage": {
+          "promptTokenCount": 15906,
+          "candidatesTokenCount": 15647,
+          "totalTokenCount": 31553,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 15906
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 15647
+            }
+          ]
+        },
+        "seconds": 144,
+        "finish": "STOP"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "tris": 15800,
+      "meshes": 88,
+      "instanced": 4,
+      "children": 6,
+      "bbox": {
+        "min": [
+          -900,
+          0.7,
+          -40.8
+        ],
+        "max": [
+          -45,
+          7.5,
+          7.6
+        ]
+      },
+      "buildMs": 76,
+      "bytes": 39675
+    },
+    "ok": true,
+    "seconds": 145,
+    "tokens": {
+      "out": 15647,
+      "think": 0,
+      "prompt": 15906
+    }
+  },
+  {
+    "id": "r3_east",
+    "round": 0,
+    "calls": [
+      {
+        "name": "rf_r0_r3_east",
+        "usage": {
+          "promptTokenCount": 15861,
+          "candidatesTokenCount": 18469,
+          "totalTokenCount": 34330,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 15861
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 18469
+            }
+          ]
+        },
+        "seconds": 173.7,
+        "finish": "STOP"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "tris": 16029,
+      "meshes": 153,
+      "instanced": 5,
+      "children": 4,
+      "bbox": {
+        "min": [
+          45,
+          -3,
+          -41.3
+        ],
+        "max": [
+          800,
+          0.8,
+          11.2
+        ]
+      },
+      "buildMs": 50,
+      "bytes": 47464
+    },
+    "ok": true,
+    "seconds": 174,
+    "tokens": {
+      "out": 18469,
+      "think": 0,
+      "prompt": 15861
+    }
+  },
+  {
+    "id": "r4_north",
+    "round": 0,
+    "calls": [
+      {
+        "name": "rf_r0_r4_north",
+        "usage": {
+          "promptTokenCount": 15751,
+          "candidatesTokenCount": 16412,
+          "totalTokenCount": 32163,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 15751
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 16412
+            }
+          ]
+        },
+        "seconds": 140.2,
+        "finish": "STOP"
+      },
+      {
+        "name": "rf_r0_r4_north_repair",
+        "usage": {
+          "promptTokenCount": 32236,
+          "candidatesTokenCount": 15644,
+          "totalTokenCount": 48417,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 32236
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 15644
+            }
+          ],
+          "thoughtsTokenCount": 537
+        },
+        "seconds": 126,
+        "finish": "STOP"
+      }
+    ],
+    "validation": {
+      "ok": false,
+      "errors": [
+        "runtime error while building (Node, headless, ctx.makeCanvas returns null): ReferenceError: o is not defined |     at Module.region (file:///home/claude/sightline/web/regions_argon/_staging/r4_north.r0.repair.js?v=1792958459768:671:47) |     at validateModule (file:///home/claude/sightline/argon/region_forge.mjs:273:24) |     at process.processTicksAndRejections (node:internal/process/task_queues:103:5)"
+      ],
+      "warnings": []
+    },
+    "ok": false,
+    "seconds": 267,
+    "tokens": {
+      "out": 32056,
+      "think": 537,
+      "prompt": 47987
+    }
+  },
+  {
+    "id": "r5_south",
+    "round": 0,
+    "calls": [
+      {
+        "name": "rf_r0_r5_south",
+        "usage": {
+          "promptTokenCount": 16535,
+          "candidatesTokenCount": 23746,
+          "totalTokenCount": 40281,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 16535
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 23746
+            }
+          ]
+        },
+        "seconds": 221,
+        "finish": "STOP"
+      },
+      {
+        "name": "rf_r0_r5_south_repair",
+        "usage": {
+          "promptTokenCount": 40354,
+          "candidatesTokenCount": 21738,
+          "totalTokenCount": 63159,
+          "cachedContentTokenCount": 14481,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 40354
+            }
+          ],
+          "cacheTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 14481
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 21738
+            }
+          ],
+          "thoughtsTokenCount": 1067
+        },
+        "seconds": 180.3,
+        "finish": "STOP"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "tris": 179751,
+      "meshes": 684,
+      "instanced": 38,
+      "children": 9,
+      "bbox": {
+        "min": [
+          -1000.1,
+          -2.9,
+          3.3
+        ],
+        "max": [
+          800.1,
+          26.1,
+          485.7
+        ]
+      },
+      "buildMs": 272,
+      "bytes": 56556
+    },
+    "ok": true,
+    "seconds": 403,
+    "tokens": {
+      "out": 45484,
+      "think": 1067,
+      "prompt": 56889
+    }
+  },
+  {
+    "id": "r6_terrain",
+    "round": 0,
+    "calls": [
+      {
+        "name": "rf_r0_r6_terrain",
+        "usage": {
+          "promptTokenCount": 15984,
+          "candidatesTokenCount": 19956,
+          "totalTokenCount": 35940,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 15984
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 19956
+            }
+          ]
+        },
+        "seconds": 178.5,
+        "finish": "STOP"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "triangle count 314526 above budget 280000"
+      ],
+      "tris": 314526,
+      "meshes": 18,
+      "instanced": 4,
+      "children": 5,
+      "bbox": {
+        "min": [
+          -3200,
+          -3.3,
+          -3000
+        ],
+        "max": [
+          3000,
+          30.1,
+          3000
+        ]
+      },
+      "buildMs": 504,
+      "bytes": 49420
+    },
+    "ok": true,
+    "seconds": 179,
+    "tokens": {
+      "out": 19956,
+      "think": 0,
+      "prompt": 15984
+    }
+  }
+]

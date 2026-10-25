@@ -5,3 +5,21 @@
 20:00:54 [forge] semitrailer_box r0: code 41088 chars valid=false forbidden import/require/fetch/eval; import failed: Invalid or unexpected token
 20:01:16 [argon] truck_tractor r0: 172.8s finish=STOP chars=47417 out=19400 think=undefined
 20:01:16 [forge] truck_tractor r0: code 45819 chars valid=true 
+20:01:25 [argon] pickup r0: 181.5s finish=STOP chars=45097 out=19397 think=undefined
+20:01:25 [forge] pickup r0: code 43785 chars valid=false create() threw in Node: ReferenceError: THREE is not defined |     at addMesh (file:///home/claude/sightline/renders/asset_forge/work/pickup.r0.js?v=1792958485712:613:13) |     at Module.create (file:///home/claude/sightline/renders/asset_forge/work/pickup.r0.js?v=1792958485712:708:3)
+20:01:29 [argon] sedan r0: 185.8s finish=STOP chars=46711 out=19743 think=undefined
+20:01:30 [forge] sedan r0: code 45187 chars valid=true 
+20:01:47 [argon] suv r0: 203.5s finish=STOP chars=50741 out=21474 think=undefined
+20:01:47 [forge] suv r0: code 48967 chars valid=true 
+20:02:19 [argon] bus_shelter r0: 123.9s finish=STOP chars=33577 out=13194 think=undefined
+20:02:20 [forge] bus_shelter r0: code 32193 chars valid=true 
+20:02:44 [argon] road_surface_material r0: 74s finish=STOP chars=19611 out=7739 think=undefined
+20:02:45 [forge] road_surface_material r0: code 18087 chars valid=true 
+20:02:58 [argon] grass_material r0: 70.8s finish=STOP chars=19635 out=7529 think=undefined
+20:02:59 [forge] grass_material r0: code 18390 chars valid=true 
+20:02:59 [argon] utility_pole r0: 125.1s finish=STOP chars=33391 out=13648 think=undefined
+20:02:59 [forge] utility_pole r0: code 31880 chars valid=true 
+20:03:17 [argon] oak_tree r0: 120.1s finish=STOP chars=31281 out=12773 think=undefined
+20:03:17 [forge] oak_tree r0: code 29689 chars valid=false length(Z) 10.56 m vs target 10 m (tol ±0.50); width(X) 10.58 m vs target 10 m (tol ±0.50)
+20:03:54 [argon] pine_tree r0: 149.1s finish=STOP chars=40577 out=15848 think=undefined
+20:03:55 [forge] pine_tree r0: code 39051 chars valid=true 

@@ -90,9 +90,10 @@ export function getMaterials(THREE) {
     if (!p) {
       // clearcoat automotive paint; metalness kept modest so it reads correctly with or without an env map
       const hsl = {}; col.getHSL(hsl);
-      const metallic = hsl.s < 0.25 && hsl.l > 0.25 && hsl.l < 0.8; // silver / grey read as metallic
-      p = new Phys({ color: col, metalness: metallic ? 0.55 : 0.12, roughness: metallic ? 0.32 : 0.36,
-        clearcoat: 1.0, clearcoatRoughness: 0.06, envMapIntensity: 1.0 });
+      // forensic-standard clearcoat paint (metalness 0.4 / roughness 0.25 / clearcoat 1 / cc-roughness 0.05);
+      // very light solids (white) keep a lower metalness so they still read white under weak IBL
+      const metal = hsl.l > 0.78 ? 0.15 : 0.4;
+      p = new Phys({ color: col, metalness: metal, roughness: 0.25, clearcoat: 1.0, clearcoatRoughness: 0.05, envMapIntensity: 1.0 });
       p.name = 'paint_' + key;
       c.paints.set(key, p);
     }

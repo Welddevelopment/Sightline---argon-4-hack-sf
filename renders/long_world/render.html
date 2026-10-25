@@ -1,0 +1,45 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Long world render</title>
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js"}}</script>
+</head><body>
+<script type="module">
+import * as THREE from 'three';
+const q = new URLSearchParams(location.search);
+const W = +(q.get('w') || 1600), H = +(q.get('h') || 900);
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(W, H); renderer.setPixelRatio(1);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const cam = new THREE.PerspectiveCamera(60, W / H, 0.1, 5000);
+window.sl = { errors: [] };
+window.addEventListener('error', (e) => window.sl.errors.push(String(e.message)));
+window.sl.ready = (async () => {
+  const mod = await import(q.get('world') + '?v=' + Date.now());
+  const world = mod.default(THREE);
+  window.sl.world = world;
+  scene.add(world.root);
+  const env = world.root.userData.env || {};
+  let lights = 0; world.root.traverse((o) => { if (o.isLight) lights++; });
+  if (!lights) { scene.add(new THREE.HemisphereLight(0xffffff, 0x8a9a7a, 0.9)); const s = new THREE.DirectionalLight(0xffffff, 2); s.position.set(-200, 200, 0); scene.add(s); }
+  scene.background = new THREE.Color(env.background ?? 0x9ec9ec);
+  if (env.fog) scene.fog = new THREE.Fog(env.fog.color, env.fog.near, env.fog.far);
+  renderer.toneMappingExposure = env.exposure ?? 1.0;
+  window.sl.info = { lights, meshes: 0 }; world.root.traverse((o) => { if (o.isMesh) window.sl.info.meshes++; });
+})();
+window.sl.shot = (view, t) => {
+  const world = window.sl.world;
+  world.setTime(t);
+  const car = world.objects.veh_A.node.position;
+  if (view === 'overhead') { cam.fov = 50; cam.position.set(0, 160, -14.0001); cam.up.set(0, 0, -1); cam.lookAt(0, 0, -14); }
+  else if (view === 'oblique') { cam.fov = 45; cam.up.set(0, 1, 0); cam.position.set(55, 32, 58); cam.lookAt(-6, 0, -12); }
+  else { const w = world.witnesses.find((x) => x.id === view); cam.fov = 60; cam.up.set(0, 1, 0); cam.position.set(w.position[0], w.eyeHeight, w.position[2]);
+    const tg = typeof w.lookAt === 'string' ? world.objects[w.lookAt].node.position : new THREE.Vector3(...w.lookAt); cam.lookAt(tg.x, 0.8, tg.z); }
+  cam.updateProjectionMatrix();
+  world.root.updateMatrixWorld(true);
+  renderer.render(scene, cam);
+  return { car: [car.x, car.z], calls: renderer.info.render.calls, tris: renderer.info.render.triangles };
+};
+</script></body></html>

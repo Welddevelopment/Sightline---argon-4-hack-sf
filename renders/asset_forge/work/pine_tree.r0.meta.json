@@ -1,0 +1,50 @@
+{
+  "round": 0,
+  "file": "/home/claude/sightline/renders/asset_forge/work/pine_tree.r0.js",
+  "png": "/home/claude/sightline/renders/asset_forge/pine_tree_r0.png",
+  "finish": "STOP",
+  "usage": {
+    "promptTokenCount": 5754,
+    "candidatesTokenCount": 15848,
+    "totalTokenCount": 21602,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 5754
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 15848
+      }
+    ]
+  },
+  "seconds": 149.1,
+  "defects": null,
+  "validation": {
+    "ok": true,
+    "errors": [],
+    "warnings": [],
+    "buildMs": 437.7,
+    "tris": 44014,
+    "meshes": 4,
+    "bbox": {
+      "min": [
+        -3.061,
+        0,
+        -3.098
+      ],
+      "max": [
+        2.939,
+        18,
+        2.902
+      ],
+      "size": {
+        "length": 6,
+        "width": 6,
+        "height": 18
+      }
+    }
+  }
+}

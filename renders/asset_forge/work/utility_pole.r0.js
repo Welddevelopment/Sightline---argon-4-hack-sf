@@ -1,0 +1,968 @@
+let _woodTexCache = null;
+let _tagTexCache = null;
+let _geomCache = null;
+let _matCache = null;
+
+function hashSeed(str) {
+  let h = 2166136261 >>> 0;
+  const s = String(str || 'utility_pole');
+  for (let i = 0; i < s.length; i++) {
+    h = Math.imul(h ^ s.charCodeAt(i), 16777619);
+  }
+  return h >>> 0;
+}
+
+function makePRNG(seed) {
+  let s = seed >>> 0;
+  if (s === 0) s = 123456789;
+  return function () {
+    s ^= s << 13;
+    s ^= s >>> 17;
+    s ^= s << 5;
+    return (s >>> 0) / 4294967296;
+  };
+}
+
+function getWoodTextures(THREE) {
+  if (_woodTexCache) return _woodTexCache;
+
+  const W = 256;
+  const H = 512;
+  const colorData = new Uint8Array(W * H * 4);
+  const bumpData = new Uint8Array(W * H * 4);
+  const roughData = new Uint8Array(W * H * 4);
+
+  const rng = makePRNG(987654321);
+
+  // Pre-generate vertical crack traces and grain streaks
+  const cracks = [];
+  for (let i = 0; i < 18; i++) {
+    cracks.push({
+      u: rng() * W,
+      v0: rng() * H * 0.85,
+      vLen: 35 + rng() * 140,
+      width: 0.7 + rng() * 1.4,
+      wobbleFreq: 0.04 + rng() * 0.08,
+      wobbleAmp: 0.5 + rng() * 1.5,
+      phase: rng() * Math.PI * 2
+    });
+  }
+
+  const knots = [];
+  for (let i = 0; i < 9; i++) {
+    knots.push({
+      u: 12 + rng() * (W - 24),
+      v: 40 + rng() * (H - 60),
+      rx: 3 + rng() * 4,
+      ry: 5 + rng() * 9
+    });
+  }
+
+  for (let y = 0; y < H; y++) {
+    const vNorm = y / H; // 0 = bottom (groundline), 1 = top
+    // Darker creosote saturation near groundline (bottom 7% of pole height)
+    const creosoteMask = vNorm < 0.065
+      ? 0.42 + 0.58 * Math.max(0, (vNorm - 0.03) / 0.035)
+      : 1.0;
+    // Slight sun-bleached greying near top
+    const sunBleach = 0.94 + 0.08 * vNorm;
+
+    for (let x = 0; x < W; x++) {
+      const uRad = (x / W) * Math.PI * 2;
+      // Multi-frequency vertical wood grain
+      const g1 = Math.sin(uRad * 22 + Math.sin(y * 0.025) * 1.2);
+      const g2 = Math.sin(uRad * 67 + y * 0.015);
+      const g3 = Math.cos(uRad * 140 - y * 0.04);
+      let grain = 0.5 + 0.25 * g1 + 0.15 * g2 + 0.10 * g3;
+
+      // Checking cracks
+      let crackDepth = 0;
+      for (let c = 0; c < cracks.length; c++) {
+        const cr = cracks[c];
+        if (y >= cr.v0 && y <= cr.v0 + cr.vLen) {
+          const t = (y - cr.v0) / cr.vLen;
+          const env = Math.sin(t * Math.PI);
+          const cx = cr.u + Math.sin(y * cr.wobbleFreq + cr.phase) * cr.wobbleAmp;
+          let dx = Math.abs(x - cx);
+          if (dx > W * 0.5) dx = W - dx;
+          const cw = cr.width * env;
+          if (dx < cw) {
+            const d = 1.0 - dx / cw;
+            crackDepth = Math.max(crackDepth, d * d);
+          }
+        }
+      }
+
+      // Wood knots
+      let knotFactor = 0;
+      for (let k = 0; k < knots.length; k++) {
+        const kn = knots[k];
+        const dx = (x - kn.u) / kn.rx;
+        const dy = (y - kn.v) / kn.ry;
+        const dist2 = dx * dx + dy * dy;
+        if (dist2 < 2.2) {
+          const dist = Math.sqrt(dist2);
+          if (dist < 1.0) {
+            knotFactor = Math.max(knotFactor, 1.0 - dist * 0.7);
+          } else {
+            grain += 0.2 * Math.sin((dist - 1.0) * 10.0);
+          }
+        }
+      }
+
+      const shade = (0.78 + 0.28 * grain) * creosoteMask * sunBleach * (1.0 - 0.68 * crackDepth) * (1.0 - 0.45 * knotFactor);
+      // Base white-ish neutral so material.color tints it accurately, with warm/cool variation
+      const r = Math.min(255, Math.max(0, Math.round(235 * shade + (1.0 - creosoteMask) * -15)));
+      const g = Math.min(255, Math.max(0, Math.round(225 * shade)));
+      const b = Math.min(255, Math.max(0, Math.round(212 * shade + vNorm * 14)));
+
+      const idx = (y * W + x) * 4;
+      colorData[idx] = r;
+      colorData[idx + 1] = g;
+      colorData[idx + 2] = b;
+      colorData[idx + 3] = 255;
+
+      const bumpVal = Math.min(255, Math.max(0, Math.round((0.55 + 0.35 * grain - 0.5 * crackDepth - 0.25 * knotFactor) * 255)));
+      bumpData[idx] = bumpVal;
+      bumpData[idx + 1] = bumpVal;
+      bumpData[idx + 2] = bumpVal;
+      bumpData[idx + 3] = 255;
+
+      const roughVal = Math.min(255, Math.max(140, Math.round((0.82 + 0.14 * crackDepth - 0.12 * (1 - creosoteMask) + 0.06 * (1 - grain)) * 255)));
+      roughData[idx] = roughVal;
+      roughData[idx + 1] = roughVal;
+      roughData[idx + 2] = roughVal;
+      roughData[idx + 3] = 255;
+    }
+  }
+
+  const colorTex = new THREE.DataTexture(colorData, W, H, THREE.RGBAFormat);
+  if (THREE.SRGBColorSpace) colorTex.colorSpace = THREE.SRGBColorSpace;
+  colorTex.wrapS = THREE.RepeatWrapping;
+  colorTex.wrapT = THREE.ClampToEdgeWrapping;
+  colorTex.needsUpdate = true;
+
+  const bumpTex = new THREE.DataTexture(bumpData, W, H, THREE.RGBAFormat);
+  bumpTex.wrapS = THREE.RepeatWrapping;
+  bumpTex.wrapT = THREE.ClampToEdgeWrapping;
+  bumpTex.needsUpdate = true;
+
+  const roughTex = new THREE.DataTexture(roughData, W, H, THREE.RGBAFormat);
+  roughTex.wrapS = THREE.RepeatWrapping;
+  roughTex.wrapT = THREE.ClampToEdgeWrapping;
+  roughTex.needsUpdate = true;
+
+  _woodTexCache = { colorTex, bumpTex, roughTex };
+  return _woodTexCache;
+}
+
+function getTagTexture(THREE) {
+  if (_tagTexCache) return _tagTexCache;
+  const W = 64, H = 128;
+  const data = new Uint8Array(W * H * 4);
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const border = x < 4 || x >= W - 4 || y < 4 || y >= H - 4;
+      // Simulated stamped horizontal bars where characters sit (non-readable forensic texture)
+      const inRow = (y > 20 && y < 34) || (y > 46 && y < 60) || (y > 72 && y < 86) || (y > 96 && y < 108);
+      const inCol = x > 10 && x < W - 10 && ((x * 7 + y * 3) % 11 > 4);
+      const stamped = border || (inRow && inCol);
+      const v = stamped ? 155 : 225;
+      const idx = (y * W + x) * 4;
+      data[idx] = v;
+      data[idx + 1] = v + 3;
+      data[idx + 2] = v + 6;
+      data[idx + 3] = 255;
+    }
+  }
+  const tex = new THREE.DataTexture(data, W, H, THREE.RGBAFormat);
+  if (THREE.SRGBColorSpace) tex.colorSpace = THREE.SRGBColorSpace;
+  tex.needsUpdate = true;
+  _tagTexCache = tex;
+  return _tagTexCache;
+}
+
+function getMaterials(THREE) {
+  if (_matCache) return _matCache;
+  const woodTex = getWoodTextures(THREE);
+  const tagTex = getTagTexture(THREE);
+
+  _matCache = {
+    woodTex,
+    crossarmWood: new THREE.MeshStandardMaterial({
+      color: 0x6f5843,
+      map: woodTex.colorTex,
+      bumpMap: woodTex.bumpTex,
+      bumpScale: 0.008,
+      roughnessMap: woodTex.roughTex,
+      roughness: 0.88,
+      metalness: 0.02
+    }),
+    galvSteel: new THREE.MeshStandardMaterial({
+      color: 0xaeb5bc,
+      roughness: 0.42,
+      metalness: 0.82
+    }),
+    weatheredGalv: new THREE.MeshStandardMaterial({
+      color: 0x8d949b,
+      roughness: 0.55,
+      metalness: 0.75
+    }),
+    porcelainBrown: new THREE.MeshPhysicalMaterial({
+      color: 0x432316,
+      roughness: 0.12,
+      metalness: 0.05,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.06
+    }),
+    porcelainGrey: new THREE.MeshPhysicalMaterial({
+      color: 0xc8cdd2,
+      roughness: 0.14,
+      metalness: 0.05,
+      clearcoat: 0.95,
+      clearcoatRoughness: 0.08
+    }),
+    conductorACSR: new THREE.MeshStandardMaterial({
+      color: 0xbec5cc,
+      roughness: 0.36,
+      metalness: 0.88
+    }),
+    blackCable: new THREE.MeshStandardMaterial({
+      color: 0x1e2022,
+      roughness: 0.82,
+      metalness: 0.08
+    }),
+    copperWire: new THREE.MeshStandardMaterial({
+      color: 0x8c583a,
+      roughness: 0.45,
+      metalness: 0.85
+    }),
+    woodMoulding: new THREE.MeshStandardMaterial({
+      color: 0x4f3e2e,
+      roughness: 0.9,
+      metalness: 0.02
+    }),
+    aluTag: new THREE.MeshStandardMaterial({
+      color: 0xd8dee4,
+      map: tagTex,
+      bumpMap: tagTex,
+      bumpScale: 0.002,
+      roughness: 0.32,
+      metalness: 0.92
+    }),
+    transformerTank: new THREE.MeshStandardMaterial({
+      color: 0x9aa2a8,
+      roughness: 0.38,
+      metalness: 0.35
+    }),
+    darkSteel: new THREE.MeshStandardMaterial({
+      color: 0x3b4045,
+      roughness: 0.5,
+      metalness: 0.75
+    }),
+    redWarning: new THREE.MeshStandardMaterial({
+      color: 0xb82921,
+      roughness: 0.4,
+      metalness: 0.2
+    })
+  };
+  return _matCache;
+}
+
+function buildRoofedPoleGeometry(THREE) {
+  const height = 10.50;
+  const rBottom = 0.16; // 0.32m diameter at groundline
+  const rTop = 0.11;    // 0.22m diameter at top
+  const radSegs = 36;
+  const heightSegs = 48;
+
+  const geom = new THREE.CylinderGeometry(rTop, rBottom, height, radSegs, heightSegs, false);
+  // Shift so bottom is at y = 0 and top is at y = 10.50
+  geom.translate(0, height * 0.5, 0);
+
+  const pos = geom.attributes.position;
+  const rng = makePRNG(135792468);
+  // Subtle organic longitudinal sweep/imperfection + dual-pitch gable roof cut at top
+  for (let i = 0; i < pos.count; i++) {
+    let x = pos.getX(i);
+    let y = pos.getY(i);
+    let z = pos.getZ(i);
+
+    const t = y / height;
+    // Slight natural timber bow (max ~8mm mid-pole)
+    const bowX = Math.sin(t * Math.PI) * 0.006;
+    const bowZ = Math.sin(t * Math.PI * 1.5) * 0.004;
+
+    // Subtle organic surface flutes
+    const angle = Math.atan2(z, x);
+    const radiusScale = 1.0 + 0.008 * Math.sin(angle * 5 + t * 4.0) + 0.005 * Math.cos(angle * 9 - t * 6.0);
+    x = x * radiusScale + bowX;
+    z = z * radiusScale + bowZ;
+
+    // Roof cut at very top (sheds rain left/right along X)
+    if (y > height - 0.12) {
+      const roofFactor = (y - (height - 0.12)) / 0.12;
+      const slopeDrop = Math.abs(x) * 0.38 * roofFactor;
+      y -= slopeDrop;
+    }
+
+    pos.setXYZ(i, x, y, z);
+  }
+  geom.computeVertexNormals();
+  return geom;
+}
+
+function buildPinInsulatorGeometry(THREE) {
+  // Multi-skirt ANSI 55-4 style pin insulator profile (total height ~0.165 m, base at y=0)
+  const pts = [
+    new THREE.Vector2(0.000, 0.000),
+    new THREE.Vector2(0.036, 0.000),
+    new THREE.Vector2(0.038, 0.022),
+    // Bottom large rain shed skirt
+    new THREE.Vector2(0.072, 0.032),
+    new THREE.Vector2(0.074, 0.044),
+    new THREE.Vector2(0.045, 0.062),
+    // Middle rain shed skirt
+    new THREE.Vector2(0.065, 0.074),
+    new THREE.Vector2(0.067, 0.086),
+    new THREE.Vector2(0.040, 0.102),
+    // Top umbrella skirt
+    new THREE.Vector2(0.058, 0.114),
+    new THREE.Vector2(0.056, 0.126),
+    // Side tie-wire groove neck
+    new THREE.Vector2(0.030, 0.134),
+    new THREE.Vector2(0.028, 0.144),
+    // Crown with top conductor groove impression
+    new THREE.Vector2(0.038, 0.152),
+    new THREE.Vector2(0.032, 0.163),
+    new THREE.Vector2(0.012, 0.165),
+    new THREE.Vector2(0.000, 0.158)
+  ];
+  return new THREE.LatheGeometry(pts, 24);
+}
+
+function buildSpoolInsulatorGeometry(THREE) {
+  // ANSI 53-2 secondary spool insulator (height 0.08m, rotated or vertical)
+  const pts = [
+    new THREE.Vector2(0.014, -0.038),
+    new THREE.Vector2(0.038, -0.038),
+    new THREE.Vector2(0.040, -0.026),
+    new THREE.Vector2(0.023, -0.010),
+    new THREE.Vector2(0.021,  0.000),
+    new THREE.Vector2(0.023,  0.010),
+    new THREE.Vector2(0.040,  0.026),
+    new THREE.Vector2(0.038,  0.038),
+    new THREE.Vector2(0.014,  0.038)
+  ];
+  return new THREE.LatheGeometry(pts, 20);
+}
+
+function buildCrossarmGeometry(THREE) {
+  // 2.44 m wide (X), 0.11 m high (Y), 0.09 m deep (Z), slightly chamfered top roof to shed water
+  const w = 2.44, h = 0.11, d = 0.09, c = 0.008;
+  const shape = new THREE.Shape();
+  shape.moveTo(-d / 2, -h / 2 + c);
+  shape.lineTo(-d / 2 + c, -h / 2);
+  shape.lineTo(d / 2 - c, -h / 2);
+  shape.lineTo(d / 2, -h / 2 + c);
+  shape.lineTo(d / 2, h / 2 - c * 1.4);
+  shape.lineTo(0, h / 2); // crowned top
+  shape.lineTo(-d / 2, h / 2 - c * 1.4);
+  shape.closePath();
+
+  const extrudeSettings = {
+    steps: 1,
+    depth: w,
+    bevelEnabled: true,
+    bevelThickness: 0.004,
+    bevelSize: 0.004,
+    bevelSegments: 2
+  };
+  const geom = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+  // Extrude is along +Z; rotate so length is along X and centered
+  geom.translate(0, 0, -w / 2);
+  geom.rotateY(Math.PI / 2);
+  geom.computeVertexNormals();
+  return geom;
+}
+
+function getGeometries(THREE) {
+  if (_geomCache) return _geomCache;
+
+  const condCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0, -0.006, -0.195),
+    new THREE.Vector3(0,  0.000, -0.070),
+    new THREE.Vector3(0,  0.002,  0.000),
+    new THREE.Vector3(0,  0.000,  0.070),
+    new THREE.Vector3(0, -0.006,  0.195)
+  ]);
+
+  _geomCache = {
+    pole: buildRoofedPoleGeometry(THREE),
+    crossarm: buildCrossarmGeometry(THREE),
+    pinInsulator: buildPinInsulatorGeometry(THREE),
+    spoolInsulator: buildSpoolInsulatorGeometry(THREE),
+    insulatorPin: new THREE.CylinderGeometry(0.011, 0.013, 0.14, 12),
+    conductorStub: new THREE.TubeGeometry(condCurve, 12, 0.0075, 10, false),
+    tieCollar: new THREE.TorusGeometry(0.031, 0.0035, 8, 18),
+    hexNut: new THREE.CylinderGeometry(0.018, 0.018, 0.016, 6),
+    sqWasher: new THREE.BoxGeometry(0.058, 0.058, 0.006),
+    stepRod: new THREE.CylinderGeometry(0.008, 0.008, 0.15, 10),
+    stepHook: new THREE.CylinderGeometry(0.008, 0.008, 0.042, 10),
+    staple: new THREE.TorusGeometry(0.011, 0.0025, 6, 12, Math.PI)
+  };
+  return _geomCache;
+}
+
+function setShadow(obj) {
+  obj.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+}
+
+function addHardwareBolt(THREE, parent, x, y, z, lengthZ, mats, geoms) {
+  const boltGroup = new THREE.Group();
+  boltGroup.position.set(x, y, z);
+
+  const shaft = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.009, 0.009, lengthZ, 10),
+    mats.galvSteel
+  );
+  shaft.rotation.x = Math.PI / 2;
+  boltGroup.add(shaft);
+
+  // Front & back square washers + hex nuts
+  for (const dir of [-1, 1]) {
+    const zEnd = dir * (lengthZ * 0.5 - 0.012);
+    const washer = new THREE.Mesh(geoms.sqWasher, mats.galvSteel);
+    washer.position.z = zEnd - dir * 0.008;
+    boltGroup.add(washer);
+
+    const nut = new THREE.Mesh(geoms.hexNut, mats.galvSteel);
+    nut.rotation.x = Math.PI / 2;
+    nut.position.z = zEnd;
+    boltGroup.add(nut);
+  }
+  parent.add(boltGroup);
+}
+
+function addInsulatorAssembly(THREE, parent, x, yBase, z, mats, geoms) {
+  const grp = new THREE.Group();
+  grp.position.set(x, yBase, z);
+
+  // Forged steel insulator pin
+  const pin = new THREE.Mesh(geoms.insulatorPin, mats.galvSteel);
+  pin.position.y = 0.03;
+  grp.add(pin);
+
+  // Porcelain body (height 0.165m, starts 0.035m above crossarm top so top is +0.20m)
+  const ins = new THREE.Mesh(geoms.pinInsulator, mats.porcelainBrown);
+  ins.position.y = 0.035;
+  grp.add(ins);
+
+  // Aluminium tie wire loop around insulator neck
+  const tie = new THREE.Mesh(geoms.tieCollar, mats.conductorACSR);
+  tie.rotation.x = Math.PI / 2;
+  tie.position.y = 0.035 + 0.138;
+  grp.add(tie);
+
+  // Short ACSR conductor stub (0.39 m along Z) resting in top groove
+  const stub = new THREE.Mesh(geoms.conductorStub, mats.conductorACSR);
+  stub.position.y = 0.035 + 0.162;
+  grp.add(stub);
+
+  parent.add(grp);
+  // Return local attachment point in pole space
+  return [x, +(yBase + 0.035 + 0.162).toFixed(3), z];
+}
+
+export default function create(THREE, opts = {}) {
+  const group = new THREE.Group();
+  group.name = opts.id ?? 'utility_pole';
+
+  const mats = getMaterials(THREE);
+  const geoms = getGeometries(THREE);
+
+  // Pole wood material (allows custom opts.color override while preserving grain & creosote band)
+  const poleColor = new THREE.Color(opts.color ?? 0x614d3b);
+  const poleMat = new THREE.MeshStandardMaterial({
+    color: poleColor,
+    map: mats.woodTex.colorTex,
+    bumpMap: mats.woodTex.bumpTex,
+    bumpScale: 0.010,
+    roughnessMap: mats.woodTex.roughTex,
+    roughness: 0.88,
+    metalness: 0.02
+  });
+
+  // 1. MAIN TAPERED WOODEN POLE (10.50 m above grade)
+  const poleMesh = new THREE.Mesh(geoms.pole, poleMat);
+  poleMesh.name = 'pole_timber';
+  group.add(poleMesh);
+
+  // Groundline creosote / bitumastic protective collar wrap right at grade (y = 0..0.38m)
+  const collarGeom = new THREE.CylinderGeometry(0.1595, 0.1615, 0.38, 32);
+  collarGeom.translate(0, 0.19, 0);
+  const collarMat = new THREE.MeshStandardMaterial({
+    color: 0x261d16,
+    roughness: 0.72,
+    metalness: 0.05
+  });
+  const groundCollar = new THREE.Mesh(collarGeom, collarMat);
+  group.add(groundCollar);
+
+  const attachPoints = [];
+
+  // 2. 8-FT (2.44 m) WOODEN CROSSARM AT y = 9.95 m ON -Z FACE
+  const crossarmY = 9.95;
+  const crossarmZ = -0.155; // sits gained into -Z face of pole (pole radius here ~0.112 m)
+  const crossarm = new THREE.Mesh(geoms.crossarm, mats.crossarmWood);
+  crossarm.position.set(0, crossarmY, crossarmZ);
+  crossarm.name = 'crossarm';
+  group.add(crossarm);
+
+  // Center through-bolt fixing crossarm to pole
+  addHardwareBolt(THREE, group, 0, crossarmY, -0.025, 0.31, mats, geoms);
+
+  // 3. GALVANIZED STEEL V-BRACES (from pole y=9.32m to crossarm x=±0.68m, y=9.91m)
+  const braceAnchorY = 9.32;
+  const braceArmX = 0.68;
+  const braceArmY = crossarmY - 0.03;
+  for (const side of [-1, 1]) {
+    const p0 = new THREE.Vector3(side * 0.018, braceAnchorY, -0.118);
+    const p1 = new THREE.Vector3(side * braceArmX, braceArmY, crossarmZ + 0.048);
+    const delta = new THREE.Vector3().subVectors(p1, p0);
+    const len = delta.length();
+
+    const braceGeom = new THREE.BoxGeometry(0.032, len, 0.006);
+    const braceMesh = new THREE.Mesh(braceGeom, mats.galvSteel);
+    braceMesh.position.copy(p0).addScaledVector(delta, 0.5);
+    braceMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), delta.clone().normalize());
+    group.add(braceMesh);
+
+    // Carriage bolt at crossarm brace attachment
+    const armBolt = new THREE.Mesh(geoms.hexNut, mats.galvSteel);
+    armBolt.rotation.x = Math.PI / 2;
+    armBolt.position.set(side * braceArmX, braceArmY, crossarmZ - 0.05);
+    group.add(armBolt);
+  }
+  // Lag bolt securing V-brace base to pole
+  addHardwareBolt(THREE, group, 0, braceAnchorY, 0.0, 0.27, mats, geoms);
+
+  // 4. PRIMARY PIN INSULATORS ON CROSSARM (3 pins) + 1 RIDGE PIN AT POLE TOP
+  const crossarmTopY = crossarmY + 0.055; // 10.005 m
+  const pinXPositions = [-1.08, -0.42, 1.08];
+  for (const px of pinXPositions) {
+    const pt = addInsulatorAssembly(THREE, group, px, crossarmTopY, crossarmZ, mats, geoms);
+    attachPoints.push(pt);
+    // Pin shank nut underneath crossarm
+    const underNut = new THREE.Mesh(geoms.hexNut, mats.galvSteel);
+    underNut.position.set(px, crossarmY - 0.062, crossarmZ);
+    group.add(underNut);
+  }
+
+  // Top ridge-pin bracket + top insulator reaching y = 10.70 m
+  const ridgeBracket = new THREE.Group();
+  ridgeBracket.position.set(0, 10.42, 0);
+  for (const side of [-1, 1]) {
+    const strap = new THREE.Mesh(
+      new THREE.BoxGeometry(0.008, 0.18, 0.038),
+      mats.galvSteel
+    );
+    strap.position.set(side * 0.105, 0, 0);
+    strap.rotation.z = side * 0.14;
+    ridgeBracket.add(strap);
+  }
+  const ridgeCap = new THREE.Mesh(
+    new THREE.BoxGeometry(0.19, 0.012, 0.045),
+    mats.galvSteel
+  );
+  ridgeCap.position.y = 0.085;
+  ridgeBracket.add(ridgeCap);
+  group.add(ridgeBracket);
+  addHardwareBolt(THREE, group, 0, 10.36, 0, 0.25, mats, geoms);
+
+  // Top insulator (base at 10.503 m -> top at 10.70 m)
+  const topPt = addInsulatorAssembly(THREE, group, 0, 10.503, 0, mats, geoms);
+  attachPoints.push(topPt);
+
+  // 5. SECONDARY / NEUTRAL 3-SPOOL RACK AT ~8.40 m (mounted on +X side of pole)
+  const rackY = 8.40;
+  const poleRadAtRack = 0.16 - (0.16 - 0.11) * (rackY / 10.5); // ~0.120 m
+  const rackGroup = new THREE.Group();
+  rackGroup.position.set(poleRadAtRack, rackY, 0);
+
+  // Back channel bar bolted vertically against pole
+  const rackBack = new THREE.Mesh(
+    new THREE.BoxGeometry(0.014, 0.56, 0.052),
+    mats.galvSteel
+  );
+  rackGroup.add(rackBack);
+
+  // Through-2-bolts for spool rack
+  addHardwareBolt(THREE, group, 0, rackY + 0.24, 0, 0.26, mats, geoms);
+  addHardwareBolt(THREE, group, 0, rackY - 0.24, 0, 0.26, mats, geoms);
+
+  // Clevis rod running through all 3 spools
+  const clevisRod = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.008, 0.008, 0.52, 10),
+    mats.galvSteel
+  );
+  clevisRod.position.set(0.068, 0, 0);
+  rackGroup.add(clevisRod);
+
+  const spoolOffsets = [0.18, 0.0, -0.18];
+  for (let i = 0; i < spoolOffsets.length; i++) {
+    const sy = spoolOffsets[i];
+    // Upper/lower clevis arms
+    for (const armOff of [-0.044, 0.044]) {
+      const arm = new THREE.Mesh(
+        new THREE.BoxGeometry(0.075, 0.007, 0.036),
+        mats.galvSteel
+      );
+      arm.position.set(0.038, sy + armOff, 0);
+      rackGroup.add(arm);
+    }
+
+    // Porcelain spool insulator (grey glazed for neutral/secondary)
+    const spool = new THREE.Mesh(geoms.spoolInsulator, mats.porcelainGrey);
+    spool.position.set(0.068, sy, 0);
+    rackGroup.add(spool);
+
+    // Secondary conductor stub (top spool bare neutral, lower 2 insulated black triplex)
+    const wireMat = i === 0 ? mats.conductorACSR : mats.blackCable;
+    const secStub = new THREE.Mesh(geoms.conductorStub, wireMat);
+    secStub.position.set(0.092, sy, 0);
+    rackGroup.add(secStub);
+
+    attachPoints.push([
+      +(poleRadAtRack + 0.092).toFixed(3),
+      +(rackY + sy).toFixed(3),
+      0
+    ]);
+  }
+  group.add(rackGroup);
+
+  // 6. TELECOM / FIBER SUSPENSION CLAMP AT y = 6.20 m (on -X side of pole)
+  const teleY = 6.20;
+  const poleRadAtTele = 0.16 - (0.16 - 0.11) * (teleY / 10.5); // ~0.130 m
+  const teleGroup = new THREE.Group();
+  teleGroup.position.set(-poleRadAtTele, teleY, 0);
+
+  // Heavy 3-bolt galvanized suspension clamp plates
+  const clampPlate1 = new THREE.Mesh(
+    new THREE.BoxGeometry(0.016, 0.068, 0.16),
+    mats.galvSteel
+  );
+  clampPlate1.position.x = -0.012;
+  teleGroup.add(clampPlate1);
+
+  const clampPlate2 = new THREE.Mesh(
+    new THREE.BoxGeometry(0.014, 0.056, 0.15),
+    mats.galvSteel
+  );
+  clampPlate2.position.x = -0.032;
+  teleGroup.add(clampPlate2);
+
+  for (const bz of [-0.05, 0, 0.05]) {
+    const cBolt = new THREE.Mesh(geoms.hexNut, mats.galvSteel);
+    cBolt.rotation.z = Math.PI / 2;
+    cBolt.position.set(-0.044, 0, bz);
+    teleGroup.add(cBolt);
+  }
+
+  // Steel messenger strand stub + lashed black fiber/coax bundle stub (≤ 0.40 m)
+  const messengerStub = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.005, 0.005, 0.39, 8),
+    mats.galvSteel
+  );
+  messengerStub.rotation.x = Math.PI / 2;
+  messengerStub.position.set(-0.024, 0.012, 0);
+  teleGroup.add(messengerStub);
+
+  const coaxBundle = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.018, 0.018, 0.38, 12),
+    mats.blackCable
+  );
+  coaxBundle.rotation.x = Math.PI / 2;
+  coaxBundle.position.set(-0.024, -0.028, 0);
+  teleGroup.add(coaxBundle);
+
+  // Stainless lashing straps holding coax bundle to messenger
+  for (const lz of [-0.14, 0.14]) {
+    const strap = new THREE.Mesh(
+      new THREE.TorusGeometry(0.024, 0.0025, 6, 14),
+      mats.galvSteel
+    );
+    strap.position.set(-0.024, -0.010, lz);
+    teleGroup.add(strap);
+  }
+
+  group.add(teleGroup);
+  addHardwareBolt(THREE, group, 0, teleY, 0, 0.28, mats, geoms);
+  attachPoints.push([+(-poleRadAtTele - 0.024).toFixed(3), teleY, 0]);
+
+  // 7. COPPER GROUND WIRE + U-GUARD MOULDING RUNNING DOWN POLE (+X/+Z quadrant)
+  const gndAngle = Math.PI * 0.22; // ~40 deg between +X and +Z
+  const sinA = Math.sin(gndAngle);
+  const cosA = Math.cos(gndAngle);
+
+  // Bare copper wire from y = 2.40 m up to top neutral/ground bond at y = 10.35 m
+  const gndPoints = [];
+  for (let i = 0; i <= 16; i++) {
+    const y = 2.40 + (10.35 - 2.40) * (i / 16);
+    const r = (0.16 - (0.16 - 0.11) * (y / 10.5)) + 0.004;
+    gndPoints.push(new THREE.Vector3(r * cosA, y, r * sinA));
+  }
+  // Bend over at top to neutral spool at y = 8.58m as well
+  const gndCurve = new THREE.CatmullRomCurve3(gndPoints);
+  const gndWire = new THREE.Mesh(
+    new THREE.TubeGeometry(gndCurve, 20, 0.0035, 6, false),
+    mats.copperWire
+  );
+  group.add(gndWire);
+
+  // Staples along the bare ground wire
+  for (let y = 2.8; y < 10.1; y += 0.95) {
+    const r = (0.16 - (0.16 - 0.11) * (y / 10.5)) + 0.003;
+    const st = new THREE.Mesh(geoms.staple, mats.galvSteel);
+    st.position.set(r * cosA, y, r * sinA);
+    st.rotation.y = -gndAngle + Math.PI / 2;
+    group.add(st);
+  }
+
+  // Lower protective wood/PVC U-guard moulding from y = 0.0 m to y = 2.45 m
+  const guardH = 2.45;
+  const rGuardBot = 0.16 + 0.011;
+  const rGuardTop = (0.16 - (0.16 - 0.11) * (guardH / 10.5)) + 0.011;
+  const guardStart = new THREE.Vector3(rGuardBot * cosA, 0, rGuardBot * sinA);
+  const guardEnd = new THREE.Vector3(rGuardTop * cosA, guardH, rGuardTop * sinA);
+  const guardDelta = new THREE.Vector3().subVectors(guardEnd, guardStart);
+  const guardMesh = new THREE.Mesh(
+    new THREE.BoxGeometry(0.024, guardDelta.length(), 0.028),
+    mats.woodMoulding
+  );
+  guardMesh.position.copy(guardStart).addScaledVector(guardDelta, 0.5);
+  guardMesh.rotation.y = -gndAngle;
+  group.add(guardMesh);
+
+  // Galvanized straps holding U-guard moulding at y = 0.4, 1.2, 2.2 m
+  for (const sy of [0.4, 1.25, 2.25]) {
+    const r = (0.16 - (0.16 - 0.11) * (sy / 10.5)) + 0.012;
+    const clip = new THREE.Mesh(
+      new THREE.BoxGeometry(0.030, 0.022, 0.048),
+      mats.galvSteel
+    );
+    clip.position.set(r * cosA, sy, r * sinA);
+    clip.rotation.y = -gndAngle;
+    group.add(clip);
+  }
+
+  // 8. ALUMINIUM POLE ID TAG & BIRTHMARK BRAND AT y = 1.80 m (on -Z road-facing side)
+  const tagY = 1.80;
+  const rAtTag = 0.16 - (0.16 - 0.11) * (tagY / 10.5); // ~0.1514 m
+  const tagGroup = new THREE.Group();
+  tagGroup.position.set(0, tagY, -(rAtTag + 0.002));
+
+  // Vertical rectangular embossed aluminium utility number plate
+  const idPlate = new THREE.Mesh(
+    new THREE.BoxGeometry(0.065, 0.145, 0.003),
+    mats.aluTag
+  );
+  tagGroup.add(idPlate);
+
+  // Top & bottom aluminum nails
+  for (const ny of [-0.058, 0.058]) {
+    const nail = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.005, 0.005, 0.006, 8),
+      mats.galvSteel
+    );
+    nail.rotation.x = Math.PI / 2;
+    nail.position.set(0, ny, -0.002);
+    tagGroup.add(nail);
+  }
+
+  // Round aluminium inspection date nail beside tag
+  const dateNail = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.014, 0.014, 0.005, 14),
+    mats.aluTag
+  );
+  dateNail.rotation.x = Math.PI / 2;
+  dateNail.position.set(0.056, 0.025, 0);
+  tagGroup.add(dateNail);
+
+  // High-voltage yellow/red small marker disc below tag
+  const warnDisc = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.018, 0.018, 0.004, 14),
+    mats.redWarning
+  );
+  warnDisc.rotation.x = Math.PI / 2;
+  warnDisc.position.set(0.056, -0.032, 0);
+  tagGroup.add(warnDisc);
+
+  group.add(tagGroup);
+
+  // 9. CLIMBING STEP BOLTS (alternating on ±X from y = 3.2 m to 9.0 m)
+  const stepHeights = [3.2, 3.65, 4.1, 4.55, 5.0, 5.45, 6.65, 7.1, 7.55, 8.95, 9.4];
+  for (let i = 0; i < stepHeights.length; i++) {
+    const sy = stepHeights[i];
+    const side = i % 2 === 0 ? 1 : -1;
+    const r = 0.16 - (0.16 - 0.11) * (sy / 10.5);
+
+    const stepGrp = new THREE.Group();
+    stepGrp.position.set(side * (r + 0.06), sy, 0);
+
+    const rod = new THREE.Mesh(geoms.stepRod, mats.weatheredGalv);
+    rod.rotation.z = Math.PI / 2;
+    stepGrp.add(rod);
+
+    const hook = new THREE.Mesh(geoms.stepHook, mats.weatheredGalv);
+    hook.position.set(side * 0.072, 0.018, 0);
+    stepGrp.add(hook);
+
+    group.add(stepGrp);
+  }
+
+  // 10. OPTIONAL 25 kVA POLE-TOP TRANSFORMER CAN ON +Z SIDE (opts.transformer)
+  // Designed to sit compactly on the +Z / +X side within the 0.50 m Z envelope
+  if (opts.transformer) {
+    const txGroup = new THREE.Group();
+    txGroup.name = 'transformer_25kva';
+    const txY = 8.95;
+    // Tank radius 0.078 m, center at x = -0.105, z = +0.162 -> max Z = 0.240 m (fits inside +0.25 m bbox)
+    const txX = -0.105;
+    const txZ = 0.162;
+    const tankR = 0.078;
+    const tankH = 0.64;
+
+    txGroup.position.set(txX, txY, txZ);
+
+    // Cylindrical steel tank body
+    const tank = new THREE.Mesh(
+      new THREE.CylinderGeometry(tankR, tankR, tankH, 28),
+      mats.transformerTank
+    );
+    txGroup.add(tank);
+
+    // Domed top cover lid + clamping ring
+    const lid = new THREE.Mesh(
+      new THREE.CylinderGeometry(tankR * 0.96, tankR * 1.03, 0.032, 28),
+      mats.transformerTank
+    );
+    lid.position.y = tankH * 0.5 + 0.016;
+    txGroup.add(lid);
+
+    const lidBoltBand = new THREE.Mesh(
+      new THREE.CylinderGeometry(tankR * 1.04, tankR * 1.04, 0.014, 28),
+      mats.darkSteel
+    );
+    lidBoltBand.position.y = tankH * 0.5 - 0.004;
+    txGroup.add(lidBoltBand);
+
+    // Bottom rolled rim
+    const botRim = new THREE.Mesh(
+      new THREE.CylinderGeometry(tankR * 1.02, tankR * 1.02, 0.02, 28),
+      mats.darkSteel
+    );
+    botRim.position.y = -tankH * 0.5 + 0.01;
+    txGroup.add(botRim);
+
+    // Cooling radiator fins along the outer (-X) side of the tank
+    for (let f = -2; f <= 2; f++) {
+      const fin = new THREE.Mesh(
+        new THREE.BoxGeometry(0.035, tankH * 0.68, 0.005),
+        mats.transformerTank
+      );
+      fin.position.set(-tankR - 0.012, -0.02, f * 0.018);
+      txGroup.add(fin);
+    }
+
+    // Lifting lugs on sides of tank
+    for (const sideZ of [-1, 1]) {
+      const lug = new THREE.Mesh(
+        new THREE.BoxGeometry(0.018, 0.045, 0.022),
+        mats.transformerTank
+      );
+      lug.position.set(-tankR * 0.7, tankH * 0.35, sideZ * tankR * 0.7);
+      txGroup.add(lug);
+    }
+
+    // Stenciled "25" kVA rating decal patch on tank side
+    const stencilPatch = new THREE.Mesh(
+      new THREE.BoxGeometry(0.004, 0.085, 0.065),
+      mats.aluTag
+    );
+    stencilPatch.position.set(-tankR - 0.001, 0.14, 0);
+    txGroup.add(stencilPatch);
+
+    // High-voltage primary porcelain bushing angled on top lid
+    const hvBushingGrp = new THREE.Group();
+    hvBushingGrp.position.set(-0.015, tankH * 0.5 + 0.025, 0.01);
+    hvBushingGrp.rotation.z = 0.15;
+
+    const hvPorcelain = new THREE.Mesh(geoms.pinInsulator, mats.porcelainGrey);
+    hvPorcelain.scale.set(0.62, 1.15, 0.62);
+    hvBushingGrp.add(hvPorcelain);
+
+    const hvTerm = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.006, 0.006, 0.045, 10),
+      mats.copperWire
+    );
+    hvTerm.position.y = 0.20;
+    hvBushingGrp.add(hvTerm);
+    txGroup.add(hvBushingGrp);
+
+    // 3 Low-voltage secondary spade bushings on side of tank facing pole/+X
+    for (const by of [-0.055, 0.0, 0.055]) {
+      const lvBush = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.014, 0.018, 0.048, 12),
+        mats.porcelainBrown
+      );
+      lvBush.rotation.z = -Math.PI / 2;
+      lvBush.position.set(tankR + 0.018, tankH * 0.25, by);
+      txGroup.add(lvBush);
+
+      const lvBlade = new THREE.Mesh(
+        new THREE.BoxGeometry(0.026, 0.008, 0.012),
+        mats.copperWire
+      );
+      lvBlade.position.set(tankR + 0.046, tankH * 0.25, by);
+      txGroup.add(lvBlade);
+    }
+
+    // Upper & lower hanger brackets strapping transformer to pole
+    for (const hy of [-0.20, 0.20]) {
+      const bracket = new THREE.Mesh(
+        new THREE.BoxGeometry(0.12, 0.045, 0.14),
+        mats.galvSteel
+      );
+      bracket.position.set(0.065, hy, -0.095);
+      txGroup.add(bracket);
+    }
+
+    // Primary riser jumper wire from HV bushing up toward crossarm cutout
+    const jumperCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-0.035, tankH * 0.5 + 0.22, 0.01),
+      new THREE.Vector3(-0.18,  tankH * 0.5 + 0.55, -0.08),
+      new THREE.Vector3(-0.315, crossarmY - txY + 0.18, crossarmZ - txZ)
+    ]);
+    const jumperMesh = new THREE.Mesh(
+      new THREE.TubeGeometry(jumperCurve, 14, 0.0045, 8, false),
+      mats.blackCable
+    );
+    txGroup.add(jumperMesh);
+
+    group.add(txGroup);
+  }
+
+  setShadow(group);
+
+  group.userData.assetType = 'pole';
+  group.userData.dims = { length: 0.5, width: 2.44, height: 10.7 };
+  group.userData.attach = attachPoints;
+
+  return group;
+}

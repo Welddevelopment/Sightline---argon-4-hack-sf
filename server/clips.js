@@ -183,7 +183,7 @@ export function mountClips(app, ctx = {}) {
           ch.stdout.on('data', (d) => { so += d; });
           ch.stderr.on('data', (d) => { se += d; });
           const killer = setTimeout(() => ch.kill('SIGKILL'), 15 * 60 * 1000);
-          ch.on('close', (code) => { clearTimeout(killer); code === 0 ? resolve(so) : reject(new Error(`clip render failed (exit ${code}): ${(se || so).slice(-800)}`)); });
+          ch.on('close', (code, sig) => { clearTimeout(killer); if (code !== 0) se += ` [signal ${sig}]`; code === 0 ? resolve(so) : reject(new Error(`clip render failed (exit ${code}): ${(se || so).slice(-800)}`)); });
           ch.on('error', reject);
         });
         if (!fs.existsSync(job.file)) throw new Error('clip render produced no file: ' + out.slice(-400));
@@ -226,12 +226,15 @@ export function mountClips(app, ctx = {}) {
       try {
         ({ seconds } = await runRender(job, `http://127.0.0.1:${req.socket.localPort}`));
       } catch (e) {
-        // mock mode: any cached clip of this camera beats an error
+        console.warn(`[clips] render ${job.name} failed: ${errMsg(e).slice(0, 600)}`);
+        if (fs.existsSync(job.file)) { cache = 'miss'; } else {
+        // mock mode: a cached clip of this camera (same world sha) beats an error
         const dir = clipDir(job.id);
         const pre = job.name.split('__').slice(0, 2).join('__') + '__'; // same camera + same world sha
         const alt = MODE === 'mock' && fs.existsSync(dir) && fs.readdirSync(dir).filter((f) => f.startsWith(pre) && f.endsWith('.mp4')).sort().pop();
         if (!alt) return res.status(500).json({ error: errMsg(e) });
         job.file = path.join(dir, alt); cache = 'fallback';
+        }
       }
     }
     const side = readJson(job.file.replace(/\.mp4$/, '.json'), {});

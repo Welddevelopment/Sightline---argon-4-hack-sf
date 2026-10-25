@@ -1,0 +1,1326 @@
+// r5_south — South roadside (z in [3.35, 500]): NE 140th Ct (z>=16), retail store + apron, bench shelter, utility pole line + wires, wire fences, residence & south vegetation.
+export default function region(THREE, assets, ctx) {
+  const root = new THREE.Group();
+  root.name = 'region_r5_south';
+  root.userData.citation = 'NTSB/HAR-17/02 p.1, p.3, p.23, p.29-30 (south roadside, NE 140th Ct, retail store, utility pole, wire fences, residence)';
+
+  const L = ctx.layout;
+  const CITE = L.cite || {};
+  const rand = ctx.rand(50516);
+
+  // ---------------------------------------------------------------------------
+  // Shared Materials & Helpers
+  // ---------------------------------------------------------------------------
+  const matAsphaltLocal = ctx.surface('asphalt', { color: 0x45474a, roughness: 0.86, polygonOffset: true });
+  const matGravelApron = ctx.surface('gravel', { color: 0xb8b3a8, roughness: 0.90, polygonOffset: true });
+  const matDriveway = ctx.surface('gravel', { color: 0xc2bdb2, roughness: 0.88, polygonOffset: true });
+  const matConcrete = ctx.surface('concrete', { color: 0x9c9a94, roughness: 0.85, polygonOffset: true });
+  const matDirtEdge = ctx.surface('dirt', { color: 0x8a7f6d, roughness: 0.92, polygonOffset: true });
+
+  const matWoodPost = new THREE.MeshStandardMaterial({ color: 0x5a4632, roughness: 0.88, metalness: 0.0 });
+  const matSteelGalv = new THREE.MeshStandardMaterial({ color: 0x8c9094, roughness: 0.45, metalness: 0.75 });
+  const matTPost = new THREE.MeshStandardMaterial({ color: 0x2f4a34, roughness: 0.65, metalness: 0.45 });
+  const matWire = new THREE.MeshStandardMaterial({ color: 0x707478, roughness: 0.50, metalness: 0.65 });
+  const matDarkMetal = new THREE.MeshStandardMaterial({ color: 0x2b2e33, roughness: 0.55, metalness: 0.65 });
+  const matWhiteMetal = new THREE.MeshStandardMaterial({ color: 0xeeece6, roughness: 0.45, metalness: 0.25 });
+  const matRedMetal = new THREE.MeshStandardMaterial({ color: 0xb82929, roughness: 0.45, metalness: 0.3 });
+  const matBlueMetal = new THREE.MeshStandardMaterial({ color: 0x244c82, roughness: 0.5, metalness: 0.3 });
+  const matTrimBrown = new THREE.MeshStandardMaterial({ color: 0x5c4028, roughness: 0.72, metalness: 0.1 });
+  const matRoofMetal = new THREE.MeshStandardMaterial({ color: 0x7a7d80, roughness: 0.55, metalness: 0.45 });
+  const matGlass = new THREE.MeshStandardMaterial({ color: 0x1e2b33, roughness: 0.18, metalness: 0.65 });
+  const matFadedPaint = new THREE.MeshStandardMaterial({
+    color: 0xd8d6ce,
+    roughness: 0.75,
+    metalness: 0.0,
+    polygonOffset: true,
+    polygonOffsetFactor: -3,
+    polygonOffsetUnits: -3
+  });
+  const matPineBark = new THREE.MeshStandardMaterial({ color: 0x4d3b2c, roughness: 0.92, metalness: 0.0 });
+  const matPineNeedles = new THREE.MeshStandardMaterial({ color: 0x2f4820, roughness: 0.88, metalness: 0.0 });
+  const matOakBark = new THREE.MeshStandardMaterial({ color: 0x43392f, roughness: 0.92, metalness: 0.0 });
+  const matOakLeaves = new THREE.MeshStandardMaterial({ color: 0x3b5323, roughness: 0.88, metalness: 0.0 });
+  const matPalmetto = new THREE.MeshStandardMaterial({ color: 0x48662b, roughness: 0.82, metalness: 0.0, side: THREE.DoubleSide });
+
+  function gY(x, z) {
+    return ctx.groundY(x, z);
+  }
+
+  // Check if a point is clear of sight corridors, Witness B, Vehicle A rest, and NE 140th Ct
+  function isClearForProp(x, z, extraRadius = 0) {
+    if (ctx.blocked(x, z)) return false;
+    // West sight corridor strict keep-clear (x in [-700, 0], z <= 42)
+    if (x >= -700 && x <= 4 && z <= 42) return false;
+    // Witness B standing point (7.5, 6.5) radius 2.2 m
+    const dxB = x - 7.5, dzB = z - 6.5;
+    if (dxB * dxB + dzB * dzB < (2.2 + extraRadius) * (2.2 + extraRadius)) return false;
+    // Car rest point (276.6, 23.9) radius 4.5 m
+    const dxR = x - 276.6, dzR = z - 23.9;
+    if (dxR * dxR + dzR * dzR < (4.5 + extraRadius) * (4.5 + extraRadius)) return false;
+    // NE 140th Ct roadway + shoulders x in [-5.5, 5.5], z in [3.35, 235]
+    if (Math.abs(x) < 5.5 + extraRadius && z >= 3.35 && z <= 235) return false;
+    return true;
+  }
+
+  // Build a gridded terrain-conforming patch over [x0, x1] x [z0, z1]
+  function buildConformingPatch(x0, x1, z0, z1, nx, nz, yLift, mat, uvScale = 1.0, heightFn = null) {
+    const geom = new THREE.BufferGeometry();
+    const verts = new Float32Array((nx + 1) * (nz + 1) * 3);
+    const uvs = new Float32Array((nx + 1) * (nz + 1) * 2);
+    const indices = [];
+    let p = 0, u = 0;
+    for (let iz = 0; iz <= nz; iz++) {
+      const tz = iz / nz;
+      const z = z0 + (z1 - z0) * tz;
+      for (let ix = 0; ix <= nx; ix++) {
+        const tx = ix / nx;
+        const x = x0 + (x1 - x0) * tx;
+        const y = (heightFn ? heightFn(x, z) : gY(x, z)) + yLift;
+        verts[p++] = x;
+        verts[p++] = y;
+        verts[p++] = z;
+        uvs[u++] = x * uvScale;
+        uvs[u++] = z * uvScale;
+      }
+    }
+    for (let iz = 0; iz < nz; iz++) {
+      for (let ix = 0; ix < nx; ix++) {
+        const a = iz * (nx + 1) + ix;
+        const b = a + 1;
+        const c = a + (nx + 1);
+        const d = c + 1;
+        indices.push(a, c, b, b, c, d);
+      }
+    }
+    geom.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+    geom.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
+    geom.setIndex(indices);
+    geom.computeVertexNormals();
+    const mesh = new THREE.Mesh(geom, mat);
+    mesh.receiveShadow = true;
+    return mesh;
+  }
+
+  // Build a skirted foundation slab for a building on sloping ground
+  function buildFoundationSlab(cx, cz, w, d, skirtDepth = 0.8, slabThick = 0.18) {
+    const x0 = cx - w * 0.5, x1 = cx + w * 0.5;
+    const z0 = cz - d * 0.5, z1 = cz + d * 0.5;
+    const samples = [
+      gY(x0, z0), gY(x1, z0), gY(x0, z1), gY(x1, z1),
+      gY(cx, cz), gY(cx, z0), gY(cx, z1), gY(x0, cz), gY(x1, cz)
+    ];
+    const maxY = Math.max(...samples);
+    const totalH = slabThick + skirtDepth;
+    const geom = new THREE.BoxGeometry(w + 0.3, totalH, d + 0.3);
+    const mesh = new THREE.Mesh(geom, matConcrete);
+    mesh.position.set(cx, maxY + slabThick - totalH * 0.5, cz);
+    mesh.receiveShadow = true;
+    mesh.castShadow = true;
+    return { mesh, topY: maxY + slabThick };
+  }
+
+  // Build a rural mailbox on a wooden post
+  function buildMailbox(x, z, facingRotY = 0) {
+    const grp = new THREE.Group();
+    const y0 = gY(x, z);
+    grp.position.set(x, y0, z);
+    grp.rotation.y = facingRotY;
+
+    const post = new THREE.Mesh(new THREE.BoxGeometry(0.1, 1.15, 0.1), matWoodPost);
+    post.position.set(0, 0.575, 0);
+    post.castShadow = true;
+    grp.add(post);
+
+    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.08, 0.42), matWoodPost);
+    arm.position.set(0, 1.05, -0.14);
+    grp.add(arm);
+
+    const box = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.16, 0.48), matDarkMetal);
+    box.position.set(0, 1.17, -0.16);
+    box.castShadow = true;
+    grp.add(box);
+
+    const hood = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.48, 8, 1, false, 0, Math.PI), matDarkMetal);
+    hood.rotation.x = Math.PI * 0.5;
+    hood.rotation.z = Math.PI * 0.5;
+    hood.position.set(0, 1.25, -0.16);
+    grp.add(hood);
+
+    const flag = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.18, 0.05), matRedMetal);
+    flag.position.set(0.12, 1.26, -0.32);
+    grp.add(flag);
+
+    return grp;
+  }
+
+  // ---------------------------------------------------------------------------
+  // 1. NE 140th Court (z = 16 to 230, x in [-3.05, 3.05]) + grass/dirt shoulders
+  // ---------------------------------------------------------------------------
+  {
+    const ne140Group = new THREE.Group();
+    ne140Group.name = 'road_ne140_south';
+    ne140Group.userData.citation = CITE.sideRoad || 'NTSB/HAR-17/02 p.1, p.3, p.23 (NE 140th Ct local paved road, runs south, 6.1 m wide, no centre line)';
+
+    // Unpaved dirt/gravel shoulder transition strips on both sides of NE 140th Ct
+    const leftEdgeStrip = buildConformingPatch(-4.15, -2.95, 16, 230, 1, 28, 0.006, matDirtEdge, 0.25);
+    leftEdgeStrip.name = 'ne140_shoulder_west';
+    leftEdgeStrip.userData.citation = 'inferred: rural unpaved shoulder edge along NE 140th Ct';
+    ne140Group.add(leftEdgeStrip);
+
+    const rightEdgeStrip = buildConformingPatch(2.95, 4.15, 16, 230, 1, 28, 0.006, matDirtEdge, 0.25);
+    rightEdgeStrip.name = 'ne140_shoulder_east';
+    rightEdgeStrip.userData.citation = 'inferred: rural unpaved shoulder edge along NE 140th Ct';
+    ne140Group.add(rightEdgeStrip);
+
+    // Main asphalt carriageway (x in [-3.05, 3.05], z in [16, 230])
+    const crownFn = (x, z) => {
+      const base = gY(x, z);
+      const t = 1.0 - Math.min(1.0, Math.abs(x) / 3.05);
+      return base + 0.02 * t;
+    };
+    const roadMesh = buildConformingPatch(-3.05, 3.05, 16, 230, 3, 28, 0.012, matAsphaltLocal, 0.2, crownFn);
+    roadMesh.name = 'ne140_pavement';
+    roadMesh.userData.citation = CITE.sideRoad;
+    ne140Group.add(roadMesh);
+
+    // Subtle wheel-path wear strips along NE 140th Ct (no centerline markings per NTSB/spec)
+    const matWear = new THREE.MeshStandardMaterial({
+      color: 0x343638,
+      roughness: 0.9,
+      metalness: 0.0,
+      polygonOffset: true,
+      polygonOffsetFactor: -2,
+      polygonOffsetUnits: -2
+    });
+    const wheelOffsets = [-2.1, -0.7, 0.7, 2.1];
+    for (let i = 0; i < wheelOffsets.length; i++) {
+      const wx = wheelOffsets[i];
+      const wearStrip = buildConformingPatch(wx - 0.28, wx + 0.28, 16, 230, 1, 28, 0.016, matWear, 0.2, crownFn);
+      wearStrip.name = `ne140_wheel_wear_${i}`;
+      wearStrip.userData.citation = 'inferred: typical wheel-path aggregate wear on local rural road';
+      ne140Group.add(wearStrip);
+    }
+
+    // Street name sign at SE corner outside Witness B sightline (at x=5.4, z=16.2)
+    try {
+      const stSign = assets.sign({
+        id: 'sign_street_ne140',
+        kind: 'street_name',
+        streetName: 'NE 140TH CT',
+        streetName2: 'US 27A',
+        mountHeight: 2.2,
+        rural: true
+      });
+      const sx = 5.4, sz = 16.2;
+      stSign.position.set(sx, gY(sx, sz), sz);
+      stSign.rotation.y = Math.PI * 0.5;
+      stSign.name = 'sign_street_name_ne140';
+      stSign.userData.citation = 'inferred: standard rural county street name blade at NE 140th Ct';
+      ne140Group.add(stSign);
+    } catch (e) {
+      // Fallback ignored if sign helper differs
+    }
+
+    root.add(ne140Group);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 2. Retail Store Apron, Parking Stalls, Wheel Stops & Parked Vehicle
+  // ---------------------------------------------------------------------------
+  {
+    const apronGroup = new THREE.Group();
+    apronGroup.name = 'store_parking_apron';
+    apronGroup.userData.citation = 'inferred: deposition.txt 77-83, 95; evidence/map.png; typical rural store frontage apron x=[4,33], z=[3.35,13]';
+
+    const mainApron = buildConformingPatch(3.05, 33.5, 3.35, 13.4, 12, 6, 0.008, matGravelApron, 0.22);
+    mainApron.name = 'apron_surface_main';
+    mainApron.userData.citation = apronGroup.userData.citation;
+    apronGroup.add(mainApron);
+
+    const eastApron = buildConformingPatch(26.5, 42.5, 13.4, 23.5, 6, 4, 0.008, matGravelApron, 0.22);
+    eastApron.name = 'apron_surface_east';
+    eastApron.userData.citation = 'inferred: gravel circulation apron around east side of retail store';
+    apronGroup.add(eastApron);
+
+    // Concrete sidewalk walkway along storefront (x in [8.8, 27.2], z in [11.4, 13.05])
+    const walkElevationFn = (x, z) => gY(x, 13.0) + 0.06;
+    const storeWalk = buildConformingPatch(8.8, 27.2, 11.4, 13.05, 6, 2, 0.02, matConcrete, 0.5, walkElevationFn);
+    storeWalk.name = 'store_front_sidewalk';
+    storeWalk.userData.citation = 'inferred: concrete storefront walkway apron';
+    apronGroup.add(storeWalk);
+
+    // Faded white stall stripes & concrete wheel stops in front of store (x = 12 to 27, z = 6.8 to 11.2)
+    const stallX = [12.0, 14.8, 17.6, 20.4, 23.2, 26.0];
+    for (let i = 0; i < stallX.length; i++) {
+      const sx = stallX[i];
+      const stripe = buildConformingPatch(sx - 0.06, sx + 0.06, 6.8, 11.2, 1, 2, 0.016, matFadedPaint, 1.0);
+      stripe.name = `apron_stall_line_${i}`;
+      stripe.userData.citation = 'inferred: faded parking stall lines in front of retail store';
+      apronGroup.add(stripe);
+
+      if (i < stallX.length - 1) {
+        const cx = 0.5 * (stallX[i] + stallX[i + 1]);
+        const cz = 10.9;
+        const stop = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.13, 0.22), matConcrete);
+        stop.position.set(cx, gY(cx, cz) + 0.065, cz);
+        stop.castShadow = true;
+        stop.receiveShadow = true;
+        stop.name = `apron_wheel_stop_${i}`;
+        stop.userData.citation = 'inferred: precast concrete parking wheel stop';
+        apronGroup.add(stop);
+      }
+    }
+
+    // Parked vehicle in east stall at x = 23.2, z = 9.0 (well clear of Witness B at (7.5, 6.5) and car path)
+    // Using 1 library parkedVehicle (~68k tris) keeps region well under the 300k triangle budget
+    const pvx = 21.8, pvz = 9.0;
+    if (!ctx.blocked(pvx, pvz)) {
+      const veh = assets.parkedVehicle('pickup', { id: 'store_parked_pickup', color: 0x3b526b });
+      veh.position.set(pvx, gY(pvx, pvz), pvz);
+      veh.rotation.y = Math.PI + 0.03; // nose-in toward store (south, +Z)
+      veh.name = 'store_parked_pickup';
+      veh.userData.citation = 'inferred: parked customer vehicle in retail store lot (east stall x=21.8, clear of sightlines)';
+      apronGroup.add(veh);
+    }
+
+    root.add(apronGroup);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 3. Open Bench Shelter at (8.0, 7.9)
+  // ---------------------------------------------------------------------------
+  {
+    const shelterGroup = new THREE.Group();
+    shelterGroup.name = 'occ_shelter';
+    shelterGroup.userData.citation = CITE.shelter || 'case/facts.md modeling assumption (open-sided bench shelter at (8, 7.9); does not block a 1.6 m eye line)';
+
+    const sx = L.shelter.center[0]; // 8.0
+    const sz = L.shelter.center[1]; // 7.9
+    const sy = gY(sx, sz);
+
+    const pad = new THREE.Mesh(new THREE.BoxGeometry(3.8, 0.10, 1.9), matConcrete);
+    pad.position.set(sx, sy + 0.05, sz);
+    pad.receiveShadow = true;
+    pad.name = 'shelter_concrete_pad';
+    pad.userData.citation = shelterGroup.userData.citation;
+    shelterGroup.add(pad);
+
+    const sh = assets.shelter({ id: 'bench_shelter_se', open: true });
+    sh.position.set(sx, sy + 0.08, sz);
+    sh.rotation.y = 0; // open side faces north (-Z) toward US-27A
+    sh.name = 'bench_shelter_structure';
+    sh.userData.citation = shelterGroup.userData.citation;
+    shelterGroup.add(sh);
+
+    // Trash receptacle on east side of shelter (x = 10.25, z = 8.2), away from Witness B (7.5, 6.5)
+    const tx = 10.25, tz = 8.2;
+    const ty = gY(tx, tz);
+    const trash = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.25, 0.78, 10), matDarkMetal);
+    trash.position.set(tx, ty + 0.39, tz);
+    trash.castShadow = true;
+    trash.receiveShadow = true;
+    trash.name = 'shelter_trash_can';
+    trash.userData.citation = 'inferred: small roadside trash receptacle on east side of bench shelter';
+    shelterGroup.add(trash);
+
+    root.add(shelterGroup);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 4. Retail Store (SE Corner: center (18, 19), 18 x 12 x 4.5 m, faces North)
+  //    + Optional Fuel Island East of Store (x ~ 35.5, z ~ 16.5)
+  // ---------------------------------------------------------------------------
+  {
+    const storeGroup = new THREE.Group();
+    storeGroup.name = 'bld_store';
+    storeGroup.userData.citation = CITE.store || 'NTSB/HAR-17/02 p.1 ("retail business on an intersection corner"); SE corner (18, 19), 18x12x4.5m';
+
+    const scx = L.store.center[0]; // 18
+    const scz = L.store.center[1]; // 19
+    const sw = L.store.w;          // 18
+    const sd = L.store.d;          // 12
+    const sh = L.store.h;          // 4.5
+
+    const fnd = buildFoundationSlab(scx, scz, sw, sd, 0.7, 0.16);
+    fnd.mesh.name = 'store_foundation_slab';
+    fnd.mesh.userData.citation = storeGroup.userData.citation;
+    storeGroup.add(fnd.mesh);
+    const baseY = fnd.topY;
+
+    const shell = assets.building({
+      id: 'retail_store_shell',
+      w: sw,
+      d: sd,
+      h: sh,
+      kind: 'store',
+      style: 'commercial'
+    });
+    shell.position.set(scx, baseY, scz);
+    shell.rotation.y = 0; // local -Z is North
+    shell.name = 'store_main_shell';
+    shell.userData.citation = storeGroup.userData.citation;
+    storeGroup.add(shell);
+
+    const parapet = new THREE.Mesh(new THREE.BoxGeometry(sw + 0.3, 0.85, sd + 0.3), matTrimBrown);
+    parapet.position.set(scx, baseY + sh - 0.32, scz);
+    parapet.castShadow = true;
+    parapet.name = 'store_parapet_cap';
+    parapet.userData.citation = 'inferred: commercial CMU store parapet trim';
+    storeGroup.add(parapet);
+
+    const awning = new THREE.Mesh(new THREE.BoxGeometry(sw - 1.2, 0.28, 1.65), matTrimBrown);
+    awning.position.set(scx, baseY + 3.05, scz - sd * 0.5 - 0.8);
+    awning.castShadow = true;
+    awning.receiveShadow = true;
+    awning.name = 'store_front_awning';
+    awning.userData.citation = 'inferred: storefront metal canopy awning';
+    storeGroup.add(awning);
+
+    for (let rx = scx - 7.0; rx <= scx + 7.01; rx += 3.5) {
+      const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 1.35, 6), matSteelGalv);
+      rod.position.set(rx, baseY + 3.55, scz - sd * 0.5 - 0.75);
+      rod.rotation.x = 0.65;
+      storeGroup.add(rod);
+    }
+
+    // Storefront glazing panels & aluminum mullions on North facade (z = 12.97)
+    const northZ = scz - sd * 0.5 - 0.03;
+    const glassBaysX = [11.5, 14.3, 21.7, 24.5];
+    for (let i = 0; i < glassBaysX.length; i++) {
+      const gx = glassBaysX[i];
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(2.3, 2.1, 0.08), matSteelGalv);
+      frame.position.set(gx, baseY + 1.55, northZ);
+      storeGroup.add(frame);
+
+      const pane = new THREE.Mesh(new THREE.BoxGeometry(2.14, 1.94, 0.10), matGlass);
+      pane.position.set(gx, baseY + 1.55, northZ);
+      storeGroup.add(pane);
+
+      const vMull = new THREE.Mesh(new THREE.BoxGeometry(0.05, 2.0, 0.12), matSteelGalv);
+      vMull.position.set(gx, baseY + 1.55, northZ);
+      storeGroup.add(vMull);
+    }
+
+    // Double glass entrance doors at center of north facade
+    const doorFrame = new THREE.Mesh(new THREE.BoxGeometry(2.0, 2.35, 0.10), matSteelGalv);
+    doorFrame.position.set(scx, baseY + 1.18, northZ);
+    storeGroup.add(doorFrame);
+    const doorGlass = new THREE.Mesh(new THREE.BoxGeometry(1.82, 2.22, 0.12), matGlass);
+    doorGlass.position.set(scx, baseY + 1.18, northZ);
+    storeGroup.add(doorGlass);
+    const doorCenterBar = new THREE.Mesh(new THREE.BoxGeometry(0.08, 2.35, 0.14), matSteelGalv);
+    doorCenterBar.position.set(scx, baseY + 1.18, northZ);
+    storeGroup.add(doorCenterBar);
+    const pushBar = new THREE.Mesh(new THREE.BoxGeometry(1.75, 0.06, 0.16), matSteelGalv);
+    pushBar.position.set(scx, baseY + 1.05, northZ);
+    storeGroup.add(pushBar);
+
+    // West facade window facing NE 140th Ct
+    const westFrame = new THREE.Mesh(new THREE.BoxGeometry(0.08, 1.9, 2.4), matSteelGalv);
+    westFrame.position.set(scx - sw * 0.5 - 0.03, baseY + 1.6, 16.5);
+    storeGroup.add(westFrame);
+    const westGlass = new THREE.Mesh(new THREE.BoxGeometry(0.10, 1.74, 2.24), matGlass);
+    westGlass.position.set(scx - sw * 0.5 - 0.03, baseY + 1.6, 16.5);
+    storeGroup.add(westGlass);
+
+    // Unbranded 'FOOD STORE • FEED & SUPPLY' sign band on north parapet
+    let signBandMat = new THREE.MeshStandardMaterial({ color: 0xf4f1e8, roughness: 0.45, metalness: 0.05 });
+    const signCanvas = ctx.makeCanvas(1024, 192);
+    if (signCanvas) {
+      const c2d = signCanvas.getContext('2d');
+      c2d.fillStyle = '#f5f2e9';
+      c2d.fillRect(0, 0, 1024, 192);
+      c2d.strokeStyle = '#7a201c';
+      c2d.lineWidth = 10;
+      c2d.strokeRect(8, 8, 1008, 176);
+      c2d.fillStyle = '#7a201c';
+      c2d.font = 'bold 74px sans-serif';
+      c2d.textAlign = 'center';
+      c2d.textBaseline = 'middle';
+      c2d.fillText('FOOD STORE', 512, 74);
+      c2d.fillStyle = '#2b2b2b';
+      c2d.font = 'bold 38px sans-serif';
+      c2d.fillText('GROCERIES  •  ICE  •  FEED & SUPPLY', 512, 142);
+      const tex = new THREE.CanvasTexture(signCanvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = 8;
+      signBandMat = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.4, metalness: 0.05 });
+    }
+    const signBoard = new THREE.Mesh(new THREE.BoxGeometry(8.6, 0.92, 0.14), signBandMat);
+    signBoard.position.set(scx, baseY + 3.92, scz - sd * 0.5 - 0.18);
+    signBoard.name = 'store_fascia_sign';
+    signBoard.userData.citation = 'inferred: unbranded commercial fascia sign on retail store';
+    storeGroup.add(signBoard);
+
+    // Ice chest & Propane cage along north storefront wall
+    const iceChest = new THREE.Mesh(new THREE.BoxGeometry(1.9, 1.35, 0.95), matWhiteMetal);
+    iceChest.position.set(scx - 5.2, baseY + 0.675, scz - sd * 0.5 - 0.52);
+    iceChest.castShadow = true;
+    iceChest.name = 'store_ice_merch';
+    iceChest.userData.citation = 'inferred: storefront ice merchandiser chest';
+    storeGroup.add(iceChest);
+
+    const iceHeader = new THREE.Mesh(new THREE.BoxGeometry(1.92, 0.28, 0.97), matBlueMetal);
+    iceHeader.position.set(scx - 5.2, baseY + 1.42, scz - sd * 0.5 - 0.52);
+    storeGroup.add(iceHeader);
+
+    const propaneCage = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.65, 0.85), matWhiteMetal);
+    propaneCage.position.set(scx + 5.6, baseY + 0.825, scz - sd * 0.5 - 0.48);
+    propaneCage.castShadow = true;
+    propaneCage.name = 'store_propane_cage';
+    propaneCage.userData.citation = 'inferred: storefront propane cylinder exchange cage';
+    storeGroup.add(propaneCage);
+
+    // Wall-pack exterior security lights (off during day)
+    const wallPackX = [11.0, 18.0, 25.0];
+    for (let i = 0; i < wallPackX.length; i++) {
+      const wp = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.22, 0.18), matDarkMetal);
+      wp.position.set(wallPackX[i], baseY + 3.35, scz - sd * 0.5 - 0.08);
+      storeGroup.add(wp);
+    }
+
+    // Rooftop HVAC packaged units
+    const hvacPositions = [
+      [scx - 4.2, scz - 1.5, 1.7, 1.05, 1.4],
+      [scx + 3.8, scz + 1.2, 1.9, 1.15, 1.5]
+    ];
+    for (let i = 0; i < hvacPositions.length; i++) {
+      const [hx, hz, hw, hh, hd] = hvacPositions[i];
+      const hvac = new THREE.Mesh(new THREE.BoxGeometry(hw, hh, hd), matRoofMetal);
+      hvac.position.set(hx, baseY + sh + hh * 0.5, hz);
+      hvac.castShadow = true;
+      hvac.name = `store_rooftop_hvac_${i}`;
+      hvac.userData.citation = 'inferred: commercial rooftop packaged HVAC unit';
+      storeGroup.add(hvac);
+    }
+
+    // Rear dumpster enclosure behind store (x = 24.5, z = 27.2)
+    const dmpX = 24.5, dmpZ = 27.2;
+    const dmpY = gY(dmpX, dmpZ);
+    const dmpPad = new THREE.Mesh(new THREE.BoxGeometry(3.8, 0.12, 3.0), matConcrete);
+    dmpPad.position.set(dmpX, dmpY + 0.06, dmpZ);
+    storeGroup.add(dmpPad);
+
+    const dumpster = new THREE.Mesh(new THREE.BoxGeometry(2.1, 1.45, 1.5), matTPost);
+    dumpster.position.set(dmpX, dmpY + 0.84, dmpZ);
+    dumpster.castShadow = true;
+    dumpster.name = 'store_rear_dumpster';
+    dumpster.userData.citation = 'inferred: rear commercial dumpster and enclosure';
+    storeGroup.add(dumpster);
+
+    const dmpLid = new THREE.Mesh(new THREE.BoxGeometry(2.16, 0.12, 1.56), matDarkMetal);
+    dmpLid.position.set(dmpX, dmpY + 1.6, dmpZ);
+    storeGroup.add(dmpLid);
+
+    // Optional Fuel Island East of Store (x ~ 35.5, z ~ 16.5) — well clear of carPostImpactPath
+    const fuelGroup = new THREE.Group();
+    fuelGroup.name = 'store_fuel_island';
+    fuelGroup.userData.citation = 'inferred: scene dressing, not in NTSB record (rural store fuel canopy east of store, clear of car path)';
+
+    const fcx = 35.5, fcz = 16.5;
+    const fcy = gY(fcx, fcz);
+
+    const island = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.18, 7.6), matConcrete);
+    island.position.set(fcx, fcy + 0.09, fcz);
+    island.receiveShadow = true;
+    fuelGroup.add(island);
+
+    const colOffsets = [[-3.2, -3.2], [3.2, -3.2], [-3.2, 3.2], [3.2, 3.2]];
+    for (const [ox, oz] of colOffsets) {
+      const col = new THREE.Mesh(new THREE.BoxGeometry(0.32, 4.6, 0.32), matWhiteMetal);
+      col.position.set(fcx + ox, fcy + 2.3, fcz + oz);
+      col.castShadow = true;
+      fuelGroup.add(col);
+    }
+
+    const canopyDeck = new THREE.Mesh(new THREE.BoxGeometry(8.4, 0.65, 9.2), matWhiteMetal);
+    canopyDeck.position.set(fcx, fcy + 4.75, fcz);
+    canopyDeck.castShadow = true;
+    canopyDeck.receiveShadow = true;
+    fuelGroup.add(canopyDeck);
+
+    const canopyStripe = new THREE.Mesh(new THREE.BoxGeometry(8.46, 0.22, 9.26), matRedMetal);
+    canopyStripe.position.set(fcx, fcy + 4.75, fcz);
+    fuelGroup.add(canopyStripe);
+
+    const pumpZ = [fcz - 2.0, fcz + 2.0];
+    for (let i = 0; i < pumpZ.length; i++) {
+      const pz = pumpZ[i];
+      const disp = new THREE.Mesh(new THREE.BoxGeometry(0.95, 1.95, 1.15), matWhiteMetal);
+      disp.position.set(fcx, fcy + 0.18 + 0.975, pz);
+      disp.castShadow = true;
+      fuelGroup.add(disp);
+
+      const dispTop = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.38, 1.2), matBlueMetal);
+      dispTop.position.set(fcx, fcy + 0.18 + 2.05, pz);
+      fuelGroup.add(dispTop);
+
+      for (const bz of [pz - 0.85, pz + 0.85]) {
+        const bollard = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 1.05, 6), matRedMetal);
+        bollard.position.set(fcx - 0.85, fcy + 0.525, bz);
+        fuelGroup.add(bollard);
+      }
+    }
+
+    storeGroup.add(fuelGroup);
+    root.add(storeGroup);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 5. Utility Pole Line along z = 18.5 (x = -1000 to 800, spacing 75 m,
+  //    anchorX = 239.3 — the pole Vehicle A struck) + Sagging Catenary Wires
+  // ---------------------------------------------------------------------------
+  {
+    const poleLineGroup = new THREE.Group();
+    poleLineGroup.name = 'utility_poles_south_line';
+    poleLineGroup.userData.citation = CITE.postImpact || 'NTSB/HAR-17/02 p.1 (wooden utility pole struck and broken at x=239.3, z=18.5; south ROW utility line)';
+
+    const poleZ = L.poleLine.z;               // 18.5
+    const spacing = L.poleLine.spacing;       // 75
+    const anchorX = L.poleLine.anchorX;       // 239.3
+    const poleH = L.poleLine.height || 10.5;  // 10.5
+
+    const poleXs = [];
+    const kMin = Math.ceil((-1000 - anchorX) / spacing);
+    const kMax = Math.floor((800 - anchorX) / spacing);
+    for (let k = kMin; k <= kMax; k++) {
+      const px = +(anchorX + k * spacing).toFixed(2);
+      if (Math.abs(px) < 6.0) continue;
+      if (px >= 4.0 && px <= 34.0) continue;
+      poleXs.push(px);
+    }
+
+    const placedPoles = [];
+    for (let i = 0; i < poleXs.length; i++) {
+      const px = poleXs[i];
+      const py = gY(px, poleZ);
+      const isStruckPole = Math.abs(px - anchorX) < 0.2;
+
+      const poleObj = assets.pole({
+        id: isStruckPole ? 'occ_pole' : `south_pole_${i}`,
+        height: poleH,
+        crossarm: true,
+        insulators: 3
+      });
+      poleObj.position.set(px, py, poleZ);
+      poleObj.rotation.y = Math.PI * 0.5;
+      poleObj.name = isStruckPole ? 'occ_pole' : `utility_pole_${i}`;
+      poleObj.userData.citation = isStruckPole
+        ? 'NTSB/HAR-17/02 p.1; facts.txt F24, F26 (wooden utility pole at (239.3, 18.5) struck and broken by Vehicle A)'
+        : 'inferred: south right-of-way utility pole line aligned with struck pole at z=18.5 m, 75 m spacing';
+
+      if (isStruckPole || i % 3 === 0) {
+        const xfmr = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.85, 8), matSteelGalv);
+        xfmr.position.set(0.28, poleH - 1.85, 0);
+        xfmr.castShadow = true;
+        poleObj.add(xfmr);
+      }
+
+      poleLineGroup.add(poleObj);
+
+      const rawAttach = (poleObj.userData && Array.isArray(poleObj.userData.attach) && poleObj.userData.attach.length >= 4)
+        ? poleObj.userData.attach
+        : [
+            [-1.05, poleH - 0.50, 0],
+            [0.0,   poleH - 0.50, 0],
+            [1.05,  poleH - 0.50, 0],
+            [0.18,  poleH - 1.35, 0],
+            [0.18,  poleH - 2.35, 0]
+          ];
+
+      const worldAttach = rawAttach.map(([lx, ly, lz]) => new THREE.Vector3(px + lz, py + ly, poleZ - lx));
+      if (worldAttach.length < 5) {
+        worldAttach.push(new THREE.Vector3(px, py + poleH - 2.35, poleZ - 0.15));
+      }
+      placedPoles.push({ x: px, y: py, z: poleZ, attach: worldAttach });
+    }
+
+    // Draw sagging catenary conductors (8 segments per span per wire) using open-ended 3-sided prism InstancedMesh (6 tris/seg)
+    const segsPerSpan = 8;
+    const wireCountPerSpan = 5;
+    const totalSpans = Math.max(0, placedPoles.length - 1);
+    const totalSegments = totalSpans * wireCountPerSpan * segsPerSpan;
+
+    if (totalSegments > 0) {
+      const cylGeom = new THREE.CylinderGeometry(0.016, 0.016, 1.0, 3, 1, true);
+      const wireInst = new THREE.InstancedMesh(cylGeom, matWire, totalSegments);
+      wireInst.name = 'utility_line_conductors';
+      wireInst.userData.citation = 'inferred: overhead aluminum primary conductors, neutral, and comm line along south ROW poles';
+
+      const dummy = new THREE.Object3D();
+      const upVec = new THREE.Vector3(0, 1, 0);
+      const dirVec = new THREE.Vector3();
+      const pA = new THREE.Vector3();
+      const pB = new THREE.Vector3();
+      const mid = new THREE.Vector3();
+      let idx = 0;
+
+      for (let s = 0; s < totalSpans; s++) {
+        const pole0 = placedPoles[s];
+        const pole1 = placedPoles[s + 1];
+        const spanLen = Math.abs(pole1.x - pole0.x);
+        const baseSag = Math.min(2.4, 1.05 * (spanLen / 75.0));
+
+        for (let w = 0; w < wireCountPerSpan; w++) {
+          const startPt = pole0.attach[w % pole0.attach.length];
+          const endPt = pole1.attach[w % pole1.attach.length];
+          const wireSag = (w === 4) ? baseSag * 0.85 : baseSag;
+
+          for (let k = 0; k < segsPerSpan; k++) {
+            const t0 = k / segsPerSpan;
+            const t1 = (k + 1) / segsPerSpan;
+
+            pA.lerpVectors(startPt, endPt, t0);
+            pA.y -= 4.0 * wireSag * t0 * (1.0 - t0);
+
+            pB.lerpVectors(startPt, endPt, t1);
+            pB.y -= 4.0 * wireSag * t1 * (1.0 - t1);
+
+            mid.addVectors(pA, pB).multiplyScalar(0.5);
+            dirVec.subVectors(pB, pA);
+            const segLen = dirVec.length();
+
+            dummy.position.copy(mid);
+            dummy.quaternion.setFromUnitVectors(upVec, dirVec.normalize());
+            const thickness = (w === 4) ? 1.55 : 1.0;
+            dummy.scale.set(thickness, segLen, thickness);
+            dummy.updateMatrix();
+            wireInst.setMatrixAt(idx++, dummy.matrix);
+          }
+        }
+      }
+      wireInst.instanceMatrix.needsUpdate = true;
+      poleLineGroup.add(wireInst);
+    }
+
+    root.add(poleLineGroup);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 6. Wire Fences (NTSB p.1: two wire fences struck by Vehicle A post-impact,
+  //    plus south ROW fence segments outside the car trajectory)
+  // ---------------------------------------------------------------------------
+  {
+    const fencesGroup = new THREE.Group();
+    fencesGroup.name = 'south_wire_fences';
+    fencesGroup.userData.citation = CITE.postImpact || 'NTSB/HAR-17/02 p.1 (Vehicle A went through two wire fences post-impact: fenceSouth1 at z=14.5 x=[85,225] and fenceSouth2 at x=225 z=[13,31])';
+
+    function buildWireFenceRun(name, citation, x0, z0, x1, z1) {
+      const grp = new THREE.Group();
+      grp.name = name;
+      grp.userData.citation = citation;
+
+      const dx = x1 - x0;
+      const dz = z1 - z0;
+      const totalLen = Math.hypot(dx, dz);
+      const span = 3.66;
+      const numBays = Math.max(1, Math.round(totalLen / span));
+
+      // Low-poly open-ended geometries to keep InstancedMesh triangle count compact
+      const woodPostGeom = new THREE.CylinderGeometry(0.065, 0.072, 1.35, 5, 1, true);
+      const tPostGeom = new THREE.BoxGeometry(0.035, 1.32, 0.035);
+      const wireSegGeom = new THREE.CylinderGeometry(0.008, 0.008, 1.0, 3, 1, true);
+
+      const woodInst = new THREE.InstancedMesh(woodPostGeom, matWoodPost, numBays + 1);
+      const tPostInst = new THREE.InstancedMesh(tPostGeom, matTPost, numBays);
+      const wireInst = new THREE.InstancedMesh(wireSegGeom, matSteelGalv, numBays * 4);
+
+      woodInst.castShadow = true;
+      tPostInst.castShadow = true;
+
+      const dummy = new THREE.Object3D();
+      const upVec = new THREE.Vector3(0, 1, 0);
+      const dirVec = new THREE.Vector3();
+      const pA = new THREE.Vector3();
+      const pB = new THREE.Vector3();
+      const mid = new THREE.Vector3();
+
+      const strandHeights = [0.28, 0.56, 0.84, 1.12];
+      let wIdx = 0;
+
+      for (let i = 0; i <= numBays; i++) {
+        const t = i / numBays;
+        const px = x0 + dx * t;
+        const pz = z0 + dz * t;
+        const py = gY(px, pz);
+
+        dummy.position.set(px, py + 0.65, pz);
+        dummy.rotation.set((rand() - 0.5) * 0.03, rand() * Math.PI, (rand() - 0.5) * 0.03);
+        dummy.scale.set(1, 1, 1);
+        dummy.updateMatrix();
+        woodInst.setMatrixAt(i, dummy.matrix);
+
+        if (i < numBays) {
+          const tm = (i + 0.5) / numBays;
+          const mx = x0 + dx * tm;
+          const mz = z0 + dz * tm;
+          const my = gY(mx, mz);
+
+          dummy.position.set(mx, my + 0.64, mz);
+          dummy.rotation.set(0, Math.atan2(dx, dz), 0);
+          dummy.scale.set(1, 1, 1);
+          dummy.updateMatrix();
+          tPostInst.setMatrixAt(i, dummy.matrix);
+
+          const tNext = (i + 1) / numBays;
+          const nx = x0 + dx * tNext;
+          const nz = z0 + dz * tNext;
+          const ny = gY(nx, nz);
+
+          for (let s = 0; s < strandHeights.length; s++) {
+            const sh = strandHeights[s];
+            pA.set(px, py + sh, pz);
+            pB.set(nx, ny + sh, nz);
+            mid.addVectors(pA, pB).multiplyScalar(0.5);
+            dirVec.subVectors(pB, pA);
+            const len = dirVec.length();
+            dummy.position.copy(mid);
+            dummy.quaternion.setFromUnitVectors(upVec, dirVec.normalize());
+            dummy.scale.set(1, len, 1);
+            dummy.updateMatrix();
+            wireInst.setMatrixAt(wIdx++, dummy.matrix);
+          }
+        }
+      }
+
+      woodInst.instanceMatrix.needsUpdate = true;
+      tPostInst.instanceMatrix.needsUpdate = true;
+      wireInst.instanceMatrix.needsUpdate = true;
+
+      grp.add(woodInst);
+      grp.add(tPostInst);
+      grp.add(wireInst);
+
+      // Horizontal wooden H-brace top rails at both ends
+      for (const endIdx of [0, numBays - 1]) {
+        const tA = endIdx / numBays;
+        const tB = (endIdx + 1) / numBays;
+        const ax = x0 + dx * tA, az = z0 + dz * tA, ay = gY(ax, az) + 1.05;
+        const bx = x0 + dx * tB, bz = z0 + dz * tB, by = gY(bx, bz) + 1.05;
+        pA.set(ax, ay, az);
+        pB.set(bx, by, bz);
+        mid.addVectors(pA, pB).multiplyScalar(0.5);
+        dirVec.subVectors(pB, pA);
+        const railLen = dirVec.length();
+        const rail = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, railLen, 5, 1, true), matWoodPost);
+        rail.position.copy(mid);
+        rail.quaternion.setFromUnitVectors(upVec, dirVec.normalize());
+        grp.add(rail);
+      }
+
+      return grp;
+    }
+
+    // 1. Property wire fence #1 (struck by Vehicle A): z = 14.5, x in [85, 225]
+    fencesGroup.add(buildWireFenceRun(
+      'fence_wire_south_1',
+      'NTSB/HAR-17/02 p.1; police_report.txt p.2 (wire pasture/property fence #1 on south side of US-27A, struck by Vehicle A)',
+      L.fenceSouth1.x[0], L.fenceSouth1.z,
+      L.fenceSouth1.x[1], L.fenceSouth1.z
+    ));
+
+    // 2. Cross-property wire fence #2 (struck by Vehicle A): x = 225, z in [13, 31]
+    fencesGroup.add(buildWireFenceRun(
+      'fence_wire_south_2',
+      'NTSB/HAR-17/02 p.1; police_report.txt p.2 (cross-property wire fence #2 at x=225, z=[13,31], struck by Vehicle A)',
+      L.fenceSouth2.x, L.fenceSouth2.z[0],
+      L.fenceSouth2.x, L.fenceSouth2.z[1]
+    ));
+
+    // 3. South ROW fence segments outside the approach sight corridor and car trajectory
+    fencesGroup.add(buildWireFenceRun(
+      'fence_row_south_far_west',
+      'inferred: rural Florida south ROW wire fence west of approach corridor',
+      -1000, L.rowFence.south.z,
+      -702, L.rowFence.south.z
+    ));
+
+    fencesGroup.add(buildWireFenceRun(
+      'fence_row_south_east',
+      'inferred: rural Florida south ROW wire fence east of residence (x=[310, 800], z=14.5)',
+      L.rowFence.south.x[1][0], L.rowFence.south.z,
+      L.rowFence.south.x[1][1], L.rowFence.south.z
+    ));
+
+    root.add(fencesGroup);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 7. Residence where Vehicle A came to rest:
+  //    Ranch house at layout.residence (262, 40), 20 x 14 m, faces north,
+  //    shell-rock driveway x [278, 282] from z = 3.35 to 44, mailbox at (284, 8),
+  //    front-yard lawn (clear 4.5 m around carRest (276.6, 23.9)), 2 live oaks, 1 palm
+  // ---------------------------------------------------------------------------
+  {
+    const resGroup = new THREE.Group();
+    resGroup.name = 'residential_house_car_rest';
+    resGroup.userData.citation = CITE.postImpact || 'NTSB/HAR-17/02 p.1; police_report.txt p.2 (Vehicle A came to final rest at (276.6, 23.9) in front yard of residence near driveway)';
+
+    const rcx = L.residence.center[0]; // 262
+    const rcz = L.residence.center[1]; // 40
+    const rw = L.residence.w;          // 20
+    const rd = L.residence.d;          // 14
+    const rh = 4.2;
+
+    const resFnd = buildFoundationSlab(rcx, rcz, rw, rd, 0.75, 0.18);
+    resFnd.mesh.name = 'residence_foundation';
+    resFnd.mesh.userData.citation = resGroup.userData.citation;
+    resGroup.add(resFnd.mesh);
+    const resBaseY = resFnd.topY;
+
+    const house = assets.building({
+      id: 'residence_east_main',
+      w: rw,
+      d: rd,
+      h: rh,
+      kind: 'house',
+      style: 'house'
+    });
+    house.position.set(rcx, resBaseY, rcz);
+    house.rotation.y = 0;
+    house.name = 'residence_building_shell';
+    house.userData.citation = resGroup.userData.citation;
+    resGroup.add(house);
+
+    // Front covered porch on the north face
+    const porchW = 11.5, porchD = 2.4;
+    const porchZ = rcz - rd * 0.5 - porchD * 0.5;
+    const porchDeck = new THREE.Mesh(new THREE.BoxGeometry(porchW, 0.35, porchD), matConcrete);
+    porchDeck.position.set(rcx, resBaseY - 0.08, porchZ);
+    porchDeck.receiveShadow = true;
+    resGroup.add(porchDeck);
+
+    const steps = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.22, 0.8), matConcrete);
+    steps.position.set(rcx, resBaseY - 0.16, porchZ - porchD * 0.5 - 0.35);
+    resGroup.add(steps);
+
+    const porchRoof = new THREE.Mesh(new THREE.BoxGeometry(porchW + 0.4, 0.25, porchD + 0.3), matRoofMetal);
+    porchRoof.position.set(rcx, resBaseY + 2.85, porchZ);
+    porchRoof.rotation.x = -0.08;
+    porchRoof.castShadow = true;
+    resGroup.add(porchRoof);
+
+    for (let i = 0; i < 4; i++) {
+      const colX = (rcx - porchW * 0.46) + (i / 3) * (porchW * 0.92);
+      const col = new THREE.Mesh(new THREE.BoxGeometry(0.14, 2.8, 0.14), matWhiteMetal);
+      col.position.set(colX, resBaseY + 1.4, porchZ - porchD * 0.44);
+      col.castShadow = true;
+      resGroup.add(col);
+    }
+
+    // Attached carport on the east end of the house connecting to the driveway
+    const cpX = rcx + rw * 0.5 + 3.0; // 275
+    const cpZ = rcz - 0.5;            // 39.5
+    const cpPad = buildConformingPatch(272.0, 278.5, 34.0, 44.5, 2, 2, 0.015, matConcrete, 0.3);
+    cpPad.name = 'residence_carport_pad';
+    cpPad.userData.citation = 'inferred: attached carport concrete pad adjoining driveway';
+    resGroup.add(cpPad);
+
+    const cpRoof = new THREE.Mesh(new THREE.BoxGeometry(6.4, 0.24, 9.6), matRoofMetal);
+    cpRoof.position.set(cpX, resBaseY + 2.95, cpZ);
+    cpRoof.castShadow = true;
+    resGroup.add(cpRoof);
+
+    for (const cz of [cpZ - 4.2, cpZ, cpZ + 4.2]) {
+      const post = new THREE.Mesh(new THREE.BoxGeometry(0.14, 3.1, 0.14), matWhiteMetal);
+      post.position.set(cpX + 2.8, resBaseY + 1.4, cz);
+      post.castShadow = true;
+      resGroup.add(post);
+    }
+
+    // Shell-rock residential driveway: x in [278, 282], z from 3.35 to 44
+    const drvX0 = L.residence.driveway.x[0]; // 278
+    const drvX1 = L.residence.driveway.x[1]; // 282
+    const drvZ0 = L.residence.driveway.z[0]; // 3.35
+    const drvZ1 = L.residence.driveway.z[1]; // 44
+
+    const drvApron = buildConformingPatch(drvX0 - 1.8, drvX1 + 1.8, drvZ0, 8.0, 3, 3, 0.012, matDriveway, 0.25);
+    drvApron.name = 'residential_driveway_apron';
+    drvApron.userData.citation = 'police_report.txt p.2 (near a driveway in front yard of residence)';
+    resGroup.add(drvApron);
+
+    const drvMain = buildConformingPatch(drvX0, drvX1, 8.0, drvZ1, 2, 12, 0.014, matDriveway, 0.25);
+    drvMain.name = 'residential_driveway_east';
+    drvMain.userData.citation = 'police_report.txt p.2 (residential driveway near Vehicle A final rest)';
+    resGroup.add(drvMain);
+
+    // Culvert pipe under the residential driveway at z = 9.0
+    const drvCulvY = gY(280, 9.0) - 0.38;
+    const drvPipe = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.32, 6.2, 10, 1, true), matConcrete);
+    drvPipe.rotation.z = Math.PI * 0.5;
+    drvPipe.position.set(280.0, drvCulvY, 9.0);
+    resGroup.add(drvPipe);
+
+    for (const hx of [276.9, 283.1]) {
+      const hw = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.65, 1.2), matConcrete);
+      hw.position.set(hx, drvCulvY + 0.1, 9.0);
+      resGroup.add(hw);
+    }
+
+    // Mailbox at (284, 8)
+    const mb = buildMailbox(284.0, 8.0, 0);
+    mb.name = 'residence_mailbox';
+    mb.userData.citation = 'inferred: residential rural mailbox beside driveway at (284, 8)';
+    resGroup.add(mb);
+
+    // Hero Trees in the residence yard (2 live oaks + 1 cabbage palm), strictly keeping > 4.5 m clear of carRest (276.6, 23.9)
+    const yardTrees = [
+      { id: 'res_oak_west', kind: 'oak', height: 11.5, x: 247.5, z: 33.5 },
+      { id: 'res_oak_east', kind: 'oak', height: 12.2, x: 289.5, z: 30.0 },
+      { id: 'res_palm_front', kind: 'palm', height: 9.5, x: 266.0, z: 29.5 }
+    ];
+    for (const t of yardTrees) {
+      if (isClearForProp(t.x, t.z, 2.5)) {
+        const tree = assets.tree({ id: t.id, kind: t.kind, height: t.height });
+        tree.position.set(t.x, gY(t.x, t.z), t.z);
+        tree.rotation.y = rand() * Math.PI * 2;
+        tree.name = t.id;
+        tree.userData.citation = 'inferred: residential yard shade trees (set clear of Vehicle A post-impact path and final rest)';
+        resGroup.add(tree);
+      }
+    }
+
+    root.add(resGroup);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 8. Other Sparse South-Side Homes:
+  //    - 3 homes along NE 140th Ct (x ±28, z 92..188) with driveways & mailboxes
+  //    - 2 homes along US-27A at x ~ 520 and x ~ -420 (set back z >= 54 m from road)
+  // ---------------------------------------------------------------------------
+  const extraHomeTreeCoords = [];
+  {
+    const homesGroup = new THREE.Group();
+    homesGroup.name = 'south_sparse_residences';
+    homesGroup.userData.citation = 'inferred: deposition.txt 207, 210 ("past a couple of houses"); sparse rural homes along NE 140th Ct and US-27A';
+
+    const extraHomes = [
+      {
+        id: 'house_ne140_w1',
+        x: -28.0, z: 92.0, w: 16, d: 12, h: 4.0, style: 'house', rotY: -Math.PI * 0.5,
+        drv: { x0: -22.0, x1: -3.05, z0: 89.5, z1: 93.0 },
+        mb: { x: -4.2, z: 88.2, rotY: -Math.PI * 0.5 },
+        palm: { h: 9.0, x: -20.0, z: 101.0 },
+        instTrees: [[-34.0, 82.0, 'oak'], [-36.0, 100.0, 'pine']]
+      },
+      {
+        id: 'house_ne140_e1',
+        x: 28.0, z: 138.0, w: 17, d: 12.5, h: 4.1, style: 'house', rotY: Math.PI * 0.5,
+        drv: { x0: 3.05, x1: 21.8, z0: 135.5, z1: 139.0 },
+        mb: { x: 4.2, z: 134.2, rotY: Math.PI * 0.5 },
+        palm: { h: 9.2, x: 21.0, z: 129.0 },
+        instTrees: [[35.0, 126.0, 'oak'], [22.0, 149.0, 'pine']]
+      },
+      {
+        id: 'house_ne140_w2',
+        x: -29.0, z: 188.0, w: 15, d: 13, h: 4.2, style: 'barn', rotY: -Math.PI * 0.5,
+        drv: { x0: -22.5, x1: -3.05, z0: 186.0, z1: 189.5 },
+        mb: { x: -4.2, z: 184.8, rotY: -Math.PI * 0.5 },
+        palm: { h: 8.8, x: -21.0, z: 196.0 },
+        instTrees: [[-36.0, 176.0, 'pine'], [-35.0, 198.0, 'oak']]
+      },
+      {
+        id: 'house_us27_east_520',
+        x: 520.0, z: 54.0, w: 19, d: 13, h: 4.2, style: 'house', rotY: 0,
+        drv: { x0: 531.0, x1: 534.8, z0: 15.0, z1: 54.0 },
+        mb: null,
+        palm: { h: 9.5, x: 538.0, z: 48.0 },
+        instTrees: [[506.0, 46.0, 'oak'], [515.0, 68.0, 'pine']]
+      },
+      {
+        id: 'house_us27_west_420',
+        x: -420.0, z: 56.0, w: 18, d: 13, h: 4.2, style: 'house', rotY: 0,
+        drv: { x0: -410.0, x1: -406.2, z0: 42.0, z1: 56.0 },
+        mb: null,
+        palm: { h: 9.2, x: -402.0, z: 52.0 },
+        instTrees: [[-434.0, 50.0, 'oak'], [-425.0, 70.0, 'pine']]
+      }
+    ];
+
+    for (const h of extraHomes) {
+      if (ctx.blocked(h.x, h.z)) continue;
+      const sub = new THREE.Group();
+      sub.name = h.id;
+      sub.userData.citation = homesGroup.userData.citation;
+
+      const fndW = (Math.abs(Math.sin(h.rotY)) > 0.5) ? h.d : h.w;
+      const fndD = (Math.abs(Math.sin(h.rotY)) > 0.5) ? h.w : h.d;
+      const fnd = buildFoundationSlab(h.x, h.z, fndW, fndD, 0.7, 0.16);
+      sub.add(fnd.mesh);
+
+      const bld = assets.building({
+        id: `${h.id}_shell`,
+        w: h.w,
+        d: h.d,
+        h: h.h,
+        kind: h.style === 'barn' ? 'generic' : 'house',
+        style: h.style
+      });
+      bld.position.set(h.x, fnd.topY, h.z);
+      bld.rotation.y = h.rotY;
+      sub.add(bld);
+
+      if (h.drv) {
+        const drvPatch = buildConformingPatch(h.drv.x0, h.drv.x1, h.drv.z0, h.drv.z1, 2, 2, 0.012, matDriveway, 0.25);
+        sub.add(drvPatch);
+      }
+
+      if (h.mb) {
+        const mb = buildMailbox(h.mb.x, h.mb.z, h.mb.rotY);
+        sub.add(mb);
+      }
+
+      if (h.palm && isClearForProp(h.palm.x, h.palm.z, 2.0)) {
+        const palmMesh = assets.tree({ id: `${h.id}_palm`, kind: 'palm', height: h.palm.h });
+        palmMesh.position.set(h.palm.x, gY(h.palm.x, h.palm.z), h.palm.z);
+        palmMesh.rotation.y = rand() * Math.PI * 2;
+        sub.add(palmMesh);
+      }
+
+      if (h.instTrees) {
+        for (const it of h.instTrees) {
+          extraHomeTreeCoords.push(it);
+        }
+      }
+
+      homesGroup.add(sub);
+    }
+
+    root.add(homesGroup);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 9. Massed South-Side Vegetation (z > 60 across [-1000, 800], plus east of
+  //    x = 315 for z > 32): Low-Poly Instanced Slash Pines, Live Oaks & Saw Palmettos
+  // ---------------------------------------------------------------------------
+  {
+    const vegGroup = new THREE.Group();
+    vegGroup.name = 'veg_south_treeline_and_pasture';
+    vegGroup.userData.citation = 'NTSB/HAR-17/02 p.29-30 (no vegetation obstructions in approach corridor); inferred distant rural Florida slash pine, live oak, and palmetto background south of z=60';
+
+    function mergeGeometries(geoms) {
+      let totalVerts = 0;
+      let totalIndices = 0;
+      for (const g of geoms) {
+        totalVerts += g.attributes.position.count;
+        totalIndices += g.index ? g.index.count : g.attributes.position.count;
+      }
+      const pos = new Float32Array(totalVerts * 3);
+      const norm = new Float32Array(totalVerts * 3);
+      const idx = new Uint32Array(totalIndices);
+      let vOffset = 0;
+      let iOffset = 0;
+      for (const g of geoms) {
+        const pAttr = g.attributes.position;
+        const nAttr = g.attributes.normal;
+        pos.set(pAttr.array, vOffset * 3);
+        if (nAttr) norm.set(nAttr.array, vOffset * 3);
+        if (g.index) {
+          const gIdx = g.index.array;
+          for (let i = 0; i < gIdx.length; i++) {
+            idx[iOffset + i] = gIdx[i] + vOffset;
+          }
+          iOffset += gIdx.length;
+        } else {
+          for (let i = 0; i < pAttr.count; i++) {
+            idx[iOffset + i] = vOffset + i;
+          }
+          iOffset += pAttr.count;
+        }
+        vOffset += pAttr.count;
+      }
+      const out = new THREE.BufferGeometry();
+      out.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      out.setAttribute('normal', new THREE.BufferAttribute(norm, 3));
+      out.setIndex(new THREE.BufferAttribute(idx, 1));
+      return out;
+    }
+
+    // Ultra-clean low-poly Slash Pine (~25 tris total: 5-sided open trunk + 3 open 5-sided tiered cones)
+    const pineTrunkGeom = new THREE.CylinderGeometry(0.14, 0.24, 9.5, 5, 1, true);
+    pineTrunkGeom.translate(0, 4.75, 0);
+
+    const cone1 = new THREE.ConeGeometry(2.5, 3.8, 5, 1, true);
+    cone1.translate(0, 8.2, 0);
+    const cone2 = new THREE.ConeGeometry(2.1, 3.4, 5, 1, true);
+    cone2.translate(0.12, 10.2, -0.08);
+    const cone3 = new THREE.ConeGeometry(1.45, 2.8, 5, 1, true);
+    cone3.translate(-0.08, 11.9, 0.08);
+    const pineCrownGeom = mergeGeometries([cone1, cone2, cone3]);
+
+    // Ultra-clean low-poly Live Oak (~34 tris total: 5-sided open trunk + 3 faceted octahedron canopy domes)
+    const oakTrunkGeom = new THREE.CylinderGeometry(0.22, 0.36, 4.2, 5, 1, true);
+    oakTrunkGeom.translate(0, 2.1, 0);
+
+    const lobe1 = new THREE.OctahedronGeometry(3.3, 0);
+    lobe1.scale(1.25, 0.72, 1.15);
+    lobe1.translate(0, 5.4, 0);
+    const lobe2 = new THREE.OctahedronGeometry(2.6, 0);
+    lobe2.scale(1.15, 0.68, 1.1);
+    lobe2.translate(-1.8, 4.9, 0.9);
+    const lobe3 = new THREE.OctahedronGeometry(2.5, 0);
+    lobe3.scale(1.1, 0.68, 1.15);
+    lobe3.translate(1.7, 5.1, -0.8);
+    const oakCrownGeom = mergeGeometries([lobe1, lobe2, lobe3]);
+
+    // Low-poly Saw Palmetto clump (15 tris: 5 open 3-sided fan blades)
+    const frondGeoms = [];
+    for (let f = 0; f < 5; f++) {
+      const ang = (f / 5) * Math.PI * 2;
+      const blade = new THREE.ConeGeometry(0.65, 1.35, 3, 1, true);
+      blade.scale(1.0, 1.0, 0.18);
+      blade.rotateX(0.62);
+      blade.rotateY(ang);
+      blade.translate(Math.sin(ang) * 0.35, 0.55, Math.cos(ang) * 0.35);
+      frondGeoms.push(blade);
+    }
+    const palmettoGeom = mergeGeometries(frondGeoms);
+
+    const pineTransforms = [];
+    const oakTransforms = [];
+    const palmettoTransforms = [];
+    const dummy = new THREE.Object3D();
+
+    // Yard trees around the sparse extra homes
+    for (const [tx, tz, kind] of extraHomeTreeCoords) {
+      if (!isClearForProp(tx, tz, 2.0)) continue;
+      const ty = gY(tx, tz);
+      dummy.position.set(tx, ty - 0.15, tz);
+      dummy.rotation.set(0, rand() * Math.PI * 2, 0);
+      dummy.scale.set(1.05, 1.05, 1.05);
+      dummy.updateMatrix();
+      if (kind === 'pine') pineTransforms.push(dummy.matrix.clone());
+      else oakTransforms.push(dummy.matrix.clone());
+    }
+
+    function isClearForForest(x, z) {
+      if (!isClearForProp(x, z, 3.0)) return false;
+      if (Math.abs(x) < 16.0 && z < 240.0) return false;
+      if (Math.abs(x - (-28)) < 14 && Math.abs(z - 92) < 14) return false;
+      if (Math.abs(x - 28) < 14 && Math.abs(z - 138) < 14) return false;
+      if (Math.abs(x - (-29)) < 14 && Math.abs(z - 188) < 14) return false;
+      if (x >= 242 && x <= 292 && z >= 14 && z <= 55) return false;
+      if (Math.abs(x - 520) < 22 && Math.abs(z - 54) < 18) return false;
+      if (Math.abs(x - (-420)) < 22 && Math.abs(z - 56) < 18) return false;
+      return true;
+    }
+
+    // 1. Continuous horizon treeline belt at z in [62, 180], x in [-980, 780]
+    for (let i = 0; i < 420; i++) {
+      const tx = -980 + rand() * 1760;
+      const tz = 62 + Math.pow(rand(), 1.35) * 185;
+      if (!isClearForForest(tx, tz)) continue;
+
+      const ty = gY(tx, tz);
+      const scale = 0.85 + rand() * 0.55;
+      dummy.position.set(tx, ty - 0.15, tz);
+      dummy.rotation.set(0, rand() * Math.PI * 2, 0);
+      dummy.scale.set(scale, scale * (0.9 + rand() * 0.25), scale);
+      dummy.updateMatrix();
+
+      if (rand() < 0.68) pineTransforms.push(dummy.matrix.clone());
+      else oakTransforms.push(dummy.matrix.clone());
+    }
+
+    // 2. Deep south woodland clusters (z in [170, 480], x in [-980, 780])
+    for (let i = 0; i < 220; i++) {
+      const tx = -980 + rand() * 1760;
+      const tz = 170 + rand() * 310;
+      if (!isClearForForest(tx, tz)) continue;
+
+      const ty = gY(tx, tz);
+      const scale = 0.9 + rand() * 0.65;
+      dummy.position.set(tx, ty - 0.15, tz);
+      dummy.rotation.set(0, rand() * Math.PI * 2, 0);
+      dummy.scale.set(scale, scale, scale);
+      dummy.updateMatrix();
+
+      if (rand() < 0.72) pineTransforms.push(dummy.matrix.clone());
+      else oakTransforms.push(dummy.matrix.clone());
+    }
+
+    // 3. East pasture / woodline grove (x in [315, 780], z in [32, 62])
+    for (let i = 0; i < 80; i++) {
+      const tx = 315 + rand() * 465;
+      const tz = 32 + rand() * 30;
+      if (!isClearForForest(tx, tz)) continue;
+
+      const ty = gY(tx, tz);
+      const scale = 0.8 + rand() * 0.45;
+      dummy.position.set(tx, ty - 0.15, tz);
+      dummy.rotation.set(0, rand() * Math.PI * 2, 0);
+      dummy.scale.set(scale, scale, scale);
+      dummy.updateMatrix();
+
+      if (rand() < 0.6) pineTransforms.push(dummy.matrix.clone());
+      else oakTransforms.push(dummy.matrix.clone());
+    }
+
+    // 4. Saw palmetto understory clumps along treeline edges (z in [58, 220])
+    for (let i = 0; i < 280; i++) {
+      const px = -960 + rand() * 1720;
+      const pz = 58 + Math.pow(rand(), 1.5) * 160;
+      if (!isClearForForest(px, pz)) continue;
+
+      const py = gY(px, pz);
+      const s = 0.75 + rand() * 0.65;
+      dummy.position.set(px, py - 0.05, pz);
+      dummy.rotation.set(0, rand() * Math.PI * 2, 0);
+      dummy.scale.set(s, s * (0.85 + rand() * 0.3), s);
+      dummy.updateMatrix();
+      palmettoTransforms.push(dummy.matrix.clone());
+    }
+
+    if (pineTransforms.length > 0) {
+      const pTrunkInst = new THREE.InstancedMesh(pineTrunkGeom, matPineBark, pineTransforms.length);
+      const pCrownInst = new THREE.InstancedMesh(pineCrownGeom, matPineNeedles, pineTransforms.length);
+      pTrunkInst.castShadow = true;
+      pCrownInst.castShadow = true;
+      pCrownInst.receiveShadow = true;
+      for (let i = 0; i < pineTransforms.length; i++) {
+        pTrunkInst.setMatrixAt(i, pineTransforms[i]);
+        pCrownInst.setMatrixAt(i, pineTransforms[i]);
+      }
+      pTrunkInst.instanceMatrix.needsUpdate = true;
+      pCrownInst.instanceMatrix.needsUpdate = true;
+      pTrunkInst.name = 'inst_slash_pine_trunks';
+      pCrownInst.name = 'inst_slash_pine_crowns';
+      vegGroup.add(pTrunkInst);
+      vegGroup.add(pCrownInst);
+    }
+
+    if (oakTransforms.length > 0) {
+      const oTrunkInst = new THREE.InstancedMesh(oakTrunkGeom, matOakBark, oakTransforms.length);
+      const oCrownInst = new THREE.InstancedMesh(oakCrownGeom, matOakLeaves, oakTransforms.length);
+      oTrunkInst.castShadow = true;
+      oCrownInst.castShadow = true;
+      oCrownInst.receiveShadow = true;
+      for (let i = 0; i < oakTransforms.length; i++) {
+        oTrunkInst.setMatrixAt(i, oakTransforms[i]);
+        oCrownInst.setMatrixAt(i, oakTransforms[i]);
+      }
+      oTrunkInst.instanceMatrix.needsUpdate = true;
+      oCrownInst.instanceMatrix.needsUpdate = true;
+      oTrunkInst.name = 'inst_live_oak_trunks';
+      oCrownInst.name = 'inst_live_oak_crowns';
+      vegGroup.add(oTrunkInst);
+      vegGroup.add(oCrownInst);
+    }
+
+    if (palmettoTransforms.length > 0) {
+      const palmInst = new THREE.InstancedMesh(palmettoGeom, matPalmetto, palmettoTransforms.length);
+      palmInst.castShadow = true;
+      palmInst.receiveShadow = true;
+      for (let i = 0; i < palmettoTransforms.length; i++) {
+        palmInst.setMatrixAt(i, palmettoTransforms[i]);
+      }
+      palmInst.instanceMatrix.needsUpdate = true;
+      palmInst.name = 'inst_saw_palmetto_clumps';
+      vegGroup.add(palmInst);
+    }
+
+    root.add(vegGroup);
+  }
+
+  return root;
+}

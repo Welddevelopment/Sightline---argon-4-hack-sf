@@ -1,0 +1,38 @@
+{
+  "round": 0,
+  "file": "/home/claude/sightline/renders/asset_forge/work/road_surface_material.r0.js",
+  "png": "/home/claude/sightline/renders/asset_forge/road_surface_material_r0.png",
+  "finish": "STOP",
+  "usage": {
+    "promptTokenCount": 5827,
+    "candidatesTokenCount": 7739,
+    "totalTokenCount": 13566,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 5827
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7739
+      }
+    ]
+  },
+  "seconds": 74,
+  "defects": null,
+  "validation": {
+    "ok": true,
+    "errors": [],
+    "warnings": [],
+    "buildMs": 1083.6,
+    "material": {
+      "type": "MeshStandardMaterial",
+      "name": "argon_asphalt",
+      "hasMap": true,
+      "hasNormal": true,
+      "hasRough": true
+    }
+  }
+}

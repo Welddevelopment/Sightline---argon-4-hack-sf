@@ -89,5 +89,12 @@
     "mimeType": "video/mp4",
     "expiresAt": "2026-10-27T19:25:43.761724791Z",
     "uploadedAt": "2026-10-25T19:26:01.923Z"
+  },
+  "cases/live2/evidence/deposition.mp4|4244843|1792956061153": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/tafctlpnx12q",
+    "name": "files/tafctlpnx12q",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T20:01:41.575928700Z",
+    "uploadedAt": "2026-10-25T20:02:07.569Z"
   }
 }
