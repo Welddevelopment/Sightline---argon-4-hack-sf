@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sightline · Compare</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/compare.css">
+<script type="importmap">
+{ "imports": {
+  "three": "/node_modules/three/build/three.module.js",
+  "three/addons/": "/node_modules/three/examples/jsm/"
+} }
+</script>
+<script>
+  // window.cmp.ready lets headless callers wait for the first frame
+  window.cmp = { ready: new Promise(function (a, b) { window.__cmpResolve = a; window.__cmpReject = b; }) };
+  window.cmp.ready.catch(function () {});
+</script>
+</head>
+<body class="cmp-body">
+<header id="top">
+  <div class="brand">
+    <span class="logo" aria-hidden="true"></span>
+    <div>
+      <div class="case-title" id="caseTitle">Sightline</div>
+      <div class="case-sub">Compare · two witnesses and the physical evidence on one timeline</div>
+    </div>
+  </div>
+  <span class="sim-badge">SIMULATED / FICTIONAL WITNESSES</span>
+  <div class="cmp-top-right">
+    <span id="summary" class="cmp-summary mono"></span>
+    <a id="backLink" class="btn small" href="/">Back to viewer</a>
+  </div>
+</header>
+
+<main id="cmpRoot">
+  <div id="cmpError" class="cmp-error" hidden></div>
+  <section class="cmp-stage">
+    <canvas id="cmpCanvas"></canvas>
+    <div class="cmp-pane" id="paneA">
+      <div class="pane-h"><span class="pane-k">A</span><span id="titleA">Witness A's view</span></div>
+      <div class="reticle"><i></i><span></span></div>
+      <div class="live mono"></div>
+    </div>
+    <div class="cmp-pane" id="paneB">
+      <div class="pane-h"><span class="pane-k">B</span><span id="titleB">Witness B's view</span></div>
+      <div class="reticle"><i></i><span></span></div>
+      <div class="live mono"></div>
+    </div>
+    <div class="cmp-pane" id="paneO">
+      <div class="pane-h"><span class="pane-k">E</span><span id="titleO">Overhead · physical evidence</span></div>
+      <div id="labelsO" class="labels"></div>
+      <div class="legend mono"><span class="lg ok"></span>clear <span class="lg bad"></span>blocked <span class="lg ghost"></span>as reconstructed (what-if)</div>
+    </div>
+  </section>
+
+  <section class="cmp-caps">
+    <div class="cmp-cap" id="capA"></div>
+    <div class="cmp-cap" id="capB"></div>
+    <div class="cmp-cap" id="capO"></div>
+  </section>
+
+  <section class="cmp-timeline">
+    <button id="play" class="btn">Play</button>
+    <div class="scrub">
+      <div id="ticks"></div>
+      <input id="tl" type="range" min="0" max="12" step="0.01" value="0" aria-label="Timeline">
+    </div>
+    <div class="mono tlabel"><span id="tval">0.00</span> / <span id="dur">—</span></div>
+    <div class="jumps">
+      <button class="btn small" data-jump="a">A's moment</button>
+      <button class="btn small" data-jump="b">B's moment</button>
+      <button class="btn small" data-jump="impact">Impact</button>
+    </div>
+  </section>
+
+  <section class="cmp-whatif" id="whatif">
+    <div class="wi-ctl">
+      <div class="wi-k">What-if</div>
+      <label for="speed" id="speedLabel">Vehicle speed</label>
+      <input id="speed" type="range" min="10" max="100" step="1" value="50">
+      <span id="speedVal" class="mono wi-val">— mph</span>
+      <span id="speedOrig" class="muted small"></span>
+      <button id="wiReset" class="btn small ghost">Reset</button>
+    </div>
+    <div class="wi-out">
+      <div id="wiText"></div>
+      <div id="wiAssume" class="muted small"></div>
+    </div>
+  </section>
+  <footer class="cmp-foot muted small"><span id="kinLabel"></span></footer>
+</main>
+<script type="module" src="/compare.js"></script>
+</body>
+</html>

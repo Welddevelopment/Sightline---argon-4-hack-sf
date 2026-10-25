@@ -1,5 +1,5 @@
 // ARGON-ONLY UI: make "only Argon can do this" visible.
-//  1. Case-size banner (viewer stage + case page): tokens · video · pages · documents · read in one pass.
+//  1. Case-size banner (viewer stage + case page): "Case: N tokens · H h MM min video · P pages · read in one pass by gemini-4-argon".
 //  2. Key finding: witness-eye render at the key time next to the deposition frame where she marks the map.
 //  3. The existing Flash card (#compare, ui.js, cache/baseline.json) gets a precise label of what that baseline was.
 // Data preference: cases/<id>/argon_only.json (via /api/cases/:id/size .argonOnly) > /size meta/estimate.
@@ -139,14 +139,14 @@
     const parts = [`<b>${esc(fmtTokens(s.totalTokens))}</b> tokens`];
     if (s.videoSec) parts.push(`<b>${esc(fmtDur(s.videoSec))}</b> video` + (s.videoCount > 1 ? ` <span class="ao-dim">(${s.videoCount} files)</span>` : ''));
     if (s.pages) parts.push(`<b>${esc(Number(s.pages).toLocaleString('en-US'))}</b> pages`);
-    if (s.documents) parts.push(esc(plural(s.documents, 'document')));
     const tip = [
       `${Number(s.totalTokens).toLocaleString('en-US')} input tokens — ${s.method || ''}`,
       s.measured && s.measuredFrom ? `Source: ${s.measuredFrom.file}${s.measuredFrom.at ? ' (' + s.measuredFrom.at + ')' : ''}` : '',
       s.measured && s.estimatedTokens ? `Pre-flight estimate was ${Number(s.estimatedTokens).toLocaleString('en-US')}` : '',
+      s.documents ? `${plural(s.documents, 'document')}${s.videoCount ? ' + ' + plural(s.videoCount, 'video') : ''}` : '',
       s.pdfPages || s.textPages ? `Pages: ${s.pdfPages || 0} PDF + ${s.textPages || 0} text page-equivalents (~3,000 chars)` : '',
     ].filter(Boolean).join('\n');
-    return `<span class="ao-k">Case</span><span class="ao-parts">${parts.join('<i class="ao-sep">·</i>')}<i class="ao-sep">·</i>read in one pass by <span class="ao-model">${esc(prettyModel(s.model || 'gemini-4-argon'))}</span></span>` +
+    return `<span class="ao-k">Case:</span><span class="ao-parts">${parts.join('<i class="ao-sep">·</i>')}<i class="ao-sep">·</i>read in one pass by <span class="ao-model">${esc(prettyModel(s.model || 'gemini-4-argon'))}</span></span>` +
       `<span class="ao-tag ${s.measured ? 'm' : 'e'}" title="${esc(tip)}">${s.measured ? 'Measured' : 'Estimated'}</span>`;
   }
   function paintBanner() {
@@ -252,11 +252,11 @@
 
   // ---------- 3. existing Flash card (#compare, from cache/baseline.json): label it precisely ----------
   // Per lead/user decision: no "same inputs" card; baseline_fair.json is not read by the UI.
-  const FLASH_LABEL = '<b>Gemini Flash</b>chunk-and-summarize pipeline over the transcript · no video';
+  const FLASH_LABEL = '<b class="ao-inl">Gemini Flash</b> · chunk-and-summarize pipeline over the transcript · no video';
   function labelCompare() {
     if (!IS_VIEWER) return;
     const m = document.querySelector('#compare .cmp-grid .cmp-col:first-child .cmp-model');
-    if (m && m.innerHTML !== FLASH_LABEL && /flash/i.test(m.textContent)) m.innerHTML = FLASH_LABEL;
+    if (m && m.innerHTML !== FLASH_LABEL && /flash/i.test(m.textContent)) { m.innerHTML = FLASH_LABEL; m.classList.add('ao-flash-label'); }
   }
 
   // ---------- paint + observe ----------

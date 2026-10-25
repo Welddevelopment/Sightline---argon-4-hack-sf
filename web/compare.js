@@ -522,7 +522,31 @@ async function boot() {
       } else html += resultHtml(orig, 'Independent check');
       cap.innerHTML = html;
     }
+    renderEvidenceCaption();
   }
+  // overhead pane: the physical evidence (marks in the world + cited physical facts) and the non-witness checks
+  function renderEvidenceCaption() {
+    const cap = $('capO'); if (!cap) return;
+    const marks = Object.entries(world.objects).filter(([id, o]) => o && (o.kind === 'mark' || /^mark_/.test(id)));
+    const facts = (Array.isArray(world.facts) ? world.facts : []).filter((f) => /position|distance|skid|speed/i.test(f.kind || '')).slice(0, 3);
+    const items = marks.map(([id, o]) => ({ claim: shortObjLabel(o, id).full, cite: o.citation || '' }))
+      .concat(facts.map((f) => ({ claim: f.text, cite: f.citation || '' }))).slice(0, 4);
+    let html = items.length
+      ? `<ul class="cmp-ev">${items.map((x) => `<li><span>${esc(x.claim)}</span><span class="cmp-cite">${esc(x.cite)}</span></li>`).join('')}</ul>`
+      : '<div class="muted">No physical evidence objects in this world.</div>';
+    const list = whatIf ? (serverRes && serverRes.targetMph === mph ? serverRes.checks : null) : baseChecks;
+    const other = (list || []).filter((c) => c.check !== 'sightline');
+    if (whatIf && !list) html += `<div class="cmp-res pend">What-if ${mph} mph · timing & plausibility checks running…</div>`;
+    else if (other.length) {
+      const bad = other.filter((c) => !c.pass);
+      const tag = whatIf ? `What-if ${mph} mph · independent check` : 'Independent check';
+      html += `<div class="cmp-res ${bad.length ? 'bad' : 'ok'}"><span class="cmp-tag">${esc(tag)}</span> ` +
+        (bad.length ? `<b>${bad.length} of ${other.length}</b> timing/plausibility checks fail: ${esc(bad.map((c) => `${c.check} ${speedNameSafe(c.subject)}`).join(', '))}`
+          : `<b>${other.length} of ${other.length}</b> timing/plausibility checks pass`) + '</div>';
+    }
+    cap.innerHTML = html;
+  }
+  const speedNameSafe = (id) => (id && world.objects[id] ? speedName(world, id) : id || '');
 
   // ---------- timeline ticks ----------
   function renderTicks() {

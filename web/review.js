@@ -365,9 +365,26 @@ function mapConfig() {
   const scaled = m && Number.isFinite(+m.px_per_m) && +m.px_per_m > 0;
   return { imgFile: img, scaled, ppm: scaled ? +m.px_per_m : null, origin: m && Array.isArray(m.origin_px) ? m.origin_px.map(Number) : null };
 }
-function loadMap() {
+// Fallback when the case manifest has an exhibit map but no scale block: the shared exhibit
+// manifest (case/case.json) carries {file, px_per_m, origin_px} for the same Exhibit 4 image.
+// Used only when the file names match and the loaded image has the same pixel size.
+async function refMapScale(imgFile) {
+  try {
+    const r = await fetch('/case/case.json'); if (!r.ok) return null;
+    const m = (await r.json()).map;
+    if (!m || !(+m.px_per_m > 0) || !Array.isArray(m.origin_px)) return null;
+    const base = (s) => String(s || '').split('/').pop().toLowerCase();
+    return base(m.file) === base(imgFile.name) ? m : null;
+  } catch { return null; }
+}
+async function loadMap() {
   const cfg = mapConfig();
   S.map = { ...cfg, img: null };
+  if (cfg.imgFile && !cfg.scaled) {
+    const m = await refMapScale(cfg.imgFile);
+    if (m) Object.assign(S.map, { scaled: true, ppm: +m.px_per_m, origin: m.origin_px.map(Number), scaleSrc: 'case/case.json' });
+    Object.assign(cfg, S.map);
+  }
   if (cfg.imgFile && cfg.scaled) {
     const im = new Image();
     im.onload = () => { S.map.img = im; if (!S.map.origin) S.map.origin = [im.naturalWidth / 2, im.naturalHeight / 2]; drawMap(); };
@@ -441,7 +458,7 @@ function drawMap() {
   if (S.map.img) {
     ctx.globalAlpha = 0.85; ctx.drawImage(S.map.img, 0, 0, w, h); ctx.globalAlpha = 1;
     ctx.fillStyle = 'rgba(8,11,16,.25)'; ctx.fillRect(0, 0, w, h);
-    if (S.placing == null) note.textContent = `${S.map.imgFile.name} · ${S.map.ppm} px/m`;
+    if (S.placing == null) note.textContent = `${S.map.imgFile.name} · ${S.map.ppm} px/m${S.map.scaleSrc ? ' (scale: exhibit manifest)' : ''}`;
   } else {
     ctx.fillStyle = '#0c1016'; ctx.fillRect(0, 0, w, h);
     const step = niceStep(ppm, 34);
