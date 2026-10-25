@@ -1,0 +1,17 @@
+{
+  "caseId": "live1",
+  "world": "/cases/live1/worlds/world_v1.js",
+  "findings": [],
+  "checks": [],
+  "loopLog": [
+    {
+      "round": 1,
+      "world": "/cases/live1/worlds/world_v1.js",
+      "startedAt": "2026-10-25T18:44:55.234Z",
+      "error": "Unexpected end of input"
+    }
+  ],
+  "verdict": null,
+  "mode": "live",
+  "updatedAt": "2026-10-25T18:44:55.235Z"
+}
