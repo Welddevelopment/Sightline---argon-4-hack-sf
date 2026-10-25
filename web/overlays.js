@@ -645,8 +645,10 @@ function update(cam) {
       placed.push(q);
     }
     // amber dashed "inferred" boxes and the all-witness overhead rays: full mode only (minimal = the active sight line)
-    if (!full) scene.traverse((o) => { if ((o.isLineSegments && /^inferred_/.test(o.name || '')) || (o.name === '__sl_rays' && w && r)) o.visible = false; });
+    if (!full) scene.traverse((o) => { if (o.name === '__sl_rays' && w && r) o.visible = false; });
   }
+  // amber dashed "inferred" outlines (viewer rebuilds them every frame): full mode only, in every view
+  if (!full) scene.traverse((o) => { if (o.isLineSegments && /^inferred_/.test(o.name || '')) o.visible = false; });
 
   // ---- (full) stopping distance / brake point bars on the road, one-word tags; the sentence is in the card ----
   const stop = info.stop;

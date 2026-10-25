@@ -718,7 +718,7 @@ export function forestBand(THREE, opts = {}) {
   // canopy
   for (const c of sample(density * 1.25, d => (d < 0 ? 0 : d < 6 ? 0.95 : 0.8))) {
     const edge = Math.exp(-Math.max(0, c.d) / 12);
-    const pO = (oak * (1 + 1.6 * edge)) / sumC, pL = laurel / sumC, pP = pine / sumC * (1 - 0.3 * edge);
+    const pO = (oak * (1 + 0.8 * edge)) / sumC, pL = laurel / sumC, pP = pine / sumC * (1 - 0.15 * edge);
     const r = R() * (pO + pL + pP);
     let kind = r < pP ? 'pine' : r < pP + pO ? 'oak' : 'laurel_oak';
     let h;

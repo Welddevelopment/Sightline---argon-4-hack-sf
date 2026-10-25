@@ -7,8 +7,10 @@
 //   All jobs run in parallel (background interactions); we poll, download each result file from the sandbox's file API,
 //   compare against the local checks, and Argon MERGES everything into a verification report.
 //
-//   SIGHTLINE_MODE=live node argon/fleet.mjs demo-full [--max 24] [--no-renders] [--only sl_wit_B,rob_wit_B]
-//   SIGHTLINE_MODE=mock (default) replays cases/<id>/cache/fleet/run.json.
+//   node argon/fleet.mjs demo-full --live [--max 24] [--no-renders] [--only sl_wit_B,rob_wit_B]   (or FLEET_LIVE=1)
+//   node argon/fleet.mjs demo-full              → replays cases/<id>/cache/fleet/run.json (no API calls)
+//   node argon/fleet.mjs demo-full --rehydrate  → re-downloads job results/stills from the sandboxes in run.json
+//   A live run archives the previous run to cache/fleet/history/<timestamp>/.
 //
 // Security: the API key is used only by this process (SDK + file-download header). It is never placed in a sandbox
 // prompt, environment config, env var or uploaded file. Sandbox egress is allowlisted to npm + GitHub only.
@@ -16,7 +18,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { ROOT, isLive, getAI, callArgon, readPrompt, readJSON, writeJSON } from './client.js';
+import { ROOT, getAI, callArgon, readPrompt, readJSON, writeJSON } from './client.js';
 
 export const FLEET_AGENT = process.env.FLEET_AGENT || 'antigravity-preview-09-2026';
 export const FLEET_MODEL = process.env.FLEET_MODEL || 'gemini-3.8-flash';
@@ -25,6 +27,8 @@ const API = 'https://generativelanguage.googleapis.com/v1beta';
 const SANDBOX_DIR = path.join(ROOT, 'argon', 'fleet_sandbox');
 const TYPES = new Set(['full_checks', 'sightline', 'robustness', 'gaze', 'prt', 'whatif_speed', 'whatif_time', 'render']);
 const NETWORK = { allowlist: [{ domain: 'registry.npmjs.org' }, { domain: 'github.com' }, { domain: 'codeload.github.com' }, { domain: '*.githubusercontent.com' }] };
+// Live only when asked explicitly (FLEET_LIVE=1 or --live): .env may set SIGHTLINE_MODE=live for the rest of the app.
+export const fleetLive = () => process.env.FLEET_LIVE === '1' || process.argv.includes('--live');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const sha12 = (buf) => crypto.createHash('sha256').update(buf).digest('hex').slice(0, 12);
 const log = (...a) => console.log('[fleet]', ...a);
@@ -133,6 +137,43 @@ async function createWithRetry(ai, req) {
   }
 }
 
+// Pull a finished interaction's verdict files out of its sandbox (environment file API) into rec.
+async function collect(c, task, g, rec, resultRel) {
+  rec.status = g.status; rec.environmentId = g.environment_id; rec.usage = g.usage ? { total: g.usage.total_tokens, input: g.usage.total_input_tokens, cached: g.usage.total_cached_tokens } : null;
+  rec.agentReply = parseAgentReply(g.output_text);
+  if (g.environment_id) {
+    const txt = await fetchEnvFile(g.environment_id, resultRel);
+    rec.result = txt ? JSON.parse(txt) : null;
+    if (task.type === 'render') {
+      const png = await fetchEnvFile(g.environment_id, `out/${task.view}/still.png`, { binary: true });
+      if (png && png.length > 100) {
+        const p = path.join(c.fleetDir, 'renders', `${task.view}.png`);
+        fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, png);
+        rec.still = path.relative(ROOT, p);
+      }
+    }
+  }
+  rec.ok = rec.status === 'completed' && !!rec.result && (task.type === 'render' || rec.result.ok);
+  return rec;
+}
+
+/** Re-download every job's results from the (persistent) sandbox environments listed in run.json. No new agents. */
+export async function rehydrate(caseId) {
+  const c = loadCase(caseId);
+  const run = readJSON(path.join(c.fleetDir, 'run.json'));
+  if (!run) throw new Error('no run.json to rehydrate');
+  const ai = await getAI();
+  await Promise.all(run.jobs.map(async (j) => {
+    const prev = readJSON(path.join(c.fleetDir, 'jobs', `${j.id}.json`)) || {};
+    const task = { id: j.id, type: j.type, witness: j.witness, view: j.view };
+    const g = await ai.interactions.get(j.interactionId);
+    const rec = { ...prev, id: j.id, type: j.type, witness: j.witness, view: j.view, interactionId: j.interactionId, wallMs: j.wallS * 1000, error: undefined };
+    await collect(c, task, g, rec, j.type === 'render' ? `out/${j.view}/verdict.json` : 'out/result.json');
+    writeJSON(path.join(c.fleetDir, 'jobs', `${j.id}.json`), rec);
+    log(`rehydrated ${j.id} ${rec.ok ? 'ok' : 'MISSING'}`);
+  }));
+}
+
 async function runJob(ai, c, task, files, tDispatch0) {
   const spec = jobSpec(c, task, files);
   const rec = { id: task.id, type: task.type, witness: task.witness, view: task.view, why: task.why, command: spec.command };
@@ -145,22 +186,7 @@ async function runJob(ai, c, task, files, tDispatch0) {
       await sleep(4000);
       try { g = await ai.interactions.get(it.id); } catch (e) { if (![429, 500, 502, 503, 504].includes(e.status)) throw e; }
     }
-    rec.status = g.status; rec.environmentId = g.environment_id; rec.usage = g.usage ? { total: g.usage.total_tokens, input: g.usage.total_input_tokens, cached: g.usage.total_cached_tokens } : null;
-    rec.serverCreated = g.created; rec.serverUpdated = g.updated;
-    rec.agentReply = parseAgentReply(g.output_text);
-    if (g.environment_id) {
-      const txt = await fetchEnvFile(g.environment_id, spec.resultRel);
-      rec.result = txt ? JSON.parse(txt) : null;
-      if (task.type === 'render') {
-        const png = await fetchEnvFile(g.environment_id, `out/${task.view}/still.png`, { binary: true });
-        if (png && png.length > 100) {
-          const p = path.join(c.fleetDir, 'renders', `${task.view}.png`);
-          fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, png);
-          rec.still = path.relative(ROOT, p);
-        }
-      }
-    }
-    rec.ok = rec.status === 'completed' && !!rec.result && (task.type === 'render' || rec.result.ok);
+    await collect(c, task, g, rec, spec.resultRel);
   } catch (e) {
     rec.status = rec.status || 'error'; rec.ok = false; rec.error = `${e.status || ''} ${String(e.message || e).slice(0, 300)}`;
   }
@@ -212,13 +238,18 @@ function compactResult(j) {
 export async function runFleet({ caseId, tasks, max = Number(process.env.FLEET_MAX || 24), renders = true, only = null } = {}) {
   const c = loadCase(caseId);
   fs.mkdirSync(c.fleetDir, { recursive: true });
-  if (!isLive()) {
+  if (!fleetLive()) {
     const run = readJSON(path.join(c.fleetDir, 'run.json'));
     if (!run) throw new Error(`[mock] no fleet cache at ${path.relative(ROOT, c.fleetDir)}/run.json`);
     return run;
   }
   const tStart = Date.now();
-  for (const d of ['jobs', 'renders']) fs.rmSync(path.join(c.fleetDir, d), { recursive: true, force: true });
+  const prev = readJSON(path.join(c.fleetDir, 'run.json'));
+  if (prev) { // archive the previous run instead of deleting it
+    const h = path.join(c.fleetDir, 'history', prev.at.replace(/[:.]/g, '-'));
+    fs.mkdirSync(h, { recursive: true });
+    for (const f of fs.readdirSync(c.fleetDir)) if (f !== 'history') fs.renameSync(path.join(c.fleetDir, f), path.join(h, f));
+  }
   const worldBuf = fs.readFileSync(c.worldAbs);
   const files = { world: worldBuf.toString('utf8'), runner: fs.readFileSync(path.join(SANDBOX_DIR, 'run_task.mjs'), 'utf8'), render: fs.readFileSync(path.join(SANDBOX_DIR, 'render_view.mjs'), 'utf8') };
   if (/GEMINI_API_KEY|AIza[0-9A-Za-z_-]{20,}/.test(files.world + files.runner + files.render)) throw new Error('refusing: key-like string in sandbox upload');
@@ -298,6 +329,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const a = process.argv.slice(2);
   const opt = (k) => { const i = a.indexOf('--' + k); return i >= 0 ? a[i + 1] : null; };
   const caseId = a[0] && !a[0].startsWith('--') ? a[0] : 'demo-full';
+  if (a.includes('--rehydrate')) { await rehydrate(caseId); process.exit(0); }
   const run = await runFleet({ caseId, max: Number(opt('max') || process.env.FLEET_MAX || 24),
     renders: !a.includes('--no-renders'), only: opt('only') ? opt('only').split(',') : null });
   console.log(JSON.stringify({ timings: run.timings, agents: run.agents, headline: run.report?.headline }, null, 2));

@@ -2,112 +2,11 @@
   "id": "ws_wit_B",
   "type": "whatif_speed",
   "witness": "wit_B",
-  "why": "Test whether varying Vehicle A's approach speed clears the tractor blockage for Witness B.",
+  "why": "Speed sensitivity for wit_B.",
   "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
-  "interactionId": "v1_ChY3bmJlYXNrVW5vX0swd19zejZfQURREhY3bmJlYXNrVW5vX0swd19zejZfQURR",
-  "dispatchedAtMs": 2252,
-  "createMs": 152136,
-  "status": "completed",
-  "environmentId": "699593136d8f240f9af444ab90e173be",
-  "usage": {
-    "total": 20661,
-    "input": 18944,
-    "cached": 9968
-  },
-  "agentReply": {
-    "ran": true,
-    "exit_ok": true,
-    "summary_line": "{\"id\":\"ws_wit_B\",\"ok\":true,\"ms\":1510}",
-    "interpretation": "Witness B could not have seen vehicle A at the baseline speed because their line of sight was blocked by the tractor, and vehicle A only becomes visible if it was traveling at least 20% faster."
-  },
-  "result": {
-    "task": {
-      "id": "ws_wit_B",
-      "type": "whatif_speed",
-      "witness": "wit_B",
-      "params": {}
-    },
-    "ok": true,
-    "error": null,
-    "result": {
-      "target": "veh_A",
-      "tObs": 9.8,
-      "impactT": 10.43,
-      "impactSource": "meta.impactT",
-      "sweep": [
-        {
-          "k": 0.7,
-          "trackT": 9.99,
-          "visible": false,
-          "blockedBy": "veh_T_tractor",
-          "distance": 24.33,
-          "robustBlockedOf25": 25
-        },
-        {
-          "k": 0.8,
-          "trackT": 9.93,
-          "visible": false,
-          "blockedBy": "veh_T_tractor",
-          "distance": 26.28,
-          "robustBlockedOf25": 25
-        },
-        {
-          "k": 0.9,
-          "trackT": 9.86,
-          "visible": false,
-          "blockedBy": "veh_T_tractor",
-          "distance": 28.24,
-          "robustBlockedOf25": 25
-        },
-        {
-          "k": 1,
-          "trackT": 9.8,
-          "visible": false,
-          "blockedBy": "veh_T_tractor",
-          "distance": 30.22,
-          "robustBlockedOf25": 21
-        },
-        {
-          "k": 1.1,
-          "trackT": 9.74,
-          "visible": false,
-          "blockedBy": "veh_T_tractor",
-          "distance": 32.22,
-          "robustBlockedOf25": 17
-        },
-        {
-          "k": 1.2,
-          "trackT": 9.67,
-          "visible": true,
-          "blockedBy": null,
-          "distance": 34.22,
-          "robustBlockedOf25": 10
-        },
-        {
-          "k": 1.3,
-          "trackT": 9.61,
-          "visible": true,
-          "blockedBy": null,
-          "distance": 36.24,
-          "robustBlockedOf25": 9
-        }
-      ],
-      "note": "Speed what-if by time remapping along the cited track; other moving objects follow the same remap (approximation)."
-    },
-    "env": {
-      "host": "",
-      "node": "v22.23.4",
-      "cpus": 10,
-      "ms": 1510,
-      "worldSha": "526ea902d593",
-      "checksSha": {
-        "checks.js": "8b54e5598ebe",
-        "robustness.js": "7ffe748d2d02",
-        "physics.js": "31d365b6bf24"
-      }
-    }
-  },
-  "ok": true,
-  "wallMs": 204879,
-  "doneAtMs": 207131
+  "status": "error",
+  "ok": false,
+  "error": " Unable to make request: TypeError: fetch failed",
+  "wallMs": 6761,
+  "doneAtMs": 8761
 }

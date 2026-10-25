@@ -2,98 +2,11 @@
   "id": "rob_wit_A",
   "type": "robustness",
   "witness": "wit_A",
-  "why": "Confirm Witness A's visibility verdict is robust to position perturbations inside the pickup cab.",
+  "why": "Position robustness for wit_A.",
   "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
-  "interactionId": "v1_Chd2WGJlYXFlYUs2U3V4ZElQMEppWG9RdxIXdlhiZWFxZWFLNlN1eGRJUDBKaVhvUXc",
-  "dispatchedAtMs": 752,
-  "createMs": 105162,
-  "status": "completed",
-  "environmentId": "20b56b1087488a1e3fab51b15eba00c0",
-  "usage": {
-    "total": 19772,
-    "input": 18611,
-    "cached": 9968
-  },
-  "agentReply": {
-    "ran": true,
-    "exit_ok": true,
-    "summary_line": "{\"id\":\"rob_wit_A\",\"ok\":true,\"ms\":2497}",
-    "interpretation": "Witness wit_A had a completely unobstructed line of sight to vehicle veh_A with zero blocked samples across all tested perturbation radii."
-  },
-  "result": {
-    "task": {
-      "id": "rob_wit_A",
-      "type": "robustness",
-      "witness": "wit_A",
-      "params": {}
-    },
-    "ok": true,
-    "error": null,
-    "result": {
-      "target": "veh_A",
-      "tObs": 4.5,
-      "standard": {
-        "radiusM": 2,
-        "samples": 25,
-        "blocked": 0,
-        "clear": 25,
-        "eyeJitterM": 0.1,
-        "verdict": "not_blocked",
-        "blockers": {}
-      },
-      "rings": [
-        {
-          "radiusM": 0.5,
-          "samples": 25,
-          "blocked": 0,
-          "blockers": {}
-        },
-        {
-          "radiusM": 1,
-          "samples": 25,
-          "blocked": 0,
-          "blockers": {}
-        },
-        {
-          "radiusM": 2,
-          "samples": 25,
-          "blocked": 0,
-          "blockers": {}
-        },
-        {
-          "radiusM": 3,
-          "samples": 25,
-          "blocked": 0,
-          "blockers": {}
-        },
-        {
-          "radiusM": 5,
-          "samples": 25,
-          "blocked": 0,
-          "blockers": {}
-        },
-        {
-          "radiusM": 8,
-          "samples": 25,
-          "blocked": 0,
-          "blockers": {}
-        }
-      ]
-    },
-    "env": {
-      "host": "",
-      "node": "v22.23.4",
-      "cpus": 10,
-      "ms": 2497,
-      "worldSha": "526ea902d593",
-      "checksSha": {
-        "checks.js": "8b54e5598ebe",
-        "robustness.js": "7ffe748d2d02",
-        "physics.js": "31d365b6bf24"
-      }
-    }
-  },
-  "ok": true,
-  "wallMs": 176067,
-  "doneAtMs": 176819
+  "status": "error",
+  "ok": false,
+  "error": " Unable to make request: TypeError: fetch failed",
+  "wallMs": 6639,
+  "doneAtMs": 7389
 }

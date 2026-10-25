@@ -1059,7 +1059,7 @@ export function treeline(opts = {}) {
   const { id, points = [[-200, -100], [200, -100]], depth = 14, spacing = 7, height = 13, pineRatio = 0.35, seed = 1 } = opts;
   if (TREES?.forestBand && !opts.legacy) {   // web/assets/trees.js: instanced card pines/oaks + palmetto understory + LOD impostors
     const fb = TREES.forestBand(THREE, { id, polyline: points, centered: true, depth, seed, heightScale: height / 13,
-      density: Math.min(3, Math.max(0.8, 130 / (spacing * spacing))), mix: { pine: pineRatio, oak: 1 - pineRatio, palmetto: 5 * (opts.understory ?? 0.6) / 0.6 },
+      density: Math.min(3, Math.max(0.8, 130 / (spacing * spacing))), mix: { pine: 0.35 + 0.65 * pineRatio, oak: 0.65 * (1 - pineRatio), palmetto: 5 * (opts.understory ?? 0.6) / 0.6 },
       terrainHeight: (x, z) => (TERRAIN.profiles.length ? profileH(x, z) : 0) });
     return tag(fb, id, 'treeline', { length: 0, width: depth, height }, { count: fb.userData.count });
   }
