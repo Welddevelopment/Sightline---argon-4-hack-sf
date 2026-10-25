@@ -1,0 +1,97 @@
+{
+  "world": "/cases/demo-full/worlds/world_v4.js",
+  "worldMtime": 1792965956476.2332,
+  "checksAt": "2026-10-25T22:07:46.645Z",
+  "renderedAt": "2026-10-25T23:04:05.999Z",
+  "figures": [
+    {
+      "id": "overview",
+      "cam": "overhead",
+      "t": 9.9,
+      "solo": null,
+      "kind": "overhead",
+      "file": "overview.png",
+      "banner": null
+    },
+    {
+      "id": "wit_witness_A_overhead",
+      "cam": "overhead",
+      "t": 4,
+      "solo": "wit_witness_A",
+      "kind": "overhead",
+      "witness": "wit_witness_A",
+      "file": "wit_witness_A_overhead.png",
+      "banner": null
+    },
+    {
+      "id": "wit_witness_A_eye",
+      "cam": "wit_witness_A",
+      "t": 4,
+      "solo": null,
+      "kind": "eye",
+      "witness": "wit_witness_A",
+      "file": "wit_witness_A_eye.png",
+      "banner": "LINE OF SIGHT BLOCKED — Witness A pickup truck: black pickup traveling westbound on US-27A at ~60 mph"
+    },
+    {
+      "id": "wit_witness_B_overhead",
+      "cam": "overhead",
+      "t": 9.9,
+      "solo": "wit_witness_B",
+      "kind": "overhead",
+      "witness": "wit_witness_B",
+      "file": "wit_witness_B_overhead.png",
+      "banner": null
+    },
+    {
+      "id": "wit_witness_B_eye",
+      "cam": "wit_witness_B",
+      "t": 9.9,
+      "solo": null,
+      "kind": "eye",
+      "witness": "wit_witness_B",
+      "file": "wit_witness_B_eye.png",
+      "banner": "LINE OF SIGHT BLOCKED — Bench shelter in front of retail store"
+    },
+    {
+      "id": "wit_witness_C_overhead",
+      "cam": "overhead",
+      "t": 10.43,
+      "solo": "wit_witness_C",
+      "kind": "overhead",
+      "witness": "wit_witness_C",
+      "file": "wit_witness_C_overhead.png",
+      "banner": null
+    },
+    {
+      "id": "wit_witness_C_eye",
+      "cam": "wit_witness_C",
+      "t": 10.43,
+      "solo": null,
+      "kind": "eye",
+      "witness": "wit_witness_C",
+      "file": "wit_witness_C_eye.png",
+      "banner": "LINE OF SIGHT BLOCKED — Witness C pickup truck: stopped in westbound inside lane 18 m west of NE 140th Court crossover"
+    },
+    {
+      "id": "wit_witness_D_overhead",
+      "cam": "overhead",
+      "t": 10.43,
+      "solo": "wit_witness_D",
+      "kind": "overhead",
+      "witness": "wit_witness_D",
+      "file": "wit_witness_D_overhead.png",
+      "banner": null
+    },
+    {
+      "id": "wit_witness_D_eye",
+      "cam": "wit_witness_D",
+      "t": 10.43,
+      "solo": null,
+      "kind": "eye",
+      "witness": "wit_witness_D",
+      "file": "wit_witness_D_eye.png",
+      "banner": "LINE OF SIGHT BLOCKED — Retail store / country store on SE corner of US-27A & NE 140th Court"
+    }
+  ]
+}
