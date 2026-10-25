@@ -1,6 +1,6 @@
 // Sightline viewer: loads a world module, renders it, exposes window.sl
 import * as THREE from 'three';
-import { applyRenderQuality } from './render_quality.js';
+import { applyRenderQuality, isLiteRendering } from './render_quality.js';
 
 const params = new URLSearchParams(location.search);
 const DEFAULT_WORLD = '/worlds/reference_world.js';
@@ -19,7 +19,9 @@ const emit = (type, detail) => sl.events.dispatchEvent(new CustomEvent(type, { d
 
 // ---------- renderer / scene ----------
 const stage = document.getElementById('stage') || document.body;
-const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+// LITE (software GL / headless / ?lite=1): no MSAA context; render_quality.js trims the per-frame budget too
+const LITE = isLiteRendering();
+const renderer = new THREE.WebGLRenderer({ antialias: !LITE, preserveDrawingBuffer: true });
 // ?quality=render (headless clips/stills) = 2x supersampled + 4096 shadows; default 'interactive'
 const RENDER_QUALITY = params.get('quality') === 'render' ? 'render' : 'interactive';
 applyRenderQuality(renderer, null, { quality: RENDER_QUALITY });

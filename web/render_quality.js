@@ -30,7 +30,39 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 const PRESETS = {
   interactive: { maxPixelRatio: 2, supersample: 1, shadowMapSize: 2048, shadowRadius: 2.5, msaa: 4, aoScale: 0.5, aoSamples: 12 },
   render: { maxPixelRatio: 2, supersample: 2, shadowMapSize: 4096, shadowRadius: 3.5, msaa: 0, aoScale: 0.5, aoSamples: 16 },
+  // LITE: software rasterisers (headless SwiftShader / llvmpipe on 2 CPUs). Same lighting model and colours, but pixel
+  // ratio 1, no AO composer, 1024 shadow map (vehicles/buildings/poles only), no grass blades, foliage instances culled
+  // to the camera's neighbourhood each time it moves. Keeps a 1280x720 still well under 30 s.
+  lite: { maxPixelRatio: 1, supersample: 1, shadowMapSize: 1024, shadowRadius: 1.5, msaa: 0, aoScale: 0.5, aoSamples: 8, shadowCap: 300 },
 };
+// Foliage instance culling radii (m) in LITE: outer leaf masses / trunks keep a 170 m neighbourhood, inner (self-shadow)
+// clusters 70 m. Distant tree belts beyond that are covered by the landscape treeline ring impostors (cheap cards, kept).
+const LITE_R = { outer: 170, inner: 70 };
+
+let _liteCache = null;
+/** True when rendering should run in LITE mode: ?lite=1 (or ?lite=0 to force full quality), navigator.webdriver
+ *  (headless/automated capture), or a software WebGL renderer (SwiftShader / llvmpipe / softpipe). Call before creating
+ *  the WebGLRenderer so the context can skip MSAA (`antialias: !isLiteRendering()`). */
+export function isLiteRendering(renderer) {
+  if (typeof location !== 'undefined') { const m = /[?&]lite=([01])\b/.exec(location.search); if (m) return m[1] === '1'; }
+  if (_liteCache != null) return _liteCache;
+  let lite = false;
+  try { if (typeof navigator !== 'undefined' && navigator.webdriver) lite = true; } catch (_) {}
+  if (!lite) {
+    try {
+      let gl = renderer && renderer.getContext ? renderer.getContext() : null, tmp = null;
+      if (!gl && typeof document !== 'undefined') { tmp = document.createElement('canvas'); gl = tmp.getContext('webgl2') || tmp.getContext('webgl'); }
+      if (gl) {
+        const ext = gl.getExtension('WEBGL_debug_renderer_info');
+        const name = String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
+        if (/swiftshader|llvmpipe|softpipe|software|basic render/i.test(name)) lite = true;
+        if (tmp) { const lose = gl.getExtension('WEBGL_lose_context'); if (lose) lose.loseContext(); }
+      }
+    } catch (_) {}
+  }
+  _liteCache = lite;
+  return lite;
+}
 // exposure / environment / light balance per lighting kind (ACES filmic). Tuned on SwiftShader stills of the demo world.
 // hemi: [sky, ground, intensity] fill so shadow sides are never pitch black (null = keep the viewer's colours, scaled).
 const LOOK = {
@@ -142,7 +174,8 @@ export function applyRenderQuality(renderer, scene, opts = {}) {
   // ?rq=off: legacy look (A/B benchmarking and before/after comparisons)
   if (typeof location !== 'undefined' && /[?&]rq=off\b/.test(location.search)) return { quality: 'off', ready: Promise.resolve(), fitShadow() {}, pixelRatio: renderer.getPixelRatio() };
   const quality = opts.quality === 'render' ? 'render' : 'interactive';
-  const P = PRESETS[quality];
+  const lite = opts.lite != null ? !!opts.lite : isLiteRendering(renderer);
+  const P = lite ? PRESETS.lite : PRESETS[quality];
   const lighting = (opts.lighting || 'day').toLowerCase();
   const L = LOOK[lighting] || LOOK.day;
   const gl = renderer.getContext();
@@ -155,7 +188,7 @@ export function applyRenderQuality(renderer, scene, opts = {}) {
   // anti-aliasing: MSAA comes from the context ({antialias:true}); 'render' additionally supersamples 2x and lets the
   // compositor box-filter it down to the CSS size (exact 2:1 -> 2x2 average). Capped by the GPU's max texture size.
   const dpr = (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
-  let pr = quality === 'render' ? Math.max(dpr, 1) * P.supersample : Math.min(dpr, P.maxPixelRatio);
+  let pr = lite ? 1 : quality === 'render' ? Math.max(dpr, 1) * P.supersample : Math.min(dpr, P.maxPixelRatio);
   const maxTex = renderer.capabilities.maxTextureSize || 4096;
   const cssW = (renderer.domElement.clientWidth || renderer.domElement.width || 1280);
   if (cssW * pr > maxTex) pr = Math.max(1, Math.floor(maxTex / cssW));
@@ -166,7 +199,7 @@ export function applyRenderQuality(renderer, scene, opts = {}) {
   renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.shadowMap.needsUpdate = true;
 
-  const handle = { quality, pixelRatio: pr, lighting, exposure: renderer.toneMappingExposure, envKind: null, keyLight: null,
+  const handle = { quality, lite, pixelRatio: pr, lighting, exposure: renderer.toneMappingExposure, envKind: null, keyLight: null,
     msaaSamples: (gl.getContextAttributes && gl.getContextAttributes().antialias) ? (gl.getParameter(gl.SAMPLES) || 0) : 0,
     ready: Promise.resolve(), fitShadow: () => {} };
   if (!scene) return handle;
@@ -233,7 +266,7 @@ export function applyRenderQuality(renderer, scene, opts = {}) {
     if (fitBox.isEmpty()) fitBox.set(new THREE.Vector3(-60, 0, -60), new THREE.Vector3(60, 10, 60));
     fitBox.expandByScalar(6);
     // cap the covered area so texel density stays forensic-grade (<= ~15 cm at 4096)
-    const s = fitBox.getSize(_v), cap = 560;
+    const s = fitBox.getSize(_v), cap = P.shadowCap || 560;
     if (s.x > cap || s.z > cap) { fitBox.getCenter(_c); fitBox.min.x = Math.max(fitBox.min.x, _c.x - cap / 2); fitBox.max.x = Math.min(fitBox.max.x, _c.x + cap / 2); fitBox.min.z = Math.max(fitBox.min.z, _c.z - cap / 2); fitBox.max.z = Math.min(fitBox.max.z, _c.z + cap / 2); }
     fitShadowCamera(key, fitBox, P.shadowMapSize);
   };
@@ -254,13 +287,19 @@ export function applyRenderQuality(renderer, scene, opts = {}) {
   };
 
   // ---- ambient occlusion + MSAA: HDR composer (RenderPass -> GTAO -> OutputPass: tone map + sRGB), overlays on top ----
-  const aoOff = opts.ao === false || (typeof location !== 'undefined' && /[?&]ao=0\b/.test(location.search));
+  const aoOff = lite || opts.ao === false || (typeof location !== 'undefined' && /[?&]ao=0\b/.test(location.search));
   handle.ao = !aoOff;
   if (!aoOff) {
     try { handle.render = makeComposerRender(renderer, scene, P, L, overlayRoots, worldRoot); }
     catch (e) { console.warn('render_quality: AO composer unavailable, plain render', e); handle.ao = false; }
   }
   if (!handle.render) handle.render = (cam) => renderer.render(scene, cam);
+  if (lite) {
+    const cull = makeLiteCuller(scene);
+    const base = handle.render;
+    handle.render = (cam) => { cull(cam); return base(cam); };
+    handle.liteStats = cull.stats;
+  }
 
   // ---- environment (image-based fill + reflections) ----
   scene.environmentIntensity = L.envIntensity;
@@ -291,6 +330,69 @@ export function applyRenderQuality(renderer, scene, opts = {}) {
     try { setEnv(room(), 'room'); } catch (_) {}
   }
   return handle;
+}
+
+// ---- LITE scene budget ----
+const FOLIAGE_NAME = /leaves|inner|foliage|core|fronds|moss|treeline|shrub|wood|trunk|branch/i;
+const IMPOSTOR_NAME = /impostor|ring_trees/i;
+function isFoliageMesh(o) {
+  if (!o.isInstancedMesh) return false;
+  const mats = Array.isArray(o.material) ? o.material : [o.material];
+  if (mats.some((m) => m && /^foliage_|bark|treeline|treeCore|moss|frond/i.test(m.name || ''))) return true;
+  return FOLIAGE_NAME.test(o.name || '');
+}
+function makeLiteCuller(scene) {
+  const entries = [];
+  const stats = { foliageMeshes: 0, instancesTotal: 0, instancesDrawn: 0, grassHidden: 0 };
+  const seen = new WeakSet();
+  const scan = () => {
+    scene.traverse((o) => {
+      if (seen.has(o)) return;
+      seen.add(o);
+      if (o.userData && o.userData.assetType === 'grassBlades') { o.visible = false; stats.grassHidden++; return; }
+      if (!o.isInstancedMesh) return;
+      if (IMPOSTOR_NAME.test(o.name || '')) { o.castShadow = false; return; }
+      if (!isFoliageMesh(o) || o.count < 24) return;
+      o.castShadow = false;   // sun shadows from vehicles / buildings / poles only
+      const n = o.count, src = new Float32Array(o.instanceMatrix.array.subarray(0, n * 16));
+      const col = o.instanceColor ? new Float32Array(o.instanceColor.array.subarray(0, n * 3)) : null;
+      const inner = /inner|core/i.test(o.name || '');
+      entries.push({ o, n, src, col, r: inner ? LITE_R.inner : LITE_R.outer, last: null });
+      stats.foliageMeshes++; stats.instancesTotal += n;
+    });
+  };
+  let lastScan = -1;
+  const cam = new THREE.Vector3(), wp = new THREE.Vector3(), m4 = new THREE.Matrix4();
+  function cull(camera) {
+    // rescan occasionally (worlds add scenery lazily, e.g. landscape rings on first attach)
+    const now = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+    if (lastScan < 0 || now - lastScan > 2000) { scan(); lastScan = now; }
+    camera.getWorldPosition(cam);
+    let drawn = 0;
+    for (const e of entries) {
+      const o = e.o;
+      if (e.last && e.last.distanceToSquared(cam) < 25) { drawn += o.count; continue; }   // moved < 5 m: keep
+      o.updateWorldMatrix(true, false);
+      const r2 = e.r * e.r, dst = o.instanceMatrix.array, dcol = o.instanceColor ? o.instanceColor.array : null;
+      let k = 0;
+      for (let i = 0; i < e.n; i++) {
+        m4.fromArray(e.src, i * 16);
+        wp.setFromMatrixPosition(m4).applyMatrix4(o.matrixWorld);
+        const dx = wp.x - cam.x, dz = wp.z - cam.z;
+        if (dx * dx + dz * dz > r2) continue;
+        if (k !== i) { dst.set(e.src.subarray(i * 16, i * 16 + 16), k * 16); if (dcol) dcol.set(e.col.subarray(i * 3, i * 3 + 3), k * 3); }
+        else if (e.last) { dst.set(e.src.subarray(i * 16, i * 16 + 16), k * 16); if (dcol) dcol.set(e.col.subarray(i * 3, i * 3 + 3), k * 3); }
+        k++;
+      }
+      o.count = k; o.instanceMatrix.needsUpdate = true; if (o.instanceColor) o.instanceColor.needsUpdate = true;
+      o.frustumCulled = false;   // bounding sphere no longer matches the compacted set
+      e.last = (e.last || new THREE.Vector3()).copy(cam);
+      drawn += k;
+    }
+    stats.instancesDrawn = drawn;
+  }
+  cull.stats = stats;
+  return cull;
 }
 
 // Display match for the Preetham dome under ACES: its radiance (skyGain-scaled to the scene's lux model) sits high on the

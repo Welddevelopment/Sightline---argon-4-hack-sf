@@ -385,5 +385,55 @@
       "impactSource": "meta.impactT",
       "label": "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation."
     }
+  ],
+  "critique": {
+    "round": 3,
+    "verdict": "world_patched",
+    "summary": "The Round 3 world module contained two evidentiary and contract errors: (1) Witness B's marked position on Exhibit 4 (Depo Witness B 1:54:34) was mis-measured as [7.5, 0, 12.0] m when the center of her red X mark is actually on the south edge of the bench shelter at [8.5, 0, 9.0] m, and her observationTime was set to t=9.5s rather than the final second before impact (t=9.9s) when the turning tractor-semitrailer blocks her sightline; and (2) driving witnesses A and C lacked `vehicleId` bindings and dynamic eye-position updates in `setTime(t)`. Patching the world module to place Witness B at her exact Exhibit 4 pen mark [8.5, 0, 9.0] m at t=9.9s and binding Witnesses A and C to their respective pickup trucks reveals the true physical contradiction in Witness B's testimony—that the turning tractor-semitrailer and bench shelter obstructed her view in the final seconds before impact—while confirming that Witness A's, Witness C's, and Witness D's accounts and the solar lighting (azimuth 265.0°, elevation 45.1°) are fully consistent with the record.",
+    "findings": 5,
+    "patched": true,
+    "patch": {
+      "world": "/cases/demo-full/worlds/world_v4.js",
+      "problems": [],
+      "valid": true,
+      "errors": [
+        "witness wit_witness_A: position must be [x, y, z] numbers",
+        "witness wit_witness_C: position must be [x, y, z] numbers"
+      ],
+      "postFix": "1 mechanical edit: driverEye read as local [x,y,z] array per WORLD CONTRACT v2 (Argon read .x/.y/.z -> NaN eye for wit_witness_A/C); Argon output kept in worlds/onepass/world_v4_argon_unfixed.js"
+    },
+    "seconds": 326,
+    "usage": {
+      "promptTokenCount": 863985,
+      "candidatesTokenCount": 20292,
+      "totalTokenCount": 884277,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 155493
+        },
+        {
+          "modality": "IMAGE",
+          "tokenCount": 4392
+        },
+        {
+          "modality": "VIDEO",
+          "tokenCount": 704100
+        }
+      ],
+      "candidatesTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 20292
+        }
+      ]
+    },
+    "finalWorld": "/cases/demo-full/worlds/world_v4.js"
+  },
+  "finalChecks": [
+    "wit_witness_A: CLEAR (0/25)",
+    "wit_witness_B: BLOCKED by occ_bench_shelter (25/25)",
+    "wit_witness_C: CLEAR (0/25)",
+    "wit_witness_D: BLOCKED by bld_retail_store (23/25)"
   ]
 }
