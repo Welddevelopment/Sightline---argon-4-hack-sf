@@ -1,0 +1,338 @@
+{
+  "id": "r_wit_d",
+  "type": "render",
+  "view": "wit_witness_D",
+  "why": "Render Witness D's interior store perspective to confirm the retail building and fixtures block the highway.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node render_view.mjs --repo /workspace/job/repo --world /workspace/job/world.js --view wit_witness_D --out /workspace/job/out/wit_witness_D --fps 2 --w 480 --h 270",
+  "interactionId": "v1_ChdsNDNlYW9maU9PM0x5dE1QOTlLLWtBNBIXbDQzZWFvZmlPTzNMeXRNUDk5Sy1rQTQ",
+  "dispatchedAtMs": 5501,
+  "createMs": 22811,
+  "status": "completed",
+  "environmentId": "f33bd43d573e73aa0bf5bb2bb396a4e5",
+  "usage": {
+    "total": 20389,
+    "input": 19053,
+    "cached": 4154
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"view\":\"wit_witness_D\",\"frames\":51,\"renderMs\":40702,\"verdict\":\"blocked\"}",
+    "interpretation": "The reconstruction confirms that Witness D's line of sight to the vehicle was completely blocked by the retail store building, corroborating their claim that they could not see the highway."
+  },
+  "result": {
+    "view": "wit_witness_D",
+    "world": "world.js",
+    "frames": 51,
+    "fps": 2,
+    "size": [
+      480,
+      270
+    ],
+    "stillT": 10.43,
+    "renderMs": 40702,
+    "node": "v22.23.4",
+    "host": "",
+    "witness": {
+      "id": "wit_witness_D",
+      "claim": "Inside the store behind the register restocking cigarettes; could not see the highway due to the drink cooler and window posters, and only heard the loud bang before going outside ~10-15 s later.",
+      "citation": "Depo Witness D 07:38-08:47, 13:39-14:45, 18:02-19:22, 41:40-42:18",
+      "observationTime": 10.43,
+      "lookAt": "veh_car_a"
+    },
+    "raycast": {
+      "visible": false,
+      "blockedBy": "bld_retail_store",
+      "distance": 30.42,
+      "hitPoint": [
+        20.464516667323558,
+        1.483041666768069,
+        12.995000000372528
+      ]
+    },
+    "pixels": {
+      "target": "veh_car_a",
+      "t": 10.43,
+      "zoomFovDeg": 16.39,
+      "distance": 30.4,
+      "targetPixels": 3866,
+      "visiblePixels": 0,
+      "visibleFraction": 0,
+      "blockers": [
+        {
+          "id": "bld_retail_store",
+          "fraction": 1
+        }
+      ],
+      "rawVisibleFraction": 0,
+      "rawBlockers": [
+        {
+          "id": "bld_retail_store",
+          "fraction": 1
+        }
+      ]
+    },
+    "timeline": [
+      [
+        0,
+        1,
+        null
+      ],
+      [
+        0.5,
+        1,
+        null
+      ],
+      [
+        1,
+        1,
+        null
+      ],
+      [
+        1.5,
+        1,
+        null
+      ],
+      [
+        2,
+        1,
+        null
+      ],
+      [
+        2.5,
+        1,
+        null
+      ],
+      [
+        3,
+        1,
+        null
+      ],
+      [
+        3.5,
+        1,
+        null
+      ],
+      [
+        4,
+        1,
+        null
+      ],
+      [
+        4.5,
+        1,
+        null
+      ],
+      [
+        5,
+        1,
+        null
+      ],
+      [
+        5.5,
+        1,
+        null
+      ],
+      [
+        6,
+        1,
+        null
+      ],
+      [
+        6.5,
+        1,
+        null
+      ],
+      [
+        7,
+        1,
+        null
+      ],
+      [
+        7.5,
+        1,
+        null
+      ],
+      [
+        8,
+        1,
+        null
+      ],
+      [
+        8.5,
+        1,
+        null
+      ],
+      [
+        9,
+        0,
+        "bld_retail_store"
+      ],
+      [
+        9.5,
+        0,
+        "bld_retail_store"
+      ],
+      [
+        10,
+        0,
+        "bld_retail_store"
+      ],
+      [
+        10.5,
+        0,
+        "bld_retail_store"
+      ],
+      [
+        11,
+        0,
+        "bld_retail_store"
+      ],
+      [
+        11.5,
+        0,
+        "bld_retail_store"
+      ],
+      [
+        12,
+        1,
+        null
+      ],
+      [
+        12.5,
+        1,
+        null
+      ],
+      [
+        13,
+        1,
+        null
+      ],
+      [
+        13.5,
+        1,
+        null
+      ],
+      [
+        14,
+        1,
+        null
+      ],
+      [
+        14.5,
+        1,
+        null
+      ],
+      [
+        15,
+        1,
+        null
+      ],
+      [
+        15.5,
+        1,
+        null
+      ],
+      [
+        16,
+        1,
+        null
+      ],
+      [
+        16.5,
+        1,
+        null
+      ],
+      [
+        17,
+        1,
+        null
+      ],
+      [
+        17.5,
+        1,
+        null
+      ],
+      [
+        18,
+        1,
+        null
+      ],
+      [
+        18.5,
+        1,
+        null
+      ],
+      [
+        19,
+        1,
+        null
+      ],
+      [
+        19.5,
+        1,
+        null
+      ],
+      [
+        20,
+        1,
+        null
+      ],
+      [
+        20.5,
+        1,
+        null
+      ],
+      [
+        21,
+        1,
+        null
+      ],
+      [
+        21.5,
+        1,
+        null
+      ],
+      [
+        22,
+        1,
+        null
+      ],
+      [
+        22.5,
+        1,
+        null
+      ],
+      [
+        23,
+        1,
+        null
+      ],
+      [
+        23.5,
+        1,
+        null
+      ],
+      [
+        24,
+        1,
+        null
+      ],
+      [
+        24.5,
+        1,
+        null
+      ],
+      [
+        25,
+        1,
+        null
+      ]
+    ],
+    "verdict": "blocked"
+  },
+  "still": "cases/demo-full/cache/fleet/renders/wit_witness_D.png",
+  "ok": true,
+  "wallMs": 153668,
+  "doneAtMs": 159169
+}

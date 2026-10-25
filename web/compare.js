@@ -476,7 +476,7 @@ async function boot() {
     const dir = tg.to.clone().sub(eye); const dist = dir.length(); dir.normalize();
     const owners = [];
     for (const [id, o] of Object.entries(world.objects)) {
-      if (o.occludes !== true || !o.node || id === tg.id) continue;
+      if (o.occludes !== true || !o.node || id === tg.id || id === w.vehicleId) continue; // never the observer's own vehicle (same as checks.js)
       if (tg.node && (isDesc(o.node, tg.node) || isDesc(tg.node, o.node))) continue;
       owners.push([id, o.node]);
     }

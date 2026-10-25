@@ -1,0 +1,117 @@
+{
+  "id": "wt_wit_d",
+  "type": "whatif_time",
+  "witness": "wit_witness_D",
+  "why": "Verify whether Car A was blocked from Witness D's position across the entire ±2s window around impact.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_ChdqWTdlYW9LVkYtYUZ5dE1QNnBxQ2lRNBIXalk3ZWFvS1ZGLWFGeXRNUDZwcUNpUTQ",
+  "dispatchedAtMs": 4251,
+  "createMs": 269410,
+  "status": "completed",
+  "environmentId": "53a6d22ff879a453272833f44911dd99",
+  "usage": {
+    "total": 19939,
+    "input": 18861,
+    "cached": 9970
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"wt_wit_d\",\"ok\":true,\"ms\":4392}",
+    "interpretation": "Witness D could not see vehicle A across the entire observation window because the line of sight was obstructed by the retail store building."
+  },
+  "result": {
+    "task": {
+      "id": "wt_wit_d",
+      "type": "whatif_time",
+      "witness": "wit_witness_D",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_car_a",
+      "tObs": 10.43,
+      "sweep": [
+        {
+          "dt": -2,
+          "t": 8.43,
+          "visible": false,
+          "blockedBy": "bld_retail_store",
+          "distance": 93.81
+        },
+        {
+          "dt": -1.5,
+          "t": 8.93,
+          "visible": false,
+          "blockedBy": "bld_retail_store",
+          "distance": 77.53
+        },
+        {
+          "dt": -1,
+          "t": 9.43,
+          "visible": false,
+          "blockedBy": "bld_retail_store",
+          "distance": 61.39
+        },
+        {
+          "dt": -0.5,
+          "t": 9.93,
+          "visible": false,
+          "blockedBy": "bld_retail_store",
+          "distance": 45.54
+        },
+        {
+          "dt": 0,
+          "t": 10.43,
+          "visible": false,
+          "blockedBy": "bld_retail_store",
+          "distance": 30.42
+        },
+        {
+          "dt": 0.5,
+          "t": 10.93,
+          "visible": false,
+          "blockedBy": "bld_retail_store",
+          "distance": 17.93
+        },
+        {
+          "dt": 1,
+          "t": 11.43,
+          "visible": false,
+          "blockedBy": "bld_retail_store",
+          "distance": 16.02
+        },
+        {
+          "dt": 1.5,
+          "t": 11.93,
+          "visible": false,
+          "blockedBy": "bld_retail_store",
+          "distance": 26.79
+        },
+        {
+          "dt": 2,
+          "t": 12.43,
+          "visible": false,
+          "blockedBy": "bld_retail_store",
+          "distance": 40.99
+        }
+      ]
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 4392,
+      "worldSha": "549d69915f59",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 349230,
+  "doneAtMs": 353481
+}

@@ -1,0 +1,334 @@
+{
+  "id": "r_wit_a",
+  "type": "render",
+  "view": "wit_witness_A",
+  "why": "Render Witness A's perspective at t=4.0s to visually confirm pixel visibility of Car A.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node render_view.mjs --repo /workspace/job/repo --world /workspace/job/world.js --view wit_witness_A --out /workspace/job/out/wit_witness_A --fps 2 --w 480 --h 270",
+  "interactionId": "v1_ChczNDNlYXNIUUs5ZTRpTE1QaXBHbThRTRIXMzQzZWFzSFFLOWU0aUxNUGlwR204UU0",
+  "dispatchedAtMs": 4751,
+  "createMs": 95485,
+  "status": "completed",
+  "environmentId": "471e677185b938d7a9594852567881ac",
+  "usage": {
+    "total": 33899,
+    "input": 32315,
+    "cached": 16374
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"view\":\"wit_witness_A\",\"frames\":51,\"renderMs\":55997,\"verdict\":\"partial\"}",
+    "interpretation": "The reconstruction yields a partial verdict for Witness A, confirming that the car was visible for several seconds before being obstructed by the turning truck tractor."
+  },
+  "result": {
+    "view": "wit_witness_A",
+    "world": "world.js",
+    "frames": 51,
+    "fps": 2,
+    "size": [
+      480,
+      270
+    ],
+    "stillT": 4,
+    "renderMs": 55997,
+    "node": "v22.23.4",
+    "host": "",
+    "witness": {
+      "id": "wit_witness_A",
+      "claim": "Saw the eastbound dark car come over the hill for several seconds before the turning semitrailer entered the eastbound lanes and blocked his view of the car.",
+      "citation": "docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12; docket_vehicle_dynamics_study.txt p.2, p.4, p.8 Table 2; witness_A.md p.1",
+      "observationTime": 4,
+      "lookAt": "veh_car_a"
+    },
+    "raycast": {
+      "visible": true,
+      "blockedBy": null,
+      "distance": 553.58,
+      "hitPoint": null
+    },
+    "pixels": {
+      "target": "veh_car_a",
+      "t": 4,
+      "zoomFovDeg": 0.9,
+      "distance": 553.6,
+      "targetPixels": 2315,
+      "visiblePixels": 0,
+      "visibleFraction": 0,
+      "blockers": [
+        {
+          "id": "veh_witness_a_pickup",
+          "fraction": 1
+        }
+      ],
+      "rawVisibleFraction": 0,
+      "rawBlockers": [
+        {
+          "id": "veh_witness_a_pickup",
+          "fraction": 1
+        }
+      ]
+    },
+    "timeline": [
+      [
+        0,
+        1,
+        null
+      ],
+      [
+        0.5,
+        1,
+        null
+      ],
+      [
+        1,
+        1,
+        null
+      ],
+      [
+        1.5,
+        1,
+        null
+      ],
+      [
+        2,
+        1,
+        null
+      ],
+      [
+        2.5,
+        1,
+        null
+      ],
+      [
+        3,
+        1,
+        null
+      ],
+      [
+        3.5,
+        1,
+        null
+      ],
+      [
+        4,
+        1,
+        null
+      ],
+      [
+        4.5,
+        1,
+        null
+      ],
+      [
+        5,
+        1,
+        null
+      ],
+      [
+        5.5,
+        1,
+        null
+      ],
+      [
+        6,
+        1,
+        null
+      ],
+      [
+        6.5,
+        1,
+        null
+      ],
+      [
+        7,
+        0,
+        "veh_truck_tractor"
+      ],
+      [
+        7.5,
+        0,
+        "veh_truck_tractor"
+      ],
+      [
+        8,
+        0,
+        "veh_truck_tractor"
+      ],
+      [
+        8.5,
+        1,
+        null
+      ],
+      [
+        9,
+        1,
+        null
+      ],
+      [
+        9.5,
+        1,
+        null
+      ],
+      [
+        10,
+        1,
+        null
+      ],
+      [
+        10.5,
+        1,
+        null
+      ],
+      [
+        11,
+        1,
+        null
+      ],
+      [
+        11.5,
+        1,
+        null
+      ],
+      [
+        12,
+        1,
+        null
+      ],
+      [
+        12.5,
+        1,
+        null
+      ],
+      [
+        13,
+        1,
+        null
+      ],
+      [
+        13.5,
+        1,
+        null
+      ],
+      [
+        14,
+        1,
+        null
+      ],
+      [
+        14.5,
+        1,
+        null
+      ],
+      [
+        15,
+        1,
+        null
+      ],
+      [
+        15.5,
+        1,
+        null
+      ],
+      [
+        16,
+        1,
+        null
+      ],
+      [
+        16.5,
+        1,
+        null
+      ],
+      [
+        17,
+        1,
+        null
+      ],
+      [
+        17.5,
+        1,
+        null
+      ],
+      [
+        18,
+        1,
+        null
+      ],
+      [
+        18.5,
+        1,
+        null
+      ],
+      [
+        19,
+        1,
+        null
+      ],
+      [
+        19.5,
+        1,
+        null
+      ],
+      [
+        20,
+        1,
+        null
+      ],
+      [
+        20.5,
+        1,
+        null
+      ],
+      [
+        21,
+        1,
+        null
+      ],
+      [
+        21.5,
+        1,
+        null
+      ],
+      [
+        22,
+        0,
+        "occ_tree_cluster_1"
+      ],
+      [
+        22.5,
+        1,
+        null
+      ],
+      [
+        23,
+        1,
+        null
+      ],
+      [
+        23.5,
+        1,
+        null
+      ],
+      [
+        24,
+        0,
+        "occ_tree_cluster_1"
+      ],
+      [
+        24.5,
+        0,
+        "occ_tree_cluster_1"
+      ],
+      [
+        25,
+        0,
+        "occ_tree_cluster_1"
+      ]
+    ],
+    "verdict": "partial"
+  },
+  "still": "cases/demo-full/cache/fleet/renders/wit_witness_A.png",
+  "ok": true,
+  "wallMs": 282066,
+  "doneAtMs": 286817
+}

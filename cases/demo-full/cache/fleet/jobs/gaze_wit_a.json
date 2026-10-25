@@ -1,0 +1,65 @@
+{
+  "id": "gaze_wit_a",
+  "type": "gaze",
+  "witness": "wit_witness_A",
+  "why": "Check that Car A falls within Witness A's central field of view while driving eastbound.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_Chc3WTNlYXQtc0gtM0x5dE1QOTlLLWtBNBIXN1kzZWF0LXNILTNMeXRNUDk5Sy1rQTQ",
+  "dispatchedAtMs": 1002,
+  "createMs": 112779,
+  "status": "completed",
+  "environmentId": "ac0a591d72b4090f5bd7170ac0c21a9b",
+  "usage": {
+    "total": 33607,
+    "input": 31427,
+    "cached": 19780
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"gaze_wit_a\",\"ok\":true,\"ms\":8803}",
+    "interpretation": "Witness A had vehicle A directly in their field of view at the time of observation, with an off-axis gaze angle of only 1.5 degrees."
+  },
+  "result": {
+    "task": {
+      "id": "gaze_wit_a",
+      "type": "gaze",
+      "witness": "wit_witness_A",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_car_a",
+      "tObs": 4,
+      "gaze": {
+        "offAxisDeg": 1.5,
+        "assumed": true,
+        "cameraFovDeg": 60,
+        "peripheral": false,
+        "source": "mark_poi"
+      },
+      "altGazeDegByMark": {
+        "mark_poi": 2.29,
+        "mark_poi_tire_impressions": 2.44,
+        "mark_car_rest": 38.78,
+        "mark_truck_rest": 8.02
+      }
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 8803,
+      "worldSha": "549d69915f59",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 260302,
+  "doneAtMs": 261304
+}

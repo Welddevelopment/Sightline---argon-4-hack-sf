@@ -1,0 +1,106 @@
+{
+  "id": "r_overhead",
+  "type": "render",
+  "view": "overhead",
+  "why": "Render the overhead scene layout to confirm vehicle trajectories and obstruction geometry.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node render_view.mjs --repo /workspace/job/repo --world /workspace/job/world.js --view overhead --out /workspace/job/out/overhead --fps 2 --w 480 --h 270",
+  "interactionId": "v1_Chc3STNlYXFXQk9fYXJ5dE1QN3F6MThBWRIXN0kzZWFxV0JPX2FyeXRNUDdxejE4QVk",
+  "dispatchedAtMs": 4501,
+  "createMs": 108890,
+  "status": "completed",
+  "environmentId": "c52774783de2dff70ee26d66cb2befd2",
+  "usage": {
+    "total": 42996,
+    "input": 40689,
+    "cached": 22942
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"view\":\"overhead\",\"frames\":51,\"renderMs\":34324,\"verdict\":\"7/9 pass\"}",
+    "interpretation": "The overhead view rendered 51 frames and passed 7 of 9 verification checks, confirming vehicle timing and kinematic plausibility while verifying expected sightline obstructions for Witnesses B and D."
+  },
+  "result": {
+    "view": "overhead",
+    "world": "world.js",
+    "frames": 51,
+    "fps": 2,
+    "size": [
+      480,
+      270
+    ],
+    "stillT": 12.5,
+    "renderMs": 34324,
+    "node": "v22.23.4",
+    "host": "",
+    "runAll": [
+      {
+        "check": "sightline",
+        "subject": "wit_witness_A",
+        "pass": true,
+        "blockedBy": null,
+        "t": 4,
+        "detail": "From Witness A's marked position (docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12; docket_vehicle_dynamics_study.txt p.2, p.4, p.8 Table 2; witness_A.md p.1) Witness A had line of sight to veh_car_a at t=4s (distance 553.6 m); target 2° from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness A's mark. Claim: \"Saw the eastbound dark car come over the hill for several seconds before the turning semitrailer entered the eastbound lanes and blocked his view of the car.\""
+      },
+      {
+        "check": "sightline",
+        "subject": "wit_witness_B",
+        "pass": false,
+        "blockedBy": "occ_bench_shelter",
+        "t": 9.9,
+        "detail": "From Witness B's marked position (Depo Witness B 17:01 (5 ft 6 in tall), 41:10-41:20, 52:00-52:07 (\"watched it the whole way, right up until it hit\"), 1:54:34 (Exhibit 4 pen mark #2 centered at [8.5, 0, 9.0] m on south edge of bench shelter)) the line of sight to veh_car_a is blocked by occ_bench_shelter at t=9.9s (distance 29.9 m). Blocked from 25 of 25 positions within 2 m of Witness B's mark. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\""
+      },
+      {
+        "check": "sightline",
+        "subject": "wit_witness_C",
+        "pass": true,
+        "blockedBy": null,
+        "t": 10.43,
+        "detail": "From Witness C's marked position (witness_C.md p.1; police_report.md p.1) Witness C had line of sight to veh_semitrailer at t=10.4s (distance 35 m); target 7° from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness C's mark. Claim: \"Stopped in WB inside lane ~18 m west of crossover watching the truck creep out of the turn lane and swing across the EB lanes; heard the crunch and saw the car emerge from the far side.\""
+      },
+      {
+        "check": "sightline",
+        "subject": "wit_witness_D",
+        "pass": false,
+        "blockedBy": "bld_retail_store",
+        "t": 10.43,
+        "detail": "From Witness D's marked position (Depo Witness D 07:38-08:47, 13:39-14:45, 18:02-19:22, 41:40-42:18) the line of sight to veh_car_a is blocked by bld_retail_store at t=10.4s (distance 30.4 m). Blocked from 25 of 25 positions within 2 m of Witness D's mark. Claim: \"Inside the store behind the register restocking cigarettes; could not see the highway due to the drink cooler and window posters, and only heard the loud bang before going outside ~10-15 s later.\""
+      },
+      {
+        "check": "timing",
+        "subject": "veh_car_a",
+        "pass": true,
+        "blockedBy": null,
+        "detail": "The driver of Vehicle A: 2015 4-door passenger sedan had a continuous line of sight to Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer came within 3 m of the centerline of this driver's remaining path 1.73 s before impact. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation."
+      },
+      {
+        "check": "plausibility",
+        "subject": "veh_car_a",
+        "pass": true,
+        "detail": "Vehicle A: 2015 4-door passenger sedan moves plausibly: peak speed 74 mph, peak acceleration 0.03 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A: 2015 4-door passenger sedan took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.52 g at t=21.35 s."
+      },
+      {
+        "check": "plausibility",
+        "subject": "veh_truck_tractor",
+        "pass": true,
+        "detail": "Vehicle T (Tractor): 2014 conventional truck-tractor turning left from WB US-27A onto SB NE 140th Ct moves plausibly: peak speed 15.4 mph, peak acceleration 0.99 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within ±0.5 s of it are excluded."
+      },
+      {
+        "check": "plausibility",
+        "subject": "veh_semitrailer",
+        "pass": true,
+        "detail": "Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer moves plausibly: peak speed 14.1 mph, peak acceleration 0.87 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.17 g at t=17.35 s."
+      },
+      {
+        "check": "plausibility",
+        "subject": "veh_witness_a_pickup",
+        "pass": true,
+        "detail": "Witness A pickup truck: black pickup traveling westbound on US-27A at ~60 mph moves plausibly: peak speed 60.6 mph, peak acceleration 0.61 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within ±0.5 s of it are excluded."
+      }
+    ]
+  },
+  "still": "cases/demo-full/cache/fleet/renders/overhead.png",
+  "ok": true,
+  "wallMs": 331006,
+  "doneAtMs": 335507
+}

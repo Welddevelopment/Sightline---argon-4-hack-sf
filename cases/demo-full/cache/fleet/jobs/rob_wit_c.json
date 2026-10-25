@@ -1,0 +1,111 @@
+{
+  "id": "rob_wit_c",
+  "type": "robustness",
+  "witness": "wit_witness_C",
+  "why": "Verify that Witness C's view from the westbound inside lane is unaffected by minor position shifts.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_ChdPbzdlYXBtRE1vR0gxc2dQek9TSGlBNBIXT283ZWFwbURNb0dIMXNnUHpPU0hpQTQ",
+  "dispatchedAtMs": 3001,
+  "createMs": 188399,
+  "status": "completed",
+  "environmentId": "b80259196a64e4e34014395432cf96af",
+  "usage": {
+    "total": 19926,
+    "input": 18747,
+    "cached": 9970
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"rob_wit_c\",\"ok\":true,\"ms\":4737}",
+    "interpretation": "Under standard verification parameters, witness C had an unblocked line of sight to the semitrailer at the time of observation, though positional variations within close proximity face partial obstruction from the witness's own pickup truck."
+  },
+  "result": {
+    "task": {
+      "id": "rob_wit_c",
+      "type": "robustness",
+      "witness": "wit_witness_C",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_semitrailer",
+      "tObs": 10.43,
+      "standard": {
+        "radiusM": 2,
+        "samples": 25,
+        "blocked": 0,
+        "clear": 25,
+        "eyeJitterM": 0.1,
+        "verdict": "not_blocked",
+        "blockers": {}
+      },
+      "rings": [
+        {
+          "radiusM": 0.5,
+          "samples": 25,
+          "blocked": 20,
+          "blockers": {
+            "veh_witness_c_pickup": 20
+          }
+        },
+        {
+          "radiusM": 1,
+          "samples": 25,
+          "blocked": 14,
+          "blockers": {
+            "veh_witness_c_pickup": 14
+          }
+        },
+        {
+          "radiusM": 2,
+          "samples": 25,
+          "blocked": 8,
+          "blockers": {
+            "veh_witness_c_pickup": 8
+          }
+        },
+        {
+          "radiusM": 3,
+          "samples": 25,
+          "blocked": 5,
+          "blockers": {
+            "veh_witness_c_pickup": 5
+          }
+        },
+        {
+          "radiusM": 5,
+          "samples": 25,
+          "blocked": 2,
+          "blockers": {
+            "veh_witness_c_pickup": 2
+          }
+        },
+        {
+          "radiusM": 8,
+          "samples": 25,
+          "blocked": 1,
+          "blockers": {
+            "veh_witness_c_pickup": 1
+          }
+        }
+      ]
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 4737,
+      "worldSha": "549d69915f59",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 240589,
+  "doneAtMs": 243590
+}
