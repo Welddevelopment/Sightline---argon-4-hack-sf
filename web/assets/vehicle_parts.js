@@ -279,13 +279,20 @@ function wheelGeos(THREE, R, W, rim) {
     tp.push(new THREE.Vector2(rr + side * 0.55, -hw * 1.0));
     tp.push(new THREE.Vector2(R - sh, -hw * 0.97));
     for (let k = 1; k <= 4; k++) { const a = (k / 5) * Math.PI / 2; tp.push(new THREE.Vector2(R - sh + Math.sin(a) * sh, -hw + sh * (1 - Math.cos(a)) * 0.9 + 0.0)); }
-    tp.push(new THREE.Vector2(R, -hw + sh)); tp.push(new THREE.Vector2(R, hw - sh));
+    // crown with 3 circumferential tread grooves (reads as tread in close-ups / low witness views)
+    { const a0 = -hw + sh, a1 = hw - sh, gd = Math.min(0.009, R * 0.025), gw = (a1 - a0) * 0.045;
+      tp.push(new THREE.Vector2(R, a0));
+      for (const f of [0.25, 0.5, 0.75]) {
+        const c = a0 + (a1 - a0) * f;
+        tp.push(new THREE.Vector2(R, c - gw), new THREE.Vector2(R - gd, c - gw * 0.7), new THREE.Vector2(R - gd, c + gw * 0.7), new THREE.Vector2(R, c + gw));
+      }
+      tp.push(new THREE.Vector2(R, a1)); }
     for (let k = 4; k >= 1; k--) { const a = (k / 5) * Math.PI / 2; tp.push(new THREE.Vector2(R - sh + Math.sin(a) * sh, hw - sh * (1 - Math.cos(a)) * 0.9)); }
     tp.push(new THREE.Vector2(R - sh, hw * 0.97));
     tp.push(new THREE.Vector2(rr + side * 0.55, hw * 1.0));
     tp.push(new THREE.Vector2(rr + side * 0.18, hw * 0.97));
     tp.push(new THREE.Vector2(rr * 0.98, hw * 0.86));
-    const tire = new THREE.LatheGeometry(tp, 40);
+    const tire = new THREE.LatheGeometry(tp, 48);
     // rim barrel + face (outboard = +y before rotation -> +X after)
     const lip = hw * 0.86;
     const rp = [
