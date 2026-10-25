@@ -19,3 +19,7 @@ cases/demo-full/cache/*.raw.txt
 # runtime demo clones (created by "Start demo"); demo-full is the source and stays tracked
 cases/demo-*/
 !cases/demo-full/
+
+# large generated exports (rebuilt on demand)
+cases/*/exports/scene.glb
+cases/*/exports/scene.zip
