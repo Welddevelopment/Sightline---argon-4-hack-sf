@@ -91,7 +91,7 @@ HSMV 61512 (03115) Page 1 of3
  HOURS OF SERVICE
 DRIVER'S NAME HOURS C:l SERVICE R\.lES Co-awER'SNAl.E HOURS«- SffMCf RUlfS
 
-FRANK BARESSI [8] INlERSTAlE D INTRASTAlE N/A D INlERSTAlE D INTRASTAlE
+FRANK [DRIVER OF VEHICLE T] [8] INlERSTAlE D INTRASTAlE N/A D INlERSTAlE D INTRASTAlE
  DATE TOTAt HRS at DUTY DRMNG cw-ooT'I'NOTORIVNG TOTAllri..SDRIVEN DATE TOTAL HRS ON DUTY ........, OHOUTYNOTCftWNG TOTAllrolts[liWEN
 
 04/30/201 6 9.5 9 .5 526
@@ -208,18 +208,18 @@ Post Crash notification was emailed through the proper chain of command on 05-07
  I arrived at the above location at approximately 1830 Hours and made contact with FHP Corporal
 Daphne Yuncker, who was conducting the traffic homicide investigation, case number FHP-B16-OFF-012225,
 and Traffic Homicide Investigation case number FHP 716-39-007. I was advised that at approximately 1642
-Hours a red, 2014, Freightliner Tractor (North bound on US 27)) hauling a 2003 Utility trailer turned West on
+Hours a red, 2014, [truck manufacturer] Tractor (North bound on US 27)) hauling a 2003 [trailer manufacturer] trailer turned West on
  th th
-NE 140 Avenue in Williston, FL. While turning West on NE 140 Ave, a black in color Tesla passenger
+NE 140 Avenue in Williston, FL. While turning West on NE 140 Ave, a black in color [car manufacturer] passenger
 vehicle ran under the center part of the trailer causing the passenger vehicle to crash. The driver of the
 passenger vehicle sustained injuries which were fatal.
 
  A CVSA level one inspection (FL3122005025) was conducted on 05-12-16 at 0755 hours on the 2014
-Freightliner tractor and 2003 Utility trailer. A copy of the inspection was mailed to Owner .
+[truck manufacturer] tractor and 2003 [trailer manufacturer] trailer. A copy of the inspection was mailed to Owner .
 
- I observed the tractor to be a red, 2014, Freightliner, with vehicle identification number
+ I observed the tractor to be a red, 2014, [truck manufacturer], with vehicle identification number
  , bearing Florida tag number , and unit number 14. The tractor is registered to
-Okemah Express LLC (DOT# 1065141). The trailer is an aluminum, 2003 Utility trailer, with identification
+Okemah Express LLC (DOT# 1065141). The trailer is an aluminum, 2003 [trailer manufacturer] trailer, with identification
 number , bearing Florida tag , and unit number 2004. The trailer is also
 registered to Okemah Express LLC.
 
@@ -242,7 +242,7 @@ regulations.
 
  Mr. asked that due to being loaded with perishable blueberries and us putting a 5 day hold on the
 vehicle, if he could unload the blueberries at the packing house which was 2 miles from the accident scene.
-After conferring with Cpl. Yuncker, we allowed Mr. Baressi to drive his vehicle to the packing house located at
+After conferring with Cpl. Yuncker, we allowed [driver of Vehicle T] to drive his vehicle to the packing house located at
 HSMV 61513 (08/11)
 
 === FHP Post-Crash Inspection p.6 ===

@@ -34,36 +34,36 @@ A Group was formed composed of the following individuals:
 
  Member: Matthew Schwall
  Director, Field Performance Engineering
- Tesla Motors, Inc.
+ [car manufacturer], Inc.
 
 3. DETAILS OF INVESTIGATION
 
 The NTSB received raw data and image files stored within the Gateway Electronic Control
-Unit (ECU) of the Tesla Model S (VIN 5YJSA1S26FF ) together with parametric
-data based on this raw data that was obtained via database query from Tesla company
+Unit (ECU) of the [car manufacturer] [car model] (VIN 5YJSA1S26FF ) together with parametric
+data based on this raw data that was obtained via database query from [car manufacturer] company
 servers.
 
-3.1. Tesla Driver Assistance System
+3.1. [car manufacturer] Driver Assistance System
 
-The Tesla Model S comes equipped with a suite of driver assistance system (DAS)
+The [car manufacturer] [car model] comes equipped with a suite of driver assistance system (DAS)
 features that includes features such as adaptive cruise control (ACC), lane keeping
 
  HWY16FH018
  Driver Assistance System Factual Report, page 10-1
 
 === Driver Assistance System Factual p.2 ===
-assistance, and automatic emergency braking (AEB). The Tesla Autopilot feature fuses
+assistance, and automatic emergency braking (AEB). The [car manufacturer] [driver-assistance system] feature fuses
 data obtained from optical, radar, and ultrasonic sensors on the vehicle to build an internal
 model of the nearby surroundings including both stationary and non-stationary objects.
 Using this information, together with parametric data concerning the current position1 and
-motion2 of the Tesla vehicle, Autopilot’s Autosteer and Traffic-Aware Cruise Control
+motion2 of the [car manufacturer] vehicle, [driver-assistance system]’s Autosteer and Traffic-Aware Cruise Control
 features are designed to work together to compute the wheel torque, wheel braking, and
 steering inputs required to keep the vehicle in its driving lane when cruising at a set speed
 on highways that have a center divider and clear lane markings.
 
-3.2. Overall Description of the Tesla Driver Assistance System
+3.2. Overall Description of the [car manufacturer] Driver Assistance System
 
-The Tesla Model S driver assistance system is composed of three main subsystems: a)
+The [car manufacturer] [car model] driver assistance system is composed of three main subsystems: a)
 a sensor suite designed to assess the nearby environment, b) a servo suite designed to
 provide thrust, braking, and steering inputs, and c) a data processing suite designed to
 collect input data from the sensors and compute instructions to deliver to the servos.
@@ -71,7 +71,7 @@ Information travels between these three subsystems using multiple Controller Are
 Network (CAN)3 busses.
 
 These three subsystems provide the functions of performance monitoring, processing,
-and control required to implement the Tesla Autopilot Driver Assistance System (DAS).
+and control required to implement the [car manufacturer] [driver-assistance system] Driver Assistance System (DAS).
 Performance monitoring refers to functions related to quantifying the actual performance
 of the vehicle. Examples of performance variables include vehicle speed, acceleration,
 and direction of travel. Control refers to functions related to modifying the future
@@ -80,7 +80,7 @@ motor torque. Processing refers to functions related to building a model of the 
 environment and, together with servo commands specified by the driver, deriving servo
 instructions used to control the vehicle.
 
-The Tesla Model S uses three types of sensors for measuring the relative position of
+The [car manufacturer] [car model] uses three types of sensors for measuring the relative position of
 objects in the nearby environment - two electromagnetic-based (radar and visible light)
 and one sound-based (ultrasonic). CAN busses are used to move data between the
 various electronic control units (ECU) servicing these and other automobile subsystems
@@ -110,7 +110,7 @@ nodes is accomplished using a two-wire twisted pair connecting all of the ECUs t
 === Driver Assistance System Factual p.3 ===
 3.2.1. Bosch Radar System
 
-The Tesla Model S radar system, manufactured by Bosch, is an active system that uses
+The [car manufacturer] [car model] radar system, manufactured by Bosch, is an active system that uses
 super high frequency (SHF)5 radio waves broadcast and received using a multi-channel
 radar transceiver mounted behind the front grille of the vehicle. Time of flight between the
 broadcast of a series of electromagnetic impulses and the reception of the reflected
@@ -119,13 +119,13 @@ to a fan-shaped region forward of the vehicle with a specified range of 160 m (5
 under ideal conditions.
 
 The Bosch radar system is capable of performing fault analysis and reporting certain
-faults to the Autopilot system. These faults include messages related to: sensor
+faults to the [driver-assistance system] system. These faults include messages related to: sensor
 adjustment/alignment, ECU failure, CAN bus failure, message handshaking problems,
 invalid external system/sensor data, and parameter values out-of-range.
 
 3.2.2. MobilEye Image Capture and Processing System
 
-The Tesla Model S optical system is a passive system that employs a single 1-Megapixel
+The [car manufacturer] [car model] optical system is a passive system that employs a single 1-Megapixel
 monochromatic camera mounted in the rear-view-mirror area of the front windshield and
 is designed to accept light information from a region ahead of the vehicle. This data is
 routed through a dedicated camera ECU which can store images in volatile 6 memory and
@@ -133,16 +133,16 @@ pass this data on to a visual processing unit produced by MobilEye that performs
 processing of the incoming optical data and fusion with data received from the Bosch
 radar system. The results of this data fusion, together with image processing performed
 to extract features corresponding to objects in the local environment, is communicated to
-other components of the Tesla Model S Autopilot system including the Gateway ECU.
+other components of the [car manufacturer] [car model] [driver-assistance system] system including the Gateway ECU.
 
 The MobilEye system is capable of performing fault analysis and reporting certain faults
-to the Autopilot system. These include messages related to: radar low visibility or
+to the [driver-assistance system] system. These include messages related to: radar low visibility or
 misalignment, image quality issues (focus, contrast, etc.), image obstruction issues
 (blockages, sun blindness, etc.), and image calibration issues.
 
 3.2.3. Ultrasonic Sensor System
 
-The Tesla Model S ultrasonic system is an active system that uses high frequency sound
+The [car manufacturer] [car model] ultrasonic system is an active system that uses high frequency sound
 waves broadcast and sensed using an array of twelve ultrasonic transducers arrayed
 about the front and rear bumpers of the vehicle. Time of flight between the broadcast of
 a sound impulse and the reception of its return reflected from a nearby object is used to
@@ -167,15 +167,15 @@ require that vehicles be equipped with event data recorders. Equipping a vehicle
 event data recorder is completely voluntary. The regulation also specifies vehicle
 manufacturer requirements for providing commercially available tools and/or methods for
 accomplishing data retrieval from an event data recorder in the event of a crash. The
-Tesla Model S involved in this crash did not, nor was it required by regulation, contain an
+[car manufacturer] [car model] involved in this crash did not, nor was it required by regulation, contain an
 event data recorder. As a result, the data recorded by the ECU was not recorded in
 accordance with this regulation. Further, there is no commercially available tool for data
-retrieval and review of the ECU data. NTSB investigators had to rely on Tesla to provide
+retrieval and review of the ECU data. NTSB investigators had to rely on [car manufacturer] to provide
 the data in engineering units using proprietary manufacturer software.
 
 3.4. Gateway Electronic Control Unit
 
-The Tesla Model S stores non-geo-located data on the vehicle in non-volatile8 memory
+The [car manufacturer] [car model] stores non-geo-located data on the vehicle in non-volatile8 memory
 using a removable SD card installed within the Gateway ECU. This SD card is large
 enough to typically maintain a complete record of all stored data for the lifetime of the
 vehicle.
@@ -183,7 +183,7 @@ vehicle.
 One type of data acquired and stored is general vehicle state information. This data is
 continually written to the Gateway ECU as long as the car is on. Typical parameters
 include: steering angle, accelerator pedal position, driver applied brake pedal application,
-vehicle speed, Autopilot feature states, and lead vehicle distance. Some of these
+vehicle speed, [driver-assistance system] feature states, and lead vehicle distance. Some of these
 parameters are recorded at a 1Hz rate. Other parameters are only recorded when a
 change of state occurs. All parameters are timestamped with the time of arrival at the
 Gateway ECU using a GPS derived clock time.
@@ -215,21 +215,21 @@ an external power source.
  Driver Assistance System Factual Report, page 10-4
 
 === Driver Assistance System Factual p.5 ===
-Data from the SD card is episodically data-linked to Tesla servers using a virtual private
+Data from the SD card is episodically data-linked to [car manufacturer] servers using a virtual private
 network connection established via Wi-Fi, or using the 3G cellular data capabilities of the
 vehicle. Camera data will only be available after it has been transferred to the Gateway
 ECU via CAN bus. This process can take over 40 minutes.
 
 In general, data stored on-board the vehicle will contain information additional to that
-contained on Tesla servers. Specifically, any data stored since the last auto-upload event
+contained on [car manufacturer] servers. Specifically, any data stored since the last auto-upload event
 will exist only on the vehicle itself and must be recovered by forcing an over-the-air
 upload, using maintenance download equipment to connect directly to the vehicle, or by
 removing and directly accessing the SD card internal to the central primary dash-mounted
 electronic control panel.
 
 In addition to the aforementioned data, the vehicle supports the upload of anonymized
-geo-location data to Tesla for mapping and Autopilot feature development efforts. This
-data is not stored on-board the Tesla vehicle.
+geo-location data to [car manufacturer] for mapping and [driver-assistance system] feature development efforts. This
+data is not stored on-board the [car manufacturer] vehicle.
 
 3.5. Data Recovery
 
@@ -242,11 +242,11 @@ files containing all of the parametric data discussed in this report, was stored
 proprietary binary format that required the use of in-house manufacturer software tools
 for conversion into engineering units.
 
-The Tesla model S involved in this crash was running firmware version 7.1 (2.17.37).
-This vehicle was capable of recording hundreds of parameters. Of these, Tesla converted
+The [car manufacturer] model S involved in this crash was running firmware version 7.1 (2.17.37).
+This vehicle was capable of recording hundreds of parameters. Of these, [car manufacturer] converted
 the subset determined by the NTSB to be relevant to this investigation into engineering
 units for the investigation. This was accomplished by performing a database query on
-vehicle data on Tesla servers that mirrored the information that was recovered from the
+vehicle data on [car manufacturer] servers that mirrored the information that was recovered from the
 SD card. The result of this query yielded parametric data from 53 distinct variables, and
 text-based information related to 42 distinct error messages, covering a 42 hour period
 from 04:24:27 UTC (00:24:27 EDT) on May 6, 2016 to 22:15:25 UTC (18:15:25 EDT) on
@@ -270,9 +270,9 @@ contain information consistent with the crash. These images were likely triggere
 earlier FCW / AEB event and written to the SD card prior to the last trip.
 
 Parametric data was also recovered from the SD card. Subsequent to the initial data
-recovery effort, Tesla provided detailed information regarding a subset of parameters
+recovery effort, [car manufacturer] provided detailed information regarding a subset of parameters
 requested by the NTSB (see Appendix 1). The actual data for these parameters,
-converted into engineering units by Tesla using manufacturer proprietary in-house
+converted into engineering units by [car manufacturer] using manufacturer proprietary in-house
 software tools, is included as Attachment 1 to this report. Figures 1 – 4 provide a detailed
 graphical depiction of this data.
 
@@ -291,7 +291,7 @@ final trip including the: CRUISE STATE, MOTOR TORQUE (-MAIN11 and -SLAVE12), CRU
  13
 SETTING, STEERING ANGLE sensor reading, and VEHICLE SPEED. Figure 1 shows
  14
-additional state information related to the Autopilot and the Autopilot hands-on sensing
+additional state information related to the [driver-assistance system] and the [driver-assistance system] hands-on sensing
 logic, as well as parametric data for the distance in meters to any identified lead vehicle.15
 Figure 2 shows additional state information for the brake pedal, turn indicators, and rear
 brake light, as well as parametric data measuring the position of the accelerator pedal.
@@ -303,11 +303,11 @@ The beginning of the accident drive is indicated by the concurrent initializatio
 vehicle systems. This occurred at 15:55:23 EDT, at which time the BUCKLE DRIVER
 STATUS parameter also transitioned to BUCKLE LATCHED. At approximately 15:58 EDT,
 several parameters transitioned to a state or states consistent with autopilot features
-being actively engaged and controlling the vehicle. The AUTOPILOT STATE parameter
+being actively engaged and controlling the vehicle. The [DRIVER-ASSISTANCE SYSTEM] STATE parameter
 transitioned to a state of ACTIVE NORMAL and remained in either the ACTIVE NORMAL or
 ACTIVE RESTRICTED states during the remainder of the trip up to the time of the crash. At
 the same time, CRUISE STATE transitioned to ENABLED, and remained in this state for the
-majority of the trip up to the crash. Also, the AUTOPILOT HAND ON STATE transitioned from
+majority of the trip up to the crash. Also, the [DRIVER-ASSISTANCE SYSTEM] HAND ON STATE transitioned from
 
 11
  Main motor torque refers to the torque on the main (rear) drive wheels.
@@ -318,37 +318,37 @@ majority of the trip up to the crash. Also, the AUTOPILOT HAND ON STATE transiti
 14
  State information includes discrete data such as engaged or disengaged for control parameters, and
 illuminated or not illuminated for performance monitoring parameters (indicators). Certain parameters, like
-the Autopilot state, can assume a larger number of states due to the complexity of the system.
+the [driver-assistance system] state, can assume a larger number of states due to the complexity of the system.
 15
  If a lead vehicle has not been identified (e.g. the lane ahead of the vehicle is deemed clear of other
-vehicles by the Tesla DAS) this parameter will return a constant of 204.6 m.
+vehicles by the [car manufacturer] DAS) this parameter will return a constant of 204.6 m.
  HWY16FH018
  Driver Assistance System Factual Report, page 10-6
 
 === Driver Assistance System Factual p.7 ===
-HANDS NOT REQUIRED to one of several states that correspond with an Autopilot system
+HANDS NOT REQUIRED to one of several states that correspond with an [driver-assistance system] system
 requirement that torque be applied to the steering wheel as a surrogate for sensing driver
 engagement.
 
-For the vast majority of the trip, the AUTOPILOT HANDS ON STATE remained at HANDS
-REQUIRED NOT DETECTED. Seven times during the course of the trip, the AUTOPILOT HANDS
-ON STATE transitioned to VISUAL WARNING. During six of these times, the AUTOPILOT
+For the vast majority of the trip, the [DRIVER-ASSISTANCE SYSTEM] HANDS ON STATE remained at HANDS
+REQUIRED NOT DETECTED. Seven times during the course of the trip, the [DRIVER-ASSISTANCE SYSTEM] HANDS
+ON STATE transitioned to VISUAL WARNING. During six of these times, the [DRIVER-ASSISTANCE SYSTEM]
 HANDS ON STATE transitioned further to CHIME 1 before briefly transitioning to HANDS
 REQUIRED DETECTED for 1 to 3 seconds. During the course of the trip, approximately
-37 minutes16 passed during which the Autopilot system was actively controlling the
+37 minutes16 passed during which the [driver-assistance system] system was actively controlling the
 automobile in both lane assist and adaptive cruise control. During this period, the
-AUTOPILOT HANDS ON STATE was in HANDS REQUIRED DETECTED for 25 seconds. For the
-remainder of this period, the AUTOPILOT HANDS ON STATE was in HANDS REQUIRED NOT
+[DRIVER-ASSISTANCE SYSTEM] HANDS ON STATE was in HANDS REQUIRED DETECTED for 25 seconds. For the
+remainder of this period, the [DRIVER-ASSISTANCE SYSTEM] HANDS ON STATE was in HANDS REQUIRED NOT
 DETECTED, or in one of the visual or aural warning states.
 
 Twice during the course of the trip – at approximately 16:19 and 16:30 EDT – the data
 showed indications consistent with the vehicle coming to a stop or near stop. At these
 times vehicle speed slowed to below 7 mph, CRUISE STATE transitioned from Enabled to
-Standby, AUTOPILOT HANDS ON STATE transitioned to HANDS NOT REQUIRED, and
-AUTOPILOT STATE oscillated between AVAILABLE and UNAVAILABLE. In both cases, the
+Standby, [DRIVER-ASSISTANCE SYSTEM] HANDS ON STATE transitioned to HANDS NOT REQUIRED, and
+[DRIVER-ASSISTANCE SYSTEM] STATE oscillated between AVAILABLE and UNAVAILABLE. In both cases, the
 driver applied accelerator pedal input to manually accelerate the vehicle before the
-AUTOPILOT STATE and AUTOPILOT HANDS ON STATE transitioned to states consistent with
-Autopilot operation with lane assist. The last stop or near stop occurred at approximately
+[DRIVER-ASSISTANCE SYSTEM] STATE and [DRIVER-ASSISTANCE SYSTEM] HANDS ON STATE transitioned to states consistent with
+[driver-assistance system] operation with lane assist. The last stop or near stop occurred at approximately
 16:29:52 EDT; 6 minutes 21 seconds before the crash.
 
 After the second stop or near stop, the CRUISE SET parameter increased in steps from
@@ -370,11 +370,11 @@ activation or deactivation event occurs, and assumes the last known state at all
 times. The HEADLIGHT STATUS parameter transitioned to ON at 16:36:14 EDT, one second
 
 16
- More precisely, the Autopilot system was actively controlling the automobile in both lane assist and
+ More precisely, the [driver-assistance system] system was actively controlling the automobile in both lane assist and
 adaptive cruise control for a total of 36 minutes 43 seconds during the accident drive.
 17
- This behavior is consistent with another vehicle ahead of the Tesla changing lanes or ‘cutting -in’ ahead
-of the Tesla and accelerating away.
+ This behavior is consistent with another vehicle ahead of the [car manufacturer] changing lanes or ‘cutting -in’ ahead
+of the [car manufacturer] and accelerating away.
  HWY16FH018
  Driver Assistance System Factual Report, page 10-7
 
@@ -382,10 +382,10 @@ of the Tesla and accelerating away.
 after the crash.18 The HEADLIGHT STATUS was previously reported as OFF at 09:42:36
 EDT, approximately 6 hours prior to the beginning of the accident trip.
 
-In addition to the Tesla database query used to obtain the engineering unit parametric
-data examined in this investigation, Tesla performed a supplemental database query at
+In addition to the [car manufacturer] database query used to obtain the engineering unit parametric
+data examined in this investigation, [car manufacturer] performed a supplemental database query at
 NTSB request to determine the presence of any status messages indicating that AEB or
-FCW were disabled during the accident drive; no such messages were identified. Tesla
+FCW were disabled during the accident drive; no such messages were identified. [car manufacturer]
 reported that there was no indication in the recorded data of an FCW event, AEB event,
 or any other event indicating detection of an in-path stationary object at or just prior to the
 time of the crash.
@@ -397,25 +397,25 @@ data for 2 hours 9 minutes and 12.4 seconds after the accident event.
  Driver Assistance System Factual Report, page 10-8
 
 === Driver Assistance System Factual p.9 ===
-Figure 1. Autopilot vehicle control and vehicle performance information for the accident trip (41 minutes).
+Figure 1. [driver-assistance system] vehicle control and vehicle performance information for the accident trip (41 minutes).
 
  HWY16FH018
  Driver Assistance System Factual Report, page 10-9
 
 === Driver Assistance System Factual p.10 ===
-Figure 2. Autopilot, user control, and vehicle performance information for the accident trip (41 minutes).
+Figure 2. [driver-assistance system], user control, and vehicle performance information for the accident trip (41 minutes).
 
  HWY16FH018
  Driver Assistance System Factual Report, page 10-10
 
 === Driver Assistance System Factual p.11 ===
-Figure 3. Autopilot vehicle control and vehicle performance information for the last 6 ¼ minutes of the accident trip.
+Figure 3. [driver-assistance system] vehicle control and vehicle performance information for the last 6 ¼ minutes of the accident trip.
 
  HWY16FH018
  Driver Assistance System Factual Report, page 10-11
 
 === Driver Assistance System Factual p.12 ===
-Figure 4. Autopilot, user control, and vehicle performance information for last 6 ¼ minutes the end of the accident trip.
+Figure 4. [driver-assistance system], user control, and vehicle performance information for last 6 ¼ minutes the end of the accident trip.
 
  HWY16FH018
  Driver Assistance System Factual Report, page 10-12
@@ -424,7 +424,7 @@ Figure 4. Autopilot, user control, and vehicle performance information for last 
  Appendix 1
 Parameter Name Units Update Update Description
  Rate Logic
-AUTOPILOT HANDS ON STATE discrete Asynchro Upon HANDS NOT REQD = Autopilot not controlling vehicle.
+[DRIVER-ASSISTANCE SYSTEM] HANDS ON STATE discrete Asynchro Upon HANDS NOT REQD = [driver-assistance system] not controlling vehicle.
  nous Change
  HANDS REQD DETECTED = Steering wheel torque sufficient to detect
  hands-on.
@@ -436,15 +436,15 @@ AUTOPILOT HANDS ON STATE discrete Asynchro Upon HANDS NOT REQD = Autopilot not c
 
  HANDS REQD CHIME 2 = Stage 2 aural warning to driver.
 
- HANDS REQD SLOWING = Autopilot slowing vehicle.
+ HANDS REQD SLOWING = [driver-assistance system] slowing vehicle.
 
  HANDS SNA = Steering wheel hands-on detection not available.
 
-AUTOPILOT STATE discrete Upon DISABLED = Autopilot disabled.
+[DRIVER-ASSISTANCE SYSTEM] STATE discrete Upon DISABLED = [driver-assistance system] disabled.
  Change
- UNAVAILABLE = Autopilot unavailable.
+ UNAVAILABLE = [driver-assistance system] unavailable.
 
- AVAILABLE = Autopilot available.
+ AVAILABLE = [driver-assistance system] available.
 
  ACTIVE NOMINAL = Autosteer engaged.
 
@@ -517,7 +517,7 @@ CRUISE STATE discrete Upon OFF = Cruise control deactivated.
  Change
 
 19
- For a detailed explanation of the Tesla Adaptive Cruise Control system see the NTSB Human Performance Group Chairman’s Supplemental Report:
+ For a detailed explanation of the [car manufacturer] Adaptive Cruise Control system see the NTSB Human Performance Group Chairman’s Supplemental Report:
 Driver Assistance Systems, Williston, FL, HWY16FH018.
  HWY16FH018
  Driver Assistance System Factual Report, page 10-14

@@ -22,12 +22,12 @@ A. CRASH INFORMATION
 
 Location: US-Alt 27, milepost 29, near Williston, Levy County, Florida
 
-Vehicle #1: 2015 Tesla Model S 70D
+Vehicle #1: 2015 [car manufacturer] [car model] 70D
 
 Operator #1: Private operator
 
-Vehicle #2: 2014 Freightliner Cascadia truck tractor in combination with a
- 2003 Utility 3000R refrigerated semitrailer
+Vehicle #2: 2014 [truck manufacturer] [truck model] truck tractor in combination with a
+ 2003 [trailer manufacturer] 3000R refrigerated semitrailer
 
 Operator #2: Okemah Express, LLC
  Palm Harbor, FL
@@ -57,7 +57,7 @@ D. DETAILS OF THE TECHNICAL RECONSTRUCTION GROUP
 
  The Technical Reconstruction Group provided investigative support through the
 examination and documentation of the collision scene and involved motor vehicles, excluding the
-Freightliner truck tractor. Factual and analytic data was also acquired through review of
+[truck manufacturer] truck tractor. Factual and analytic data was also acquired through review of
 documentation provided by the Florida Highway Patrol, Florida Department of Transportation and
 other NTSB investigative groups.
 
@@ -65,7 +65,7 @@ other NTSB investigative groups.
 Photographs were taken in digital format, while scanning was accomplished using the FARO
 Focus3D x330 laser scanner. The multiple scans of a subject were processed into point clouds for
 further analysis. Three scan projects were completed, which included the crash scene, and the
-involved Tesla and the involved semitrailer. Video documentation of the immediate approach to,
+involved [car manufacturer] and the involved semitrailer. Video documentation of the immediate approach to,
 and through the area of the crash was also conducted following the route of both vehicles.
 
  Factual reports prepared by other NTSB investigative groups should be consulted for
@@ -113,9 +113,9 @@ the right through lane of US-27A was about 90 feet (measured from lane centers).
  The NTSB Highway Factors Factual report should be consulted for additional highway
 details.
 
- The collision occurred when the Tesla, traveling eastbound on US-27A, struck the right
+ The collision occurred when the [car manufacturer], traveling eastbound on US-27A, struck the right
 side of the semitrailer as the combination vehicle made a left turn from westbound US-27A onto
-(southbound) NE 140th Court. The Tesla passed beneath the semitrailer and continued eastward
+(southbound) NE 140th Court. The [car manufacturer] passed beneath the semitrailer and continued eastward
 after the collision. While roadway evidence was no longer visible upon the arrival of NTSB
 investigators, the area was photographed and documented by investigators with the Florida
 Highway Patrol (FHP). FHP investigators identified the area of impact as within the confines of
@@ -128,22 +128,22 @@ within, and parallel to the right eastbound travel lane. The characteristics of 
 consistent with vertical loading or over deflection of vehicle tires without indication of sliding.
 The separation between the marks appeared consistent with the wheel track of a passenger vehicle.
 The tire mark documented by FHP investigators would have been consistent with location of the
-passenger side tires of the Tesla at impact. The photographs also depicted debris from the Tesla
+passenger side tires of the [car manufacturer] at impact. The photographs also depicted debris from the [car manufacturer]
 at the southwest corner of the intersection and trailing eastward from the area of impact. The
-debris located at the southwest corner of the intersection appeared to consist of the Tesla’s interior
+debris located at the southwest corner of the intersection appeared to consist of the [car manufacturer]’s interior
 and exterior roof panels. Figure 1 is a FHP photographs depicting the two faint tire friction marks
 and vehicle debris observed near the area of impact.
 
- FHP data documented the Tesla continuing eastward after impact with the trailer and
+ FHP data documented the [car manufacturer] continuing eastward after impact with the trailer and
 departing the right side of the roadway about 326 feet from the area of impact. Based on FHP
-documentation, the Tesla traveled from the area of impact toward the right roadside at an
+documentation, the [car manufacturer] traveled from the area of impact toward the right roadside at an
 approximate angle of 1.7⁰. FHP photographs depict continuous wheel path impressions (left and
 right side) across the grass-covered roadside adjacent the highway. The photographs depict a
 curvilinear path as the vehicle negotiated the change in vertical grade along the fore and back
 slopes that paralleled the highway (creating a large drainage culvert). Scan data depicted the fore
 slope that descended at about a 14⁰ angle over a distance of about 49 feet. The back slope ascended
 at a 14⁰ angle over a distance of about 15 feet. The linear distance covering the segment of travel
-through the drainage culvert was about 334 feet following which the Tesla breached a wire fence
+through the drainage culvert was about 334 feet following which the [car manufacturer] breached a wire fence
 at the top of the back slope. The fence ran parallel to the highway.
 
  Wheel path impressions continued another 195 feet through a level grass-covered field
@@ -154,23 +154,23 @@ Williston, FL – Technical Reconstruction Group Factual Report Page 4 of 21
 
 === Technical Reconstruction Factual p.5 ===
 Figure 1: Florida Highway Patrol photograph facing eastward on US-27A at the intersection with NE 140th Court.
-Two parallel tire friction marks are referenced by the yellow arrows. Additional Tesla debris is located at the
+Two parallel tire friction marks are referenced by the yellow arrows. Additional [car manufacturer] debris is located at the
 southwest corner of the intersection (right side of photograph).
 
- The Tesla’s position of final rest was documented about 55 feet eastward of the utility pole.
+ The [car manufacturer]’s position of final rest was documented about 55 feet eastward of the utility pole.
 Photographs of the vehicle at rest depict its position as perpendicular to the highway and its original
-direction of travel. Overall, the approximate linear distance traveled by the Tesla after impact with
+direction of travel. Overall, the approximate linear distance traveled by the [car manufacturer] after impact with
 the semitrailer was 910 feet.
 
  The collision scene was scanned on July 15, 2016. The scan area included 12 stations that
-extended from the intersection to driveway area where the Tesla came to rest. Figures 2 and 3
+extended from the intersection to driveway area where the [car manufacturer] came to rest. Figures 2 and 3
 depict the linked scans as a single image and the 2D diagram based on the scan and FHP data.
 
 Williston, FL – Technical Reconstruction Group Factual Report Page 5 of 21
 
 === Technical Reconstruction Factual p.6 ===
 Figure 2: Image depicting linked 3D scans of the intersection of eastbound US-27A and NE 140th Court extending
-eastward to the residential driveway where the Tesla came to rest.
+eastward to the residential driveway where the [car manufacturer] came to rest.
 
 Williston, FL – Technical Reconstruction Group Factual Report Page 6 of 21
 
@@ -183,17 +183,17 @@ Williston, FL – Technical Reconstruction Group Factual Report Page 7 of 21
  2. Vehicle Documentation
 
  Two of the involved vehicles were documented by 3D scanning on July 13 and 14, 2016.
-Those vehicles included the Tesla and Utility semitrailer. The original truck tractor involved in
+Those vehicles included the [car manufacturer] and [trailer manufacturer] semitrailer. The original truck tractor involved in
 the collision was not available. The semitrailer was located at a salvage facility in Groveland, FL,
-but had not been altered following the collision. The Tesla had been stored at a secure insurance
+but had not been altered following the collision. The [car manufacturer] had been stored at a secure insurance
 facility near Tampa, FL.
 
  In addition to the summary provided below, the NTSB Vehicle Factors Group factual
 report should be consulted for additional information.
 
- 2.1. Tesla Model S 70D
+ 2.1. [car manufacturer] [car model] 70D
 
- The vehicle was identified as a 2015 Tesla Model S 70D, four-door sedan. The vehicle
+ The vehicle was identified as a 2015 [car manufacturer] [car model] 70D, four-door sedan. The vehicle
 was scanned from four stations. Damage to the vehicle included the complete separation of the
 roof panel, which exhibited fore to aft compression similar to an accordion. The combination rear
 window frame and trunk lid (lift back) was observed to be inverted and folded over the rear of the
@@ -223,21 +223,21 @@ vertical height of the leading edge of the hood measured approximately 2 feet.
 Williston, FL – Technical Reconstruction Group Factual Report Page 8 of 21
 
 === Technical Reconstruction Factual p.9 ===
- Figure 4: Florida Highway Patrol post-collision photograph depicting collision damage to Tesla. The
+ Figure 4: Florida Highway Patrol post-collision photograph depicting collision damage to [car manufacturer]. The
  yellow arrow indicates upper surface damage to the hood, while the red arrow indicates the pole impact
  damage. The rear window frame and trunk deck combination has been returned to the upright position.
 
- Figure 5: Image depicting linked 3D scans of the Tesla. The yellow tape visible in the image was applied
+ Figure 5: Image depicting linked 3D scans of the [car manufacturer]. The yellow tape visible in the image was applied
  by other investigators to outline areas of damage.
 
 Williston, FL – Technical Reconstruction Group Factual Report Page 9 of 21
 
 === Technical Reconstruction Factual p.10 ===
- Published dimensions for the Tesla are conveyed in Table 1.
+ Published dimensions for the [car manufacturer] are conveyed in Table 1.
 
- Table 1: Published dimensional data for Tesla Model S
+ Table 1: Published dimensional data for [car manufacturer] [car model]
 
- 2015 Tesla Model S 70D
+ 2015 [car manufacturer] [car model] 70D
  70 kWh battery / dual motor AWD
  inches feet
  Length (overall) 196 16.33
@@ -248,9 +248,9 @@ Williston, FL – Technical Reconstruction Group Factual Report Page 9 of 21
  Front wheel track 65.4 5.45
  Rear wheel track 66.9 5.58
 
- 2.2. 2003 Utility Semitrailer
+ 2.2. 2003 [trailer manufacturer] Semitrailer
 
- The involved semitrailer was identified as a 2003 Utility VS2RA 3000R refrigerated van
+ The involved semitrailer was identified as a 2003 [trailer manufacturer] VS2RA 3000R refrigerated van
 body trailer. The vehicle was scanned from eight stations while coupled to a two-axle yard truck
 tractor. An examination of the trailer and comparison with FHP photographs revealed no apparent
 alterations of the trailer from its post-collision condition.
@@ -268,10 +268,10 @@ superficially damaged and exhibited an arced impression that extended vertically
 sidewall rail damage. The rear most area of contact was centered approximately 23.91 feet (23
 feet, 11 inches) forward of the end of the trailer. The forward most area of contact was centered
 about 28.58 feet (28 feet, 7 inches) forward of the trailer end. A segment of windshield trim from
-the Tesla was observed entangled within the damage of the forward most area of contact. The
+the [car manufacturer] was observed entangled within the damage of the forward most area of contact. The
 distance between the two areas of contact measured 4.66 feet (4 feet, 8 inches) from the
 approximate centers. Overall, the areas of contact comprised a longitudinal distance of 5.91 feet
-(5 feet, 11 inches).5 The lateral distance between the Tesla’s A-pillars measured approximately
+(5 feet, 11 inches).5 The lateral distance between the [car manufacturer]’s A-pillars measured approximately
 5.25 feet (5 feet, 4 inches) at the widest point.
 
  As measured in a static position, the vertical clearance below the trailer was approximately
@@ -284,18 +284,18 @@ covered about 7 inches (283-2810).
 Williston, FL – Technical Reconstruction Group Factual Report Page 10 of 21
 
 === Technical Reconstruction Factual p.11 ===
- vertical height of the Tesla.6 The overall vertical height of the trailer measured approximately 13.3
+ vertical height of the [car manufacturer].6 The overall vertical height of the trailer measured approximately 13.3
  feet, resulting in a sidewall surface area of just under 525 square feet.
 
  Figure 6 depicts certain dimensional data as measured from the 3D scan point cloud.
 
 Figure 4: Screen capture image depicting certain dimensional measurements for the semitrailer acquired from the 3D scan
-point cloud. The truck tractor depicted in the image is not the involved Freightliner.
+point cloud. The truck tractor depicted in the image is not the involved [truck manufacturer].
 
  Figure 7 depicts a photograph of the trailer’s right side damage.
 
  Figure 5: Photograph depicting impact damage to the right side of the semitrailer. A segment of front windshield
- trim from the Tesla is entrapped in the forward most area of damage.
+ trim from the [car manufacturer] is entrapped in the forward most area of damage.
 
  Damage to the left (driver) side of the semitrailer exhibited an outward displacement of the
  lower sidewall rail, but to a lesser extent than the right side. The left side areas of damage where
@@ -316,16 +316,16 @@ Figure 6: 3D point cloud slice depicting trailer damage at the lower sidewall.
 
  3. Vehicle Electronic Data
 
- Certain electronically recorded data was available from the Tesla and Freightliner truck
+ Certain electronically recorded data was available from the [car manufacturer] and [truck manufacturer] truck
  tractor. While neither vehicle was equipped with a crash event data recorder (EDR), both had
  systems that either recorded, or were capable of recording certain events or vehicle operating
  conditions. The sections that follow offer a summary of certain aspects of the electronic data
  retrieved from each vehicle. The NTSB Recorders Group factual report should be consulted for
  more specific details.
 
- 3.1. Tesla
+ 3.1. [car manufacturer]
 
- As a matter of routine operation, the Tesla electronically recorded a wide range of non-
+ As a matter of routine operation, the [car manufacturer] electronically recorded a wide range of non-
  geographical operational data that was retrievable with the assistance of the manufacturer after the
  crash. While substantial data covering the operational life of the vehicle was available, the NTSB
  Technical Reconstruction Group was interested in data potentially related to events around the
@@ -376,9 +376,9 @@ whether the vehicle’s daytime running lights (DRL) were active. According to t
 manual, automatic activation of the DRL can be overridden by the operator when the vehicle is
 powered up.
 
- 3.2. Freightliner tractor
+ 3.2. [truck manufacturer] tractor
 
- The engine of the 2014 Freightliner was managed by a Detroit Diesel Electronic Controller
+ The engine of the 2014 [truck manufacturer] was managed by a [engine manufacturer] Electronic Controller
 (DDEC) that had the capability to record certain parametric data associated with the operation of
 that vehicle. The DDEC version was not identified. FHP investigators acquired a copy of a data
 download report from a third party who accessed the control module on May 10, 2016. The FHP
@@ -519,7 +519,7 @@ eye height of 7.6 feet and a distant target height of 3.5 feet, the sight line d
 at 1,135 feet as measured from the area of impact.9 The calculated sight lines exceed the minimum
 AASHTO recommendations.
 
- Similar sight line calculations were made for the eastbound Tesla driver, although the
+ Similar sight line calculations were made for the eastbound [car manufacturer] driver, although the
 driver eye height was decreased to 3.5 feet as recommended for passenger vehicles in the
 AASHTO reference. The sight line distance for the eastbound passenger vehicle was calculated
 to be approximately 1,075 feet from the area of impact. The slight decrease in the calculated
@@ -552,15 +552,15 @@ already in the left turn lane at the intersection, although the witness could no
 truck was stopped or moving very slowly. No other traffic was observed in the area when the truck
 was first sighted.
 
- The witness described seeing the Tesla crest the grade before the truck began its left turn
-and crossed the median. The Tesla was described as likely traveling in the right and did not appear
+ The witness described seeing the [car manufacturer] crest the grade before the truck began its left turn
+and crossed the median. The [car manufacturer] was described as likely traveling in the right and did not appear
 to be moving at an excessive speed. The truck continued through the median at a slow speed and
-across the eastbound lanes. The impact was described as a white dust cloud after which the Tesla
+across the eastbound lanes. The impact was described as a white dust cloud after which the [car manufacturer]
 emerged from beneath the semitrailer.
 
  As the impact occurred, the witness described having reached the westbound left turn lane
 for the intersection. The witness was able to slow and make a U-turn at the intersection after which
-a phone call was placed to 9-1-1 as the witness chased after the Tesla. The Tesla had departed the
+a phone call was placed to 9-1-1 as the witness chased after the [car manufacturer]. The [car manufacturer] had departed the
 roadway but continued eastward and the witness caught up with it after it came to rest in the
 driveway of a private residence.
 
@@ -576,35 +576,35 @@ response to specific questions.
 observed at the intersection further west. The truck was described as being in the left turn lane
 facing west, parallel with the travel lane. The witness was unable to discern whether the truck was
 stationary or moving slowly. As the witness continued toward the intersection a car, which was
-later identified as the Tesla, was observed to crest the grade traveling eastbound toward the
-intersection. The witness described seeing the Tesla for several seconds before the truck began to
+later identified as the [car manufacturer], was observed to crest the grade traveling eastbound toward the
+intersection. The witness described seeing the [car manufacturer] for several seconds before the truck began to
 turn through the median.
 
  The witness described the truck as moving at a slow but steady speed – it did not appear to
-suddenly increase or decrease speed as it continued toward the eastbound roadway. The Tesla was
+suddenly increase or decrease speed as it continued toward the eastbound roadway. The [car manufacturer] was
 described as traveling at steady speed that did not appear to the witness as excessive. There was
-no detectable change in speed or heading by the Tesla as it approached the intersection. The
-witness described watching the Tesla for about 2-3 seconds as it approached the intersection.
+no detectable change in speed or heading by the [car manufacturer] as it approached the intersection. The
+witness described watching the [car manufacturer] for about 2-3 seconds as it approached the intersection.
 
- As the truck began to enter the eastbound lanes, the witness lost sight of the Tesla, which
+ As the truck began to enter the eastbound lanes, the witness lost sight of the [car manufacturer], which
 was now on the far side of the truck. The witness described the rear tires of the semitrailer as
 occupying the left eastbound lane as a white dust cloud, “like an explosion”, was observed around
-the trailer. Immediately thereafter the Tesla emerged from the near side of the trailer and continued
+the trailer. Immediately thereafter the [car manufacturer] emerged from the near side of the trailer and continued
 
 Williston, FL – Technical Reconstruction Group Factual Report Page 19 of 21
 
 === Technical Reconstruction Factual p.20 ===
 eastward without any observable loss of speed. The witness was able to rapidly slow and make a
-U-turn at the intersection and chase after the Tesla.
+U-turn at the intersection and chase after the [car manufacturer].
 
- The witness described seeing the Tesla travel off the right side of the highway. As the
+ The witness described seeing the [car manufacturer] travel off the right side of the highway. As the
 vehicle traversed the roadside, the witness described seeing the driver “bouncing” vertically “up
 and down”. The witness was unsure of the driver’s condition and was concerned that the vehicle
 did not initially appear to be slowing. The witness continued eastbound on the highway as the
-Tesla continued through a field and passed between a several trees.
+[car manufacturer] continued through a field and passed between a several trees.
 
- The witness intercepted the Tesla as it came to a stop in the driveway of a private residence.
-The witness noted that the Tesla had struck, and severed a nearby utility pole. Walking to within
+ The witness intercepted the [car manufacturer] as it came to a stop in the driveway of a private residence.
+The witness noted that the [car manufacturer] had struck, and severed a nearby utility pole. Walking to within
 10 to 15 feet of the vehicle, the witness could see that the driver has sustained severe head trauma
 and exhibited no movement. After another call to 9-1-1, the witness reported that a county sheriff’s
 deputy arrived within about 10-15 minutes.
@@ -612,10 +612,10 @@ deputy arrived within about 10-15 minutes.
  The witness conveyed that another motorist, who had been further to the east also traveling
 westbound, had arrived at the driveway first, after cutting across the median further east. When
 interviewed by FHP investigators, this second witness stated that they had not seen the collision,
-only the Tesla traveling off the highway. This witness did not respond to a request from NTSB
+only the [car manufacturer] traveling off the highway. This witness did not respond to a request from NTSB
 investigators for an interview.
 
- The witness stated that he remained in the driveway near the Tesla for at least an hour while
+ The witness stated that he remained in the driveway near the [car manufacturer] for at least an hour while
 police and fire personnel tended to the scene. The witness stated that at no time did he hear or see
 any evidence of a video, or other audio/visual entertainment device playing. The witness also
 stated that while on the scene no one other than police and fire personnel were seen near the
@@ -628,7 +628,7 @@ avoided the crash.
  Investigative work conducted by NTSB investigators included an attempt to interview the
 driver of the combination vehicle. Through an attorney, the truck driver declined to be
 interviewed. FHP investigators stated that they spoke with the truck driver, but took no written or
-recorded statement. FHP stated only that the driver reported not seeing the Tesla before beginning
+recorded statement. FHP stated only that the driver reported not seeing the [car manufacturer] before beginning
 his turn. The driver reportedly described the impact as not substantially noticeable and that he had
 no indication what was struck or run-over until he stopped and assessed the situation.
 
@@ -642,7 +642,7 @@ investigation:
 
 LIST OF ATTACHMENTS
 
-  Freightliner DDEC report
+  [truck manufacturer] DDEC report
 
 LIST OF PHOTOGRAPHS
 

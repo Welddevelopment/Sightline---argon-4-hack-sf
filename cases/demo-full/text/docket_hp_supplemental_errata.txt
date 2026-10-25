@@ -11,10 +11,10 @@ Errata to HP Supplemental Report
  (2 pages)
 
 === Errata HP Supplemental p.2 ===
-The following error was discovered in Section 3.7, “Autosteer – Component of Autopilot”
+The following error was discovered in Section 3.7, “Autosteer – Component of [driver-assistance system]”
 
 The last sentence in this section, located on page #20 reads as follows:
-Activation in the accident vehicle: Based on the vehicle’s recorder data, the Tesla driver did not
+Activation in the accident vehicle: Based on the vehicle’s recorder data, the [car manufacturer] driver did not
 use this system on the day of the crash.
 
 This sentence was erroneously copied from elsewhere in the report and this section should end

@@ -22,11 +22,11 @@ A. CRASH INFORMATION
 
  Location: US 27A, milepost 29, near Williston, Levy County, Florida.
 
- Vehicle #1: 2015 Tesla Model S 70D
+ Vehicle #1: 2015 [car manufacturer] [car model] 70D
 
  Operator #1: Private operator
 
- Vehicle #2: 2014 Freightliner Cascadia truck tractor in combination with a 2003 Utility
+ Vehicle #2: 2014 [truck manufacturer] [truck model] truck tractor in combination with a 2003 [trailer manufacturer]
  3000R refrigerated semi-trailer
 
  Operator #2: Okemah Express, LLC
@@ -52,8 +52,8 @@ investigation.
 D. DETAILS OF THE MOTOR CARRIER FACTORS INVESTIGATION
 
  This investigative report addresses the motor carrier history and operations of the
-commercial vehicle involved in this crash, which was a 2014 Freightliner truck tractor and 2003
-Utility semi-trailer, owned and operated by Okemah Express, LLC. This report also details the
+commercial vehicle involved in this crash, which was a 2014 [truck manufacturer] truck tractor and 2003
+[trailer manufacturer] semi-trailer, owned and operated by Okemah Express, LLC. This report also details the
 employment history of the commercial driver, along with the safety culture and regulatory
 oversight of Okemah Express’s operations.
 
@@ -69,7 +69,7 @@ Carrier Safety Administration (FMCSA) Motor Carrier Management Information Syste
 in Palm Harbor, FL. The carrier had active operating authority and was issued MC # 443585 This
 MC Number was issued on December 2, 2002 which indicates the carrier was operating under
 another DOT number or name prior to the current carrier. Investigation of the MCS-150 history
-indicated that the carrier was started as Frank Baressi DBA Okemah Express. This company was
+indicated that the carrier was started as [driver of Vehicle T] DBA Okemah Express. This company was
 operated with a Principle Place of Business (PPOB) in Okemah, OK. In 2005 the carrier changed
 its name and corporate structure to Okemah Express, LLC was a “for-hire” carrier of general
 freight, fresh produce, grain, meat, and refrigerated food. Per the MCS-150, the carrier had 1
@@ -80,7 +80,7 @@ had retained an attorney. A subpoena was presented to the carrier’s attorney w
 documents requested:
  • (FMCSR 395.8(k)) Driver’s log books for the last six months
  • (FMCSR 396.3(c)) All maintenance, service, and inspection records for both the
- 2014 Freightliner truck-tractor and 2003 Utility semitrailer for the last 12 months
+ 2014 [truck manufacturer] truck-tractor and 2003 [trailer manufacturer] semitrailer for the last 12 months
  • (FMCSR 391.51) All driver records such as:
  o medical long form
  o motor vehicle record

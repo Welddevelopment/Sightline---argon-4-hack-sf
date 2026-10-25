@@ -36,9 +36,9 @@ National Transportation Safety Board. 2017. Collision Between a Car Operating Wi
 Vehicle Control Systems and a Tractor-Semitrailer Truck Near Williston, Florida, May 7, 2016.
 Highway Accident Report NTSB/HAR-17/02. Washington, DC.
 
-Abstract: At 4:36 p.m. eastern daylight time on Saturday, May 7, 2016, a 2015 Tesla Model S 70D car,
+Abstract: At 4:36 p.m. eastern daylight time on Saturday, May 7, 2016, a 2015 [car manufacturer] [car model] 70D car,
 traveling eastbound on US Highway 27A (US-27A), west of Williston, Florida, struck a refrigerated
-semitrailer powered by a 2014 Freightliner Cascadia truck-tractor. At the time of the collision, the truck
+semitrailer powered by a 2014 [truck manufacturer] [truck model] truck-tractor. At the time of the collision, the truck
 was making a left turn from westbound US-27A across the two eastbound travel lanes onto NE 140th Court,
 a local paved road. The car struck the right side of the semitrailer, crossed underneath it, and then went off
 the right roadside at a shallow angle. The impact with the underside of the semitrailer sheared off the roof
@@ -48,7 +48,7 @@ in the front yard of a private residence. Meanwhile, the truck continued across 
 a stop on NE 140th Court, south of a retail business located on the intersection corner. The driver and sole
 occupant of the car died in the crash; the commercial truck driver was not injured. System performance data
 downloaded from the car indicated that the driver was operating it using the Traffic-Aware Cruise Control
-and Autosteer lane-keeping systems, which are automated vehicle control systems within Tesla’s Autopilot
+and Autosteer lane-keeping systems, which are automated vehicle control systems within [car manufacturer]’s [driver-assistance system]
 suite. The crash investigation focused on the following safety issues: operational design domains for
 SAE International Level 2 vehicle automation, surrogate means of determining the automated vehicle
 driver’s degree of engagement, event data recorders for automated vehicles, safety metrics and exposure
@@ -104,15 +104,15 @@ Executive Summary ..............................................................
  1.1.2 Crash Scene .....................................................................................................................2
  1.1.3 Occupant Protection and Injuries.....................................................................................5
 1.2 Vehicle Damage .........................................................................................................................5
- 1.2.1 Tesla Model S 70D Car ...................................................................................................5
- 1.2.2 Utility Semitrailer ............................................................................................................6
-1.3 Tesla Model S 70D Car..............................................................................................................8
+ 1.2.1 [car manufacturer] [car model] 70D Car ...................................................................................................5
+ 1.2.2 [trailer manufacturer] Semitrailer ............................................................................................................6
+1.3 [car manufacturer] [car model] 70D Car..............................................................................................................8
  1.3.1 Mechanical Inspections ...................................................................................................8
  1.3.2 Automated Vehicle Control Systems...............................................................................8
- 1.3.3 Autopilot Description ......................................................................................................9
- 1.3.4 Autopilot Availability and Constraints ..........................................................................10
- 1.3.5 Tesla-Recorded Performance Data ................................................................................14
- 1.3.6 Postcrash Changes to Autopilot .....................................................................................16
+ 1.3.3 [driver-assistance system] Description ......................................................................................................9
+ 1.3.4 [driver-assistance system] Availability and Constraints ..........................................................................10
+ 1.3.5 [car manufacturer]-Recorded Performance Data ................................................................................14
+ 1.3.6 Postcrash Changes to [driver-assistance system] .....................................................................................16
 1.4 Car Driver Information ............................................................................................................16
  1.4.1 Precrash Activities .........................................................................................................17
  1.4.2 Health .............................................................................................................................17
@@ -165,9 +165,9 @@ Board Member Statement .........................................................
 
 Appendix A. Investigation ...........................................................................................................47
 
-Appendix B. Tesla’s Automated Vehicle Control Systems and Subsystems ..........................48
+Appendix B. [car manufacturer]’s Automated Vehicle Control Systems and Subsystems ..........................48
 
-Appendix C. Alert Timing Sequence for Tesla Autopilot Version 8 .......................................50
+Appendix C. Alert Timing Sequence for [car manufacturer] [driver-assistance system] Version 8 .......................................50
 
 References .....................................................................................................................................51
 
@@ -191,24 +191,24 @@ the car’s route in the righthand travel lane..................................
 
 Figure 5. Damaged car ....................................................................................................................6
 
-Figure 6. Damaged right side of the Utility semitrailer ..................................................................7
+Figure 6. Damaged right side of the [trailer manufacturer] semitrailer ..................................................................7
 
-Figure 7. Closeup view of impact damage to the right side of the Utility semitrailer ....................7
+Figure 7. Closeup view of impact damage to the right side of the [trailer manufacturer] semitrailer ....................7
 
-Figure 8. Tesla instrument panel ...................................................................................................10
+Figure 8. [car manufacturer] instrument panel ...................................................................................................10
 
-Figure 9. Autopilot system alert timing; top portion of figure provides timing of initial visual
+Figure 9. [driver-assistance system] system alert timing; top portion of figure provides timing of initial visual
 alert and bottom portion provides timing of auditory alerts ..........................................................12
 
 Figure 10. Route of the Williston car driver’s final trip ...............................................................13
 
 Figure 11. Chart showing how much time during the 41-minute crash trip that, while
-Autopilot was active, the driver had his hands on the steering wheel ...........................................15
+[driver-assistance system] was active, the driver had his hands on the steering wheel ...........................................15
 
 Figure 12. Summary of SAE taxonomy and definitions for terms related to driving
 automation systems for on-road motor vehicles ............................................................................24
 
-Figure C-1. Autopilot system alert timing sequence for version 8 ...............................................50
+Figure C-1. [driver-assistance system] system alert timing sequence for version 8 ...............................................50
 
  iii
 
@@ -240,7 +240,7 @@ CDLIS Commercial Driver’s License Information System
 
 CFR Code of Federal Regulations
 
-DDEC Detroit Diesel Electronic Controller
+DDEC [engine manufacturer] Electronic Controller
 
 DOT US Department of Transportation
 
@@ -318,9 +318,9 @@ NTSB Highway Accident Report
 
 Executive Summary
 Investigation Synopsis
- At 4:36 p.m. eastern daylight time on Saturday, May 7, 2016, a 2015 Tesla Model S 70D
+ At 4:36 p.m. eastern daylight time on Saturday, May 7, 2016, a 2015 [car manufacturer] [car model] 70D
 car, traveling eastbound on US Highway 27A (US-27A), west of Williston, Florida, struck a
-refrigerated semitrailer powered by a 2014 Freightliner Cascadia truck-tractor. At the time of the
+refrigerated semitrailer powered by a 2014 [truck manufacturer] [truck model] truck-tractor. At the time of the
 collision, the truck was making a left turn from westbound US-27A across the two eastbound travel
 lanes onto NE 140th Court, a local paved road. The car struck the right side of the semitrailer,
 crossed underneath it, and then went off the right roadside at a shallow angle. The impact with the
@@ -337,14 +337,14 @@ not injured.
 
  System performance data downloaded from the car indicated that the driver was operating
 it using the Traffic-Aware Cruise Control and Autosteer lane-keeping systems, which are
-automated vehicle control systems within Tesla’s Autopilot suite.
+automated vehicle control systems within [car manufacturer]’s [driver-assistance system] suite.
 
  The National Transportation Safety Board (NTSB) became aware of the circumstances of
 the crash when the National Highway Traffic Safety Administration (NHTSA) began a defect
-investigation on June 28, 2016, which focused on the automatic emergency braking and Autopilot
-systems of the Tesla Models S and X, for model years 2014–2016. On learning of the May 7, 2016,
+investigation on June 28, 2016, which focused on the automatic emergency braking and [driver-assistance system]
+systems of the [car manufacturer] Models S and X, for model years 2014–2016. On learning of the May 7, 2016,
 Williston crash that prompted the NHTSA investigation, the NTSB initiated our investigation,
-which focused on the use of the Autopilot system.
+which focused on the use of the [driver-assistance system] system.
 
 Probable Cause
  The National Transportation Safety Board determines that the probable cause of the
@@ -376,8 +376,8 @@ Safety Issues
 Recommendations
  As a result of this crash investigation, the NTSB makes safety recommendations to the
 US Department of Transportation, NHTSA, manufacturers of vehicles equipped with Level 2
-vehicle automation systems (Volkswagen Group of America, BMW of North America, Nissan
-Group of North America, Mercedes-Benz USA, Tesla Inc., and Volvo Car USA), the Alliance of
+vehicle automation systems (Volkswagen Group of America, BMW of North America, [make]
+Group of North America, Mercedes-Benz USA, [car manufacturer] Inc., and [make] Car USA), the Alliance of
 Automobile Manufacturers, and the Association of Global Automakers. The NTSB also reiterates
 Safety Recommendations H-13-30 and -31 to NHTSA.
 
@@ -390,10 +390,10 @@ NTSB Highway Accident Report
 1.1 The Crash
 1.1.1 Crash Events
 
- At 4:36 p.m. eastern daylight time on Saturday, May 7, 2016, a 2015 Tesla Model S 70D
+ At 4:36 p.m. eastern daylight time on Saturday, May 7, 2016, a 2015 [car manufacturer] [car model] 70D
 car, traveling eastbound on US Highway 27A (US-27A) near mile marker 29 in Levy County, west
-of Williston, Florida, struck the right side of a 2003 Utility 3000R refrigerated semitrailer, which
-was being towed by a 2014 Freightliner Cascadia truck-tractor. 1 At the time of the collision, the
+of Williston, Florida, struck the right side of a 2003 [trailer manufacturer] 3000R refrigerated semitrailer, which
+was being towed by a 2014 [truck manufacturer] [truck model] truck-tractor. 1 At the time of the collision, the
 truck was making a left turn from westbound US-27A across the two eastbound travel lanes onto
 NE 140th Court, a local paved road. 2 After the car struck the right side of the semitrailer, it crossed
 underneath the semitrailer and went off the right roadside at a shallow angle. The impact with the
@@ -405,9 +405,9 @@ perpendicular to the highway in the front yard of a private residence. Overall, 
 about 910 feet after striking the semitrailer. The driver and sole occupant of the car died in the
 crash.
 
- System performance data downloaded from the Tesla indicated that the driver was
-operating the car using features of its Autopilot suite: Traffic-Aware Cruise Control (TACC) and
-the Autosteer lane-keeping system. “Autopilot” is a proprietary name used by Tesla for a
+ System performance data downloaded from the [car manufacturer] indicated that the driver was
+operating the car using features of its [driver-assistance system] suite: Traffic-Aware Cruise Control (TACC) and
+the Autosteer lane-keeping system. “[driver-assistance system]” is a proprietary name used by [car manufacturer] for a
 combination of vehicle automation systems that provide driver assistance. The car was also
 equipped with a forward collision warning (FCW) system and automatic emergency
 braking (AEB), but those systems did not activate. System performance data indicated that the
@@ -424,7 +424,7 @@ driver who had been traveling behind the truck on westbound US-27A at an estimat
 60 mph. In July 2016, National Transportation Safety Board (NTSB) investigators also
 interviewed this witness. He said that when he first saw the truck, it was in the left turn lane at the
 intersection; he could not discern whether the truck was stopped or moving very slowly. He said
-he saw the Tesla on US-27A eastbound before the truck began to turn through the median, with
+he saw the [car manufacturer] on US-27A eastbound before the truck began to turn through the median, with
 no other traffic in the area. He described seeing the car crest the grade before the truck began its
  1
  Unless otherwise indicated, all times in this report are eastern daylight time.
@@ -437,14 +437,14 @@ generically as the “truck”; the truck-tractor and semitrailer components may
 === HAR-17/02 p.12 ===
 NTSB Highway Accident Report
 
-left turn and crossed the median. He said that he saw the Tesla for several seconds before his view
+left turn and crossed the median. He said that he saw the [car manufacturer] for several seconds before his view
 was blocked by the semitrailer. He said he thought the car driver would need to slow down to avoid
 a collision with the truck. As the truck entered the eastbound lanes, the witness lost sight of the
 car, which was then on the far side of the truck. He reported that as he approached the location of
 the westbound left turn lane for the intersection, he heard the crash and saw the car emerge from
 underneath the semitrailer, continue traveling eastward, and leave the roadway.
 
- The witness said he made a U-turn at the intersection and followed the Tesla to its stopped
+ The witness said he made a U-turn at the intersection and followed the [car manufacturer] to its stopped
 location near a residential driveway. The witness stated that there were no obstructions to the lines
 of sight for the two vehicles, and that sun glare was not a problem at the time of the crash.
 
@@ -481,7 +481,7 @@ westbound routes.
 
 Figure 2. Diagram of the crash intersection, showing US-27A and NE 140th Court extending
 south (down toward the bottom of the diagram). The initial point of impact is on the south side of
-the intersection. After traveling off the highway, the Tesla struck a utility pole and came to rest
+the intersection. After traveling off the highway, the [car manufacturer] struck a utility pole and came to rest
 near a residential driveway.
 
  3
@@ -525,7 +525,7 @@ deployed when it collided with the utility pole.
  The truck driver, who was wearing his lap/shoulder seat belt, was not injured.
 
 1.2 Vehicle Damage
-1.2.1 Tesla Model S 70D Car
+1.2.1 [car manufacturer] [car model] 70D Car
 
  Damage to the car, as shown in figure 5, included separation of the roof panel, which
 exhibited fore-to-aft accordion-like compression. The forward-facing surfaces of the car’s
@@ -562,9 +562,9 @@ Figure 5. Damaged car. Scrapes from the semitrailer’s center side-marker lamp 
 the yellow arrow. Impact damage associated with the utility pole is indicated by the red arrow.
 (Source: Florida Highway Patrol)
 
-1.2.2 Utility Semitrailer
+1.2.2 [trailer manufacturer] Semitrailer
 
- Investigators examined the involved semitrailer, which was a 2003 Utility VS2RA 3000R
+ Investigators examined the involved semitrailer, which was a 2003 [trailer manufacturer] VS2RA 3000R
 refrigerated van-body trailer. The investigators’ comparison of the semitrailer with the
 photographs the FHP took at the crash scene showed that the external condition and appearance of
 the semitrailer had not changed since the crash. Collision evidence consisted of minor impact
@@ -576,7 +576,7 @@ transverse floor support rail between the damaged areas on the two sides. 6 A se
 
  6
  The overall length of the combination vehicle was 71 feet 7 inches, based on as-built data provided by
-Freightliner, the truck-tractor manufacturer. Based on the semitrailer’s overall calculated length, the impact would
+[truck manufacturer], the truck-tractor manufacturer. Based on the semitrailer’s overall calculated length, the impact would
 have been centered about 45 feet 5 inches rearward from the front of the truck-tractor at the time of the collision.
 
  6
@@ -588,10 +588,10 @@ trim from the car was found entangled within the forward-most area of contact da
 semitrailer. Figure 6 shows a postcrash photograph of the semitrailer, and figure 7 focuses on the
 damage to the semitrailer.
 
-Figure 6. Damaged right side of the Utility semitrailer.
+Figure 6. Damaged right side of the [trailer manufacturer] semitrailer.
 
-Figure 7. Closeup view of impact damage to the right side of the Utility semitrailer. The arrow
-indicates a segment of front windshield trim from the Tesla entrapped in the forward-most area of
+Figure 7. Closeup view of impact damage to the right side of the [trailer manufacturer] semitrailer. The arrow
+indicates a segment of front windshield trim from the [car manufacturer] entrapped in the forward-most area of
 damage.
 
  7
@@ -599,7 +599,7 @@ damage.
 === HAR-17/02 p.18 ===
 NTSB Highway Accident Report
 
-1.3 Tesla Model S 70D Car
+1.3 [car manufacturer] [car model] 70D Car
  This section first discusses the mechanical inspection of the car and then focuses on its
 automated vehicle control systems. The section also presents the recorded data that provided
 information about those systems and the car’s operation.
@@ -610,7 +610,7 @@ information about those systems and the car’s operation.
 powertrain, steering, braking, and suspension systems. They identified no anomalies within the
 major vehicle systems.
 
- The Tesla was equipped with electric power-assisted rack-and-pinion steering gear; all the
+ The [car manufacturer] was equipped with electric power-assisted rack-and-pinion steering gear; all the
 steering arm linkages remained intact and connected. It was possible to rotate the steering gear
 from stop to stop by turning the steering wheel. All ball joint connections remained intact and
 showed no evidence of excessive wear or play.
@@ -650,29 +650,29 @@ communicated through an over-the-air network to the manufacturer’s central com
 === HAR-17/02 p.19 ===
 NTSB Highway Accident Report
 
- The Tesla Model S was equipped with the following automated vehicle control systems:
-Autopilot (comprising TACC, Autosteer, and Auto Lane Change systems), Forward Collision
+ The [car manufacturer] [car model] was equipped with the following automated vehicle control systems:
+[driver-assistance system] (comprising TACC, Autosteer, and Auto Lane Change systems), Forward Collision
 Avoidance (comprising FCW and AEB), Speed Assist, Lane Assist, and Autopark. 8
 
-1.3.3 Autopilot Description
+1.3.3 [driver-assistance system] Description
 
- Although Tesla’s Autopilot suite is a combination of three systems, when discussing
-Autopilot in this report, we primarily refer to the combined activation of two systems—TACC and
+ Although [car manufacturer]’s [driver-assistance system] suite is a combination of three systems, when discussing
+[driver-assistance system] in this report, we primarily refer to the combined activation of two systems—TACC and
 Autosteer. (The driver may also activate Auto Lane Change to automatically move the car into a
 lane.) TACC is an adaptive cruise control system that maintains the set cruise speed, applies brakes
 to preserve a predetermined following distance when approaching a slower-moving vehicle ahead
-of the Tesla, and accelerates to the set cruising speed when the area in front of the Tesla is no
+of the [car manufacturer], and accelerates to the set cruising speed when the area in front of the [car manufacturer] is no
 longer obstructed. Autosteer automatically steers the car to keep it within its lane of travel. In short,
 TACC provides longitudinal control (acceleration and deceleration) and Autosteer provides lateral
-control (steering) of the car within the lane, making the Tesla Autopilot consistent with an SAE
+control (steering) of the car within the lane, making the [car manufacturer] [driver-assistance system] consistent with an SAE
 International (SAE) Level 2 automated vehicle system. (The SAE classification of automated
 vehicle technologies is discussed in section 1.7.1.)
 
- When Autopilot is active, the system (1) monitors the traveling path, (2) maintains the set
-cruise speed, (3) maintains the Tesla’s position in the traveling lane, (4) brakes when it detects
-slower-moving vehicles ahead of the Tesla, and (5) decelerates and follows a slower-moving
-vehicle in front of the Tesla at the predetermined following distance. Figure 8 shows a view of the
-Tesla instrument panel. This view represents to the driver that TACC is active, which is indicated
+ When [driver-assistance system] is active, the system (1) monitors the traveling path, (2) maintains the set
+cruise speed, (3) maintains the [car manufacturer]’s position in the traveling lane, (4) brakes when it detects
+slower-moving vehicles ahead of the [car manufacturer], and (5) decelerates and follows a slower-moving
+vehicle in front of the [car manufacturer] at the predetermined following distance. Figure 8 shows a view of the
+[car manufacturer] instrument panel. This view represents to the driver that TACC is active, which is indicated
 by a blue-colored speedometer icon at the top left of the display; the operator-established cruising
 speed appears in numerals under the speedometer icon. The actual vehicle speed appears in large
 numerals in the top/center of the instrument panel display. When Autosteer is active, the driver
@@ -690,56 +690,56 @@ case file HWY16FH018.
 === HAR-17/02 p.20 ===
 NTSB Highway Accident Report
 
-Figure 8. Tesla instrument panel. The blue speed dial at the top left indicates that TACC is active,
+Figure 8. [car manufacturer] instrument panel. The blue speed dial at the top left indicates that TACC is active,
 and the blue steering wheel at the top right indicates that Autosteer is active. (Source: Owner’s
-Manual for 2016 Tesla Model S [Tesla 2016])
+Manual for 2016 [car manufacturer] [car model] [[car manufacturer] 2016])
 
-1.3.4 Autopilot Availability and Constraints
+1.3.4 [driver-assistance system] Availability and Constraints
 
- On the Tesla, TACC is available only when traveling above 18 mph. 9 Once TACC is
+ On the [car manufacturer], TACC is available only when traveling above 18 mph. 9 Once TACC is
 activated, Autosteer is available whenever the system detects lane markings. A driver can activate
 TACC by itself but can activate Autosteer only after activating TACC; that is, Autosteer is not
-available without TACC. In addition, Tesla imposes two types of constraints on the driver’s use
-of Autopilot: these are (1) hard constraints that the system imposes automatically, and (2) soft
-constraints that Tesla provides as cautions to the driver through the instrument screen and
+available without TACC. In addition, [car manufacturer] imposes two types of constraints on the driver’s use
+of [driver-assistance system]: these are (1) hard constraints that the system imposes automatically, and (2) soft
+constraints that [car manufacturer] provides as cautions to the driver through the instrument screen and
 instructions in the vehicle owner’s manual.
 
- Hard Constraints. System-imposed constraints on driver use of Autopilot include
+ Hard Constraints. System-imposed constraints on driver use of [driver-assistance system] include
 (1) setting an upper limit on lateral acceleration that affects the system alert sequence; (2) limiting
 the maximum cruising speed, depending on the detection of the speed limit on a restricted road;
-and (3) measuring the level of driver engagement and deactivating Autopilot if the level is
+and (3) measuring the level of driver engagement and deactivating [driver-assistance system] if the level is
 
  9
- TACC can be activated at speeds lower than 18 mph, if a vehicle is detected in front of the Tesla.
+ TACC can be activated at speeds lower than 18 mph, if a vehicle is detected in front of the [car manufacturer].
 
  10
 
 === HAR-17/02 p.21 ===
 NTSB Highway Accident Report
 
-insufficient. 10 In addition, as a general hard constraint, the driver can activate Autopilot only if the
+insufficient. 10 In addition, as a general hard constraint, the driver can activate [driver-assistance system] only if the
 driver’s seat belt is latched.
 
- With respect to constraint (1), Autopilot has a lateral acceleration limit used to qualify
-“straight” roads that affects the timing duration of hands-off operation of Autopilot. 11 For
-constraint (2), when Autopilot cannot detect the speed limit, it allows a maximum cruise speed in
+ With respect to constraint (1), [driver-assistance system] has a lateral acceleration limit used to qualify
+“straight” roads that affects the timing duration of hands-off operation of [driver-assistance system]. 11 For
+constraint (2), when [driver-assistance system] cannot detect the speed limit, it allows a maximum cruise speed in
 TACC of 45 mph. When this occurs, the instrument panel displays the following message:
 “Driving on a Restricted Road.” In such circumstances, the driver can manually accelerate to
 exceed the limited TACC speed, but when the driver releases the accelerator pedal, TACC slows
-the vehicle to the 45-mph cruise speed. With respect to constraint (3), Autopilot assesses the
+the vehicle to the 45-mph cruise speed. With respect to constraint (3), [driver-assistance system] assesses the
 driver’s level of engagement by monitoring driver interaction with the steering wheel through
 changes in steering wheel torque. 12 The system uses the driver’s interactions with the wheel as a
 surrogate means of determining the driver’s degree of engagement with the tasks of monitoring
-the road environment and the Autopilot system’s performance.
+the road environment and the [driver-assistance system] system’s performance.
 
- Autopilot uses a sequence of warnings to encourage the driver to interact with the steering
+ [driver-assistance system] uses a sequence of warnings to encourage the driver to interact with the steering
 wheel. The first alert is a visual warning, which appears in the instrument panel display and reads
 “Hold Steering Wheel.” If the system does not detect driver-applied torque on the steering wheel
 after this visual warning, it sounds an auditory chime. If there is again no driver interaction with
 the steering wheel, the system sounds a second, louder chime. If the driver still does not apply
 detectable torque to the steering wheel, the system presents a final visual warning in the instrument
 panel display, which reads “To Maintain Set Speed Place Hands On Steering Wheel.” If the driver
-does not respond to the final visual warning, Autopilot decelerates the Tesla to a full stop in the
+does not respond to the final visual warning, [driver-assistance system] decelerates the [car manufacturer] to a full stop in the
 current travel lane and activates the car’s hazard flashers. 13 (This situation would likely occur only
 in the event of an incapacitated or completely unresponsive driver.)
 
@@ -748,22 +748,22 @@ in the event of an incapacitated or completely unresponsive driver.)
 traveling 45 mph and below, the warning for hands-off driving would not occur, unless the car
 exceeded the lateral acceleration threshold, such as when traveling on certain curves. When
 traveling above 45 mph, the initial warning would occur earlier when another vehicle was not
-detected ahead of the Tesla—and later when following another vehicle. The timing of the visual
+detected ahead of the [car manufacturer]—and later when following another vehicle. The timing of the visual
 warning did not depend on the type of roadway being traveled. (See figure 9 for a graphic
-indicating the warning conditions and alert timing sequences for the Autopilot system firmware
-that was running on the Tesla at the time of the crash [firmware version 7.1].)
+indicating the warning conditions and alert timing sequences for the [driver-assistance system] system firmware
+that was running on the [car manufacturer] at the time of the crash [firmware version 7.1].)
 
  10
  With respect to constraint (1), vehicles experience lateral acceleration when going around curves. Under lateral
-acceleration, drivers experience a feeling of being pulled to the outside of the curve. Autopilot uses lateral acceleration
+acceleration, drivers experience a feeling of being pulled to the outside of the curve. [driver-assistance system] uses lateral acceleration
 as an indication of the degree of curvature in the travel route.
  11
- The lateral acceleration thresholds for Autopilot are linearly interpolated over a range of speeds.
+ The lateral acceleration thresholds for [driver-assistance system] are linearly interpolated over a range of speeds.
  12
  Torque is force applied to an object (in this case, the steering wheel) to make it rotate about an axis (the steering
 column). The weight of the hands on the steering wheel is sufficient to register as driver interaction.
  13
- In the Autopilot system in use on the crash Tesla, this sequence could be repeatedly restarted by engaging with
+ In the [driver-assistance system] system in use on the crash [car manufacturer], this sequence could be repeatedly restarted by engaging with
 the steering wheel.
 
  11
@@ -771,22 +771,22 @@ the steering wheel.
 === HAR-17/02 p.22 ===
 NTSB Highway Accident Report
 
-Figure 9. Autopilot system alert timing; top portion of figure provides timing of initial visual alert
+Figure 9. [driver-assistance system] system alert timing; top portion of figure provides timing of initial visual alert
 and bottom portion provides timing of auditory alerts. Following a visual alert, if the driver does
-not interact with the steering wheel, the Autopilot system proceeds to the auditory alert sequence
-as shown in the bottom portion of the figure (Tesla firmware version 7.1).
+not interact with the steering wheel, the [driver-assistance system] system proceeds to the auditory alert sequence
+as shown in the bottom portion of the figure ([car manufacturer] firmware version 7.1).
 
- On the day of the crash, the Tesla driver was traveling from Cedar Key toward Ocala,
+ On the day of the crash, the [car manufacturer] driver was traveling from Cedar Key toward Ocala,
 Florida. (See figure 10 for route information.) He traveled along State Road 24 (SR-24) before
 turning eastbound onto US-27A, where the crash occurred. 14 SR-24 is a two-lane roadway without
 a center divider, and it is not a limited-access roadway. 15 Because it lacks a center divider, the
-Tesla’s automation system considered SR-24 a “non-preferred” roadway for the use of Autopilot.
-The system allowed the Tesla to travel 5 mph above the speed limit while on SR-24; the speed
+[car manufacturer]’s automation system considered SR-24 a “non-preferred” roadway for the use of [driver-assistance system].
+The system allowed the [car manufacturer] to travel 5 mph above the speed limit while on SR-24; the speed
 limit on SR-24 is 60 mph. The roadway on which the crash occurred, US-27A, is a four-lane road
 with an earthen center median, but it is not a limited-access roadway. 16
 
  14
- Tesla could not provide data to the NTSB on the car’s route of travel. Investigators determined that the Tesla
+ [car manufacturer] could not provide data to the NTSB on the car’s route of travel. Investigators determined that the [car manufacturer]
 traveled on SR-24 based on the originating location, the limited options for the route of travel, the speed of travel, and
 turning information.
  15
@@ -794,7 +794,7 @@ turning information.
 roadways, providing no access to abutting land users. Travelers use high-speed entrance and exit ramps to access
 limited-access roadways (Federal Highway Administration 2013, p. 14).
  16
- Tesla uses a functional road classification system based on the HERE open location platform as the data source
+ [car manufacturer] uses a functional road classification system based on the HERE open location platform as the data source
 (accessed September 7, 2017). Road classification is discussed in section 1.6.3.
 
  12
@@ -804,16 +804,16 @@ NTSB Highway Accident Report
 
 Figure 10. Route of the Williston car driver’s final trip.
 
- The Tesla’s automation system considered US-27A a “preferred roadway”; consequently,
-the system would have allowed the Tesla to travel at speeds up to 90 mph while on US-27.
-According to vehicle data, about 2 minutes before the crash, while traveling on US-27A, the Tesla
-driver set the cruise speed to 74 mph. Because the Tesla was traveling on preferred roadway
+ The [car manufacturer]’s automation system considered US-27A a “preferred roadway”; consequently,
+the system would have allowed the [car manufacturer] to travel at speeds up to 90 mph while on US-27.
+According to vehicle data, about 2 minutes before the crash, while traveling on US-27A, the [car manufacturer]
+driver set the cruise speed to 74 mph. Because the [car manufacturer] was traveling on preferred roadway
 US-27A at that time, the vehicle’s actual velocity matched the driver-set cruise speed, which was
 9 mph over the posted speed limit of 65 mph.
 
- Soft Constraints. As a soft constraint to Autopilot use, Tesla provided written instructions
-in its owner’s manual about those types of roads on which Autopilot should and should not be used
-(Tesla 2016). The Tesla Model S Owner’s Manual stated that “Traffic-Aware Cruise Control is
+ Soft Constraints. As a soft constraint to [driver-assistance system] use, [car manufacturer] provided written instructions
+in its owner’s manual about those types of roads on which [driver-assistance system] should and should not be used
+([car manufacturer] 2016). The [car manufacturer] [car model] Owner’s Manual stated that “Traffic-Aware Cruise Control is
 primarily intended for driving on dry, straight roads, such as highways and freeways” (p. 68). The
 manual also provided the following statement: “Warning: Do not use Traffic-Aware Cruise
 Control on city streets or on roads where traffic conditions are constantly changing and where
@@ -833,9 +833,9 @@ Autosteer, contains 16 items designated as warnings and 4 items designated as ca
 === HAR-17/02 p.24 ===
 NTSB Highway Accident Report
 
-1.3.5 Tesla-Recorded Performance Data
+1.3.5 [car manufacturer]-Recorded Performance Data
 
- The Tesla Model S stores data in nonvolatile memory using a removable secure
+ The [car manufacturer] [car model] stores data in nonvolatile memory using a removable secure
 digital (SD) card installed within the vehicle’s electronic control unit (ECU). Parameter data are
 written continually to the ECU while the car is on. Typical parameters of vehicle system
 performance include steering angle, accelerator pedal position, driver-applied brake pedal
@@ -845,24 +845,24 @@ the state of a system changes. All parameter data are timestamped using a global
 system (GPS)-derived clock time as they arrive at the ECU.
 
  The SD card typically maintains a complete record of all stored data for the vehicle’s
-lifetime. Data from the SD card are episodically data-linked to Tesla using a virtual private network
+lifetime. Data from the SD card are episodically data-linked to [car manufacturer] using a virtual private network
 connection established via Wi-Fi or the vehicle’s data-download capabilities. Any data stored since
 the last auto-upload event will exist only on the vehicle itself and must be recovered by the
 following means: (1) forcing an over-the-air upload, (2) using maintenance download equipment
 to connect directly to the vehicle, or (3) directly accessing the SD card after removing it from the
 dash-mounted electronics.
 
- Tesla downloaded and provided to the NTSB parameter data for 53 distinct variables and
+ [car manufacturer] downloaded and provided to the NTSB parameter data for 53 distinct variables and
 text-based information related to 42 distinct error messages, covering a 42-hour period before the
 crash. In addition, image data from the vehicle’s camera were recovered from the SD card.18
 However, the recovered image data did not contain information related to the crash. 19
 
  Figure 11 illustrates the periods of time during the crash trip when the driver interacted
 with the steering wheel. Vehicle performance data showed that for the 41-minute trip from Cedar
-Key, Autopilot was active for 37 minutes. During the trip, while Autopilot was in use, the system
+Key, [driver-assistance system] was active for 37 minutes. During the trip, while [driver-assistance system] was in use, the system
 detected driver-applied torque on the steering wheel on seven different occasions for a total of
-25 seconds. The longest period between alerts during which Autopilot did not detect the driver’s
-hands on the steering wheel was nearly 6 minutes. For the entire trip, Autopilot was in some form
+25 seconds. The longest period between alerts during which [driver-assistance system] did not detect the driver’s
+hands on the steering wheel was nearly 6 minutes. For the entire trip, [driver-assistance system] was in some form
 of warning mode for a total of approximately 2 minutes. 20
 
  Vehicle-recorded data for the trip that originated in Cedar Key showed that the system
@@ -884,24 +884,24 @@ public docket case file HWY16FH018.
 === HAR-17/02 p.25 ===
 NTSB Highway Accident Report
 
-Figure 11. Chart showing how much time during the 41-minute crash trip that, while Autopilot was
+Figure 11. Chart showing how much time during the 41-minute crash trip that, while [driver-assistance system] was
 active, the driver had his hands on the steering wheel. Visual and auditory warnings are also
 indicated. (Timing provided is based on vehicle data and is approximate and relative.)
 
  System Performance Data. The vehicle performance data revealed the following:
 
- • The crash-involved Tesla’s last trip began at 3:55:23 p.m. The car was stopped or
+ • The crash-involved [car manufacturer]’s last trip began at 3:55:23 p.m. The car was stopped or
  nearly stopped about 4:19 p.m. and again about 4:30 p.m. The collision with the truck
  occurred at 4:36:12.7, as indicated by fault codes and system disruptions.
 
  • The last driver input before the crash was to increase the TACC speed to 74 mph at
  4:34:21, which was 1 minute 51 seconds before the crash. After that input, there was
- no driver interaction with Autopilot, no change in steering angle, and no brake lamp
+ no driver interaction with [driver-assistance system], no change in steering angle, and no brake lamp
  switch activation until the collision.
 
- • During the last trip, TACC detected a vehicle ahead of the Tesla seven times. For the
+ • During the last trip, TACC detected a vehicle ahead of the [car manufacturer] seven times. For the
  final 1 minute 35 seconds preceding the crash, TACC detected no lead vehicle in front
- of the Tesla.
+ of the [car manufacturer].
 
  • About 9.7 seconds before the collision, the motor torque demand steadily decreased
  (indicating that the vehicle was on a descending grade). The reported torque demand
@@ -916,10 +916,10 @@ indicated. (Timing provided is based on vehicle data and is approximate and rela
  • Throughout the approach to the collision with the truck, the electronic power assist
  steering exhibited no substantial changes in steering angle.
 
- • There was no record indicating that the Tesla’s automation system identified the truck
+ • There was no record indicating that the [car manufacturer]’s automation system identified the truck
  that was crossing in the car’s path or that it recognized the impending crash. Because
  the system did not detect the combination vehicle—either as a moving hazard or as a
- stationary object—Autopilot did not reduce the vehicle’s speed, the FCW did not
+ stationary object—[driver-assistance system] did not reduce the vehicle’s speed, the FCW did not
 
  15
 
@@ -929,32 +929,32 @@ NTSB Highway Accident Report
  provide an alert, and the AEB did not activate. All recorded data were consistent with
  the FCW and AEB systems being enabled when the crash occurred. 21
 
- Crash Event Data Recorder. The Tesla Model S involved in this crash did not have, nor
+ Crash Event Data Recorder. The [car manufacturer] [car model] involved in this crash did not have, nor
 was it required to have, an event data recorder (EDR). 22 As noted, it did have an ECU that recorded
 many vehicle performance parameters. Because there is no commercially available tool for
-retrieval and review of the ECU data, NTSB investigators had to rely on Tesla and its proprietary
+retrieval and review of the ECU data, NTSB investigators had to rely on [car manufacturer] and its proprietary
 software to retrieve and interpret the data.
 
-1.3.6 Postcrash Changes to Autopilot
+1.3.6 Postcrash Changes to [driver-assistance system]
 
- Following the crash, Tesla made design changes to version 7.1 of its Autopilot firmware
-and hardware. On September 23, 2016, Tesla made a fleetwide firmware update to version 8. The
+ Following the crash, [car manufacturer] made design changes to version 7.1 of its [driver-assistance system] firmware
+and hardware. On September 23, 2016, [car manufacturer] made a fleetwide firmware update to version 8. The
 firmware update affected the driver interface and warning logic.
 
- Firmware version 8 reduced the period of time that the Autopilot system allows a driver to
+ Firmware version 8 reduced the period of time that the [driver-assistance system] system allows a driver to
 have hands off the steering wheel before being warned/alerted. Version 8 also provides that if the
 driver is warned on three separate occasions by alerts, Autosteer will deactivate and be unavailable
 for an hour or until an ignition restart. That firmware change also added a preferred road constraint
 to the alert timing sequence. In version 8, on preferred roads, no alerts are made when the vehicle
 is traveling below 8 mph; at speeds 8–45 mph, the first alert displays after 10 minutes of hands off
 the steering wheel; at speeds above 45 mph, the first alert timing for hands off the steering wheel
-depends on whether the system detects a vehicle ahead of the Tesla (alert displays in 3 minutes if
+depends on whether the system detects a vehicle ahead of the [car manufacturer] (alert displays in 3 minutes if
 there is a lead vehicle, but in 2 minutes if there is not). See appendix C for the alert timing sequence
-for Autopilot version 8.
+for [driver-assistance system] version 8.
 
 1.4 Car Driver Information
  The driver of the car was a 40-year-old male. Due to the requirements of his job, he traveled
-frequently. He had purchased the Tesla Model S new in 2015.
+frequently. He had purchased the [car manufacturer] [car model] new in 2015.
 
  At the time of the crash, the driver held an Ohio Class D driver’s license with motorcycle
 endorsement and no restrictions. 23 His license was renewed in February 2015 and had an expiration
@@ -992,7 +992,7 @@ his electric car. After completing the job in Cedar Key, the driver sent his sis
 inform her that he was leaving to travel to the next job site, which was in Swamp Fox, North
 Carolina.
 
- Postcrash review of the data from the Tesla showed that the car slowed to a near stop
+ Postcrash review of the data from the [car manufacturer] showed that the car slowed to a near stop
 6.4 minutes before the crash, at which point the driver assumed manual control of the vehicle.
 Autosteer was activated about 6.2 minutes before the crash. The reported average vehicle speed
 over this period indicates that Autosteer was activated about 6.7 miles before the crash, which
@@ -1189,12 +1189,12 @@ that it maintained a drug testing program, as required by 49 CFR Parts 40 and 38
 
 1.5.3 Postcrash Inspection of the Truck-Tractor and Semitrailer
 
- The FHP postcrash inspection of the 2014 Freightliner Cascadia truck-tractor did not reveal
+ The FHP postcrash inspection of the 2014 [truck manufacturer] [truck model] truck-tractor did not reveal
 any mechanical issues. The truck-tractor was not damaged in the crash, and the FHP released it
 following postcrash inspection. By the time the NTSB investigation began, the truck-tractor was
 back in service and was not examined by NTSB investigators.
 
- The engine of the 2014 Freightliner was managed by a Detroit Diesel Electronic
+ The engine of the 2014 [truck manufacturer] was managed by a [engine manufacturer] Electronic
 Controller (DDEC) that could record certain data associated with vehicle operation. The FHP
 provided NTSB investigators with a copy of a report of a May 10, 2016, data download conducted
  37
@@ -1213,7 +1213,7 @@ by a third party that accessed the DDEC control module. The report indicated tha
 movement of the truck-tractor on May 8, 2016, made certain data associated with vehicle operation
 at the time of the May 7, 2016, crash event unavailable.
 
- The FHP conducted a postcrash mechanical inspection of the 2003 Utility 3000R
+ The FHP conducted a postcrash mechanical inspection of the 2003 [trailer manufacturer] 3000R
 refrigerated semitrailer on May 12, 2016. That inspection identified missing and broken frame
 crossmembers and inoperable intermediate marker lamps. It also found an air leak at a connection
 between axles 4 and 5. No brakes were found to be out of adjustment.
@@ -1320,7 +1320,7 @@ NTSB Highway Accident Report
 interstates—fully controlled; freeways and expressways—fully/partially controlled; and other
 principal arterials—partially uncontrolled.
 
- The Tesla owner’s manual included numerous statements that drivers should use Autopilot
+ The [car manufacturer] owner’s manual included numerous statements that drivers should use [driver-assistance system]
 on highways and limited-access roads (as discussed in section 1.3.4). But the firmware’s logic did
 not restrict the system’s use based on functional road classification; the system had no hard
 constraint concerning road classification.
@@ -1365,9 +1365,9 @@ definitions only for the three highest levels of automation. The revised 30-page
  46
  (a) AdaptIVe is a consortium of 28 partners from 8 countries that was formed in 2014 and is supported by the
 European Union and the European Council for Automotive R&D EUCAR. See AdaptIVe project, accessed
-September 7, 2017. (b) CAMP originated as a partnership formed in 1995 between vehicle manufacturers Ford and
+September 7, 2017. (b) CAMP originated as a partnership formed in 1995 between vehicle manufacturers [make] and
 General Motors to accelerate the implementation of crash avoidance countermeasures in cars. The consortium has
-since expanded to include Mercedes-Benz, Nissan, Toyota, and Volkswagen.
+since expanded to include Mercedes-Benz, [make], [make], and Volkswagen.
 
  23
 
@@ -1380,7 +1380,7 @@ shown in figure 12.
 Figure 12. Summary of SAE taxonomy and definitions for terms related to driving automation
 systems for on-road motor vehicles. (Source: SAE International J3016 [SAE International 2016])
 
- According to these definitions, the Tesla car involved in the Williston crash was equipped
+ According to these definitions, the [car manufacturer] car involved in the Williston crash was equipped
 with a Level 2 automated driving system. Level 2 systems provide lateral control (lane-keeping or
 steering) and longitudinal control (adaptive cruise control or acceleration/deceleration). When
 operating a Level 2 vehicle, the driver is responsible for monitoring the driving environment.
@@ -1426,14 +1426,14 @@ NHTSA’s AV Policy (NHTSA 2016):
 1.8 NHTSA Defect Investigation
  On June 28, 2016, in response to the May 7, 2016, Williston crash, NHTSA’s Office of
 Defects Investigation (ODI) opened an investigation (PE 16-007) to consider whether the AEB
-and Autopilot systems on the Tesla Model S and Model X functioned as designed. The ODI
-examined the following: (1) AEB design and performance in Tesla vehicles and peer vehicles,
-(2) human-machine interface issues related to the Autopilot operating mode, (3) data from crash
-incidents related to Autopilot and AEB, and (4) postcrash changes that Tesla made to its Autopilot
+and [driver-assistance system] systems on the [car manufacturer] [car model] and Model X functioned as designed. The ODI
+examined the following: (1) AEB design and performance in [car manufacturer] vehicles and peer vehicles,
+(2) human-machine interface issues related to the [driver-assistance system] operating mode, (3) data from crash
+incidents related to [driver-assistance system] and AEB, and (4) postcrash changes that [car manufacturer] made to its [driver-assistance system]
 version 8 and AEB systems. On January 19, 2017, NHTSA issued an ODI Resume report stating
 that the preliminary evaluation was closed. The report stated, “NHTSA’s examination did not
-identify any defects in design or performance of the AEB or Autopilot systems of the subject
-vehicles [2014–2016 Tesla Model S and Model X] nor any incidents in which the systems did not
+identify any defects in design or performance of the AEB or [driver-assistance system] systems of the subject
+vehicles [2014–2016 [car manufacturer] [car model] and Model X] nor any incidents in which the systems did not
 perform as designed.” The report further stated that “AEB systems used in the automotive industry
 through MY 2016 [model year 2016] are rear-end collision avoidance technologies that are not
 designed to reliably perform in all crash modes, including crossing path collisions.” (NHTSA
@@ -1543,8 +1543,8 @@ roadway they were on at the time of the crash:
  handling or stopping performance.
 
  • Investigators found no evidence of precollision roadway marks, such as would be
- associated with evasive maneuver by the eastbound Tesla; moreover, no record in the
- Tesla’s performance data indicated that the vehicle systems or the driver initiated
+ associated with evasive maneuver by the eastbound [car manufacturer]; moreover, no record in the
+ [car manufacturer]’s performance data indicated that the vehicle systems or the driver initiated
  braking or steering input immediately before the crash.
 
  • Investigators conducted a signal warrant analysis of the crash intersection. Neither the
@@ -1568,7 +1568,7 @@ available to opposing drivers operating near the intersection was affected by a 
 road west of the intersection. 49 Using highway profile data provided by FDOT and applicable
 AASHTO intersection sight distance calculation methodology, the sight distance for the truck
 driver was calculated at 1,132 feet, as measured from the area of impact (AASHTO 2011). 50 Based
-on the Tesla’s 74-mph approach speed and the calculated line-of-sight distance, both drivers could
+on the [car manufacturer]’s 74-mph approach speed and the calculated line-of-sight distance, both drivers could
 potentially have had up to 10.4 seconds to observe and respond to one another. 51
 
  According to FDOT, the highway design speed was 70 mph. For left-turning combination
@@ -1586,12 +1586,12 @@ the turn.
 
  Witness Account. A witness who had been traveling westbound on US-27A behind the
 crash-involved truck said that he saw the truck in the left turn lane at the intersection. The witness
-described seeing the eastbound Tesla crest the grade before the truck began its left turn. He said
-he saw the Tesla for several seconds before the semitrailer blocked his view of the car.
+described seeing the eastbound [car manufacturer] crest the grade before the truck began its left turn. He said
+he saw the [car manufacturer] for several seconds before the semitrailer blocked his view of the car.
 
  The witness described reaching the westbound left turn lane for the intersection after the
 impact occurred. The witness said he was traveling about 60 mph. The fact that the witness had
-time to slow his speed, make a U-turn at the intersection, and follow the Tesla on its postimpact
+time to slow his speed, make a U-turn at the intersection, and follow the [car manufacturer] on its postimpact
 route suggests that he was traveling about 0.25 mile behind the truck, which could explain why he
 could not be sure whether the truck only slowed or came to a full stop in the turn lane before
 
@@ -1602,9 +1602,9 @@ could not be sure whether the truck only slowed or came to a full stop in the tu
 is recommended for passing and intersection sight distances.
  51
  Two additional line-of-sight distances were considered. The truck driver began his turn from the westbound
-turn lane from an estimated position that would have involved a slightly longer sight distance. The Tesla driver’s sight
+turn lane from an estimated position that would have involved a slightly longer sight distance. The [car manufacturer] driver’s sight
 distance would have been slightly shorter because his height was lesser. Because of the known travel time for the
-Tesla along the eastbound roadway, and because that was a median of the possible calculations, the discussion used
+[car manufacturer] along the eastbound roadway, and because that was a median of the possible calculations, the discussion used
 that distance to impact. The choice of calculation had no appreciable effect on the calculated response time of
 10.4 seconds.
  52
@@ -1627,7 +1627,7 @@ design, and the witness’s report of the vehicles’ locations and movements pr
 NTSB concludes that there was sufficient sight distance to afford time for either the truck driver
 or the car driver to have acted to prevent the crash.
 
- In the context of right of way, the truck driver had the duty to yield to the Tesla. 54 Following
+ In the context of right of way, the truck driver had the duty to yield to the [car manufacturer]. 54 Following
 the crash, the FHP cited him for failure to yield.
 
 2.2.3 Side Underride Protection
@@ -1639,30 +1639,30 @@ the European regulations, they would not have significantly mitigated the severi
 Although research into the potential benefits of trailer side guards designed for vehicle impacts
 has indicated some benefit achieved by their reducing the incompatibility between passenger cars
 and trailers (Brumbelow 2012), guards designed to prevent passenger vehicle underride are
-typically tested at 56 kilometers per hour (35 mph). Given that the Tesla struck the semitrailer at
+typically tested at 56 kilometers per hour (35 mph). Given that the [car manufacturer] struck the semitrailer at
 74 mph—more than double the test speed—it is unlikely that the injury outcome of the crash would
 have been significantly improved by side underride guards on the semitrailer.
 
 2.2.4 Forward Collision Warning and Automatic Emergency Braking
 
- On the 2015 Tesla Model S, the FCW/AEB system uses vehicle-resident camera and radar
+ On the 2015 [car manufacturer] [car model], the FCW/AEB system uses vehicle-resident camera and radar
 sensors and computer processing to provide warnings to the driver and to activate braking to
 prevent or mitigate an imminent crash. The system is designed to recognize and detect slow,
-stopped, and decelerating vehicles when they are traveling ahead of the Tesla in the same lane.
+stopped, and decelerating vehicles when they are traveling ahead of the [car manufacturer] in the same lane.
 TACC, when enabled, incorporates an AEB feature that can respond to an object that the camera
-system detects in the Tesla’s path but cannot classify as a vehicle. Such an unclassified object in
-the path of the Tesla must be detected by both the camera and the radar for the AEB to activate.
+system detects in the [car manufacturer]’s path but cannot classify as a vehicle. Such an unclassified object in
+the path of the [car manufacturer] must be detected by both the camera and the radar for the AEB to activate.
 
- A postcrash review of the Tesla’s performance data determined that no status messages
+ A postcrash review of the [car manufacturer]’s performance data determined that no status messages
 indicated that AEB or FCW was disabled during the last trip segment. The recorded data showed
 no indication of an FCW event, an AEB event, or any other event indicating detection of a vehicle
-or an object at or just before the time of the crash. The NTSB concludes that the Tesla’s automated
+or an object at or just before the time of the crash. The NTSB concludes that the [car manufacturer]’s automated
 vehicle control system was not designed to, and did not, identify the truck crossing the car’s path
-or recognize the impending crash; consequently, the Autopilot system did not reduce the car’s
+or recognize the impending crash; consequently, the [driver-assistance system] system did not reduce the car’s
 velocity, the FCW system did not provide an alert, and the AEB did not activate.
 
  Current Level 2 vehicle automation technologies cannot reliably identify and respond to
-crossing vehicle traffic. NHTSA’s ODI report on the Tesla Models S and X, which was prompted
+crossing vehicle traffic. NHTSA’s ODI report on the [car manufacturer] Models S and X, which was prompted
 by the Williston crash, states: “None of the companies contacted by ODI indicated that AEB
 
  54
@@ -1675,12 +1675,12 @@ NTSB Highway Accident Report
 
 systems used in their products through MY 2016 production were designed to brake for crossing
 path collisions” (NHTSA 2017, p. 3). As part of its defect investigation, NHTSA conducted a
-series of test-track-based AEB evaluations on the Tesla Model S, as well as a peer vehicle
-system. 55 The testing confirmed that the Tesla AEB system avoided crashes for the majority of
+series of test-track-based AEB evaluations on the [car manufacturer] [car model], as well as a peer vehicle
+system. 55 The testing confirmed that the [car manufacturer] AEB system avoided crashes for the majority of
 rear-end scenarios, and its TACC generally provided enough braking to avoid rear-end crash
 scenarios; but neither test vehicle effectively responded to “target vehicles” in straight crossing
 path or left turn across path scenarios. NHTSA concluded that there was no defect in the design of
-the Tesla crash avoidance and mitigation systems.
+the [car manufacturer] crash avoidance and mitigation systems.
 
 2.3 Truck Driver Drug Use
  The FHP had a blood sample taken from the truck driver following the crash. Law
@@ -1756,7 +1756,7 @@ automation.
 
  With respect to vehicles with no or limited automation (Levels 0–2), the AV Policy gives
 some guidelines for Level 3–5 systems that could apply to Level 2 systems, but it does not provide
-vehicle performance guidance explicitly for Level 2 systems, such as those on the Tesla involved
+vehicle performance guidance explicitly for Level 2 systems, such as those on the [car manufacturer] involved
 in the Williston crash. Regarding the features and qualities necessary for all vehicle automation
 systems, the AV Policy states—
 
@@ -1792,7 +1792,7 @@ focused on HAV systems (those classified as SAE Level 3, Level 4 and Level 5).�
 Examples of such conditions include roadway type, geographic location, clear roadway markings,
 weather condition, speed range, lighting condition, and other manufacturer-defined system
 performance criteria or constraints. In the case of an automated lateral control system that cannot
-detect crossing-path traffic, such as Autopilot, the manufacturer may establish an ODD for
+detect crossing-path traffic, such as [driver-assistance system], the manufacturer may establish an ODD for
 limited-access roadways and design the system so that the vehicle will not permit activation of the
 automated control system unless that ODD is met.
 
@@ -1803,24 +1803,24 @@ Insurance Institute for Highway Safety recognized the importance of ODDs in its 
 the AV Policy, as follows: “Driving automation systems should self-enforce their use within the
 operational design domain rather than relying on users to do so” (Kidd 2016).
 
- As detailed in section 1.3.4 of this report, Tesla constrained Autopilot operation based on
-seat belt use, speed, and the presence of a lead vehicle. The owner’s manual stated that Autopilot
-should only be used in preferred road environments, but Tesla did not automatically restrict the
-availability of Autopilot based on road classification. The driver of the Tesla involved in the
-Williston crash was able to activate Autopilot on portions of SR-24, which is not a divided road,
+ As detailed in section 1.3.4 of this report, [car manufacturer] constrained [driver-assistance system] operation based on
+seat belt use, speed, and the presence of a lead vehicle. The owner’s manual stated that [driver-assistance system]
+should only be used in preferred road environments, but [car manufacturer] did not automatically restrict the
+availability of [driver-assistance system] based on road classification. The driver of the [car manufacturer] involved in the
+Williston crash was able to activate [driver-assistance system] on portions of SR-24, which is not a divided road,
 and on both SR-24 and US-27A, which are not limited-access roadways. 60 Simply stated, the driver
-could use the Autopilot system on roads for which it was not intended to be used.
+could use the [driver-assistance system] system on roads for which it was not intended to be used.
 
- Tesla’s manufacture of cars equipped with Autopilot preceded NHTSA’s issuance of its
+ [car manufacturer]’s manufacture of cars equipped with [driver-assistance system] preceded NHTSA’s issuance of its
 AV Policy, and that policy applies to SAE Levels 3–5 rather than Level 2 automated vehicles, but
-Tesla clearly understands the ODD concept and advised drivers to use the Autopilot systems only
-on limited-access roadways. Following the crash, Tesla modified its Autopilot firmware to add a
+[car manufacturer] clearly understands the ODD concept and advised drivers to use the [driver-assistance system] systems only
+on limited-access roadways. Following the crash, [car manufacturer] modified its [driver-assistance system] firmware to add a
 preferred road usage constraint, which affects the timing of the hands-off driving alert. But despite
-these modifications, a Tesla driver can still operate Autopilot on any roads with adequate lane
+these modifications, a [car manufacturer] driver can still operate [driver-assistance system] on any roads with adequate lane
 markings.
 
  Today’s vehicle automation systems can assess the vehicle’s route and determine whether
-it is appropriate to the system’s ODD. 61 But Tesla’s Autopilot remains available to the driver, even
+it is appropriate to the system’s ODD. 61 But [car manufacturer]’s [driver-assistance system] remains available to the driver, even
 
  60
  Postcrash data show that the driver had the cruise speed set to 70 mph for almost 29 minutes before he turned
@@ -1828,7 +1828,7 @@ off non-preferred roadway SR-24 onto US-27A. Moreover, he activated Autosteer ab
 event, which, based on speed and distance data, would have placed the car on a portion of US-27A that is not
 configured as a divided highway.
  61
- Tesla’s Autopilot system uses vehicle GPS data, commercially available road data, and camera recognition of
+ [car manufacturer]’s [driver-assistance system] system uses vehicle GPS data, commercially available road data, and camera recognition of
 speed signs to determine the type of road and the speed limit of the roadway on which the vehicle travels.
 
  33
@@ -1875,8 +1875,8 @@ that because driving is an inherently visual task and a driver may touch the ste
 visually assessing the roadway, traffic conditions, or vehicle control system performance,
 
  62
- Examples of such vehicles with Level 2 automation other than Teslas include the Infiniti Q50,
-Mercedes-Benz S65, BMW 50i, Audi A7, and Volvo XC60.
+ Examples of such vehicles with Level 2 automation other than [car manufacturer]s include the Infiniti Q50,
+Mercedes-Benz S65, BMW 50i, Audi A7, and [make] XC60.
  63
  In the event of an incapacitated driver, the system slows the vehicle to a stop in its travel lane and activates the
 hazard flashers. We anticipate that more advanced future systems will remove the vehicle from the travel lane before
@@ -1894,24 +1894,24 @@ vehicle driver’s degree of engagement with the driving task.
 Currently, the Virginia Tech Transportation Institute (VTTI) is conducting a naturalistic driving
 study using vehicles with Level 2 automation capabilities from five different manufacturers.64
 Data from both forward- and driver-facing cameras are being collected to better understand driver
-behavior. A similar study, conducted by Volvo, is underway in Sweden. 65 These longer-term
+behavior. A similar study, conducted by [make], is underway in Sweden. 65 These longer-term
 naturalistic studies are essential to understanding drivers’ interactions with automated systems and
 the extent to which they may misuse them. These studies also address different approaches to
 system monitoring, such as the use of eye-tracking cameras, which have long been used in driving
-simulation research. Toyota has deployed an eye-tracking system on its Lexus brand vehicles, and
-Volvo has announced plans to use eye-tracking technology in its Driver State Estimation system.
+simulation research. [make] has deployed an eye-tracking system on its Lexus brand vehicles, and
+[make] has announced plans to use eye-tracking technology in its Driver State Estimation system.
 The Driver Attention System on the 2018 Cadillac CT6 Super Cruise vehicle uses a small camera
 located at the top of the steering column; the camera focuses exclusively on the driver and uses
 infrared light to track the driver’s head position.
 
  The time intervals permitted before an automated system issues an alert are a vital
-component of the monitoring system. Although the operational design of the Tesla Autopilot
-requires an attentive driver as an integral system element, the Autopilot on the Williston crash
+component of the monitoring system. Although the operational design of the [car manufacturer] [driver-assistance system]
+requires an attentive driver as an integral system element, the [driver-assistance system] on the Williston crash
 vehicle allowed the driver to operate in the automated control mode for almost 6 minutes, during
 which the system did not detect the driver’s hands on the steering wheel. 66 In fact, of the
-37 minutes in which the Tesla driver operated the vehicle in the automated control mode during
+37 minutes in which the [car manufacturer] driver operated the vehicle in the automated control mode during
 the crash trip, the system detected his hands on the steering wheel for only 25 seconds.
-Investigators found no indication in recorded vehicle data that the Tesla driver attempted to take
+Investigators found no indication in recorded vehicle data that the [car manufacturer] driver attempted to take
 any action (by braking or steering) to prevent crashing into the semitrailer or that he was even
 aware of the impending crash.
 
@@ -1923,9 +1923,9 @@ provide an initial visual warning after 15 seconds of hands-off driving and deac
 controlled manner after 1 minute of hands-off driving.
 
  To summarize the discussion of the Williston crash driver’s actions before the crash, he
-used the Autopilot system on roadways for which it was not designed (section 2.4) and had
+used the [driver-assistance system] system on roadways for which it was not designed (section 2.4) and had
 extended periods of hands-off driving and other indications of lack of engagement/awareness
-before the crash (section 2.5). Both driver behaviors strongly indicate that, although the Tesla
+before the crash (section 2.5). Both driver behaviors strongly indicate that, although the [car manufacturer]
 
  64
  (a) In 2005, the VTTI 100-Car Naturalistic Driving Study was completed. The study was sponsored by
@@ -1933,10 +1933,10 @@ NHTSA, Virginia Tech, the Virginia Department of Transportation, and the Virgini
 Council. (b) The current naturalistic driving project is the VTTI Center for Automated Vehicle Systems Study of Level 2
 Automation.
  65
- In January 2017, Volvo began recruiting volunteers to participate in this study. Additional information can be
-found at Volvo driving project, accessed June 19, 2017.
+ In January 2017, [make] began recruiting volunteers to participate in this study. Additional information can be
+found at [make] driving project, accessed June 19, 2017.
  66
- Firmware changes to the Autopilot system issued in September 2016 shortened the alert timeframe and altered
+ Firmware changes to the [driver-assistance system] system issued in September 2016 shortened the alert timeframe and altered
 the alert sequence. The postcrash changes are discussed in appendix C.
 
  35
@@ -1945,15 +1945,15 @@ the alert sequence. The postcrash changes are discussed in appendix C.
 NTSB Highway Accident Report
 
 owner’s manual provided information and warnings on these subjects, the driver either did not
-know of or did not heed the guidance in the manual. Therefore, the NTSB concludes that the Tesla
-driver’s pattern of use of the Autopilot system indicates an overreliance on the automation and a
-lack of understanding of system limitations. Also, the NTSB concludes that the Tesla driver was
+know of or did not heed the guidance in the manual. Therefore, the NTSB concludes that the [car manufacturer]
+driver’s pattern of use of the [driver-assistance system] system indicates an overreliance on the automation and a
+lack of understanding of system limitations. Also, the NTSB concludes that the [car manufacturer] driver was
 not attentive to the driving task, but investigators could not determine from the available evidence
 the reason for his inattention.
 
- Based on the lack of response from the Tesla’s driver before the impact with the truck and
+ Based on the lack of response from the [car manufacturer]’s driver before the impact with the truck and
 data indicating extended periods of hands-off driving, the NTSB further concludes that the way
-that the Tesla Autopilot system monitored and responded to the driver’s interaction with the
+that the [car manufacturer] [driver-assistance system] system monitored and responded to the driver’s interaction with the
 steering wheel was not an effective method of ensuring driver engagement. Therefore, the NTSB
 recommends that manufacturers of vehicles equipped with Level 2 vehicle automation systems
 develop applications to more effectively sense the driver’s level of engagement and alert the driver
@@ -1982,9 +1982,9 @@ parameters defined more than a decade ago in 49 CFR Part 563, those data now are
 comprehend even the simplest questions of who/what controlled an automated vehicle at the time
 of a crash.
 
- For example, the Tesla Model S involved in this crash recorded substantial parameter data,
+ For example, the [car manufacturer] [car model] involved in this crash recorded substantial parameter data,
 but the methodology by which the car recorded that data did not meet, nor was it required to meet,
-the Part 563 definition of an EDR. As a result, the data recorded by the ECU on the Tesla could
+the Part 563 definition of an EDR. As a result, the data recorded by the ECU on the [car manufacturer] could
 
  67
  The EDR requirements apply to “light vehicles” required to have frontal airbags—those with a gross vehicle
@@ -1998,8 +1998,8 @@ weight rating of 3,855 kilograms (8,500 pounds) or less and an unloaded vehicle 
 === HAR-17/02 p.47 ===
 NTSB Highway Accident Report
 
-be retrieved only by Tesla; there is no commercially available tool for retrieval and review of these
-Tesla data. Other manufacturers of vehicles with automated systems similarly control access to the
+be retrieved only by [car manufacturer]; there is no commercially available tool for retrieval and review of these
+[car manufacturer] data. Other manufacturers of vehicles with automated systems similarly control access to the
 postcrash proprietary information associated with their vehicles. The NTSB concludes that,
 without the manufacturer’s involvement, vehicle performance data associated with highly
 automated systems on vehicles involved in crashes cannot be independently analyzed or verified.
@@ -2212,8 +2212,8 @@ NTSB Highway Accident Report
 2. There was sufficient sight distance to afford time for either the truck driver or the car driver to
  have acted to prevent the crash.
 
-3. The Tesla’s automated vehicle control system was not designed to, and did not, identify the
- truck crossing the car’s path or recognize the impending crash; consequently, the Autopilot
+3. The [car manufacturer]’s automated vehicle control system was not designed to, and did not, identify the
+ truck crossing the car’s path or recognize the impending crash; consequently, the [driver-assistance system]
  system did not reduce the car’s velocity, the forward collision warning system did not provide
  an alert, and the automatic emergency braking did not activate.
 
@@ -2229,13 +2229,13 @@ NTSB Highway Accident Report
  monitoring steering wheel torque provides a poor surrogate means of determining the
  automated vehicle driver’s degree of engagement with the driving task.
 
-7. The Tesla driver’s pattern of use of the Autopilot system indicates an overreliance on the
+7. The [car manufacturer] driver’s pattern of use of the [driver-assistance system] system indicates an overreliance on the
  automation and a lack of understanding of system limitations.
 
-8. The Tesla driver was not attentive to the driving task, but investigators could not determine
+8. The [car manufacturer] driver was not attentive to the driving task, but investigators could not determine
  from the available evidence the reason for his inattention.
 
-9. The way that the Tesla Autopilot system monitored and responded to the driver’s interaction
+9. The way that the [car manufacturer] [driver-assistance system] system monitored and responded to the driver’s interaction
  with the steering wheel was not an effective method of ensuring driver engagement.
 
 10. Without the manufacturer’s involvement, vehicle performance data associated with highly
@@ -2306,8 +2306,8 @@ To the National Highway Traffic Safety Administration:
  (H-17-40)
 
 To manufacturers of vehicles equipped with Level 2 vehicle automation systems
-(Volkswagen Group of America, BMW of North America, Nissan Group of North America,
-Mercedes-Benz USA, Tesla Inc., and Volvo Car USA):
+(Volkswagen Group of America, BMW of North America, [make] Group of North America,
+Mercedes-Benz USA, [car manufacturer] Inc., and [make] Car USA):
 
  Incorporate system safeguards that limit the use of automated vehicle control
  systems to those conditions for which they were designed. (H-17-41)
@@ -2380,7 +2380,7 @@ crash is an example of what can happen when automation is introduced “because 
 without adequate consideration of the human element.
 
 The human element was not adequately considered in several ways. First, the owner’s manual
-warns that the Autopilot mode, the automation mode that was being used when this crash
+warns that the [driver-assistance system] mode, the automation mode that was being used when this crash
 occurred, should be used “only on highways and limited access roads.” Aside from the ambiguity
 of this warning – route US-27A, on which this crash occurred, is arguably a highway – it fails to
 consider the human reality that very few owners, and even fewer non-owner drivers, read the
@@ -2391,7 +2391,7 @@ Second, even if the owner or non-owner driver reads the manual, he or she may no
 or follow it. Moreover, many owners who are impressed with the amazing things that their car
 can do may experiment to find out how far they can stretch the boundaries of what it can do.
 
-Adding to the problem is the moniker “Autopilot.” In aviation, airline pilots know that even
+Adding to the problem is the moniker “[driver-assistance system].” In aviation, airline pilots know that even
 when the autopilot is controlling their airplane, the pilots still play a crucial role. Joe and Suzy
 Public, on the other hand, may conclude from the name “autopilot” that they need not pay any
 attention to the driving task because the autopilot is doing everything.
@@ -2446,9 +2446,9 @@ NTSB Highway Accident Report
 
 Appendix A. Investigation
  The National Transportation Safety Board (NTSB) became aware of the Williston, Florida,
-crash after Tesla notified the National Highway Traffic Safety Administration (NHTSA) of the
-event and after NHTSA opened a defect investigation of the Tesla Autopilot and automatic
-emergency braking systems. Tesla sent representatives to Ocala, Florida, to assist the Florida
+crash after [car manufacturer] notified the National Highway Traffic Safety Administration (NHTSA) of the
+event and after NHTSA opened a defect investigation of the [car manufacturer] [driver-assistance system] and automatic
+emergency braking systems. [car manufacturer] sent representatives to Ocala, Florida, to assist the Florida
 Highway Patrol in downloading data from the vehicle. The crash occurred on May 7, 2016; the
 NTSB dispatched an investigative team on July 13, 2016. Due to the delayed launch, the NTSB
 took the case as a field investigation. Once on scene, investigators determined that a complete
@@ -2456,14 +2456,14 @@ investigation, including crash reconstruction, could be accomplished. The NTSB e
 groups to investigate human performance, data recorders, motor carrier operations, traumatology,
 highway factors, and vehicle factors.
 
- Parties to the investigation were Tesla Inc. and the Florida Highway Patrol.
+ Parties to the investigation were [car manufacturer] Inc. and the Florida Highway Patrol.
 
  47
 
 === HAR-17/02 p.58 ===
 NTSB Highway Accident Report
 
-Appendix B. Tesla’s Automated Vehicle Control
+Appendix B. [car manufacturer]’s Automated Vehicle Control
 Systems and Subsystems
 Automation Subsystem Functional Description
  System
@@ -2471,17 +2471,17 @@ AUTOPARK n/a Autopark is a convenience feature that provides assistance
  when parking. It offers two different functionalities that differ in
  the level of assistance: (1) the system can provide partially
  autonomous parallel and perpendicular parking on demand
- when the driver is in the Tesla, and (2) the system can
- autonomously park and retrieve the Tesla from a designated
+ when the driver is in the [car manufacturer], and (2) the system can
+ autonomously park and retrieve the [car manufacturer] from a designated
  parked location without a driver being in the vehicle.
 SPEED n/a Speed Assist is a safety feature that provides a warning when
 ASSIST the driver exceeds the speed limit. Speed limit information is
- derived from the camera system and the Tesla’s GPS mapping
+ derived from the camera system and the [car manufacturer]’s GPS mapping
  information.
 LANE Side Collision Side Collision Warning is a crash avoidance system that
 ASSIST Warning provides a graded warning (visual warning only for least urgent,
  visual and auditory warning for most urgent) when another
- vehicle enters the Tesla’s blind spot or travels too close to its
+ vehicle enters the [car manufacturer]’s blind spot or travels too close to its
  side.
  Lane Departure Lane Departure Warning is a crash avoidance system that
  Warning provides a haptic warning when the vehicle’s front wheel
@@ -2492,9 +2492,9 @@ ASSIST Warning provides a graded warning (visual warning only for least urgent,
  the lane departure.
  Autonomous Steering Autonomous Steering Intervention is a crash avoidance
  Intervention system that provides automated corrective steering intervention
- when the Tesla drifts into or close to an adjacent lane in which
+ when the [car manufacturer] drifts into or close to an adjacent lane in which
  another vehicle is detected. The automated steering correction
- brings the Tesla back to the center of its own traveling lane.
+ brings the [car manufacturer] back to the center of its own traveling lane.
  Concurrent to the steering correction, a visual warning is
  presented on the instrument panel. The system is disabled if
  Autosteer is activated.
@@ -2509,9 +2509,9 @@ Automation Subsystem Functional Description
  System
 FORWARD Forward Collision FCW is a crash avoidance system that provides a visual and
 COLLISION Warning (FCW) auditory warning regarding a potential forward collision
-AVOIDANCE (rear-end crash). The visual warning appears on the Tesla’s
+AVOIDANCE (rear-end crash). The visual warning appears on the [car manufacturer]’s
  instrument panel and consists of an icon of a red vehicle in front
- of the Tesla vehicle icon. The auditory warning consists of a
+ of the [car manufacturer] vehicle icon. The auditory warning consists of a
  chime. The warnings remain until the driver brakes or steers
  away from the forward hazard.
  Automatic Emergency AEB is a crash avoidance system that automatically applies
@@ -2523,10 +2523,10 @@ AVOIDANCE (rear-end crash). The visual warning appears on the Tesla’s
  auditory alerts. The visual warning consists of a rectangular bar
  in the instrument panel with lettering that reads “Emergency
  Braking in Progress.” The auditory warning consists of a chime.
-AUTOPILOT Traffic-Aware Cruise TACC is a convenience feature. After the driver activates TACC
+[DRIVER-ASSISTANCE SYSTEM] Traffic-Aware Cruise TACC is a convenience feature. After the driver activates TACC
  Control (TACC) and selects a cruising speed, the system (1) maintains the set
  cruise speed as long as the forward area is not obstructed,
- (2) decelerates the Tesla when it detects a vehicle ahead and
+ (2) decelerates the [car manufacturer] when it detects a vehicle ahead and
  then maintains a set following distance, and (3) resumes the
  set cruise speed when the forward area is no longer obstructed.
  When necessary to maintain a set following distance, TACC
@@ -2534,23 +2534,23 @@ AUTOPILOT Traffic-Aware Cruise TACC is a convenience feature. After the driver a
  The driver can select the following distance—how closely to
  follow a leading vehicle. TACC has an Overtake Acceleration
  function that, in conjunction with Auto Lane Change, will
- automatically accelerate the Tesla to the set cruising speed
+ automatically accelerate the [car manufacturer] to the set cruising speed
  once it is in a passing lane.
  Autosteer Autosteer is a convenience feature that automatically steers
- the Tesla and keeps it within the traveling lane. Autosteer can
+ the [car manufacturer] and keeps it within the traveling lane. Autosteer can
  be activated only after activating TACC; Autosteer cannot
- operate without TACC. When Autopilot (TACC and Autosteer)
+ operate without TACC. When [driver-assistance system] (TACC and Autosteer)
  is activated, the system (1) monitors the environment on the
  travel path, (2) maintains the set cruise velocity, (3) maintains
- the Tesla’s position in the traveling lane, (4) brakes when it
+ the [car manufacturer]’s position in the traveling lane, (4) brakes when it
  detects a slower-moving vehicle or an obstacle ahead, and
  (5) decelerates and follows a leading slower-moving vehicle at
  the predetermined following distance. Autosteer detects lane
  markings and the presence of other vehicles and objects
- ahead, to maintain the Tesla within the lane. When Autosteer is
+ ahead, to maintain the [car manufacturer] within the lane. When Autosteer is
  activated, an icon of a blue steering wheel appears on the
  instrument panel.
- Auto Lane Change With Autosteer activated, Auto Lane Change moves the Tesla
+ Auto Lane Change With Autosteer activated, Auto Lane Change moves the [car manufacturer]
  into an adjacent travel lane as indicated by an activated turn
  signal. Auto Lane Change can only operate in conjunction with
  Autosteer and when the Lane Assist system does not detect
@@ -2561,12 +2561,12 @@ AUTOPILOT Traffic-Aware Cruise TACC is a convenience feature. After the driver a
 === HAR-17/02 p.60 ===
 NTSB Highway Accident Report
 
-Appendix C. Alert Timing Sequence for Tesla
-Autopilot Version 8
+Appendix C. Alert Timing Sequence for [car manufacturer]
+[driver-assistance system] Version 8
 
-Figure C-1. Autopilot system alert timing sequence for version 8.
+Figure C-1. [driver-assistance system] system alert timing sequence for version 8.
 
- Since the crash, Tesla has implemented several changes to the Autopilot system,
+ Since the crash, [car manufacturer] has implemented several changes to the [driver-assistance system] system,
 including reducing the allowed driver hands-off time. In addition, the timing of the initial
 visual warning is now dependent on the type of road and the speed at which the vehicle is
 traveling.
@@ -2578,11 +2578,11 @@ wheel within 15 seconds of the initial warning, an auditory warning sounds, foll
 another auditory warning of greater intensity. If the driver does not place hands on the
 steering wheel within 5 seconds of the second auditory warning, the system initiates
 controlled deceleration of the vehicle. Furthermore, at that time, the system disables the
-use of Autopilot for the rest of that ignition cycle.
+use of [driver-assistance system] for the rest of that ignition cycle.
 
- Tesla also added another constraint to Autopilot 8; Tesla referred to this as a “three
+ [car manufacturer] also added another constraint to [driver-assistance system] 8; [car manufacturer] referred to this as a “three
 strikes and you’re out” rule. If any three warnings occur during a single trip, that sequence
-will cause Autopilot to be disabled for the remainder of the trip.
+will cause [driver-assistance system] to be disabled for the remainder of the trip.
 
  50
 
@@ -2668,7 +2668,7 @@ NHTSA (National Highway Traffic Safety Administration). 2016. Federal Automated
  docket 2016-0090. Washington, DC: NHTSA. (See AV Policy.)
 
 –––. 2017. ODI Resume report from NHTSA Office of Defects Investigation on
- Investigation PE 16-007 concerning Tesla automatic vehicle control systems. (See
+ Investigation PE 16-007 concerning [car manufacturer] automatic vehicle control systems. (See
  ODI report.)
 
 NTSB (National Transportation Safety Board). 1995. Multiple Vehicle Collision With Fire
@@ -2709,7 +2709,7 @@ Scanlon, J.M., R. Sherony, and H.C. Gabler. 2017. “Injury Mitigation Estimates
  Intersection Driver Assistance System in Straight Crossing Path Crashes in the
  U.S.” Traffic Injury Prevention. Published online March 21, 2017.
 
-Tesla Inc. 2016. Tesla Model S Owner’s Manual.
+[car manufacturer] Inc. 2016. [car manufacturer] [car model] Owner’s Manual.
 
 Toma, Samuel, Elizabeth Swanson, John D. Smith, and Wassim G. Najm. 2014. Heavy
  Truck Pre-Crash Scenarios for Safety Applications Based on Vehicle-to-Vehicle

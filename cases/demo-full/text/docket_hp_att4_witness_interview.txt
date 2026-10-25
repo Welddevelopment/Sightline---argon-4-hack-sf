@@ -23,12 +23,12 @@ HUMAN PERFORMANCE FACTORS GROUP CHAIRMAN’S FACTUAL REPORT
 Investigation of: *
  *
 FATAL ACCIDENT INVOLVING A 2015 *
-TESLA MODEL S WITH A TRACTOR TRAILER * Accident No.: HWY16FH018
+[CAR MANUFACTURER] [CAR MODEL] WITH A TRACTOR TRAILER * Accident No.: HWY16FH018
 NEAR WILLISTON, FLORIDA, MAY 7, 2016 *
  *
 * * * * * * * * * * * * * * * * * * *
 
-Interview of: TERRENCE MULLIGAN
+Interview of: TERRENCE WITNESS
 
  Williston, Florida
 
@@ -58,7 +58,7 @@ National Transportation Safety Board
  I N D E X
 ITEM PAGE
 
-Interview of Mr. Mulligan:
+Interview of Mr. [westbound witness]:
 
  By Mr. Becic 4
 
@@ -92,7 +92,7 @@ Interview of Mr. Mulligan:
 
 1 I N T E R V I E W
 
-2 INTERVIEW OF TERRENCE MULLIGAN
+2 INTERVIEW OF TERRENCE WITNESS
 
 3 BY MR. BECIC:
 
@@ -114,7 +114,7 @@ Interview of Mr. Mulligan:
 
 12 MR. SQUIRE: So you were --
 
-13 MR. MULLIGAN: I was behind the truck.
+13 MR. WITNESS: I was behind the truck.
 
 14 MR. SQUIRE: Okay.
 
@@ -128,7 +128,7 @@ Interview of Mr. Mulligan:
 
 19 Q. Um-hum.
 
-20 A. And I saw the car, and I believe it's a Tesla. I didn't know
+20 A. And I saw the car, and I believe it's a [car manufacturer]. I didn't know
 
 21 that. I just saw a car come over the hill and start down this
 
@@ -168,7 +168,7 @@ Interview of Mr. Mulligan:
 
 11 he --
 
-12 MR. MULLIGAN: When I first saw him, he was pointed straight,
+12 MR. WITNESS: When I first saw him, he was pointed straight,
 
 13 and then he cocked and started going across. That's how I -- I
 
@@ -178,13 +178,13 @@ Interview of Mr. Mulligan:
 
 16 MR. BECIC: Where --
 
-17 MR. MULLIGAN: And that car was -- I saw that car for a few
+17 MR. WITNESS: And that car was -- I saw that car for a few
 
 18 seconds coming down this grade, and it's not a very long grade.
 
 19 MR. SQUIRE: Right.
 
-20 MR. MULLIGAN: So before I lost sight of it -- as soon as the
+20 MR. WITNESS: So before I lost sight of it -- as soon as the
 
 21 trailer started to cross the road, I lost sight of the car.
 
@@ -224,7 +224,7 @@ Interview of Mr. Mulligan:
 
 11 MR. SQUIRE: Okay. Okay.
 
-12 MR. MULLIGAN: -- to here, yeah.
+12 MR. WITNESS: -- to here, yeah.
 
 13 BY MR. BECIC:
 
@@ -270,7 +270,7 @@ Interview of Mr. Mulligan:
 
 6 MR. SQUIRE: Yeah.
 
-7 MR. MULLIGAN: -- and he was going to stop. Well, the car
+7 MR. WITNESS: -- and he was going to stop. Well, the car
 
 8 didn't stop. So I didn't come to a complete stop. I did a quick
 
@@ -294,7 +294,7 @@ Interview of Mr. Mulligan:
 
 18 MR. SQUIRE: Yeah, it's all --
 
-19 MR. MULLIGAN: It seemed pretty far down. It came down and
+19 MR. WITNESS: It seemed pretty far down. It came down and
 
 20 it just seemed to go in a straight line, and it went down, off the
 
@@ -394,7 +394,7 @@ Interview of Mr. Mulligan:
 
 12 MR. SQUIRE: Yeah.
 
-13 MR. MULLIGAN: And I could tell -- I was trying to see if he
+13 MR. WITNESS: And I could tell -- I was trying to see if he
 
 14 was breathing or something. I don't know how much damage somebody
 
@@ -402,7 +402,7 @@ Interview of Mr. Mulligan:
 
 16 MR. SQUIRE: Yeah.
 
-17 MR. MULLIGAN: -- you know, broken bones and all that. I
+17 MR. WITNESS: -- you know, broken bones and all that. I
 
 18 assumed he was gone. His face was just smashed in, and -- so I
 
@@ -452,7 +452,7 @@ Interview of Mr. Mulligan:
 
 13 MR. SQUIRE: Right, yeah.
 
-14 MR. MULLIGAN: There was a lot of blood over it. And I was
+14 MR. WITNESS: There was a lot of blood over it. And I was
 
 15 on the phone with 9-1-1 that time at the car. And he had a lot of
 
@@ -462,7 +462,7 @@ Interview of Mr. Mulligan:
 
 18 MR. SQUIRE: To his right side?
 
-19 MR. MULLIGAN: Yeah, there was a lot of damage, and like I
+19 MR. WITNESS: Yeah, there was a lot of damage, and like I
 
 20 said, the whole time he was in this position so that's why -- I
 
@@ -470,7 +470,7 @@ Interview of Mr. Mulligan:
 
 22 MR. SQUIRE: Yeah.
 
-23 MR. MULLIGAN: You know, I don't know if he ever saw
+23 MR. WITNESS: You know, I don't know if he ever saw
 
 24 anything.
 
@@ -482,7 +482,7 @@ Interview of Mr. Mulligan:
 === Witness Interview p.12 ===
  11
 
-1 MR. MULLIGAN: But I didn't hear skidding. I didn't see any
+1 MR. WITNESS: But I didn't hear skidding. I didn't see any
 
 2 skid marks afterwards up there.
 
@@ -496,11 +496,11 @@ Interview of Mr. Mulligan:
 
 7 MR. SQUIRE: Yeah, yeah, that's understandable.
 
-8 MR. MULLIGAN: He was just sitting there like this --
+8 MR. WITNESS: He was just sitting there like this --
 
 9 MR. SQUIRE: Yeah.
 
-10 MR. MULLIGAN: -- you know, and -- golf shirt.
+10 MR. WITNESS: -- you know, and -- golf shirt.
 
 11 But I told 9-1-1 that I didn't see anything there, and I
 
@@ -542,7 +542,7 @@ Interview of Mr. Mulligan:
 
 2 MR. SQUIRE: Yeah.
 
-3 MR. MULLIGAN: Nobody touched him. And that came back and
+3 MR. WITNESS: Nobody touched him. And that came back and
 
 4 then the paramedics stood in the driveway talking. Finally an FHP
 
@@ -576,7 +576,7 @@ Interview of Mr. Mulligan:
 
 19 started down, and then I saw the semi turning.
 
-20 Q. And then that Tesla, that car was obscured by the truck?
+20 Q. And then that [car manufacturer], that car was obscured by the truck?
 
 21 A. Yes, by the trailer.
 
@@ -726,7 +726,7 @@ Interview of Mr. Mulligan:
 
 10 MR. BECIC: Kind of up here?
 
-11 MR. MULLIGAN: Yeah, probably right around that A he was with
+11 MR. WITNESS: Yeah, probably right around that A he was with
 
 12 the front of his truck. And then like I said, I noticed a car
 
@@ -734,7 +734,7 @@ Interview of Mr. Mulligan:
 
 14 MR. BECIC: Okay.
 
-15 MR. MULLIGAN: And it was moving slow. So I figured it was
+15 MR. WITNESS: And it was moving slow. So I figured it was
 
 16 loaded. Was it?
 
@@ -742,17 +742,17 @@ Interview of Mr. Mulligan:
 
 18 MR. BECIC: Blueberries.
 
-19 MR. MULLIGAN: I don't know how much that could weigh --
+19 MR. WITNESS: I don't know how much that could weigh --
 
 20 MR. SQUIRE: Yeah.
 
-21 MR. MULLIGAN: -- but I figured it was loaded, and it just
+21 MR. WITNESS: -- but I figured it was loaded, and it just
 
 22 went across at a slow pace and that's --
 
 23 MR. SQUIRE: Right.
 
-24 MR. MULLIGAN: -- that's why I think he came from a dead
+24 MR. WITNESS: -- that's why I think he came from a dead
 
 25 stop.
 
@@ -768,7 +768,7 @@ Interview of Mr. Mulligan:
 
 3 Q. Okay. Well, what kind of a car do you drive?
 
-4 A. I have a black Dodge Ram pickup truck.
+4 A. I have a black [make] Ram pickup truck.
 
 5 Q. Okay. So it's kind of higher.
 
@@ -842,7 +842,7 @@ Interview of Mr. Mulligan:
 
 12 speed, and that's why -- and I -- like I said, I didn't even know
 
-13 it was a Tesla until the highway patrol lady interviewed me 2
+13 it was a [car manufacturer] until the highway patrol lady interviewed me 2
 
 14 weeks later. And she didn't tell me till I was done telling what
 
@@ -852,7 +852,7 @@ Interview of Mr. Mulligan:
 
 17 A. She said that makes perfect sense, because then she said it's
 
-18 a Tesla and it has autopilot, and I didn't know they had that in
+18 a [car manufacturer] and it has autopilot, and I didn't know they had that in
 
 19 those cars. But I felt bad at the accident scene, too. Like I
 
@@ -920,7 +920,7 @@ Interview of Mr. Mulligan:
 
 23 don't know.
 
-24 MR. MULLIGAN: Well, the truck driver -- well, I've been
+24 MR. WITNESS: Well, the truck driver -- well, I've been
 
 25 called by reporters, New York Times and that, and they told me
 
@@ -952,7 +952,7 @@ Interview of Mr. Mulligan:
 
 11 MR. BECIC: Okay.
 
-12 MR. MULLIGAN: But nobody else walked by me.
+12 MR. WITNESS: But nobody else walked by me.
 
 13 BY MR. SQUIRE:
 
@@ -994,7 +994,7 @@ Interview of Mr. Mulligan:
 
 4 MR. SQUIRE: No.
 
-5 MR. MULLIGAN: I hope that helps. I mean, I was right there.
+5 MR. WITNESS: I hope that helps. I mean, I was right there.
 
 6 BY MR. SQUIRE:
 
@@ -1088,7 +1088,7 @@ Interview of Mr. Mulligan:
 
 23 A. I didn't, I didn't notice.
 
-24 Q. -- either in front of the Tesla or behind?
+24 Q. -- either in front of the [car manufacturer] or behind?
 
 25 A. I didn't notice.
 
@@ -1162,7 +1162,7 @@ Interview of Mr. Mulligan:
 
 4 A. Yeah.
 
-5 Q. -- the Tesla when he --
+5 Q. -- the [car manufacturer] when he --
 
 6 A. Yeah.
 
@@ -1234,13 +1234,13 @@ Interview of Mr. Mulligan:
 
 12 daytime running lights on.
 
-13 MR. MULLIGAN: I don't remember seeing lights. It just
+13 MR. WITNESS: I don't remember seeing lights. It just
 
 14 looked like a dark car.
 
 15 MR. SQUIRE: Yeah.
 
-16 MR. MULLIGAN: I don't remember seeing lights on it.
+16 MR. WITNESS: I don't remember seeing lights on it.
 
 17 BY MR. BECIC:
 
@@ -1436,11 +1436,11 @@ Interview of Mr. Mulligan:
 
 1 MR. SQUIRE: Right.
 
-2 MR. MULLIGAN: -- a big distance.
+2 MR. WITNESS: -- a big distance.
 
 3 MR. BECIC: Okay. That helps.
 
-4 MR. MULLIGAN: And I hope it helps. I hope it --
+4 MR. WITNESS: And I hope it helps. I hope it --
 
 5 MR. SQUIRE: Absolutely. Like I said, it's -- you know, your
 
@@ -1490,7 +1490,7 @@ Interview of Mr. Mulligan:
 === Witness Interview p.30 ===
  29
 
-1 MR. MULLIGAN: Okay. He didn't even want to stay. He didn't
+1 MR. WITNESS: Okay. He didn't even want to stay. He didn't
 
 2 want to be a witness. He didn't want to stay. He kept telling,
 
@@ -1498,7 +1498,7 @@ Interview of Mr. Mulligan:
 
 4 MR. SQUIRE: Yeah.
 
-5 MR. MULLIGAN: I know his son -- he had a little boy in the
+5 MR. WITNESS: I know his son -- he had a little boy in the
 
 6 truck with him, pickup truck -- had his phone out the window a
 
@@ -1506,23 +1506,23 @@ Interview of Mr. Mulligan:
 
 8 MR. BECIC: Okay.
 
-9 MR. MULLIGAN: -- pictures at least of that car from at the
+9 MR. WITNESS: -- pictures at least of that car from at the
 
 10 road and the driveway.
 
 11 MR. BECIC: Okay. I hope to talk to him --
 
-12 MR. MULLIGAN: I didn't take any pictures.
+12 MR. WITNESS: I didn't take any pictures.
 
 13 MR. BECIC: -- in a few days or even just over the phone.
 
-14 MR. MULLIGAN: Yeah, I didn't take any picture. I don't know
+14 MR. WITNESS: Yeah, I didn't take any picture. I don't know
 
 15 how people -- you wouldn't believe how many people were stopping.
 
 16 MR. SQUIRE: Oh, I would, yeah, yeah.
 
-17 MR. MULLIGAN: Stopping out there with the cameras and stuff.
+17 MR. WITNESS: Stopping out there with the cameras and stuff.
 
 18 I felt like I was invading his privacy when I was at the car
 
@@ -1534,7 +1534,7 @@ Interview of Mr. Mulligan:
 
 22 without looking at it.
 
-23 MR. MULLIGAN: But the little boy was, I saw him. I felt bad
+23 MR. WITNESS: But the little boy was, I saw him. I felt bad
 
 24 he was doing that when I saw him with his camera phone, with his
 
@@ -1552,7 +1552,7 @@ Interview of Mr. Mulligan:
 
 3 MR. BECIC: Okay. Do you have anything else --
 
-4 MR. MULLIGAN: And now there's a big crane or whatever, DOT
+4 MR. WITNESS: And now there's a big crane or whatever, DOT
 
 5 truck parked --
 
@@ -1622,7 +1622,7 @@ Interview of Mr. Mulligan:
 
 10 this area.
 
-11 MR. MULLIGAN: Yeah. Well, I've lived here about a year.
+11 MR. WITNESS: Yeah. Well, I've lived here about a year.
 
 12 I'm an outside account manager. I'm on the road every day and I
 
@@ -1638,7 +1638,7 @@ Interview of Mr. Mulligan:
 
 18 MR. SQUIRE: Yeah.
 
-19 MR. MULLIGAN: I don't think they're supposed to change gears
+19 MR. WITNESS: I don't think they're supposed to change gears
 
 20 in turn, mid-turn or anything, so he just slowly was going across
 
@@ -1660,7 +1660,7 @@ Interview of Mr. Mulligan:
 
 1 MR. SQUIRE: Okay.
 
-2 MR. MULLIGAN: If you have any other questions --
+2 MR. WITNESS: If you have any other questions --
 
 3 (Whereupon, the interview was concluded.)
 
@@ -1719,9 +1719,9 @@ This is to certify that the attached proceeding before the
  NATIONAL TRANSPORTATION SAFETY BOARD
 
 IN THE MATTER OF: FATAL ACCIDENT INVOLVING A 2015
- TESLA MODEL S WITH A TRACTOR TRAILER
+ [CAR MANUFACTURER] [CAR MODEL] WITH A TRACTOR TRAILER
  NEAR WILLISTON, FLORIDA, MAY 7, 2016
- Interview of Terrence Mulligan
+ Interview of [westbound witness]
 
 DOCKET NUMBER: HWY16FH018
 

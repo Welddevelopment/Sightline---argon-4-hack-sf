@@ -22,12 +22,12 @@ A. CRASH INFORMATION
 
 Location: US-Alt 27, milepost 29, near Williston, Levy County, Florida
 
-Vehicle #1: 2015 Tesla Model S 70D
+Vehicle #1: 2015 [car manufacturer] [car model] 70D
 
 Operator #1: Private operator
 
-Vehicle #2: 2014 Freightliner Cascadia truck tractor in combination with a
- 2003 Utility 3000R refrigerated semitrailer
+Vehicle #2: 2014 [truck manufacturer] [truck model] truck tractor in combination with a
+ 2003 [trailer manufacturer] 3000R refrigerated semitrailer
 
 Operator #2: Okemah Express, LLC
  Palm Harbor, FL
@@ -49,7 +49,7 @@ Florida Highway Patrol, Troop B
 600 SE 25th Avenue, Ocala, Florida, 34471
 
 Matthew Schwall, Director, Field Performance Engineering,
-Tesla Motors, Inc.
+[car manufacturer], Inc.
 3500 Deer Creek Road, Palo Alto, CA 94304
 
 Williston, FL – Highway Factors Factual Report Page 2 of 13
@@ -73,7 +73,7 @@ summarizes highway design characteristics.
 
  The crash occurred in the eastbound travel lane of US 27A at mile marker 29.076, in
 Levy County, Florida. The global position system (GPS) coordinates for the crash are 29.4106 N
-/ -82.53979 W for the area of impact; 29.409516 N / -82.537291 W for the location of the Tesla
+/ -82.53979 W for the area of impact; 29.409516 N / -82.537291 W for the location of the [car manufacturer]
 sedan at rest. US 27A is also designated on Florida DOT construction documents as State Road
 (SR) 500. Figure 1 is a crash map that illustrates the crash location approximately 5 miles west
 of Williston, Florida. Attachment 1 is a redacted copy of the Florida Highway Patrol crash report
@@ -88,7 +88,7 @@ parcels and at-grade intersections with other roadways.
 Williston, FL – Highway Factors Factual Report Page 3 of 13
 
 === Highway Factual p.4 ===
- Figure 1 – Image of the crash intersection showing the eastbound route of the Tesla Model S
+ Figure 1 – Image of the crash intersection showing the eastbound route of the [car manufacturer] [car model]
 in blue and the route of the westbound tractor trailer turning south in yellow. (Source: Google
 Earth modified)
 
@@ -210,11 +210,11 @@ intersection location. Image and graphic overlays courtesy of FDOT.
  In addition to the crash that is the subject of this report, there was a fatal crash at the same
 intersection on July 22, 2016 at 8:14 pm. Florida Highway Patrol indicated that the light
 conditions were “dusk,” road conditions were dry, and the weather was clear. The 48-year-old
-female driver of a 2001 Ford Explorer, traveling north on County Road N.E. 140th Court made a
-left turn in front of a 2005 Dodge Ram pickup pulling a livestock trailer traveling on east US-
-27A. The 24-year-old male driver of the pickup took evasive action to the left but struck the Ford
+female driver of a 2001 [make] Explorer, traveling north on County Road N.E. 140th Court made a
+left turn in front of a 2005 [make] Ram pickup pulling a livestock trailer traveling on east US-
+27A. The 24-year-old male driver of the pickup took evasive action to the left but struck the [make]
 Explorer and they both came to rest in the intersection median of US 27A at the end of the west
-turn lane. The fatally injured driver of the Ford Explorer was unrestrained; she was pronounced
+turn lane. The fatally injured driver of the [make] Explorer was unrestrained; she was pronounced
 deceased at the hospital later the same evening of the crash.
 
  5. Signal Warrant Analysis

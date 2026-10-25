@@ -18,13 +18,13 @@ SOURCE: NTSB public docket HWY16FH018 — Vehicle Dynamics Study — https://dat
 
  Operator #1: Private operator
 
- Vehicle #1: 2015 Tesla Model S 70D
+ Vehicle #1: 2015 [car manufacturer] [car model] 70D
 
  Operator #2: Okemah Express, LLC
  Palm Harbor, FL
 
- Vehicle #2: 2014 Freightliner Cascadia truck-tractor in combination with a
- 2003 Utility 3000R refrigerated semitrailer.
+ Vehicle #2: 2014 [truck manufacturer] [truck model] truck-tractor in combination with a
+ 2003 [trailer manufacturer] 3000R refrigerated semitrailer.
 
  Date: May 7, 2016
 
@@ -565,7 +565,7 @@ Highways and Streets” Section 3.2.6, Criteria for Measuring Sight Distance
 Equipped with Automatic Transmissions. The Society of Automotive Engineers. Technical Paper 2012-
 01-0597.
 
-5. Grimes, W.D and Dickerson, C.P. (2000). Low-Speed Acceleration of a Kenworth T2000 Tractor-Truck
+5. Grimes, W.D and Dickerson, C.P. (2000). Low-Speed Acceleration of a [make] T2000 Tractor-Truck
 with Autoshift Transmission. The Society of Automotive Engineers. Technical Paper 2000-01-0470
 
 6. Evaluation of 90 left driving maneuvers from: Bezzina, D., Sayer, J., (2015). Safety Pilot Model
@@ -574,7 +574,7 @@ DOT HS 812 171.
 
 7. http://www.pc-crash.com/
 
-8. Vehicle Attachment #2 – Freightliner Vehicle Specifications and Chassis Final Vehicle Record. Available
+8. Vehicle Attachment #2 – [truck manufacturer] Vehicle Specifications and Chassis Final Vehicle Record. Available
 in the Pubic Docket.
 
 9. Olson, P.L, Cleveland, D.E, Fancher, P.S, Kostyniuk, L.P. and Schneider, L.W. (1984). Parameters

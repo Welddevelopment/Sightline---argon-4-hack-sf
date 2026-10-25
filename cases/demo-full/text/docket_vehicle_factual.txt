@@ -21,10 +21,10 @@ VEHICLE FACTORS GROUP CHAIRMAN’S
  CRASH INFORMATION
 
 Location: US 27-Alt, milepost 29, near Williston, Levy County, Florida
-Vehicle #1: 2015 Tesla Model S 70D
+Vehicle #1: 2015 [car manufacturer] [car model] 70D
 Operator #1: Private operator
-Vehicle #2: 2014 Freightliner Cascadia truck tractor in combination with a 2003
- Utility 3000R refrigerated semi trailer
+Vehicle #2: 2014 [truck manufacturer] [truck model] truck tractor in combination with a 2003
+ [trailer manufacturer] 3000R refrigerated semi trailer
 Operator #2: Okemah Express, LLC
  Palm Harbor, FL
 Date: May 7, 2016
@@ -38,7 +38,7 @@ Jerome F. Cantrell, Vehicle Factors Group Chairman
 NTSB, Office of Highway Safety
 490 L’Enfant Plaza S.W., Washington, DC 20594
 
-Tesla Motors Inc. Group Member
+[car manufacturer] Inc. Group Member
 Matthew Schwall, Ph.D.
 Director, Field Performance Engineering
 3500 Deer Creek Road
@@ -54,30 +54,30 @@ investigation.
 
  DETAILS OF THE VEHICLE FACTORS INVESTIGATION
 
- The 2015 Tesla Model S sedan was examined by NTSB staff on July 14, 2016. All major
+ The 2015 [car manufacturer] [car model] sedan was examined by NTSB staff on July 14, 2016. All major
 mechanical systems were examined, which included the powertrain, steering, braking, and
 suspension systems. Overall collision damage, along with any damage or anomalies within major
 vehicle mechanical systems were documented. Supporting photographs, vehicle specifications,
 and available maintenance records were reviewed.
 
- A level 1, post-accident inspection was conducted on the Freightliner truck-tractor and the
-Utility semi-trailer on May 12, 2016, by the Florida Highway Patrol (FHP). This inspection did
+ A level 1, post-accident inspection was conducted on the [truck manufacturer] truck-tractor and the
+[trailer manufacturer] semi-trailer on May 12, 2016, by the Florida Highway Patrol (FHP). This inspection did
 not uncover any violations on the truck-tractor. The damages noted for the semi-trailer were
 identified as broken lower frame rails, missing or bent frame crossmembers, inoperable
 intermediate side marker lamps, and an air leak at a proper connection.1
 
  By the time staff arrived in Florida,2 the truck tractor and semi-trailer were no longer in
 Williston, FL. The semi-trailer was no longer owned by Okemah Express LLC, but had in fact
-been used to help purchase a newer semi-trailer. Staff was able to locate the 2003 Utility semi
+been used to help purchase a newer semi-trailer. Staff was able to locate the 2003 [trailer manufacturer] semi
 trailer that had been involved in the crash and the new owner allowed staff to scan it for
 reconstruction purposes. The truck tractor along with the newer semi trailer were no longer in the
 state of Florida and they were not expected to return to Florida for an unreasonable period of time.
 
- Vehicle #1 – 2015 Tesla Model S 70D Sedan, Passenger Vehicle
+ Vehicle #1 – 2015 [car manufacturer] [car model] 70D Sedan, Passenger Vehicle
 
  1.1. General information
 
- Make/Model: 2015 Tesla, 4-Door Sedan / Model S 70D
+ Make/Model: 2015 [car manufacturer], 4-Door Sedan / [car model] 70D
  VIN:3 5YJSA1S26FFXXXXXX
  Date of Manufacture: June 2015
  GVWR:4 5,732 lbs
@@ -99,7 +99,7 @@ Williston, Florida – Vehicle Factual Report Page 3 of 11
 === Vehicle Factual p.4 ===
  1.2. Damage Description
 
- The front of the Tesla sustained major damage to the left-front. The leading edge and top
+ The front of the [car manufacturer] sustained major damage to the left-front. The leading edge and top
 of the hood sustained superficial scratches and scrapes. The leading edge of the left side of the
 hood was damaged and crushed rearward. The left headlamp assembly was missing. The plastic
 bumper cover was missing and the left side of the bumper was displaced rearward. The air
@@ -109,7 +109,7 @@ bumper and grill area were exposed, damaged and hanging down in front of the bum
 windshield was broken and most of it was missing. The “A” pillars were displaced rearward and
 the roof had been torn from the top of the “A” pillars and was folded rearward to the trunk area.
 
- The left side of the Tesla sustained substantial damage. The left-front fender was displaced
+ The left side of the [car manufacturer] sustained substantial damage. The left-front fender was displaced
 rearward, collapsing the wheel well, trapping the left-front tire. The left-front wheel was cracked
 and the tire was deflated. The left-side rearview mirror was broken from its respective mount and
 hanging by its electrical wires. The left-side rearview mirror also housed the external cell phone
@@ -118,21 +118,21 @@ passenger door was dented at approximately the top hinge area and was displaced 
 was unable to close and latch. The rear windshield was shattered. There were no side windows
 left intact.5
 
- The rear of the Tesla sustained major damage. The trunk lid was crushed. The left and
+ The rear of the [car manufacturer] sustained major damage. The trunk lid was crushed. The left and
 right tail lamp assemblies, mounted in the trunk lid, were missing the clear outer lenses. The third
 brake light assembly, mounted at the top of the rear windshield, was displaced, but was still
 hanging in its respective mounting location. The right side of the trunk lid was displaced forward.
 The right side of the trunk lid was askew and lifted. The trunk was unable to be latched closed.
 The right side of the plastic bumper covering sustained scratches.
 
- The right side of the Tesla sustained moderate damage. The front fender, front passenger
+ The right side of the [car manufacturer] sustained moderate damage. The front fender, front passenger
 door, and the rear quarter panel sustained scrapes and scratches. The rear passenger door was
 crushed downward and trapped closed. The top of the “B” pillar was displaced rearward into the
 rear passenger compartment. The right-side rearview mirror was slightly damaged, but still
 mounted. The rearview mirror mount sustained major abrasion damage at the base of the ‘A”
 pillar.
 
- The condition of the interior of the Tesla at the time of the crash was unknown because the
+ The condition of the interior of the [car manufacturer] at the time of the crash was unknown because the
 electronics had been removed sometime prior to this inspection. The instrument panel to the right
 of the driver and in front of the passenger, along with the center stack console, had all been
 removed. The interior contained a lap top computer stand mounted to the right-front passenger
@@ -143,8 +143,8 @@ driver and front passenger knee bolster airbags, the driver’s front airbag, an
 deployed during the sequence of the crash. The driver and passenger seating positions were
 equipped with a Type 2 (three-point, continuous loop lap/shoulder) occupant restraint system. The
 
-5 See Vehicle Photograph #1 – Left front of Tesla.
-6 See Vehicle Photograph #2 – Instrument panel of Tesla.
+5 See Vehicle Photograph #1 – Left front of [car manufacturer].
+6 See Vehicle Photograph #2 – Instrument panel of [car manufacturer].
 
 Williston, Florida – Vehicle Factual Report Page 4 of 11
 
@@ -166,16 +166,16 @@ Biological material was down the left side of the driver’s seat.
 
  1.3. Vehicle Recorded Event Data
 
- The Tesla was not equipped with an Event Data Recorder. The Tesla was equipped with
+ The [car manufacturer] was not equipped with an Event Data Recorder. The [car manufacturer] was equipped with
 an Air bag Control Module, however; this control module did not have an event data recorder.
-Any data that would have been recorded by the computer had been removed from the Tesla
+Any data that would have been recorded by the computer had been removed from the [car manufacturer]
 sometime prior to to this inspection by NTSB staff. Refer to the Recorder Group Chairman’s
 factual report for any data obtained from the vehicle manufacturer.
 
  1.4. Driver Controls
 
  The driver control instrument panel and gauge display were all digital. The main instrument
-panel display screen, located in the center stack of the Tesla, had been removed and was not located
+panel display screen, located in the center stack of the [car manufacturer], had been removed and was not located
 with the vehicle at the time of this inspection. 
  A single lever, mounted to the left side of the steering wheel column, operated the wipers,
 high/low beam, and turn signals. The bottom lever, mounted to the left side of the steering wheel
@@ -191,7 +191,7 @@ commands.
  1.5. Tires and Wheels
 
  According to the VIN plate, mounted on the lower portion of the “B” pillar in the driver’s
-door opening, the Tesla was specified to be equipped with P245/45R19 tires, mounted on 19x8
+door opening, the [car manufacturer] was specified to be equipped with P245/45R19 tires, mounted on 19x8
 rims.8 The tires were specified to be inflated to 45 psi for both axles. Table 1 includes the tire
 and wheel information documented at the time of inspection.
 
@@ -206,7 +206,7 @@ Williston, Florida – Vehicle Factual Report Page 5 of 11
  measurements taken are documented in Table 1. All tread depths measured were within the
  minimum tread depth regulation for passenger vehicle tires, which is 2/32 of an inch for all axles.9
 
- Table 1. Tesla Tire Information
+ Table 1. [car manufacturer] Tire Information
 Axle I Left Right
 Make GOODYEAR MICHELIN
 Model EAGLE RS-A2 PRIMARY MXM4
@@ -250,7 +250,7 @@ Tread Depth 6/32, 5/32, 5/32, 5/32 inch 6/32, 5/32, 5/32, 6/32 inch
 === Vehicle Factual p.7 ===
  1.6. Steering
 
- The Tesla was equipped with electric power-assisted rack and pinion steering gear.
+ The [car manufacturer] was equipped with electric power-assisted rack and pinion steering gear.
 
  All of the steering arm linkages from the steering wheel down to the rack and pinion
 steering gear remained intact and connected. It was possible to rotate the steering gear from stop-
@@ -259,31 +259,31 @@ excessive wear or play.
 
  1.7. Suspension
 
- Axle I of the Tesla was equipped with an independent suspension system, which consisted
+ Axle I of the [car manufacturer] was equipped with an independent suspension system, which consisted
 of lower control arms, air springs/telescopic dampers, a stabilizer bar, and stabilizer bar connecting
 links.
 
  The forward, lower control arm, ball joint mounting bolt was broken at the steering
 knuckle. No other damage was noted.
 
- Axle II of the Tesla was equipped with an independent suspension system, which consisted
+ Axle II of the [car manufacturer] was equipped with an independent suspension system, which consisted
 of multiple linkages, air springs/telescopic dampers, a stabilizer bar, and stabilizer bar connecting
 links. No damage was observed to axle II suspension components.
 
  1.8. Braking
 
- The Tesla was equipped with a hydraulic, Anti-Lock Braking System (ABS) with
+ The [car manufacturer] was equipped with a hydraulic, Anti-Lock Braking System (ABS) with
 Electronic Brake Force Distribution, Integrated Advanced Stability Control, Automatic
 Emergency Braking (AEB), and Electronic Accelerator pedal actuated regenerative braking
 system. There were disc brake assemblies on both axles. The brake calipers were fixed, with four
 pistons each.
 
- Brake functional check for the Tesla was accomplished by applying the brake pedal and
+ Brake functional check for the [car manufacturer] was accomplished by applying the brake pedal and
 attempting to rotate the brake assemblies with a pry bar. When the brake master cylinder was
 actuated, all brakes assemblies locked from hand rotation, and released when the brake master
 cylinder was released. Brake measurements are recorded in Table 2.
 
- Table 2. Tesla Brake Measurements
+ Table 2. [car manufacturer] Brake Measurements
  Brake
  Axle I Axle II
  Location
@@ -316,7 +316,7 @@ reservoir.
 
  1.9. Maintenance History
 
- The maintenance records were obtained from Tesla. The only maintenance issues
+ The maintenance records were obtained from [car manufacturer]. The only maintenance issues
 identified between July 2015 and May 7, 2016, were three tire issues. The first tire issue occurred
 on December 21, 2015, and involved the left-front tire. The documented problem was stated as a
 flat tire and the wheel was damaged as well. The second tire issue occurred on February 13, 2016,
@@ -324,13 +324,13 @@ and involved the left-rear tire. It was unknown what issues were addressed with 
 The third tire issue occurred on March 3, 2016, and involved the left-front tire. It was unknown
 what issues were addressed with the left-front tire at this time.10
 
- 2015 FREIGHTLINER TRUCK TRACTOR AND 2003 UTILITY
+ 2015 [TRUCK MANUFACTURER] TRUCK TRACTOR AND 2003 UTILITY
  SEMI TRAILER
 
  2.1. GENERAL INFORMATION
 
  TRUCK TRACTOR:11
- Make/Model: 2014 Freightliner Cascadia
+ Make/Model: 2014 [truck manufacturer] [truck model]
  VIN: 3AKJGHDV4ESXXXXXX
  Company Unit #: 14
  Date of Manufacture: February 2013
@@ -338,15 +338,15 @@ what issues were addressed with the left-front tire at this time.10
  GAWR (front axle):13 12,350 lbs
  GAWR (middle axle): 20,000 lbs
  GAWR (rear axle): 20,000 lbs
- Engine: Detroit Diesel DD13, Inline Six-Cylinder, 470 hp
+ Engine: [engine manufacturer] DD13, Inline Six-Cylinder, 470 hp
  Transmission: Allison, 6-speed, Automatic
- Additional equipment and specifications are included in the Freightliner Combined
+ Additional equipment and specifications are included in the [truck manufacturer] Combined
  Vehicle Specs and Chassis Final Vehicle Record.14
 
 10
- See Vehicle Attachment # 1 – Tesla Tire Pressure Information.
+ See Vehicle Attachment # 1 – [car manufacturer] Tire Pressure Information.
 11
- The specifications for the Freightliner were taken from the Freightliner Vehicle Specs and Chassis Final Vehicle
+ The specifications for the [truck manufacturer] were taken from the [truck manufacturer] Vehicle Specs and Chassis Final Vehicle
 Record.
 12
  Gross Vehicle Weight Rating (GVWR) is the total maximum weight that a vehicle is designed to carry when
@@ -354,13 +354,13 @@ loaded, including the weight of the vehicle itself plus fuel, passengers, and ca
 13
  Gross Axle Weight Rating (GAWR) is the maximum distributed weight that a given axle is designed to support.
 14
- See Vehicle Attachment # 2 – Freightliner Vehicle Specs and Chassis Final Vehicle Record.
+ See Vehicle Attachment # 2 – [truck manufacturer] Vehicle Specs and Chassis Final Vehicle Record.
 
 Williston, Florida – Vehicle Factual Report Page 8 of 11
 
 === Vehicle Factual p.9 ===
  SEMITRAILER:
- Make/Model: 2003 Utility, 3000R, Refrigerated Semi-Trailer
+ Make/Model: 2003 [trailer manufacturer], 3000R, Refrigerated Semi-Trailer
  VIN: 1UYVS25303UXXXXXX
  Company Unit #: 2004
  Date of Manufacture: November 2002
@@ -428,11 +428,11 @@ arms, and solid axles. No damage was identified to the semi-trailer suspension.
 
  2.5. MAINTENANCE HISTORY
 
- Maintenance and inspection records for the Freightliner truck tractor and Utility semi-
+ Maintenance and inspection records for the [truck manufacturer] truck tractor and [trailer manufacturer] semi-
 trailer combination were obtained from Okemah Express LLC, via a subpoena from the NTSB to
 his lawyer.
 
- The most recent annual inspections for the Freightliner truck tractor and Utility semi-trailer
+ The most recent annual inspections for the [truck manufacturer] truck tractor and [trailer manufacturer] semi-trailer
 combination, occurred in January 2016, in Clearwater, FL.
 
  DOCKET MATERIAL
@@ -442,8 +442,8 @@ investigation:
 
 LIST OF ATTACHMENTS
 
-Vehicle Attachment #1 – Tesla Tire Pressure Information - Official Use Only
-Vehicle Attachment #2 – Freightliner Vehicle Specs and Chassis Final Vehicle Record
+Vehicle Attachment #1 – [car manufacturer] Tire Pressure Information - Official Use Only
+Vehicle Attachment #2 – [truck manufacturer] Vehicle Specs and Chassis Final Vehicle Record
 Vehicle Attachment #3 – FHP Post-Crash Inspection
 
 19
@@ -457,9 +457,9 @@ Williston, Florida – Vehicle Factual Report Page 10 of 11
 === Vehicle Factual p.11 ===
 LIST OF PHOTOGRAPHS
 
-Vehicle Photograph #1 – Left front of Tesla
+Vehicle Photograph #1 – Left front of [car manufacturer]
 
-Vehicle Photograph #2 – Instrument panel of Tesla
+Vehicle Photograph #2 – Instrument panel of [car manufacturer]
 
 Vehicle Photograph #3 – Driver’s Seat Belt Latch Plate and Buckle
 

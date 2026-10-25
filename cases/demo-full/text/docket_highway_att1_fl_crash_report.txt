@@ -147,7 +147,7 @@ VEHICLE (1 Commercial Motor Vehicle
 Vehicle |Motor Vehicle T\ Hit & Run (by this vehicle}License Number State Reg Expires Permanent Reg. |VIN
 vo2 MOTOR VEHICLE IN TRANSPORT NO OH 1/20/2017 INO
 Year [Make Model [style [Color Extent of Damage Est. Damage youed Due to DamagdVehicle Removed By Rotation
-2015 | TESLA MODEL S 4D BLK DISABLING Bb BRONSON LUBE [ROTATION
+2015 | [CAR MANUFACTURER] [CAR MODEL] 4D BLK DISABLING Bb BRONSON LUBE [ROTATION
 Insurance Company See Policy Number
 NO PROOF NO PROOF
 Name of Vehicle Owner Business [] ‘Current Address City State Zip Code ~~ Phone Number(s)
