@@ -40,8 +40,7 @@ function waitForSl() {
 const sl = await waitForSl();
 
 // ---------- state ----------
-// Callout density: 'off' | 'min' | 'full'. userMode null = auto: full on the overhead plan, minimal in
-// witness / chase views (keeps the picture clean). URL ?callouts=0|1|min|full; sl.overlays.set(bool|mode).
+// Callout density: 'off' | 'min' | 'full'. userMode null = auto = minimal in every view (keeps the picture clean). URL ?callouts=0|1|min|full; sl.overlays.set(bool|mode).
 const normMode = (m) => {
   m = String(m == null ? '' : m).toLowerCase();
   if (m === '0' || m === 'off' || m === 'false') return 'off';
@@ -54,7 +53,7 @@ let userMode = (() => {
   try { const v = localStorage.getItem('sl.callouts'); return v === '0' ? 'off' : normMode(v); } catch (_) { return null; }
 })();
 let enabled = userMode !== 'off';
-const modeFor = (camId) => userMode || ((camId || 'overhead') === 'overhead' ? 'full' : 'min');
+const modeFor = (camId) => userMode || 'min'; // auto = minimal everywhere (studio style); Full via the toggle
 let world = null, scene = null, info = null;
 let checks = [];
 let findings = [];
@@ -84,7 +83,7 @@ cardEl.hidden = true;
 stage.appendChild(cardEl);
 const btn = document.createElement('div');
 btn.className = 'slo-toggle';
-btn.title = 'Callouts. Minimal: clock, speeds, sight line, witness card. Full: adds stopping distances, vehicle gap, street labels. URL: ?callouts=0|min|full';
+btn.title = 'Callouts. Minimal (default): clock, speeds, vehicle tags, witness names, main road, the active sight line, witness card. Full: adds object labels, inferred boxes, stopping-distance bars, vehicle gap, all street labels. URL: ?callouts=0|min|full';
 btn.innerHTML = '<span>Callouts</span><button type="button" data-m="off">Off</button><button type="button" data-m="min">Minimal</button><button type="button" data-m="full">Full</button>';
 btn.addEventListener('click', (e) => { const b = e.target.closest('button[data-m]'); if (b) setEnabled(b.dataset.m); });
 stage.appendChild(btn);
@@ -604,6 +603,7 @@ function update(cam) {
   clearGroup();
   hideSight();
   syncToggle();
+  { const rg = scene && scene.getObjectByName('__sl_rays'); if (rg) rg.visible = true; } // re-hidden below in minimal overhead
   if (!enabled || !world || !info) { layer.innerHTML = ''; cardEl.hidden = true; return; }
   const W = stage.clientWidth || window.innerWidth, H = stage.clientHeight || window.innerHeight;
   const t = sl.time || 0;
@@ -630,14 +630,22 @@ function update(cam) {
   cardEl.hidden = !showCard;
   for (const el of [hudEl, cardEl, btn, document.querySelector('.sl-hud'), document.querySelector('.ao-stage')]) { const q = elRect(el); if (q) placed.push(q); }
 
-  // obstacles: the viewer's own overhead label sprites
+  // the viewer's own overhead label sprites: minimal keeps witness names only (object / "inferred" labels are
+  // full-mode or hover); a label that would overlap one already placed is dropped, never stacked
   if (overhead) {
-    scene.traverse((o) => {
-      if (!o.isSprite || !o.visible || !visibleChain(o) || o.parent === group) return;
+    const sprites = [];
+    scene.traverse((o) => { if (o.isSprite && o.visible && o.parent !== group && visibleChain(o)) sprites.push(o); });
+    sprites.sort((a, b) => (a.userData.kind === 'witness' ? 0 : 1) - (b.userData.kind === 'witness' ? 0 : 1));
+    for (const o of sprites) {
+      if (!full && o.userData.kind === 'object') { o.visible = false; continue; }
       const c = proj(o.getWorldPosition(new THREE.Vector3()));
       const sw = o.scale.x / mpp, sh = o.scale.y / mpp;
-      placed.push({ x: c.x - sw / 2, y: c.y - sh / 2, w: sw, h: sh });
-    });
+      const q = { x: c.x - sw / 2, y: c.y - sh / 2, w: sw, h: sh };
+      if (placed.some((z) => rectsHit(z, q, 2))) { o.visible = false; continue; }
+      placed.push(q);
+    }
+    // amber dashed "inferred" boxes and the all-witness overhead rays: full mode only (minimal = the active sight line)
+    if (!full) scene.traverse((o) => { if ((o.isLineSegments && /^inferred_/.test(o.name || '')) || (o.name === '__sl_rays' && w && r)) o.visible = false; });
   }
 
   // ---- (full) stopping distance / brake point bars on the road, one-word tags; the sentence is in the card ----
@@ -791,9 +799,10 @@ function update(cam) {
     }
   }
 
-  // ---- (full) road / street labels (overhead only), along the road axis, placed last in free space ----
-  if (full && overhead) {
-    for (const rd of info.roads) {
+  // ---- road / street labels (overhead only), along the road axis, placed last in free space; minimal: main road only ----
+  if (overhead) {
+    const axLen = (rd) => rd.axis.a.distanceTo(rd.axis.b);
+    for (const rd of (full ? info.roads : info.roads.slice().sort((x, y) => axLen(y) - axLen(x)).slice(0, 1))) {
       const a = proj(rd.axis.a), b = proj(rd.axis.b);
       // clip segment to the viewport (inset)
       const seg = clipSeg(a, b, 40, 60, W - 40, H - 40);

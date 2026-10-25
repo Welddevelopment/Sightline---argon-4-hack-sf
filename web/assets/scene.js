@@ -1059,7 +1059,7 @@ export function treeline(opts = {}) {
   const { id, points = [[-200, -100], [200, -100]], depth = 14, spacing = 7, height = 13, pineRatio = 0.35, seed = 1 } = opts;
   const g = new THREE.Group();
   const rnd = (() => { let s = seed * 9301 + 49297; return () => ((s = (s * 9301 + 49297) % 233280) / 233280); })();
-  const crowns = [], trunks = [];
+  const crowns = [], trunks = [], branches = [];
   const C = (r, g, b) => [r, g, b];
   for (let i = 1; i < points.length; i++) {
     const [x0, z0] = points[i - 1], [x1, z1] = points[i];
@@ -1070,43 +1070,70 @@ export function treeline(opts = {}) {
         const off = (row / rows - 0.5) * depth + (rnd() - 0.5) * spacing;
         const x = x0 + tx * d - tz * off, z = z0 + tz * d + tx * off, y0 = TERRAIN.profiles.length ? profileH(x, z) : 0;
         const h = height * (0.7 + rnd() * 0.55);
-        if (rnd() < pineRatio) {             // slash pine: tall bare trunk, small irregular crown on top
-          const H = h * 1.35;
-          trunks.push({ x, z, y: y0, h: H, r: 0.2 });
-          const nk = 3 + Math.floor(rnd() * 3); for (let k = 0; k < nk; k++) { const cr = 1.3 + rnd() * 1.3; crowns.push({ k: 'pine', x: x + (rnd() - 0.5) * 3.2, z: z + (rnd() - 0.5) * 3.2, y: y0 + H - 1.0 - k * 1.25 - rnd() * 0.8, sx: cr * 1.25, sy: cr * 0.75, sz: cr * 1.25, c: C(0.24 + rnd() * 0.05, 0.28 + rnd() * 0.05, 0.16) }); }
-        } else {                              // live oak / laurel oak mass: broad, low, overlapping crowns
-          const w = h * (0.7 + rnd() * 0.4);
-          trunks.push({ x, z, y: y0, h: h * 0.35, r: 0.32 });
-          const n = 5 + Math.floor(rnd() * 4);
-          for (let k = 0; k < n; k++) crowns.push({ k: 'oak', x: x + (rnd() - 0.5) * w * 0.9, z: z + (rnd() - 0.5) * w * 0.9, y: y0 + h * (0.42 + rnd() * 0.38), sx: w * (0.28 + rnd() * 0.2), sy: h * (0.18 + rnd() * 0.12), sz: w * (0.28 + rnd() * 0.2),
-            c: C(0.22 + rnd() * 0.07, 0.27 + rnd() * 0.07, 0.15 + rnd() * 0.04) });
+        if (rnd() < pineRatio) {             // slash pine: tall straight bare trunk, flat-topped open crown of needle pads on branch ends
+          const H = h * 1.35, lean = [(rnd() - 0.5) * 0.6, (rnd() - 0.5) * 0.6];
+          trunks.push({ x, z, y: y0, h: H * 0.97, r: 0.17 + rnd() * 0.06, lx: lean[0], lz: lean[1] });
+          const c0 = 0.6 + rnd() * 0.1, nk = 6 + Math.floor(rnd() * 5);
+          for (let k = 0; k < nk; k++) {
+            const f = k / nk, yy = H * (c0 + (0.97 - c0) * f) + (rnd() - 0.5) * 0.6, az = rnd() * 6.283;
+            const reach = (1.1 + rnd() * 1.7) * (1 - f * 0.55), tx2 = x + lean[0] * yy / H + Math.cos(az) * reach, tz2 = z + lean[1] * yy / H + Math.sin(az) * reach;
+            branches.push({ x0: x + lean[0] * yy / H, y0: y0 + yy - 0.5, z0: z + lean[1] * yy / H, x1: tx2, y1: y0 + yy + 0.25, z1: tz2, r: 0.06 });
+            const cr = (1.15 + rnd() * 0.8) * (1 - f * 0.3);
+            crowns.push({ k: 'pine', x: tx2, z: tz2, y: y0 + yy + 0.35, sx: cr * 1.25, sy: cr * (0.5 + rnd() * 0.2), sz: cr * 1.25, c: C(0.24 + rnd() * 0.05, 0.28 + rnd() * 0.05, 0.16) });
+          }
+          crowns.push({ k: 'pine', x: x + lean[0], z: z + lean[1], y: y0 + H * 0.97, sx: 1.4, sy: 0.9, sz: 1.4, c: C(0.25, 0.29, 0.16) });
+        } else {                              // live oak / laurel oak: short trunk, broad spreading crown of overlapping leaf masses
+          const w = h * (0.75 + rnd() * 0.45);
+          trunks.push({ x, z, y: y0, h: h * 0.45, r: 0.3 + rnd() * 0.1, lx: 0, lz: 0 });
+          const n = 6 + Math.floor(rnd() * 4);
+          for (let k = 0; k < n; k++) {
+            const az = rnd() * 6.283, rr = w * (0.12 + rnd() * 0.36), yy = h * (0.45 + rnd() * 0.38);
+            const cx2 = x + Math.cos(az) * rr, cz2 = z + Math.sin(az) * rr;
+            if (k < 4) branches.push({ x0: x, y0: y0 + h * 0.38, z0: z, x1: cx2, y1: y0 + yy - 0.6, z1: cz2, r: 0.12 });
+            crowns.push({ k: 'oak', x: cx2, z: cz2, y: y0 + yy, sx: w * (0.24 + rnd() * 0.16), sy: h * (0.15 + rnd() * 0.1), sz: w * (0.24 + rnd() * 0.16),
+              c: C(0.22 + rnd() * 0.07, 0.27 + rnd() * 0.07, 0.15 + rnd() * 0.04) });
+          }
         }
         // understory (palmetto, wax myrtle, young oaks) hides trunk gaps
         if (row === 0 && rnd() < (opts.understory ?? 0.6)) for (let k = 0; k < 2; k++) { const sw = 1.2 + rnd() * 1.6; crowns.push({ k: 'shrub', x: x + (rnd() - 0.5) * spacing, z: z + (rnd() - 0.5) * spacing, y: y0 + sw * 0.35, sx: sw, sy: sw * (0.45 + rnd() * 0.3), sz: sw, c: C(0.25 + rnd() * 0.06, 0.29 + rnd() * 0.06, 0.16 + rnd() * 0.04) }); }
       }
     }
   }
-  // crowns: instanced clusters of alpha-clipped leaf cards (alphaTest 0.5, cast alpha-tested shadows), one
-  // InstancedMesh per species; a dark inner core (shrunk, opaque) stops the sky showing through dense masses.
-  const tm = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.7, 1, 1, 6), new THREE.MeshStandardMaterial({ color: 0x4a3f33, roughness: 1 }), trunks.length);
-  const o = new THREE.Object3D(), col = new THREE.Color();
-  const SPEC = { oak: { cards: 24, flat: 0.7, size: 0.8, hollow: 0.2 }, pine: { cards: 22, flat: 0.6, size: 0.85, hollow: 0.15 }, shrub: { cards: 16, flat: 0.75, size: 0.75, hollow: 0.1 } };
-  const coreMat = mat('treeCore', () => new THREE.MeshStandardMaterial({ color: 0x27331c, roughness: 1 }));
-  const coreGeo = new THREE.IcosahedronGeometry(0.62, 1);
+  // crowns: instanced clusters of alpha-clipped leaf cards (alphaTest 0.5, cast alpha-tested shadows), one InstancedMesh
+  // per species. The inside of each mass is a second, denser, darker leaf-card cluster (self-shadowed foliage) rather than
+  // an opaque smooth core, so silhouettes and interiors stay lacy instead of reading as green balls.
+  const barkMat = mat('treelineBark', () => new THREE.MeshStandardMaterial({ color: 0x55473a, roughness: 1 }));
+  const trunkGeo = new THREE.CylinderGeometry(0.62, 1, 1, 7, 1, true); trunkGeo.translate(0, 0.5, 0);
+  const tm = new THREE.InstancedMesh(trunkGeo, barkMat, trunks.length + branches.length);
+  const o = new THREE.Object3D(), col = new THREE.Color(), UPV = new THREE.Vector3(0, 1, 0), dv = new THREE.Vector3();
+  trunks.forEach((t, i) => {
+    dv.set(t.lx || 0, t.h, t.lz || 0); const L = dv.length();
+    o.position.set(t.x, t.y - 0.3, t.z); o.quaternion.setFromUnitVectors(UPV, dv.normalize()); o.scale.set(t.r, L + 0.3, t.r); o.updateMatrix(); tm.setMatrixAt(i, o.matrix);
+  });
+  branches.forEach((b, i) => {
+    dv.set(b.x1 - b.x0, b.y1 - b.y0, b.z1 - b.z0); const L = dv.length();
+    o.position.set(b.x0, b.y0, b.z0); o.quaternion.setFromUnitVectors(UPV, dv.normalize()); o.scale.set(b.r, L, b.r); o.updateMatrix(); tm.setMatrixAt(trunks.length + i, o.matrix);
+  });
+  o.quaternion.identity();
+  const SPEC = { oak: { cards: 26, flat: 0.7, size: 0.8, hollow: 0.25 }, pine: { cards: 20, flat: 0.45, size: 0.9, hollow: 0.2 }, shrub: { cards: 16, flat: 0.75, size: 0.75, hollow: 0.1 } };
+  const INNER = { oak: { cards: 18, flat: 0.7, size: 1.0, hollow: 0 }, pine: { cards: 10, flat: 0.45, size: 1.0, hollow: 0 }, shrub: { cards: 10, flat: 0.75, size: 0.9, hollow: 0 } };
   for (const kind of Object.keys(SPEC)) {
     const list = crowns.filter(c => c.k === kind); if (!list.length) continue;
-    const cmK = new THREE.InstancedMesh(foliageClusterGeometry({ ...SPEC[kind], seed: kind.length + seed }), foliageMaterial(kind === 'pine' ? 'pine' : kind), list.length);
-    const core = new THREE.InstancedMesh(coreGeo, coreMat, list.length);
+    const fm = foliageMaterial(kind === 'pine' ? 'pine' : kind);
+    const cmK = new THREE.InstancedMesh(foliageClusterGeometry({ ...SPEC[kind], seed: kind.length + seed }), fm, list.length);
+    const core = new THREE.InstancedMesh(foliageClusterGeometry({ ...INNER[kind], seed: kind.length + seed + 50 }), fm, list.length);
     list.forEach((c, i) => {
       o.position.set(c.x, c.y, c.z); o.scale.set(c.sx, c.sy, c.sz); o.rotation.set(0, i * 2.39, 0); o.updateMatrix(); cmK.setMatrixAt(i, o.matrix);
-      o.scale.multiplyScalar(0.6); o.updateMatrix(); core.setMatrixAt(i, o.matrix);
-      const tint = kind === 'pine' ? [0.74, 0.76, 0.66] : kind === 'oak' ? [0.7, 0.74, 0.62] : [0.8, 0.82, 0.7]; cmK.setColorAt(i, col.setRGB(tint[0] + (c.c[0] - 0.24) * 3, tint[1] + (c.c[1] - 0.29) * 3, tint[2] + (c.c[2] - 0.16) * 3));
+      o.scale.multiplyScalar(0.62); o.rotation.set(0, i * 1.37, 0); o.updateMatrix(); core.setMatrixAt(i, o.matrix);
+      const tint = kind === 'pine' ? [0.74, 0.76, 0.62] : kind === 'oak' ? [0.68, 0.74, 0.6] : [0.8, 0.82, 0.7];
+      const cr = tint[0] + (c.c[0] - 0.24) * 3, cg = tint[1] + (c.c[1] - 0.29) * 3, cb = tint[2] + (c.c[2] - 0.16) * 3;
+      cmK.setColorAt(i, col.setRGB(cr, cg, cb)); core.setColorAt(i, col.setRGB(cr * 0.5, cg * 0.52, cb * 0.48));
     });
     cmK.castShadow = true; cmK.receiveShadow = true; cmK.name = 'treeline_leaves_' + kind; cmK.computeBoundingSphere();
-    core.castShadow = true; core.receiveShadow = true; core.name = 'treeline_core_' + kind; core.computeBoundingSphere();
+    core.castShadow = true; core.receiveShadow = true; core.name = 'treeline_inner_' + kind; core.computeBoundingSphere();
     g.add(cmK, core);
   }
-  tm.castShadow = true;
+  tm.castShadow = true; tm.receiveShadow = true;
   tm.name = 'treeline_trunks'; tm.computeBoundingSphere();
   g.add(tm);
   tag(g, id, 'treeline', { length: 0, width: depth, height }, { count: trunks.length });

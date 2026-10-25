@@ -60,6 +60,7 @@ const envGroup = new THREE.Group();   // lights, ground
 const markerGroup = new THREE.Group(); // witness markers
 const labelGroup = new THREE.Group();  // sprite labels
 const rayGroup = new THREE.Group();    // sight lines
+rayGroup.name = '__sl_rays';           // overlays.js hides these all-witness rays in minimal callouts
 const hiGroup = new THREE.Group();     // highlight boxes
 const previewGroup = new THREE.Group(); // placement preview (Place on map)
 const infGroup = new THREE.Group();    // dashed outlines around inferred (uncited) objects
@@ -696,14 +697,16 @@ function applyXray(w, res) {
   for (const id of (res.blockedBy ? [res.blockedBy] : [])) {
     const o = world.objects[id];
     if (!o) continue;
+    // blocker stays SOLID; only a subtle red edge highlight on its outer shell (no see-through ghost: reads as debug)
     o.node.traverse((m) => {
       if (!m.isMesh || m.userData.isHeadlight || m.userData.xray) return;
-      const orig = m.material;
-      m.material = Array.isArray(orig) ? orig.map(ghostMaterial) : ghostMaterial(orig);
-      const edges = new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry, 20), new THREE.LineBasicMaterial({ color: 0xff5a5a }));
+      if (!m.geometry.boundingSphere) m.geometry.computeBoundingSphere();
+      const r = m.geometry.boundingSphere ? m.geometry.boundingSphere.radius * Math.max(m.scale.x, m.scale.y, m.scale.z) : 1;
+      if (r < 0.6) return; // skip small parts (wheels, lamps, mirrors): outline the body only
+      const edges = new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry, 40), new THREE.LineBasicMaterial({ color: 0xff3b30, transparent: true, opacity: 0.7, depthWrite: false }));
       edges.userData.xray = true; edges.renderOrder = 12;
       m.add(edges);
-      xrayRestore.push({ mesh: m, material: orig, extra: [edges] });
+      xrayRestore.push({ mesh: m, material: null, extra: [edges] });
     });
   }
   // x-ray the target: bright fill + edges drawn through everything

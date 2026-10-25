@@ -182,7 +182,7 @@ const RECIPES = {
   // Mowed right-of-way grass (bahia/St Augustine, end of the May dry season): dull olive with straw flecks.
   // Large-scale colour variation is deliberately weak here (it would repeat every tile); groundPlane adds it per vertex.
   grass: {
-    size: 512, tile: 4.0, normal: 3,
+    size: 1024, tile: 3.0, normal: 2,
     gen(u, v, p) {
       const mid = fbm(u, v, 12, 3, 62), fine = fbm(u, v, 48, 2, 66);
       const blade = fbm2(u, v, 160, 40, 2, 63);
@@ -190,9 +190,9 @@ const RECIPES = {
       const dry = smooth(0.35, 0.75, mid * 0.6 + fine * 0.4);
       const gap = smooth(0.64, 0.8, fbm(u, v, 40, 2, 65));  // soil showing between tufts
       let r = lerp(100, 134, dry), g = lerp(110, 124, dry), b = lerp(56, 72, dry);
-      const shade = 0.8 + blade * 0.34 + (fine - 0.5) * 0.12;
+      const shade = 0.86 + blade * 0.22 + (fine - 0.5) * 0.08;   // low blade contrast: reads as turf, not noise, at 5-50 m
       r *= shade; g *= shade; b *= shade;
-      if (fleck > 0.982) { r = 168; g = 156; b = 108; }   // straw
+      if (fleck > 0.988) { r = 150; g = 142; b = 100; }   // straw
       r = lerp(r, 118, gap * 0.4); g = lerp(g, 106, gap * 0.4); b = lerp(b, 80, gap * 0.4);
       p.r = r; p.g = g; p.b = b;
       p.h = blade * 0.7 + fine * 0.3 - gap * 0.3;
@@ -280,9 +280,28 @@ export function surfaceMaterial(kind, opts = {}) {
     vertexColors: !!opts.vertexColors,
   });
   if (opts.polygonOffset) { m.polygonOffset = true; m.polygonOffsetFactor = opts.polygonOffset; m.polygonOffsetUnits = opts.polygonOffset * 2; }
+  if (/^(grass|pasture)/.test(kind)) antiTile(m);
   m.name = 'surface_' + kind;
   matCache.set(key, m);
   return m;
+}
+
+// Anti-tiling for vegetation ground: the albedo is blended with a rotated 7x-larger resample of itself and modulated
+// by a 50x-larger one, so the 3 m tile never reads as a repeating pattern and mid-distance turf gets soft patchiness.
+function antiTile(m) {
+  m.onBeforeCompile = (sh) => {
+    sh.fragmentShader = sh.fragmentShader.replace('#include <map_fragment>', `
+#ifdef USE_MAP
+  vec4 sampledDiffuseColor = texture2D( map, vMapUv );
+  vec2 uvB = mat2( 0.8, -0.6, 0.6, 0.8 ) * vMapUv * 0.143 + vec2( 0.37, 0.11 );
+  vec4 texB = texture2D( map, uvB );
+  vec4 texC = texture2D( map, mat2( 0.28, 0.96, -0.96, 0.28 ) * vMapUv * 0.021 + vec2( 0.53, 0.29 ) );
+  float lC = dot( texC.rgb, vec3( 0.3, 0.5, 0.2 ) );
+  sampledDiffuseColor.rgb = mix( sampledDiffuseColor.rgb, texB.rgb, 0.4 ) * ( 0.8 + 0.4 * smoothstep( 0.06, 0.2, lC ) );
+  diffuseColor *= sampledDiffuseColor;
+#endif`);
+  };
+  m.customProgramCacheKey = () => 'surface-antitile';
 }
 
 // ---------------------------------------------------------------- decal / overlay textures
