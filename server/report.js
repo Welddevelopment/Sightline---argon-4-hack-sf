@@ -233,7 +233,7 @@ export async function buildReport({ ROOT = ROOT_DEFAULT, caseId, base, refigs = 
         const page = await ctx.newPage();
         const errs = [];
         page.on('pageerror', (e) => errs.push(String(e)));
-        const u = `${base}/?case=${encodeURIComponent(caseId)}&clean=1&cam=${encodeURIComponent(f.cam)}&t=${f.t}`;
+        const u = `${base}/?case=${encodeURIComponent(caseId)}&clean=1${process.env.REPORT_RQ_OFF === '1' ? '&rq=off' : ''}&cam=${encodeURIComponent(f.cam)}&t=${f.t}`; // REPORT_RQ_OFF=1: lighter pipeline for software (no-GPU) rendering
         await page.goto(u, { waitUntil: 'load' });
         try {
           await page.waitForFunction(() => window.sl && window.sl.world && window.sl.renderFrame, null, { timeout: 45000 });
@@ -250,7 +250,7 @@ export async function buildReport({ ROOT = ROOT_DEFAULT, caseId, base, refigs = 
         }, { f });
         await page.waitForTimeout(250);
         const file = `${f.id}.png`;
-        await page.screenshot({ path: path.join(figDir, file) });
+        await page.screenshot({ path: path.join(figDir, file), timeout: 240000 });
         const verdict = await page.evaluate(() => { const b = document.querySelector('.sl-banner'); return b && !b.hidden ? b.textContent : null; });
         figures.push({ ...f, file, banner: verdict });
         await page.close();

@@ -387,32 +387,32 @@
     }
   ],
   "critique": {
-    "round": 4,
+    "round": 5,
     "verdict": "world_patched",
-    "summary": "The physical reconstruction confirms a direct contradiction in Witness B's testimony: from the exact position she marked on Exhibit 4 ([8.5, 0, 9.0] m, on the south side of the bench shelter), her line of sight to the oncoming eastbound sedan (Vehicle A) is doubly obstructed by the opaque sheet-metal back of the bench shelter and by the turning tractor-semitrailer (Vehicle T) in the seconds before impact. Accounts from Witness A (westbound driver), Witness C (stopped westbound driver), and Witness D (store clerk inside behind the register) are physically consistent with the scene geometry and sightlines. A Round 5 patch is applied to refine four vehicle-kinematics measurements so the car's center starts slightly west of the 345 m hill crest (giving the full 10.4 s mutual sight time), the tractor-semitrailer combination spans the exact 71 ft 7 in (21.82 m) length, impact occurs 45 ft 5 in (13.84 m) aft of the tractor front, and the utility pole strike occurs at 8.4 s post-impact.",
+    "summary": "The reconstruction is patched to smooth the turning tractor's cubic Hermite trajectory so that pre-impact acceleration stays well below 0.35 g (eliminating the 1.05 g spike at t=2.65 s) and to place the utility pole strike at 8.4 seconds post-impact while keeping the pole outside the immediate underride zone. With the physical world faithful to the NTSB record and Exhibit 4, Witness B's sworn claim that she had an unobstructed view of Vehicle A all the way to impact is physically contradicted by her own pen mark (#2 on Exhibit 4), which places her directly behind the opaque sheet-metal back panel of the bench shelter and the turning tractor-semitrailer. All other witnesses (A, C, and D) and the solar lighting conditions are consistent with the evidentiary record.",
     "findings": 5,
     "patched": true,
     "patch": {
-      "world": "/cases/demo-full/worlds/world_v5.js",
+      "world": "/cases/demo-full/worlds/world_v6.js",
       "problems": [],
       "valid": false,
       "errors": [
-        "implausible motion of veh_truck_tractor: acceleration 1.05 g at t=2.65 s exceeds 1 g before impact (over the limit at 2 samples between t=2.65 and t=4.85 s) — keyframes must give continuous speed (≤0.8 g before impact; ease/constant-acceleration segments; no teleports)"
+        "implausible motion of veh_witness_a_pickup: acceleration 4.42 g at t=17.95 s exceeds 1 g outside the impact window (over the limit at 20 samples between t=12.40 and t=21.10 s) — keyframes must give continuous speed (≤0.8 g before impact; ease/constant-acceleration segments; no teleports)"
       ]
     },
-    "seconds": 235,
+    "seconds": 264,
     "usage": {
-      "promptTokenCount": 863707,
-      "candidatesTokenCount": 18636,
-      "totalTokenCount": 882343,
+      "promptTokenCount": 859685,
+      "candidatesTokenCount": 18088,
+      "totalTokenCount": 877773,
       "promptTokensDetails": [
         {
           "modality": "TEXT",
-          "tokenCount": 154115
+          "tokenCount": 153393
         },
         {
           "modality": "IMAGE",
-          "tokenCount": 5492
+          "tokenCount": 2192
         },
         {
           "modality": "VIDEO",
@@ -422,11 +422,11 @@
       "candidatesTokensDetails": [
         {
           "modality": "TEXT",
-          "tokenCount": 18636
+          "tokenCount": 18088
         }
       ]
     },
-    "finalWorld": "/cases/demo-full/worlds/world_v4.js"
+    "finalWorld": "/cases/demo-full/worlds/world_v5.js"
   },
   "finalChecks": [
     "wit_witness_A: CLEAR (0/25 blocked, not_blocked)",
