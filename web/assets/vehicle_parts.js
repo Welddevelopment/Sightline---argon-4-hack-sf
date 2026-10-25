@@ -522,7 +522,7 @@ export function makeInterior(THREE, o = {}) {
   add(roundedBox(THREE, 0.28, 0.06, 0.6, 0.02), M.interior, 'int_console', 0, seatH - 0.05, ez + 0.25);
   // instrument binnacle + steering wheel
   add(roundedBox(THREE, 0.34, 0.09, 0.16, 0.03), M.interior, 'int_binnacle', ex, dashTop + 0.035, dashZ + 0.05);
-  const swZ = ez - 0.47, swY = ey - 0.4, T = 0.4;   // wheel plane tilted back ~23 deg
+  const swZ = ez - 0.47, swY = ey - (o.swDrop ?? 0.4), T = 0.4;   // wheel plane tilted back ~23 deg
   const ring = cachedGeo(THREE, 'int_swring', () => new THREE.TorusGeometry(0.185, 0.017, 8, 28));
   add(ring, M.steering, 'steering_wheel', ex, swY, swZ, T, 0, 0);
   add(cachedGeo(THREE, 'int_swhub', () => new THREE.CylinderGeometry(0.055, 0.06, 0.05, 14)), M.trim, 'steering_hub', ex, swY, swZ, Math.PI / 2 + T);
