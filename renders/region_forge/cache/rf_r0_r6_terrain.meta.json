@@ -1,0 +1,25 @@
+{
+  "name": "rf_r0_r6_terrain",
+  "model": "gemini-4-argon",
+  "hash": "b8735fec1f180f91",
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 15984,
+    "candidatesTokenCount": 19956,
+    "totalTokenCount": 35940,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 15984
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 19956
+      }
+    ]
+  },
+  "seconds": 178.5,
+  "at": "2026-10-25T19:59:31.620Z"
+}

@@ -103,11 +103,11 @@ function framing(name) {
   const [L, W, H] = a.dims || [0, 0, 0];
   const R = Math.hypot(L, W, H) / 2;
   const fov = 35 * Math.PI / 180;
-  const fit = (r, k = 1.08) => (r / Math.sin(fov / 2)) * k * 0.62;
+  const fit = (r, k = 1.08) => (r / Math.sin(fov / 2)) * k * 0.68;
   switch (a.view) {
     case 'front34': return { t: [0, H * 0.42, 0], az: 38, el: 14, d: fit(R) };
     case 'rear34': return { t: [0, H * 0.42, 0.5], az: 145, el: 12, d: fit(R, 0.95) };
-    case 'signal': return { t: [4.3, 4.6, 0], az: 28, el: 6, d: 15.5 };
+    case 'signal': return { t: [4.3, 3.9, 0], az: 28, el: 7, d: 19.5 };
     case 'pole': return { t: [0, 6.2, 0], az: 35, el: 8, d: 16 };
     case 'tree': return { t: [0, H * 0.47, 0], az: 35, el: 6, d: fit(R, 1.02) };
     case 'canopy': return { t: [0, 2.6, 0], az: 30, el: 16, d: 34 };
@@ -177,7 +177,7 @@ function basePrompt(name, ref) {
   const a = ASSETS[name];
   const sys = fs.readFileSync(path.join(ROOT, 'argon', 'prompts', 'asset_forge.md'), 'utf8');
   const dimTxt = a.dims ? `Target bounding box: length (Z) ${a.dims[0]} m, width (X) ${a.dims[1]} m, height (Y) ${a.dims[2]} m — the rendered bbox is checked to within 5%.` : 'Returns a Material (no bounding box).';
-  return `${sys}\n${ref ? `\n## Reference standard (review of paid forensic crash animations — match this level)\n${ref.trim()}\n` : ''}
+  return `${sys}\n${ref ? `\n## Reference standard (review of paid forensic crash animations — match this level)\n${ref.trim()}\n(Our constraints override the reference where they conflict: everything is procedural code — no .glb downloads, no glass transmission, no post-processing. Use it for the level of DETAIL and realism expected.)\n` : ''}
 ## THE ASSET: \`${name}\`
 ${dimTxt}
 ${a.brief}

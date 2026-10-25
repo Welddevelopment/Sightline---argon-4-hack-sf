@@ -1,0 +1,25 @@
+{
+  "name": "rf_r0_r4_north",
+  "model": "gemini-4-argon",
+  "hash": "ec69391333003082",
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 15751,
+    "candidatesTokenCount": 16412,
+    "totalTokenCount": 32163,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 15751
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 16412
+      }
+    ]
+  },
+  "seconds": 140.2,
+  "at": "2026-10-25T19:58:53.317Z"
+}

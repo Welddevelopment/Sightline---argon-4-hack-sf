@@ -1,5 +1,6 @@
 // RENDER slice: headless Playwright -> per-view mp4 + PNG stills.
 // CLI: node render/record.js --world /worlds/reference_world.js --views overhead,wit_A,wit_B --fps 10 --out renders/<name>
+//      [--page '/?case=demo'] [--still 1 --t 9.9] [--quality render|interactive]
 // Lib: import { renderViews } from './render/record.js'
 // Env: RENDER_CHROME=packaged|playwright (default auto), BASE_URL (use a running app server), RENDER_PAGE (default /, may carry ?case=),
 //      RENDER_W / RENDER_H (clip size, default 960x540), RENDER_STILL_W / RENDER_STILL_H (stills, default 1280x720),
@@ -144,6 +145,9 @@ export async function renderViews({ world, worldUrl: worldUrlOpt, views = 'all',
           window.sl.setTime(tt); window.sl.renderFrame(); return tt;
         }, { t: t != null ? +t : null, view });
         const png = path.join(outDir, `${view}_t${String(ts).replace('.', 'p')}${extraWitnesses.length ? '_' + Date.now() : ''}.png`);
+        const ts0 = Date.now();
+        await page.evaluate(() => window.sl.renderFrame());   // timed frame (first one also compiled shaders)
+        (result.secPerFrame || (result.secPerFrame = {}))[view] = +((Date.now() - ts0) / 1000).toFixed(3);
         await page.screenshot({ path: png, timeout: 180000 });
         result.stills.push(png);
         await page.close();
@@ -200,7 +204,9 @@ if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === imp
   for (let i = 2; i < process.argv.length; i++) if (process.argv[i].startsWith('--')) a[process.argv[i].slice(2)] = process.argv[++i];
   try {
     const t0 = Date.now();
-    const r = await renderViews({ world: a.world || '/worlds/reference_world.js', views: a.views || 'all', fps: +(a.fps || 10), outDir: a.out, page: a.page });
+    if (a.quality) process.env.RENDER_QUALITY = a.quality;
+    const r = await renderViews({ world: a.world || '/worlds/reference_world.js', views: a.views || 'all', fps: +(a.fps || 10), outDir: a.out, page: a.page,
+      t: a.t != null ? +a.t : undefined, stillOnly: a.still === '1' || a.still === 'true' });
     console.log(JSON.stringify({ ...r, seconds: ((Date.now() - t0) / 1000).toFixed(1) }, null, 2));
   } catch (e) { console.error(e.message); process.exit(1); }
 }

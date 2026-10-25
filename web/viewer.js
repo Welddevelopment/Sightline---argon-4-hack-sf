@@ -429,6 +429,8 @@ function updateMarkersAndLabels() {
   for (const sp of order) {
     sp.visible = overhead && showLabels;
     if (!sp.visible) continue;
+    // with callouts on, overlays.js draws each vehicle's name + speed; skip the duplicate sprite
+    if (sp.userData.kind === 'object' && sl.overlays && sl.overlays.enabled && (world.objects[sp.userData.ref] || {}).kind === 'vehicle') { sp.visible = false; continue; }
     const isW = sp.userData.kind === 'witness';
     const s = hgt * (isW ? 1.1 : 0.85);
     const w = s * sp.userData.aspect;
@@ -776,7 +778,8 @@ function renderFrame() {
   updateEyePanel();
   hudCam.textContent = cameraLabel();
   hudTime.textContent = 't = ' + curT.toFixed(2) + ' s';
-  renderer.render(scene, camera);
+  // render_quality: AO composer (world) + overlays in UI colours; plain render when unavailable / ?rq=off
+  if (sl.renderQuality && sl.renderQuality.render) sl.renderQuality.render(camera); else renderer.render(scene, camera);
 }
 
 // ---------- public API ----------
