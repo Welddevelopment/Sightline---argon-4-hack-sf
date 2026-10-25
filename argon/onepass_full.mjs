@@ -95,19 +95,23 @@ if (resumeId) {
     input.push({ type: 'text', text: `VIDEO ${v.index}: deposition of ${v.label} (${v.clock}) — file ${v.rel}. Cite moments as "${v.cite}".` });
     input.push({ type: 'video', uri: f.uri, mime_type: f.mimeType || 'video/mp4', resolution: 'low' });
   }
-  for (const im of inv.images) {
-    input.push({ type: 'text', text: `EVIDENCE IMAGE: ${path.relative(CASE, im)}` });
-    input.push({ type: 'image', data: fs.readFileSync(im).toString('base64'), mime_type: im.endsWith('.png') ? 'image/png' : 'image/jpeg' });
+  // gemini-4-argon on the Interactions API rejects image parts ("Image input modality is not enabled"), so every image is
+  // sent as a 3-second still-frame video (ffmpeg), which the video modality accepts.
+  const stills = [];
+  for (const im of inv.images) stills.push({ label: `EVIDENCE IMAGE: ${path.relative(CASE, im)} (sent as a 3-second still-frame video; it is a single static image)`, src: im, mp4: path.join(OUT, path.basename(im).replace(/\.[^.]+$/, '') + '_still.mp4') });
+  stills.push({ label: 'GROUND-TRUTH AERIAL of the site (USGS The National Map / USDA NAIP, public domain; sent as a 3-second still-frame video of a single 1600 x 960 image; see "GROUND TRUTH AERIAL" above for scale, rotation and origin). Not case evidence about the event; cite it as "aerial (USGS NAIP)".', src: path.join(OUT, 'aerial_1600.jpg'), mp4: path.join(OUT, 'aerial_still.mp4') });
+  for (const s of stills) {
+    if (!fs.existsSync(s.mp4)) throw new Error('missing still video ' + s.mp4 + ' (make it with ffmpeg -loop 1 -t 3)');
+    const f = await uploadVideo(s.mp4);
+    input.push({ type: 'text', text: s.label });
+    input.push({ type: 'video', uri: f.uri, mime_type: 'video/mp4', resolution: 'high' });
   }
-  const aerial = path.join(OUT, 'aerial_1600.jpg');
-  input.push({ type: 'text', text: 'GROUND-TRUTH AERIAL of the site (USGS The National Map / USDA NAIP, public domain; see "GROUND TRUTH AERIAL" above for scale, rotation and origin). Not case evidence about the event; cite it as "aerial (USGS NAIP)".' });
-  input.push({ type: 'image', data: fs.readFileSync(aerial).toString('base64'), mime_type: 'image/jpeg' });
   input.push({ type: 'text', text: 'Now study all text above, watch both depositions, inspect the exhibit and the aerial, then output the complete, detailed WORLD CONTRACT v2 module in a single ```js block.' });
   log('prompt chars', prompt.length, 'videos', videoUris.map((v) => v.uri).join(' '), 'max_output_tokens', maxTok);
   const startedAt = new Date().toISOString();
   it = await ai.interactions.create({ model: MODEL, background: true, input, generation_config: { max_output_tokens: maxTok, thinking_level: 'low' } });
   meta = { interactionId: it.id, model: MODEL, caseId, api: 'interactions (background)', maxOutputTokens: maxTok, thinkingLevel: 'low', promptChars: prompt.length,
-    videos: videoUris, images: [...inv.images.map((f) => path.relative(CASE, f)), 'worlds/onepass/aerial_1600.jpg (USGS NAIP, downscaled)'], prepSec: Math.round((Date.now() - t0) / 1000), startedAt };
+    videos: videoUris, images: [...inv.images.map((f) => path.relative(CASE, f)), 'worlds/onepass/aerial_1600.jpg (USGS NAIP, downscaled)'], imagesSentAs: 'still-frame mp4 video parts (Interactions API image modality not enabled for this model)', prepSec: Math.round((Date.now() - t0) / 1000), startedAt };
   fs.writeFileSync(path.join(OUT, 'onepass.meta.json'), JSON.stringify(meta, null, 2));
   log('created', it.id, it.status);
 }

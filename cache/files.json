@@ -110,5 +110,19 @@
     "mimeType": "video/mp4",
     "expiresAt": "2026-10-27T20:46:10.691322698Z",
     "uploadedAt": "2026-10-25T20:46:39.360Z"
+  },
+  "cases/demo-full/worlds/onepass/exhibit4_intersection_map_still.mp4|45719|1792961240508": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/ol8f66sdah5p",
+    "name": "files/ol8f66sdah5p",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T20:48:32.735321926Z",
+    "uploadedAt": "2026-10-25T20:48:36.213Z"
+  },
+  "cases/demo-full/worlds/onepass/aerial_still.mp4|748169|1792961239556": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/r56tvu6oq2d6",
+    "name": "files/r56tvu6oq2d6",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T20:48:37.432804735Z",
+    "uploadedAt": "2026-10-25T20:48:41.128Z"
   }
 }
