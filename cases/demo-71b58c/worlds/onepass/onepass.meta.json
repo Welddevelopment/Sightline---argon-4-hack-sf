@@ -1,0 +1,60 @@
+{
+  "interactionId": "v1_ChdLV3ZlYXItYU5LV0R5dE1QOTQ3MzJBMBIXS1d2ZWFyLWFOS1dEeXRNUDk0NzMyQTA",
+  "model": "gemini-4-argon",
+  "caseId": "demo-71b58c",
+  "api": "interactions (background)",
+  "maxOutputTokens": 160000,
+  "thinkingLevel": "low",
+  "promptChars": 438103,
+  "videos": [
+    {
+      "file": "evidence/deposition_witness_B.mp4",
+      "label": "Witness B",
+      "uri": "https://generativelanguage.googleapis.com/v1beta/files/5ooxvjb0o9bx",
+      "length": "2:00:00"
+    },
+    {
+      "file": "evidence/deposition_witness_D.mp4",
+      "label": "Witness D",
+      "uri": "https://generativelanguage.googleapis.com/v1beta/files/8jto7c3nwcxe",
+      "length": "45:00"
+    }
+  ],
+  "images": [
+    "evidence/exhibit4_intersection_map.png",
+    "worlds/onepass/aerial_1600.jpg (USGS NAIP, downscaled)"
+  ],
+  "imagesSentAs": "still-frame mp4 video parts (Interactions API image modality not enabled for this model)",
+  "prepSec": 11,
+  "startedAt": "2026-10-25T20:48:41.132Z",
+  "status": "completed",
+  "finishReason": "completed (natural stop)",
+  "usage": {
+    "total_tokens": 855986,
+    "total_input_tokens": 839188,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 133504
+      },
+      {
+        "modality": "video",
+        "tokens": 705684
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 16798,
+    "output_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 16798
+      }
+    ],
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0
+  },
+  "wallSec": 251,
+  "outputChars": 40350,
+  "outputLines": 952,
+  "finishedAt": "2026-10-25T20:52:51.840Z"
+}

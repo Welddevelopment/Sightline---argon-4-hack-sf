@@ -43,7 +43,7 @@ export function mountDemo(app, ctx = {}) {
   const errMsg = ctx.errMsg || ((e) => (e && e.message) || String(e));
   const CASES = path.join(ROOT, 'cases');
   const STEP_MS = clamp(Number(process.env.DEMO_STEP_MS) || 2800, 2000, 4000);
-  const LOCAL_MS = Math.round(STEP_MS * 0.45); // local (non-Argon) steps: evidence/render/patch replay faster
+  const LOCAL_MS = Math.max(2000, Math.round(STEP_MS * 0.75)); // local (non-Argon) steps: evidence/render/patch replay a bit faster (still ≥ 2 s)
 
   const dir = (id, ...a) => path.join(CASES, id, ...a);
   const validId = (id) => /^[a-z0-9][a-z0-9-]{0,80}$/.test(String(id || ''));

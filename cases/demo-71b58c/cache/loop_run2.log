@@ -1,0 +1,38 @@
+(node:5797) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[loop] r1 evidence: Case demo-71b58c: 21 text file(s), 2 video(s), 13 image(s)
+[loop] r1 render: Rendering /cases/demo-71b58c/worlds/world_v1.js from overhead + 4 witness viewpoints…
+[loop] r1 render: Reusing 5 existing renders in /cases/demo-71b58c/renders/world_v1
+[loop] r1 render: Rendered 0 videos, 5 stills
+[loop] r1 checks: Independent checks: 7/10 pass — wit_A: blocked by veh_witA; wit_B: blocked by veh_T_tractor; wit_D: blocked by occ_shelter
+[loop] r1 critique: Argon is watching the witness-view renders against the evidence videos and documents…
+[argon] critique_round1: calling gemini-4-argon (43 parts, maxOutputTokens=65536)
+.....................
+[argon] critique_round1: done in 159.2s, finish=STOP, chars=28829
+[loop] r1 critique: world_patched: Witness B's sworn claim that she had an unobstructed view of the approaching car right up until impact is physically contradicted by the position she marked on Exhibit 4 (mark #2 at x=8 m, z=9 m), where both the sheet-metal back panel of the bench shelter and the turning tractor-semitrailer block her line of sight. Two world modeling artifacts were also identified and patched: Witness A's pickup (`veh_witA`) was set to `occludes: true`, causing self-occlusion of his sightline from inside his own cab at t=4.5 s, and the retail store (`bld_store`) did not include the evidenced drink cooler and window posters along its north storefront that blocked Witness D's view from the register.
+[loop] r1 patch: Argon patched the world → /cases/demo-71b58c/worlds/world_v2.js
+[loop] r1 done: Loop finished after 1 round(s). Final world /cases/demo-71b58c/worlds/world_v2.js. 1 contradiction(s).
+{
+  "world": "/cases/demo-71b58c/worlds/world_v2.js",
+  "verdict": "world_patched",
+  "findings": [
+    "F1 [contradiction] Witness B's testimony that she had a clear, unobstructed view of Vehicle A all the way to impact is contradicted by her own marked position on Exhibit 4.",
+    "F2 [consistent] Witness A's pickup mesh (`veh_witA`) was authored with `occludes: true`, causing artificial self-occlusion of Witness A's sightline from inside his own cab at t=4.5 s.",
+    "F3 [consistent] Witness D's account that she was inside behind the counter and could not see the highway due to the drink cooler and window posters is consistent, and the storefront cooler/poster occluder has been added to the world.",
+    "F4 [consistent] Witness C's account from his stopped pickup in the westbound inside lane ~18 m west of the crossover is physically consistent with the reconstruction.",
+    "F5 [consistent] Vehicle speeds, trajectories, sight distances (1,132 ft / 10.43 s), and the absence of pre-impact braking marks match the NTSB record and physics checks.",
+    "F6 [consistent] Scene lighting, clear weather, dry road surface, sun position (azimuth 265.0°, elevation 45.1°), and lack of sun glare match the documentary record, post-crash scene photographs, and solar calculations."
+  ],
+  "checks": [
+    "sightline wit_A: PASS",
+    "sightline wit_B: FAIL (blocked by veh_T_tractor)",
+    "sightline wit_C: PASS",
+    "sightline wit_D: FAIL (blocked by occ_store_front)",
+    "timing veh_A: PASS",
+    "timing veh_T_tractor: PASS",
+    "plausibility veh_A: PASS",
+    "plausibility veh_T_tractor: PASS",
+    "plausibility veh_T_trailer: PASS",
+    "plausibility veh_witA: PASS"
+  ]
+}

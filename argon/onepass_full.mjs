@@ -1,7 +1,9 @@
 // argon/onepass_full.mjs — ONE-PASS stage world for a large case (default demo-full): a single gemini-4-argon long-decode
 // call (Interactions API, background:true) reads the WHOLE case (all docket text, every deposition video via Files API,
 // exhibit image, USGS aerial as ground-truth image) and writes the complete WORLD CONTRACT v2 module.
-// Usage: node argon/onepass_full.mjs [caseId=demo-full] [--max=160000] [--resume=<interactionId>] [--followup]
+// Usage: node argon/onepass_full.mjs [caseId=demo-full] [--max=160000] [--resume=<interactionId>]
+//   post stages: --stage=finish (truncation follow-up, validate, ONE repair, checks, save world_vN + provenance)
+//                --stage=render --world=<path> (stills; run under scripts/render_lock.sh) · --stage=critique (ONE critique round, v+1, state.json, argon_only.json)
 // Env: GEMINI_API_KEY, ARGON_LIVE=1, ARGON_MODEL (default gemini-4-argon).
 import fs from 'node:fs';
 import path from 'node:path';
@@ -73,6 +75,9 @@ const extractJs = (text) => {
   return m && !/^\s*(\/\/|export|\/\*)/.test(text) ? m[1] : text;
 };
 
+const STAGE = (args.find((a) => a.startsWith('--stage=')) || '').split('=')[1];
+if (STAGE) { await runStage(STAGE); process.exit(0); }
+
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 let it, meta;
 if (resumeId) {
@@ -134,3 +139,139 @@ Object.assign(meta, {
 });
 fs.writeFileSync(path.join(OUT, 'onepass.meta.json'), JSON.stringify(meta, null, 2));
 log('DONE', r.status, 'wall', meta.wallSec + 's', 'lines', meta.outputLines, 'usage', JSON.stringify(r.usage || {}));
+
+
+// ===================================================================== post stages
+async function pollInteraction(ai, id, label) {
+  const t0 = Date.now();
+  let r = await ai.interactions.get(id);
+  while (!['completed', 'failed', 'cancelled', 'incomplete'].includes(r.status)) {
+    await new Promise((res) => setTimeout(res, 15000));
+    try { r = await ai.interactions.get(id); } catch (e) { log(label, 'poll error', String(e.message).slice(0, 160)); continue; }
+    log(label, ((Date.now() - t0) / 1000).toFixed(0) + 's', r.status);
+  }
+  return { r, sec: Math.round((Date.now() - t0) / 1000) };
+}
+async function followUp(ai, meta, text, maxOut, label) {
+  const t0 = Date.now();
+  let it;
+  try {
+    it = await ai.interactions.create({ model: MODEL, background: true, previous_interaction_id: meta.interactionId, input: text, generation_config: { max_output_tokens: maxOut, thinking_level: 'low' } });
+  } catch (e) { log(label, 'create failed', String(e.message).slice(0, 300)); throw e; }
+  log(label, 'created', it.id);
+  const { r } = await pollInteraction(ai, it.id, label);
+  fs.writeFileSync(path.join(OUT, `${label}_result.json`), JSON.stringify(r, null, 1));
+  return { id: it.id, status: r.status, usage: r.usage || null, text: outputText(r), sec: Math.round((Date.now() - t0) / 1000) };
+}
+const latestVersion = (dir) => Math.max(0, ...fs.readdirSync(dir).map((f) => Number((/^world_v(\d+)\.js$/.exec(f) || [])[1] || 0)));
+const sightSummary = (checks) => checks.filter((c) => c.check === 'sightline').map((c) =>
+  `${c.subject}: ${c.pass ? 'CLEAR' : 'BLOCKED by ' + (c.blockedBy || '?')}${c.robustness ? ` (${c.robustness.blocked}/${c.robustness.samples} blocked, ${c.robustness.verdict})` : ''}`);
+
+async function runStage(stage) {
+  const { validateWorldFile, syntaxCheck, formatErrors } = await import('./validate_world.js');
+  const { loadWorldFile } = await import('./world_io.js');
+  const { runAll } = await import('../checks/checks.js');
+  const { writeProvenance } = await import('./provenance.js');
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const metaPath = path.join(OUT, 'onepass.meta.json');
+  const meta = JSON.parse(rd(metaPath));
+  const WD = path.join(CASE, 'worlds');
+
+  if (stage === 'finish') {
+    const file = path.join(OUT, 'world_onepass.js');
+    let src = rd(file);
+    meta.followups = meta.followups || [];
+    // 1) truncated at the cap → ONE short continuation
+    if (syntaxCheck(file) && meta.status === 'incomplete') {
+      const tail = src.split('\n').slice(-30).join('\n');
+      const f = await followUp(ai, meta, `Your module was cut off by the output limit. The last lines you wrote were:\n\`\`\`\n${tail}\n\`\`\`\nContinue EXACTLY from the end of that text (do not repeat anything) and close the module as compactly as possible (finish the current statement, the remaining required world keys, setTime(0), return world; }). Output only the continuation code in one \`\`\`js block.`, 24000, 'continuation');
+      let cont = f.text; const m = /```(?:javascript|js)?\s*\n([\s\S]*?)(?:```|$)/.exec(cont); if (m) cont = m[1];
+      src = src.replace(/\s*$/, '') + '\n' + cont;
+      fs.writeFileSync(file, src);
+      meta.followups.push({ kind: 'continuation', id: f.id, status: f.status, usage: f.usage, sec: f.sec });
+      log('continuation appended', cont.length, 'chars; syntax', syntaxCheck(file) || 'ok');
+    }
+    // 2) validate → ONE repair (search/replace edits) if invalid
+    let v = await validateWorldFile(file, { caseId });
+    log('validate', v.ok ? 'VALID' : 'INVALID', v.errors.length, 'errors', v.warnings.length, 'warnings');
+    meta.validation = { first: { ok: v.ok, errors: v.errors, warnings: v.warnings.slice(0, 40) } };
+    if (!v.ok) {
+      const f = await followUp(ai, meta, `The independent validator rejected your world module (the complete current source follows the errors):\n${formatErrors(v)}\n\nCURRENT SOURCE:\n\`\`\`js\n${src}\n\`\`\`\nFix ONLY these problems, keeping the evidence-based layout and visual detail. Answer with ONE \`\`\`json block: an array of edits [{"old": "<exact unique substring of the current source>", "new": "<replacement>"}]. Keep edits minimal.`, 32000, 'repair');
+      let edits = []; try { const m = /```(?:json)?\s*\n([\s\S]*?)```/.exec(f.text); edits = JSON.parse(m ? m[1] : f.text); } catch (e) { log('repair parse failed', e.message); }
+      let applied = 0, missed = [];
+      for (const e of edits) { if (e && typeof e.old === 'string' && src.includes(e.old)) { src = src.replace(e.old, () => e.new ?? ''); applied++; } else missed.push(String(e?.old).slice(0, 80)); }
+      fs.writeFileSync(file, src);
+      meta.followups.push({ kind: 'repair', id: f.id, status: f.status, usage: f.usage, sec: f.sec, edits: edits.length, applied, missed });
+      v = await validateWorldFile(file, { caseId });
+      log('repair applied', applied, '/', edits.length, '→', v.ok ? 'VALID' : 'INVALID', v.errors.slice(0, 5).join(' | '));
+      meta.validation.afterRepair = { ok: v.ok, errors: v.errors, warnings: v.warnings.slice(0, 40) };
+    }
+    // 3) checks + save as next world version + provenance
+    const world = await loadWorldFile(file);
+    const checks = runAll(world);
+    const n = Math.max(3, latestVersion(WD) + 1);
+    const out = path.join(WD, `world_v${n}.js`);
+    fs.copyFileSync(file, out);
+    const u = meta.usage || {};
+    writeProvenance({ caseId, worldPath: out, mode: 'live', model: MODEL, promptFile: path.relative(ROOT, path.join(OUT, 'prompt.txt')),
+      inputs: undefined, maxOutputTokens: meta.maxOutputTokens,
+      meta: { model: MODEL, seconds: meta.wallSec, finishReason: meta.finishReason, usage: { promptTokenCount: u.total_input_tokens ?? u.input_tokens ?? null, candidatesTokenCount: u.total_output_tokens ?? u.output_tokens ?? null, thoughtsTokenCount: u.total_thought_tokens ?? u.total_reasoning_tokens ?? null } } });
+    const prov = JSON.parse(rd(out.replace(/\.js$/, '.provenance.json')));
+    Object.assign(prov, { generator: 'argon/onepass_full.mjs (ONE Interactions API long-decode call, background)', interactionId: meta.interactionId, interactionUsage: meta.usage, followups: meta.followups,
+      extraInputs: ['worlds/onepass/aerial_still.mp4 (USGS NAIP aerial, ground truth, still-frame video)', 'worlds/onepass/exhibit4_intersection_map_still.mp4'], validation: v.ok ? 'VALID' : 'INVALID' });
+    fs.writeFileSync(out.replace(/\.js$/, '.provenance.json'), JSON.stringify(prov, null, 2));
+    meta.savedAs = path.relative(ROOT, out); meta.checks = checks;
+    fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2));
+    fs.writeFileSync(path.join(OUT, `checks_v${n}.json`), JSON.stringify(checks, null, 2));
+    log('saved', meta.savedAs, '|', sightSummary(checks).join(' ; '));
+    log('non-pass checks:', checks.filter((c) => !c.pass).map((c) => `${c.check}:${c.subject}`).join(', '));
+    return;
+  }
+
+  if (stage === 'render') {
+    const wf = (args.find((a) => a.startsWith('--world=')) || '').split('=')[1];
+    const world = await loadWorldFile(wf);
+    const views = ['overhead', ...(world.witnesses || []).map((w) => w.id)];
+    const { renderViews } = await import('../render/record.js');
+    const outDir = path.join(CASE, 'renders', path.basename(wf, '.js'));
+    const r = await renderViews({ world: '/' + path.relative(ROOT, path.resolve(ROOT, wf)), views, outDir, stillOnly: true, page: `/?case=${caseId}` });
+    log('rendered', (r.stills || r.pngs || []).map((f) => path.relative(ROOT, f)).join(' '));
+    return;
+  }
+
+  if (stage === 'critique') {
+    process.env.SIGHTLINE_MODE = 'live';
+    const { critique } = await import('./critique.js');
+    const { writeWorldVersion } = await import('./world_io.js');
+    const { callProvenance } = await import('./provenance.js');
+    const vN = latestVersion(WD);
+    const worldFile = path.join(WD, `world_v${vN}.js`);
+    const world = await loadWorldFile(worldFile);
+    const checks = runAll(world);
+    const rdir = path.join(CASE, 'renders', `world_v${vN}`);
+    const files = fs.existsSync(rdir) ? fs.readdirSync(rdir).filter((f) => f.endsWith('.png')).map((f) => path.join(rdir, f)) : [];
+    const t0 = Date.now();
+    const c = await critique({ caseId, round: vN, worldFile, checks, world, renders: files.length ? { files } : null });
+    const critSec = Math.round((Date.now() - t0) / 1000);
+    log('critique', c.verdict, '|', c.summary.slice(0, 300), '| patch', !!c.patch, '|', critSec + 's');
+    let finalFile = worldFile, finalChecks = checks, patch = null;
+    if (c.patch) {
+      const w = await writeWorldVersion(vN + 1, c.patch, WD, callProvenance({ caseId, call: c.call, parentWorld: '/' + path.relative(ROOT, worldFile) }));
+      const v = await validateWorldFile(w.file, { caseId });
+      patch = { world: w.url, problems: w.problems, valid: v.ok, errors: v.errors.slice(0, 8) };
+      log('patched →', w.url, 'valid', v.ok, w.problems.slice(0, 3).join('; '));
+      if (v.ok && !w.problems.some((p) => p.startsWith('module failed'))) { finalFile = w.file; finalChecks = runAll(await loadWorldFile(w.file)); }
+    }
+    const rel = (f) => '/' + path.relative(ROOT, f).split(path.sep).join('/');
+    const st = { caseId, world: rel(finalFile), findings: c.findings, checks: finalChecks, verdict: c.verdict, mode: 'live', updatedAt: new Date().toISOString(),
+      loopLog: [{ round: 1, world: rel(worldFile), generator: 'argon/onepass_full.mjs (one-pass long decode)', checks, critique: { verdict: c.verdict, summary: c.summary, findings: c.findings, patched: !!c.patch }, findings: c.findings,
+        renders: { videos: [], stills: files.map(rel) }, patch, finishedAt: new Date().toISOString() }] };
+    fs.writeFileSync(path.join(CASE, 'cache', 'state.json'), JSON.stringify(st, null, 2));
+    meta.critique = { round: vN, verdict: c.verdict, summary: c.summary, findings: c.findings.length, patched: !!c.patch, patch, seconds: critSec, finalWorld: rel(finalFile) };
+    meta.finalChecks = sightSummary(finalChecks);
+    fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2));
+    log('state.json →', rel(finalFile), '|', sightSummary(finalChecks).join(' ; '));
+    return;
+  }
+  throw new Error('unknown stage ' + stage);
+}

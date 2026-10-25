@@ -1,0 +1,11 @@
+(node:5011) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[argon] extraction_raw: calling gemini-4-argon (33 parts, maxOutputTokens=24576)
+...................
+[argon] extraction_raw: done in 224.2s, finish=STOP, chars=27399
+[extract] case=demo-full mode=live 224.2s usage={"promptTokens":847083,"outputTokens":9893,"thoughtsTokens":null,"totalTokens":856976} facts=40 vehicles=6 objects=9 witnesses=5
+  wit_A Witness A (fictional; modeled on real westbound eyewitness in docket_hp_att4_witness_interview.txt) marked=[402,-29.3] @ witness_A.md p.1; docket_har1702.txt p.39 (0.25 mi east in WB outside lane at ~60 mph, reaching WB left-turn lane ~170 m east at impact per docket_tech_recon_factual.txt p.4, p.19)
+  wit_B Witness B (fictional) marked=[9,12.6] @ Depo Witness B 1:54:30 (Mark #2 on Exhibit 4, just south of the bench shelter at [7.5..10.6, 8.9..11.2] m)
+  wit_C Witness C (fictional) marked=[-18,-25.6] @ witness_C.md p.1 (stopped in WB inside lane about 18 m west of the side road)
+  wit_D Witness D (fictional store counter clerk) marked=[24,28] @ Depo Witness D 07:38, 13:39, 18:02 (inside the retail store behind the register at the back-right/east end of the counter)
+  wit_driver_T Driver of Vehicle T (commercial truck driver) marked=[0,9] @ docket_tech_recon_factual.txt p.20; docket_vehicle_dynamics_study.txt p.5 Figure 1 (in tractor cab entering NE 140th Court at impact)
