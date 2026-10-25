@@ -280,6 +280,7 @@ export function applyRenderQuality(renderer, scene, opts = {}) {
     else if (opts.env && opts.env !== 'sky') setEnv(envFromSource(renderer, opts.env), 'custom');
     else {
       const sky = findSkyInScene(scene);
+      if (sky) tuneSky(sky, L, opts);
       if (sky) setEnv(pmremFromObject(renderer, sky), 'scene-sky');
       else {
         setEnv(gradient(), 'gradient');
@@ -290,6 +291,24 @@ export function applyRenderQuality(renderer, scene, opts = {}) {
     try { setEnv(room(), 'room'); } catch (_) {}
   }
   return handle;
+}
+
+// Display match for the Preetham dome under ACES: its radiance (skyGain-scaled to the scene's lux model) sits high on the
+// filmic shoulder, which desaturates a clear sky toward white. Scale the dome's output (and the luminance floor) so the
+// zenith lands at a saturated mid blue, and trim the Mie aureole that washes the sun-side horizon. Idempotent per mesh.
+// ?skyk=<n> overrides the scale for A/B checks.
+function tuneSky(sky, L, opts) {
+  const k = opts.skyScale ?? ((typeof location !== 'undefined' && /[?&]skyk=([\d.]+)/.exec(location.search)) || [])[1] ?? L.skyScale;
+  if (k == null) return;
+  sky.traverse((o) => {
+    const u = o.material && o.material.uniforms;
+    if (!u || !u.skyGain) return;
+    const ud = o.userData;
+    if (ud.rqSkyBase == null) ud.rqSkyBase = { gain: u.skyGain.value, floor: u.skyFloor ? u.skyFloor.value : 0, mie: u.mieCoefficient ? u.mieCoefficient.value : 0 };
+    u.skyGain.value = ud.rqSkyBase.gain * +k;
+    if (u.skyFloor) u.skyFloor.value = ud.rqSkyBase.floor * +k;
+    if (u.mieCoefficient && L.mieScale != null) u.mieCoefficient.value = ud.rqSkyBase.mie * L.mieScale;
+  });
 }
 
 const _sz = new THREE.Vector2();

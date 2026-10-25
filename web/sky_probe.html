@@ -21,7 +21,7 @@ assets.beginWorld && assets.beginWorld();
 const root = new THREE.Group(); scene.add(root);
 const env = assets.environment({ date: '2016-05-07', timeOfDay: '16:36', utcOffset: '-04:00', timeZone: 'America/New_York', lat: 29.4106, lon: -82.53979, lighting: 'day', weather: 'clear' });
 root.add(env);
-if (q.get('skyk')) env.traverse(o => { const u = o.material?.uniforms; if (o.name === 'env_sky' && u?.skyGain) { u.skyGain.value *= +q.get('skyk'); u.skyFloor.value *= +q.get('skyk'); } });
+// ?skyk= is applied by render_quality.js (tuneSky)
 let fog = null;
 env.traverse(o => { if (o.userData?.isEnvironment && o.userData.sky) { const sk = o.userData.sky; if (sk.fog) fog = sk.fog; if (sk.background?.isColor && !sk.skyMesh) scene.background = sk.background; } });
 if (fog) scene.fog = fog.isFog || fog.isFogExp2 ? fog : null;
