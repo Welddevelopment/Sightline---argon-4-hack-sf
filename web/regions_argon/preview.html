@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argon Site Regions</title>
+<script type="importmap">
+{ "imports": {
+  "three": "/node_modules/three/build/three.module.js",
+  "three/addons/": "/node_modules/three/examples/jsm/"
+} }
+</script>
+<style>
+  html, body { margin: 0; background: #111; color: #ddd; font: 12px/1.3 system-ui, sans-serif; overflow: hidden; }
+  canvas { display: block; }
+  #lab { position: absolute; left: 6px; top: 6px; padding: 3px 6px; background: rgba(0,0,0,.55); color: #fff; font: 11px/1.35 ui-monospace, monospace; white-space: pre; }
+</style>
+</head>
+<body>
+<div id="lab"></div>
+<script type="module">
+// Preview of the Argon-authored site (web/regions_argon/index.js) under the case lighting (16:36 EDT, 7 May 2016).
+// Query: ?w=1280&h=720&view=oblique&flat=0&only=r1_crossover,r5_south&world=1 (adds world_v2 vehicles at t, lifted onto the terrain)
+// Headless API (argon/region_forge.mjs): window.__ready, window.__shot(view) -> PNG data URL, window.__stats.
+import * as THREE from 'three';
+import { Sky } from 'three/addons/objects/Sky.js';
+import { environment, configureRenderer } from '/web/assets/environment.js';
+import { loadAssets } from '/web/assets.js';
+import { buildSite } from '/web/regions_argon/index.js';
+
+const q = new URLSearchParams(location.search);
+const W = +(q.get('w') || innerWidth), H = +(q.get('h') || innerHeight);
+const lab = document.getElementById('lab');
+try {
+  const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true, logarithmicDepthBuffer: true });
+  renderer.setPixelRatio(1);
+  renderer.setSize(W, H);
+  configureRenderer(THREE, renderer);
+  document.body.appendChild(renderer.domElement);
+
+  const assets = await loadAssets(THREE, { Sky });
+  const scene = new THREE.Scene();
+  const t0 = performance.now();
+  const site = buildSite(THREE, assets, { flat: q.get('flat') === '1', only: q.get('only') ? q.get('only').split(',') : undefined });
+  const buildMs = performance.now() - t0;
+  scene.add(site);
+  const gy = site.userData.groundY;
+
+  if (q.get('world') === '1') {
+    const { default: createWorld } = await import('/cases/demo/worlds/world_v2.js');
+    const world = createWorld(THREE, assets);
+    world.setTime(+(q.get('t') || 9.9));
+    for (const id of ['veh_A', 'veh_T_tractor', 'veh_T_trailer']) { const n = world.objects[id]?.node; if (n) { scene.add(n); n.position.y = site.userData.roadY(n.position.x); } }
+  }
+
+  const env = environment(THREE, { date: '2016-05-07', timeOfDay: '16:36', utcOffset: '-04:00', lat: 29.41, lon: -82.54, weather: 'clear', Sky, center: [0, 0], radius: 160 });
+  scene.add(env.group);
+  scene.fog = env.fog;
+  if (env.background) scene.background = env.background;
+  // PMREM sky fill so shadowed faces are not black (reference review gap #1)
+  try {
+    const pm = new THREE.PMREMGenerator(renderer);
+    const { RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js');
+    scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environmentIntensity = 0.35;
+  } catch (e) { console.warn('pmrem', e); }
+
+  let tris = 0, meshes = 0;
+  site.traverse((m) => { if (m.isMesh && m.geometry) { meshes++; const g = m.geometry; tris += (g.index ? g.index.count : g.attributes.position.count) / 3 * (m.isInstancedMesh ? m.count : 1); } });
+
+  const Y = (x, z) => gy(x, z);
+  const VIEWS = {
+    oblique: { pos: [70, Y(70, 75) + 45, 75], look: [-5, Y(-5, -12), -12], fov: 50 },
+    eyeB: { pos: [7.5, Y(7.5, 6.5) + 1.6, 6.5], look: [-200, site.userData.roadY(-200) + 1.2, 0], fov: 50 },
+    r1: { pos: [0, 55, 32], look: [0, 0, -12], fov: 55 },
+    r2: { pos: [-330, site.userData.roadY(-330) + 1.2, 0], look: [0, 1.0, -2], fov: 50 },
+    r3: { pos: [40, Y(40, 4) + 9, 4], look: [260, Y(260, -15) + 0, -15], fov: 55 },
+    r4: { pos: [-60, 30, -20], look: [80, 0, -150], fov: 60 },
+    r5: { pos: [-22, 16, -6], look: [22, 0, 20], fov: 55 },
+    r5b: { pos: [150, Y(150, -4) + 18, -4], look: [255, Y(255, 25), 25], fov: 55 },
+    r6: { pos: [-260, 210, 380], look: [-80, 0, -40], fov: 55 },
+  };
+  const cam = new THREE.PerspectiveCamera(50, W / H, 0.1, 6000);
+  function setView(name) {
+    const v = VIEWS[name] || VIEWS.oblique;
+    cam.fov = v.fov; cam.position.set(...v.pos); cam.lookAt(...v.look); cam.updateProjectionMatrix();
+    env.update(cam, v.look);
+    lab.textContent = `${name}  ·  Argon site regions  ·  16:36 EDT  ·  ${Math.round(tris / 1000)}k tris`;
+  }
+  function draw(name) { setView(name); renderer.render(scene, cam); }
+  window.__shot = (name) => { draw(name); return renderer.domElement.toDataURL('image/png'); };
+  window.__stats = { tris: Math.round(tris), meshes, buildMs: Math.round(buildMs), errors: site.userData.errors, regions: site.userData.regions };
+  draw(q.get('view') || 'oblique');
+  window.__ready = true;
+} catch (e) {
+  console.error(e);
+  window.__error = String(e && e.stack || e);
+  lab.textContent = 'ERROR ' + window.__error;
+}
+</script>
+</body>
+</html>

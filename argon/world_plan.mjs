@@ -6,7 +6,8 @@
 //   C) shot_plan: Argon writes OUR film mirroring the reference grammar (consumed by the SHOT-RIG)
 //                                      -> cases/<id>/plan/shot_plan.json
 // A and B run in parallel, then C.
-//   node argon/world_plan.mjs [--case demo] [--step all|A|B|C] [--ref <youtube url> ...]
+//   D) stills: 3–4 reference timestamps for a still-frame side-by-side -> shots_reference.json .stillFrames
+//   node argon/world_plan.mjs [--case demo] [--step all|A|B|C|stills] [--ref <youtube url> ...]
 //   SIGHTLINE_MODE=live to call Gemini (default mock = replay cases/<id>/cache/plan_*.json).
 //   Optional per-case overrides: cases/<id>/plan/director_notes.md, cases/<id>/plan/references.json ([{id,url,label}]).
 import fs from 'node:fs';
@@ -111,6 +112,19 @@ export async function shotPlan({ caseId = 'demo', reference, scene } = {}) {
   return { data: r.data, meta: meta(r), world: wf && path.relative(ROOT, wf) };
 }
 
+/** Pick 3–4 reference timestamps for still-frame side-by-side with OUR shots (needs A and, if present, C). */
+export async function stillFrames({ caseId = 'demo', reference, plan } = {}) {
+  const d = caseDirs(caseId);
+  const refs = (reference?.videos || []).map((v) => ({ id: v.id, url: v.url }));
+  const parts = [textPart(`You picked shots from these professional forensic animations earlier (breakdown below). Now choose the 3–4 BEST single timestamps for a still-frame side-by-side comparison against OUR film. Prefer frames that (a) show the scene geometry, vehicles and lighting clearly, (b) correspond to a shot type our film also has, (c) are not mid-dissolve or motion-blurred, and (d) together cover different shot types (e.g. orbit/establishing, top-down, chase at contact, witness eye). For each give: videoId, timestamp "mm:ss.s", sec, refShotN, shotType, whatToCompare (materials, markings, lighting, framing...), ourShotId (from OUR SHOT PLAN) and ourFilmSec (seconds into that shot that best matches the framing), and why. Return ONLY JSON: {"stillFrames":[...]}`)];
+  for (const r of refs) { parts.push(textPart(`\n=== VIDEO "${r.id}" ${r.url} ===`)); parts.push({ fileData: { fileUri: r.url } }); }
+  const brief = (o) => JSON.stringify(o, (k, v) => (k === '_provenance' ? undefined : v));
+  parts.push(textPart(`\n=== REFERENCE BREAKDOWN ===\n${brief({ videos: reference?.videos?.map((v) => ({ id: v.id, shots: v.shots.map((s) => ({ n: s.n, start: s.start, end: s.end, type: s.type, description: s.description })) })) })}`));
+  if (plan) parts.push(textPart(`\n=== OUR SHOT PLAN (summary) ===\n${brief(plan.shots.map((s) => ({ id: s.id, type: s.type, durationSec: s.durationSec, purpose: s.purpose, mirrors: s.mirrors })))}`));
+  const r = await callJSON({ name: 'plan_still_frames', parts, maxOutputTokens: 16384, cacheDir: d.cache });
+  return { data: r.data, meta: meta(r) };
+}
+
 // ---------- light sanity checks (reported, not fatal) ----------
 export function lintScene(s) {
   const issues = [];
@@ -169,6 +183,17 @@ async function main() {
     writeJSON(out('shot_plan.json'), plan);
     console.log(`[plan] C shot_plan: ${JSON.stringify(lintPlan(r.data)).slice(0, 600)}`);
   } else if (step === 'ALL' || step === 'C') { console.error('[plan] C skipped: missing shots_reference or scene_spec'); process.exitCode = 1; }
+
+  // Stills: 3–4 reference timestamps for the side-by-side, merged into shots_reference.json.
+  if ((step === 'ALL' || step === 'STILLS') && reference) {
+    const plan = readJSON(out('shot_plan.json'));
+    const r = await stillFrames({ caseId, reference, plan });
+    reference = readJSON(out('shots_reference.json')) || reference;
+    reference.stillFrames = r.data.stillFrames || r.data;
+    reference._provenance = { ...reference._provenance, stillFrames: { prompt: 'inline in argon/world_plan.mjs stillFrames()', ...r.meta } };
+    writeJSON(out('shots_reference.json'), reference);
+    console.log(`[plan] stills: ${(reference.stillFrames || []).map((f) => `${f.videoId}@${f.timestamp}->${f.ourShotId}`).join(', ')}`);
+  }
   console.log(`[plan] done in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
 }
 

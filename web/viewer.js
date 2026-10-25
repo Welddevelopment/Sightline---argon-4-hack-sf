@@ -787,6 +787,7 @@ async function loadWorld(url) {
   const mod = await import(full);
   // WORLD CONTRACT v2: pass the shared asset library (v1 worlds ignore it). Missing/broken facade → undefined.
   const assets = await (sl._assetsP ||= import('./assets.js').then((m) => m.loadAssets(THREE)).catch((e) => { console.warn('assets.js unavailable:', e); return undefined; }));
+  try { assets?.beginWorld?.(); } catch {}   // clear terrain left by a previously loaded world
   const w = mod.default(THREE, assets);
   if (!w || !w.root || typeof w.setTime !== 'function') throw new Error('Bad world module: ' + url);
   w.objects = w.objects || {};
@@ -807,6 +808,17 @@ async function loadWorld(url) {
     fitOverhead(ts.length ? ts[Math.floor(ts.length / 2)] : world.duration * 0.5); }
   const kind = (world.meta.lighting || 'day').toLowerCase();
   setupLighting(kind);
+  { // v2 worlds: adopt the library environment (sky/fog/hemisphere) and terrain ground instead of the viewer presets
+    let envG = null, hasGround = false;
+    world.root.traverse((o) => { if (o.userData?.isEnvironment) envG = envG || o; if (o.userData?.assetType === 'groundPlane') hasGround = true; });
+    if (hasGround) envGroup.children.forEach((c) => { if (c.name === '__ground') c.visible = false; });
+    if (envG) {
+      const sk = envG.userData.sky || {};
+      if (sk.fog) fogCfg = sk.fog;
+      if (sk.background?.isColor && !sk.skyMesh) scene.background = sk.background;
+      envGroup.children.forEach((c) => { if (c.isHemisphereLight) c.visible = false; });
+    }
+  }
   addHeadlights();
   // render quality (web/render_quality.js): tone mapping/exposure, single shadowed sun fit to the ROI, PMREM sky fill, AA
   sl.renderQuality = applyRenderQuality(renderer, scene, { quality: RENDER_QUALITY, lighting: kind, sun, roi: bounds, world,

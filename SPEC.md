@@ -190,3 +190,17 @@ Skip path: if `cases/<id>/confirmed_facts.json` does not exist, generate_world i
 - Cache: default-t exports are written to `cases/<id>/exports/scene.{glb,json,zip}`; served cached in mock mode for demo, otherwise when the cached world sha matches. A `t` other than the cached one is built on the fly (~0.5 s, not cached). Header `X-Scene-Cache: hit|miss`. Errors JSON: 400 bad t, 404 unknown case, 409 no world yet. Refresh: `node server/scene_export.js <caseId>`.
 - UI: one "Download scene (.zip)" button → `/api/cases/<id>/scene.zip`; optional secondary links for `.glb` / `.json?download=1`.
 - Clips correction (PRODUCT-C, 12:55): fps is **12** (CLIP_FPS env, SwiftShader on 2 CPUs), not 24. Cache key is the **sha256** of the world file: `cases/<id>/exports/clips/<camera>__<world>.<sha256[0:12]>__<t0>-<t1>.mp4` (sidecar `.json` carries `worldSha256`), so a re-seeded/upgraded world never serves a stale clip; the mock-mode render-failure fallback only uses clips with the same world sha. Caption line 1 = "SIMULATED / FICTIONAL WITNESS — analysis draft, not evidence | case | camera"; line 2 = sightline check result + clip window; running scene time `t = N.NN s` top-right.
+
+## COMPARE & WHAT-IF (12:26)
+- Page `web/compare.html?case=<id>[&a=wit_X&b=wit_Y][&t=][&mph=][&object=veh_X]` (`web/compare.js`, `web/compare.css`). One WebGL renderer,
+  three scissor viewports on one timeline: Witness A's eye view | Witness B's eye view | overhead physical evidence. Default pair = opposing
+  sight-line results on the same target. Captions: claim + citation + independent result (cached `state.checks`, or the server what-if result).
+  Headless hook: `window.cmp.ready` → `{setTime(t), setWhatIf(mph), serverSettled(), renderFrame(), whatIf, serverResult}`.
+- `GET /api/cases/:id/whatif?object=veh_A&targetMph=60` (`server/whatif.js`, mounted in server.js) →
+  `{object, targetMph, origMph, sentence, analysis:{newImpactT, delayS, clearT, enterT, contact, minGap, breakEvenMph}, assumptions[],
+  checks[] (checks.runAll on the re-timed world), baselineSightlines[], changedSightlines[], label}`. Re-timing: the object's path and t=0
+  position are kept, impact LOCATION fixed, its times scaled by v0/v1; other objects unchanged. Same code (`retimeWorld` exported from
+  web/compare.js) in browser and server. Kinematic what-if, not crash physics; labelled as analysis draft, not evidence.
+- ARGON-ONLY UI (same slot): `GET /api/cases/:id/size`, `GET /api/cases/:id/frame?video=&t=[&cue=mid][&format=json]` (server/case_size.js);
+  banner "Case: N tokens · H h MM min video · P pages · read in one pass by gemini-4-argon" tagged MEASURED (cache/*.meta.json usage or
+  cases/<id>/argon_only.json) or ESTIMATED. See status/argon_only_ui.md.
