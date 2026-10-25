@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { ROOT } from './client.js';
+import { writeProvenance } from './provenance.js';
 
 let THREE = null;
 async function three() { return (THREE ||= await import('three')); }
@@ -40,10 +41,12 @@ export function validateWorld(world) {
 }
 
 /** Write a module to <worldsDir>/world_v{n}.js (per case: cases/<caseId>/worlds), verify it loads + validates. Returns { file, url, problems }. */
-export async function writeWorldVersion(n, source, worldsDir = path.join(ROOT, 'worlds')) {
+export async function writeWorldVersion(n, source, worldsDir = path.join(ROOT, 'worlds'), prov = null) {
   const file = path.join(worldsDir, `world_v${n}.js`);
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, source);
+  // CREDIBILITY v1: world_vN.provenance.json beside the module (prov = argon/provenance.js callProvenance(...)).
+  if (prov) try { writeProvenance({ ...prov, worldPath: file }); } catch (e) { console.warn(`[provenance] world_v${n}: ${e.message}`); }
   let problems = [];
   try { problems = validateWorld(await loadWorldFile(file)); } catch (e) { problems = ['module failed to load: ' + e.message]; }
   return { file, url: worldUrlFromFile(file), problems };
