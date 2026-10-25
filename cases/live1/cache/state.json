@@ -165,7 +165,7 @@
       "check": "sightline",
       "subject": "wit_B",
       "pass": false,
-      "detail": "From Witness B's marked position (Depo 27:05; Depo 27:47; Depo 28:17) the line of sight to veh_A is blocked by veh_T_trailer at t=9.8s (distance 28.1 m). Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
+      "detail": "From Witness B's marked position (Depo 27:05; Depo 27:47; Depo 28:17) the line of sight to veh_A is blocked by veh_T_trailer at t=9.8s (distance 28.1 m). Blocked from 25 of 25 positions within 2 m of Witness B's mark. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
       "citation": "Depo 27:05; Depo 27:47; Depo 28:17",
       "blockedBy": "veh_T_trailer",
       "target": "veh_A",
@@ -185,13 +185,32 @@
         2.824750191124919,
         1.47108254644666,
         3.8388848571651435
-      ]
+      ],
+      "robustness": {
+        "radiusM": 2,
+        "samples": 25,
+        "blocked": 25,
+        "clear": 0,
+        "eyeJitterM": 0.1,
+        "verdict": "robust",
+        "blockers": {
+          "veh_T_trailer": 22,
+          "veh_T_tractor": 3
+        }
+      },
+      "gaze": {
+        "offAxisDeg": 25.4,
+        "assumed": true,
+        "cameraFovDeg": 60,
+        "peripheral": false,
+        "source": "mark_poi"
+      }
     },
     {
       "check": "sightline",
       "subject": "wit_A",
       "pass": true,
-      "detail": "From Witness A's marked position (text/witness_A.txt; text/facts.txt F30) the line of sight to veh_A is clear at t=9.8s (distance 176.9 m). Claim: \"Once the trailer was out across the eastbound lanes, it blocked my view of the car. I didn't see the car hit the trailer.\"",
+      "detail": "From Witness A's marked position (text/witness_A.txt; text/facts.txt F30) Witness A had line of sight to veh_A at t=9.8s (distance 176.9 m); target 1° from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness A's mark. Claim: \"Once the trailer was out across the eastbound lanes, it blocked my view of the car. I didn't see the car hit the trailer.\"",
       "citation": "text/witness_A.txt; text/facts.txt F30",
       "blockedBy": null,
       "target": "veh_A",
@@ -207,13 +226,29 @@
         0.7224999952316284,
         0
       ],
-      "hitPoint": null
+      "hitPoint": null,
+      "robustness": {
+        "radiusM": 2,
+        "samples": 25,
+        "blocked": 0,
+        "clear": 25,
+        "eyeJitterM": 0.1,
+        "verdict": "not_blocked",
+        "blockers": {}
+      },
+      "gaze": {
+        "offAxisDeg": 1.4,
+        "assumed": true,
+        "cameraFovDeg": 60,
+        "peripheral": false,
+        "source": "mark_poi"
+      }
     },
     {
       "check": "sightline",
       "subject": "wit_C",
       "pass": true,
-      "detail": "From Witness C's marked position (text/witness_C.txt) the line of sight to veh_T_trailer is clear at t=9.8s (distance 31.6 m). Claim: \"The truck was barely creeping when it pulled out, slower than a walk at first, then picking up a little as it swung across the eastbound lanes toward 140th.\"",
+      "detail": "From Witness C's marked position (text/witness_C.txt) Witness C had line of sight to veh_T_trailer at t=9.8s (distance 31.6 m); target 8° from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness C's mark. Claim: \"The truck was barely creeping when it pulled out, slower than a walk at first, then picking up a little as it swung across the eastbound lanes toward 140th.\"",
       "citation": "text/witness_C.txt",
       "blockedBy": null,
       "target": "veh_T_trailer",
@@ -229,7 +264,173 @@
         3.9600000429153437,
         -2.727507350471945
       ],
-      "hitPoint": null
+      "hitPoint": null,
+      "robustness": {
+        "radiusM": 2,
+        "samples": 25,
+        "blocked": 0,
+        "clear": 25,
+        "eyeJitterM": 0.1,
+        "verdict": "not_blocked",
+        "blockers": {}
+      },
+      "gaze": {
+        "offAxisDeg": 8,
+        "assumed": true,
+        "cameraFovDeg": 60,
+        "peripheral": false,
+        "source": "mark_poi"
+      }
+    },
+    {
+      "check": "timing",
+      "subject": "veh_A",
+      "observerId": "veh_A",
+      "targetId": "veh_T_trailer",
+      "impactT": 10.3,
+      "availableS": 10.3,
+      "rangeS": [
+        1,
+        2.5
+      ],
+      "typicalS": 1.5,
+      "verdict": "sufficient",
+      "method": "sightline",
+      "firstVisibleT": 0,
+      "conflictT": 8.3,
+      "conflictS": 2,
+      "cappedAtStart": true,
+      "blockedBy": null,
+      "detail": "The driver of Vehicle A had a continuous line of sight to Vehicle T Semitrailer for 10.30 s before impact (t=0.00–10.30 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Vehicle T Semitrailer came within 3 m of the centerline of this driver's remaining path 2.00 s before impact. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
+      "impactSource": "estimated: first plan-view contact of veh_A and veh_T",
+      "pass": true,
+      "citation": "estimated: first plan-view contact of veh_A and veh_T",
+      "target": "veh_T_trailer",
+      "prt": {
+        "availableS": 10.3,
+        "rangeS": [
+          1,
+          2.5
+        ],
+        "typicalS": 1.5,
+        "verdict": "sufficient"
+      }
+    },
+    {
+      "check": "timing",
+      "subject": "veh_T_tractor",
+      "observerId": "veh_T_tractor",
+      "targetId": "veh_A",
+      "impactT": 10.3,
+      "availableS": 10.3,
+      "rangeS": [
+        1,
+        2.5
+      ],
+      "typicalS": 1.5,
+      "verdict": "sufficient",
+      "method": "sightline",
+      "firstVisibleT": 0,
+      "conflictT": null,
+      "conflictS": null,
+      "cappedAtStart": true,
+      "blockedBy": null,
+      "detail": "The driver of Vehicle T Tractor had a continuous line of sight to Vehicle A for 10.30 s before impact (t=0.00–10.30 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
+      "impactSource": "estimated: first plan-view contact of veh_T and veh_A",
+      "pass": true,
+      "citation": "estimated: first plan-view contact of veh_T and veh_A",
+      "target": "veh_A",
+      "prt": {
+        "availableS": 10.3,
+        "rangeS": [
+          1,
+          2.5
+        ],
+        "typicalS": 1.5,
+        "verdict": "sufficient"
+      }
+    },
+    {
+      "check": "plausibility",
+      "subject": "veh_A",
+      "pass": true,
+      "maxAccelG": 0,
+      "maxSpeedMph": 74,
+      "issues": [],
+      "detail": "Vehicle A moves plausibly: peak speed 74 mph, peak acceleration 0 g before impact, no position jumps. Impact at t=10.30 s (estimated: first plan-view contact of veh_A and veh_T); Vehicle A took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 4.82 g at t=18.80 s (consistent with secondary impacts during run-out; not counted).",
+      "citation": "text/facts.txt F14, F17, Modeling assumptions; text/police_report.txt p.1",
+      "maxAccelT": 9.55,
+      "maxSpeedT": 7.9,
+      "impactAccelG": 3.55,
+      "involvedInImpact": true,
+      "postImpactAccelG": 4.82,
+      "postImpactAccelT": 18.8,
+      "impactT": 10.3,
+      "impactSource": "estimated: first plan-view contact of veh_A and veh_T",
+      "label": "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation."
+    },
+    {
+      "check": "plausibility",
+      "subject": "veh_T_tractor",
+      "pass": false,
+      "maxAccelG": 1.52,
+      "maxSpeedMph": 13.5,
+      "issues": [
+        "acceleration 1.52 g at t=7.50 s exceeds 1 g before impact (over the limit at 6 samples between t=4.45 and t=7.55 s)"
+      ],
+      "detail": "Vehicle T Tractor has implausible motion: acceleration 1.52 g at t=7.50 s exceeds 1 g before impact (over the limit at 6 samples between t=4.45 and t=7.55 s). Impact at t=10.30 s (estimated: first plan-view contact of veh_A and veh_T); Vehicle T Tractor took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 2.16 g at t=18.50 s (consistent with secondary impacts during run-out; not counted).",
+      "citation": "text/facts.txt F15, F19, Modeling assumptions; text/police_report.txt p.1",
+      "maxAccelT": 7.5,
+      "maxSpeedT": 8.950000000000001,
+      "impactAccelG": 1.33,
+      "involvedInImpact": true,
+      "postImpactAccelG": 2.16,
+      "postImpactAccelT": 18.5,
+      "impactT": 10.3,
+      "impactSource": "estimated: first plan-view contact of veh_A and veh_T",
+      "label": "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation."
+    },
+    {
+      "check": "plausibility",
+      "subject": "veh_T_trailer",
+      "pass": false,
+      "maxAccelG": 1.38,
+      "maxSpeedMph": 12,
+      "issues": [
+        "acceleration 1.38 g at t=7.45 s exceeds 1 g before impact (over the limit at 3 samples between t=7.45 and t=7.55 s)"
+      ],
+      "detail": "Vehicle T Semitrailer has implausible motion: acceleration 1.38 g at t=7.45 s exceeds 1 g before impact (over the limit at 3 samples between t=7.45 and t=7.55 s). Impact at t=10.30 s (estimated: first plan-view contact of veh_A and veh_T); Vehicle T Semitrailer took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 2.16 g at t=18.50 s (consistent with secondary impacts during run-out; not counted).",
+      "citation": "text/facts.txt F15, F16, F30, Modeling assumptions; text/deposition.txt 138-140",
+      "maxAccelT": 7.45,
+      "maxSpeedT": 9.200000000000001,
+      "impactAccelG": 0.52,
+      "involvedInImpact": true,
+      "postImpactAccelG": 2.16,
+      "postImpactAccelT": 18.5,
+      "impactT": 10.3,
+      "impactSource": "estimated: first plan-view contact of veh_A and veh_T",
+      "label": "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation."
+    },
+    {
+      "check": "plausibility",
+      "subject": "veh_wit_A",
+      "pass": false,
+      "maxAccelG": 7.83,
+      "maxSpeedMph": 60,
+      "issues": [
+        "acceleration 7.83 g at t=15.95 s exceeds 1 g outside the impact window (over the limit at 10 samples between t=15.90 and t=20.10 s)"
+      ],
+      "detail": "Witness A vehicle has implausible motion: acceleration 7.83 g at t=15.95 s exceeds 1 g outside the impact window (over the limit at 10 samples between t=15.90 and t=20.10 s). Impact at t=10.30 s (estimated: first plan-view contact of veh_A and veh_T); accelerations within ±0.5 s of it are excluded.",
+      "citation": "text/witness_A.txt; text/facts.txt F30",
+      "maxAccelT": 15.950000000000001,
+      "maxSpeedT": 1.2000000000000002,
+      "impactAccelG": 0.76,
+      "involvedInImpact": false,
+      "postImpactAccelG": null,
+      "postImpactAccelT": null,
+      "impactT": 10.3,
+      "impactSource": "estimated: first plan-view contact of veh_A and veh_T",
+      "label": "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation."
     }
   ],
   "loopLog": [
