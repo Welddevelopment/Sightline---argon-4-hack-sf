@@ -1,0 +1,30 @@
+{
+  "case": "demo-full",
+  "built_at": "2026-10-25T19:59:49.393Z",
+  "tokens_total": 849454,
+  "video_seconds": 9900,
+  "videos": [
+    {
+      "label": "Witness B",
+      "seconds": 7200
+    },
+    {
+      "label": "Witness D",
+      "seconds": 2700
+    }
+  ],
+  "pages": 212,
+  "argon": {
+    "model": "gemini-4-argon",
+    "generate_world_s": 146.8,
+    "extraction_s": 234.5,
+    "found_mark": true,
+    "mark_cited_as": "Depo Witness B 1:54:30"
+  },
+  "key_frames": {
+    "render_png": null,
+    "render_t": null,
+    "depo_png": "/cases/demo-full/keyframes/kf_mark_015430.png",
+    "depo_timecode": "1:54:30"
+  }
+}

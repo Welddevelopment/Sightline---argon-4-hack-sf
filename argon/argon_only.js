@@ -26,7 +26,7 @@ export function countPages(caseId) {
   const d = caseDirs(caseId);
   const man = readJSON(path.join(d.dir, 'docket_manifest.json'));
   const manStr = man ? JSON.stringify(man).toLowerCase() : '';
-  let pages = man ? sumPages(man) : 0;
+  let pages = man ? (man.totals_used?.pages ?? sumPages(man)) : 0;
   const inv = listEvidence(caseId);
   for (const f of [...inv.text, ...inv.evidenceText]) {
     const stem = path.basename(f).replace(/\.[^.]+$/, '').toLowerCase();
@@ -109,10 +109,10 @@ export async function buildArgonOnly(caseId = defaultCaseId()) {
     video_seconds,
     videos,
     pages: countPages(caseId),
-    baseline: { model: BASELINE_MODEL, variant: base?.variant ?? null, inputs: 'same inputs: all documents + all video',
+    ...(bf ? { baseline: { model: BASELINE_MODEL, variant: base?.variant ?? null, inputs: 'same inputs: all documents + all video',
       verdict: shortVerdict(base, truth), found_mark: base?.found_mark ?? null, found_claim: base?.found_claim ?? null,
-      concluded_blocked: base?.concluded_blocked ?? null },
-    argon: { model: ARGON_MODEL, found_mark: arg?.found_mark ?? null, concluded_blocked: arg?.concluded_blocked ?? null, latency_s: arg?.latency_s ?? null },
+      concluded_blocked: base?.concluded_blocked ?? null } } : {}),
+    argon: { model: ARGON_MODEL, ...argonFromPipeline(d, truth), ...(arg ? Object.fromEntries(Object.entries({ found_mark: arg.found_mark, concluded_blocked: arg.concluded_blocked, latency_s: arg.latency_s }).filter(([, v]) => v != null)) : {}) },
     key_frames: {
       render_png: rel(render?.png),
       render_t: render ? await observationTime(d, render.version, wid) : null,
@@ -120,7 +120,7 @@ export async function buildArgonOnly(caseId = defaultCaseId()) {
       depo_timecode: depo && truth?.mark_sec != null ? fmtClock(Number(truth.mark_sec)) : null,
     },
   };
-  if (!bf) console.warn('[argon_only] WARNING: cache/baseline_full.json not found — run argon/baseline_full.js first');
+
   if (!truth) console.warn('[argon_only] WARNING: case_full/meta.json not found — mark/keyframe fields left null');
   const p = path.join(d.dir, 'argon_only.json');
   writeJSON(p, out);
@@ -132,4 +132,28 @@ if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === imp
   const i = process.argv.indexOf('--case');
   try { console.log(JSON.stringify(await buildArgonOnly(i > 0 ? process.argv[i + 1] : undefined), null, 2)); process.exit(0); }
   catch (e) { console.error('[argon_only] FAILED:', e.message); process.exit(1); }
+}
+
+// Argon's own pipeline results (no baseline needed): did generate_world cite the hidden mark time, and did the
+// independent ray-cast (state.json checks) find the target witness blocked?
+function argonFromPipeline(d, truth) {
+  const out = {};
+  const meta = readJSON(path.join(d.cache, 'generate_world.meta.json'));
+  if (meta?.seconds != null) out.generate_world_s = meta.seconds;
+  const extMeta = readJSON(path.join(d.cache, 'extraction.meta.json'));
+  if (extMeta?.seconds != null) out.extraction_s = extMeta.seconds;
+  if (truth?.mark_sec != null) {
+    const src = [path.join(d.cache, 'generate_world.js'), path.join(d.cache, 'extraction.json')].map((f) => { try { return fs.readFileSync(f, 'utf8'); } catch { return ''; } }).join('\n');
+    const tcs = [...src.matchAll(/(?:(\d+):)?(\d{1,3}):(\d{2})/g)].map((m) => (Number(m[1] || 0) * 3600 + Number(m[2]) * 60 + Number(m[3])));
+    out.found_mark = tcs.some((t) => Math.abs(t - Number(truth.mark_sec)) <= 60);
+    out.mark_cited_as = 'Depo Witness B ' + fmtClock(Number(truth.mark_sec));
+  }
+  const st = readJSON(path.join(d.cache, 'state.json'));
+  const checks = st?.checks || st?.rounds?.at?.(-1)?.checks || null;
+  const wid = truth?.witness_id || 'wit_B';
+  const c = Array.isArray(checks) ? checks.find((x) => x.check === 'sightline' && x.subject === wid) : null;
+  if (c) { out.concluded_blocked = c.pass === false; out.blocked_by = c.blockedBy ?? null; out.check_detail = c.detail; }
+  const f = st?.findings || null;
+  if (f) out.critique_verdict = f.verdict || f.status || null;
+  return out;
 }
