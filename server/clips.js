@@ -72,7 +72,9 @@ export function mountClips(app, ctx = {}) {
     if (metaCache.has(key)) return metaCache.get(key);
     const THREE = await getThree();
     const mod = await import(pathToFileURL(file).href + `?h=${hash}`);
-    const world = mod.default(THREE);
+    let assets;
+    try { assets = await (await import(pathToFileURL(path.join(ROOT, 'checks', 'load_world.js')).href)).nodeAssets(); } catch { assets = undefined; }
+    const world = await mod.default(THREE, assets); // v2 worlds need the asset library; v1 ignores it
     const wits = [...(world.witnesses || [])];
     for (const w of extras) { const i = wits.findIndex((x) => x.id === w.id); if (i >= 0) wits[i] = w; else wits.push(w); }
     const labels = Object.fromEntries(Object.entries(world.objects || {}).map(([k, o]) => [k, (o && o.label) || k]));

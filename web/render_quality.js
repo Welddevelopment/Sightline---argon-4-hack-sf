@@ -132,6 +132,8 @@ export function fitShadowCamera(light, box, mapSize = light.shadow.mapSize.x) {
 }
 
 export function applyRenderQuality(renderer, scene, opts = {}) {
+  // ?rq=off: legacy look (A/B benchmarking and before/after comparisons)
+  if (typeof location !== 'undefined' && /[?&]rq=off\b/.test(location.search)) return { quality: 'off', ready: Promise.resolve(), fitShadow() {}, pixelRatio: renderer.getPixelRatio() };
   const quality = opts.quality === 'render' ? 'render' : 'interactive';
   const P = PRESETS[quality];
   const lighting = (opts.lighting || 'day').toLowerCase();

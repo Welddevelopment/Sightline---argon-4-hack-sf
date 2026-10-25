@@ -564,7 +564,7 @@ function applyExtraction(r) {
         }
       };
       overlay(S.facts, c.facts); overlay(S.vehicles, c.vehicles); overlay(S.objects, c.objects); overlay(S.witnesses, c.witnesses);
-      if (c.scene) for (const [k, v] of Object.entries(c.scene)) if (JSON.stringify(S.scene[k]) !== JSON.stringify(v)) { S.scene[k] = clone(v); if (k !== 'citation' && k !== 'source') S.sceneEdited.add(k); }
+      if (c.scene) for (const [k, v] of Object.entries(c.scene)) if (k !== 'edited' && JSON.stringify(S.scene[k]) !== JSON.stringify(v)) { S.scene[k] = clone(v); if (k !== 'citation' && k !== 'source') S.sceneEdited.add(k); }
       if (!$('#confirmedBy').value && c.confirmedBy) $('#confirmedBy').value = c.confirmedBy;
     }
   }

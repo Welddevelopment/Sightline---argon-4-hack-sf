@@ -173,7 +173,8 @@
     const rCap = r ? `${esc(r.witName)} · eye level` : '';
     const rSub = r ? `Reconstruction${r.t != null && Number.isFinite(r.t) ? ` · t = ${esc(Number(r.t).toFixed(1))} s` : ''}` : '';
     const dCap = d ? `Deposition · ${esc(d.tc)}` : '';
-    const dSub = d ? (d.quote ? `“${esc(d.quote)}”` : 'Marks her position on the exhibit') + (d.cited && d.cited !== d.tc ? ` <em>cited ${esc(d.cited)}</em>` : '') : '';
+    const q = d && d.quote ? String(d.quote).replace(/^[A-Z][A-Z .'-]{1,30}:\s*/, '') : '';
+    const dSub = d ? (q ? `“${esc(q)}”` :'Marks her position on the exhibit') + (d.cited && d.cited !== d.tc ? ` <em>cited ${esc(d.cited)}</em>` : '') : '';
     return `<div class="ao-frames-h">What she said she saw <span>vs</span> what her marked position sees</div>
       <div class="ao-frames">
         ${d ? fig(d.src, 'ao-depo', dCap, dSub, d.t != null ? ` data-seek="${esc(d.tc)}" title="Click to open the deposition at ${esc(d.tc)}"` : '') : ''}

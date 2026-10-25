@@ -31,6 +31,9 @@ const facts = [
   ...c.facts,
 ].map((f) => ({ ...f, citation: cite(f.citation) }));
 
+// Case time/place for the sun (NTSB/HAR-17/02 p.1, p.5: 4:36:12 p.m. EDT, 7 May 2016, US-27A at NE 140th Ct, Williston FL).
+const loc = { date: '2016-05-07', time: (c.timeline.clock_at_impact || c.timeOfDay).replace(/\.\d+$/, ''), utcOffset: '-04:00', timeZone: 'America/New_York',
+  lat: 29.41, lon: -82.54, ...(c.location || {}) };
 const X0 = -440, X1 = 340, XM = (X0 + X1) / 2, XL = X1 - X0;
 const ebC = (kd.eb_inside_lane_z[0] + kd.eb_outside_lane_z[1]) / 2;            // EB 2-lane center
 const wbC = (kd.wb_outside_lane_z[0] + kd.wb_inside_lane_z[1]) / 2;            // WB 2-lane center
@@ -56,7 +59,8 @@ export default function createWorld(THREE, assets) {
   };
 
   // ---------- light + ground: ${c.timeOfDay} local (EDT, UTC-4), ${c.weather} ----------
-  root.add(assets.environment({ timeOfDay: ${J(c.timeOfDay)}, date: '2016-05-07', utcOffset: '-04:00', lat: 29.387, lon: -82.447, lighting: ${J(c.lighting)}, weather: 'clear' }));
+  root.add(assets.environment({ date: ${J(loc.date)}, timeOfDay: ${J(loc.time)}, utcOffset: ${J(loc.utcOffset)}, timeZone: ${J(loc.timeZone)}, lat: ${loc.lat}, lon: ${loc.lon}, lighting: ${J(c.lighting)}, weather: 'clear' }));
+  // sun position is computed by the library from date/time/place (NTSB/HAR-17/02 p.1, p.5: 4:36:12 p.m. EDT, clear; US-27A near Williston, FL)
   const ground = assets.groundPlane({ id: 'ground', size: ${XL + 40}, kind: 'grass' });
   ground.position.set(${XM}, 0, 0);
   root.add(ground);
@@ -129,6 +133,7 @@ export default function createWorld(THREE, assets) {
 
   const world = {
     meta: { caseId: ${J(c.caseId)}, title: ${J(c.title)}, timeOfDay: ${J(c.timeOfDay)}, lighting: ${J(c.lighting)}, impactT: T_IMPACT,
+      date: ${J(loc.date)}, timeZone: ${J(loc.timeZone)}, utcOffset: ${J(loc.utcOffset)}, lat: ${loc.lat}, lon: ${loc.lon},
       source: 'NTSB/HAR-17/02 (HWY16FH018) physical facts + fictional witnesses', contract: 'v2' },
     root, duration, setTime, objects, witnesses, facts, skids,
   };

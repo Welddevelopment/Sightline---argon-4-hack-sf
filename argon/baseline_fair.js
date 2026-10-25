@@ -45,7 +45,10 @@ export function score(answer, caseId) {
   if (!B) return { witnessFound: false, mark: false, claim: false, blocked: false, notes: 'no Witness B entry' };
   const posBlob = `${B.position || ''} ${(B.positionCitations || []).join(' ')}`;
   const all = JSON.stringify(B);
-  const mark = inWindow(posBlob, R.markWindow) && /\bmark|\bX\b|exhibit|map|drew|draws|pen/i.test(posBlob);
+  // markCited: a ~27:04 moment is cited for her position (weak: the transcript also has a [27:04] line, "over by the corner, near the shelter").
+  // mark: her position text itself reports the on-screen mark (X / mark / exhibit / drew) — the visual-only fact.
+  const markCited = inWindow(posBlob, R.markWindow);
+  const mark = markCited && /\bmark(ed|s)?\b|\bX\b|exhibit\s*4|red pen|\bdrew\b|\bdraws?\b/i.test(B.position || '');
   const markAnywhere = inWindow(all, R.markWindow) && /\bmark|\bX\b/i.test(all);
   const claims = Array.isArray(B.claims) ? B.claims : [];
   const claimHit = claims.find((c) => /clear view|whole way|nothing was in the way|saw it clearly/i.test(c.claim || '') || inWindow(c.citation || '', R.claimWindow));
@@ -53,7 +56,7 @@ export function score(answer, caseId) {
     && /trailer|truck|tractor|semi|rig|cab/i.test(c.reasoning || '') && /block|obstruct|occlud|between|in the way|hidden|cut off|line of sight/i.test(c.reasoning || ''));
   return {
     witnessFound: true, position: B.position || '', positionCitations: B.positionCitations || [],
-    mark, markAnywhere, claim: !!claimHit, blocked: !!blockedHit,
+    mark, markCited, markAnywhere, claim: !!claimHit, blocked: !!blockedHit,
     claimVerdicts: claims.map((c) => ({ claim: String(c.claim || '').slice(0, 160), citation: c.citation, physicallyPossible: c.physicallyPossible })),
   };
 }
@@ -241,7 +244,7 @@ if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === imp
   try {
     const r = await runFairBaseline({ caseId: arg('case', defaultCaseId()), models,
       chunked: !process.argv.includes('--no-chunked'), singles: !process.argv.includes('--only-chunked') });
-    const line = (name, x) => x && console.log(`${name}: ${x.error ? 'ERROR ' + x.error.slice(0, 200) : JSON.stringify({ mark: x.score?.mark, markAnywhere: x.score?.markAnywhere, claim: x.score?.claim, blocked: x.score?.blocked, s: x.seconds ?? x.wallSeconds, prompt: x.usage?.promptTokenCount })}`);
+    const line = (name, x) => x && console.log(`${name}: ${x.error ? 'ERROR ' + x.error.slice(0, 200) : JSON.stringify({ mark: x.score?.mark, markCited: x.score?.markCited, markAnywhere: x.score?.markAnywhere, claim: x.score?.claim, blocked: x.score?.blocked, s: x.seconds ?? x.wallSeconds, prompt: x.usage?.promptTokenCount })}`);
     for (const [m, x] of Object.entries(r.single || {})) line(m, x);
     line('chunked', r.chunked);
   } catch (e) { console.error('[fair] FAILED:', e.stack || e.message); process.exit(1); }

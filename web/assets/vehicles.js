@@ -51,7 +51,7 @@ const CARS = {
   sedan: {
     L: 4.9, W: 1.9, H: 1.45, bodyW: 1.82,
     wheel: { r: 0.335, w: 0.235, rim: 'alloy' }, axles: [0.96, 3.81],
-    top: [[0, 0.56], [0.025, 0.63], [0.07, 0.68], [0.16, 0.72], [0.45, 0.77], [0.95, 0.84], [1.45, 0.91], [1.74, 0.95], [2.6, 0.975],
+    top: [[0, 0.58], [0.025, 0.66], [0.07, 0.72], [0.16, 0.765], [0.45, 0.81], [0.95, 0.86], [1.45, 0.92], [1.74, 0.955], [2.6, 0.975],
       [3.6, 0.995], [3.96, 1.0], [4.4, 0.995], [4.66, 0.975], [4.78, 0.94], [4.85, 0.87], [4.885, 0.8], [4.9, 0.72]],
     bot: [[0, 0.33], [0.06, 0.255], [0.25, 0.2], [0.5, 0.19], [4.4, 0.19], [4.7, 0.24], [4.86, 0.3], [4.9, 0.36]],
     hw: [[0, 0.70], [0.02, 0.78], [0.07, 0.84], [0.2, 0.885], [0.55, 0.905], [1.2, 0.91], [3.9, 0.91], [4.4, 0.9], [4.7, 0.87], [4.84, 0.82], [4.9, 0.74]],
@@ -294,11 +294,12 @@ function buildCarTemplate(THREE, type) {
   // wheel-well blockers (stop see-through under the arches) + chassis
   for (const a of cfg.axles) {
     const wInner = cfg.bodyW - 2 * (tw + 0.07), h = f.yc + f.Ra - 0.16;
-    addMesh(roundedBox(THREE, wInner, h, f.Ra * 2, 0.02), M.underbody, 'wheelwell', [0, 0.14 + h / 2, z(a)]);
+    const y0 = Math.max(0.12, f.bot(L / 2) - 0.04), hh = f.yc + f.Ra - 0.02 - y0;
+    addMesh(roundedBox(THREE, wInner, hh, f.Ra * 2, 0.02), M.underbody, 'wheelwell', [0, y0 + hh / 2, z(a)]);
     for (const s of [-1, 1]) addMesh(roundedBox(THREE, 0.04, h * 0.75, f.Ra * 1.9, 0.015), M.underbody, 'well_liner', [s * (hwB - tw - 0.05), f.yc + 0.12, z(a)]);
   }
   const uEnd = cfg.bodyEnd || L;
-  addMesh(roundedBox(THREE, cfg.bodyW - 0.3, 0.12, uEnd - 0.5, 0.03), M.underbody, 'floorpan', [0, 0.2, z(uEnd / 2)]);
+  addMesh(roundedBox(THREE, cfg.bodyW - 0.3, 0.12, uEnd - 0.5, 0.03), M.underbody, 'floorpan', [0, f.bot(L / 2) - 0.02, z(uEnd / 2)]);
 
   // interior: dark tub at belt + headrests so glass reads as glass, not paint
   const g = cfg.gh;
@@ -317,6 +318,12 @@ function buildCarTemplate(THREE, type) {
   void eyeZ;
   if (type === 'van') addMesh(roundedBox(THREE, cfg.bodyW - 0.2, 0.8, 0.04, 0.01), M.interior, 'bulkhead', [0, f.top(2.4) + 0.4, z(2.45)]);
 
+  const ghY = (u, x) => {
+    const yb0 = f.top(u), yt = Math.max(f.ghTop(u), yb0 + 0.004), sink = 0.12, ybb = yb0 - sink;
+    const hw = (f.sideX(u, yb0 - 0.03) - 0.018) * (1 - g.tumble * Math.min(1, (yt - yb0) / 0.45));
+    const n = g.nTop, ct = Math.min(1, Math.pow(Math.abs(x) / hw, n / 2)), st = Math.sqrt(1 - ct * ct);
+    return (ybb + yt) / 2 + (yt - ybb) / 2 * Math.pow(st, 2 / n);
+  };
   // ---- front end
   const fu = (y) => f.noseU(y);
   const G = cfg.grille;
@@ -372,15 +379,16 @@ function buildCarTemplate(THREE, type) {
 
   // ---- mirrors (housing reaches exactly W/2)
   for (const s of [-1, 1]) {
-    const mu = cfg.mirror.u, my = cfg.mirror.y, big = cfg.mirror.big;
+    const mu = cfg.mirror.u, big = cfg.mirror.big, my = f.top(cfg.mirror.u) + (big ? 0.1 : 0.075);
     const hx = big ? 0.12 : 0.16, hy = big ? 0.26 : 0.11, hz = big ? 0.08 : 0.1;
     const cx = s * (cfg.W / 2 - hx / 2);
     addMesh(roundedBox(THREE, hx, hy, hz, 0.035), big ? M.trimGloss : mats[0], 'mirror_housing', [cx, my + (big ? 0.08 : 0), z(mu)], [0, -s * 0.12, 0], big ? null : 0);
     addMesh(roundedBox(THREE, hx * 0.86, hy * 0.82, 0.01, 0.02), M.mirror, 'mirror_glass', [cx, my + (big ? 0.08 : 0), z(mu) + hz / 2 + 0.002], [0, -s * 0.12, 0]);
-    const sx = f.sideX(mu, my);
-    addMesh(roundedBox(THREE, Math.max(0.02, Math.abs(cx) - hx / 2 - sx + 0.06), 0.03, 0.05, 0.01), M.trim, 'mirror_stalk', [s * ((Math.abs(cx) - hx / 2 + sx - 0.06) / 2), my - 0.03, z(mu) + 0.02]);
+    const sx = f.sideX(mu, f.top(mu) - 0.04);
+    const sy = Math.min(my - 0.03, f.top(mu) + 0.03);
+    addMesh(roundedBox(THREE, Math.max(0.02, Math.abs(cx) - hx / 2 - sx + 0.06), 0.035, 0.06, 0.012), big ? M.trimGloss : M.trim, 'mirror_stalk', [s * ((Math.abs(cx) - hx / 2 + sx - 0.06) / 2), sy, z(mu) + 0.02]);
   }
-  // ---- door handles (body colour, flush)
+  // ---- door handles (gloss black, flush)
   const handles = type === 'van' ? [1.6, 2.75] : type === 'pickup' ? [2.25, 2.95] : type === 'suv' ? [2.55, 3.6] : [2.62, 3.62];
   for (const hu of handles) for (const s of [-1, 1]) {
     const hy = f.top(hu) - (type === 'sedan' ? 0.09 : 0.1);
@@ -388,7 +396,9 @@ function buildCarTemplate(THREE, type) {
   }
   // ---- roof rails (suv)
   if (cfg.roofRails) for (const s of [-1, 1]) {
-    addMesh(roundedBox(THREE, 0.045, 0.035, 1.75, 0.015), M.trim, 'roof_rail', [s * 0.6, cfg.H - 0.0175, z(3.55)]);
+    const ry = ghY(2.9, 0.58) - 0.005;
+    addMesh(roundedBox(THREE, 0.045, 0.03, 1.6, 0.014), M.trim, 'roof_rail', [s * 0.58, ry + 0.045, z(3.5)]);
+    for (const fu2 of [2.78, 4.22]) addMesh(roundedBox(THREE, 0.05, 0.05, 0.12, 0.012), M.trim, 'roof_rail_foot', [s * 0.58, ry + 0.02, z(fu2)]);
   }
   // ---- side indicator repeaters / reflectors
   for (const s of [-1, 1]) {

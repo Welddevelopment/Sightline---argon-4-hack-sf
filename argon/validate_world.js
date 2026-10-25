@@ -37,6 +37,8 @@ export function staticScan(src) {
     [/\bsetTimeout\b|\bsetInterval\b|\brequestAnimationFrame\b|\basync\s+function\b|\bawait\b/, 'no timers/async'],
   ];
   for (const [re, msg] of banned) if (re.test(src)) errors.push(msg);
+  const lights = src.match(/new\s+THREE\.(DirectionalLight|SpotLight|PointLight|HemisphereLight|AmbientLight|RectAreaLight)\b/g);
+  if (lights) errors.push(`module creates its own lights (${[...new Set(lights.map((l) => l.replace(/new\s+THREE\./, '')))].join(', ')}); remove them — sun/sky come only from assets.environment({ date, timeOfDay, utcOffset, timeZone, lat, lon, weather }) with the case's cited values`);
   const geo = (src.match(/new\s+THREE\.\w+Geometry\b/g) || []).length;
   if (geo) warnings.push(`module builds ${geo} THREE geometr${geo === 1 ? 'y' : 'ies'} itself; v2 worlds should only place library assets`);
   return { errors, warnings, geometryCalls: geo };
@@ -142,6 +144,23 @@ async function runtimeCheck(file) {
   for (const f of world.facts || []) { if (!f.id || !f.text) errors.push(`fact ${f?.id}: id/text missing`); citeCheck(`fact ${f?.id}`, f?.citation); }
   for (const s of world.skids || []) { if (!objects[s.vehicle]) errors.push(`skid: vehicle "${s.vehicle}" not in objects`); if (!(s.length > 0)) errors.push(`skid ${s.vehicle}: length must be > 0`); citeCheck(`skid ${s.vehicle}`, s.citation); }
 
+  // lighting must come from the library's environment(), computed from the case's own date/time/place
+  const envCalls = calls.filter((c) => c.method === 'environment');
+  let sun = null;
+  if (!envCalls.length) errors.push('no assets.environment(...) call: add root.add(assets.environment({ date, timeOfDay, utcOffset, timeZone, lat, lon, lighting, weather })) with the case\'s cited date/time/location/weather');
+  else {
+    const a = envCalls[0].args[0] || {};
+    const miss = ['date', 'timeOfDay', 'lat', 'lon'].filter((k) => a[k] === undefined || a[k] === null || a[k] === '');
+    if (miss.length) errors.push(`assets.environment(...) is missing ${miss.join(', ')} — pass the case's own date, local time, latitude/longitude (approximate from the named place if needed) so the sun is computed, not guessed`);
+    if (!a.utcOffset && !a.timeZone) warnings.push('assets.environment: no utcOffset/timeZone; local time is converted with a longitude guess (no DST)');
+    if (envCalls.length > 1) warnings.push(`assets.environment called ${envCalls.length} times (once is enough)`);
+    let envNode = null; world.root.traverse((n) => { if (!envNode && n.userData?.isEnvironment) envNode = n; });
+    if (!envNode) errors.push('the assets.environment(...) result is not added under world.root');
+    const sk = envNode?.userData?.sky || {};
+    const az = sk.sunAzimuth ?? sk.sunAzimuthDeg, el = sk.sunElevation ?? sk.sunElevationDeg;
+    if (Number.isFinite(az)) sun = { azimuthDeg: Math.round(az * 10) / 10, elevationDeg: Math.round(el * 10) / 10 };
+  }
+
   // asset call sanity (lanes 3.0–3.7 m)
   for (const c of calls) {
     if (c.method === 'road') {
@@ -200,7 +219,7 @@ async function runtimeCheck(file) {
     errors, warnings,
     stats: { objects: ids.length, witnesses: (world.witnesses || []).length, facts: (world.facts || []).length, duration: dur, moving: moving.length,
       assetCalls: calls.length, assetMethods: [...new Set(calls.map((c) => c.method))], vehicleTypes: calls.filter((c) => c.method === 'vehicle' || c.method === 'parkedVehicle').map((c) => c.args[0]),
-      citations: inferredCount, plausibility: plaus.map((p) => ({ subject: p.subject, pass: p.pass, maxAccelG: p.maxAccelG, maxSpeedMph: p.maxSpeedMph })),
+      sun, citations: inferredCount, plausibility: plaus.map((p) => ({ subject: p.subject, pass: p.pass, maxAccelG: p.maxAccelG, maxSpeedMph: p.maxSpeedMph })),
       assetFallbacks: Object.fromEntries(Object.entries(assetStats).filter(([, s]) => s.box || s.fallback).map(([k, s]) => [k, { fallback: s.fallback, box: s.box }])) },
   };
 }

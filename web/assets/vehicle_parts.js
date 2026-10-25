@@ -52,7 +52,7 @@ export function getMaterials(THREE) {
   const Phys = THREE.MeshPhysicalMaterial || THREE.MeshStandardMaterial;
   const std = (o) => new THREE.MeshStandardMaterial(o);
   const m = {
-    glass: new Phys({ color: 0x0d1418, metalness: 0.0, roughness: 0.04, transparent: true, opacity: 0.82, clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 1.4 }),
+    glass: new Phys({ color: 0x0a1014, metalness: 0.0, roughness: 0.04, transparent: true, opacity: 0.9, clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 1.4 }),
     glassDark: new Phys({ color: 0x07090b, metalness: 0.0, roughness: 0.05, clearcoat: 1, clearcoatRoughness: 0.03 }),
     rubber: std({ color: 0x1b1c1e, roughness: 0.88, metalness: 0 }),
     tread: std({ color: 0x121314, roughness: 0.95, metalness: 0 }),
@@ -64,7 +64,7 @@ export function getMaterials(THREE) {
     trimGloss: new Phys({ color: 0x0b0c0d, roughness: 0.18, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.05 }),
     plastic: std({ color: 0x2a2c2f, roughness: 0.75, metalness: 0 }),
     underbody: std({ color: 0x0c0d0e, roughness: 0.95, metalness: 0 }),
-    interior: std({ color: 0x101112, roughness: 0.9, metalness: 0 }),
+    interior: std({ color: 0x0a0b0c, roughness: 0.95, metalness: 0, envMapIntensity: 0.3 }),
     brake: std({ color: 0x55585c, roughness: 0.5, metalness: 0.7 }),
     mirror: std({ color: 0x9aa3ab, roughness: 0.02, metalness: 1.0 }),
     lightHead: new Phys({ color: 0xc9ced3, roughness: 0.08, metalness: 0.6, clearcoat: 1, clearcoatRoughness: 0.02, emissive: 0x000000 }),

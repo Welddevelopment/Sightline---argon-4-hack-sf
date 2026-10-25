@@ -1,0 +1,65 @@
+[
+  {
+    "name": "Witness D",
+    "position": [
+      0,
+      0,
+      -45
+    ],
+    "eyeHeight": 1.6,
+    "lookAt": "veh_A",
+    "observationTime": 10.43,
+    "claim": "I watched the car the whole time until it hit the truck from the gas station on the north side of the highway.",
+    "confidence": "low",
+    "assumptions": "The gas station on the north side of the highway is not modeled in the world; placed the pedestrian witness north of the westbound lanes (z = -45 m, beyond road_wb north edge at z = -37.1 m) opposite the intersection at x = 0 m. Set observationTime to 10.43 s (moment of impact) since the witness claims to have watched the car until it hit the truck.",
+    "citation": "Live statement",
+    "source": "argon-live",
+    "latencyMs": 5216,
+    "model": "gemini-4-argon",
+    "modelSeconds": 4.792,
+    "attempt": 1,
+    "id": "wit_live_1"
+  },
+  {
+    "name": "Witness E",
+    "position": [
+      91.44,
+      0,
+      -32.9
+    ],
+    "eyeHeight": 1.2,
+    "lookAt": "veh_A",
+    "observationTime": 2,
+    "claim": "I was driving west about 100 yards from the crossover when the truck started its turn, and I could see the eastbound car coming the entire time.",
+    "confidence": "medium",
+    "assumptions": "Placed in the center of the westbound lanes (z = -32.9 m) 100 yards (91.44 m) east of the crossover center (x = 0) as a car driver (eyeHeight = 1.2 m) approaching from the east. Observation time set to t = 2 s when the tractor-trailer begins turning south out of the left-turn lane.",
+    "citation": "Live statement",
+    "source": "argon-live",
+    "latencyMs": 6341,
+    "model": "gemini-4-argon",
+    "modelSeconds": 6.178,
+    "attempt": 1,
+    "id": "wit_live_2"
+  },
+  {
+    "name": "Witness F",
+    "position": [
+      18,
+      0,
+      8
+    ],
+    "eyeHeight": 1.6,
+    "lookAt": "veh_A",
+    "observationTime": 10,
+    "claim": "I was nearby and I saw everything; the car never slowed down.",
+    "confidence": "low",
+    "assumptions": "The statement 'nearby' is completely vague with no specific landmark or side of the road mentioned, so I placed the pedestrian witness in front of the retail store on the SE corner at [18, 0, 8]. The observation time is set to t=10s just before impact to test their claim of seeing the car's final approach without slowing down.",
+    "citation": "Live statement",
+    "source": "argon-live",
+    "latencyMs": 6947,
+    "model": "gemini-4-argon",
+    "modelSeconds": 6.66,
+    "attempt": 1,
+    "id": "wit_live_3"
+  }
+]

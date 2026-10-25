@@ -24,7 +24,7 @@
   "865d7236e960cf40": {
     "statement": "I was pumping gas at the station on the north side of the highway, facing the intersection. I watched the car the whole time until it hit the truck.",
     "witness": {
-      "name": "New Witness",
+      "name": "Witness D",
       "position": [
         0,
         0,
@@ -32,38 +32,38 @@
       ],
       "eyeHeight": 1.6,
       "lookAt": "veh_A",
-      "observationTime": 10.4,
-      "claim": "Watched the car the whole time until it hit the truck from the gas station on the north side of the highway.",
+      "observationTime": 10.43,
+      "claim": "I watched the car the whole time until it hit the truck from the gas station on the north side of the highway.",
       "confidence": "low",
-      "assumptions": "The gas station is not modeled in the scene, so the witness is placed as a standing pedestrian (eye height 1.6 m) on the north side of the westbound highway (north of z = -38.05 m) aligned with the intersection at x = 0. Observation time is set to 10.4 s, just at the moment of impact (10.43 s), because they claim to have watched the car until it hit the truck.",
+      "assumptions": "The gas station on the north side of the highway is not modeled in the world; placed the pedestrian witness north of the westbound lanes (z = -45 m, beyond road_wb north edge at z = -37.1 m) opposite the intersection at x = 0 m. Set observationTime to 10.43 s (moment of impact) since the witness claims to have watched the car until it hit the truck.",
       "citation": "Live statement",
       "model": "gemini-4-argon"
     },
     "model": "gemini-4-argon",
-    "seconds": 5.434,
-    "at": "2026-10-25T19:17:22.530Z"
+    "seconds": 4.792,
+    "at": "2026-10-25T19:27:07.603Z"
   },
   "63edd7a5e67738d1": {
     "statement": "I was driving west, about 100 yards from the crossover, when the truck started its turn. I could see the eastbound car coming the entire time.",
     "witness": {
-      "name": "Westbound Driver",
+      "name": "Westbound driver (100 yd out at turn start, sees car entire time, t=1s, x=91.4m, z=-32.9m, eye=1.2m, looks at veh_A, confidence=medium, assumptions=100 yd east of crossover center in WB lanes at t=1s when tractor begins turning south from z=-27.4m to -27.1m) -> Wait, schema requires clean name. Let's provide standard name.",
       "position": [
-        91.44,
+        91.4,
         0,
-        -32.7
+        -32.9
       ],
       "eyeHeight": 1.2,
       "lookAt": "veh_A",
-      "observationTime": 2,
-      "claim": "I was driving west about 100 yards from the crossover when the truck started its turn and could see the eastbound car coming the entire time.",
+      "observationTime": 1,
+      "claim": "I was driving west about 100 yards from the crossover when the truck started its turn, and I could see the eastbound car coming the entire time.",
       "confidence": "medium",
-      "assumptions": "Placed in the westbound travel lanes (z = -32.7) at x = 91.44 m (100 yards east of the crossover at x = 0, approaching from the east). Set observationTime to t = 2.0 s, when the truck-tractor begins turning south from its westbound left-turn lane.",
+      "assumptions": "Placed 100 yards (91.44 m) east of the crossover center (x=0) in the westbound travel lanes (z=-32.9 m) with car driver eye height (1.2 m). Observation time set to t=1.0 s when the tractor begins turning south out of the left-turn lane.",
       "citation": "Live statement",
       "model": "gemini-4-argon"
     },
     "model": "gemini-4-argon",
-    "seconds": 5.294,
-    "at": "2026-10-25T19:21:41.569Z"
+    "seconds": 10.119,
+    "at": "2026-10-25T19:29:20.125Z"
   },
   "e0ddbd29052b7390": {
     "statement": "I was standing in front of the store, about 20 meters from the stop sign, and the truck was blocking nothing.",
@@ -86,5 +86,49 @@
     "model": "gemini-4-argon",
     "seconds": 5.45,
     "at": "2026-10-25T19:24:54.598Z"
+  },
+  "ece46586511f9fd1": {
+    "statement": "I was nearby and I saw everything. The car never slowed down.",
+    "witness": {
+      "name": "Witness F",
+      "position": [
+        18,
+        0,
+        8
+      ],
+      "eyeHeight": 1.6,
+      "lookAt": "veh_A",
+      "observationTime": 10,
+      "claim": "I was nearby and I saw everything; the car never slowed down.",
+      "confidence": "low",
+      "assumptions": "The statement 'nearby' is completely vague with no specific landmark or side of the road mentioned, so I placed the pedestrian witness in front of the retail store on the SE corner at [18, 0, 8]. The observation time is set to t=10s just before impact to test their claim of seeing the car's final approach without slowing down.",
+      "citation": "Live statement",
+      "model": "gemini-4-argon"
+    },
+    "model": "gemini-4-argon",
+    "seconds": 6.66,
+    "at": "2026-10-25T19:27:52.148Z"
+  },
+  "bc3e6d48d7974143": {
+    "statement": "I was jogging on the shoulder of 140th, maybe 50 feet south of the highway, and saw the car hit the trailer.",
+    "witness": {
+      "name": "Jogger on NE 140th Ct",
+      "position": [
+        -4.2,
+        0,
+        17.6
+      ],
+      "eyeHeight": 1.6,
+      "lookAt": "veh_A",
+      "observationTime": 10.43,
+      "claim": "Jogging on the shoulder of 140th about 50 feet south of the highway and saw the car hit the trailer.",
+      "confidence": "medium",
+      "assumptions": "Placed on the west shoulder of NE 140th Court (just outside the 7.2 m road width at x = -4.2 m) and 50 feet (15.2 m) south of the US-27A eastbound southern edge (z = 2.4 m + 15.2 m = 17.6 m); east/west shoulder was not specified. Observation time is set to the moment of impact at t = 10.43 s.",
+      "citation": "Live statement",
+      "model": "gemini-4-argon"
+    },
+    "model": "gemini-4-argon",
+    "seconds": 26.031,
+    "at": "2026-10-25T19:29:50.831Z"
   }
 }

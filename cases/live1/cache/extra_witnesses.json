@@ -40,5 +40,26 @@
     "modelSeconds": 6.961,
     "attempt": 1,
     "id": "wit_live_2"
+  },
+  {
+    "name": "Witness (nearby pedestrian at SE corner near store, t=9.8s, looking at veh_A, eye 1.6m; low confidence: vague 'nearby' location, placed on walkable area near retail store and intersection at impact t=9.8s) (10.4s/0m/65mph/74mph/3.7m/18.3m/167.6m/39.6m/21.8m/13.8m/277.4m/8.4s/6.9m/31.3m/402.3m/26.8m/s/-18.0m/345.0m/0.0m/1.6m/9.8s/1.2m/1.8m/2.0m/2.4m/0.9144m/0.3048m/2.15%/1132ft/910ft/550ft/130ft/60ft/12ft/71ft/45ft/0.25mi/60mph/33.08m/s/10.43s/277.37m/21.82m/13.84m/3.66m/18.29m/26.82m/s/-28.04m/276.6m/23.9m/19.2m/222.5m/18.83s/16:36/140th/US-27A/HWY16FH018/live1/veh_A/veh_T_tractor/veh_T_trailer/mark_poi/road_us27a_wb/road_us27a_eb/road_median/road_ne140th/bld_retail_store/occ_shelter/occ_vertical_crest/occ_utility_pole/sig_stop_ne140th/mark_rest_veh_A/mark_rest_veh_T/veh_wit_A/veh_wit_C/wit_A/wit_B/wit_C/f_speed_limit/f_vehA_speed/f_skids_none/f_crest_dist/f_sight_time/f_lane_width/f_turn_lane_crossover/f_truck_length/f_post_impact_dist/f_witB_marked_pos/f_witB_truck_rest_mark/f_witA_pos/f_witC_pos/Depo/Exhibit/NTSB/Levy/FL/SE/WB/EB/AOI/POI/SUV/pickup/sedan/tractor/trailer/semitrailer/crossover/median/shoulder/lane/store/shelter/crest/pole/stop/sign/yard/highway/intersection/station/gas/north/south/east/west/pedestrian/driver/motorist/witness/impact/collision/rest/skid/brake/cruise/control/grade/sight/time/speed/limit/design/percentile/length/width/distance/height/eye/position/claim/confidence/assumptions/lookAt/observationTime/name/high/medium/low/true/false/null/0/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22) - Witness E",
+    "position": [
+      6.9,
+      0,
+      4.5
+    ],
+    "eyeHeight": 1.6,
+    "lookAt": "veh_A",
+    "observationTime": 9.8,
+    "claim": "I was nearby and I saw everything, and the car never slowed down.",
+    "confidence": "low",
+    "assumptions": "The statement only says 'nearby' without specifying a landmark, side of the road, or whether the witness was driving or standing; we placed them as a standing pedestrian (eye height 1.6 m) on the walkable area near the intersection and retail store at [6.9, 0, 4.5] m. Observation time is set to t = 9.8 s (the moment of impact) looking at 'veh_A' because they claim the car never slowed down right up to the crash.",
+    "citation": "Live statement",
+    "source": "argon-live",
+    "latencyMs": 20872,
+    "model": "gemini-4-argon",
+    "modelSeconds": 20.759,
+    "attempt": 1,
+    "id": "wit_live_3"
   }
 ]

@@ -15,7 +15,8 @@ export default function createWorld(THREE, assets) {
   };
 
   // ---------- light + ground: 16:36 local (EDT, UTC-4), clear, dry pavement; sun high and behind the eastbound car ----------
-  root.add(assets.environment({ timeOfDay: "16:36", date: '2016-05-07', utcOffset: '-04:00', lat: 29.387, lon: -82.447, lighting: "day", weather: 'clear' }));
+  root.add(assets.environment({ date: "2016-05-07", timeOfDay: "16:36:12", utcOffset: "-04:00", timeZone: "America/New_York", lat: 29.41, lon: -82.54, lighting: "day", weather: 'clear' }));
+  // sun position is computed by the library from date/time/place (NTSB/HAR-17/02 p.1, p.5: 4:36:12 p.m. EDT, clear; US-27A near Williston, FL)
   const ground = assets.groundPlane({ id: 'ground', size: 820, kind: 'grass' });
   ground.position.set(-50, 0, 0);
   root.add(ground);
@@ -204,6 +205,7 @@ export default function createWorld(THREE, assets) {
 
   const world = {
     meta: { caseId: "HWY16FH018", title: "Car into turning tractor-semitrailer at an uncontrolled median crossover, US-27A near Williston, Florida (2016)", timeOfDay: "16:36", lighting: "day", impactT: T_IMPACT,
+      date: "2016-05-07", timeZone: "America/New_York", utcOffset: "-04:00", lat: 29.41, lon: -82.54,
       source: 'NTSB/HAR-17/02 (HWY16FH018) physical facts + fictional witnesses', contract: 'v2' },
     root, duration, setTime, objects, witnesses, facts, skids,
   };

@@ -1,1 +1,10 @@
-{"name":"New Witness","position":[0,0,-45],"eyeHeight":1.6,"lookAt":"veh_A","observationTime":10.4,"claim":"Watched the car the whole time until it hit the truck from the gas station on the north side of the highway.","confidence":"low","assumptions":"The gas station is not modeled in the scene, so the witness is placed as a standing pedestrian (eye height 1.6 m) on the north side of the westbound highway (north of z = -38.05 m) aligned with the intersection at x = 0. Observation time is set to 10.4 s, just at the moment of impact (10.43 s), because they claim to have watched the car until it hit the truck."}
+{
+  "name": "Witness D",
+  "position": [0, 0, -45],
+  "eyeHeight": 1.6,
+  "lookAt": "veh_A",
+  "observationTime": 10.43,
+  "claim": "I watched the car the whole time until it hit the truck from the gas station on the north side of the highway.",
+  "confidence": "low",
+  "assumptions": "The gas station on the north side of the highway is not modeled in the world; placed the pedestrian witness north of the westbound lanes (z = -45 m, beyond road_wb north edge at z = -37.1 m) opposite the intersection at x = 0 m. Set observationTime to 10.43 s (moment of impact) since the witness claims to have watched the car until it hit the truck."
+}
