@@ -892,13 +892,21 @@ function assemble(T, id, type, variant, geoByMat, paintHex, dims) {
 function attachLights(T, root, lamps, heads) {
   const L = lampMats(T);
   const SM = SHARED && SHARED.attachLightAPI && SHARED.getMaterials ? SHARED.getMaterials(T) : null;
-  const tails = [];
+  const tails = [], halos = [];
   for (const l of lamps) {
     const mat = SM && l.kind === 'head' ? SM.lightHead : SM && l.kind === 'tail' ? SM.lightTail : L[l.kind];
     const m = lampMesh(T, l.geo, mat, l.name, l.pos, l.rot);
     m.userData.lampKind = l.kind;
     if (l.kind === 'tail') tails.push(m);
     root.add(m);
+    if (l.halo !== false) {                       // glare halo, shown with the lamp at night (setLights(on, {glow}))
+      const h = haloSprite(T, l.kind), [x, y, z] = l.pos;
+      const side = /side_marker|_side_/.test(l.name);
+      h.position.set(side ? x + Math.sign(x) * 0.03 : x, y, side ? z : z + (z < 0 ? -0.03 : 0.03));
+      if (l.haloScale) h.scale.multiplyScalar(l.haloScale);
+      h.name = l.name + '_halo'; h.userData.lampKind = l.kind;
+      root.add(h); halos.push(h);
+    }
   }
   let on = false, brake = false, beams = null, base = null;
   if (SM) {
@@ -923,13 +931,16 @@ function attachLights(T, root, lamps, heads) {
       }
       if (beams) for (const b of beams) b.visible = on;
     }
-    L.amber.emissiveIntensity = on ? 1.6 : 0;
-    L.marker.emissiveIntensity = on ? 1.2 : 0;
+    L.amber.emissiveIntensity = on ? 2.4 : 0;
+    L.marker.emissiveIntensity = on ? 2.0 : 0;
+    const glow = opts.glow ?? true;
+    for (const h of halos) h.visible = glow && (h.userData.lampKind === 'tail' ? on || brake : on);
   };
   let last = {};
   root.userData.setLights = (v, opts = {}) => { on = !!v; last = opts || {}; root.userData.lightsOn = on; apply(last); return root; };
   root.userData.setBrake = (v) => { brake = !!v; apply(last); return root; };
   root.userData.lamps = lamps.map(l => l.name);
+  root.userData.halos = halos;
   root.userData.lightsOn = false;
   apply({ spot: false });
 }

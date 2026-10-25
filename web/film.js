@@ -46,6 +46,7 @@ const wmEl = el('div', 'film-wm');
 const lblEl = el('div', 'film-labels');
 const sbEl = el('div', 'film-scale');
 const bannerEl = el('div', 'film-banner');
+const creditEl = el('div', 'film-credit');
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const styleProp = (style, k) => { const m = String(style || '').match(new RegExp('(?:^|;)\\s*' + k + '\\s*:\\s*([^;]+)')); return m ? m[1].trim() : null; };
 const W = () => stage.clientWidth || innerWidth, H = () => stage.clientHeight || innerHeight;
@@ -398,6 +399,8 @@ function quadMatrix(w, h, d) {
   return `matrix3d(${m[0]},${m[3]},0,${m[6]},${m[1]},${m[4]},0,${m[7]},0,0,1,0,${m[2]},${m[5]},0,1)`;
 }
 function placeImage(cam, op) {
+  creditEl.style.display = op > 0 && aerial ? 'block' : 'none';
+  if (aerial) creditEl.textContent = aerial.credit || 'Aerial: USGS The National Map (NAIP)';
   if (!(op > 0)) { imgEl.style.opacity = '0'; return; }
   const cs = aerial && aerial.url ? aerialCorners() : null;
   if (cs && imgEl.naturalWidth) {
@@ -563,7 +566,7 @@ function frame(i) {
       const fs = parseFloat(String(styleProp(sh.card && sh.card.style, 'font') || '').match(/([\d.]+)%/) ? RegExp.$1 : '');
       titleEl.style.setProperty('--fs', ((Number.isFinite(fs) ? fs : 5.6) * H() / 100).toFixed(1) + 'px');
       titleEl.style.display = 'flex';
-      hideAll(true); imgEl.style.opacity = '0';
+      hideAll(true); imgEl.style.opacity = '0'; creditEl.style.display = 'none';
       const wm = (sh.ovs || []).find((o) => /watermark/i.test(o.kind || ''));
       wmEl.textContent = wm ? wm.text : ''; wmEl.style.display = wm ? 'block' : 'none';
     }
