@@ -1,0 +1,11 @@
+{
+  "name": "Live witness",
+  "position": [12, 0, 10],
+  "eyeHeight": 1.6,
+  "lookAt": "veh_A",
+  "observationTime": 9.8,
+  "claim": "I was nearby and I saw everything. The car never slowed down.",
+  "citation": "Live statement",
+  "confidence": "low",
+  "assumptions": "The statement 'I was nearby' is too vague to determine a specific location. Placed the witness as a standing pedestrian (eye height 1.6 m) on the walkable apron in front of the retail store on the southeast corner ([12, 0, 10]), looking at Vehicle A (veh_A) just prior to impact (t=9.8s)."
+}

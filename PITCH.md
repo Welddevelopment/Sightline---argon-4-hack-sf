@@ -66,10 +66,11 @@ Rule of thumb: about 140 spoken words per minute. Lines in quotes are said out l
 
 ### 1:45 – 2:00 · Credibility (why an expert won't laugh at it)
 
-> "Before you trust that: her mark could be off a meter or two, so we test 25 spots in a two-meter circle around it. The truck blocks her from all 25. We also report the car was 28 degrees off her assumed line of gaze. And this world matches 11 of 12 facts NTSB measured, and the one miss is shown, not hidden. Model, prompt and input hashes are all logged."
+> "Her mark could be off a meter or two, so we tested 25 spots around it: the truck blocks all 25. This world matches 11 of 12 facts NTSB measured, miss shown. Every version logs model, prompt and input hashes."
 
     Point, in order: (1) robustness chip on wit_B ("blocked from 25 of 25": tractor 14, trailer 11), (2) gaze angle + "60° camera FOV" note,
     (3) NTSB match panel ("11 of 12 measured facts"), (4) methodology panel (model, prompt version, input hashes, kinematic label).
+    About 35 words, 15 seconds; let the panels carry the detail (the gaze angle, 28° on wit_B, is pointed at, not read out).
     Re-check the numbers on screen before the slot (see section 0). If a panel isn't there, say only the lines whose panel you can point at.
 
 ### 2:00 – 2:12 · Flash baseline
@@ -97,7 +98,7 @@ Rule of thumb: about 140 spoken words per minute. Lines in quotes are said out l
 
 > "This only works with Argon. In one pass it read the whole case file, watched the full 30-minute deposition, found the moment she marked the map, and wrote a to-scale world in about two minutes. Then it watched its own renders and fixed them. The expert still signs. We give them a cited first draft in minutes, not weeks."
 
-**Word budget:** ~460 words spoken. If you are running long at 2:12, skip the live witness explanation line and go straight to typing. If you are still long, cut the methodology sentence from the credibility beat, never the robustness line.
+**Word budget:** ~460 words spoken. If you are running long at 2:12, skip the live witness explanation line and go straight to typing. If you are still long, cut the hashes sentence from the credibility beat, never the robustness line.
 
 ---
 
@@ -107,10 +108,10 @@ Rule of thumb: about 140 spoken words per minute. Lines in quotes are said out l
 It's not meant to be shown to a jury. It's a case-analysis tool for the lawyer and their expert, used before depositions and before hiring a full reconstruction. Every object and witness position carries a citation to the page or video timestamp it came from, the world is plain inspectable code, uncertain values are labeled as assumptions, and a human expert reviews and signs anything that goes further. It finds where to look, it doesn't replace the expert.
 
 **2. "Isn't the AI just grading its own homework?"**
-No. Argon proposes and critiques, but the verdicts that matter come from independent code with no model in it: ray-cast sightlines from each witness's eye height at the moment they describe, and physics checks (skid-length vs speed, speed along the timeline). In the demo, the ray-cast says "blocked by the tractor" on its own. If Argon and the check disagree, the finding is shown as a disagreement, not resolved by the model.
+No. Argon proposes and critiques, but the verdicts that matter come from independent code with no model in it: ray-cast sightlines from each witness's eye height at the moment they describe, and physics checks (skid-length vs speed, speed along the timeline). In the demo, the ray-cast says "blocked by the tractor" on its own; in today's live run Argon's critique (77.5 s) found the contradiction and the ray-cast independently agreed (blocked by the semitrailer at t = 9.8 s). If Argon and the check disagree, the finding is shown as a disagreement, not resolved by the model.
 
 **3. "Why does this need Argon specifically?"**
-Because one call does what a pipeline can't. In a single pass Argon reads the whole case file and watches the full 30-minute deposition as video: about 164k input tokens, roughly 128k of them video, inside a 1M-token input context that leaves room for more depositions, dashcam and our own renders. Nobody told it where to look: it found the moment Witness B marks the map (Depo 27:05) on its own. That position is never spoken, so a transcript pipeline misses it, which is exactly what the Flash baseline shows. It then wrote a complete to-scale world module in 129 seconds, and in the critique round it watched its own renders next to the deposition and patched the world. (If asked about output size: the world is a compact code module, well inside Argon's 32,768-token output limit. The long part is the input, not the output.)
+Because one call does what a pipeline can't. In a single pass Argon reads the whole case file and watches the full 30-minute deposition as video: about 164k input tokens, roughly 128k of them video, inside a 1M-token input context that leaves room for more depositions, dashcam and our own renders. Nobody told it where to look: it found the moment Witness B marks the map on its own (it said Depo 27:05; the X goes down at 27:04 in our script). That position is never spoken, so a transcript pipeline misses it, which is exactly what the Flash baseline shows. It then wrote a complete to-scale world module in 129 seconds, and in the critique round it watched its own renders next to the deposition and patched the world. (If asked about output size: the world is a compact code module, well inside Argon's 32,768-token output limit. The long part is the input, not the output.)
 
 **4. "What's real and what's synthetic, and why?"**
 Physical facts are real and public: NTSB report HAR-17/02 for crash HWY16FH018 (road geometry, speeds, truck dimensions, timing), cited by page. Witnesses A, B and C are fictional, and the deposition is a simulated video we generated today, both labeled on screen. We did that because real depositions are private and real witnesses deserve privacy. Modeling choices NTSB didn't specify (e.g. trailer bed height, truck turn speed) are marked "assumed" in the case file.
@@ -160,13 +161,13 @@ Every dimension is cited to a page; anything inferred rather than stated is labe
 Correct, and it says so on screen. Motion is fitted to cited evidence and checked for physical plausibility (flags anything over 1 g, teleports, impossible speeds). Roadmap: export to crash-physics tools for the expert's own simulation.
 
 **"Her map mark is only good to a meter or two."**
-So we don't test one point. We ray-cast from 25 positions in a 2 m disc around her mark, with eye height ±0.1 m: the truck blocks her from **all 25 of 25** (tractor from 14, trailer from 11). Verdict: robust.
+So we don't test one point. We ray-cast from 25 positions in a 2 m disc around her mark, with eye height ±0.1 m: the truck blocks her from **all 25 of 25** (tractor from 14, trailer from 11). Verdict: robust. The live-run world gives the same 25 of 25.
 
 **"Line of sight doesn't mean she'd notice."**
-Agreed. We report the angle between her gaze and the target, flag peripheral vision past 30°, and state the 60° camera field of view on every witness render. The finding says "had line of sight", never "could see". That's more honest than most paid animations.
+Agreed. We report the angle between her gaze and the target (demo, gaze assumed toward the impact point: B 28.4°, A 2.4°, C 17.3°), flag peripheral vision past 30°, and state the 60° camera field of view on every witness render. The finding says "had line of sight", never "could see". That's more honest than most paid animations.
 
 **"It was dusk / there was glare."**
-Lighting objects (headlights, signals, streetlights) are cited from the evidence like everything else. Sun-angle glare check is on the roadmap.
+Lighting is cited like everything else (here: daylight, clear, sun high behind the eastbound car, HAR-17/02 p.5). We cross-checked with the computed sun position for 4:36 p.m. EDT, May 7, 2016 at Williston: about 45° up, azimuth 265° (just south of west), so it sits 45° or more off every near-horizontal witness sightline and no view falls in a glare cone. Roadmap: compute this automatically for each case's date, time and place and flag any sightline near the sun.
 
 ---
 

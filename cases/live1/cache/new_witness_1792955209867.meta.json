@@ -1,0 +1,25 @@
+{
+  "name": "new_witness_1792955209867",
+  "model": "gemini-4-argon",
+  "hash": "23166b493d394a56",
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 3088,
+    "candidatesTokenCount": 187,
+    "totalTokenCount": 3275,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 3088
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 187
+      }
+    ]
+  },
+  "seconds": 5.9,
+  "at": "2026-10-25T19:06:55.741Z"
+}

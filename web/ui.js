@@ -198,7 +198,7 @@ function renderCameras() {
     const b = document.createElement('button');
     b.textContent = c.label;
     b.dataset.cam = c.id;
-    b.onclick = () => { sl.setCamera(c.id); };
+    b.onclick = () => selectCamera(c.id);
     nav.appendChild(b);
   }
   markActiveCamera();
@@ -459,11 +459,31 @@ function renderChecks(checks) {
   const ul = $('checks');
   ul.innerHTML = '';
   const arr = Array.isArray(checks) ? checks : [];
-  $('checkCount').textContent = arr.length ? '(' + arr.filter((c) => c.pass).length + '/' + arr.length + ' pass)' : '';
+  // a failed testimony check is a confirmed contradiction (a finding), not an error; plausibility failures flag the reconstruction itself
+  const kindOf = (c) => {
+    if (c.check === 'plausibility') return c.pass === false ? 'flag' : 'plausible';
+    if (c.pass === false) return 'contradiction';
+    if (c.pass === true) return 'consistent';
+    return 'unverifiable';
+  };
+  const n = { contradiction: 0, consistent: 0, flag: 0, plausible: 0, unverifiable: 0 };
+  for (const c of arr) n[kindOf(c)]++;
+  const parts = [];
+  if (n.contradiction) parts.push(`${n.contradiction} contradiction${n.contradiction > 1 ? 's' : ''} confirmed`);
+  if (n.consistent) parts.push(`${n.consistent} consistent`);
+  if (n.unverifiable) parts.push(`${n.unverifiable} unverifiable`);
+  if (n.flag) parts.push(`${n.flag} motion flag${n.flag > 1 ? 's' : ''}`);
+  else if (n.plausible) parts.push('motion plausible');
+  $('checkCount').textContent = parts.length ? ': ' + parts.join(', ') : '';
   if (!arr.length) { ul.innerHTML = '<li class="muted">No check results.</li>'; return; }
-  for (const c of arr) {
+  const TAG = { contradiction: 'CONTRADICTION', consistent: 'CONSISTENT', flag: 'MOTION FLAG', plausible: 'PLAUSIBLE', unverifiable: 'UNVERIFIABLE' };
+  const order = { contradiction: 0, flag: 1, consistent: 2, unverifiable: 3, plausible: 4 };
+  for (const c of arr.slice().sort((a, b) => order[kindOf(a)] - order[kindOf(b)])) {
+    const k = kindOf(c);
+    const subj = sl.world && sl.world.objects[c.subject] ? cleanLbl(c.subject) : (sl.world && (sl.world.witnesses || []).find((w) => w.id === c.subject) ? shortWit(sl.world.witnesses.find((w) => w.id === c.subject)) : c.subject);
     const li = document.createElement('li');
-    li.innerHTML = `<span class="${c.pass ? 'ok' : 'bad'}">${c.pass ? 'PASS' : 'FAIL'}</span><span>${esc(c.check)} · ${esc(c.subject)} — ${esc(c.detail)}</span>`;
+    li.className = 'ck-' + k;
+    li.innerHTML = `<span class="ck-tag ${k}">${TAG[k]}</span><span><b>${esc(c.check)} · ${esc(subj)}</b> — ${esc(String(c.detail || '').replace(/could see/gi, 'had line of sight to'))}</span>`;
     ul.appendChild(li);
   }
 }

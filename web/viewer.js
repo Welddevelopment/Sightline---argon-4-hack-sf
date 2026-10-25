@@ -390,6 +390,22 @@ function updateInferred() {
   }
 }
 
+// schematic analysis marks (impact point, rest position, travel path) are map annotations, not things on the road:
+// show them in the overhead plan only. Physical marks (skid / tire / gouge / debris) stay visible at eye level.
+const PHYSICAL_MARK_RE = /skid|tire|tyre|gouge|scuff|scrape|debris|yaw/i;
+function isAnnotationMark(id, o) {
+  if (!o || !o.node || !(id.startsWith('mark_') || o.kind === 'mark')) return false;
+  return !PHYSICAL_MARK_RE.test(id + ' ' + (o.label || ''));
+}
+function updateAnnotationMarks() {
+  const show = camId === 'overhead';
+  for (const [id, o] of Object.entries(world.objects)) {
+    if (!isAnnotationMark(id, o)) continue;
+    if (o.node.userData.slVis == null) o.node.userData.slVis = o.node.visible !== false;
+    o.node.visible = show && o.node.userData.slVis;
+  }
+}
+
 function shortLabel(t) {
   t = String(t).replace(/\s*\([^)]*\)/g, '');   // drop parentheticals
   return t.length > 26 ? t.slice(0, 25) + '…' : t;
@@ -751,6 +767,7 @@ function renderFrame() {
   if (!world) return;
   world.root.updateMatrixWorld(true);
   applyCamera();
+  updateAnnotationMarks();
   updateMarkersAndLabels();
   updateSightRays();
   updateHighlight();

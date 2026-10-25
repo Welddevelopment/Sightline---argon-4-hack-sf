@@ -423,7 +423,9 @@ export function mountCases(app, h) {
     if (rr.mod && typeof rr.mod.renderViews === 'function') {
       try {
         const out = await rr.mod.renderViews({ world: state.world, worldUrl: state.world, views: [witness.id], t: witness.observationTime ?? 0, stillOnly: true, extraWitnesses: list, outDir: store.dir(id, 'renders', 'live') });
-        renderUrl = h.findRenderUrl(out);
+        // Stills land under cases/<id>/renders/live, served at /cases/<id>/... (h.findRenderUrl assumes ROOT/renders → 404).
+        const png = [...(out?.stills || []), ...(out?.pngs || [])].find((s) => typeof s === 'string' && path.resolve(s).startsWith(store.dir(id) + path.sep));
+        renderUrl = png ? urlFor(id, path.relative(store.dir(id), path.resolve(png)).split(path.sep).join('/')) : h.findRenderUrl(out);
       } catch (e) { warnings.push(`render skipped: ${h.errMsg(e)}`); }
     } else warnings.push(rr.error || 'render.renderViews unavailable');
 

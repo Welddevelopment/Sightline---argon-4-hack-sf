@@ -24,7 +24,7 @@ In the demo case, Witness B says she had a clear view of the car the whole way i
 
 ## Why it needs Argon
 
-The hard part is the input, not the output. In one pass Argon reads the whole case file and watches the full 30-minute deposition as video: about 164k input tokens, roughly 128k of them video, inside its 1M-token input context (which leaves room for more depositions, dashcam and our renders). Nobody points it at the right moment: in the live run it located Witness B's map mark at Depo 27:05 on its own, a position that is never spoken and so is invisible to a transcript pipeline. It then writes a complete to-scale world module in one call (129 s in the live run; the module fits well inside Argon's 32,768-token output limit), and in the critique round it watches its own renders next to the evidence and patches the world.
+The hard part is the input, not the output. In one pass Argon reads the whole case file and watches the full 30-minute deposition as video: about 164k input tokens, roughly 128k of them video, inside its 1M-token input context (which leaves room for more depositions, dashcam and our renders). Nobody points it at the right moment: in the live run it located Witness B's map mark at Depo 27:05 on its own, a position that is never spoken and so is invisible to a transcript pipeline. It then writes a complete to-scale world module in one call (129 s in the live run; the module fits well inside Argon's 32,768-token output limit), and in the critique round it watches its own renders next to the evidence and patches the world (77.5 s in the live run, which found Witness B's contradiction; the independent ray-cast agreed: blocked by the semitrailer at t = 9.8 s).
 
 For comparison, a paid forensic crash animation costs roughly $2k to $20k+ and takes weeks.
 
@@ -133,9 +133,9 @@ We used open-source libraries (Three.js, Express, Playwright, @sparticuz/chromiu
 - **Accuracy is unvalidated.** We validate against public NTSB investigations with known answers: **11 of 12** measured facts match on this case (`cases/demo/cache/validation.json`; the miss is NTSB's 10.4 s crest-to-impact time, which can't be checked because the modeled car path starts about 1.6 m short of the crest). Next, a benchmark across dozens of cases.
 - **Geometry from documents, not a survey.** Every dimension is cited; inferred values are labeled and drawn in amber. Roadmap: aerial imagery and scans.
 - **Kinematic, not physics.** Motion is fitted to cited evidence and checked for physical plausibility (over 1 g, teleports, impossible speeds). Roadmap: export to crash-physics tools.
-- **Her map mark is only good to ±1–2 m.** We ray-cast from 25 positions in a 2 m disc around it (eye height ±0.1 m): in the demo, blocked from **25 of 25** (tractor 14, trailer 11).
-- **Line of sight is not the same as noticing.** We report the angle between her gaze and the target, flag anything past 30° as peripheral, and state the 60° camera field of view. Findings say "had line of sight", never "could see".
-- **Night and glare.** Lighting objects are cited from the evidence; a sun-angle glare check is on the roadmap.
+- **Her map mark is only good to ±1–2 m.** We ray-cast from 25 positions in a 2 m disc around it (eye height ±0.1 m): blocked from **25 of 25** in both the demo world (tractor 14, trailer 11) and the live-run world.
+- **Line of sight is not the same as noticing.** We report the angle between her gaze and the target (demo, gaze assumed toward impact: B 28.4°, A 2.4°, C 17.3°), flag anything past 30° as peripheral, and state the 60° camera field of view. Findings say "had line of sight", never "could see".
+- **Lighting and glare.** Lighting is cited from the evidence (demo: daylight, sun high behind the eastbound car, HAR-17/02 p.5). The computed sun position for 4:36 p.m. EDT, May 7, 2016 at Williston is about 45° up at azimuth 265°, at least 45° off every near-horizontal witness sightline, so no glare. Roadmap: compute it automatically per case (date, time, place) and flag sightlines near the sun.
 
 ## Limits
 

@@ -1,0 +1,109 @@
+{
+  "world": "cases/demo/worlds/world_v2.js",
+  "t": 9.9,
+  "meta": {
+    "caseId": "HWY16FH018",
+    "title": "Car into turning tractor-semitrailer at an uncontrolled median crossover, US-27A near Williston, Florida (2016)",
+    "timeOfDay": "16:36",
+    "lighting": "day",
+    "source": "NTSB/HAR-17/02 (HWY16FH018) physical facts + fictional witnesses"
+  },
+  "cameras": [
+    {
+      "id": "wit_A",
+      "node": "cam_wit_A",
+      "label": "Witness A (fictional)",
+      "position": [
+        357.2,
+        1.5,
+        -34.75
+      ],
+      "lookAt": [
+        -20.01799999999999,
+        0.7225000005960465,
+        0
+      ],
+      "fovDeg": 60,
+      "aspect": 1.7777777777777777
+    },
+    {
+      "id": "wit_B",
+      "node": "cam_wit_B",
+      "label": "Witness B (fictional)",
+      "position": [
+        7.5,
+        1.6,
+        6.5
+      ],
+      "lookAt": [
+        -20.01799999999999,
+        0.7225000005960465,
+        0
+      ],
+      "fovDeg": 60,
+      "aspect": 1.7777777777777777
+    },
+    {
+      "id": "wit_C",
+      "node": "cam_wit_C",
+      "label": "Witness C (fictional)",
+      "position": [
+        -18,
+        1.6,
+        -40.5
+      ],
+      "lookAt": [
+        0,
+        2.000000011920929,
+        7.334000011920931
+      ],
+      "fovDeg": 60,
+      "aspect": 1.7777777777777777
+    },
+    {
+      "id": "oblique",
+      "node": "cam_oblique",
+      "label": "Oblique (SW, elevated)",
+      "position": [
+        -38,
+        22.045,
+        40
+      ],
+      "lookAt": [
+        4,
+        0.045,
+        -10
+      ],
+      "fovDeg": 60,
+      "aspect": 1.7777777777777777
+    },
+    {
+      "id": "overhead",
+      "node": "cam_overhead",
+      "label": "Overhead",
+      "position": [
+        0,
+        120.045,
+        0.01
+      ],
+      "lookAt": [
+        0,
+        0.045,
+        0
+      ],
+      "fovDeg": 60,
+      "aspect": 1.7777777777777777
+    }
+  ],
+  "sun": {
+    "dirThree": [
+      -0.6199304198780666,
+      0.752772652709081,
+      0.22140372138502382
+    ],
+    "elevationDeg": 48.83112783038303,
+    "azimuthDeg": 250.34617594194668,
+    "intensity": 1.7
+  },
+  "frame": "three.js: +X east, -Z north, Y up (glTF importer maps to Blender X east, +Y north, Z up)"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Live witness",
+  "position": [91.4, 0, -29.8],
+  "eyeHeight": 1.2,
+  "lookAt": "veh_A",
+  "observationTime": 9.8,
+  "claim": "I was driving west about 100 yards from the crossover when the truck started its turn, and I could see the eastbound car coming the entire time.",
+  "citation": "Live statement",
+  "confidence": "medium",
+  "assumptions": "100 yards (91.4 m) east of the intersection/crossover (x = 91.4 m) in the westbound travel lanes (z = -29.8 m, between WB inside at -28.0 m and WB outside at -31.7 m). Assumed standard passenger car eye height (1.2 m) and evaluated at t = 9.8 s (just before impact, matching other witnesses testing "the entire time" claims)."
+}

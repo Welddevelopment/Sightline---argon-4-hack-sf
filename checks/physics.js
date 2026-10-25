@@ -2,7 +2,13 @@
 // Independent math over a world module's setTime(): skid speed range, perception-reaction time (PRT)
 // available before impact, and kinematic plausibility of every moving object.
 // No case-specific facts, ids or numbers live here.
+// Plausibility: >1.0 g fails outside +-0.5 s of impact. For an object that took part in the impact
+// (plan-view contact with another moving unit near impact, or >1 g inside the impact window), the whole
+// post-impact phase is excluded too: run-out with secondary impacts (fences, poles, kerbs) legitimately
+// exceeds 1 g. Those post-impact peaks are reported separately as information. Pre-impact >1 g always fails.
 import * as THREE from 'three';
+// Circular import is safe: castRay is only used at call time (checks.js uses physics.* at call time too).
+import { castRay } from './checks.js';
 
 export const KINEMATIC_LABEL = "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation.";
 
@@ -49,16 +55,6 @@ function isVisibleChain(o) {
 function isDescendant(node, ancestor) {
   for (let n = node; n; n = n.parent) if (n === ancestor) return true;
   return false;
-}
-
-// Same aim rule as checks.js: bbox center, near the top for tall things.
-function aimPoint(obj) {
-  const box = new THREE.Box3().setFromObject(obj.node);
-  if (box.isEmpty()) return worldPos(obj.node);
-  const c = box.getCenter(new THREE.Vector3());
-  const size = box.getSize(new THREE.Vector3());
-  if (obj.kind === 'signal' || size.y > 3) c.y = Math.max(box.min.y, box.max.y - 0.15);
-  return c;
 }
 
 function shortName(s) {
@@ -179,10 +175,21 @@ export function plausibilityCheck(world) {
     for (const id of moving) {
       kin[id].acc.forEach((a, i) => { if (a && -a.tang > best) { best = -a.tang; bestT = ts[i]; bestId = id; } });
     }
-    if (bestT !== null) impact = { t: bestT, source: `estimated: strongest deceleration (${bestId}, ${r1(best / G)} g)` };
+    if (bestT !== null) impact = { t: bestT, source: `estimated: strongest deceleration (${bestId}, ${r1(best / G)} g)`, fromDecel: true };
   }
   const halfSpan = (ACCEL_HALF_SPAN + 1) * DT;   // accel sample footprint
   const nearImpact = (t) => impact && Math.abs(t - impact.t) <= IMPACT_WINDOW_S + halfSpan;
+  const postImpact = (t) => impact && t > impact.t + IMPACT_WINDOW_S + halfSpan;
+
+  // Units in plan-view contact with another moving unit within 1 s of impact took part in it.
+  const contactUnits = new Set();
+  if (impact) {
+    try {
+      for (const p of unitContacts(world, movingUnits(world))) {
+        if (p.t !== null && Math.abs(p.t - impact.t) <= 1.0) { contactUnits.add(p.a); contactUnits.add(p.b); }
+      }
+    } catch { /* contact is a hint only */ }
+  }
 
   const out = [];
   for (const id of moving) {
@@ -197,12 +204,19 @@ export function plausibilityCheck(world) {
       if (sp > maxSpeed) { maxSpeed = sp; maxSpeedT = ts[i]; }
       if (sp > SPEED_LIMIT_MPS) fast.push([ts[i], sp]);
     });
-    let maxA = 0, maxAT = null, impactA = 0;
+    const clean = (a) => {
+      for (let k = Math.max(0, a.lo); k <= Math.min(seg.length - 1, a.hi); k++) if (jumpSegs.has(k)) return false;
+      return true;
+    };
+    let impactA = 0;
+    acc.forEach((a, i) => { if (a && clean(a) && nearImpact(ts[i])) impactA = Math.max(impactA, a.mag); });
+    // Not when the impact time was itself estimated from the strongest deceleration (that would excuse the flagged motion).
+    const involved = !!impact && !impact.fromDecel && (contactUnits.has(unitOf(id)) || impactA > ACCEL_LIMIT_G * G);
+    let maxA = 0, maxAT = null, postA = 0, postAT = null;
     const hard = [];
     acc.forEach((a, i) => {
-      if (!a) return;
-      for (let k = Math.max(0, a.lo); k <= Math.min(seg.length - 1, a.hi); k++) if (jumpSegs.has(k)) return;
-      if (nearImpact(ts[i])) { impactA = Math.max(impactA, a.mag); return; }
+      if (!a || !clean(a) || nearImpact(ts[i])) return;
+      if (involved && postImpact(ts[i])) { if (a.mag > postA) { postA = a.mag; postAT = ts[i]; } return; }
       if (a.mag > maxA) { maxA = a.mag; maxAT = ts[i]; }
       if (a.mag > ACCEL_LIMIT_G * G) hard.push([ts[i], a.mag]);
     });
@@ -217,20 +231,28 @@ export function plausibilityCheck(world) {
     }
     if (hard.length) {
       const t0 = hard[0][0], t1 = hard[hard.length - 1][0];
-      issues.push(`acceleration ${r2(maxA / G)} g at t=${fmt(maxAT)} s exceeds ${ACCEL_LIMIT_G} g outside the impact window` +
+      const when = impact && maxAT < impact.t ? 'before impact' : 'outside the impact window';
+      issues.push(`acceleration ${r2(maxA / G)} g at t=${fmt(maxAT)} s exceeds ${ACCEL_LIMIT_G} g ${when}` +
         ` (over the limit at ${hard.length} samples between t=${fmt(t0)} and t=${fmt(t1)} s)`);
     }
     const pass = issues.length === 0;
     const nm = label(world, id);
-    const impactNote = impact ? ` Impact at t=${fmt(impact.t)} s (${impact.source}); accelerations within ±${IMPACT_WINDOW_S} s of it are excluded.` : ' No impact time found; no window excluded.';
+    const impactNote = !impact ? ' No impact time found; no window excluded.'
+      : involved ? ` Impact at t=${fmt(impact.t)} s (${impact.source}); ${nm} took part in it, so accelerations within ±${IMPACT_WINDOW_S} s of impact and during the post-impact run-out are excluded.`
+      : ` Impact at t=${fmt(impact.t)} s (${impact.source}); accelerations within ±${IMPACT_WINDOW_S} s of it are excluded.`;
+    const postNote = involved && postAT !== null
+      ? ` Info: post-impact peak ${r2(postA / G)} g at t=${fmt(postAT)} s` + (postA > ACCEL_LIMIT_G * G ? ' (consistent with secondary impacts during run-out; not counted).' : '.')
+      : '';
+    const scope = involved ? 'before impact' : 'outside the impact window';
     const detail = pass
-      ? `${nm} moves plausibly: peak speed ${r1(maxSpeed * MPS_TO_MPH)} mph, peak acceleration ${r2(maxA / G)} g outside the impact window, no position jumps.${impactNote}`
-      : `${nm} has implausible motion: ${issues.join('; ')}.${impactNote}`;
+      ? `${nm} moves plausibly: peak speed ${r1(maxSpeed * MPS_TO_MPH)} mph, peak acceleration ${r2(maxA / G)} g ${scope}, no position jumps.${impactNote}${postNote}`
+      : `${nm} has implausible motion: ${issues.join('; ')}.${impactNote}${postNote}`;
     out.push({
       check: 'plausibility', subject: id, pass,
       maxAccelG: r2(maxA / G), maxSpeedMph: r1(maxSpeed * MPS_TO_MPH), issues, detail,
       citation: world.objects[id]?.citation || '',
       maxAccelT: maxAT, maxSpeedT, impactAccelG: r2(impactA / G),
+      involvedInImpact: involved, postImpactAccelG: involved ? r2(postA / G) : null, postImpactAccelT: involved ? postAT : null,
       impactT: impact ? impact.t : null, impactSource: impact ? impact.source : null,
       label: KINEMATIC_LABEL,
     });
@@ -276,23 +298,21 @@ function eyeFn(world, observerId) {
   return { eye: () => o.node.localToWorld(local.clone()), exclude: unitParts(world, observerId), kind: 'driver' };
 }
 
-function rayClear(world, eye, to, skipIds) {
-  const dir = to.clone().sub(eye);
-  const distance = dir.length();
-  if (distance < 1e-6) return { visible: true, blockedBy: null };
-  dir.normalize();
-  const owners = [];
-  for (const [id, o] of Object.entries(world.objects || {})) {
-    if (o.occludes !== true || !o.node || skipIds.has(id)) continue;
-    owners.push([id, o.node]);
+// Line of sight via checks.js castRay (same ray rule as the sightline check). The observer's own unit and
+// the target's unit are made non-occluding for the duration of the cast (restored afterwards), so the
+// driver's own car body or the target's other parts (tractor vs trailer) do not count as blockers.
+function rayClear(world, eye, targetId, t, skipIds) {
+  const saved = [];
+  try {
+    for (const id of skipIds) {
+      const o = world.objects[id];
+      if (o && o.occludes === true) { saved.push(o); o.occludes = false; }
+    }
+    const r = castRay(world, eye.toArray(), targetId, t, { prepared: true });
+    return { visible: r.visible, blockedBy: r.blockedBy };
+  } finally {
+    for (const o of saved) o.occludes = true;
   }
-  const rc = new THREE.Raycaster(eye, dir, 0, Math.max(distance - 0.01, 0));
-  const hits = rc.intersectObjects(owners.map((x) => x[1]), true).filter((h) => isVisibleChain(h.object));
-  for (const h of hits) {
-    const owner = owners.find(([, n]) => isDescendant(h.object, n));
-    if (owner) return { visible: false, blockedBy: owner[0] };
-  }
-  return { visible: true, blockedBy: null };
 }
 
 function xzBox(node) {
@@ -368,7 +388,7 @@ export function prtCheck(world, { observerId, targetId, impactT } = {}) {
       for (const id of tgtIds) {
         const o = world.objects[id];
         if (!isVisibleChain(o.node)) continue;
-        const r = rayClear(world, eye, aimPoint(o), skip);
+        const r = rayClear(world, eye, id, t, skip);
         if (r.visible) { vis = true; break; }
         blk = blk || r.blockedBy;
       }

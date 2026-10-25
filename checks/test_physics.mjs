@@ -113,6 +113,38 @@ t('abrupt stop at the stated impact time is excused', () => {
   assert.ok(r.impactAccelG > 1);
 });
 
+// Impact at t=5 (20 m/s -> 8 m/s within the window), then a secondary hit: 8 m/s -> 0 at 2 g from t=7.
+const brake = (v0, a, t0) => (t) => (t < t0 ? v0 * (t - t0) : t < t0 + v0 / a ? v0 * (t - t0) - 0.5 * a * (t - t0) ** 2 : v0 * v0 / (2 * a));
+function runout(t) {
+  if (t < 5) return 20 * t;
+  if (t < 7) return 100 + 8 * (t - 5);
+  return 116 + brake(8, 2 * 9.81, 7)(t);
+}
+t('post-impact >1 g (secondary impacts) is excused for a car that had an impact, reported as info', () => {
+  const r = plausibilityCheck(oneCar(runout, { meta: { impactT: 5 } }))[0];
+  assert.equal(r.pass, true, r.detail);
+  assert.equal(r.involvedInImpact, true);
+  assert.ok(r.postImpactAccelG > 1.5, r.postImpactAccelG);
+  assert.ok(r.maxAccelG < 0.1, r.maxAccelG);
+  assert.match(r.detail, /post-impact peak/);
+});
+
+t('2 g pre-impact braking still fails for a car that had an impact', () => {
+  // 2 g stop from 30 m/s at t=1.5-3.03 s (pre-impact), then the stated impact at t=6 shoves the car 0.6 m.
+  const y = (t) => brake(30, 2 * 9.81, 1.5)(Math.min(t, 6)) + (t > 6 ? 3 * Math.min(t - 6, 0.2) : 0);
+  const r = plausibilityCheck(oneCar(y, { meta: { impactT: 6 } }))[0];
+  assert.equal(r.pass, false, r.detail);
+  assert.equal(r.involvedInImpact, true);
+  assert.ok(r.issues.some((s) => /before impact/.test(s)), r.issues.join('; '));
+});
+
+t('post-impact >1 g fails for an object that took no part in the impact', () => {
+  const late = (t) => (t < 7 ? 20 * t : 140 + brake(20, 2 * 9.81, 7)(t));
+  const r = plausibilityCheck(oneCar(late, { meta: { impactT: 3 } }))[0];
+  assert.equal(r.involvedInImpact, false);
+  assert.equal(r.pass, false, r.detail);
+});
+
 t('speed over 60 m/s fails', () => {
   const r = plausibilityCheck(oneCar((t) => 70 * t))[0];
   assert.equal(r.pass, false);

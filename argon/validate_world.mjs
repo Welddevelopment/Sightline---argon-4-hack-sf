@@ -10,7 +10,13 @@ import path from 'node:path';
 import { pathToFileURL, fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const SOURCE = 'NTSB HAR-17/02';
+const DEFAULT_SOURCE = 'published investigation';
+// source label: facts file object form {source, facts}, else the common report id in citations (e.g. "NTSB/HAR-17/02 p.3" -> "NTSB HAR-17/02")
+function sourceOf(raw, facts) {
+  if (raw && !Array.isArray(raw) && raw.source) return raw.source;
+  const ids = facts.map((f) => /^\s*([A-Z]{2,})\/([A-Z]+-?\d+\/\d+)/.exec(f.citation || '')).map((m) => (m ? `${m[1]} ${m[2]}` : null));
+  return ids.length && ids[0] && ids.every((x) => x === ids[0]) ? ids[0] : DEFAULT_SOURCE;
+}
 const MPS_TO_MPH = 2.2369363;
 const G = 9.80665;
 
@@ -281,8 +287,8 @@ function judge(fact, res) {
 export async function validateWorld(caseId, worldPath, opts = {}) {
   const factsFile = path.join(ROOT, 'cases', caseId, 'validation_facts.json');
   if (!fs.existsSync(factsFile)) return null;
-  let facts = JSON.parse(fs.readFileSync(factsFile, 'utf8'));
-  if (!Array.isArray(facts)) facts = facts.facts || [];
+  const raw = JSON.parse(fs.readFileSync(factsFile, 'utf8'));
+  const facts = Array.isArray(raw) ? raw : raw.facts || [];
   const wp = worldPath ? path.resolve(worldPath) : latestWorld(caseId);
   if (!wp || !fs.existsSync(wp)) throw new Error(`no world found for case ${caseId}`);
   const world = await loadWorld(wp);
@@ -302,7 +308,7 @@ export async function validateWorld(caseId, worldPath, opts = {}) {
   });
   const rel = path.relative(ROOT, wp).split(path.sep).join('/');
   const result = {
-    source: SOURCE, caseId, world: '/' + rel, matched: items.filter((i) => i.pass).length, total: items.length,
+    source: sourceOf(raw, facts), caseId, world: '/' + rel, matched: items.filter((i) => i.pass).length, total: items.length,
     impact: ctx.impact ? { t: ctx.impact.t, contact: ctx.impact.contact, point: ctx.impactPoint ? [r(ctx.impactPoint.x), r(ctx.impactPoint.z)] : null } : null,
     roles: ctx.roles, notes: ctx.notes, generatedAt: new Date().toISOString(), items,
   };

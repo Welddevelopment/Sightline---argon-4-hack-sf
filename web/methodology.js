@@ -33,7 +33,10 @@
   const fmtTime = (s) => { if (!s) return '—'; const d = new Date(s); return isNaN(d) ? esc(s) : d.toISOString().replace('T', ' ').replace(/\.\d+Z$/, ' UTC'); };
   const base = (p) => String(p || '').split(/[\\/]/).pop();
   const hash = (h, n = 16) => h ? `<span class="mth-hash" title="${esc(h)}">${esc(String(h).slice(0, n))}${String(h).length > n ? '…' : ''}</span>` : '<span class="mth-na">not recorded</span>';
-  const withUnit = (v, u) => v == null ? '—' : `${fmtNum(v)}${u ? ' ' + esc(u) : ''}`;
+  const fmtVal = (v) => Array.isArray(v) ? '(' + v.map((x) => fmtNum(x)).join(', ') + ')' : fmtNum(v);
+  const withUnit = (v, u) => v == null ? '—' : `${fmtVal(v)}${u ? ' ' + esc(u) : ''}`;
+  const fmtTol = (t, u) => t == null ? '—' : (typeof t === 'object' && !Array.isArray(t))
+    ? Object.entries(t).map(([k, x]) => `± ${withUnit(x, u)} <span class="mth-muted">${esc(k)}</span>`).join('<br>') : '± ' + withUnit(t, u);
   const verRe = /_v(\d+)\.js$/;
   const worldVer = (w, p) => (p && p.version != null) ? p.version : ((String(w).match(verRe) || [])[1] ?? '?');
 
@@ -86,8 +89,8 @@
     const total = v.total ?? v.items.length, matched = v.matched ?? v.items.filter((i) => i.pass).length;
     const ok = matched === total;
     const rows = v.items.map((i) => `<tr class="${i.pass ? 'pass' : 'fail'}">
-      <td>${esc(i.label || i.id)}</td><td class="num">${withUnit(i.expected, i.unit)}</td><td class="num">${withUnit(i.actual, i.unit)}</td>
-      <td class="num">${i.tolerance == null ? '—' : '± ' + withUnit(i.tolerance, i.unit)}</td>
+      <td>${esc(i.label || i.id)}${i.note ? `<div class="mth-path">${esc(i.note)}</div>` : ''}</td><td class="num">${withUnit(i.expected, i.unit)}</td><td class="num">${i.actual == null ? '<span class="mth-na">not reached</span>' : withUnit(i.actual, i.unit)}</td>
+      <td class="num">${fmtTol(i.tolerance, i.unit)}</td>
       <td class="res">${i.pass ? 'PASS' : 'FAIL'}</td><td class="cit">${esc(i.citation || '')}</td></tr>`).join('');
     return `<div class="mth-valid ${ok ? 'ok' : 'partial'}">
       <div class="mth-valid-head"><span class="mth-badge">${ok ? 'VALIDATED' : 'PARTIAL'}</span>
@@ -119,11 +122,11 @@
     const rows = provEntries.map(([w, p]) => {
       const u = p.usage || {};
       return `<tr><td><b>v${esc(worldVer(w, p))}</b><div class="mth-path">${esc(base(w))}${p.parentWorld ? ' ← ' + esc(base(p.parentWorld)) : ''}</div></td>
-        <td>${esc(p.model || '—')}<div class="mth-path">${esc(p.mode || '')}${p.finishReason ? ' · ' + esc(p.finishReason) : ''}</div></td>
+        <td>${p.model ? esc(p.model) : `<span class="mth-na">${p.mode === 'seeded' ? 'seeded fixture' : '—'}</span>`}<div class="mth-path">${esc(p.mode || '')}${p.finishReason ? ' · ' + esc(p.finishReason) : ''}</div></td>
         <td>${esc(base(p.promptFile) || '—')}<div class="mth-path">${p.promptVersion ? 'sha256 ' + hash(p.promptVersion, 12) : ''}</div></td>
         <td>${fmtTime(p.createdAt)}</td>
         <td class="num">${p.thinkingBudget == null ? '—' : fmtInt(p.thinkingBudget)}</td>
-        <td class="num">${fmtInt(u.promptTokens)} / ${fmtInt(u.outputTokens)} / ${fmtInt(u.thoughtsTokens)}</td>
+        <td class="num">${[u.promptTokens, u.outputTokens, u.thoughtsTokens].some((x) => x != null) ? `${fmtInt(u.promptTokens)} / ${fmtInt(u.outputTokens)} / ${fmtInt(u.thoughtsTokens)}` : '<span class="mth-na">not recorded</span>'}</td>
         <td class="num">${p.seconds == null ? '—' : fmtNum(p.seconds, 1) + ' s'}</td>
         <td>${hash(p.outputSha256, 12)}</td></tr>`;
     }).concat(metaFallback.map((m) => `<tr class="mth-fallback"><td><b>${esc(m.name)}</b><div class="mth-path">run metadata (no provenance file)</div></td>

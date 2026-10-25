@@ -55,6 +55,9 @@ html.mth-open, html.mth-open body { overflow: hidden; }
 .mth-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .mth-table tbody tr:last-child td, .mth-table tbody tr:last-child th { border-bottom: 0; }
 .mth-runs td { white-space: normal; }
+.mth-runs td:first-child { min-width: 120px; }
+.mth-runs td:first-child .mth-path { word-break: normal; }
+.mth-runs th.num { white-space: normal; }
 .mth-fallback td { color: var(--ink2); }
 .mth-assume th { width: 26%; font-weight: 600; font-size: 12px; letter-spacing: 0; text-transform: none; color: var(--ink); }
 .mth-assume td.val { width: 26%; font: 600 12px/1.4 var(--mono, monospace); white-space: nowrap; }

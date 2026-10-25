@@ -16,3 +16,10 @@
 - NTSB validation: 11 of 12 matched. The miss is crest_to_impact_time (expected 10.4 s): the car path starts 343.4 m before impact, short of the 345 m needed. Stated openly in PITCH §3 and README. A WORLD/CASE fix (start veh_A path a few m earlier) would make it 12/12; then update the numbers.
 - wit_B robustness: blocked 25/25 (tractor 14, trailer 11), verdict robust; gaze 28.4° (assumed). Filled in PITCH §0, §1, §3 and README.
 - Witness B claim wording in script + README updated to the cached claim ("clear view of the car the whole way in ... nothing was in the way"); the old "driver's head / looking at the dash" line was stale.
+
+## Resume pass (after 12:02)
+- 1:45 credibility beat trimmed to ~35 spoken words (15 s): robustness 25/25, NTSB 11 of 12 with the miss shown, hashes logged; gaze 28° is pointed at, not read.
+- Live-run facts added: critique 77.5 s found the contradiction, ray-cast agreed (semitrailer, t=9.8 s) in PITCH Q2 and README "Why it needs Argon"; Q3 notes Argon said 27:05 vs scripted 27:04; robustness 25/25 also holds on the live world.
+- Gaze angles (B 28.4°, A 2.4°, C 17.3°, assumed toward impact) in PITCH §3 / README.
+- Lighting/glare item rewritten: cited lighting (HAR-17/02 p.5) + sun position computed by hand for 4:36 p.m. EDT 2016-05-07 at Williston (~45° elevation, az 265°) -> no glare. NOTE: no automatic sun/glare check exists in code; it is stated as roadmap. If one gets built, update the wording.
+- Re-verified: no "1M output" claims; 1M is described only as input context, 32,768 as the output limit.
