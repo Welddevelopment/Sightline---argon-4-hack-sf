@@ -627,7 +627,7 @@ export function makeInterior(THREE, o = {}) {
   // floor tub
   add(roundedBox(THREE, W, 0.04, rearZ - dashZ + 0.2, 0.01), M.interior, 'int_floor', 0, floorY, (dashZ + rearZ) / 2);
   // dash: main block + top pad + centre stack
-  const dashTop = ey - 0.32;
+  const dashTop = o.dashTop ?? ey - 0.32;
   const DW = Math.min(W, o.dashW || W);
   add(roundedBox(THREE, DW, dashTop - floorY - 0.05, 0.38, 0.04), M.interior, 'int_dash', 0, (dashTop + floorY) / 2, dashZ - 0.12);
   add(roundedBox(THREE, DW - 0.04, 0.05, 0.5, 0.025), M.dash || M.interior, 'int_dash_top', 0, dashTop, dashZ - 0.08, -0.12);

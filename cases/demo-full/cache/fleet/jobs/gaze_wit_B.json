@@ -1,0 +1,59 @@
+{
+  "id": "gaze_wit_B",
+  "type": "gaze",
+  "witness": "wit_B",
+  "interactionId": "v1_ChdkbmZlYXFIRE9zR0p5dE1QeG9IbHNBNBIXZG5mZWFxSERPc0dKeXRNUHhvSGxzQTQ",
+  "wallMs": 343453,
+  "status": "completed",
+  "environmentId": "5594c03c7ba244d067e309abf60d0667",
+  "usage": {
+    "total": 20258,
+    "input": 18460,
+    "cached": 8914
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"gaze_wit_B\",\"ok\":true,\"ms\":1205}",
+    "interpretation": "The result indicates that witness wit_B had vehicle veh_A in their peripheral line of sight at approximately 31.5 degrees off-axis at observation time 9.8 seconds."
+  },
+  "result": {
+    "task": {
+      "id": "gaze_wit_B",
+      "type": "gaze",
+      "witness": "wit_B",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_A",
+      "tObs": 9.8,
+      "gaze": {
+        "offAxisDeg": 31.5,
+        "assumed": true,
+        "cameraFovDeg": 60,
+        "peripheral": true,
+        "source": "mark_poi"
+      },
+      "altGazeDegByMark": {
+        "mark_poi": 31.46,
+        "mark_pole_poi": 164.27,
+        "mark_tire_impression": 28.93
+      }
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 1205,
+      "worldSha": "526ea902d593",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true
+}

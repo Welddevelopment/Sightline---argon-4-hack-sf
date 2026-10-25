@@ -140,3 +140,4 @@ html.clean .slo-toggle { display: none; }
 .slo-card-claim .citation { font-size: 10.5px; }
 .slo-card-m { font-size: 11px; line-height: 1.4; }
 .slo-card-n, .slo-card-s { font-size: 10px; line-height: 1.4; }
+.slo-card .slo-card-m.finding { padding: 5px 8px; margin: 5px 0 0; cursor: default; }
