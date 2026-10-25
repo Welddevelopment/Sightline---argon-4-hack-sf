@@ -6320,2075 +6320,707 @@
  {
   "t_start_sec": 6000,
   "speaker": "Attorney",
-  "text": "I want to shift gears a little and go over some follow-up topics. First, the written statement you mentioned earlier. When did you give that statement?",
-  "dur_sec": 9.56
- },
- {
-  "t_start_sec": 6010.3,
-  "speaker": "Witness B",
-  "text": "A few days after. I think it was the Tuesday or the Wednesday. A deputy called me and asked if I'd come by and write down what I saw.",
-  "dur_sec": 10.67
- },
- {
-  "t_start_sec": 6021.7,
-  "speaker": "Attorney",
-  "text": "Did you go to the sheriff's office, or did the deputy come to you?",
-  "dur_sec": 5.15
- },
- {
-  "t_start_sec": 6027.58,
-  "speaker": "Witness B",
-  "text": "I went there. To the substation. My sister drove me.",
-  "dur_sec": 3.68
- },
- {
-  "t_start_sec": 6032,
-  "speaker": "Attorney",
-  "text": "Did your sister go in with you?",
-  "dur_sec": 2.57
- },
- {
-  "t_start_sec": 6035.3,
-  "speaker": "Witness B",
-  "text": "She came in and sat in the lobby. She didn't come in the room.",
-  "dur_sec": 5.15
- },
- {
-  "t_start_sec": 6041.19,
-  "speaker": "Attorney",
-  "text": "Who was in the room with you when you wrote it?",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 6045.97,
-  "speaker": "Witness B",
-  "text": "Just the deputy. He gave me a form and a pen and said take my time.",
-  "dur_sec": 5.88
- },
- {
-  "t_start_sec": 6052.59,
-  "speaker": "Attorney",
-  "text": "Was it the same deputy you talked to at the scene that afternoon?",
-  "dur_sec": 4.78
- },
- {
-  "t_start_sec": 6058.11,
-  "speaker": "Witness B",
-  "text": "I don't think so. The one at the scene was older. This one was younger. I could be wrong, there were a lot of them out there that day.",
-  "dur_sec": 10.67
- },
- {
-  "t_start_sec": 6069.51,
-  "speaker": "Attorney",
-  "text": "Fair enough. Did the deputy ask you questions before you started writing?",
-  "dur_sec": 4.41
- },
- {
-  "t_start_sec": 6074.66,
-  "speaker": "Witness B",
-  "text": "He asked me to just write it in my own words. Then after, he read it and asked me a couple of things.",
-  "dur_sec": 8.46
- },
- {
-  "t_start_sec": 6083.85,
-  "speaker": "Attorney",
-  "text": "Do you remember what he asked?",
-  "dur_sec": 2.21
- },
- {
-  "t_start_sec": 6086.79,
-  "speaker": "Witness B",
-  "text": "He asked what time it was, about. And he asked if I'd ever met anybody involved. I said no.",
-  "dur_sec": 6.99
- },
- {
-  "t_start_sec": 6094.51,
-  "speaker": "Attorney",
-  "text": "Had you?",
-  "dur_sec": 0.74
- },
- {
-  "t_start_sec": 6095.99,
-  "speaker": "Witness B",
-  "text": "No. I didn't know anybody. I was just there.",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 6100.03,
-  "speaker": "Attorney",
-  "text": "Did he ask you to add anything to the statement after he read it?",
-  "dur_sec": 5.15
- },
- {
-  "t_start_sec": 6105.91,
-  "speaker": "Witness B",
-  "text": "No. He said it was fine. I signed it and dated it.",
-  "dur_sec": 4.41
- },
- {
-  "t_start_sec": 6111.06,
-  "speaker": "Attorney",
-  "text": "How long was the statement, roughly?",
-  "dur_sec": 2.21
- },
- {
-  "t_start_sec": 6114.01,
-  "speaker": "Witness B",
-  "text": "Not long. Maybe a page. Most of a page. My handwriting's big.",
-  "dur_sec": 4.41
- },
- {
-  "t_start_sec": 6119.15,
-  "speaker": "Attorney",
-  "text": "You reviewed that statement before today, correct?",
-  "dur_sec": 2.57
- },
- {
-  "t_start_sec": 6122.46,
-  "speaker": "Witness B",
-  "text": "Yes. You all sent me a copy and I read it last week.",
-  "dur_sec": 4.78
- },
- {
-  "t_start_sec": 6127.98,
-  "speaker": "Attorney",
-  "text": "And when you read it last week, was there anything in it you thought was wrong?",
-  "dur_sec": 5.88
- },
- {
-  "t_start_sec": 6134.6,
-  "speaker": "Witness B",
-  "text": "No. It's what I wrote. It's what happened.",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 6138.28,
-  "speaker": "Attorney",
-  "text": "Is there anything you'd change about it today?",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 6141.96,
-  "speaker": "Witness B",
-  "text": "Maybe I'd write more. I was nervous. But I wouldn't change anything that's in there.",
-  "dur_sec": 5.52
- },
- {
-  "t_start_sec": 6148.21,
-  "speaker": "Attorney",
-  "text": "In that statement, you wrote, quote, \"I saw the whole thing,\" end quote. Do you remember writing that?",
-  "dur_sec": 6.62
- },
- {
-  "t_start_sec": 6155.56,
-  "speaker": "Witness B",
-  "text": "Yes.",
-  "dur_sec": 0.37
- },
- {
-  "t_start_sec": 6156.67,
-  "speaker": "Attorney",
-  "text": "What did you mean by that?",
-  "dur_sec": 2.21
- },
- {
-  "t_start_sec": 6159.61,
-  "speaker": "Witness B",
-  "text": "I meant I saw it. The car coming, the truck turning, and then when it happened. I saw the whole thing.",
-  "dur_sec": 7.72
- },
- {
-  "t_start_sec": 6168.07,
-  "speaker": "Opposing counsel",
-  "text": "Object to form.",
-  "dur_sec": 1.1
- },
- {
-  "t_start_sec": 6169.9,
-  "speaker": "Attorney",
-  "text": "You can answer.",
-  "dur_sec": 1.1
- },
- {
-  "t_start_sec": 6171.74,
-  "speaker": "Witness B",
-  "text": "I did answer. That's what I meant.",
-  "dur_sec": 2.57
- },
- {
-  "t_start_sec": 6175.05,
-  "speaker": "Attorney",
-  "text": "Did anyone suggest that phrase to you, \"I saw the whole thing\"?",
-  "dur_sec": 4.41
- },
- {
-  "t_start_sec": 6180.2,
-  "speaker": "Witness B",
-  "text": "No. Those are my words.",
-  "dur_sec": 1.84
- },
- {
-  "t_start_sec": 6182.78,
-  "speaker": "Attorney",
-  "text": "Did the deputy tell you what to write in any way?",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 6187.56,
-  "speaker": "Witness B",
-  "text": "No. He didn't tell me anything except to take my time and write what I saw.",
-  "dur_sec": 5.88
- },
- {
-  "t_start_sec": 6194.18,
-  "speaker": "Attorney",
-  "text": "Did you use any notes when you wrote the statement?",
-  "dur_sec": 3.68
- },
- {
-  "t_start_sec": 6198.59,
-  "speaker": "Witness B",
-  "text": "No. I didn't have any notes. I didn't write anything down that day. I was too shook up.",
-  "dur_sec": 6.62
- },
- {
-  "t_start_sec": 6205.95,
-  "speaker": "Attorney",
-  "text": "Between the afternoon of the collision and the day you wrote the statement, did you talk with anybody about what you'd seen?",
-  "dur_sec": 8.09
- },
- {
-  "t_start_sec": 6214.77,
-  "speaker": "Witness B",
-  "text": "My sister, mostly. She picked me up right after, so she was the first one I really talked to.",
-  "dur_sec": 6.99
- },
- {
-  "t_start_sec": 6222.49,
-  "speaker": "Attorney",
-  "text": "What did you tell her?",
-  "dur_sec": 1.84
- },
- {
-  "t_start_sec": 6225.07,
-  "speaker": "Witness B",
-  "text": "Just that I saw a wreck. That a car went under a truck and kept going. I was crying, honestly. I wasn't real detailed.",
-  "dur_sec": 8.83
- },
- {
-  "t_start_sec": 6234.63,
-  "speaker": "Attorney",
-  "text": "Did she ask you questions about it?",
-  "dur_sec": 2.57
- },
- {
-  "t_start_sec": 6237.94,
-  "speaker": "Witness B",
-  "text": "Some. She asked was I okay. She asked did I need to go to the doctor. I said no, I just wanted to go home.",
-  "dur_sec": 9.19
- },
- {
-  "t_start_sec": 6247.87,
-  "speaker": "Attorney",
-  "text": "Did you talk with anyone else before you wrote the statement?",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 6252.65,
-  "speaker": "Witness B",
-  "text": "My husband, that night. And my daughter called me the next day because my sister told her.",
-  "dur_sec": 6.25
- },
- {
-  "t_start_sec": 6259.64,
-  "speaker": "Attorney",
-  "text": "Did any of them tell you anything about the collision that they had heard from somewhere else?",
-  "dur_sec": 6.25
- },
- {
-  "t_start_sec": 6266.63,
-  "speaker": "Opposing counsel",
-  "text": "Object to form.",
-  "dur_sec": 1.1
- },
- {
-  "t_start_sec": 6268.46,
-  "speaker": "Witness B",
-  "text": "My daughter said it was on the news. I told her I didn't want to hear about it.",
-  "dur_sec": 6.62
- },
- {
-  "t_start_sec": 6275.82,
-  "speaker": "Attorney",
-  "text": "Did she tell you what was on the news?",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 6279.87,
-  "speaker": "Witness B",
-  "text": "She started to and I stopped her. I said I was there, I don't need to hear it from the TV.",
-  "dur_sec": 7.72
- },
- {
-  "t_start_sec": 6288.32,
-  "speaker": "Attorney",
-  "text": "Did you watch any news coverage of the collision at any point?",
-  "dur_sec": 4.41
- },
- {
-  "t_start_sec": 6293.47,
-  "speaker": "Witness B",
-  "text": "No. I turned it off when it came on. I didn't want to see it.",
-  "dur_sec": 5.52
- },
- {
-  "t_start_sec": 6299.72,
-  "speaker": "Attorney",
-  "text": "Did you read anything about it, in the paper or online?",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 6304.51,
-  "speaker": "Witness B",
-  "text": "No. People would send me things and I wouldn't open them.",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 6309.29,
-  "speaker": "Attorney",
-  "text": "Who sent you things?",
-  "dur_sec": 1.47
- },
- {
-  "t_start_sec": 6311.49,
-  "speaker": "Witness B",
-  "text": "Just people I know. Somebody from church. A cousin. I'd see the picture and I'd just close it.",
-  "dur_sec": 6.62
- },
- {
-  "t_start_sec": 6318.85,
-  "speaker": "Attorney",
-  "text": "So you may have seen a picture?",
-  "dur_sec": 2.57
- },
- {
-  "t_start_sec": 6322.16,
-  "speaker": "Witness B",
-  "text": "Like a little picture on my phone, a thumbnail. I didn't look at it. I didn't read it.",
-  "dur_sec": 6.62
- },
- {
-  "t_start_sec": 6329.51,
-  "speaker": "Attorney",
-  "text": "Do you remember what that picture showed?",
-  "dur_sec": 2.57
- },
- {
-  "t_start_sec": 6332.82,
-  "speaker": "Witness B",
-  "text": "No. I closed it. I'm not trying to be difficult, I just didn't look.",
-  "dur_sec": 5.15
- },
- {
-  "t_start_sec": 6338.71,
-  "speaker": "Attorney",
-  "text": "That's fine. Have you ever looked at any photographs of the scene taken by anyone else?",
-  "dur_sec": 5.88
- },
- {
-  "t_start_sec": 6345.33,
-  "speaker": "Witness B",
-  "text": "No. Not until you all, I guess, if there's some today. I haven't seen any.",
-  "dur_sec": 5.52
- },
- {
-  "t_start_sec": 6351.58,
-  "speaker": "Attorney",
-  "text": "Have you looked at any maps or diagrams of the intersection since the collision?",
-  "dur_sec": 5.15
- },
- {
-  "t_start_sec": 6357.46,
-  "speaker": "Witness B",
-  "text": "No.",
-  "dur_sec": 0.37
- },
- {
-  "t_start_sec": 6358.57,
-  "speaker": "Attorney",
-  "text": "Have you gone back to that intersection since?",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 6362.24,
-  "speaker": "Witness B",
-  "text": "I've driven through it. I have to. It's the way to my sister's. But I haven't stopped at the store since.",
-  "dur_sec": 7.72
- },
- {
-  "t_start_sec": 6370.7,
-  "speaker": "Attorney",
-  "text": "You haven't been back to the store at all?",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 6374.75,
-  "speaker": "Witness B",
-  "text": "No. I just don't want to.",
-  "dur_sec": 2.21
- },
- {
-  "t_start_sec": 6377.69,
-  "speaker": "Attorney",
-  "text": "When you drive through the intersection now, do you look at it?",
-  "dur_sec": 4.41
- },
- {
-  "t_start_sec": 6382.84,
-  "speaker": "Witness B",
-  "text": "I try not to. I just go.",
-  "dur_sec": 2.57
- },
- {
-  "t_start_sec": 6386.15,
-  "speaker": "Attorney",
-  "text": "Have you talked with anyone who was at the scene that day, other than the people you've mentioned?",
-  "dur_sec": 6.62
- },
- {
-  "t_start_sec": 6393.5,
-  "speaker": "Witness B",
-  "text": "The lady from the store. The one who came out. I talked to her that afternoon.",
-  "dur_sec": 5.88
- },
- {
-  "t_start_sec": 6400.12,
-  "speaker": "Attorney",
-  "text": "After that afternoon, have you talked with her again?",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 6404.17,
-  "speaker": "Witness B",
-  "text": "No. I haven't seen her since.",
-  "dur_sec": 2.21
- },
- {
-  "t_start_sec": 6407.11,
-  "speaker": "Attorney",
-  "text": "Have you talked with anyone from either side of this case, other than the attorneys, before today?",
-  "dur_sec": 6.25
- },
- {
-  "t_start_sec": 6414.1,
-  "speaker": "Witness B",
-  "text": "An investigator called me once. I think he was from your side. I told him basically what I told the deputy.",
-  "dur_sec": 7.72
- },
- {
-  "t_start_sec": 6422.56,
-  "speaker": "Attorney",
-  "text": "Did you give that investigator a written or recorded statement?",
-  "dur_sec": 3.68
- },
- {
-  "t_start_sec": 6426.97,
-  "speaker": "Witness B",
-  "text": "No. It was just a phone call. Maybe ten minutes.",
-  "dur_sec": 3.68
- },
- {
-  "t_start_sec": 6431.38,
-  "speaker": "Attorney",
-  "text": "Did anyone from the trucking company or its insurer contact you?",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 6436.16,
-  "speaker": "Witness B",
-  "text": "Not that I know of. I got a letter about today. That's it.",
-  "dur_sec": 4.78
- },
- {
-  "t_start_sec": 6441.68,
-  "speaker": "Opposing counsel",
-  "text": "For the record, that letter was the notice of deposition.",
-  "dur_sec": 3.68
- },
- {
-  "t_start_sec": 6446.09,
-  "speaker": "Attorney",
-  "text": "Thank you. Ma'am, did anyone, at any time, tell you what to say today?",
-  "dur_sec": 5.15
- },
- {
-  "t_start_sec": 6451.98,
-  "speaker": "Witness B",
-  "text": "No.",
-  "dur_sec": 0.37
- },
- {
-  "t_start_sec": 6453.08,
-  "speaker": "Attorney",
-  "text": "Did you meet with anyone to prepare for today?",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 6457.13,
-  "speaker": "Witness B",
-  "text": "I talked to your office on the phone to set up the time. And they told me to just tell the truth and say if I don't know something.",
-  "dur_sec": 10.67
- },
- {
-  "t_start_sec": 6468.53,
-  "speaker": "Attorney",
-  "text": "Did anyone go over the substance of your testimony with you?",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 6473.31,
-  "speaker": "Witness B",
-  "text": "No. They just said read your statement if you want to. So I did.",
-  "dur_sec": 5.15
- },
- {
-  "t_start_sec": 6479.19,
-  "speaker": "Attorney",
-  "text": "All right. Let me ask you some questions about your eyesight. Do you wear glasses?",
-  "dur_sec": 5.52
- },
- {
-  "t_start_sec": 6485.44,
-  "speaker": "Witness B",
-  "text": "Reading glasses. Only for reading. For close up.",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 6489.12,
-  "speaker": "Attorney",
-  "text": "How long have you worn reading glasses?",
-  "dur_sec": 2.57
- },
- {
-  "t_start_sec": 6492.43,
-  "speaker": "Witness B",
-  "text": "Maybe six or seven years. Since my forties.",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 6496.11,
-  "speaker": "Attorney",
-  "text": "Do you need glasses or contacts for distance?",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 6499.79,
-  "speaker": "Witness B",
-  "text": "No. My distance is fine. I drive without glasses. My license doesn't have any restriction.",
-  "dur_sec": 5.52
- },
- {
-  "t_start_sec": 6506.04,
-  "speaker": "Attorney",
-  "text": "When was your last eye exam?",
-  "dur_sec": 2.21
- },
- {
-  "t_start_sec": 6508.98,
-  "speaker": "Witness B",
-  "text": "Last year, I think. Maybe a little more. They said my distance was good and gave me a new reading prescription.",
-  "dur_sec": 7.72
- },
- {
-  "t_start_sec": 6517.44,
-  "speaker": "Attorney",
-  "text": "And before the collision, when was your last exam?",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 6521.48,
-  "speaker": "Witness B",
-  "text": "The one before that was maybe two years before. Same thing. Distance was fine.",
-  "dur_sec": 5.15
- },
- {
-  "t_start_sec": 6527.37,
-  "speaker": "Attorney",
-  "text": "Have you ever been told you have any problem with your eyes, other than needing reading glasses?",
-  "dur_sec": 6.25
- },
- {
-  "t_start_sec": 6534.35,
-  "speaker": "Witness B",
-  "text": "No. Nothing.",
-  "dur_sec": 0.74
- },
- {
-  "t_start_sec": 6535.83,
-  "speaker": "Attorney",
-  "text": "Any trouble with glare, or seeing in bright light?",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 6539.87,
-  "speaker": "Witness B",
-  "text": "No more than anybody. If it's real bright I squint like anybody.",
-  "dur_sec": 4.41
- },
- {
-  "t_start_sec": 6545.02,
-  "speaker": "Attorney",
-  "text": "Were you wearing your reading glasses that afternoon?",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 6548.7,
-  "speaker": "Witness B",
-  "text": "No. They were in my purse. I'd used them in the store to read a label and then I put them away.",
-  "dur_sec": 8.09
- },
- {
-  "t_start_sec": 6557.52,
-  "speaker": "Attorney",
-  "text": "So at the time of the collision, your reading glasses were in your purse.",
-  "dur_sec": 5.15
- },
- {
-  "t_start_sec": 6563.41,
-  "speaker": "Witness B",
-  "text": "Yes.",
-  "dur_sec": 0.37
- },
- {
-  "t_start_sec": 6564.51,
-  "speaker": "Attorney",
-  "text": "And you weren't wearing sunglasses.",
-  "dur_sec": 1.84
- },
- {
-  "t_start_sec": 6567.09,
-  "speaker": "Witness B",
-  "text": "No. I don't think I even had them with me. I'd left them in my sister's car the week before.",
-  "dur_sec": 7.36
- },
- {
-  "t_start_sec": 6575.18,
-  "speaker": "Attorney",
-  "text": "Were you wearing a hat or anything over your eyes?",
-  "dur_sec": 3.68
- },
- {
-  "t_start_sec": 6579.59,
-  "speaker": "Witness B",
-  "text": "No. No hat.",
-  "dur_sec": 1.1
- },
- {
-  "t_start_sec": 6581.43,
-  "speaker": "Attorney",
-  "text": "How tall are you?",
-  "dur_sec": 1.47
- },
- {
-  "t_start_sec": 6583.63,
-  "speaker": "Witness B",
-  "text": "Five foot six.",
-  "dur_sec": 1.1
- },
- {
-  "t_start_sec": 6585.47,
-  "speaker": "Attorney",
-  "text": "Were you wearing any kind of heels or anything that day?",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 6590.25,
-  "speaker": "Witness B",
-  "text": "No. Flat sandals. I don't wear heels. My feet won't let me.",
-  "dur_sec": 4.41
- },
- {
-  "t_start_sec": 6595.4,
-  "speaker": "Attorney",
-  "text": "So you were standing at about your normal height.",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 6599.45,
-  "speaker": "Witness B",
-  "text": "Five six. Same as now.",
-  "dur_sec": 1.84
- },
- {
-  "t_start_sec": 6602.02,
-  "speaker": "Attorney",
-  "text": "Were you standing the whole time, or were you sitting at some point?",
-  "dur_sec": 4.78
- },
- {
-  "t_start_sec": 6607.54,
-  "speaker": "Witness B",
-  "text": "Standing. I'd been inside a while shopping and then I went out to wait, and I was standing.",
-  "dur_sec": 6.62
- },
- {
-  "t_start_sec": 6614.89,
-  "speaker": "Opposing counsel",
-  "text": "Object to form.",
-  "dur_sec": 1.1
- },
- {
-  "t_start_sec": 6616.73,
-  "speaker": "Attorney",
-  "text": "At the moment the car reached the intersection, were you standing or sitting?",
-  "dur_sec": 4.78
- },
- {
-  "t_start_sec": 6622.25,
-  "speaker": "Witness B",
-  "text": "Standing.",
-  "dur_sec": 0.37
- },
- {
-  "t_start_sec": 6623.35,
-  "speaker": "Attorney",
-  "text": "Were you on any kind of step, or curb, or raised area?",
-  "dur_sec": 4.41
- },
- {
-  "t_start_sec": 6628.5,
-  "speaker": "Witness B",
-  "text": "I don't think so. It was just the ground out front. Maybe the concrete in front of the store, I don't remember a step.",
-  "dur_sec": 8.83
- },
- {
-  "t_start_sec": 6638.06,
-  "speaker": "Attorney",
-  "text": "All right. Now I want to ask about what, if anything, was between you and the highway. When you were standing outside, out front of the store, what objects were around you?",
-  "dur_sec": 11.77
- },
- {
-  "t_start_sec": 6650.57,
-  "speaker": "Witness B",
-  "text": "There was a couple of signs. Like the store signs, a sign by the road. And there was a bench shelter thing out front. A little covered bench. And the gas, or the ice box, I think there was an ice box by the door.",
-  "dur_sec": 16.55
- },
- {
-  "t_start_sec": 6667.85,
-  "speaker": "Attorney",
-  "text": "Let's take those one at a time. The signs. What kind of signs?",
-  "dur_sec": 4.78
- },
- {
-  "t_start_sec": 6673.37,
-  "speaker": "Witness B",
-  "text": "One was the store sign, up on a pole, a tall one. And there were some little signs, like the kind that stick in the ground, advertising stuff. Bait, I think, and something about a sale.",
-  "dur_sec": 13.24
- },
- {
-  "t_start_sec": 6687.34,
-  "speaker": "Attorney",
-  "text": "How big were the small signs?",
-  "dur_sec": 2.21
- },
- {
-  "t_start_sec": 6690.29,
-  "speaker": "Witness B",
-  "text": "Small. Like yard signs. Down low, knee high maybe.",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 6694.33,
-  "speaker": "Attorney",
-  "text": "And the tall sign on the pole. Where was the sign itself, up high or down low?",
-  "dur_sec": 6.25
- },
- {
-  "t_start_sec": 6701.32,
-  "speaker": "Witness B",
-  "text": "Up high. Way up. You'd have to look up to see it.",
-  "dur_sec": 4.41
- },
- {
-  "t_start_sec": 6706.47,
-  "speaker": "Attorney",
-  "text": "The bench shelter you mentioned. Can you describe it?",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 6710.51,
-  "speaker": "Witness B",
-  "text": "It's a little roof over a bench. Like a bus stop kind of thing, but I don't think a bus stops there. Posts on the corners, a roof. Open on the sides mostly.",
-  "dur_sec": 12.14
- },
- {
-  "t_start_sec": 6723.38,
-  "speaker": "Attorney",
-  "text": "Was it enclosed in any way?",
-  "dur_sec": 2.21
- },
- {
-  "t_start_sec": 6726.33,
-  "speaker": "Witness B",
-  "text": "There was a back on it, I think. Part of a back. But you could see through the sides.",
-  "dur_sec": 6.99
- },
- {
-  "t_start_sec": 6734.05,
-  "speaker": "Attorney",
-  "text": "What was it made of, if you know?",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 6737.73,
-  "speaker": "Witness B",
-  "text": "Metal posts, I think. A metal roof. I didn't really pay attention to it.",
-  "dur_sec": 5.15
- },
- {
-  "t_start_sec": 6743.61,
-  "speaker": "Attorney",
-  "text": "How tall was it, approximately?",
-  "dur_sec": 1.84
- },
- {
-  "t_start_sec": 6746.18,
-  "speaker": "Witness B",
-  "text": "Taller than me. Maybe seven feet. I don't know exactly.",
-  "dur_sec": 3.68
- },
- {
-  "t_start_sec": 6750.6,
-  "speaker": "Attorney",
-  "text": "Was anybody sitting on the bench?",
-  "dur_sec": 2.21
- },
- {
-  "t_start_sec": 6753.54,
-  "speaker": "Witness B",
-  "text": "Not that I remember. I don't think so.",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 6757.22,
-  "speaker": "Attorney",
-  "text": "Anything else between you and the highway? Any vehicles parked in front of the store?",
-  "dur_sec": 5.52
- },
- {
-  "t_start_sec": 6763.47,
-  "speaker": "Witness B",
-  "text": "There might have been a car or two parked. I'm not sure. There wasn't anything big. No trucks parked out there that I remember.",
-  "dur_sec": 8.83
- },
- {
-  "t_start_sec": 6773.03,
-  "speaker": "Attorney",
-  "text": "Any trees or bushes?",
-  "dur_sec": 1.47
- },
- {
-  "t_start_sec": 6775.24,
-  "speaker": "Witness B",
-  "text": "Not really out front. There's some trees further off, toward the back and along the side. Not in front.",
-  "dur_sec": 6.99
- },
- {
-  "t_start_sec": 6782.96,
-  "speaker": "Attorney",
-  "text": "Any fences?",
-  "dur_sec": 0.74
- },
- {
-  "t_start_sec": 6784.43,
-  "speaker": "Witness B",
-  "text": "Not right there. There were fences further down, the ones the car went through. Those are down the road.",
-  "dur_sec": 6.99
- },
- {
-  "t_start_sec": 6792.15,
-  "speaker": "Attorney",
-  "text": "So summarizing, between you and the highway there were a couple of signs, the bench shelter, and possibly a parked car or two?",
-  "dur_sec": 8.46
- },
- {
-  "t_start_sec": 6801.35,
-  "speaker": "Opposing counsel",
-  "text": "Object to form. Mischaracterizes.",
-  "dur_sec": 1.47
- },
- {
-  "t_start_sec": 6803.56,
-  "speaker": "Attorney",
-  "text": "I'll rephrase. In your own words, what was between you and the highway?",
-  "dur_sec": 4.78
- },
- {
-  "t_start_sec": 6809.07,
-  "speaker": "Witness B",
-  "text": "A couple of signs, a bench shelter thing, nothing big. That's what I remember.",
-  "dur_sec": 5.15
- },
- {
-  "t_start_sec": 6814.96,
-  "speaker": "Attorney",
-  "text": "Did any of those things block your view of the highway?",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 6819.74,
-  "speaker": "Opposing counsel",
-  "text": "Object to form.",
-  "dur_sec": 1.1
- },
- {
-  "t_start_sec": 6821.58,
-  "speaker": "Witness B",
-  "text": "No. Like I said, nothing was in the way.",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 6825.62,
-  "speaker": "Attorney",
-  "text": "Let me ask about the sun. Do you remember where the sun was that afternoon?",
-  "dur_sec": 5.52
- },
- {
-  "t_start_sec": 6831.87,
-  "speaker": "Witness B",
-  "text": "It was up. Still pretty high. It was a sunny day.",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 6836.65,
-  "speaker": "Attorney",
-  "text": "Was it in front of you, behind you, to the side?",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 6841.43,
-  "speaker": "Witness B",
-  "text": "It wasn't in my eyes. I remember it was hot on my arms, but it wasn't in my eyes.",
-  "dur_sec": 6.99
- },
- {
-  "t_start_sec": 6849.16,
-  "speaker": "Attorney",
-  "text": "Did you have to shade your eyes at any point?",
-  "dur_sec": 3.68
- },
- {
-  "t_start_sec": 6853.57,
-  "speaker": "Witness B",
-  "text": "No. I don't remember doing that.",
-  "dur_sec": 2.21
- },
- {
-  "t_start_sec": 6856.51,
-  "speaker": "Attorney",
-  "text": "Were you squinting?",
-  "dur_sec": 1.1
- },
- {
-  "t_start_sec": 6858.35,
-  "speaker": "Witness B",
-  "text": "No. It wasn't like that. It wasn't in my face.",
-  "dur_sec": 3.68
- },
- {
-  "t_start_sec": 6862.76,
-  "speaker": "Opposing counsel",
-  "text": "Object to form. Asked and answered.",
-  "dur_sec": 2.21
- },
- {
-  "t_start_sec": 6865.71,
-  "speaker": "Attorney",
-  "text": "Were there any shadows or anything like that, that made it hard to see the road?",
-  "dur_sec": 5.88
- },
- {
-  "t_start_sec": 6872.33,
-  "speaker": "Witness B",
-  "text": "No. It was just a bright clear day. You could see everything.",
-  "dur_sec": 4.41
- },
- {
-  "t_start_sec": 6877.47,
-  "speaker": "Attorney",
-  "text": "Was there any haze, dust, smoke, anything in the air?",
-  "dur_sec": 3.68
- },
- {
-  "t_start_sec": 6881.89,
-  "speaker": "Witness B",
-  "text": "No. It was clear. It hadn't rained.",
-  "dur_sec": 2.57
- },
- {
-  "t_start_sec": 6885.2,
-  "speaker": "Attorney",
-  "text": "Now, you told us earlier you were waiting for your sister. At the time of the collision, where was your attention, if you remember?",
-  "dur_sec": 8.83
- },
- {
-  "t_start_sec": 6894.76,
-  "speaker": "Opposing counsel",
-  "text": "Object to form.",
-  "dur_sec": 1.1
- },
- {
-  "t_start_sec": 6896.6,
-  "speaker": "Witness B",
-  "text": "On the road. I was looking for her car. She comes from the west, so I was looking that way, up the road toward the hill.",
-  "dur_sec": 9.56
- },
- {
-  "t_start_sec": 6906.9,
-  "speaker": "Attorney",
-  "text": "Okay. I want to come back to your written statement for a moment. Besides \"I saw the whole thing,\" do you recall what else you wrote?",
-  "dur_sec": 9.56
- },
- {
-  "t_start_sec": 6917.19,
-  "speaker": "Witness B",
-  "text": "I wrote that the car came down the hill fast, that the truck was turning, and that the car went under it and kept going and hit a pole. And then I wrote the truck stopped down the side road.",
-  "dur_sec": 14.71
- },
- {
-  "t_start_sec": 6932.64,
-  "speaker": "Attorney",
-  "text": "Did you write anything about where you were?",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 6936.32,
-  "speaker": "Witness B",
-  "text": "I wrote I was outside the store waiting on my sister. Out front.",
-  "dur_sec": 4.78
- },
- {
-  "t_start_sec": 6941.83,
-  "speaker": "Attorney",
-  "text": "Did you write anything more specific than that?",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 6945.51,
-  "speaker": "Witness B",
-  "text": "No. Just out front of the store. That's all he asked.",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 6950.29,
-  "speaker": "Attorney",
-  "text": "Did the deputy draw anything, or ask you to draw anything?",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 6955.07,
-  "speaker": "Witness B",
-  "text": "No. No drawing. Just writing.",
-  "dur_sec": 1.84
- },
- {
-  "t_start_sec": 6957.65,
-  "speaker": "Attorney",
-  "text": "Did the deputy show you any map or photo?",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 6961.69,
-  "speaker": "Witness B",
-  "text": "No.",
-  "dur_sec": 0.37
- },
- {
-  "t_start_sec": 6962.79,
-  "speaker": "Attorney",
-  "text": "Did you write how fast you thought the car was going?",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 6967.58,
-  "speaker": "Witness B",
-  "text": "I wrote fast. I think I wrote \"real fast.\" I didn't put a number.",
-  "dur_sec": 5.15
- },
- {
-  "t_start_sec": 6973.46,
-  "speaker": "Opposing counsel",
-  "text": "Object to foundation.",
-  "dur_sec": 1.1
- },
- {
-  "t_start_sec": 6975.3,
-  "speaker": "Attorney",
-  "text": "Did you put a number anywhere in the statement?",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 6979.34,
-  "speaker": "Witness B",
-  "text": "Maybe the time. I put around four thirty. That's the only number, I think, besides the date.",
-  "dur_sec": 6.25
- },
- {
-  "t_start_sec": 6986.33,
-  "speaker": "Attorney",
-  "text": "Is there anything that you remember now, sitting here today, that you didn't put in that statement?",
-  "dur_sec": 6.25
- },
- {
-  "t_start_sec": 6993.32,
-  "speaker": "Witness B",
-  "text": "Little things. Like the store lady coming out. Calling my sister. I didn't put all that. I just put the wreck.",
-  "dur_sec": 7.72
- },
- {
-  "t_start_sec": 7001.78,
-  "speaker": "Attorney",
-  "text": "Is there anything you remember now that's different from what you wrote?",
-  "dur_sec": 4.41
- },
- {
-  "t_start_sec": 7006.93,
-  "speaker": "Witness B",
-  "text": "No. Nothing different. Just more.",
-  "dur_sec": 1.84
- },
- {
-  "t_start_sec": 7009.5,
-  "speaker": "Attorney",
-  "text": "Has your memory of that afternoon changed over time, in your view?",
-  "dur_sec": 4.41
- },
- {
-  "t_start_sec": 7014.65,
-  "speaker": "Opposing counsel",
-  "text": "Object to form.",
-  "dur_sec": 1.1
- },
- {
-  "t_start_sec": 7016.49,
-  "speaker": "Witness B",
-  "text": "No. If anything I remember it too well. I still think about it.",
-  "dur_sec": 4.78
- },
- {
-  "t_start_sec": 7022,
-  "speaker": "Attorney",
-  "text": "Do you have any difficulty with your memory generally?",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 7026.05,
-  "speaker": "Witness B",
-  "text": "No. I keep track of all my clients' medications. I'd lose my job if I forgot things.",
-  "dur_sec": 6.25
- },
- {
-  "t_start_sec": 7033.04,
-  "speaker": "Attorney",
-  "text": "Let me ask about the period after the statement. Have you discussed the collision with anyone in the time since you wrote it?",
-  "dur_sec": 8.46
- },
- {
-  "t_start_sec": 7042.23,
-  "speaker": "Witness B",
-  "text": "Not much. It comes up sometimes with my family. I don't like to talk about it.",
-  "dur_sec": 5.88
- },
- {
-  "t_start_sec": 7048.85,
-  "speaker": "Attorney",
-  "text": "When it comes up with your family, does anyone tell you things they've heard about it?",
-  "dur_sec": 5.88
- },
- {
-  "t_start_sec": 7055.47,
-  "speaker": "Witness B",
-  "text": "They know not to. I asked them not to.",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 7059.52,
-  "speaker": "Attorney",
-  "text": "Have you ever posted anything about it online?",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 7063.19,
-  "speaker": "Witness B",
-  "text": "No. Never. I don't do that.",
-  "dur_sec": 2.21
- },
- {
-  "t_start_sec": 7066.14,
-  "speaker": "Attorney",
-  "text": "Did anyone ever offer you anything in connection with your testimony? Money, anything at all?",
-  "dur_sec": 5.52
- },
- {
-  "t_start_sec": 7072.39,
-  "speaker": "Witness B",
-  "text": "No. Nothing. I'm not getting anything. I took off work to be here.",
-  "dur_sec": 4.78
- },
- {
-  "t_start_sec": 7077.9,
-  "speaker": "Attorney",
-  "text": "I appreciate that. Do you have any relationship with the store, other than being a customer?",
-  "dur_sec": 5.88
- },
- {
-  "t_start_sec": 7084.52,
-  "speaker": "Witness B",
-  "text": "No. I just shop there sometimes. Used to.",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 7088.2,
-  "speaker": "Attorney",
-  "text": "Any relationship with any trucking company?",
-  "dur_sec": 2.21
- },
- {
-  "t_start_sec": 7091.14,
-  "speaker": "Witness B",
-  "text": "No. My brother-in-law drives for a moving company, but that's nothing to do with this.",
-  "dur_sec": 5.52
- },
- {
-  "t_start_sec": 7097.4,
-  "speaker": "Attorney",
-  "text": "Does your brother-in-law work for the company that's the defendant in this case?",
-  "dur_sec": 4.78
- },
- {
-  "t_start_sec": 7102.91,
-  "speaker": "Witness B",
-  "text": "No. Not as far as I know. It's a different company. Little local outfit.",
-  "dur_sec": 5.15
- },
- {
-  "t_start_sec": 7108.8,
-  "speaker": "Attorney",
-  "text": "Have you ever been involved in a lawsuit yourself?",
-  "dur_sec": 3.31
- },
- {
-  "t_start_sec": 7112.84,
-  "speaker": "Witness B",
-  "text": "No.",
-  "dur_sec": 0.37
- },
- {
-  "t_start_sec": 7113.94,
-  "speaker": "Attorney",
-  "text": "All right. Let me go back to one more thing on eyesight. At the distance of the highway from the front of the store, could you read, for example, a license plate?",
-  "dur_sec": 11.77
- },
- {
-  "t_start_sec": 7126.45,
-  "speaker": "Opposing counsel",
-  "text": "Object to form. Foundation.",
-  "dur_sec": 1.47
- },
- {
-  "t_start_sec": 7128.65,
-  "speaker": "Witness B",
-  "text": "I didn't try to read any license plate. I could see the cars fine. I could see colors and shapes.",
-  "dur_sec": 7.36
- },
- {
-  "t_start_sec": 7136.75,
-  "speaker": "Attorney",
-  "text": "Could you tell the color of the car?",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 7140.42,
-  "speaker": "Witness B",
-  "text": "Dark. Black or real dark blue. Dark.",
-  "dur_sec": 2.57
- },
- {
-  "t_start_sec": 7143.73,
-  "speaker": "Attorney",
-  "text": "Could you tell the color of the trailer?",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 7147.41,
-  "speaker": "Witness B",
-  "text": "White. All white. Big and white.",
-  "dur_sec": 2.21
- },
- {
-  "t_start_sec": 7150.35,
-  "speaker": "Attorney",
-  "text": "Okay. Ma'am, would you like a short break, or are you okay to keep going?",
-  "dur_sec": 5.52
- },
- {
-  "t_start_sec": 7156.6,
-  "speaker": "Witness B",
-  "text": "I'm okay. Let's keep going. I'd rather just get it done.",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 7161.39,
-  "speaker": "Attorney",
-  "text": "Some water there if you need it.",
-  "dur_sec": 2.57
- },
- {
-  "t_start_sec": 7164.7,
-  "speaker": "Witness B",
-  "text": "Thank you.",
-  "dur_sec": 0.74
- },
- {
-  "t_start_sec": 7166.17,
-  "speaker": "Attorney",
-  "text": "Between the collision and five o'clock, did you stay outside the store?",
-  "dur_sec": 4.41
- },
- {
-  "t_start_sec": 7171.31,
-  "speaker": "Witness B",
-  "text": "Yes. I stayed out front. I didn't go anywhere. The store lady came out and stood with me for a while.",
-  "dur_sec": 7.72
- },
- {
-  "t_start_sec": 7179.77,
-  "speaker": "Attorney",
-  "text": "Did you ever go inside during that time?",
-  "dur_sec": 2.94
- },
- {
-  "t_start_sec": 7183.45,
-  "speaker": "Witness B",
-  "text": "Maybe for a minute, to get some water. She brought me inside for a minute and then I went back out because I was waiting for my sister.",
-  "dur_sec": 10.3
- },
- {
-  "t_start_sec": 7194.48,
-  "speaker": "Attorney",
-  "text": "All right. I think that covers that area. Thank you, ma'am.",
-  "dur_sec": 4.05
- },
- {
-  "t_start_sec": 7199.26,
-  "speaker": "Witness B",
-  "text": "You're welcome.",
-  "dur_sec": 0.74
- },
- {
-  "t_start_sec": 7200,
-  "speaker": "Attorney",
   "text": "Let's keep going. I want to circle back to a few things from earlier before I show you a document. Are you doing all right? Do you need water or anything?",
   "dur_sec": 12.44
  },
  {
-  "t_start_sec": 7213.24,
+  "t_start_sec": 6013.24,
   "speaker": "Witness B",
   "text": "I'm fine. I have water. Thank you.",
   "dur_sec": 2.81
  },
  {
-  "t_start_sec": 7216.85,
+  "t_start_sec": 6016.85,
   "speaker": "Attorney",
   "text": "Earlier you told us your sister picked you up that afternoon. About what time did she get there?",
   "dur_sec": 7.22
  },
  {
-  "t_start_sec": 7224.87,
+  "t_start_sec": 6024.87,
   "speaker": "Witness B",
   "text": "Around five. Maybe a couple of minutes after.",
   "dur_sec": 3.21
  },
  {
-  "t_start_sec": 7228.89,
+  "t_start_sec": 6028.89,
   "speaker": "Attorney",
   "text": "So from the time of the collision until your sister arrived, about how long was that?",
   "dur_sec": 6.42
  },
  {
-  "t_start_sec": 7236.11,
+  "t_start_sec": 6036.11,
   "speaker": "Witness B",
   "text": "Twenty-five minutes, something like that. It felt longer.",
   "dur_sec": 3.21
  },
  {
-  "t_start_sec": 7240.12,
+  "t_start_sec": 6040.12,
   "speaker": "Attorney",
   "text": "During those twenty-five minutes, did you stay at the store the entire time?",
   "dur_sec": 5.22
  },
  {
-  "t_start_sec": 7246.14,
+  "t_start_sec": 6046.14,
   "speaker": "Witness B",
   "text": "Yes. I didn't leave the store property. I stayed out front.",
   "dur_sec": 4.41
  },
  {
-  "t_start_sec": 7251.35,
+  "t_start_sec": 6051.35,
   "speaker": "Attorney",
   "text": "Did you ever walk down the highway toward where the car ended up?",
   "dur_sec": 5.22
  },
  {
-  "t_start_sec": 7257.37,
+  "t_start_sec": 6057.37,
   "speaker": "Witness B",
   "text": "No. I didn't go down there. I didn't want to.",
   "dur_sec": 4.01
  },
  {
-  "t_start_sec": 7262.19,
+  "t_start_sec": 6062.19,
   "speaker": "Attorney",
   "text": "Did you walk down Northeast 140th Court toward the truck?",
   "dur_sec": 4.01
  },
  {
-  "t_start_sec": 7267,
+  "t_start_sec": 6067,
   "speaker": "Witness B",
   "text": "No. I stayed up by the store.",
   "dur_sec": 2.81
  },
  {
-  "t_start_sec": 7270.61,
+  "t_start_sec": 6070.61,
   "speaker": "Attorney",
   "text": "When your sister arrived, where did she park?",
   "dur_sec": 3.21
  },
  {
-  "t_start_sec": 7274.62,
+  "t_start_sec": 6074.62,
   "speaker": "Witness B",
   "text": "In the little lot by the store. She couldn't get in easy because of all the deputies' cars, but she squeezed in.",
   "dur_sec": 8.83
  },
  {
-  "t_start_sec": 7284.25,
+  "t_start_sec": 6084.25,
   "speaker": "Attorney",
   "text": "Did you tell her what had happened?",
   "dur_sec": 2.81
  },
  {
-  "t_start_sec": 7287.86,
+  "t_start_sec": 6087.86,
   "speaker": "Witness B",
   "text": "Some. Not a lot right then. I was pretty shook up. I told her more on the drive home.",
   "dur_sec": 7.62
  },
  {
-  "t_start_sec": 7296.29,
+  "t_start_sec": 6096.29,
   "speaker": "Opposing counsel",
   "text": "Object to form, to the extent it calls for the content of conversations.",
   "dur_sec": 5.22
  },
  {
-  "t_start_sec": 7302.31,
+  "t_start_sec": 6102.31,
   "speaker": "Attorney",
   "text": "I'm not asking what you said yet. Just whether you talked about it. You did?",
   "dur_sec": 6.02
  },
  {
-  "t_start_sec": 7309.13,
+  "t_start_sec": 6109.13,
   "speaker": "Witness B",
   "text": "Yes, on the way home.",
   "dur_sec": 2.01
  },
  {
-  "t_start_sec": 7311.94,
+  "t_start_sec": 6111.94,
   "speaker": "Attorney",
   "text": "Did your sister see any part of the collision herself?",
   "dur_sec": 4.01
  },
  {
-  "t_start_sec": 7316.75,
+  "t_start_sec": 6116.75,
   "speaker": "Witness B",
   "text": "No. She wasn't there yet. She came after.",
   "dur_sec": 3.21
  },
  {
-  "t_start_sec": 7320.76,
+  "t_start_sec": 6120.76,
   "speaker": "Attorney",
   "text": "Before we get to the exhibit, a few more questions about that afternoon. When the deputies arrived, about how many were there?",
   "dur_sec": 8.83
  },
  {
-  "t_start_sec": 7330.39,
+  "t_start_sec": 6130.39,
   "speaker": "Witness B",
   "text": "At first one car, then more. Four or five cars, I think, and then the fire trucks and the ambulance came.",
   "dur_sec": 8.43
  },
  {
-  "t_start_sec": 7339.62,
+  "t_start_sec": 6139.62,
   "speaker": "Attorney",
   "text": "Did any of them come from the west, the same direction the car had come from?",
   "dur_sec": 6.42
  },
  {
-  "t_start_sec": 7346.84,
+  "t_start_sec": 6146.84,
   "speaker": "Witness B",
   "text": "Some of them did. Some came from the other way. I really couldn't tell you which ones.",
   "dur_sec": 6.82
  },
  {
-  "t_start_sec": 7354.46,
+  "t_start_sec": 6154.46,
   "speaker": "Attorney",
   "text": "Were the eastbound lanes blocked off at some point?",
   "dur_sec": 3.61
  },
  {
-  "t_start_sec": 7358.88,
+  "t_start_sec": 6158.88,
   "speaker": "Witness B",
   "text": "Yes. They put cars across the road and were waving traffic around. It got backed up up toward the hill.",
   "dur_sec": 8.02
  },
  {
-  "t_start_sec": 7367.7,
+  "t_start_sec": 6167.7,
   "speaker": "Attorney",
   "text": "Did you see anyone take photographs or measurements while you were there?",
   "dur_sec": 4.81
  },
  {
-  "t_start_sec": 7373.32,
+  "t_start_sec": 6173.32,
   "speaker": "Opposing counsel",
   "text": "Object to form.",
   "dur_sec": 1.2
  },
  {
-  "t_start_sec": 7375.33,
+  "t_start_sec": 6175.33,
   "speaker": "Witness B",
   "text": "I saw a deputy with a camera, I think. And later somebody with a tape, a long tape, on the road. I didn't watch closely.",
   "dur_sec": 10.03
  },
  {
-  "t_start_sec": 7386.16,
+  "t_start_sec": 6186.16,
   "speaker": "Attorney",
   "text": "Did anyone ask you to point anything out on the road while you were there?",
   "dur_sec": 6.02
  },
  {
-  "t_start_sec": 7392.98,
+  "t_start_sec": 6192.98,
   "speaker": "Witness B",
   "text": "No. The deputy just asked what I saw and wrote it on a pad. Then he said someone might call me.",
   "dur_sec": 8.43
  },
  {
-  "t_start_sec": 7402.21,
+  "t_start_sec": 6202.21,
   "speaker": "Attorney",
   "text": "And did someone call you?",
   "dur_sec": 2.01
  },
  {
-  "t_start_sec": 7405.02,
+  "t_start_sec": 6205.02,
   "speaker": "Witness B",
   "text": "Yes, a few days later. That's when I did the written one.",
   "dur_sec": 4.81
  },
  {
-  "t_start_sec": 7410.63,
+  "t_start_sec": 6210.63,
   "speaker": "Attorney",
   "text": "Where did you write it?",
   "dur_sec": 2.01
  },
  {
-  "t_start_sec": 7413.44,
+  "t_start_sec": 6213.44,
   "speaker": "Witness B",
   "text": "At the sheriff's office. They had me sit at a table and write it out by hand, and then I signed it.",
   "dur_sec": 8.83
  },
  {
-  "t_start_sec": 7423.07,
+  "t_start_sec": 6223.07,
   "speaker": "Attorney",
   "text": "Did anyone tell you what to put in it?",
   "dur_sec": 3.61
  },
  {
-  "t_start_sec": 7427.48,
+  "t_start_sec": 6227.48,
   "speaker": "Witness B",
   "text": "No. They just said write down what you saw, in your own words.",
   "dur_sec": 5.22
  },
  {
-  "t_start_sec": 7433.5,
+  "t_start_sec": 6233.5,
   "speaker": "Attorney",
   "text": "Okay. You mentioned a deputy took your information that afternoon. Did that deputy ask you to write anything down that day?",
   "dur_sec": 8.43
  },
  {
-  "t_start_sec": 7442.73,
+  "t_start_sec": 6242.73,
   "speaker": "Witness B",
   "text": "No, not that day. He took my name and number and asked me a few questions. The written one was later.",
   "dur_sec": 8.43
  },
  {
-  "t_start_sec": 7451.96,
+  "t_start_sec": 6251.96,
   "speaker": "Attorney",
   "text": "And that written statement is the one we've talked about this morning, the one you reviewed before today?",
   "dur_sec": 7.22
  },
  {
-  "t_start_sec": 7459.98,
+  "t_start_sec": 6259.98,
   "speaker": "Witness B",
   "text": "Yes. That's the one.",
   "dur_sec": 1.6
  },
  {
-  "t_start_sec": 7462.39,
+  "t_start_sec": 6262.39,
   "speaker": "Attorney",
   "text": "Between the day of the collision and the day you wrote that statement, did you go back to the intersection?",
   "dur_sec": 8.02
  },
  {
-  "t_start_sec": 7471.21,
+  "t_start_sec": 6271.21,
   "speaker": "Witness B",
   "text": "I drove past it. I didn't stop.",
   "dur_sec": 2.81
  },
  {
-  "t_start_sec": 7474.82,
+  "t_start_sec": 6274.82,
   "speaker": "Attorney",
   "text": "Why didn't you stop?",
   "dur_sec": 1.6
  },
  {
-  "t_start_sec": 7477.23,
+  "t_start_sec": 6277.23,
   "speaker": "Witness B",
   "text": "I just didn't want to. It was still too fresh.",
   "dur_sec": 4.01
  },
  {
-  "t_start_sec": 7482.05,
+  "t_start_sec": 6282.05,
   "speaker": "Attorney",
   "text": "Since then, have you stopped at that store again?",
   "dur_sec": 3.61
  },
  {
-  "t_start_sec": 7486.46,
+  "t_start_sec": 6286.46,
   "speaker": "Witness B",
   "text": "A few times. It's the closest store to my sister's place. I go in and out. I don't really hang around out front anymore.",
   "dur_sec": 9.63
  },
  {
-  "t_start_sec": 7496.89,
+  "t_start_sec": 6296.89,
   "speaker": "Attorney",
   "text": "Has anything about the intersection changed since that day, as far as you can tell?",
   "dur_sec": 6.02
  },
  {
-  "t_start_sec": 7503.71,
+  "t_start_sec": 6303.71,
   "speaker": "Opposing counsel",
   "text": "Object to form. Foundation.",
   "dur_sec": 1.6
  },
  {
-  "t_start_sec": 7506.12,
+  "t_start_sec": 6306.12,
   "speaker": "Attorney",
   "text": "Just from your own observation, driving through.",
   "dur_sec": 2.81
  },
  {
-  "t_start_sec": 7509.73,
+  "t_start_sec": 6309.73,
   "speaker": "Witness B",
   "text": "Not that I noticed. The road looks the same to me. Same store, same side road. I don't pay much attention to it now, honestly.",
   "dur_sec": 10.03
  },
  {
-  "t_start_sec": 7520.56,
+  "t_start_sec": 6320.56,
   "speaker": "Attorney",
   "text": "Fair enough. Now, before I show you the exhibit, I want to make sure I understand some directions, so we're using the same words. The highway runs east and west there, correct?",
   "dur_sec": 12.84
  },
  {
-  "t_start_sec": 7534.2,
+  "t_start_sec": 6334.2,
   "speaker": "Witness B",
   "text": "Yes. East and west.",
   "dur_sec": 1.6
  },
  {
-  "t_start_sec": 7536.61,
+  "t_start_sec": 6336.61,
   "speaker": "Attorney",
   "text": "And the car you've described was traveling east?",
   "dur_sec": 3.21
  },
  {
-  "t_start_sec": 7540.62,
+  "t_start_sec": 6340.62,
   "speaker": "Witness B",
   "text": "East. Coming from the hill side, from the west.",
   "dur_sec": 3.61
  },
  {
-  "t_start_sec": 7545.04,
+  "t_start_sec": 6345.04,
   "speaker": "Attorney",
   "text": "And the truck was in the westbound lanes, in the turn lane, before it turned?",
   "dur_sec": 6.02
  },
  {
-  "t_start_sec": 7551.86,
+  "t_start_sec": 6351.86,
   "speaker": "Witness B",
   "text": "Yes. In the turn lane on the other side of the median.",
   "dur_sec": 4.81
  },
  {
-  "t_start_sec": 7557.47,
+  "t_start_sec": 6357.47,
   "speaker": "Attorney",
   "text": "And Northeast 140th Court runs which direction off the highway?",
   "dur_sec": 4.01
  },
  {
-  "t_start_sec": 7562.29,
+  "t_start_sec": 6362.29,
   "speaker": "Witness B",
   "text": "South. It goes south, down past the store.",
   "dur_sec": 3.21
  },
  {
-  "t_start_sec": 7566.3,
+  "t_start_sec": 6366.3,
   "speaker": "Attorney",
   "text": "And the store is on which side of 140th Court?",
   "dur_sec": 4.01
  },
  {
-  "t_start_sec": 7571.11,
+  "t_start_sec": 6371.11,
   "speaker": "Witness B",
   "text": "The east side. The store's on the corner there, on the south side of the highway.",
   "dur_sec": 6.42
  },
  {
-  "t_start_sec": 7578.34,
+  "t_start_sec": 6378.34,
   "speaker": "Attorney",
   "text": "When the truck turned, which direction did it turn?",
   "dur_sec": 3.61
  },
  {
-  "t_start_sec": 7582.75,
+  "t_start_sec": 6382.75,
   "speaker": "Witness B",
   "text": "Left. From where it was, it turned left, across our side of the highway and onto 140th.",
   "dur_sec": 6.82
  },
  {
-  "t_start_sec": 7590.37,
+  "t_start_sec": 6390.37,
   "speaker": "Attorney",
   "text": "When you say 'our side,' you mean the eastbound lanes?",
   "dur_sec": 4.01
  },
  {
-  "t_start_sec": 7595.19,
+  "t_start_sec": 6395.19,
   "speaker": "Witness B",
   "text": "Yes, sorry. The eastbound lanes. The side by the store.",
   "dur_sec": 4.01
  },
  {
-  "t_start_sec": 7600,
+  "t_start_sec": 6400,
   "speaker": "Attorney",
   "text": "No need to apologize. That's exactly why I'm asking. I'd like to show you what we'll mark as Exhibit 4.",
   "dur_sec": 7.65
  },
  {
-  "t_start_sec": 7608.41,
+  "t_start_sec": 6408.41,
   "speaker": "Attorney",
   "text": "For the record, Exhibit 4 is an aerial-style map of the intersection of U.S. 27A and Northeast 140th Court. I'm handing a copy to the witness and a copy to counsel.",
   "dur_sec": 11.85
  },
  {
-  "t_start_sec": 7621.03,
+  "t_start_sec": 6421.03,
   "speaker": "Opposing counsel",
   "text": "Thank you. I'll note for the record that this is a demonstrative and we haven't stipulated to its scale or accuracy.",
   "dur_sec": 8.03
  },
  {
-  "t_start_sec": 7629.83,
+  "t_start_sec": 6429.83,
   "speaker": "Attorney",
   "text": "Understood. Ma'am, take a moment to look it over. Have you ever seen this document before today?",
   "dur_sec": 6.5
  },
  {
-  "t_start_sec": 7637.09,
+  "t_start_sec": 6437.09,
   "speaker": "Witness B",
   "text": "No. I've never seen this.",
   "dur_sec": 1.91
  },
  {
-  "t_start_sec": 7639.77,
+  "t_start_sec": 6439.77,
   "speaker": "Attorney",
   "text": "Have you seen any map or photograph of the intersection taken from above, before today?",
   "dur_sec": 5.74
  },
  {
-  "t_start_sec": 7646.27,
+  "t_start_sec": 6446.27,
   "speaker": "Witness B",
   "text": "Not that I remember. Maybe on a phone map, years ago, but not for this.",
   "dur_sec": 5.74
  },
  {
-  "t_start_sec": 7652.77,
+  "t_start_sec": 6452.77,
   "speaker": "Attorney",
   "text": "Take your time with it. Do you recognize what's shown?",
   "dur_sec": 3.82
  },
  {
-  "t_start_sec": 7657.36,
+  "t_start_sec": 6457.36,
   "speaker": "Witness B",
   "text": "Yes. That's the highway, going across. That's the median in the middle with the grass. And this is the crossover where the truck turned.",
   "dur_sec": 9.18
  },
  {
-  "t_start_sec": 7667.3,
+  "t_start_sec": 6467.3,
   "speaker": "Attorney",
   "text": "Do you see the side road, Northeast 140th Court?",
   "dur_sec": 3.44
  },
  {
-  "t_start_sec": 7671.51,
+  "t_start_sec": 6471.51,
   "speaker": "Witness B",
   "text": "Yes, here, going down. Going south.",
   "dur_sec": 2.29
  },
  {
-  "t_start_sec": 7674.57,
+  "t_start_sec": 6474.57,
   "speaker": "Attorney",
   "text": "And do you see the store?",
   "dur_sec": 2.29
  },
  {
-  "t_start_sec": 7677.62,
+  "t_start_sec": 6477.62,
   "speaker": "Witness B",
   "text": "Yes. That's the building, here. That's the store.",
   "dur_sec": 3.06
  },
  {
-  "t_start_sec": 7681.45,
+  "t_start_sec": 6481.45,
   "speaker": "Attorney",
   "text": "Do you see the lanes of the highway, the two eastbound lanes and the two westbound lanes?",
   "dur_sec": 6.5
  },
  {
-  "t_start_sec": 7688.71,
+  "t_start_sec": 6488.71,
   "speaker": "Witness B",
   "text": "Yes. Two and two, with the grass between them.",
   "dur_sec": 3.44
  },
  {
-  "t_start_sec": 7692.92,
+  "t_start_sec": 6492.92,
   "speaker": "Attorney",
   "text": "Do you see the crossover, the paved opening in the median?",
   "dur_sec": 4.21
  },
  {
-  "t_start_sec": 7697.89,
+  "t_start_sec": 6497.89,
   "speaker": "Witness B",
   "text": "Yes, right here, lined up with the side road.",
   "dur_sec": 3.44
  },
  {
-  "t_start_sec": 7702.1,
+  "t_start_sec": 6502.1,
   "speaker": "Attorney",
   "text": "And to the right of the store, to the east, is there anything you recognize?",
   "dur_sec": 5.74
  },
  {
-  "t_start_sec": 7708.6,
+  "t_start_sec": 6508.6,
   "speaker": "Witness B",
   "text": "That's the field and the fences, going down toward where the houses are. The car went off down that way, but it's further than this shows.",
   "dur_sec": 9.94
  },
  {
-  "t_start_sec": 7719.3,
+  "t_start_sec": 6519.3,
   "speaker": "Attorney",
   "text": "So the place where the car came to rest isn't on this map?",
   "dur_sec": 4.97
  },
  {
-  "t_start_sec": 7725.04,
+  "t_start_sec": 6525.04,
   "speaker": "Witness B",
   "text": "I don't think so. It was way down. Past the edge here.",
   "dur_sec": 4.59
  },
  {
-  "t_start_sec": 7730.39,
+  "t_start_sec": 6530.39,
   "speaker": "Attorney",
   "text": "There's an arrow in the corner of the map marked with an N. Do you understand that to point north?",
   "dur_sec": 7.65
  },
  {
-  "t_start_sec": 7738.81,
+  "t_start_sec": 6538.81,
   "speaker": "Witness B",
   "text": "Yes.",
   "dur_sec": 0.38
  },
  {
-  "t_start_sec": 7739.95,
+  "t_start_sec": 6539.95,
   "speaker": "Attorney",
   "text": "So the top of the page is north, the bottom is south, the left side is west, and the right side is east. Is that how you understand it?",
   "dur_sec": 11.09
  },
  {
-  "t_start_sec": 7751.81,
+  "t_start_sec": 6551.81,
   "speaker": "Witness B",
   "text": "Yes, that makes sense. The hill would be off this way, to the left, off the page.",
   "dur_sec": 6.5
  },
  {
-  "t_start_sec": 7759.07,
+  "t_start_sec": 6559.07,
   "speaker": "Attorney",
   "text": "Okay. Is there anything on this map that looks wrong to you, compared to how you remember the intersection?",
   "dur_sec": 7.27
  },
  {
-  "t_start_sec": 7767.1,
+  "t_start_sec": 6567.1,
   "speaker": "Opposing counsel",
   "text": "Object to form.",
   "dur_sec": 1.15
  },
  {
-  "t_start_sec": 7769.02,
+  "t_start_sec": 6569.02,
   "speaker": "Attorney",
   "text": "You can answer.",
   "dur_sec": 1.15
  },
  {
-  "t_start_sec": 7770.93,
+  "t_start_sec": 6570.93,
   "speaker": "Witness B",
   "text": "Not really. It's a picture from the top, so it looks different than standing there. But the road and the store look right to me.",
   "dur_sec": 9.56
  },
  {
-  "t_start_sec": 7781.25,
+  "t_start_sec": 6581.25,
   "speaker": "Attorney",
   "text": "Does the map, in general, fairly show the layout of the roads and the store as they were on May 7th, 2016, as best you can tell?",
   "dur_sec": 10.32
  },
  {
-  "t_start_sec": 7792.34,
+  "t_start_sec": 6592.34,
   "speaker": "Opposing counsel",
   "text": "Same objection. Foundation.",
   "dur_sec": 1.15
  },
  {
-  "t_start_sec": 7794.25,
+  "t_start_sec": 6594.25,
   "speaker": "Witness B",
   "text": "As best I can tell, yes. The roads are where they were.",
   "dur_sec": 4.59
  },
  {
-  "t_start_sec": 7799.61,
+  "t_start_sec": 6599.61,
   "speaker": "Attorney",
   "text": "I'm going to ask you to make some marks on this map. I'm handing you a pen. It's a red pen, so the marks will show up. Please don't make any marks until I ask you to. Okay?",
   "dur_sec": 14.53
  },
  {
-  "t_start_sec": 7814.9,
+  "t_start_sec": 6614.9,
   "speaker": "Witness B",
   "text": "Okay.",
   "dur_sec": 0.38
  },
  {
-  "t_start_sec": 7816.05,
+  "t_start_sec": 6616.05,
   "speaker": "Attorney",
   "text": "And if you're not sure about something, it's fine to tell me that instead of marking. I don't want you to guess.",
   "dur_sec": 8.41
  },
  {
-  "t_start_sec": 7825.23,
+  "t_start_sec": 6625.23,
   "speaker": "Witness B",
   "text": "All right.",
   "dur_sec": 0.76
  },
  {
-  "t_start_sec": 7826.76,
+  "t_start_sec": 6626.76,
   "speaker": "Attorney",
   "text": "Let's start with the truck. Before it began its turn, you said it was in the westbound left-turn lane. Do you see that turn lane on the map?",
   "dur_sec": 10.71
  },
  {
-  "t_start_sec": 7838.23,
+  "t_start_sec": 6638.23,
   "speaker": "Witness B",
   "text": "Yes. It's this little lane right by the median, on the top side.",
   "dur_sec": 4.97
  },
  {
-  "t_start_sec": 7843.96,
+  "t_start_sec": 6643.96,
   "speaker": "Attorney",
   "text": "I'm not going to have you mark that. I just want to make sure we're oriented. Now, after the collision, did the truck keep moving?",
   "dur_sec": 9.56
  },
  {
-  "t_start_sec": 7854.29,
+  "t_start_sec": 6654.29,
   "speaker": "Witness B",
   "text": "Yes. It kept going. It went on down the side road.",
   "dur_sec": 4.21
  },
  {
-  "t_start_sec": 7859.26,
+  "t_start_sec": 6659.26,
   "speaker": "Attorney",
   "text": "Did you watch it come to a stop?",
   "dur_sec": 3.06
  },
  {
-  "t_start_sec": 7863.08,
+  "t_start_sec": 6663.08,
   "speaker": "Witness B",
   "text": "I saw it stopped. I saw it sitting there down the road. I don't know if I saw the exact second it stopped.",
   "dur_sec": 8.79
  },
  {
-  "t_start_sec": 7872.64,
+  "t_start_sec": 6672.64,
   "speaker": "Attorney",
   "text": "Understood. How long after the collision did you notice it stopped?",
   "dur_sec": 4.21
  },
  {
-  "t_start_sec": 7877.61,
+  "t_start_sec": 6677.61,
   "speaker": "Witness B",
   "text": "Pretty quick. Seconds. I looked that way and it was stopped.",
   "dur_sec": 4.21
  },
  {
-  "t_start_sec": 7882.58,
+  "t_start_sec": 6682.58,
   "speaker": "Attorney",
   "text": "When you first noticed the truck stopped, were you looking south down 140th?",
   "dur_sec": 4.97
  },
  {
-  "t_start_sec": 7888.32,
+  "t_start_sec": 6688.32,
   "speaker": "Witness B",
   "text": "I turned and looked that way, yes. Everybody was looking every which way. It was loud and then it was quiet.",
   "dur_sec": 8.03
  },
  {
-  "t_start_sec": 7897.11,
+  "t_start_sec": 6697.11,
   "speaker": "Attorney",
   "text": "Was the truck's engine still running, as far as you could hear?",
   "dur_sec": 4.59
  },
  {
-  "t_start_sec": 7902.47,
+  "t_start_sec": 6702.47,
   "speaker": "Witness B",
   "text": "I think so. I remember a rumbling for a while. I couldn't tell you when it stopped.",
   "dur_sec": 6.5
  },
  {
-  "t_start_sec": 7909.73,
+  "t_start_sec": 6709.73,
   "speaker": "Attorney",
   "text": "Before the collision, as the truck began turning, was it moving in a straight line or a curve?",
   "dur_sec": 6.88
  },
  {
-  "t_start_sec": 7917.38,
+  "t_start_sec": 6717.38,
   "speaker": "Witness B",
   "text": "A curve, the way you'd turn. The cab went first and the trailer swung around behind it.",
   "dur_sec": 6.5
  },
  {
-  "t_start_sec": 7924.65,
+  "t_start_sec": 6724.65,
   "speaker": "Attorney",
   "text": "Using the pen, please mark where the truck came to a stop.",
   "dur_sec": 4.59
  },
  {
-  "t_start_sec": 7930,
+  "t_start_sec": 6730,
   "speaker": "Witness B",
   "text": "It was down here. Down 140th, past the store. About here.",
   "dur_sec": 7.2,
@@ -8399,121 +7031,121 @@
   }
  },
  {
-  "t_start_sec": 7938.08,
+  "t_start_sec": 6738.08,
   "speaker": "Attorney",
   "text": "Thank you. Would you put the number 1 next to that mark?",
   "dur_sec": 5.24
  },
  {
-  "t_start_sec": 7944.19,
+  "t_start_sec": 6744.19,
   "speaker": "Witness B",
   "text": "Okay. There. Number 1.",
   "dur_sec": 1.75
  },
  {
-  "t_start_sec": 7946.81,
+  "t_start_sec": 6746.81,
   "speaker": "Attorney",
   "text": "Is that mark where the front of the truck was, the back of the trailer, or somewhere in between?",
   "dur_sec": 8.3
  },
  {
-  "t_start_sec": 7955.99,
+  "t_start_sec": 6755.99,
   "speaker": "Witness B",
   "text": "I was just marking the truck. Where the truck part was, the cab. The trailer was behind it, back toward the highway.",
   "dur_sec": 9.61
  },
  {
-  "t_start_sec": 7966.47,
+  "t_start_sec": 6766.47,
   "speaker": "Attorney",
   "text": "Did the trailer still extend back toward the highway after it stopped?",
   "dur_sec": 5.24
  },
  {
-  "t_start_sec": 7972.59,
+  "t_start_sec": 6772.59,
   "speaker": "Witness B",
   "text": "Some of it, yes. It's a long trailer. I couldn't tell you exactly how much.",
   "dur_sec": 6.55
  },
  {
-  "t_start_sec": 7980.01,
+  "t_start_sec": 6780.01,
   "speaker": "Attorney",
   "text": "That's fine. Did the truck move again after that, while you were there?",
   "dur_sec": 5.68
  },
  {
-  "t_start_sec": 7986.57,
+  "t_start_sec": 6786.57,
   "speaker": "Witness B",
   "text": "Not that I saw. It stayed there. The deputies were all around it after a while.",
   "dur_sec": 6.99
  },
  {
-  "t_start_sec": 7994.43,
+  "t_start_sec": 6794.43,
   "speaker": "Attorney",
   "text": "Do you remember anyone getting into or out of the truck?",
   "dur_sec": 4.81
  },
  {
-  "t_start_sec": 8000.11,
+  "t_start_sec": 6800.11,
   "speaker": "Opposing counsel",
   "text": "Object to form.",
   "dur_sec": 1.31
  },
  {
-  "t_start_sec": 8002.29,
+  "t_start_sec": 6802.29,
   "speaker": "Witness B",
   "text": "I don't remember that. I wasn't looking at it the whole time. I was mostly looking the other way, down the highway, and then at my phone calling my sister.",
   "dur_sec": 13.1
  },
  {
-  "t_start_sec": 8016.27,
+  "t_start_sec": 6816.27,
   "speaker": "Attorney",
   "text": "All right. I want to go back to the moment the car reached the intersection. You've told us this morning you were outside, out front of the store. Correct?",
   "dur_sec": 12.67
  },
  {
-  "t_start_sec": 8029.81,
+  "t_start_sec": 6829.81,
   "speaker": "Witness B",
   "text": "Yes.",
   "dur_sec": 0.44
  },
  {
-  "t_start_sec": 8031.12,
+  "t_start_sec": 6831.12,
   "speaker": "Attorney",
   "text": "About how long had you been there, outside, by the time the car reached the intersection?",
   "dur_sec": 6.99
  },
  {
-  "t_start_sec": 8038.99,
+  "t_start_sec": 6838.99,
   "speaker": "Witness B",
   "text": "A good while. I'd done my shopping and come out, and I'd been waiting maybe fifteen, twenty minutes.",
   "dur_sec": 7.86
  },
  {
-  "t_start_sec": 8047.72,
+  "t_start_sec": 6847.72,
   "speaker": "Attorney",
   "text": "Were you standing or sitting at that point?",
   "dur_sec": 3.49
  },
  {
-  "t_start_sec": 8052.09,
+  "t_start_sec": 6852.09,
   "speaker": "Witness B",
   "text": "Standing. I'd been standing a while. I had my bag at my feet.",
   "dur_sec": 5.68
  },
  {
-  "t_start_sec": 8058.64,
+  "t_start_sec": 6858.64,
   "speaker": "Attorney",
   "text": "I'd like you to show us on the map.",
   "dur_sec": 3.93
  },
  {
-  "t_start_sec": 8063.45,
+  "t_start_sec": 6863.45,
   "speaker": "Attorney",
   "text": "And please mark where you were standing when the car reached the intersection.",
   "dur_sec": 5.68
  },
  {
-  "t_start_sec": 8070,
+  "t_start_sec": 6870,
   "speaker": "Witness B",
   "text": "I was over by the corner, near the shelter.",
   "dur_sec": 7.32,
@@ -8524,307 +7156,307 @@
   }
  },
  {
-  "t_start_sec": 8078.18,
+  "t_start_sec": 6878.18,
   "speaker": "Attorney",
   "text": "Thank you. Let the record reflect the witness has marked Exhibit 4. Would you put the number 2 next to that mark?",
   "dur_sec": 9.54
  },
  {
-  "t_start_sec": 8088.59,
+  "t_start_sec": 6888.59,
   "speaker": "Witness B",
   "text": "Number 2. Okay.",
   "dur_sec": 1.3
  },
  {
-  "t_start_sec": 8090.76,
+  "t_start_sec": 6890.76,
   "speaker": "Attorney",
   "text": "And would you put your initials and today's date at the bottom of the page?",
   "dur_sec": 6.5
  },
  {
-  "t_start_sec": 8098.13,
+  "t_start_sec": 6898.13,
   "speaker": "Witness B",
   "text": "Here?",
   "dur_sec": 0.43
  },
  {
-  "t_start_sec": 8099.43,
+  "t_start_sec": 6899.43,
   "speaker": "Attorney",
   "text": "Anywhere at the bottom is fine.",
   "dur_sec": 2.6
  },
  {
-  "t_start_sec": 8102.9,
+  "t_start_sec": 6902.9,
   "speaker": "Witness B",
   "text": "Okay. Done.",
   "dur_sec": 0.87
  },
  {
-  "t_start_sec": 8104.64,
+  "t_start_sec": 6904.64,
   "speaker": "Attorney",
   "text": "Were you in that same general spot the whole time the car was approaching, from when you first saw it?",
   "dur_sec": 8.67
  },
  {
-  "t_start_sec": 8114.18,
+  "t_start_sec": 6914.18,
   "speaker": "Opposing counsel",
   "text": "Object to form. Compound.",
   "dur_sec": 1.73
  },
  {
-  "t_start_sec": 8116.78,
+  "t_start_sec": 6916.78,
   "speaker": "Attorney",
   "text": "I'll rephrase. From when you first noticed the car until the collision, did you move from where you were?",
   "dur_sec": 8.24
  },
  {
-  "t_start_sec": 8125.88,
+  "t_start_sec": 6925.88,
   "speaker": "Witness B",
   "text": "No. I was just standing there waiting. I wasn't walking around.",
   "dur_sec": 4.77
  },
  {
-  "t_start_sec": 8131.52,
+  "t_start_sec": 6931.52,
   "speaker": "Attorney",
   "text": "Thank you. At this time I'll offer Exhibit 4, as marked by the witness, into the record.",
   "dur_sec": 7.37
  },
  {
-  "t_start_sec": 8139.76,
+  "t_start_sec": 6939.76,
   "speaker": "Opposing counsel",
   "text": "No objection to it being attached to the transcript, subject to the objection I made earlier as to scale and accuracy.",
   "dur_sec": 9.11
  },
  {
-  "t_start_sec": 8149.73,
+  "t_start_sec": 6949.73,
   "speaker": "Attorney",
   "text": "Understood. I'll pass the witness. Counsel, do you have questions?",
   "dur_sec": 4.34
  },
  {
-  "t_start_sec": 8154.94,
+  "t_start_sec": 6954.94,
   "speaker": "Opposing counsel",
   "text": "Just a few. Ma'am, I represent the motor carrier. I'll be brief. You understand you're still under oath?",
   "dur_sec": 7.81
  },
  {
-  "t_start_sec": 8163.61,
+  "t_start_sec": 6963.61,
   "speaker": "Witness B",
   "text": "Yes.",
   "dur_sec": 0.43
  },
  {
-  "t_start_sec": 8164.91,
+  "t_start_sec": 6964.91,
   "speaker": "Opposing counsel",
   "text": "Before today, had anyone shown you Exhibit 4?",
   "dur_sec": 3.47
  },
  {
-  "t_start_sec": 8169.25,
+  "t_start_sec": 6969.25,
   "speaker": "Witness B",
   "text": "No. Today's the first time.",
   "dur_sec": 2.17
  },
  {
-  "t_start_sec": 8172.28,
+  "t_start_sec": 6972.28,
   "speaker": "Opposing counsel",
   "text": "When you made the marks on Exhibit 4 a few minutes ago, did anyone help you decide where to put them?",
   "dur_sec": 9.11
  },
  {
-  "t_start_sec": 8182.26,
+  "t_start_sec": 6982.26,
   "speaker": "Witness B",
   "text": "No. Nobody helped me. I did it myself.",
   "dur_sec": 3.47
  },
  {
-  "t_start_sec": 8186.59,
+  "t_start_sec": 6986.59,
   "speaker": "Opposing counsel",
   "text": "Did anyone point to a spot on the map or suggest a spot to you, either today or before today?",
   "dur_sec": 8.67
  },
  {
-  "t_start_sec": 8196.13,
+  "t_start_sec": 6996.13,
   "speaker": "Witness B",
   "text": "No.",
   "dur_sec": 0.43
  },
  {
-  "t_start_sec": 8197.44,
+  "t_start_sec": 6997.44,
   "speaker": "Opposing counsel",
   "text": "Did you discuss with anyone, before today, where you would mark on a map?",
   "dur_sec": 6.07
  },
  {
-  "t_start_sec": 8204.37,
+  "t_start_sec": 7004.37,
   "speaker": "Witness B",
   "text": "No. I didn't know there was going to be a map.",
   "dur_sec": 4.77
  },
  {
-  "t_start_sec": 8210.01,
+  "t_start_sec": 7010.01,
   "speaker": "Opposing counsel",
   "text": "The mark you labeled number 2. How sure are you of that spot?",
   "dur_sec": 5.64
  },
  {
-  "t_start_sec": 8216.52,
+  "t_start_sec": 7016.52,
   "speaker": "Witness B",
   "text": "Roughly, yes. I'm sure of it roughly. I wasn't measuring where my feet were. But that's about where I was.",
   "dur_sec": 8.67
  },
  {
-  "t_start_sec": 8226.06,
+  "t_start_sec": 7026.06,
   "speaker": "Opposing counsel",
   "text": "Could you have been a few feet one way or another from that mark?",
   "dur_sec": 6.07
  },
  {
-  "t_start_sec": 8232.99,
+  "t_start_sec": 7032.99,
   "speaker": "Witness B",
   "text": "A few feet, maybe. It's a little mark on a big picture. But that's the area.",
   "dur_sec": 6.94
  },
  {
-  "t_start_sec": 8240.8,
+  "t_start_sec": 7040.8,
   "speaker": "Opposing counsel",
   "text": "And the mark you labeled number 1, for where the truck stopped. Same question. How sure are you of that one?",
   "dur_sec": 9.11
  },
  {
-  "t_start_sec": 8250.77,
+  "t_start_sec": 7050.77,
   "speaker": "Witness B",
   "text": "About the same. That's about where it was. I wouldn't swear to the exact foot.",
   "dur_sec": 6.5
  },
  {
-  "t_start_sec": 8258.15,
+  "t_start_sec": 7058.15,
   "speaker": "Opposing counsel",
   "text": "You'd never seen a picture of the intersection from above before today, correct?",
   "dur_sec": 5.64
  },
  {
-  "t_start_sec": 8264.65,
+  "t_start_sec": 7064.65,
   "speaker": "Witness B",
   "text": "Correct.",
   "dur_sec": 0.43
  },
  {
-  "t_start_sec": 8265.95,
+  "t_start_sec": 7065.95,
   "speaker": "Opposing counsel",
   "text": "So you were translating what you saw standing on the ground onto a picture from overhead.",
   "dur_sec": 6.94
  },
  {
-  "t_start_sec": 8273.76,
+  "t_start_sec": 7073.76,
   "speaker": "Attorney",
   "text": "Object to form.",
   "dur_sec": 1.3
  },
  {
-  "t_start_sec": 8275.93,
+  "t_start_sec": 7075.93,
   "speaker": "Opposing counsel",
   "text": "You can answer.",
   "dur_sec": 1.3
  },
  {
-  "t_start_sec": 8278.09,
+  "t_start_sec": 7078.09,
   "speaker": "Witness B",
   "text": "I guess so. But I know that corner. I've been to that store a hundred times.",
   "dur_sec": 6.94
  },
  {
-  "t_start_sec": 8285.9,
+  "t_start_sec": 7085.9,
   "speaker": "Opposing counsel",
   "text": "Before today, did you ever go back and stand in the spot you marked, to check what you could see from there?",
   "dur_sec": 9.54
  },
  {
-  "t_start_sec": 8296.31,
+  "t_start_sec": 7096.31,
   "speaker": "Witness B",
   "text": "No. I never did anything like that.",
   "dur_sec": 3.04
  },
  {
-  "t_start_sec": 8300.21,
+  "t_start_sec": 7100.21,
   "speaker": "Opposing counsel",
   "text": "Has anyone, an investigator or anyone else, asked you to go out to the intersection with them?",
   "dur_sec": 7.37
  },
  {
-  "t_start_sec": 8308.45,
+  "t_start_sec": 7108.45,
   "speaker": "Witness B",
   "text": "No. Nobody's asked me to do that.",
   "dur_sec": 3.04
  },
  {
-  "t_start_sec": 8312.35,
+  "t_start_sec": 7112.35,
   "speaker": "Opposing counsel",
   "text": "Did you bring any notes or drawings with you today?",
   "dur_sec": 4.34
  },
  {
-  "t_start_sec": 8317.56,
+  "t_start_sec": 7117.56,
   "speaker": "Witness B",
   "text": "No. Just my glasses and my water.",
   "dur_sec": 3.04
  },
  {
-  "t_start_sec": 8321.46,
+  "t_start_sec": 7121.46,
   "speaker": "Opposing counsel",
   "text": "You mentioned earlier you wear reading glasses. Were you wearing them when you marked the exhibit?",
   "dur_sec": 6.94
  },
  {
-  "t_start_sec": 8329.26,
+  "t_start_sec": 7129.26,
   "speaker": "Witness B",
   "text": "Yes, to see the little lines on the map. I don't wear them for distance. I didn't have them on that day outside.",
   "dur_sec": 9.97
  },
  {
-  "t_start_sec": 8340.1,
+  "t_start_sec": 7140.1,
   "speaker": "Opposing counsel",
   "text": "Understood. Last thing. Other than your written statement and what you've told us here today, have you given any other statement about what you saw, written or recorded?",
   "dur_sec": 12.14
  },
  {
-  "t_start_sec": 8353.11,
+  "t_start_sec": 7153.11,
   "speaker": "Witness B",
   "text": "No. Just the deputy that day, and the written one, and today.",
   "dur_sec": 5.2
  },
  {
-  "t_start_sec": 8359.19,
+  "t_start_sec": 7159.19,
   "speaker": "Opposing counsel",
   "text": "Thank you, ma'am. I have nothing further.",
   "dur_sec": 3.04
  },
  {
-  "t_start_sec": 8363.09,
+  "t_start_sec": 7163.09,
   "speaker": "Attorney",
   "text": "Nothing further from me either. Thank you for your time today. I know this hasn't been easy.",
   "dur_sec": 7.37
  },
  {
-  "t_start_sec": 8371.33,
+  "t_start_sec": 7171.33,
   "speaker": "Witness B",
   "text": "Thank you.",
   "dur_sec": 0.87
  },
  {
-  "t_start_sec": 8373.06,
+  "t_start_sec": 7173.06,
   "speaker": "Opposing counsel",
   "text": "We'll read and sign, as we stated at the beginning.",
   "dur_sec": 4.34
  },
  {
-  "t_start_sec": 8378.27,
+  "t_start_sec": 7178.27,
   "speaker": "Attorney",
   "text": "So noted.",
   "dur_sec": 0.87
  },
  {
-  "t_start_sec": 8380,
+  "t_start_sec": 7180,
   "speaker": "Videographer",
   "text": "This concludes the videotaped deposition of Witness B. The original exhibit will be retained by the court reporter. We are going off the record. The time is 11:22 a.m.",
   "dur_sec": 20

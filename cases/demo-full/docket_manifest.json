@@ -152,13 +152,13 @@
    "title": "Highway Factual Report Attachment 7 - Florida Traffic Signal Warrant Analysis",
    "docket_item_id": "40453265",
    "url": "https://data.ntsb.gov/Docket/Document/docBLOB?ID=40453265&FileExtension=.PDF&FileName=Highway%20Factual%20Report%20Attachment%207%20-%20Florida%20Traffic%20Signal%20Warrant%20Analysis-Master.PDF",
-   "kept": true,
-   "reason": "relevant factual/engineering record",
+   "kept": false,
+   "reason": "token budget (case must fit 1,048,576 with prompts)",
    "pages": 16,
    "chars": 78805,
    "est_tokens": 19701,
-   "text_file": "text/docket_highway_att7_signal_warrant.txt",
-   "evidence_file": "evidence/docket/docket_highway_att7_signal_warrant.pdf"
+   "text_file": null,
+   "evidence_file": null
   },
   {
    "title": "Highway Factual Report Attachment 8 - Roadway Plan Sheets, Signing and Pavement Marking",
@@ -238,13 +238,13 @@
    "title": "Human Performance Supplemental Report - Driver Assistance Systems",
    "docket_item_id": "40453275",
    "url": "https://data.ntsb.gov/Docket/Document/docBLOB?ID=40453275&FileExtension=.PDF&FileName=Human%20Performance%20Supplemental%20Report%20-%20Driver%20Assistance%20Systems-Master.PDF",
-   "kept": true,
-   "reason": "engineering; contains brand names - do not display",
+   "kept": false,
+   "reason": "token budget (case must fit 1,048,576 with prompts)",
    "pages": 23,
    "chars": 52658,
    "est_tokens": 13164,
-   "text_file": "text/docket_hp_supplemental_driver_assistance.txt",
-   "evidence_file": "evidence/docket/docket_hp_supplemental_driver_assistance.pdf"
+   "text_file": null,
+   "evidence_file": null
   },
   {
    "title": "Errata - HP Supplemental Report - Driver Assistance Systems",
@@ -552,13 +552,13 @@
    "title": "Staff's Board Meeting Presentations",
    "docket_item_id": "40456837",
    "url": "https://data.ntsb.gov/Docket/Document/docBLOB?ID=40456837&FileExtension=.PDF&FileName=Staff%27s%20Board%20Meeting%20Presentations-Master.PDF",
-   "kept": true,
-   "reason": "slides; sparse text",
+   "kept": false,
+   "reason": "token budget (case must fit 1,048,576 with prompts)",
    "pages": 76,
    "chars": 21623,
    "est_tokens": 5405,
-   "text_file": "text/docket_board_presentations.txt",
-   "evidence_file": "evidence/docket/docket_board_presentations.pdf"
+   "text_file": null,
+   "evidence_file": null
   },
   {
    "title": "NTSB Highway Accident Report HAR-17/02 (adopted board report)",
@@ -634,8 +634,7 @@
   "photos": 12
  },
  "totals_used": {
-  "documents": 20,
-  "pages": 327,
-  "chars_after_whitespace_collapse": 485255
+  "documents": 17,
+  "pages": 212
  }
 }

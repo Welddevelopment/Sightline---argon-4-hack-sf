@@ -1,5 +1,5 @@
 {
-  "notice": "SIMULATED DEPOSITIONS — FICTIONAL WITNESSES. Physical facts from the real NTSB investigation HWY16FH018 / HAR-17/02. No real names, no brand or manufacturer names. Fictional witnesses testify ONLY about their own position, what they themselves could see/hear, and vehicle positions/movements. Never about any real person's conduct, attention, state of mind, condition, phone, driving record, or any vehicle automation system.",
+  "notice": "SIMULATED DEPOSITIONS \u2014 FICTIONAL WITNESSES. Physical facts from the real NTSB investigation HWY16FH018 / HAR-17/02. No real names, no brand or manufacturer names. Fictional witnesses testify ONLY about their own position, what they themselves could see/hear, and vehicle positions/movements. Never about any real person's conduct, attention, state of mind, condition, phone, driving record, or any vehicle automation system.",
   "setting": "Saturday May 7 2016 about 4:36 pm, clear, dry, daylight, sun high and behind the eastbound car. US-27A four-lane divided rural highway (two 12-ft lanes each way, ~60-ft grassy median), unsignalized median crossover at NE 140th Court, which runs south off the highway. A small retail store (convenience/feed-type store, no brand) on the SE corner; a bench shelter in front of the store near the highway (fictional scene dressing). Eastbound traffic comes down a gentle grade from a hill crest about 1,100 ft west. Vehicle A = a dark four-door sedan travelling east. Vehicle T = a tractor pulling a long white refrigerated box trailer, turning left from the westbound left-turn lane across both eastbound lanes onto NE 140th Court. The car struck the right side of the trailer, passed under it, left the road on the south side, went through fences and struck a utility pole far to the east (~900 ft), coming to rest in a yard.",
   "people": {
     "Attorney": "examining counsel for the plaintiff (unnamed; speaker label 'Attorney')",
@@ -9,22 +9,75 @@
     "Witness D": "FICTIONAL. Adult woman, worked the counter inside the store that afternoon. Front windows face the highway but are mostly covered with posters/ads and shelving; from the register she could not see the eastbound lanes. Heard the crash, went outside, saw the aftermath; spoke with Witness B, who was outside and very upset."
   },
   "depositions": {
-    "B": {"file": "deposition_witness_B.mp4", "duration_sec": 8400, "date_on_record": "the fourteenth, 9:02 a.m.",
+    "B": {
+      "file": "deposition_witness_B.mp4",
+      "duration_sec": 7200,
+      "date_on_record": "the fourteenth, 9:02 a.m.",
       "segments": [
-        {"id": "B1", "start": 0, "end": 1200, "plan": "Videographer opens record; appearances; oath; usual instructions (verbal answers, don't guess, ask to rephrase); B's general background (fictional, generic: lives in the county, works as a home health aide, no prior depositions); documents she reviewed (her written statement); familiarity with that stretch of US-27A (drives it weekly)."},
-        {"id": "B2", "start": 1200, "end": 2400, "plan": "Why she was there: waiting for her sister to pick her up after shopping at the store; arrived ~4:10; weather, light, traffic volume, noise; long description in words of the road layout (lanes, median, turn lanes, crossover, the side road, the hill to the west). She says only that she was 'outside, out front of the store' — never more precise. Questions about what she was holding (a shopping bag), whether on her phone (no — her own, fictional), sunglasses (no)."},
-        {"id": "B3", "start": 2400, "end": 3600, "plan": "The approach of the car. She first noticed the car coming over the hill to the west. ANCHOR at 2470 s (0:41:10): Attorney asks 'How well could you see the car as it came toward the intersection?' and Witness B answers EXACTLY: 'I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.' Later around 3120 s she repeats a variant ('I never lost sight of it'). Estimates of its speed are vague ('fast, highway speed'); Opposing counsel objects to foundation. She does NOT say where exactly she was standing."},
-        {"id": "B4", "start": 3600, "end": 4800, "plan": "The truck: she noticed a big white truck with a long box trailer in the westbound left-turn lane; can't say if it was stopped or creeping; it turned left across the eastbound lanes toward 140th; how long the turn took ('a few seconds, slow'); the trailer stretched across both eastbound lanes; sounds (engine, no horn she recalls, no brakes she heard). Only vehicle positions/movements — no statements about any driver's attention or conduct. Objections to form."},
-        {"id": "B5", "start": 4800, "end": 6000, "plan": "Impact and aftermath: the sound; the car continuing east off the road, through fences, hitting a pole far away; the truck stopping down 140th south of the store; what she did (stayed by the store, called her sister); a store employee (Witness D) came out and she talked with her; deputies arrived; she gave her information. Never describes anyone's injuries in detail (keep it respectful: 'I didn't go down there')."},
-        {"id": "B6", "start": 6000, "end": 7200, "plan": "Follow-up topics: her written statement a few days later (says 'I saw the whole thing'); whether she discussed it with others; news coverage she avoided; her eyesight and height (5 ft 6 in); whether anything was between her and the highway ('a couple of signs, a bench shelter thing, nothing big'); sun not in her eyes. Detailed but uneventful."},
-        {"id": "B7", "start": 7200, "end": 8400, "plan": "Exhibit 4 (aerial-style map of the intersection) introduced ~7600 s. ANCHOR at 7930 s: Attorney 'Using the pen, please mark where the truck came to a stop.' Witness B: 'It was down here. Down 140th, past the store. About here.' (exhibit map_mark x_m 0.0 z_m 40.0). ANCHOR at 8070 s (2:14:30): Attorney 'And please mark where you were standing when the car reached the intersection.' Witness B answers ONLY: 'I was over by the corner, near the shelter.' (exhibit map_mark x_m 7.5 z_m 6.5). The pen mark is shown on screen only; nobody reads coordinates or describes the mark's location aloud. Then Attorney offers Exhibit 4 as marked; Opposing counsel asks a few short questions (did anyone help her mark it — no; is she sure of the spot — 'roughly, yes'); Videographer closes the record at ~8380 s."}
-      ]},
-    "D": {"file": "deposition_witness_D.mp4", "duration_sec": 2700, "date_on_record": "the fifteenth, 1:30 p.m.",
+        {
+          "id": "B1",
+          "start": 0,
+          "end": 1200,
+          "plan": "Videographer opens record; appearances; oath; usual instructions (verbal answers, don't guess, ask to rephrase); B's general background (fictional, generic: lives in the county, works as a home health aide, no prior depositions); documents she reviewed (her written statement); familiarity with that stretch of US-27A (drives it weekly)."
+        },
+        {
+          "id": "B2",
+          "start": 1200,
+          "end": 2400,
+          "plan": "Why she was there: waiting for her sister to pick her up after shopping at the store; arrived ~4:10; weather, light, traffic volume, noise; long description in words of the road layout (lanes, median, turn lanes, crossover, the side road, the hill to the west). She says only that she was 'outside, out front of the store' \u2014 never more precise. Questions about what she was holding (a shopping bag), whether on her phone (no \u2014 her own, fictional), sunglasses (no)."
+        },
+        {
+          "id": "B3",
+          "start": 2400,
+          "end": 3600,
+          "plan": "The approach of the car. She first noticed the car coming over the hill to the west. ANCHOR at 2470 s (0:41:10): Attorney asks 'How well could you see the car as it came toward the intersection?' and Witness B answers EXACTLY: 'I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.' Later around 3120 s she repeats a variant ('I never lost sight of it'). Estimates of its speed are vague ('fast, highway speed'); Opposing counsel objects to foundation. She does NOT say where exactly she was standing."
+        },
+        {
+          "id": "B4",
+          "start": 3600,
+          "end": 4800,
+          "plan": "The truck: she noticed a big white truck with a long box trailer in the westbound left-turn lane; can't say if it was stopped or creeping; it turned left across the eastbound lanes toward 140th; how long the turn took ('a few seconds, slow'); the trailer stretched across both eastbound lanes; sounds (engine, no horn she recalls, no brakes she heard). Only vehicle positions/movements \u2014 no statements about any driver's attention or conduct. Objections to form."
+        },
+        {
+          "id": "B5",
+          "start": 4800,
+          "end": 6000,
+          "plan": "Impact and aftermath: the sound; the car continuing east off the road, through fences, hitting a pole far away; the truck stopping down 140th south of the store; what she did (stayed by the store, called her sister); a store employee (Witness D) came out and she talked with her; deputies arrived; she gave her information. Never describes anyone's injuries in detail (keep it respectful: 'I didn't go down there')."
+        },
+        {
+          "id": "B6",
+          "start": 6000,
+          "end": 7200,
+          "plan": "Exhibit 4 (aerial-style map of the intersection) introduced ~6400 s. ANCHOR at 6730 s: Attorney 'Using the pen, please mark where the truck came to a stop.' Witness B: 'It was down here. Down 140th, past the store. About here.' (exhibit map_mark x_m 0.0 z_m 40.0). ANCHOR at 6870 s (1:54:30): Attorney 'And please mark where you were standing when the car reached the intersection.' Witness B answers ONLY: 'I was over by the corner, near the shelter.' (exhibit map_mark x_m 7.5 z_m 6.5). The pen mark is shown on screen only; nobody reads coordinates or describes the mark's location aloud. Then Attorney offers Exhibit 4 as marked; Opposing counsel asks a few short questions (did anyone help her mark it \u2014 no; is she sure of the spot \u2014 'roughly, yes'); Videographer closes the record at ~7180 s."
+        }
+      ],
+      "note": "Original 20-min block 1:40-2:00 (follow-up topics) was cut to keep the whole case under the 1,048,576-token input limit; see case_full/segments_cut/."
+    },
+    "D": {
+      "file": "deposition_witness_D.mp4",
+      "duration_sec": 2700,
+      "date_on_record": "the fifteenth, 1:30 p.m.",
       "segments": [
-        {"id": "D1", "start": 0, "end": 900, "plan": "Videographer opens; appearances; oath; instructions; D's background (fictional: worked at the store about two years, counter clerk); the store layout: front door faces the highway, windows mostly covered by posters and a drink cooler; from the register she could not see the eastbound lanes; that afternoon was slow; the bench shelter out front exists."},
-        {"id": "D2", "start": 900, "end": 1800, "plan": "Hearing a very loud bang around 4:30-something; going out the front door; what she saw AFTER: the truck stopped down 140th south of the store, the car far down to the east off the road, people stopping; she did not see the collision itself and says so plainly. She saw a woman (Witness B) outside in front of the store, upset. She does NOT say exactly where B was standing ('out front')."},
-        {"id": "D3", "start": 1800, "end": 2700, "plan": "What Witness B told her. ANCHOR at 1880 s (0:31:20): Attorney 'What, if anything, did she tell you about what she saw?' Opposing counsel: 'Objection, hearsay.' Attorney: 'You can answer.' Witness D: 'She said she had a clear view of the car the whole way in. She said she watched it right up until it hit.' Follow-ups: B was shaking, D gave her water; deputies; D's own statement; D never went to the vehicles. Opposing counsel's short cross (D did not see the collision; she doesn't know where B was standing at the moment of impact — 'I didn't see her until after'). Videographer closes ~2680 s."}
-      ]}
+        {
+          "id": "D1",
+          "start": 0,
+          "end": 900,
+          "plan": "Videographer opens; appearances; oath; instructions; D's background (fictional: worked at the store about two years, counter clerk); the store layout: front door faces the highway, windows mostly covered by posters and a drink cooler; from the register she could not see the eastbound lanes; that afternoon was slow; the bench shelter out front exists."
+        },
+        {
+          "id": "D2",
+          "start": 900,
+          "end": 1800,
+          "plan": "Hearing a very loud bang around 4:30-something; going out the front door; what she saw AFTER: the truck stopped down 140th south of the store, the car far down to the east off the road, people stopping; she did not see the collision itself and says so plainly. She saw a woman (Witness B) outside in front of the store, upset. She does NOT say exactly where B was standing ('out front')."
+        },
+        {
+          "id": "D3",
+          "start": 1800,
+          "end": 2700,
+          "plan": "What Witness B told her. ANCHOR at 1880 s (0:31:20): Attorney 'What, if anything, did she tell you about what she saw?' Opposing counsel: 'Objection, hearsay.' Attorney: 'You can answer.' Witness D: 'She said she had a clear view of the car the whole way in. She said she watched it right up until it hit.' Follow-ups: B was shaking, D gave her water; deputies; D's own statement; D never went to the vehicles. Opposing counsel's short cross (D did not see the collision; she doesn't know where B was standing at the moment of impact \u2014 'I didn't see her until after'). Videographer closes ~2680 s."
+        }
+      ]
+    }
   },
   "consistency_rules": [
     "The two decisive facts appear ONLY at the anchors: B's own claim (B3 at 2470 s, repeated ~3120 s), D's hearsay recount (D3 at 1880 s), and B's on-screen-only position mark (B7 at 8070 s). Nowhere else may anyone state B's precise position (only 'outside', 'out front of the store'; 'near the shelter' only at the B7 anchor).",

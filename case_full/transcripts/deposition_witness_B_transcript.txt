@@ -1,0 +1,1242 @@
+00:00:00 VIDEOGRAPHER: We are now on the record. This is the videotaped deposition of Witness B, taken in connection with the wrongful death action arising from the collision on U.S. Highway 27A at Northeast 140th Court on May 7, 2016. Today's date is the fourteenth. The time on the video monitor is 9:02 a.m. Will counsel please state their appearances for the record.
+00:00:22 ATTORNEY: Good morning. I represent the estate of the driver of Vehicle A, the plaintiff in this matter, and I'll be conducting the examination today.
+00:00:31 OPPOSING COUNSEL: Good morning. I appear on behalf of the defendant motor carrier and the driver of Vehicle T. We'll reserve all objections except as to form until the time of trial, and the witness will read and sign.
+00:00:45 ATTORNEY: That's agreed. Is there anyone else present in the room that should be noted?
+00:00:51 OPPOSING COUNSEL: No one else on our side.
+00:00:54 ATTORNEY: Nor on ours. Would the court reporter please swear the witness.
+00:00:58 VIDEOGRAPHER: Let the record reflect the witness has been sworn by the court reporter. Counsel, you may proceed.
+00:01:05 ATTORNEY: Thank you. Good morning.
+00:01:07 WITNESS B: Good morning.
+00:01:09 ATTORNEY: Could you please state your name for the record. For purposes of this video we'll refer to you as Witness B, and that's how you'll be identified in the transcript.
+00:01:20 WITNESS B: Okay. I understand. I gave my full name to the reporter before we started.
+00:01:26 ATTORNEY: That's fine. You understand that you've just taken an oath to tell the truth?
+00:01:31 WITNESS B: Yes, I do.
+00:01:33 ATTORNEY: And that oath is the same oath you would take if you were testifying in a courtroom in front of a judge and a jury?
+00:01:43 WITNESS B: Yes, I understand that.
+00:01:45 ATTORNEY: Have you ever had your deposition taken before?
+00:01:48 WITNESS B: No. This is my first time. I've never been in anything like this.
+00:01:54 ATTORNEY: Have you ever testified in court, in any kind of case?
+00:01:58 WITNESS B: No. I got called for jury duty one time, years ago, but they sent me home the first day.
+00:02:06 ATTORNEY: Have you ever been a party to a lawsuit? Meaning you sued someone or someone sued you?
+00:02:13 WITNESS B: No, never.
+00:02:14 ATTORNEY: All right. Since this is your first deposition, let me go through a few ground rules. They help keep the record clean, and frankly they make the day go faster. Is that okay?
+00:02:27 WITNESS B: Sure.
+00:02:28 ATTORNEY: The court reporter is taking down everything that's said in this room, and the camera is recording you. So it's important that you answer out loud. A nod of the head or a shrug doesn't show up in the transcript. Do you understand?
+00:02:44 WITNESS B: Yes.
+00:02:45 ATTORNEY: Along the same lines, try to avoid answers like uh-huh or huh-uh. They look nearly the same on paper. Yes or no is better when it fits.
+00:02:55 WITNESS B: Okay. I'll try. I'm a talker, so you might have to remind me.
+00:03:00 ATTORNEY: That's perfectly fine. Second, please let me finish my question before you start your answer, even if you think you know where I'm going. And I'll do my best to let you finish your answer before I ask the next one. If we talk over each other, the reporter can't take us both down. Fair?
+00:03:21 WITNESS B: That's fair.
+00:03:22 ATTORNEY: Third, if you don't understand a question, please tell me, and I'll rephrase it. If you go ahead and answer, I'm going to assume you understood the question. Is that reasonable?
+00:03:34 WITNESS B: Yes.
+00:03:35 ATTORNEY: Fourth, I don't want you to guess. If you know something, tell me. If you don't know, it's perfectly fine to say I don't know or I don't remember. Do you understand the difference between a guess and an estimate?
+00:03:50 WITNESS B: I think so. Can you explain what you mean?
+00:03:54 ATTORNEY: Sure. If I asked you how long this table is, you probably couldn't tell me exactly, but you could look at it and give me a reasonable estimate. That's fine. What I don't want is for you to make something up about something you never saw or heard.
+00:04:12 WITNESS B: Okay. That makes sense. So if I don't know, I just say so.
+00:04:17 ATTORNEY: Exactly. And if you're giving me an estimate, it helps if you tell me that it's an estimate.
+00:04:24 WITNESS B: All right.
+00:04:26 ATTORNEY: From time to time the other attorney may object to one of my questions. Unless you're instructed not to answer, you should go ahead and answer the question after the objection. The objection is just for the record. Understood?
+00:04:40 WITNESS B: So I still answer even when he objects.
+00:04:44 ATTORNEY: Correct, unless you're told otherwise.
+00:04:46 WITNESS B: Okay.
+00:04:47 ATTORNEY: If you need a break at any time, just let me know. The only thing I'd ask is that you not take a break while a question is pending. Answer the question, and then we can take a break. All right?
+00:05:03 WITNESS B: That's fine. I'm okay for now.
+00:05:05 ATTORNEY: Are you taking any medication today, or is there anything else that would affect your ability to understand my questions or give truthful and complete answers?
+00:05:15 WITNESS B: No. Nothing like that.
+00:05:18 ATTORNEY: That's understandable. Is there any reason at all you can't give your best testimony today?
+00:05:24 WITNESS B: No. I can do it.
+00:05:26 ATTORNEY: Good. Let's start with a little background. Where do you currently live? I don't need a street address, just generally.
+00:05:34 WITNESS B: I live here in the county. Out on the west side, kind of in between towns.
+00:05:40 ATTORNEY: How long have you lived in the county?
+00:05:44 WITNESS B: About fourteen years now. Going on fifteen.
+00:05:47 ATTORNEY: And before that?
+00:05:49 WITNESS B: Before that I lived a couple of counties north. I moved down here when my sister did. We're close, so we wanted to be near each other.
+00:05:59 ATTORNEY: Do you live with anyone?
+00:06:02 WITNESS B: Just me now. My son lived with me until a few years ago, but he's grown and moved out.
+00:06:09 ATTORNEY: Where did you go to school?
+00:06:12 WITNESS B: I went to high school up north, where I grew up. I graduated. And then later I took classes at the community college for my certificate.
+00:06:22 ATTORNEY: What certificate is that?
+00:06:24 WITNESS B: For home health. I'm a certified home health aide.
+00:06:28 ATTORNEY: Is that what you do for work?
+00:06:31 WITNESS B: Yes. I've done it for about eleven years.
+00:06:35 ATTORNEY: Can you describe for the jury what a home health aide does?
+00:06:40 WITNESS B: I go to people's houses, mostly older folks, and help them with daily things. Getting around the house, meals, light housekeeping, making sure they take their medicine on time. Some days it's just keeping somebody company.
+00:06:53 ATTORNEY: Do you work for an agency or for yourself?
+00:06:57 WITNESS B: For an agency. They give me my clients and my schedule.
+00:07:02 ATTORNEY: How many clients do you typically see in a week?
+00:07:06 WITNESS B: It changes. Usually three or four regular clients. Sometimes more if someone's out and they need me to fill in.
+00:07:14 ATTORNEY: Are your clients spread out around the county?
+00:07:18 WITNESS B: Yes, all over. That's a big part of the job, really. I'm in the car a lot, going from one house to the next.
+00:07:27 ATTORNEY: About how many miles would you say you drive in a typical week for work?
+00:07:33 WITNESS B: Oh, a lot. I'd guess a few hundred. I don't keep exact track. The agency reimburses some of it.
+00:07:40 ATTORNEY: So that's an estimate.
+00:07:43 WITNESS B: Yes, that's an estimate. A few hundred.
+00:07:46 ATTORNEY: Were you working as a home health aide in May of 2016?
+00:07:51 WITNESS B: Yes. Same agency.
+00:07:53 ATTORNEY: Were you working on Saturday, May 7, 2016?
+00:07:56 WITNESS B: No. That was my day off. I usually have Saturdays.
+00:08:00 ATTORNEY: We'll come back to that day in a little while. I want to finish up some background first. Do you have a driver's license?
+00:08:10 WITNESS B: Yes.
+00:08:11 ATTORNEY: How long have you been driving?
+00:08:14 WITNESS B: Since I was sixteen. So a long time.
+00:08:17 ATTORNEY: Do you need glasses or contact lenses to drive?
+00:08:21 WITNESS B: No. I have reading glasses, for close-up things. Paperwork, my phone, that kind of thing. But I don't need anything for driving or for seeing far away.
+00:08:31 ATTORNEY: Is there a restriction on your license for corrective lenses?
+00:08:36 WITNESS B: No, there's no restriction.
+00:08:38 ATTORNEY: When was the last time you had your eyes checked?
+00:08:42 WITNESS B: Before this happened, it would have been maybe a year or so before. They told me my distance vision was fine. That's when they said I could use the readers for close up.
+00:08:55 OPPOSING COUNSEL: Object to form.
+00:08:56 ATTORNEY: You can answer. Let me ask it more simply. As of May 2016, did you wear any glasses for seeing at a distance?
+00:09:05 WITNESS B: No. Only the reading glasses, and only for reading.
+00:09:09 ATTORNEY: Do you have them with you today?
+00:09:12 WITNESS B: They're in my purse. I might need them if you show me papers.
+00:09:18 ATTORNEY: That's fine. Feel free to use them whenever you need to. Do you have any problems with your hearing?
+00:09:25 WITNESS B: No. My hearing is good.
+00:09:28 ATTORNEY: Now, before today, did you do anything to prepare for this deposition?
+00:09:33 WITNESS B: I looked over my statement. The one I wrote for the deputy.
+00:09:38 ATTORNEY: Let's talk about that. You said a statement you wrote for the deputy. What is that?
+00:09:44 WITNESS B: A few days after the accident, a deputy from the sheriff's office called me and asked if I would come in and write down what I saw. So I did. It's about a page, handwritten.
+00:09:57 ATTORNEY: Do you remember about how many days after the crash that was?
+00:10:02 WITNESS B: I think it was three or four days after. It was the next week, during the week. I remember I had to move a client's visit around to go in.
+00:10:14 ATTORNEY: And you wrote that statement yourself, in your own handwriting?
+00:10:18 WITNESS B: Yes. The deputy gave me a form and I wrote it out. He asked me a couple of questions, but I wrote it myself.
+00:10:27 ATTORNEY: Did anyone tell you what to write?
+00:10:30 WITNESS B: No. He just said write down what you saw, in your own words.
+00:10:36 ATTORNEY: Did you sign it?
+00:10:38 WITNESS B: Yes, I signed it at the bottom and dated it.
+00:10:42 ATTORNEY: When did you review it in preparation for today?
+00:10:46 WITNESS B: I read it again last night, and once a couple of weeks ago when I got the paper saying I had to come in.
+00:10:55 ATTORNEY: The paper you're referring to, is that the subpoena?
+00:10:59 WITNESS B: Yes. The subpoena.
+00:11:01 ATTORNEY: Where did you get the copy of the statement that you reviewed?
+00:11:06 WITNESS B: I kept a copy. The deputy made me a copy that day, and I put it in a folder at home with the other papers.
+00:11:16 ATTORNEY: Other than your written statement, did you review any other documents to prepare for today?
+00:11:22 WITNESS B: No. Just that.
+00:11:23 ATTORNEY: Did you look at any photographs of the scene?
+00:11:27 WITNESS B: No.
+00:11:28 ATTORNEY: Any maps or diagrams?
+00:11:31 WITNESS B: No.
+00:11:32 ATTORNEY: Any news articles, videos, anything on the internet about the crash?
+00:11:36 WITNESS B: No. I've stayed away from all that on purpose.
+00:11:40 ATTORNEY: Why is that?
+00:11:42 WITNESS B: Because I was there. I don't need to watch it on the news. It was hard enough the first time.
+00:11:50 ATTORNEY: I understand. Did you meet with any attorney before today to prepare for this deposition?
+00:11:56 WITNESS B: No. I talked to somebody from your office on the phone once to set up the date, but that was about scheduling.
+00:12:04 ATTORNEY: Did you discuss the substance of what you saw during that call?
+00:12:09 WITNESS B: No. Just the date and the time and where to come.
+00:12:14 ATTORNEY: Have you spoken with anyone from the motor carrier, or any attorney representing them?
+00:12:20 WITNESS B: No.
+00:12:21 ATTORNEY: Has anyone ever asked you to change anything in your statement?
+00:12:25 WITNESS B: No. Nobody.
+00:12:27 ATTORNEY: Having reread your statement last night, is there anything in it that you believe is wrong or that you'd like to change today?
+00:12:36 OPPOSING COUNSEL: Object to form.
+00:12:37 ATTORNEY: You can answer.
+00:12:39 WITNESS B: No. I wrote what I remembered, and I still remember it the same way.
+00:12:45 ATTORNEY: Have you talked to anyone else about today's deposition? Family, friends, coworkers?
+00:12:50 WITNESS B: My sister knows I'm here. She drove me, actually. And I told my supervisor I needed the morning off. That's about it.
+00:12:58 ATTORNEY: Did you discuss the details of what you saw with your sister in preparing for today?
+00:13:05 WITNESS B: Not to prepare, no. We talked about it right after it happened, of course. But not about today.
+00:13:12 ATTORNEY: We'll get into those conversations later. I'd like to turn now to the location. Are you familiar with U.S. Highway 27A in this county?
+00:13:21 WITNESS B: Yes, very.
+00:13:23 ATTORNEY: How are you familiar with it?
+00:13:26 WITNESS B: I drive it all the time. It's the main road out my way. Several of my clients are off of it, and it's the way to get into town for groceries and the pharmacy.
+00:13:38 ATTORNEY: Specifically, are you familiar with the stretch of 27A near the intersection with Northeast 140th Court?
+00:13:45 WITNESS B: Yes. I go right through there.
+00:13:48 ATTORNEY: How often, back in 2016, would you say you drove through that particular stretch?
+00:13:53 WITNESS B: At least once a week. Usually more. I had a client back then who lived a few miles past there, and I went out to her every Tuesday and Thursday.
+00:14:05 ATTORNEY: So at least weekly, and often twice a week?
+00:14:09 WITNESS B: Yes. At least weekly. Sometimes more if I was running errands.
+00:14:13 ATTORNEY: And today, do you still drive through there?
+00:14:17 WITNESS B: I do. Not as much as I used to. I'll be honest, I go another way sometimes now if I can.
+00:14:25 ATTORNEY: When you drove that stretch, which direction were you usually going?
+00:14:30 WITNESS B: Both. Going out to my client I'd go one way, and coming back the other. So both directions.
+00:14:37 ATTORNEY: How long have you been driving that stretch of road?
+00:14:41 WITNESS B: Since I moved down here. So about fourteen years.
+00:14:45 WITNESS B: Yes, plenty of times. It's a little country store. I'd stop for a drink or gas or a snack between clients.
+00:14:53 ATTORNEY: Before May 7, 2016, had you ever seen an accident at that intersection?
+00:14:59 WITNESS B: No. I'd never seen one there myself.
+00:15:02 ATTORNEY: Had you ever been in an accident anywhere on 27A?
+00:15:06 WITNESS B: No.
+00:15:07 ATTORNEY: Have you ever been in any car accident, as a driver or a passenger?
+00:15:13 WITNESS B: One time, a long time ago, somebody backed into me in a parking lot. Nobody was hurt. That's it.
+00:15:20 ATTORNEY: Other than that parking lot incident, have you ever witnessed a serious crash before May 7, 2016?
+00:15:27 WITNESS B: No. Never like that.
+00:15:29 ATTORNEY: Now, I'm going to ask you some general questions about the road itself. I'm not asking about that day yet, just about the road as you know it from driving it. All right?
+00:15:42 WITNESS B: Okay.
+00:15:43 ATTORNEY: Is 27A in that area a divided highway?
+00:15:46 WITNESS B: Yes. It's two lanes going each way with grass in the middle.
+00:15:51 ATTORNEY: And what's the speed limit in that area, if you know?
+00:15:56 WITNESS B: I believe it's sixty-five. That's what I've always gone by. I think there's a sign for it, but I couldn't swear to exactly where it is.
+00:16:06 OPPOSING COUNSEL: Object to foundation.
+00:16:08 ATTORNEY: You can answer, though I think you have. You said you believe it's sixty-five?
+00:16:13 WITNESS B: Yes, I believe so. That's my understanding from driving it.
+00:16:18 ATTORNEY: Is that stretch generally straight or curvy?
+00:16:21 WITNESS B: Pretty straight through there. There's a hill to the west, coming toward the store from the west side. Not a big hill, but it rises up and then you come down toward the intersection.
+00:16:34 ATTORNEY: We'll talk about the layout in more detail a little later. For now, generally, would you describe traffic on that stretch as heavy or light?
+00:16:43 WITNESS B: It depends on the time of day. During the week, mornings and afternoons it can be busy. Weekends it's usually lighter. There are a lot of trucks, too.
+00:16:54 ATTORNEY: Thank you. Let me ask you about yourself for a moment. How tall are you?
+00:17:00 WITNESS B: About five foot six.
+00:17:02 ATTORNEY: Was that the same in May of 2016?
+00:17:06 WITNESS B: Yes. I haven't grown any.
+00:17:08 ATTORNEY: Fair enough. Do you have any medical condition that affects your balance or your ability to stand for long periods?
+00:17:16 WITNESS B: No. I'm on my feet all day at work. Standing is no problem.
+00:17:21 ATTORNEY: Let me ask you about one more document before we move on. You mentioned the folder at home where you kept a copy of your statement. Is there anything else in that folder relating to this crash?
+00:17:35 WITNESS B: The subpoena. And a card the deputy gave me with his name and number. That's all.
+00:17:42 ATTORNEY: Did you ever write down any notes of your own, apart from the statement for the deputy?
+00:17:48 WITNESS B: No. I didn't write anything else.
+00:17:51 ATTORNEY: Did you ever take any photographs that day, with a phone or a camera?
+00:17:57 WITNESS B: No. I didn't take any pictures.
+00:18:00 ATTORNEY: Have you received any payment or anything of value for your testimony today?
+00:18:05 WITNESS B: No. Nobody's paid me anything. I lost a morning of work, if anything.
+00:18:11 ATTORNEY: Do you have any relationship with the family of the driver of Vehicle A?
+00:18:16 WITNESS B: No. I didn't know anybody involved.
+00:18:19 ATTORNEY: Any relationship with the motor carrier, or anyone who works for it?
+00:18:24 WITNESS B: No.
+00:18:25 ATTORNEY: Do you have any interest in the outcome of this case?
+00:18:30 OPPOSING COUNSEL: Object to form.
+00:18:32 WITNESS B: No. I just came because I was asked to say what I saw. I don't have anything riding on it.
+00:18:39 ATTORNEY: Before I move on to the afternoon itself, I want to make sure we're on the same page about one thing. When I use the term Vehicle A, I'm referring to the dark four-door sedan that was involved in the collision. When I use the term Vehicle T, I'm referring to the tractor with the white trailer. Will you understand those terms if I use them?
+00:19:04 WITNESS B: Yes. The car and the truck.
+00:19:06 ATTORNEY: Exactly. And if at any point you're not sure which vehicle I mean, ask me.
+00:19:12 WITNESS B: I will.
+00:19:14 ATTORNEY: And when I refer to the intersection, I mean where 27A meets Northeast 140th Court, by the store. Is that clear?
+00:19:22 WITNESS B: Yes, that's clear.
+00:19:24 ATTORNEY: All right. One last question on background. Is there anything about that day, May 7, 2016, that makes it stand out in your mind, apart from the crash itself?
+00:19:35 WITNESS B: No. It was just a normal Saturday. I was off, I went shopping, I was waiting on my sister. If it hadn't been for what happened, I wouldn't remember anything about that day.
+00:19:47 ATTORNEY: But you do remember it.
+00:19:50 WITNESS B: I remember it very well. I don't think I'll ever forget it.
+00:19:55 ATTORNEY: Thank you. I want to turn now to that afternoon in more detail.
+00:20:00 ATTORNEY: I'd like to turn now to the afternoon of Saturday, May 7, 2016. Do you remember that day?
+00:20:07 WITNESS B: Yes. I remember it very well. I don't think I'll forget it.
+00:20:12 ATTORNEY: Why were you in the area of US-27A and Northeast 140th Court that afternoon?
+00:20:18 WITNESS B: I was waiting for my sister. She was supposed to pick me up at the store there after I finished my shopping.
+00:20:27 ATTORNEY: Which store are we talking about?
+00:20:30 WITNESS B: The little store on the corner there, on the south side of the highway. They sell a bit of everything. Feed, drinks, snacks, some hardware.
+00:20:40 ATTORNEY: And how did you get to the store that day?
+00:20:44 WITNESS B: A neighbor dropped me off. My car was in the shop that week, so I was getting rides from people.
+00:20:53 ATTORNEY: About what time did your neighbor drop you off?
+00:20:57 WITNESS B: Around ten after four. Maybe a minute or two either way.
+00:21:01 ATTORNEY: How do you know it was around ten after four?
+00:21:06 WITNESS B: Because my sister texted me she'd be there around five, and I remember thinking I had close to an hour to kill.
+00:21:15 ATTORNEY: Did your sister in fact arrive around five?
+00:21:19 WITNESS B: Yes. Right about five. A little after, maybe, because of everything that was going on by then.
+00:21:26 ATTORNEY: We'll get to that later. When you were dropped off, what did you do first?
+00:21:32 WITNESS B: I went inside and did my shopping. I picked up a few things. Some bread, a jug of tea, some batteries, and a bag of birdseed for my mother.
+00:21:43 ATTORNEY: About how long were you inside the store?
+00:21:47 WITNESS B: Fifteen minutes, maybe. Not long. It's not a big store.
+00:21:52 ATTORNEY: Did you pay for your items?
+00:21:54 WITNESS B: Yes. At the counter.
+00:21:57 ATTORNEY: And after you paid, where did you go?
+00:22:00 WITNESS B: I went back outside. Out front of the store, to wait for my sister.
+00:22:06 ATTORNEY: Why did you wait outside rather than inside?
+00:22:10 WITNESS B: It was a nice day. And it's a little stuffy in there. I'd rather be outside than stand around in the aisles.
+00:22:19 ATTORNEY: So from the time you finished shopping until the collision, you were outside?
+00:22:25 WITNESS B: Yes. Outside, out front of the store.
+00:22:28 ATTORNEY: Did you go back inside the store at any point before the collision?
+00:22:33 WITNESS B: No. I stayed outside.
+00:22:36 ATTORNEY: Did you sit down at any point while you were waiting?
+00:22:40 WITNESS B: Off and on. I can't tell you exactly when. I was mostly standing.
+00:22:46 OPPOSING COUNSEL: Object to form.
+00:22:48 ATTORNEY: Let me ask it differently. At the time of the collision, do you recall whether you were standing or sitting?
+00:22:56 WITNESS B: I was standing.
+00:22:58 ATTORNEY: Let's talk about the conditions that afternoon. What was the weather like?
+00:23:03 WITNESS B: Clear. Sunny. No rain at all. It was warm but not hot like summer gets.
+00:23:09 ATTORNEY: Were there any clouds that you recall?
+00:23:13 WITNESS B: Maybe a few way off. Nothing over us. It was a bright, clear afternoon.
+00:23:19 ATTORNEY: Had it rained earlier that day, to your knowledge?
+00:23:23 WITNESS B: Not that I know of. The road was dry. Everything was dry.
+00:23:28 ATTORNEY: How do you know the road was dry?
+00:23:32 WITNESS B: I could see it. There weren't any puddles, nothing shiny. It looked like a dry road on a sunny day.
+00:23:40 ATTORNEY: What about the light? Was it full daylight?
+00:23:44 WITNESS B: Yes. Full daylight. The sun was still pretty high.
+00:23:48 ATTORNEY: Do you recall where the sun was in the sky, generally?
+00:23:52 WITNESS B: Up and kind of over to the west. Behind the traffic coming from the west, I'd say. It wasn't down low yet.
+00:24:01 OPPOSING COUNSEL: Object to form.
+00:24:03 ATTORNEY: Was there any haze, smoke, or fog in the area?
+00:24:08 WITNESS B: No. None of that.
+00:24:10 ATTORNEY: Any wind that you noticed?
+00:24:12 WITNESS B: A little breeze. Nothing to speak of.
+00:24:16 ATTORNEY: Now, how would you describe the traffic on the highway while you were waiting?
+00:24:22 WITNESS B: Light. It's a Saturday afternoon out there. You'd get a few cars, then nothing for a while, then a few more.
+00:24:30 ATTORNEY: Were there trucks as well as cars?
+00:24:34 WITNESS B: Some. Mostly cars and pickups. Every so often a bigger truck.
+00:24:38 ATTORNEY: Can you estimate how many vehicles passed in, say, a minute?
+00:24:43 OPPOSING COUNSEL: Object to form. Calls for speculation.
+00:24:46 ATTORNEY: If you can.
+00:24:48 WITNESS B: I really can't give you a number. It wasn't busy. Sometimes a minute would go by and nothing passed at all.
+00:24:57 ATTORNEY: What about noise? What could you hear while you were standing outside?
+00:25:02 WITNESS B: The cars going by, mainly. They make that whoosh at highway speed. Some birds. A radio from inside the store when the door opened.
+00:25:11 ATTORNEY: Was there any construction or machinery running nearby?
+00:25:15 WITNESS B: No. Not that I remember.
+00:25:18 ATTORNEY: Was it loud enough that you'd have had trouble hearing someone talk to you?
+00:25:24 WITNESS B: No. Only when a truck went by. Otherwise it was pretty quiet out there.
+00:25:30 ATTORNEY: I'd like you to describe the road for us in words. We'll look at a map later in the day, but for now, just in your own words. Can you do that?
+00:25:42 WITNESS B: I'll try.
+00:25:44 ATTORNEY: Start with the highway itself. How many lanes are there?
+00:25:48 WITNESS B: Four. Two going east and two going west.
+00:25:52 ATTORNEY: Is there anything separating the eastbound lanes from the westbound lanes?
+00:25:57 WITNESS B: Yes. A big grassy median in between. It's wide. Wider than a lot of roads around here.
+00:26:04 ATTORNEY: Can you estimate how wide the median is?
+00:26:07 WITNESS B: I'm not good with feet. Wide enough you could park a couple of trucks end to end across it, maybe. Sixty feet? I don't know.
+00:26:17 OPPOSING COUNSEL: Object to form.
+00:26:19 ATTORNEY: Fair enough. Which side of the highway is the store on?
+00:26:24 WITNESS B: The south side. The eastbound side.
+00:26:27 ATTORNEY: So the lanes nearest the store are the eastbound lanes?
+00:26:32 WITNESS B: Yes. The eastbound lanes are closest. Then the median, then the westbound lanes on the far side.
+00:26:39 ATTORNEY: Is there a place where you can cross the median at that intersection?
+00:26:44 WITNESS B: Yes. There's a crossover. A cut in the median where you can go across from one side to the other.
+00:26:52 ATTORNEY: Is there a traffic light at that crossover?
+00:26:56 WITNESS B: No. No light. No stop light, no blinking light. Just the cut through the median.
+00:27:02 ATTORNEY: Are there stop signs?
+00:27:05 WITNESS B: I think there's a stop sign on the side road coming up to the highway. Not on the highway itself.
+00:27:13 ATTORNEY: On the highway, are there turn lanes near the crossover?
+00:27:17 WITNESS B: Yes. There's a left-turn lane on each side, I believe. It's kind of cut into the median before the crossover so people can get out of the fast lane to turn.
+00:27:29 ATTORNEY: Let's focus on the westbound side. Is there a left-turn lane for westbound traffic?
+00:27:35 WITNESS B: Yes. If you're heading west and want to turn left onto 140th, you pull into that turn lane in the median and wait there.
+00:27:45 ATTORNEY: And from that westbound turn lane, a vehicle turning left would cross what?
+00:27:51 WITNESS B: It'd go through the crossover and across both of the eastbound lanes, and then onto 140th.
+00:27:57 ATTORNEY: Tell me about 140th Court. Which direction does it run from the highway?
+00:28:03 WITNESS B: South. It goes south off the highway, right there by the store.
+00:28:08 ATTORNEY: Does 140th Court continue north of the highway?
+00:28:12 WITNESS B: Not that I've ever seen. I've only ever known it to go south.
+00:28:17 ATTORNEY: What's 140th Court like? Is it paved?
+00:28:21 WITNESS B: It's paved. It's a smaller road. Two lanes, one each way, no median. Some houses and fields down it.
+00:28:28 ATTORNEY: Where is the store in relation to 140th Court?
+00:28:33 WITNESS B: It's right on the corner. On the east side of 140th, where it meets the highway.
+00:28:39 ATTORNEY: So the store sits at the southeast corner of the intersection?
+00:28:44 WITNESS B: Yes. That's right.
+00:28:46 ATTORNEY: Now I'd like to ask about the area to the west of the intersection. What's the land like in that direction?
+00:28:54 WITNESS B: There's a hill. The highway comes over a rise to the west and then comes down toward the intersection.
+00:29:02 ATTORNEY: How far west is the top of that hill, roughly?
+00:29:07 OPPOSING COUNSEL: Object to form. Foundation.
+00:29:09 ATTORNEY: Just your best sense, if you have one.
+00:29:13 WITNESS B: A good ways. A quarter mile maybe. I've never measured it. When you drive it, you come over the top and then you can see the store down the hill in front of you.
+00:29:26 ATTORNEY: Is it a steep hill?
+00:29:29 WITNESS B: No. Gentle. It's not a big hill. It's just enough that you can't see what's past the top.
+00:29:36 ATTORNEY: And when you drive east on that stretch yourself, as you said you do weekly, what do you see when you come over that rise?
+00:29:46 WITNESS B: You see the road go down and the intersection ahead, and the store on the right. It's pretty open from the top on down.
+00:29:56 ATTORNEY: What about east of the intersection? What is it like in that direction?
+00:30:01 WITNESS B: Flatter. The highway runs on straight. There are fences, some yards and houses back off the road, some power poles along the side.
+00:30:10 ATTORNEY: Are there trees along the highway near the intersection?
+00:30:15 WITNESS B: Some, back from the road. Not right on the shoulder. It's mostly grass along the edges.
+00:30:21 ATTORNEY: Are there any buildings at the intersection besides the store?
+00:30:26 WITNESS B: Not right there, no. The store is the main thing. There are houses further off.
+00:30:32 ATTORNEY: Is there a parking area at the store?
+00:30:36 WITNESS B: Yes. A gravel and dirt lot in front and along the side. People pull in off the highway or off 140th.
+00:30:44 ATTORNEY: How many cars were parked there while you were waiting?
+00:30:49 WITNESS B: A couple. One or two. It wasn't busy. People would pull in, run in, and leave.
+00:30:55 ATTORNEY: Were there any vehicles parked between the store and the highway while you were outside?
+00:31:02 WITNESS B: Not that I remember. Not big ones. Maybe a car came and went.
+00:31:07 OPPOSING COUNSEL: Object to form.
+00:31:09 ATTORNEY: I'll move on. Is the shoulder of the eastbound lanes paved?
+00:31:14 WITNESS B: There's a paved strip along the edge and then grass. Then the store lot.
+00:31:20 ATTORNEY: Is there a speed limit sign anywhere near there that you know of?
+00:31:25 WITNESS B: There's one somewhere back up the road. I believe it's sixty-five out there, but don't hold me to it.
+00:31:33 OPPOSING COUNSEL: Object. Foundation.
+00:31:35 ATTORNEY: You're not certain of the posted limit?
+00:31:38 WITNESS B: No, I'm not certain. That's just what I think it is from driving it.
+00:31:44 ATTORNEY: Let me go back to what you had with you that afternoon. When you went outside after shopping, what were you carrying?
+00:31:53 WITNESS B: My purse, and a shopping bag. One of those plastic bags from the store with my things in it.
+00:32:01 ATTORNEY: Just one bag?
+00:32:02 WITNESS B: Just the one. The birdseed was the heaviest thing. I had it all in one bag.
+00:32:09 ATTORNEY: Which hand were you holding it in?
+00:32:12 WITNESS B: I'd switch. It was heavy. I think I had it in my left hand most of the time, with my purse on my right shoulder.
+00:32:23 ATTORNEY: Did you set the bag down at any point?
+00:32:27 WITNESS B: I might have, on and off. I don't remember exactly. When everything happened, I know I still had it, because I remember it banging against my leg when I jumped.
+00:32:38 ATTORNEY: When you say you jumped, what do you mean?
+00:32:43 WITNESS B: From the noise. The crash. It made me jump. That's all.
+00:32:47 ATTORNEY: We'll come to the crash in detail later. Did you have a cell phone with you that afternoon?
+00:32:55 WITNESS B: Yes. In my purse.
+00:32:57 ATTORNEY: Were you using your phone while you were waiting outside?
+00:33:01 WITNESS B: Not right then. Earlier I'd read my sister's text, when I first got there. After that it was in my purse.
+00:33:10 ATTORNEY: So in the minutes before the collision, were you looking at your phone?
+00:33:16 WITNESS B: No. It was in my purse. I wasn't on it.
+00:33:20 ATTORNEY: Were you talking to anyone on the phone in the minutes before the collision?
+00:33:26 WITNESS B: No. I called my sister after. Not before.
+00:33:30 ATTORNEY: Were you texting, reading, or doing anything with the phone?
+00:33:34 WITNESS B: No. I know people will say I was on my phone, but I wasn't. I was just standing there watching the road.
+00:33:43 OPPOSING COUNSEL: Move to strike the last part as nonresponsive.
+00:33:47 ATTORNEY: Were you listening to anything? Earbuds, headphones, music?
+00:33:50 WITNESS B: No. Nothing in my ears.
+00:33:53 ATTORNEY: Were you wearing glasses that afternoon?
+00:33:56 WITNESS B: No. I only wear reading glasses, and those were in my purse.
+00:34:01 ATTORNEY: Do you need glasses to see things at a distance?
+00:34:06 WITNESS B: No. My distance vision is fine. I just need the readers for small print.
+00:34:12 ATTORNEY: Were you wearing sunglasses?
+00:34:14 WITNESS B: No. I didn't have sunglasses with me that day.
+00:34:18 ATTORNEY: Did the sun bother you at all while you were waiting?
+00:34:23 WITNESS B: No. It wasn't in my face. I could see fine.
+00:34:27 OPPOSING COUNSEL: Object to form.
+00:34:29 ATTORNEY: Were you wearing a hat or anything with a brim?
+00:34:33 WITNESS B: No hat. Just my hair pulled back.
+00:34:37 ATTORNEY: Was anyone with you while you were outside?
+00:34:40 WITNESS B: No. I was by myself.
+00:34:43 ATTORNEY: Were you talking with anyone in person while you waited?
+00:34:48 WITNESS B: Not really. A man said hello going into the store. That's about it.
+00:34:53 ATTORNEY: Do you know who that man was?
+00:34:56 WITNESS B: No. Never seen him before. Just somebody stopping in.
+00:35:01 ATTORNEY: Did you see where he went after that?
+00:35:04 WITNESS B: Inside. I don't know after that. I wasn't paying him any attention.
+00:35:09 ATTORNEY: While you were waiting, what were you doing, generally?
+00:35:14 WITNESS B: Just waiting. Watching the road, watching for my sister's car. She'd be coming from the west, so I kept looking that way.
+00:35:22 ATTORNEY: Why would your sister be coming from the west?
+00:35:26 WITNESS B: Because she lives west of there. She'd come down the highway over that hill, same as anybody coming from that direction.
+00:35:35 ATTORNEY: So you were watching westbound or eastbound traffic for her?
+00:35:39 WITNESS B: Eastbound. She'd be heading east toward me, coming down the hill.
+00:35:44 ATTORNEY: What kind of car does your sister drive?
+00:35:48 WITNESS B: A little silver hatchback. I was looking for that.
+00:35:52 ATTORNEY: Did you watch the cars that came over the hill while you waited?
+00:35:58 WITNESS B: Every one of them. Every time something came over I'd look to see if it was her.
+00:36:05 OPPOSING COUNSEL: Object to form.
+00:36:07 ATTORNEY: Was there anything that afternoon, before the collision, that seemed unusual to you about the traffic?
+00:36:13 WITNESS B: No. It was just a normal afternoon. Cars going by. Nothing unusual until it happened.
+00:36:20 ATTORNEY: Did you notice any vehicles pulling into or out of the store lot in the few minutes before the collision?
+00:36:28 WITNESS B: I don't remember any right then. It was quiet.
+00:36:32 ATTORNEY: Did you notice anyone walking along the highway, or crossing it?
+00:36:37 WITNESS B: No. Nobody walking.
+00:36:38 ATTORNEY: Any bicycles or motorcycles?
+00:36:41 WITNESS B: Not that I remember.
+00:36:43 ATTORNEY: Any emergency vehicles, police cars, anything with lights, before the collision?
+00:36:48 WITNESS B: No. Not before. Afterward, yes, a lot of them.
+00:36:52 ATTORNEY: Let me ask one more general question about where you were. Throughout the time you were waiting, where were you?
+00:37:00 WITNESS B: Outside. Out front of the store. I've said that.
+00:37:04 ATTORNEY: You have. I'm just making sure the record is clear. Did you go around to the side or back of the store at any point?
+00:37:14 WITNESS B: No. I stayed out front.
+00:37:17 ATTORNEY: Did you walk out toward the highway at any point before the collision?
+00:37:22 WITNESS B: No. I stayed by the store.
+00:37:25 ATTORNEY: Did you cross 140th Court at any point before the collision?
+00:37:30 WITNESS B: No.
+00:37:31 ATTORNEY: Had you ever waited outside that store before, on another day?
+00:37:36 WITNESS B: A few times. When I've gotten rides. It's an easy place for people to pick me up.
+00:37:43 ATTORNEY: So you were familiar with what the intersection looks like from the store?
+00:37:49 WITNESS B: Yes. I know what it looks like from there.
+00:37:53 ATTORNEY: Before May 7, had you ever seen a collision at that intersection?
+00:37:58 WITNESS B: No. Never. I'd heard people say it's a bad crossing, but I'd never seen anything.
+00:38:04 OPPOSING COUNSEL: Object. Move to strike as hearsay.
+00:38:07 ATTORNEY: I'll ask you just about what you saw yourself. Before that day, had you yourself seen any near misses there?
+00:38:15 WITNESS B: Not that I can remember. Nothing that stuck with me.
+00:38:20 ATTORNEY: All right. In the minutes leading up to the collision, about how long had you been standing outside?
+00:38:27 WITNESS B: Ten minutes. Maybe a little more. I'd finished shopping at around twenty-five after, so ten or twelve minutes.
+00:38:35 ATTORNEY: And how are you estimating that?
+00:38:38 WITNESS B: From when I got there and how long I was inside. I didn't look at a clock. It's my best guess.
+00:38:46 ATTORNEY: Understood. Did anything distract you in those minutes before? Any noise, anything that pulled your attention away from the road?
+00:38:54 OPPOSING COUNSEL: Object to form.
+00:38:56 WITNESS B: No. Nothing like that. I was just looking at the road for my sister.
+00:39:02 ATTORNEY: Were you hungry, tired, not feeling well, anything of that sort that day?
+00:39:08 WITNESS B: No. I felt fine. I'd had lunch. I was a little tired from the week, but nothing out of the ordinary.
+00:39:16 ATTORNEY: Had you had anything to drink that day other than water or tea?
+00:39:22 WITNESS B: No. Tea and water. That's all.
+00:39:25 ATTORNEY: Were you taking any medication that affects your vision or your memory?
+00:39:30 WITNESS B: No. Nothing like that.
+00:39:32 ATTORNEY: Okay. I think that covers the background of the afternoon. Next I want to move to the traffic you saw coming from the west, beginning with the first time you noticed the car. Before I do, is there anything about the conditions or the road we've discussed that you want to add or correct?
+00:39:53 WITNESS B: No. I think I've said it. It was clear, it was quiet, and I was out front waiting.
+00:40:00 ATTORNEY: Let's turn now to the car itself. You told me a few minutes ago that you were outside, out front of the store, when it happened. I want to take this slowly. When did you first notice the car?
+00:40:13 WITNESS B: When it came over the hill. Off to the west, to my left if I'm facing the road. That's where I first saw it.
+00:40:21 ATTORNEY: The hill crest you described earlier, the one about a quarter mile or so to the west?
+00:40:27 WITNESS B: Yes. It comes over that rise and then it's sort of downhill toward the intersection.
+00:40:33 ATTORNEY: What was it about the car that made you notice it?
+00:40:37 WITNESS B: It was dark, and it was by itself. There wasn't anybody right behind it or right in front of it. It just kind of stood out coming down the hill.
+00:40:47 ATTORNEY: Can you describe the car for me?
+00:40:50 WITNESS B: A dark car. A sedan, four doors I think. Low to the ground. Black or a real dark color, I couldn't tell you exactly which.
+00:40:59 ATTORNEY: Which direction was it traveling?
+00:41:01 WITNESS B: East. Coming toward the intersection from the west, heading east.
+00:41:05 ATTORNEY: How well could you see the car as it came toward the intersection?
+00:41:10 WITNESS B: I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.
+00:41:20 OPPOSING COUNSEL: Object to form.
+00:41:22 ATTORNEY: You can go ahead. Is there anything you want to add to that answer?
+00:41:28 WITNESS B: No. That's what happened. I saw it.
+00:41:31 ATTORNEY: All right. Let me break that down a little. When you first saw it at the top of the hill, about how far away would you say it was from the intersection?
+00:41:44 WITNESS B: Far. I don't know in feet. It was up at the top of the hill. However far that is.
+00:41:52 ATTORNEY: That's fine. I don't want you to guess. Would it be fair to say it was some distance away?
+00:41:59 WITNESS B: It was a good ways off, yes.
+00:42:03 ATTORNEY: And once you noticed it, did you keep looking at it?
+00:42:08 WITNESS B: Yes. I kept looking at it.
+00:42:10 ATTORNEY: Why did you keep looking at it?
+00:42:14 WITNESS B: I don't really know. I was waiting on my sister, so I was looking up the road anyway for her car. She'd be coming from that direction, from the west. So I was watching the cars come over the hill.
+00:42:29 ATTORNEY: So you were looking for your sister's car coming from the west?
+00:42:34 WITNESS B: Right. She drives a light-colored car, so when I saw a dark one I knew it wasn't her, but I just kept watching it.
+00:42:44 ATTORNEY: About how long did you watch that dark car before it reached the intersection?
+00:42:50 WITNESS B: Not long. A few seconds. It was going pretty good.
+00:42:54 ATTORNEY: When you say a few seconds, can you give me any better estimate than that?
+00:43:01 WITNESS B: No. I wasn't counting. It wasn't a long time. It came down the hill and then it was there.
+00:43:08 ATTORNEY: Let's talk about speed. Do you have an estimate of how fast the car was traveling as it came down the hill?
+00:43:17 OPPOSING COUNSEL: Objection. Foundation.
+00:43:19 ATTORNEY: You can answer if you have an estimate.
+00:43:23 WITNESS B: It was fast. Highway speed. It wasn't slowing down that I could tell.
+00:43:28 ATTORNEY: When you say highway speed, what do you mean by that?
+00:43:33 WITNESS B: I mean like the other cars that go through there. People go fast on that road. It's a highway. It was going like a car on the highway goes.
+00:43:44 ATTORNEY: Can you put a number on it?
+00:43:48 OPPOSING COUNSEL: Same objection. Foundation.
+00:43:50 WITNESS B: No, I can't put a number on it. I'm not going to make up a number. It was fast.
+00:43:57 ATTORNEY: That's fair, and I don't want you to make up a number. Have you ever been trained in estimating vehicle speeds?
+00:44:06 WITNESS B: No.
+00:44:07 ATTORNEY: Ever worked in law enforcement, or as a crossing guard, anything like that?
+00:44:12 WITNESS B: No. Nothing like that. I take care of people in their homes. That's my job.
+00:44:19 ATTORNEY: Compared to the other eastbound traffic you had seen that afternoon while you were waiting, was the car going faster, slower, or about the same?
+00:44:29 OPPOSING COUNSEL: Object to form. Foundation.
+00:44:31 WITNESS B: I'd say about the same or maybe a little faster. I really couldn't tell you more than that. Everybody goes fast through there.
+00:44:40 ATTORNEY: Did you see the car change speed at any point as it came toward the intersection?
+00:44:47 WITNESS B: Not that I saw. It looked like it was just going steady.
+00:44:52 ATTORNEY: Did you see any brake lights on the car?
+00:44:56 WITNESS B: The car was coming toward me, sort of, so I wouldn't have seen brake lights on the back. I didn't see it slow down, is what I can tell you.
+00:45:08 ATTORNEY: Did you hear any sound from the car as it approached, tires, anything like that?
+00:45:14 WITNESS B: Not really. There's wind out there and the road noise. I didn't hear any squealing or anything like that, if that's what you mean.
+00:45:24 ATTORNEY: Did you hear any horn?
+00:45:26 WITNESS B: No. I don't remember any horn.
+00:45:29 ATTORNEY: Now, the eastbound side of the highway has two lanes, correct? You described that earlier.
+00:45:36 WITNESS B: Yes, two lanes going east.
+00:45:38 ATTORNEY: Do you know which of the two eastbound lanes the car was in as it came down the hill?
+00:45:46 WITNESS B: I think it was in the right one, the outside one, closer to my side. But I'm not a hundred percent on that.
+00:45:55 OPPOSING COUNSEL: Object to form.
+00:45:57 ATTORNEY: When you say you think, how sure are you?
+00:46:01 WITNESS B: Pretty sure. But I'm not going to swear on the lane. I'm sure it was going east and I'm sure I watched it.
+00:46:10 ATTORNEY: Did you see the car change lanes at any point?
+00:46:15 WITNESS B: No. It stayed where it was, as far as I saw.
+00:46:20 ATTORNEY: Did you see the car move toward the shoulder or toward the median at any point before it reached the intersection?
+00:46:28 WITNESS B: No. It just came straight. Straight down the road.
+00:46:32 ATTORNEY: Were there any other vehicles in the eastbound lanes near that car at that time?
+00:46:38 WITNESS B: Not near it. There might have been cars way back up the hill, I don't remember. Nothing right around it.
+00:46:47 ATTORNEY: Any vehicles in the westbound lanes that you remember, other than the truck we'll talk about later?
+00:46:54 WITNESS B: There might have been one or two going the other way. I don't remember anything specific about them.
+00:47:01 ATTORNEY: I want to go back to the hill for a moment. When the car first came over the crest, could you see the whole car, or just part of it?
+00:47:13 WITNESS B: At first just the top of it, kind of, as it came over. Then the whole thing as it came down.
+00:47:21 ATTORNEY: And from that point on, could you see the whole car?
+00:47:26 WITNESS B: Yes.
+00:47:27 ATTORNEY: Was the sun a factor at all in how you were seeing the car?
+00:47:33 WITNESS B: No. The sun was up high. It wasn't in my eyes. It was a bright afternoon, a nice day.
+00:47:41 ATTORNEY: Were you wearing any glasses at that time?
+00:47:45 WITNESS B: No. I only wear my reading glasses, and those were in my purse. I don't need them for far away.
+00:47:53 ATTORNEY: Were you doing anything else while you watched the car? Talking to anybody, looking at anything in your hands?
+00:48:00 WITNESS B: No. I had my bag, my shopping bag, but I wasn't doing anything with it. I was just standing there watching the road.
+00:48:10 ATTORNEY: Was anyone standing with you?
+00:48:12 WITNESS B: No. I was by myself out there.
+00:48:16 ATTORNEY: Did anybody walk in front of you or by you while you were watching the car?
+00:48:22 WITNESS B: No. Nobody was out there. It was a slow afternoon.
+00:48:27 ATTORNEY: Did you hear anything from inside the store at that time, music, anything that drew your attention?
+00:48:34 WITNESS B: No. The door was shut. I was outside.
+00:48:37 ATTORNEY: Let me ask it this way. Between the time you first saw the car at the top of the hill and the time it reached the intersection, did you look away at all?
+00:48:50 OPPOSING COUNSEL: Object to form. Asked and answered.
+00:48:53 ATTORNEY: You can answer.
+00:48:55 WITNESS B: No. I didn't look away.
+00:48:58 ATTORNEY: Not even for a second, to look for your sister or anything else?
+00:49:03 WITNESS B: No. Once I saw that car I watched that car.
+00:49:08 ATTORNEY: Were you looking at the car the entire time, or were you looking generally at the road?
+00:49:15 WITNESS B: At the car. I was looking at the car.
+00:49:19 ATTORNEY: Why do you think you were so focused on that particular car?
+00:49:24 OPPOSING COUNSEL: Object to form. Calls for speculation.
+00:49:27 WITNESS B: I don't know why. It was coming fast and it was the only one. Sometimes you just watch something. I couldn't tell you why.
+00:49:36 ATTORNEY: Okay. As the car got closer to the intersection, did your view of it change in any way?
+00:49:44 OPPOSING COUNSEL: Object to form.
+00:49:46 WITNESS B: No. I could see it. It was closer, so I could see it better if anything.
+00:49:52 ATTORNEY: Could you see the side of the car, the front of the car, which part?
+00:49:59 WITNESS B: Mostly the side and a little of the front. It was going across in front of me, more or less, going from left to right.
+00:50:09 ATTORNEY: Going from your left to your right?
+00:50:12 WITNESS B: Yes. West to east. Left to right the way I was facing.
+00:50:17 ATTORNEY: And you were facing the highway at that time?
+00:50:21 WITNESS B: Yes. I was facing the road.
+00:50:24 ATTORNEY: Could you see whether there was anyone inside the car?
+00:50:29 WITNESS B: No. I couldn't see inside. The windows were dark and it was going too fast for that. I just saw the car.
+00:50:37 ATTORNEY: I'm not going to ask you anything about who was in the car or what anyone in the car was doing. I just want to be clear about what you could see. You saw the car itself, its body, its movement?
+00:50:53 WITNESS B: Yes. The car itself. Where it was and where it was going.
+00:50:59 ATTORNEY: Thank you. Now, as best you can, I want you to describe the last part of the car's approach, the last few seconds before it reached the intersection.
+00:51:10 WITNESS B: It came down the bottom of the hill, it was coming straight, it didn't slow down, and then it went into the intersection, and that's when it hit.
+00:51:21 ATTORNEY: When you say it hit, what did it hit?
+00:51:25 WITNESS B: The truck. The trailer part of the truck. The big white trailer.
+00:51:30 ATTORNEY: We'll talk about the truck in detail in a bit, so I don't want to get too far ahead. For now, I just want to stay with the car. Did you see the moment of contact?
+00:51:44 WITNESS B: Yes.
+00:51:45 ATTORNEY: And you were looking at the car at the moment of contact?
+00:51:50 OPPOSING COUNSEL: Object to form. Leading.
+00:51:52 ATTORNEY: Let me rephrase. Where were you looking at the moment the car made contact with the trailer?
+00:52:00 WITNESS B: At the car. I never lost sight of it. I watched it the whole way, right up until it hit.
+00:52:07 ATTORNEY: How confident are you in that?
+00:52:10 WITNESS B: I'm confident. I know what I saw. People have asked me that and I tell them the same thing every time.
+00:52:18 ATTORNEY: Who has asked you that?
+00:52:20 WITNESS B: The deputy, when I gave my statement. And my sister. And the lawyers when I met with them. I tell everybody the same thing.
+00:52:29 OPPOSING COUNSEL: Move to strike the nonresponsive portion.
+00:52:32 ATTORNEY: Your objection is noted. When you gave your written statement to the deputy a few days later, did you describe the car's approach?
+00:52:40 WITNESS B: I did. Not as much as today. It was short. But I wrote that I saw the car come over the hill and I saw it hit.
+00:52:50 ATTORNEY: Is anything you've told me today about the car different from what you wrote in that statement?
+00:52:57 WITNESS B: No. Today's just more detail because you're asking more questions.
+00:53:01 ATTORNEY: Fair enough. Let me ask about the moments just before the hit. Did you see the car swerve?
+00:53:08 WITNESS B: No. I didn't see it swerve.
+00:53:10 ATTORNEY: Did you see it move left or right in its lane?
+00:53:15 WITNESS B: Not that I could tell. It just kept going straight.
+00:53:19 ATTORNEY: Did you see any smoke or dust from the tires before the contact?
+00:53:24 WITNESS B: No. Nothing like that.
+00:53:26 ATTORNEY: Did the car's speed seem any different right before the contact than it did coming down the hill?
+00:53:33 OPPOSING COUNSEL: Objection. Foundation. Form.
+00:53:35 WITNESS B: It looked the same to me. Fast. Same as it had been.
+00:53:40 ATTORNEY: And you don't have a number for that speed.
+00:53:43 WITNESS B: No. I told you, fast. Highway speed. That's all I can say.
+00:53:48 ATTORNEY: Understood. Have you ever driven that stretch yourself coming down that hill eastbound?
+00:53:53 WITNESS B: Lots of times. Every week, like I said before.
+00:53:57 ATTORNEY: When you drive it, what speed do you usually go?
+00:54:01 OPPOSING COUNSEL: Object to relevance. But go ahead.
+00:54:04 WITNESS B: The speed limit, more or less. I don't speed. My car's old.
+00:54:09 ATTORNEY: Without guessing at a number, would you say the car you saw was going faster or slower than you usually drive that hill?
+00:54:17 OPPOSING COUNSEL: Objection. Foundation. Calls for speculation.
+00:54:20 WITNESS B: Faster, I'd say. But I really can't give you a number. I'm not trying to be difficult, I just don't know.
+00:54:28 ATTORNEY: You're not being difficult. That's exactly the kind of answer I need. If you don't know, tell me you don't know.
+00:54:35 WITNESS B: Okay.
+00:54:36 ATTORNEY: Let me ask a few questions about time. Do you know what time it was when you first noticed the car coming over the hill?
+00:54:46 WITNESS B: Not exactly. It was around four-thirty, a little after. I'd been out there a while waiting.
+00:54:52 ATTORNEY: Had you checked the time recently?
+00:54:55 WITNESS B: A little before. My sister said she'd be there around five, and I remember thinking I still had a while.
+00:55:02 ATTORNEY: Where did you check the time?
+00:55:05 WITNESS B: My watch. I wear a watch. I don't like taking my phone out.
+00:55:10 ATTORNEY: Before the dark car came over the hill, how many other eastbound cars had you watched come over that hill while you were waiting?
+00:55:19 WITNESS B: I don't know. Some. Not a lot. It wasn't busy. Maybe a car every little while.
+00:55:25 ATTORNEY: Did any of those other cars stand out to you?
+00:55:29 WITNESS B: No. Just regular traffic.
+00:55:31 ATTORNEY: Was the road surface wet or dry?
+00:55:34 WITNESS B: Dry. It hadn't rained. It was a clear day.
+00:55:38 ATTORNEY: Any wind?
+00:55:39 WITNESS B: A little breeze. Nothing much.
+00:55:42 ATTORNEY: Any haze, glare off the road, anything that made it harder to see down the road to the west?
+00:55:49 WITNESS B: No. It was a clear day. You could see a long way.
+00:55:54 ATTORNEY: All right. I want to ask you one more time about the approach, and then we'll move on. From the time the car came over the crest to the moment of contact, was there anything at all that came between you and the car?
+00:56:10 OPPOSING COUNSEL: Object to form. Asked and answered.
+00:56:12 ATTORNEY: You can answer.
+00:56:14 WITNESS B: No. Like I said. I could see it the whole time.
+00:56:19 ATTORNEY: Did you hear anything at the moment of contact?
+00:56:22 WITNESS B: Yes. A big bang. Loud. Louder than anything I've ever heard.
+00:56:27 ATTORNEY: We'll get to the sound and what happened after in more detail later this morning. For now, is there anything else about the car's approach that you remember that we haven't covered?
+00:56:38 WITNESS B: I don't think so. It came over the hill, it came down fast, it didn't slow down, and it hit. That's what I saw.
+00:56:47 ATTORNEY: Did you have any trouble seeing the color of the car?
+00:56:52 WITNESS B: No. It was dark. I said black or dark gray, something like that.
+00:56:57 ATTORNEY: Did you notice anything on the car, any marks, any roof rack, anything unusual?
+00:57:02 WITNESS B: No. It was just a plain dark car. Nothing on top of it that I saw.
+00:57:09 ATTORNEY: Had you ever seen that car before that day?
+00:57:12 WITNESS B: No. Not that I know of.
+00:57:15 ATTORNEY: Did you see where the car came from before it came over the hill?
+00:57:21 WITNESS B: No. You can't see past the hill from there. The first I saw it was when it came over the top.
+00:57:28 ATTORNEY: Okay. Let me take a step back. You've said a couple of times that you watched the car the whole way in. Was that something you thought about at the time, or something you realized afterward?
+00:57:41 OPPOSING COUNSEL: Object to form.
+00:57:43 WITNESS B: I don't understand the question.
+00:57:46 ATTORNEY: Fair enough. Let me try again. At the time you were watching the car, did you think to yourself, I'm watching this car?
+00:57:54 WITNESS B: No. You don't think like that. I was just looking at it. Afterward I knew I'd seen the whole thing.
+00:58:02 ATTORNEY: When did you first tell someone that you had seen the car come in?
+00:58:07 WITNESS B: Right after. The lady from the store came out and I told her. I was shaking. I told her I saw it.
+00:58:15 OPPOSING COUNSEL: Objection. Hearsay. Move to strike.
+00:58:18 ATTORNEY: Noted. I'm not asking what the store employee said. I'm just asking about timing. That was within a few minutes of the crash?
+00:58:26 WITNESS B: A few minutes. Maybe less. She came right out.
+00:58:30 ATTORNEY: We'll come back to that conversation later. Have you ever had any problem with your distance vision?
+00:58:37 WITNESS B: No. My eyes are fine far away. I had them checked last year for my license.
+00:58:43 ATTORNEY: Did you pass?
+00:58:44 WITNESS B: Yes. No restrictions except reading.
+00:58:47 ATTORNEY: Is there anything about how you were feeling that afternoon, tired, sick, anything, that would have affected what you saw?
+00:58:54 WITNESS B: No. I felt fine. I'd just done my shopping. I was just waiting.
+00:59:00 ATTORNEY: I think that covers the car's approach. In a moment I'm going to turn to the truck. Before I do, is there anything you've said about the car that you'd like to change or correct?
+00:59:12 WITNESS B: No. That's all true.
+00:59:14 ATTORNEY: Counsel, I'm about to move on to a new subject. Do you need anything before I do?
+00:59:21 OPPOSING COUNSEL: No, go ahead.
+00:59:23 ATTORNEY: All right. Just one more on the car. When the car came down the hill, you said you watched it from the top. How would you describe the grade, the slope of the hill, from what you could see?
+00:59:37 WITNESS B: Gentle. It's not steep. It just goes down a little toward the intersection, and then it's flat there.
+00:59:43 ATTORNEY: Did the slope affect your ability to see the car at all?
+00:59:48 OPPOSING COUNSEL: Object to form.
+00:59:50 WITNESS B: No. If anything, it made it easier, because it was coming down toward me. I could see it fine.
+00:59:57 ATTORNEY: Thank you. Let's turn to the truck.
+01:00:00 ATTORNEY: All right. I want to shift now from the car to the truck. Is that okay with you?
+01:00:07 WITNESS B: That's fine.
+01:00:08 ATTORNEY: At some point that afternoon, before the crash, did you notice a large truck near the intersection?
+01:00:15 WITNESS B: Yes. A big white truck. A tractor with a long trailer behind it.
+01:00:21 ATTORNEY: Do you remember when you first noticed it?
+01:00:25 WITNESS B: Not to the minute. It was a little while before everything happened. I just noticed it sitting over there on the other side.
+01:00:34 ATTORNEY: When you say the other side, what do you mean?
+01:00:39 WITNESS B: The westbound side. Across the median from the store. The lanes going the other direction, toward town.
+01:00:46 ATTORNEY: Was it in one of the westbound travel lanes, or somewhere else?
+01:00:51 WITNESS B: It was in the turn lane. The little left-turn lane they have there for the crossover.
+01:00:57 ATTORNEY: Just so the record is clear, that's the turn lane on the westbound side that lets you turn left across the median toward 140th?
+01:01:07 WITNESS B: Yes. That one.
+01:01:09 ATTORNEY: How did you know it was in the turn lane and not the regular lane?
+01:01:15 WITNESS B: Because it was over on the left, by the median, where the lane cuts in. The regular lanes were to the right of it, and cars were going by it in those.
+01:01:28 ATTORNEY: Did you see cars going by it in the westbound lanes?
+01:01:33 WITNESS B: A couple, I think. Not a lot. It wasn't busy.
+01:01:37 ATTORNEY: Tell me what you remember about the truck itself. Start with the trailer.
+01:01:43 WITNESS B: The trailer was white. Long. A box trailer, all closed in. Like a big metal box on wheels.
+01:01:50 ATTORNEY: Did you notice anything on the front of the trailer?
+01:01:55 WITNESS B: There was a unit up on the front of it, up high, behind the cab. A refrigeration thing, I'd guess. I could hear it running.
+01:02:05 ATTORNEY: What did it sound like?
+01:02:07 WITNESS B: A hum. Kind of a steady hum, like a big air conditioner. You hear them at truck stops.
+01:02:15 ATTORNEY: Could you hear that hum from where you were outside the store?
+01:02:20 OPPOSING COUNSEL: Object to form.
+01:02:22 ATTORNEY: You can answer.
+01:02:24 WITNESS B: Yes. Once things got quiet between cars, you could hear it. It's a constant sound.
+01:02:30 ATTORNEY: What about the cab, the tractor part. What do you remember about that?
+01:02:35 WITNESS B: It was darker than the trailer. I don't remember the exact color. A regular big rig cab. Not one of the flat-front ones, it had a hood.
+01:02:46 ATTORNEY: Do you have any estimate of how long the trailer was?
+01:02:51 WITNESS B: Long. The regular long kind. I couldn't give you feet. I'm not good with distances, I said that before.
+01:02:59 ATTORNEY: That's fine. Would you say it was the size of trailer you typically see on the highway, the big ones?
+01:03:07 OPPOSING COUNSEL: Object to form. Leading.
+01:03:09 WITNESS B: Yes, the big ones. Not a short one. The full size.
+01:03:14 ATTORNEY: When you first noticed the truck in the turn lane, was it stopped, or was it moving?
+01:03:21 WITNESS B: I really can't tell you for sure. It was either stopped or just barely rolling. Creeping, maybe.
+01:03:28 ATTORNEY: What makes you say it might have been creeping?
+01:03:32 WITNESS B: It just didn't seem totally still to me. But I wasn't staring at it. It could have been stopped. I don't want to say one way or the other.
+01:03:44 ATTORNEY: I understand. I don't want you to guess. Is it fair to say you don't know whether it was stopped or creeping?
+01:03:53 WITNESS B: That's fair. It was one or the other. Sitting there or close to it.
+01:03:59 ATTORNEY: Do you know how long it was in the turn lane before it began its turn?
+01:04:05 WITNESS B: No. It was there when I noticed it. I don't know how long it had been there.
+01:04:12 ATTORNEY: Were there any other vehicles in that turn lane, in front of it or behind it?
+01:04:19 WITNESS B: Not that I remember. Just the truck.
+01:04:22 ATTORNEY: Okay. At some point did the truck begin to turn?
+01:04:27 WITNESS B: Yes.
+01:04:28 ATTORNEY: Describe for me what you saw it do.
+01:04:32 WITNESS B: It started coming across. It pulled out of the turn lane, into the crossover, the gap in the median, and then the front of it started across the eastbound lanes. Toward our side. Toward 140th.
+01:04:45 ATTORNEY: When you say our side, you mean the south side of the highway, the side the store is on?
+01:04:53 WITNESS B: Yes. The store side.
+01:04:56 ATTORNEY: Which part of the truck came across first?
+01:04:59 WITNESS B: The cab. The front. Then the trailer follows behind it, the way they do. It kind of swings around.
+01:05:07 ATTORNEY: Describe the path of the cab, as best you can.
+01:05:11 WITNESS B: It came out of the median and angled across, toward the side road. Heading for 140th. It was turning left, so it was curving toward my left as I looked at it. Toward the south.
+01:05:25 OPPOSING COUNSEL: Object to form.
+01:05:27 ATTORNEY: I'll rephrase. From where you were, which way did the cab appear to be heading as it crossed?
+01:05:35 WITNESS B: Toward 140th. Toward the side road that goes down past the store.
+01:05:40 ATTORNEY: Did it appear to you to be making a normal left turn into 140th?
+01:05:46 OPPOSING COUNSEL: Object to form. Foundation.
+01:05:48 ATTORNEY: If you can answer.
+01:05:50 WITNESS B: It looked like a regular left turn to me. It was going where the road goes. I'm not an expert in trucks.
+01:05:59 ATTORNEY: How fast was the truck moving as it turned?
+01:06:03 WITNESS B: Slow.
+01:06:04 ATTORNEY: Can you give me any sense of how slow?
+01:06:08 OPPOSING COUNSEL: Object to form.
+01:06:10 WITNESS B: Slow like a big truck turning. A little faster than somebody walking, maybe. Not much. They don't go fast when they're turning like that.
+01:06:20 ATTORNEY: Did the speed change as it went through the turn?
+01:06:24 WITNESS B: Not that I could tell. It was kind of steady. Slow and steady. Maybe it picked up a little once it was moving. I really don't know.
+01:06:35 ATTORNEY: Did you see it stop at any point during the turn, before the crash?
+01:06:41 WITNESS B: No. I didn't see it stop. Once it started across, it kept going.
+01:06:47 ATTORNEY: How long, from when it started moving out of the turn lane, did the turn take?
+01:06:53 OPPOSING COUNSEL: Object to form.
+01:06:55 WITNESS B: A few seconds. I don't know. It felt slow. It wasn't like a car whipping across. It took its time.
+01:07:03 ATTORNEY: When you say a few seconds, are you able to put any number on that?
+01:07:10 WITNESS B: No. I'd be making it up. Several seconds. It was slow. That's all I can tell you.
+01:07:17 ATTORNEY: I'm not asking you to make anything up. If you don't know, that's a fine answer.
+01:07:23 WITNESS B: Then I don't know the exact number. It was a few seconds, and it was slow.
+01:07:30 ATTORNEY: As the truck turned, did you hear anything from it?
+01:07:34 WITNESS B: The engine. You could hear the engine working, like a low rumble when they pull out. And that hum from the trailer.
+01:07:43 ATTORNEY: Did the engine noise change during the turn?
+01:07:47 WITNESS B: It got a little louder when it started pulling. Then it was just steady. Like a big diesel. That's all I remember.
+01:07:56 ATTORNEY: Did you hear the truck's horn at any point?
+01:08:00 WITNESS B: No. I don't remember any horn.
+01:08:03 ATTORNEY: Did you hear any air brakes, that hiss trucks make?
+01:08:08 WITNESS B: No. I didn't hear brakes. Not from the truck, not from anybody.
+01:08:13 ATTORNEY: Did you hear any other sounds from the truck, any squeal, anything like that?
+01:08:19 WITNESS B: No. Just the engine and the hum.
+01:08:22 ATTORNEY: Did you notice whether the truck had any lights on?
+01:08:26 WITNESS B: I didn't notice lights. It was broad daylight. I wasn't looking for that.
+01:08:32 ATTORNEY: Did you notice a turn signal on the truck?
+01:08:36 WITNESS B: I don't remember. I didn't notice it either way. I'm not saying it was or wasn't on.
+01:08:43 ATTORNEY: Understood. Now, as the truck came across the eastbound lanes, where did the trailer end up relative to those lanes?
+01:08:51 WITNESS B: Across them. The trailer was stretched across the road. Both eastbound lanes.
+01:08:57 ATTORNEY: Both lanes?
+01:08:58 WITNESS B: Both. The inside lane and the outside lane. It was long enough that it covered the whole thing, more or less.
+01:09:07 ATTORNEY: When you say covered, do you mean the trailer was across both of the eastbound lanes at the same moment?
+01:09:15 WITNESS B: Yes. At one point it was across both of them. The cab was over toward 140th and the trailer was back across the road behind it.
+01:09:25 OPPOSING COUNSEL: Object to form.
+01:09:27 ATTORNEY: Let me break that down. At the moment the trailer was across both lanes, where was the cab?
+01:09:34 WITNESS B: The cab was mostly across already. Up near the edge of the road on our side, starting into 140th, or close to it.
+01:09:44 ATTORNEY: And the back of the trailer, where was that?
+01:09:48 WITNESS B: Still back in the median area, I think. Back toward where it came from. The back wheels were still coming through the crossover.
+01:09:57 ATTORNEY: Are you confident about where the back of the trailer was?
+01:10:02 WITNESS B: Not exactly confident. It was back there somewhere. In the median or right near it. I wasn't looking at the back wheels.
+01:10:11 ATTORNEY: Okay. Was the trailer moving or stopped when it was across both lanes?
+01:10:16 WITNESS B: Moving. Slow, still moving. It was still turning.
+01:10:20 ATTORNEY: Was the trailer straight across the road, or at an angle?
+01:10:25 OPPOSING COUNSEL: Object to form.
+01:10:27 WITNESS B: At an angle, I'd say. Because it was still bending around the turn. Not straight across like a wall, more slanted.
+01:10:35 ATTORNEY: Slanted in which direction, if you can say?
+01:10:39 WITNESS B: I can't really say better than that. It was angled. The front was ahead of the back. That's how they turn.
+01:10:48 ATTORNEY: Fair enough. Which side of the trailer was facing the oncoming eastbound traffic?
+01:10:53 OPPOSING COUNSEL: Object to form. Foundation.
+01:10:55 ATTORNEY: If you know.
+01:10:57 WITNESS B: The side of it. The long side. Coming from the west you'd be looking at the long side. The right side of it, I guess, if you're the truck.
+01:11:09 ATTORNEY: Okay. Let me go back a step. When the truck started its turn, where was the car, if you know?
+01:11:17 OPPOSING COUNSEL: Object to form.
+01:11:19 WITNESS B: Coming down the hill. Coming east. It had already come over the top, I think, when the truck started moving.
+01:11:27 ATTORNEY: You think, or you know?
+01:11:30 WITNESS B: I think. I believe the car was already over the hill when the truck pulled out. That's how I remember it. But I wouldn't swear to the second.
+01:11:41 ATTORNEY: In your earlier testimony this morning you said you first noticed the car as it came over the hill. Was the truck still in the turn lane at that moment?
+01:11:53 WITNESS B: I think it was still in the turn lane, or just starting. It started across after, or about the same time. Not long after.
+01:12:02 ATTORNEY: So the sequence you recall is the car comes over the hill, and then the truck begins across, or about the same time?
+01:12:12 OPPOSING COUNSEL: Object to form. Asked and answered.
+01:12:15 ATTORNEY: You can answer.
+01:12:16 WITNESS B: Yes. That's my memory. Car over the hill, truck starts across, about together or right after.
+01:12:23 ATTORNEY: Did you see the truck at any point stop, back up, or pause once it was in the eastbound lanes?
+01:12:31 WITNESS B: No. It kept coming across.
+01:12:34 ATTORNEY: Were there any other eastbound vehicles anywhere near the intersection while the truck was turning?
+01:12:40 WITNESS B: No. Just the car. I don't remember anybody else coming east right then.
+01:12:46 ATTORNEY: And westbound, while the truck was turning?
+01:12:49 WITNESS B: I think a car went by westbound, maybe one. I really don't remember for sure. It was quiet.
+01:12:56 ATTORNEY: Let's talk about the car's position relative to the truck. As the truck moved across, which lane was the car in?
+01:13:05 WITNESS B: The right lane. The outside one, nearest the store. Like I said before.
+01:13:11 ATTORNEY: Did the car stay in that lane while the truck was turning?
+01:13:16 WITNESS B: Yes. It stayed right there. Straight.
+01:13:19 ATTORNEY: Did you see the car move toward the left lane, or toward the shoulder, at any point while the truck was crossing?
+01:13:28 WITNESS B: No. It didn't move over. It just kept straight in its lane.
+01:13:33 ATTORNEY: Did the car appear to you to slow down as the truck crossed in front of it?
+01:13:40 OPPOSING COUNSEL: Object to form. Foundation.
+01:13:42 ATTORNEY: I'm asking only what you saw.
+01:13:45 WITNESS B: I didn't see it slow down. It kept coming the same as it was. I didn't see any change.
+01:13:53 ATTORNEY: Did you hear any braking from the car? Tires, anything?
+01:13:57 WITNESS B: No. No tires, no squealing. Nothing until the crash itself.
+01:14:02 ATTORNEY: Did you hear a horn from the car?
+01:14:06 WITNESS B: No. No horn from anybody.
+01:14:08 ATTORNEY: Now, I'm going to ask you about the last moment before the impact, but I'm not going to ask you yet about the impact itself. We'll get there. Okay?
+01:14:20 WITNESS B: Okay.
+01:14:21 ATTORNEY: Just before the impact, where was the truck?
+01:14:25 WITNESS B: Across the road. The cab was over on our side, heading into 140th, and the trailer was across the eastbound lanes.
+01:14:33 ATTORNEY: Was the truck still moving at that moment?
+01:14:37 WITNESS B: I think so. Still slow. Still going.
+01:14:40 ATTORNEY: And the car, just before the impact, where was it?
+01:14:45 WITNESS B: Right there. In the right lane, coming up to the trailer.
+01:14:49 ATTORNEY: Which part of the truck did the car come up on? The cab, the trailer?
+01:14:56 OPPOSING COUNSEL: Object to form.
+01:14:58 WITNESS B: The trailer. The side of the trailer. Not the cab. The cab was already past.
+01:15:04 ATTORNEY: Do you know about where along the trailer? Front, middle, back?
+01:15:09 WITNESS B: Somewhere in the middle, more toward the back maybe. Behind the cab, ahead of the back wheels. I couldn't tell you exactly.
+01:15:18 ATTORNEY: Okay. We'll come back to that. I want to ask a few more general things about the truck. Had you seen that truck before that day, at the store or on the road?
+01:15:31 WITNESS B: No. Not that I know of. Lots of trucks go through there. I wouldn't know one from another.
+01:15:38 ATTORNEY: Going back to that afternoon. While the truck was in the turn lane, before it started across, did you see anything about the truck that seemed unusual to you?
+01:15:50 OPPOSING COUNSEL: Object to form.
+01:15:51 WITNESS B: No. It was just a truck waiting to turn. Nothing stood out. I didn't think anything of it.
+01:15:59 ATTORNEY: Did you see any doors open on it, anything loose, anything like that?
+01:16:04 WITNESS B: No. Nothing like that.
+01:16:07 ATTORNEY: Okay. Did the trailer at any point cross into the area of 140th itself, before the crash?
+01:16:14 WITNESS B: The front part of the truck was going into 140th. The trailer was still mostly on the highway when it happened.
+01:16:22 ATTORNEY: How much of the truck, if any, was on 140th at the moment of the crash, if you can say?
+01:16:30 OPPOSING COUNSEL: Object to form.
+01:16:32 WITNESS B: The cab, maybe. Starting onto it. Maybe a little of the front of the trailer. I can't say exactly.
+01:16:40 ATTORNEY: Okay. Let me ask it this way. Was the cab on the highway or past the highway when the crash happened?
+01:16:49 WITNESS B: At the edge, or just past it. Going onto 140th. It was most of the way through the turn with the front end.
+01:16:58 ATTORNEY: And you're describing the cab's position there based on what you saw at the time?
+01:17:04 WITNESS B: Yes. Based on what I saw.
+01:17:07 ATTORNEY: Okay. One moment.
+01:17:09 ATTORNEY: I want to make sure I have the timeline straight. You noticed the truck sitting in the westbound turn lane, stopped or creeping, correct?
+01:17:19 WITNESS B: Yes.
+01:17:20 ATTORNEY: You don't know how long it had been there?
+01:17:24 WITNESS B: No.
+01:17:25 ATTORNEY: At about the time the car came over the hill, the truck began its turn?
+01:17:31 OPPOSING COUNSEL: Object to form. Mischaracterizes.
+01:17:34 ATTORNEY: Is that a fair summary of what you said?
+01:17:38 WITNESS B: About that time, or right after. Yes.
+01:17:41 ATTORNEY: The truck moved out of the turn lane, through the crossover, and across the eastbound lanes, toward 140th?
+01:17:48 WITNESS B: Yes.
+01:17:50 ATTORNEY: Slowly?
+01:17:51 WITNESS B: Slowly.
+01:17:52 ATTORNEY: Without stopping, that you saw?
+01:17:54 WITNESS B: Without stopping that I saw.
+01:17:57 ATTORNEY: And at some point the trailer was across both eastbound lanes?
+01:18:02 WITNESS B: Yes. Both of them.
+01:18:04 ATTORNEY: And during that time, you didn't hear a horn and you didn't hear brakes?
+01:18:10 WITNESS B: No horn. No brakes. Just the engine and the hum.
+01:18:14 ATTORNEY: Is there anything about the truck's movements that you remember that I haven't asked you about?
+01:18:21 WITNESS B: I don't think so. That's what I remember. It came across slow, and the trailer was across the road.
+01:18:29 ATTORNEY: Did you say anything out loud, or call out, while the truck was turning?
+01:18:35 WITNESS B: No. There wasn't time to say anything, and I don't know who I would have said it to. I was just standing there.
+01:18:44 ATTORNEY: Was anyone else outside the store with you during the truck's turn?
+01:18:49 WITNESS B: Not right with me. I don't remember anybody else outside right then. The girl who worked there was inside.
+01:18:57 ATTORNEY: How do you know she was inside?
+01:19:00 WITNESS B: Because she came out after. After the crash. She came out the door.
+01:19:06 ATTORNEY: We'll get to that. Before the crash, did you see anyone else on the store property, in the lot?
+01:19:14 WITNESS B: There might have been a car parked. I don't remember people. It was quiet.
+01:19:20 ATTORNEY: Just a few more about the truck. After the truck got across, and we'll talk about this more later, did you see where it ended up?
+01:19:30 WITNESS B: It went on down 140th. It kept going a ways and stopped down there past the store.
+01:19:37 ATTORNEY: We'll come back to exactly where. Did it stop right away, or keep going?
+01:19:43 WITNESS B: It kept going a little. It didn't stop right at the highway. It went down some and then stopped.
+01:19:51 ATTORNEY: Okay. We'll pick that up later this morning. I'm going to move now to the moment of impact, which is the next area.
+01:20:00 ATTORNEY: I want to move now to the collision itself. I'm going to ask you about what you heard and what you saw, and then about what happened afterward. All right?
+01:20:12 WITNESS B: All right.
+01:20:13 ATTORNEY: What is the first thing you noticed at the moment of the impact?
+01:20:19 WITNESS B: The sound. It was the loudest thing I ever heard. It was like a bang and a scrape at the same time, metal on metal.
+01:20:29 ATTORNEY: How long did the sound last, as best you can estimate?
+01:20:34 OPPOSING COUNSEL: Object to form.
+01:20:36 ATTORNEY: You can answer.
+01:20:38 WITNESS B: Maybe a second or two for the main part. Then there was more noise after, further off. I'll get to that, I guess.
+01:20:47 ATTORNEY: We will. Before the bang, did you hear any other sound? Any horn?
+01:20:53 WITNESS B: No horn. I didn't hear a horn.
+01:20:56 ATTORNEY: Any squealing of tires, any braking sound?
+01:20:59 WITNESS B: Not that I heard. I've thought about it a lot. I don't remember any squealing.
+01:21:06 ATTORNEY: Are you saying there was no such sound, or that you don't recall one?
+01:21:12 OPPOSING COUNSEL: Object to form.
+01:21:14 WITNESS B: I'm saying I didn't hear one. If there was one, I didn't hear it.
+01:21:20 ATTORNEY: After that first bang, what did you see the car do?
+01:21:25 WITNESS B: It kept going. It came out the other side of the trailer and just kept going east. It didn't stop.
+01:21:33 ATTORNEY: When you say the other side, what do you mean?
+01:21:38 WITNESS B: The car went under the trailer, the middle part, and came out on the far side, the east side, and kept on going down the road.
+01:21:48 ATTORNEY: Which side of the trailer did the car strike, if you know?
+01:21:53 OPPOSING COUNSEL: Object to foundation.
+01:21:55 ATTORNEY: If you know.
+01:21:57 WITNESS B: The side facing west. The side facing toward the hill. That's the side it came at.
+01:22:04 ATTORNEY: Did the car stay on the highway after it came out from under the trailer?
+01:22:10 WITNESS B: Not for long. It went off to the right. Off the south side of the road.
+01:22:17 ATTORNEY: The south side, that's the same side of the highway as the store?
+01:22:23 WITNESS B: Yes. Our side.
+01:22:25 ATTORNEY: About how fast was the car moving after it came out from under the trailer?
+01:22:31 OPPOSING COUNSEL: Object to form. Foundation.
+01:22:33 ATTORNEY: You can answer if you're able.
+01:22:36 WITNESS B: I can't give you a number. It was still going fast. It didn't look like it slowed down much at all.
+01:22:45 ATTORNEY: Did you see it slow down at any point?
+01:22:49 WITNESS B: Not right away. Not that I could tell.
+01:22:53 ATTORNEY: Describe for me what you saw the car do after it left the road.
+01:22:59 WITNESS B: It went into the grass and then there was a fence. It went right through the fence. I could hear the wire and the posts, like snapping. Then it went through another one.
+01:23:12 ATTORNEY: How many fences did you see it go through?
+01:23:16 WITNESS B: At least two. I think two. There may have been more. It was getting further away by then.
+01:23:24 ATTORNEY: What kind of fences were they, if you remember?
+01:23:28 WITNESS B: Like farm fences. Wire fences with wooden posts. There's pasture down that way.
+01:23:34 ATTORNEY: Was the car moving in a straight line or was it turning?
+01:23:39 OPPOSING COUNSEL: Object to form.
+01:23:41 WITNESS B: Mostly straight, I think. Kind of angling away from the road. It wasn't spinning or anything like that, that I saw.
+01:23:50 ATTORNEY: And then what?
+01:23:51 WITNESS B: Then it hit a pole. A power pole, way down the road. There was another big bang, not as loud because it was far, but you could hear it. And I saw the pole move.
+01:24:05 ATTORNEY: When you say the pole moved, what did you see?
+01:24:10 WITNESS B: It shook. It leaned. I remember the wires swinging. I thought the lines were going to come down.
+01:24:17 ATTORNEY: Did they come down?
+01:24:20 WITNESS B: I don't think so. Not that I saw.
+01:24:23 ATTORNEY: About how far away from the intersection was that pole?
+01:24:28 OPPOSING COUNSEL: Object to form. Calls for speculation.
+01:24:31 ATTORNEY: Just your best estimate.
+01:24:33 WITNESS B: Far. A long way. I'd say a couple football fields, maybe more. I told the deputy it was way down there. I'm not good with distances, I said that before.
+01:24:45 ATTORNEY: I understand. Did the car come to a stop after it hit the pole?
+01:24:51 WITNESS B: It went a little further after that, I think, and then it stopped. It ended up in somebody's yard down there. There's a house back off the road.
+01:25:03 ATTORNEY: Could you see the car once it stopped?
+01:25:06 WITNESS B: I could see it was there. I could see the shape of it. It was a long way off. I couldn't see details.
+01:25:16 ATTORNEY: From the time of the first bang to the time you saw the car hit the pole, how long was that?
+01:25:25 OPPOSING COUNSEL: Object to form.
+01:25:26 WITNESS B: A few seconds. It felt longer. It felt like it went on and on, but it was probably only a few seconds.
+01:25:36 ATTORNEY: Let me turn to the truck. What did the truck do after the impact?
+01:25:42 WITNESS B: It kept going a little. It finished the turn, kind of. It went on across and down 140th.
+01:25:49 ATTORNEY: Down 140th, meaning south?
+01:25:51 WITNESS B: Yes, south. Down the side road, past the store.
+01:25:56 ATTORNEY: Did you see the truck stop?
+01:25:59 WITNESS B: Yes. It stopped down there on 140th. South of the store some ways.
+01:26:04 ATTORNEY: How far south of the store, if you can estimate?
+01:26:09 OPPOSING COUNSEL: Object to form.
+01:26:11 WITNESS B: Not that far. The whole truck was past the corner, I think. The back of the trailer was down past the edge of the store lot. Something like that.
+01:26:22 ATTORNEY: Did it stop quickly or slowly, as far as you could tell?
+01:26:28 OPPOSING COUNSEL: Object to form. Foundation.
+01:26:30 WITNESS B: I don't know. It wasn't sudden, like a slam. It just rolled down there and stopped.
+01:26:37 ATTORNEY: Did you see any damage to the trailer from where you were?
+01:26:42 WITNESS B: I saw it later, when it was stopped. The side was messed up. There was a big dent, kind of torn along the bottom edge. I didn't go up close to it.
+01:26:55 ATTORNEY: Which side of the trailer was damaged?
+01:26:58 WITNESS B: The side that had been facing the car. After it turned, that side was facing kind of west, toward the road. I could see it.
+01:27:08 ATTORNEY: I'm not going to ask you about any person. I just want to understand where you were and what you did. Immediately after the car hit the pole, what did you do?
+01:27:21 WITNESS B: I just stood there. I couldn't move for a second. I think I said something out loud, like oh my God. I dropped my bag.
+01:27:31 ATTORNEY: The shopping bag you mentioned earlier?
+01:27:34 WITNESS B: Yes. Stuff went all over. I didn't even care. I left it there for a while.
+01:27:41 ATTORNEY: Did you move from where you were standing?
+01:27:45 WITNESS B: Not much. I stayed out front of the store. I took a couple steps, toward the road, and then I stopped.
+01:27:54 ATTORNEY: Why did you stop?
+01:27:56 WITNESS B: Because I didn't know what to do. There were cars still coming on the highway, I didn't want to walk out there. And it was so far down there where the car was.
+01:28:09 ATTORNEY: Did you ever walk down to where the car came to rest?
+01:28:14 WITNESS B: No. I didn't go down there. I didn't want to see. I'll be honest about that.
+01:28:21 ATTORNEY: That's fine. Nobody is going to ask you to describe anything you didn't see. Did anyone else go down there that you saw?
+01:28:31 WITNESS B: Some people stopped their cars on the highway and ran down there. A couple of people. I don't know who they were.
+01:28:40 ATTORNEY: About how many vehicles stopped, if you remember?
+01:28:43 WITNESS B: Two or three at first. Then more. After a while there were cars pulled off everywhere.
+01:28:50 ATTORNEY: Did you make a phone call at some point?
+01:28:54 WITNESS B: Yes. I called my sister.
+01:28:57 ATTORNEY: How soon after the crash did you call her?
+01:29:01 WITNESS B: A few minutes. Maybe a minute or two. I had to find my phone, it was in my bag and the bag was on the ground.
+01:29:12 ATTORNEY: Did you call 911?
+01:29:14 WITNESS B: No. I thought about it, but somebody said they already called. And then the lady from the store came out and said she called.
+01:29:24 ATTORNEY: Who said they already called, the first time?
+01:29:27 OPPOSING COUNSEL: Object. Hearsay.
+01:29:29 ATTORNEY: I'm not asking for the truth of it. Just who said it, if you know.
+01:29:35 WITNESS B: One of the people who stopped. A man, I think. He yelled it. I don't know him.
+01:29:43 ATTORNEY: What did you say to your sister on the phone?
+01:29:47 OPPOSING COUNSEL: Object. Hearsay.
+01:29:49 ATTORNEY: You can answer.
+01:29:50 WITNESS B: I told her there was a terrible wreck right in front of the store and to hurry up, and that she should be careful coming because the road was going to be blocked.
+01:30:04 ATTORNEY: What did she say?
+01:30:06 OPPOSING COUNSEL: Same objection.
+01:30:07 WITNESS B: She said she was close and she was coming. That's about it. I was crying, so it was hard to talk.
+01:30:16 ATTORNEY: Let's talk about the store employee. At some point did someone come out of the store?
+01:30:23 WITNESS B: Yes. The woman who worked the counter. She came running out.
+01:30:28 ATTORNEY: How soon after the crash did she come out?
+01:30:32 WITNESS B: Pretty fast. Right after. Maybe while I was still standing there. Before I called my sister, I think. Or around the same time. I'm not sure of the order.
+01:30:44 ATTORNEY: When she came out, did you talk with her?
+01:30:48 WITNESS B: Yes.
+01:30:49 ATTORNEY: Tell me what you said to her.
+01:30:52 OPPOSING COUNSEL: Object. Hearsay.
+01:30:54 ATTORNEY: These are her own statements. You can answer.
+01:30:58 WITNESS B: I told her a car went under the truck. I told her it went way down there and hit the pole. I was pointing. I was pretty upset. I don't remember every word.
+01:31:11 ATTORNEY: Did she ask you any questions?
+01:31:14 WITNESS B: She asked me what happened. She asked if I was okay. She asked if anybody called for help.
+01:31:21 ATTORNEY: Did she stay with you?
+01:31:24 WITNESS B: For a little while. Then she went back in and out a couple of times. She was on the phone, I think.
+01:31:33 ATTORNEY: Did you tell her anything else about what you saw?
+01:31:38 OPPOSING COUNSEL: Object to form.
+01:31:39 WITNESS B: Probably. I was talking a lot. I kept saying it over and over. I think I said I saw the whole thing. I know I said that to a lot of people that day.
+01:31:53 ATTORNEY: Do you remember anything she said to you, other than the questions?
+01:31:58 OPPOSING COUNSEL: Hearsay.
+01:31:59 WITNESS B: She said something like she didn't see it, she just heard it from inside. She said it shook the windows. Something like that.
+01:32:09 ATTORNEY: Did the two of you talk about where you were standing?
+01:32:14 OPPOSING COUNSEL: Object to form.
+01:32:16 WITNESS B: I don't remember that. I don't think we talked about it like that. We were just talking about the wreck.
+01:32:24 ATTORNEY: All right. Did any police or emergency vehicles arrive?
+01:32:28 WITNESS B: Yes. Deputies came. And an ambulance, and the fire truck, I think. A bunch of them.
+01:32:35 ATTORNEY: How long after the crash did the first one arrive?
+01:32:39 OPPOSING COUNSEL: Object to form.
+01:32:41 WITNESS B: It felt like forever. But it was probably ten minutes. Maybe less. I really don't know.
+01:32:48 ATTORNEY: Did any of them stop at the intersection?
+01:32:52 WITNESS B: Later, yes. A deputy car parked up by the crossover with the lights on. And they started blocking the road.
+01:33:00 ATTORNEY: Did they close the highway?
+01:33:03 WITNESS B: The eastbound side, at least. They were waving people around. It was a while before cars could get through.
+01:33:11 ATTORNEY: Was your sister able to get to the store?
+01:33:15 WITNESS B: Yes. She got there around five. She had to come around a different way, I think, or they let her through. She pulled into the store lot.
+01:33:26 ATTORNEY: Did you leave when your sister arrived?
+01:33:29 WITNESS B: No. Not right away. I wanted to tell somebody what I saw. I thought somebody should know.
+01:33:36 ATTORNEY: Did you speak to a deputy that day?
+01:33:40 WITNESS B: Yes. One of them came up to the store. He was asking if anybody saw it.
+01:33:47 ATTORNEY: What did you tell him?
+01:33:50 OPPOSING COUNSEL: Object. Hearsay.
+01:33:51 ATTORNEY: You can answer.
+01:33:53 WITNESS B: I told him I saw it. I told him I saw the car come down the hill and go under the truck. I told him it went down there and hit the pole.
+01:34:06 ATTORNEY: Did the deputy write anything down?
+01:34:09 WITNESS B: He wrote some things in a little notebook. He took my name and my phone number and my address.
+01:34:17 ATTORNEY: Did he ask you to give a written statement that day?
+01:34:22 WITNESS B: No, not that day. He said somebody would contact me. And then a few days later they did, and I wrote it out. That's the statement I looked at before today.
+01:34:34 ATTORNEY: We'll talk about that statement in more detail later. How long did you talk with the deputy that afternoon?
+01:34:42 WITNESS B: Not long. Five minutes. He was busy. There were a lot of people.
+01:34:48 ATTORNEY: Did he ask you where you were when it happened?
+01:34:53 OPPOSING COUNSEL: Object to form.
+01:34:54 WITNESS B: He asked if I was there. I said I was out front of the store. I don't think he asked more than that.
+01:35:04 ATTORNEY: Did he show you anything, a diagram, a photo, anything like that?
+01:35:09 WITNESS B: No. Nothing like that.
+01:35:11 ATTORNEY: Did any other official talk with you that day?
+01:35:16 WITNESS B: Not that I remember. Just the one deputy.
+01:35:19 ATTORNEY: Did you see the truck get moved while you were there?
+01:35:24 WITNESS B: No. It was still sitting down on 140th when we left.
+01:35:29 ATTORNEY: About what time did you leave?
+01:35:32 WITNESS B: Maybe five thirty. Quarter to six. It was still light out.
+01:35:37 ATTORNEY: Did anyone tell you anything about the people in the car?
+01:35:42 OPPOSING COUNSEL: Object. Calls for hearsay.
+01:35:44 ATTORNEY: I'll withdraw that. Let me ask it differently. Did you yourself see anything about the condition of anyone in the car?
+01:35:53 WITNESS B: No. I didn't go down there, and I didn't see anything like that. I'd rather not talk about that part.
+01:36:01 ATTORNEY: That's fine. I'm not going to ask you about that. Let me go back to a couple of things. You said the car went off the south side of the road. Do you know about where along the highway it left the pavement?
+01:36:18 OPPOSING COUNSEL: Object to form.
+01:36:20 WITNESS B: Not exactly. A ways past the intersection. Past the store. Further down.
+01:36:25 ATTORNEY: Past the store to the east?
+01:36:28 WITNESS B: Yes, east.
+01:36:30 ATTORNEY: Did you see where the car went relative to the store itself? Did it come near the store?
+01:36:37 WITNESS B: No, it didn't come near the store. It was out on the road and then off past it, down the shoulder and into the field.
+01:36:48 ATTORNEY: Was there any other vehicle on the eastbound side of the highway at the moment of the impact, that you saw?
+01:36:56 OPPOSING COUNSEL: Object to form.
+01:36:58 WITNESS B: No. Not right there. There was nobody else right there that I remember.
+01:37:04 ATTORNEY: What about on the westbound side?
+01:37:07 WITNESS B: I don't remember anything on the westbound side right then. Maybe something further off. Nothing close.
+01:37:14 ATTORNEY: After the impact, did any eastbound cars come over the hill?
+01:37:18 WITNESS B: Yes. A minute or so after, I think, a car came over and slowed way down. Then pulled over. That might have been one of the ones that stopped.
+01:37:30 ATTORNEY: Did any vehicle have to go around the truck on the highway?
+01:37:35 WITNESS B: No, by then the truck was already off the highway. It was down 140th. The road was clear except for, you know, pieces.
+01:37:45 ATTORNEY: Pieces of what?
+01:37:47 WITNESS B: Debris. Glass and parts. There was stuff on the road by the crossover. I could see it shining.
+01:37:54 ATTORNEY: Did you touch or pick up any of that debris?
+01:37:59 WITNESS B: No. I didn't go out on the road.
+01:38:03 ATTORNEY: At any point that afternoon, did you go out into the highway or the median?
+01:38:09 WITNESS B: No. I stayed by the store the whole time.
+01:38:13 ATTORNEY: When you say by the store, you mean out front, the area you've described?
+01:38:19 WITNESS B: Yes. Out front. And inside that one time.
+01:38:23 ATTORNEY: All right. Did your sister see the crash?
+01:38:27 WITNESS B: No. She wasn't there yet. She came after.
+01:38:31 ATTORNEY: When your sister arrived, did you tell her what you saw?
+01:38:35 WITNESS B: Yes, I told her the whole thing in the car on the way home. I told her again later too. I couldn't stop talking about it.
+01:38:46 ATTORNEY: How were you feeling physically that afternoon?
+01:38:49 WITNESS B: Shaky. My legs were like jelly. I wasn't hurt. I was just upset. I didn't sleep good that night.
+01:38:57 ATTORNEY: Thinking back on everything that happened after the impact, from the bang to the time you left, is there anything you saw that you haven't told us about today?
+01:39:09 OPPOSING COUNSEL: Object to form.
+01:39:11 WITNESS B: I don't think so. I think I've told you all of it. The bang, the car going down there, the pole, the truck stopping. The lady from the store. The deputies.
+01:39:23 ATTORNEY: Is there anything about what you heard that you haven't told us?
+01:39:29 WITNESS B: Just that it was loud. Then after, it got real quiet for a little bit. Except the truck. That hum kept going. I remember that.
+01:39:39 ATTORNEY: All right. I'm going to shift gears in a moment to your written statement and some other things. Before I do, is there anything about your answers in the last few minutes that you want to change or add to?
+01:39:55 WITNESS B: No. That's what I remember.
+01:39:57 ATTORNEY: Okay. Thank you. Let's keep going.
+01:40:00 ATTORNEY: Let's keep going. I want to circle back to a few things from earlier before I show you a document. Are you doing all right? Do you need water or anything?
+01:40:13 WITNESS B: I'm fine. I have water. Thank you.
+01:40:16 ATTORNEY: Earlier you told us your sister picked you up that afternoon. About what time did she get there?
+01:40:24 WITNESS B: Around five. Maybe a couple of minutes after.
+01:40:28 ATTORNEY: So from the time of the collision until your sister arrived, about how long was that?
+01:40:36 WITNESS B: Twenty-five minutes, something like that. It felt longer.
+01:40:40 ATTORNEY: During those twenty-five minutes, did you stay at the store the entire time?
+01:40:46 WITNESS B: Yes. I didn't leave the store property. I stayed out front.
+01:40:51 ATTORNEY: Did you ever walk down the highway toward where the car ended up?
+01:40:57 WITNESS B: No. I didn't go down there. I didn't want to.
+01:41:02 ATTORNEY: Did you walk down Northeast 140th Court toward the truck?
+01:41:07 WITNESS B: No. I stayed up by the store.
+01:41:10 ATTORNEY: When your sister arrived, where did she park?
+01:41:14 WITNESS B: In the little lot by the store. She couldn't get in easy because of all the deputies' cars, but she squeezed in.
+01:41:24 ATTORNEY: Did you tell her what had happened?
+01:41:27 WITNESS B: Some. Not a lot right then. I was pretty shook up. I told her more on the drive home.
+01:41:36 OPPOSING COUNSEL: Object to form, to the extent it calls for the content of conversations.
+01:41:42 ATTORNEY: I'm not asking what you said yet. Just whether you talked about it. You did?
+01:41:49 WITNESS B: Yes, on the way home.
+01:41:51 ATTORNEY: Did your sister see any part of the collision herself?
+01:41:56 WITNESS B: No. She wasn't there yet. She came after.
+01:42:00 ATTORNEY: Before we get to the exhibit, a few more questions about that afternoon. When the deputies arrived, about how many were there?
+01:42:10 WITNESS B: At first one car, then more. Four or five cars, I think, and then the fire trucks and the ambulance came.
+01:42:19 ATTORNEY: Did any of them come from the west, the same direction the car had come from?
+01:42:26 WITNESS B: Some of them did. Some came from the other way. I really couldn't tell you which ones.
+01:42:34 ATTORNEY: Were the eastbound lanes blocked off at some point?
+01:42:38 WITNESS B: Yes. They put cars across the road and were waving traffic around. It got backed up up toward the hill.
+01:42:47 ATTORNEY: Did you see anyone take photographs or measurements while you were there?
+01:42:53 OPPOSING COUNSEL: Object to form.
+01:42:55 WITNESS B: I saw a deputy with a camera, I think. And later somebody with a tape, a long tape, on the road. I didn't watch closely.
+01:43:06 ATTORNEY: Did anyone ask you to point anything out on the road while you were there?
+01:43:12 WITNESS B: No. The deputy just asked what I saw and wrote it on a pad. Then he said someone might call me.
+01:43:22 ATTORNEY: And did someone call you?
+01:43:25 WITNESS B: Yes, a few days later. That's when I did the written one.
+01:43:30 ATTORNEY: Where did you write it?
+01:43:33 WITNESS B: At the sheriff's office. They had me sit at a table and write it out by hand, and then I signed it.
+01:43:43 ATTORNEY: Did anyone tell you what to put in it?
+01:43:47 WITNESS B: No. They just said write down what you saw, in your own words.
+01:43:53 ATTORNEY: Okay. You mentioned a deputy took your information that afternoon. Did that deputy ask you to write anything down that day?
+01:44:02 WITNESS B: No, not that day. He took my name and number and asked me a few questions. The written one was later.
+01:44:11 ATTORNEY: And that written statement is the one we've talked about this morning, the one you reviewed before today?
+01:44:19 WITNESS B: Yes. That's the one.
+01:44:22 ATTORNEY: Between the day of the collision and the day you wrote that statement, did you go back to the intersection?
+01:44:31 WITNESS B: I drove past it. I didn't stop.
+01:44:34 ATTORNEY: Why didn't you stop?
+01:44:37 WITNESS B: I just didn't want to. It was still too fresh.
+01:44:42 ATTORNEY: Since then, have you stopped at that store again?
+01:44:46 WITNESS B: A few times. It's the closest store to my sister's place. I go in and out. I don't really hang around out front anymore.
+01:44:56 ATTORNEY: Has anything about the intersection changed since that day, as far as you can tell?
+01:45:03 OPPOSING COUNSEL: Object to form. Foundation.
+01:45:06 ATTORNEY: Just from your own observation, driving through.
+01:45:09 WITNESS B: Not that I noticed. The road looks the same to me. Same store, same side road. I don't pay much attention to it now, honestly.
+01:45:20 ATTORNEY: Fair enough. Now, before I show you the exhibit, I want to make sure I understand some directions, so we're using the same words. The highway runs east and west there, correct?
+01:45:34 WITNESS B: Yes. East and west.
+01:45:36 ATTORNEY: And the car you've described was traveling east?
+01:45:40 WITNESS B: East. Coming from the hill side, from the west.
+01:45:45 ATTORNEY: And the truck was in the westbound lanes, in the turn lane, before it turned?
+01:45:51 WITNESS B: Yes. In the turn lane on the other side of the median.
+01:45:57 ATTORNEY: And Northeast 140th Court runs which direction off the highway?
+01:46:02 WITNESS B: South. It goes south, down past the store.
+01:46:06 ATTORNEY: And the store is on which side of 140th Court?
+01:46:11 WITNESS B: The east side. The store's on the corner there, on the south side of the highway.
+01:46:18 ATTORNEY: When the truck turned, which direction did it turn?
+01:46:22 WITNESS B: Left. From where it was, it turned left, across our side of the highway and onto 140th.
+01:46:30 ATTORNEY: When you say 'our side,' you mean the eastbound lanes?
+01:46:35 WITNESS B: Yes, sorry. The eastbound lanes. The side by the store.
+01:46:40 ATTORNEY: No need to apologize. That's exactly why I'm asking. I'd like to show you what we'll mark as Exhibit 4.
+01:46:48 ATTORNEY: For the record, Exhibit 4 is an aerial-style map of the intersection of U.S. 27A and Northeast 140th Court. I'm handing a copy to the witness and a copy to counsel.
+01:47:01 OPPOSING COUNSEL: Thank you. I'll note for the record that this is a demonstrative and we haven't stipulated to its scale or accuracy.
+01:47:09 ATTORNEY: Understood. Ma'am, take a moment to look it over. Have you ever seen this document before today?
+01:47:17 WITNESS B: No. I've never seen this.
+01:47:19 ATTORNEY: Have you seen any map or photograph of the intersection taken from above, before today?
+01:47:26 WITNESS B: Not that I remember. Maybe on a phone map, years ago, but not for this.
+01:47:32 ATTORNEY: Take your time with it. Do you recognize what's shown?
+01:47:37 WITNESS B: Yes. That's the highway, going across. That's the median in the middle with the grass. And this is the crossover where the truck turned.
+01:47:47 ATTORNEY: Do you see the side road, Northeast 140th Court?
+01:47:51 WITNESS B: Yes, here, going down. Going south.
+01:47:54 ATTORNEY: And do you see the store?
+01:47:57 WITNESS B: Yes. That's the building, here. That's the store.
+01:48:01 ATTORNEY: Do you see the lanes of the highway, the two eastbound lanes and the two westbound lanes?
+01:48:08 WITNESS B: Yes. Two and two, with the grass between them.
+01:48:12 ATTORNEY: Do you see the crossover, the paved opening in the median?
+01:48:17 WITNESS B: Yes, right here, lined up with the side road.
+01:48:22 ATTORNEY: And to the right of the store, to the east, is there anything you recognize?
+01:48:28 WITNESS B: That's the field and the fences, going down toward where the houses are. The car went off down that way, but it's further than this shows.
+01:48:39 ATTORNEY: So the place where the car came to rest isn't on this map?
+01:48:45 WITNESS B: I don't think so. It was way down. Past the edge here.
+01:48:50 ATTORNEY: There's an arrow in the corner of the map marked with an N. Do you understand that to point north?
+01:48:58 WITNESS B: Yes.
+01:48:59 ATTORNEY: So the top of the page is north, the bottom is south, the left side is west, and the right side is east. Is that how you understand it?
+01:49:11 WITNESS B: Yes, that makes sense. The hill would be off this way, to the left, off the page.
+01:49:19 ATTORNEY: Okay. Is there anything on this map that looks wrong to you, compared to how you remember the intersection?
+01:49:27 OPPOSING COUNSEL: Object to form.
+01:49:29 ATTORNEY: You can answer.
+01:49:30 WITNESS B: Not really. It's a picture from the top, so it looks different than standing there. But the road and the store look right to me.
+01:49:41 ATTORNEY: Does the map, in general, fairly show the layout of the roads and the store as they were on May 7th, 2016, as best you can tell?
+01:49:52 OPPOSING COUNSEL: Same objection. Foundation.
+01:49:54 WITNESS B: As best I can tell, yes. The roads are where they were.
+01:49:59 ATTORNEY: I'm going to ask you to make some marks on this map. I'm handing you a pen. It's a red pen, so the marks will show up. Please don't make any marks until I ask you to. Okay?
+01:50:14 WITNESS B: Okay.
+01:50:16 ATTORNEY: And if you're not sure about something, it's fine to tell me that instead of marking. I don't want you to guess.
+01:50:25 WITNESS B: All right.
+01:50:26 ATTORNEY: Let's start with the truck. Before it began its turn, you said it was in the westbound left-turn lane. Do you see that turn lane on the map?
+01:50:38 WITNESS B: Yes. It's this little lane right by the median, on the top side.
+01:50:43 ATTORNEY: I'm not going to have you mark that. I just want to make sure we're oriented. Now, after the collision, did the truck keep moving?
+01:50:54 WITNESS B: Yes. It kept going. It went on down the side road.
+01:50:59 ATTORNEY: Did you watch it come to a stop?
+01:51:03 WITNESS B: I saw it stopped. I saw it sitting there down the road. I don't know if I saw the exact second it stopped.
+01:51:12 ATTORNEY: Understood. How long after the collision did you notice it stopped?
+01:51:17 WITNESS B: Pretty quick. Seconds. I looked that way and it was stopped.
+01:51:22 ATTORNEY: When you first noticed the truck stopped, were you looking south down 140th?
+01:51:28 WITNESS B: I turned and looked that way, yes. Everybody was looking every which way. It was loud and then it was quiet.
+01:51:37 ATTORNEY: Was the truck's engine still running, as far as you could hear?
+01:51:42 WITNESS B: I think so. I remember a rumbling for a while. I couldn't tell you when it stopped.
+01:51:49 ATTORNEY: Before the collision, as the truck began turning, was it moving in a straight line or a curve?
+01:51:57 WITNESS B: A curve, the way you'd turn. The cab went first and the trailer swung around behind it.
+01:52:04 ATTORNEY: Using the pen, please mark where the truck came to a stop.
+01:52:10 WITNESS B: It was down here. Down 140th, past the store. About here.
+01:52:18 ATTORNEY: Thank you. Would you put the number 1 next to that mark?
+01:52:24 WITNESS B: Okay. There. Number 1.
+01:52:26 ATTORNEY: Is that mark where the front of the truck was, the back of the trailer, or somewhere in between?
+01:52:35 WITNESS B: I was just marking the truck. Where the truck part was, the cab. The trailer was behind it, back toward the highway.
+01:52:46 ATTORNEY: Did the trailer still extend back toward the highway after it stopped?
+01:52:52 WITNESS B: Some of it, yes. It's a long trailer. I couldn't tell you exactly how much.
+01:53:00 ATTORNEY: That's fine. Did the truck move again after that, while you were there?
+01:53:06 WITNESS B: Not that I saw. It stayed there. The deputies were all around it after a while.
+01:53:14 ATTORNEY: Do you remember anyone getting into or out of the truck?
+01:53:20 OPPOSING COUNSEL: Object to form.
+01:53:22 WITNESS B: I don't remember that. I wasn't looking at it the whole time. I was mostly looking the other way, down the highway, and then at my phone calling my sister.
+01:53:36 ATTORNEY: All right. I want to go back to the moment the car reached the intersection. You've told us this morning you were outside, out front of the store. Correct?
+01:53:49 WITNESS B: Yes.
+01:53:51 ATTORNEY: About how long had you been there, outside, by the time the car reached the intersection?
+01:53:58 WITNESS B: A good while. I'd done my shopping and come out, and I'd been waiting maybe fifteen, twenty minutes.
+01:54:07 ATTORNEY: Were you standing or sitting at that point?
+01:54:12 WITNESS B: Standing. I'd been standing a while. I had my bag at my feet.
+01:54:18 ATTORNEY: I'd like you to show us on the map.
+01:54:23 ATTORNEY: And please mark where you were standing when the car reached the intersection.
+01:54:30 WITNESS B: I was over by the corner, near the shelter.
+01:54:38 ATTORNEY: Thank you. Let the record reflect the witness has marked Exhibit 4. Would you put the number 2 next to that mark?
+01:54:48 WITNESS B: Number 2. Okay.
+01:54:50 ATTORNEY: And would you put your initials and today's date at the bottom of the page?
+01:54:58 WITNESS B: Here?
+01:54:59 ATTORNEY: Anywhere at the bottom is fine.
+01:55:02 WITNESS B: Okay. Done.
+01:55:04 ATTORNEY: Were you in that same general spot the whole time the car was approaching, from when you first saw it?
+01:55:14 OPPOSING COUNSEL: Object to form. Compound.
+01:55:16 ATTORNEY: I'll rephrase. From when you first noticed the car until the collision, did you move from where you were?
+01:55:25 WITNESS B: No. I was just standing there waiting. I wasn't walking around.
+01:55:31 ATTORNEY: Thank you. At this time I'll offer Exhibit 4, as marked by the witness, into the record.
+01:55:39 OPPOSING COUNSEL: No objection to it being attached to the transcript, subject to the objection I made earlier as to scale and accuracy.
+01:55:49 ATTORNEY: Understood. I'll pass the witness. Counsel, do you have questions?
+01:55:54 OPPOSING COUNSEL: Just a few. Ma'am, I represent the motor carrier. I'll be brief. You understand you're still under oath?
+01:56:03 WITNESS B: Yes.
+01:56:04 OPPOSING COUNSEL: Before today, had anyone shown you Exhibit 4?
+01:56:09 WITNESS B: No. Today's the first time.
+01:56:12 OPPOSING COUNSEL: When you made the marks on Exhibit 4 a few minutes ago, did anyone help you decide where to put them?
+01:56:22 WITNESS B: No. Nobody helped me. I did it myself.
+01:56:26 OPPOSING COUNSEL: Did anyone point to a spot on the map or suggest a spot to you, either today or before today?
+01:56:36 WITNESS B: No.
+01:56:37 OPPOSING COUNSEL: Did you discuss with anyone, before today, where you would mark on a map?
+01:56:44 WITNESS B: No. I didn't know there was going to be a map.
+01:56:50 OPPOSING COUNSEL: The mark you labeled number 2. How sure are you of that spot?
+01:56:56 WITNESS B: Roughly, yes. I'm sure of it roughly. I wasn't measuring where my feet were. But that's about where I was.
+01:57:06 OPPOSING COUNSEL: Could you have been a few feet one way or another from that mark?
+01:57:12 WITNESS B: A few feet, maybe. It's a little mark on a big picture. But that's the area.
+01:57:20 OPPOSING COUNSEL: And the mark you labeled number 1, for where the truck stopped. Same question. How sure are you of that one?
+01:57:30 WITNESS B: About the same. That's about where it was. I wouldn't swear to the exact foot.
+01:57:38 OPPOSING COUNSEL: You'd never seen a picture of the intersection from above before today, correct?
+01:57:44 WITNESS B: Correct.
+01:57:45 OPPOSING COUNSEL: So you were translating what you saw standing on the ground onto a picture from overhead.
+01:57:53 ATTORNEY: Object to form.
+01:57:55 OPPOSING COUNSEL: You can answer.
+01:57:58 WITNESS B: I guess so. But I know that corner. I've been to that store a hundred times.
+01:58:05 OPPOSING COUNSEL: Before today, did you ever go back and stand in the spot you marked, to check what you could see from there?
+01:58:16 WITNESS B: No. I never did anything like that.
+01:58:20 OPPOSING COUNSEL: Has anyone, an investigator or anyone else, asked you to go out to the intersection with them?
+01:58:28 WITNESS B: No. Nobody's asked me to do that.
+01:58:32 OPPOSING COUNSEL: Did you bring any notes or drawings with you today?
+01:58:37 WITNESS B: No. Just my glasses and my water.
+01:58:41 OPPOSING COUNSEL: You mentioned earlier you wear reading glasses. Were you wearing them when you marked the exhibit?
+01:58:49 WITNESS B: Yes, to see the little lines on the map. I don't wear them for distance. I didn't have them on that day outside.
+01:59:00 OPPOSING COUNSEL: Understood. Last thing. Other than your written statement and what you've told us here today, have you given any other statement about what you saw, written or recorded?
+01:59:13 WITNESS B: No. Just the deputy that day, and the written one, and today.
+01:59:19 OPPOSING COUNSEL: Thank you, ma'am. I have nothing further.
+01:59:23 ATTORNEY: Nothing further from me either. Thank you for your time today. I know this hasn't been easy.
+01:59:31 WITNESS B: Thank you.
+01:59:33 OPPOSING COUNSEL: We'll read and sign, as we stated at the beginning.
+01:59:38 ATTORNEY: So noted.
+01:59:40 VIDEOGRAPHER: This concludes the videotaped deposition of Witness B. The original exhibit will be retained by the court reporter. We are going off the record. The time is 11:22 a.m.

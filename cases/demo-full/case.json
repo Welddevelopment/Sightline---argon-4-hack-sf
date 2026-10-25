@@ -1,11 +1,11 @@
 {
   "caseId": "demo-full",
   "title": "Car into turning tractor-semitrailer at an uncontrolled median crossover, US-27A near Williston, Florida (2016) — full case file",
-  "subtitle": "Real NTSB public docket HWY16FH018 + HAR-17/02; two SIMULATED depositions of FICTIONAL witnesses (B: 2 h 20 min, D: 45 min)",
+  "subtitle": "Real NTSB public docket HWY16FH018 + HAR-17/02; two SIMULATED depositions of FICTIONAL witnesses (B: 2 h 00 min, D: 45 min)",
   "createdAt": "2026-10-25T19:45:00.000Z",
   "source_urls": ["https://data.ntsb.gov/Docket/?NTSBNumber=HWY16FH018", "https://www.ntsb.gov/investigations/AccidentReports/Reports/HAR1702.pdf"],
   "files": [
-    {"name": "deposition_witness_B.mp4", "type": "video", "label": "Witness B", "deponent": "Witness B (fictional)", "kind": "deposition", "durationSec": 8400},
+    {"name": "deposition_witness_B.mp4", "type": "video", "label": "Witness B", "deponent": "Witness B (fictional)", "kind": "deposition", "durationSec": 7200},
     {"name": "deposition_witness_D.mp4", "type": "video", "label": "Witness D", "deponent": "Witness D (fictional)", "kind": "deposition", "durationSec": 2700},
     {"name": "exhibit4_intersection_map.png", "type": "image", "label": "Exhibit 4 (unmarked)"}
   ],
