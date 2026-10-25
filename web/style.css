@@ -81,7 +81,7 @@ h3 { font: 600 11px/1 var(--sans); letter-spacing: .08em; text-transform: upperc
 
 /* findings */
 .count { color: var(--muted); font-weight: 400; letter-spacing: 0; margin-left: 4px; }
-#findings { flex: 1 1 auto; min-height: 120px; overflow-y: auto; }
+#findings { flex: 1 1 auto; min-height: 260px; overflow-y: auto; }
 .finding { border: 1px solid var(--line); border-left: 3px solid var(--grey); border-radius: 4px; background: var(--panel2); padding: 10px 11px; margin-bottom: 9px; cursor: pointer; }
 .finding:hover, .finding.active { border-color: var(--muted); border-left-color: inherit; background: #19212c; }
 .finding.contradiction { border-left-color: var(--red); }

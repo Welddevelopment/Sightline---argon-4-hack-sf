@@ -95,3 +95,22 @@ POST /api/loop → runs loop (mock replays cache)
 
 ## The story we must be able to show (floor)
 Fictional Witness B testified (deposition video, ~27:14) she saw the signal/vehicle; in the video she marks her position on the map exhibit (visual only, not spoken precisely). From that position a real occluder (bus shelter / parked bus / curve / hill) blocks her view at the observation time → contradiction. Checks.sightline confirms. Argon patches world (e.g., corrects her position or flags testimony) → findings panel shows citations.
+
+## WORLD CONTRACT v2 (lands AFTER the 11:55 gate; see project doc sightline/world-gen-brief.md)
+`export default function createWorld(THREE, assets) { ... }` — still no imports. Argon decides WHAT/WHERE/WHEN (layout, positions, timing, speeds, witnesses, citations). The asset library (web/assets.js, shared by browser + Node) decides how things LOOK. Argon never models or rescales vehicles/furniture; it only places library objects and sets position/rotation.y in setTime. v1 worlds (createWorld(THREE)) must keep working: if a world ignores `assets`, nothing breaks.
+
+Conventions: meters; Y up; ground y=0; +X east, -Z north; every asset's origin = ground-level center of its footprint; rotation.y=0 faces -Z (north); heading via rotation.y (radians, counter-clockwise from north toward west, i.e. three.js convention). Every factory returns a THREE.Object3D with `userData.assetType`, `userData.dims` {length,width,height} and `name` = the id you pass. Geometry is procedural (no network); materials MeshStandardMaterial (PBR); meshes castShadow/receiveShadow.
+
+Catalog (exact real dimensions L x W x H in meters):
+- assets.vehicle(type, {id, color}) — sedan 4.9x1.9x1.45 · suv 4.8x1.95x1.75 · pickup 5.9x2.0x1.9 · van 5.3x2.0x2.0 · box_truck 7.5x2.5x3.4 · bus 12.2x2.55x3.2 · truck_tractor 6.5x2.5x3.6 (cab-over-engine NOT assumed; conventional hood) · semitrailer 16.2x2.6x4.1 (box; its origin is the kingpin end? NO — origin is footprint center like everything else; userData.kingpinOffset gives the kingpin position along -Z) · motorcycle 2.2x0.8x1.2 · bicycle 1.8x0.6x1.1. Vehicles include body, cabin/glass, wheels, headlights + taillights as child meshes named `headlight_L/R`, `taillight_L/R`; `vehicle.userData.setLights(on:boolean)` toggles emissive + optional SpotLights; `userData.driverEye` = local [x,y,z] of the driver's eye (left-hand drive).
+- assets.pedestrian({id, height=1.7}) — simple figure; userData.eyeHeight = height*0.93.
+- assets.road({id, lanes=2, laneWidth=3.6, length, markings:'center_dashed'|'center_double'|'none', edgeLines=true, shoulder=0}) — along -Z at rotation 0; asphalt + markings.
+- assets.median({id, width, length}) · assets.intersection({id, size}) · assets.crosswalk({id, width, length}) · assets.curb({id, length}) · assets.sidewalk({id, width, length})
+- assets.signal({id, heads=1, poleHeight=5.5, armLength=0}) — returned object has userData.setState('red'|'yellow'|'green'|'off'); world still exposes state(t) on its objects entry and calls setState inside setTime.
+- assets.sign({id, kind:'stop'|'yield'|'speed_limit'|'street_name'|'generic', text}) · assets.pole({id, height}) · assets.streetlight({id, height=9, on:false})
+- assets.shelter({id, open=true}) 3.5x1.5x2.5 · assets.building({id, w, d, h, kind:'store'|'house'|'generic'}) · assets.tree({id, height=8}) · assets.parkedVehicle(type, {id, color}) = vehicle with lights off
+- assets.environment({timeOfDay:'16:36', lighting:'dawn'|'day'|'dusk'|'night', weather:'clear'|'overcast'|'rain', sunAzimuthDeg?, sunElevationDeg?}) — returns {lights:[...], sky:{...}} to add under root (viewer applies sky/fog from userData)
+- assets.skidMark({id, points:[[x,z],...], width=0.25}) · assets.impactMarker({id, position:[x,z]}) · assets.groundPlane({id, size, kind:'grass'|'asphalt'|'dirt'})
+Boxes remain the automatic fallback: if any factory throws, it returns a labeled box of the same dims.
+Overlays (speed, time-to-impact, signal state, labels, sight lines, stopping distances) are drawn by the VIEWER from checks.js output — Argon does not write them.
+Validation (argon/validate_world.js): syntax check, isolated dynamic import, contract (required keys; citation on every object/witness; id prefixes; no import/require/fetch/eval; setTime deterministic over [0,duration]; positions within scene bounds; witnesses on ground; only catalog asset types). On failure: one Argon repair round with the validator errors, then fall back to worlds/reference_world.js and log it.
