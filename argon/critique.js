@@ -40,7 +40,7 @@ export function normalizePatch(patch) {
 }
 
 /** critique({ caseId, round, worldFile|worldSource, checks, renders }) → { round, verdict, summary, findings, patch, mode } */
-export async function critique({ caseId = defaultCaseId(), round = 1, worldFile, worldSource, checks = [], renders, world, scene,
+export async function critique({ caseId = defaultCaseId(), round = 1, worldFile, worldSource, checks = [], renders, world, scene, extraText = '',
   maxOutputTokens = Number(process.env.ARGON_CRITIQUE_MAX_TOKENS || 65536) } = {}) {
   const d = caseDirs(caseId);
   worldSource = worldSource ?? (worldFile ? fs.readFileSync(path.resolve(ROOT, worldFile), 'utf8') : '');
@@ -53,7 +53,7 @@ export async function critique({ caseId = defaultCaseId(), round = 1, worldFile,
     CASE_ID: caseId, INVENTORY: JSON.stringify(evidenceSummary(caseId)), CASE_TEXT: loadCaseText(caseId),
     CHECKS: JSON.stringify(checks, null, 2), WORLD: worldSource, LIGHTING: formatLightingAudit(lighting),
   });
-  const parts = [textPart(prompt), ...(await evidenceMediaParts(caseId))];
+  const parts = [textPart(prompt), ...(extraText ? [textPart(extraText)] : []), ...(await evidenceMediaParts(caseId))];
   for (const f of collectRenders(renders)) {
     const view = path.basename(f).replace(/\.(mp4|png)$/i, '');
     const rel = path.relative(ROOT, f);

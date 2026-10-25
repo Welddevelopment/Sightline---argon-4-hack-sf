@@ -352,8 +352,12 @@ export function mountCases(app, h) {
         const files = m.files || [];
         const texts = files.filter((f) => f.textPath), vids = files.filter((f) => f.type === 'video'), imgs = files.filter((f) => f.type === 'image');
         emit(id, { type: 'progress', step: 'extract', message: `Extracted text from ${texts.length} document(s); ${vids.length} video(s) and ${imgs.length} image(s) queued for Argon.` });
+        // body.continue: run more correction rounds from the current world (the UI asks after 3 rounds with errors left)
+        const prevForContinue = req.body && req.body.continue ? caseState(id) : null;
+        const continueFrom = prevForContinue && prevForContinue.world
+          ? { world: prevForContinue.world, round: (prevForContinue.loopLog || []).slice(-1)[0]?.round || (prevForContinue.loopLog || []).length, loopLog: prevForContinue.loopLog || [] } : null;
         const result = await lp.mod.runLoop({
-          caseId: id, mode,
+          caseId: id, mode, continueFrom, maxRounds: req.body && req.body.rounds ? Number(req.body.rounds) : undefined,
           onProgress: (ev) => { emitted++; emit(id, { type: 'progress', ...(ev && typeof ev === 'object' ? ev : { message: String(ev) }) }); },
         });
         // Only persist a result whose world file actually exists and whose last round did not error,

@@ -15,6 +15,19 @@ Built at the Gemini 4 Argon SF Hackathon, Oct 25, 2026. **Track 2: More Dimensio
 - Demo video (1 min): `TODO`
 - Team: `TODO name (@github)`, `TODO name (@github)`
 
+## Compared with what lawyers pay for today
+
+Each pair puts a frame from a commercial forensic animation (left) next to the same kind of view from Sightline (right). Our frames come from the World B reconstruction: Argon wrote it in one pass from 849k tokens of case files, then corrected it once. Each Sightline frame also shows live speeds, the time to impact, and a check of whether the witness could see the car, with the testimony cited.
+
+| | |
+|---|---|
+| **Witness-eye view** | ![Witness view: ESi/Demonstratives vs Sightline](docs/compare/1_witness_view.jpg) |
+| **Chase view behind the striking car** | ![Chase view: ESi/Demonstratives vs Sightline](docs/compare/2_chase_view.jpg) |
+| **Driver / witness inside a vehicle** | ![Driver view: Ziva vs Sightline](docs/compare/3_driver_view.jpg) |
+| **Second witness (inside the store)** | ![Second witness view: Ziva vs Sightline](docs/compare/4_second_witness.jpg) |
+
+Reference frames are single stills, credited and shown for comparison only. ESi / Demonstratives, "Night Time Semi Collision Visualization" (youtube.com/watch?v=Y7Api99fPuw), 1:46 and 1:35. Ziva, "Crash Reconstruction for Legal in Unreal" (youtube.com/watch?v=JlXN-FTQxDE), 0:26 and 0:30. They are not our work, and they come from different crashes than ours. Sightline frames: `cases/demo-full/renders/world_v4/final/`.
+
 > **Data notice.** The demo case uses **real public crash facts**: the NTSB docket and Highway Accident Report NTSB/HAR-17/02 for accident **HWY16FH018** (US-27A near Williston, Florida, May 7, 2016), cited by page. **Witnesses A–D are fictional, and both deposition videos are simulated** (generated from scripts; no real names). The aerial photo is **USGS The National Map / NAIP** (public domain). Values NTSB did not report are labeled as inferred. Sightline is an analysis aid for experts, not evidence.
 
 ## Run it on a laptop

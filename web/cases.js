@@ -358,11 +358,32 @@ function onEvent(id, ev) {
   } else if (ev.type === 'done') {
     STEPS.forEach(([k]) => { stepState[k] = 'done'; });
     stepState.round = 0;
-    logLine({ ...ev, step: 'done', message: 'Reconstruction complete. Opening the viewer…' });
     es && es.close(); es = null; refreshList();
-    setTimeout(() => { location.href = '/?case=' + encodeURIComponent(id); }, 1600);
+    const pm = ev.state && ev.state.pendingMore;
+    if (pm) { askMoreRounds(id, pm); }
+    else {
+      logLine({ ...ev, step: 'done', message: 'Reconstruction complete. Opening the viewer…' });
+      setTimeout(() => { location.href = '/?case=' + encodeURIComponent(id); }, 1600);
+    }
   }
   drawSteps();
+}
+// After 3 correction rounds with world errors left, the user decides whether Argon keeps going.
+function askMoreRounds(id, pm) {
+  const box = document.createElement('div');
+  box.className = 'ask-more';
+  box.innerHTML = `<p><strong>${esc(pm.question)}</strong></p><p class="sub">These are errors in the reconstructed world (not findings). More rounds give Argon another try at fixing them.</p>` +
+    `<button type="button" class="btn primary" data-more="3">Run 3 more rounds</button> <button type="button" class="btn" data-more="0">Stop and open the viewer</button>`;
+  ($('#progress') || document.body).appendChild(box);
+  box.addEventListener('click', async (e) => {
+    const b = e.target.closest('button[data-more]'); if (!b) return;
+    const n = Number(b.dataset.more); box.remove();
+    if (!n) { location.href = '/?case=' + encodeURIComponent(id); return; }
+    try {
+      await api(`/api/cases/${encodeURIComponent(id)}/run`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ continue: true, rounds: n }) });
+      attachStream(id);
+    } catch (err) { logLine({ type: 'error', message: 'Could not start more rounds: ' + (err && err.message || err) }, true); }
+  });
 }
 function attachStream(id) {
   Object.keys(stepState).forEach((k) => delete stepState[k]);

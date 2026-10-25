@@ -1,4 +1,8 @@
-// argon/loop.js — generate → render → checks → critique → patch → repeat (max 3 rounds).
+// argon/loop.js — generate → render → checks → critique → patch → repeat.
+// A round is triggered automatically while the WORLD has errors (argon/world_errors.js: contract problems, impossible
+// motion, disagreement with known facts — published report / lawyer-confirmed marks) or Argon itself returns a fix.
+// Sight-line results (BLOCKED/CLEAR) are findings, never errors. After maxRounds (default 3) with errors left, the loop
+// stops and sets state.pendingMore so the UI asks the user whether to run more rounds (POST /run {continue:true}).
 // Lib: import { runLoop } from './argon/loop.js'; await runLoop({ caseId, mode, onProgress })
 // CLI: node argon/loop.js [--case demo] [--rounds 3] [--no-render] [--skip-generate]
 // Outputs: cases/<caseId>/worlds/world_v*.js, cases/<caseId>/renders/world_v*/, cases/<caseId>/cache/{loop_log,state}.json
@@ -33,7 +37,7 @@ async function renderWorld(worldFile, { fps, onProgress, round, rendersDir }) {
  * runLoop({ caseId, mode, onProgress, maxRounds, render, skipGenerate }) → { world, findings, checks, loopLog }
  * onProgress({ round, step, message, ... }) with step ∈ generate|render|checks|critique|patch|done|error
  */
-export async function runLoop({ caseId = defaultCaseId(), mode, onProgress, maxRounds, render, skipGenerate = false, fps } = {}) {
+export async function runLoop({ caseId = defaultCaseId(), mode, onProgress, maxRounds, render, skipGenerate = false, fps, continueFrom = null } = {}) {
   if (mode) process.env.SIGHTLINE_MODE = mode;
   mode = envMode();
   const d = caseDirs(caseId);
@@ -50,13 +54,21 @@ export async function runLoop({ caseId = defaultCaseId(), mode, onProgress, maxR
 
   const { runAll } = await import('../checks/checks.js');
   const { critique } = await import('./critique.js');
+  const { worldErrors, formatErrorsForArgon } = await import('./world_errors.js');
   const loopLog = [];
 
-  // ---- Round 1 world ----
+  // ---- Round 1 world (or continue from an earlier run's final world) ----
   let worldFile = path.join(d.worlds, 'world_v1.js');
+  let firstRound = 1;
+  if (continueFrom && continueFrom.world) {
+    worldFile = path.resolve(ROOT, String(continueFrom.world).replace(/^\/+/, ''));
+    firstRound = Number(continueFrom.round || 0) + 1;
+    loopLog.push(...(continueFrom.loopLog || []));
+    skipGenerate = true;
+  }
   const inv = evidenceSummary(caseId);
   await emit({ round: 1, step: 'evidence', message: `Case ${caseId}: ${inv.text.length} text file(s), ${inv.videos.length} video(s), ${inv.images.length} image(s)`, evidence: inv });
-  if (!skipGenerate || !fs.existsSync(worldFile)) {
+  if (!continueFrom && (!skipGenerate || !fs.existsSync(worldFile))) {
     await emit({ round: 1, step: 'generate', message: mode === 'live'
       ? 'Argon is reading every document and watching every video to write the world module…'
       : `Replaying cached Argon world generation (cases/${caseId}/cache/generate_world.js)…` });
@@ -67,8 +79,9 @@ export async function runLoop({ caseId = defaultCaseId(), mode, onProgress, maxR
       (g.problems.length ? ` — contract problems: ${g.problems.slice(0, 3).join('; ')}` : ''), world: g.url, problems: g.problems });
   }
 
-  let checks = [], findings = [], lastVerdict = null;
-  for (let round = 1; round <= maxRounds; round++) {
+  let checks = [], findings = [], lastVerdict = null, errors = [], stopReason = null;
+  const lastRoundNo = firstRound + maxRounds - 1;
+  for (let round = firstRound; round <= lastRoundNo; round++) {
     const worldUrl = rel(worldFile);
     const entry = { round, world: worldUrl, startedAt: new Date().toISOString() };
 
@@ -101,13 +114,20 @@ export async function runLoop({ caseId = defaultCaseId(), mode, onProgress, maxR
     await emit({ round, step: 'checks', message: `Independent checks: ${checks.length - fails.length}/${checks.length} pass` +
       (fails.length ? ` — ${fails.map((c) => `${c.subject}: ${c.blockedBy ? 'blocked by ' + c.blockedBy : 'fail'}`).join('; ')}` : ''), checks });
 
+    // world errors → the automatic trigger for another round
+    ({ errors } = await worldErrors({ caseId, worldFile, world, checks }));
+    entry.worldErrors = errors;
+    await emit({ round, step: 'checks', message: errors.length
+      ? `${errors.length} world error(s) found: ${errors.map((e) => e.id).join(', ')} — sending them to Argon`
+      : 'No world errors (contract, motion and known facts all agree)', worldErrors: errors });
+
     // critique
     await emit({ round, step: 'critique', message: mode === 'live'
       ? 'Argon is watching the witness-view renders against the evidence videos and documents…'
       : `Replaying cached Argon critique (cases/${caseId}/cache/critique_round${round}.json)…` });
     let c;
     try {
-      c = await critique({ caseId, round, worldFile, checks, renders: entry.renders.videos.length || entry.renders.stills.length
+      c = await critique({ caseId, round, worldFile, checks, extraText: formatErrorsForArgon(errors), renders: entry.renders.videos.length || entry.renders.stills.length
         ? { files: [...entry.renders.videos, ...entry.renders.stills].map((u) => path.join(ROOT, u)) } : null });
     } catch (e) {
       await emit({ round, step: 'error', message: `Critique failed: ${e.message}` });
@@ -119,7 +139,12 @@ export async function runLoop({ caseId = defaultCaseId(), mode, onProgress, maxR
     entry.findings = c.findings;
     await emit({ round, step: 'critique', message: `${c.verdict}: ${c.summary}`, findings: c.findings, verdict: c.verdict });
 
-    if (!c.patch) { entry.finishedAt = new Date().toISOString(); loopLog.push(entry); break; }
+    if (!c.patch) {
+      entry.finishedAt = new Date().toISOString(); loopLog.push(entry);
+      stopReason = errors.length ? 'no_fix' : 'clean';
+      if (errors.length) await emit({ round, step: 'critique', message: `Argon returned no fix, but ${errors.length} world error(s) remain — flagged for review` });
+      break;
+    }
 
     // patch
     const w = await writeWorldVersion(round + 1, c.patch, d.worlds, c.call ? callProvenance({ caseId, call: c.call, parentWorld: worldUrl }) : null);
@@ -129,14 +154,22 @@ export async function runLoop({ caseId = defaultCaseId(), mode, onProgress, maxR
     await emit({ round, step: 'patch', message: `Argon patched the world → ${w.url}` + (w.problems.length ? ` (contract problems: ${w.problems.slice(0, 3).join('; ')})` : ''), world: w.url });
     if (w.problems.some((p) => p.startsWith('module failed'))) { await emit({ round, step: 'error', message: 'Patched module does not load; keeping previous world' }); break; }
     worldFile = w.file;
-    if (round === maxRounds) {
+    if (round === lastRoundNo) {
       // Re-check the final patched world so state reflects it.
-      checks = runAll(await loadWorldFile(worldFile));
+      const fw = await loadWorldFile(worldFile);
+      checks = runAll(fw);
+      ({ errors } = await worldErrors({ caseId, worldFile, world: fw, checks }));
+      stopReason = errors.length ? 'max_rounds' : 'clean';
     }
   }
 
   const finalWorld = rel(worldFile);
-  const state = { caseId, world: finalWorld, findings, checks, loopLog, verdict: lastVerdict, mode, updatedAt: new Date().toISOString() };
+  const rounds = loopLog.length ? loopLog[loopLog.length - 1].round : 0;
+  const pendingMore = stopReason === 'max_rounds' && errors.length
+    ? { afterRound: rounds, errors: errors.length, ids: errors.map((e) => e.id), question: `${rounds} correction rounds done; ${errors.length} world error(s) remain (${errors.map((e) => e.id).join(', ')}). Run more rounds?` }
+    : null;
+  if (pendingMore) await emit({ round: rounds, step: 'ask_more', message: pendingMore.question, pendingMore });
+  const state = { caseId, world: finalWorld, findings, checks, loopLog, verdict: lastVerdict, mode, worldErrors: errors, stopReason, pendingMore, updatedAt: new Date().toISOString() };
   writeJSON(path.join(d.cache, 'loop_log.json'), loopLog);
   writeJSON(path.join(d.cache, 'state.json'), state);
   if (caseId === 'demo' && process.env.SIGHTLINE_NO_LEGACY_MIRROR !== '1') {
@@ -144,7 +177,7 @@ export async function runLoop({ caseId = defaultCaseId(), mode, onProgress, maxR
     writeJSON(path.join(ROOT, 'cache', 'loop_log.json'), loopLog);
     writeJSON(path.join(ROOT, 'cache', 'state.json'), state);
   }
-  await emit({ step: 'done', round: loopLog.length, message: `Loop finished after ${loopLog.length} round(s). Final world ${finalWorld}. ${findings.filter((f) => f.status === 'contradiction').length} contradiction(s).` });
+  await emit({ step: 'done', round: loopLog.length, message: `Loop finished after ${rounds} round(s). Final world ${finalWorld}. ${findings.filter((f) => f.status === 'contradiction').length} contradiction(s).` });
   return state;
 }
 

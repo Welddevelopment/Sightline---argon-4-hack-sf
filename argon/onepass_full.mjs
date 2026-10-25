@@ -267,7 +267,12 @@ async function runStage(stage) {
     const prompt = C.fill(C.readPrompt('critique'), { ROUND: String(vN), NEXT_ROUND: String(vN + 1), CONTRACT: C.loadWorldContract(), CASE_ID: caseId,
       INVENTORY: JSON.stringify(K.evidenceSummary(caseId)), CASE_TEXT: K.loadCaseText(caseId), CHECKS: JSON.stringify(checks, null, 2), WORLD: worldSource, LIGHTING: formatLightingAudit(lighting) });
     const VERIFY = `POSITION AUDIT (do this before anything else): this world was written in ONE pass from the whole case. For EVERY witness, re-derive the position and observationTime from the strongest evidence and compare with the world: an on-screen mark a deponent makes on an exhibit in a video controls over words; measure it on the exhibit with the exhibit's scale bar and its marked reference point (e.g. the AOI / point of impact), convert to world metres in the world's frame, and state the measured value. observationTime must match the claim's wording (e.g. "right up until it hit" = the last second before impact). A still frame from the evidence video at Depo Witness B 1:54:34 showing her pen mark on Exhibit 4 is attached (extracted from deposition_witness_B.mp4; it IS evidence). If any witness is more than 1 m from its evidenced position, or a time/claim mapping is wrong, return the corrected COMPLETE module as \`patch\` (keep all scenery and visual detail; change only what the evidence requires; cite it). A witness who is a DRIVER must ride with their vehicle: in setTime, set that witness's position to the vehicle's driver eye (vehicle.userData.driverEye transformed by the vehicle's pose at t; eyeHeight from it) and look along the vehicle heading, and give the witness "vehicleId" = that vehicle's id; a fixed eye point inside a moving vehicle is wrong. The independent checks above already exclude a witness's own vehicle from the ray-cast. Do not move anything to reach a desired result: build what the evidence shows.`;
-    const parts = [C.textPart(prompt), C.textPart(VERIFY), ...(await K.evidenceMediaParts(caseId))];
+    const { worldErrors, formatErrorsForArgon } = await import('./world_errors.js');
+    const { errors: worldErrs, validation } = await worldErrors({ caseId, worldFile, world, checks });
+    log('world errors before critique:', worldErrs.length, worldErrs.map((e) => e.id).join(', '));
+    const ERRORS = formatErrorsForArgon(worldErrs) + (worldErrs.length ? '\nContract reminder: vehicle.userData.driverEye is a LOCAL [x, y, z] ARRAY (index it [0],[1],[2]).' : '');
+    const audit = args.includes('--position-audit');
+    const parts = [C.textPart(prompt), ...(audit ? [C.textPart(VERIFY)] : []), ...(ERRORS ? [C.textPart(ERRORS)] : []), ...(await K.evidenceMediaParts(caseId))];
     const frame = path.join(OUT, 'depoB_6874.png');
     parts.push(C.textPart('EVIDENCE FRAME — Depo Witness B 1:54:34 (frame extracted from cases/demo-full/evidence/deposition_witness_B.mp4): Exhibit 4 with the witness\'s pen mark, as shown on screen.'));
     parts.push(C.imagePart(frame));
@@ -294,7 +299,12 @@ async function runStage(stage) {
     const st = { caseId, world: rel(finalFile), findings: c.findings, checks: finalChecks, verdict: c.verdict, mode: 'live', updatedAt: new Date().toISOString(),
       loopLog: [{ round: 1, world: rel(worldFile), generator: 'argon/onepass_full.mjs (one-pass long decode)', checks, critique: { verdict: c.verdict, summary: c.summary, findings: c.findings, patched: !!c.patch }, findings: c.findings,
         renders: { videos: [], stills: files.map(rel) }, patch, finishedAt: new Date().toISOString() }] };
-    fs.writeFileSync(path.join(CASE, 'cache', 'state.json'), JSON.stringify(st, null, 2));
+    let finalErrors = worldErrs;
+    if (finalFile !== worldFile) finalErrors = (await worldErrors({ caseId, worldFile: finalFile, world: await loadWorldFile(finalFile), checks: finalChecks })).errors;
+    log('world errors after critique:', finalErrors.length, finalErrors.map((e) => e.id).join(', '));
+    st.loopLog[0].worldErrors = { before: worldErrs, after: finalErrors };
+    if (!args.includes('--no-state')) fs.writeFileSync(path.join(CASE, 'cache', 'state.json'), JSON.stringify(st, null, 2));
+    else fs.writeFileSync(path.join(OUT, `state_candidate_v${vN + 1}.json`), JSON.stringify(st, null, 2));
     const cm = (() => { try { return JSON.parse(rd(path.join(CASE, 'cache', `critique_round${vN}.meta.json`))); } catch { return null; } })();
     meta.critique = { round: vN, verdict: c.verdict, summary: c.summary, findings: c.findings.length, patched: !!c.patch, patch, seconds: critSec, usage: cm?.usage || null, finalWorld: rel(finalFile) };
     meta.finalChecks = sightSummary(finalChecks);
