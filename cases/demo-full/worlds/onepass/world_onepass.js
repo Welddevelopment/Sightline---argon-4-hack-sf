@@ -610,13 +610,11 @@ export default function createWorld(THREE, assets) {
     [0.0, -347.45, 0.0, 90.0, 33.081],
     [5.0, -182.045, 0.0, 90.0, 33.081],
     [10.43, -2.45, 0.0, 90.0, 33.081],
-    [10.65, 4.75, 0.1, 91.7, 32.3],
-    [13.55, 96.9, 2.85, 92.8, 31.1],
-    [16.8, 194.5, 11.8, 94.8, 28.5],
-    [18.83, 249.2, 17.6, 95.5, 25.0],
-    [19.0, 253.4, 18.0, 95.0, 21.93],
-    [20.8, 271.5, 20.3, 40.0, 6.5, 'spin'],
-    [23.0, 276.6, 21.0, 0.0, 0.0, 'spin'],
+    [13.55, 96.9, 2.85, 92.8, 29.5],
+    [16.8, 184.5, 11.2, 95.5, 24.0],
+    [18.83, 227.5, 15.8, 95.5, 18.2],
+    [21.5, 263.5, 19.8, 82.0, 8.8, 'spin'],
+    [24.5, 276.6, 21.0, 0.0, 0.0, 'spin'],
     [25.0, 276.6, 21.0, 0.0, 0.0, 'spin'],
   ];
 
@@ -630,28 +628,25 @@ export default function createWorld(THREE, assets) {
   //   Tractor center is at [-1.53, 10.75] m with heading 178° (tractor front at Z = 10.75 + 3.25 = 14.0 m, entering NE 140th Ct;
   //   13.84 m aft of tractor front is Z = 14.0 - 13.84 = +0.16 m ≈ 0.0 m, center of EB outside lane!).
   const tractorKeyframes = [
-    [0.0, -19.5, -27.43, 270.0, 1.2],
-    [2.0, -16.2, -27.1, 258.0, 2.2],
-    [4.5, -10.2, -23.8, 225.0, 3.8],
-    [7.0, -4.2, -14.2, 192.0, 5.2],
-    [9.0, -1.9, -1.2, 180.0, 6.2],
-    [10.43, -1.53, 10.75, 178.0, 6.4],
-    [13.0, -1.53, 25.5, 180.0, 4.2],
-    [16.5, -1.53, 35.0, 180.0, 0.0],
+    [0.0, -18.5, -27.43, 270.0, 1.5],
+    [2.5, -14.0, -26.5, 245.0, 2.5],
+    [5.0, -8.0, -21.0, 210.0, 4.0],
+    [7.5, -3.2, -10.0, 186.0, 5.2],
+    [10.43, -1.53, 8.75, 179.0, 6.2],
+    [13.5, -1.53, 25.0, 180.0, 4.0],
+    [17.5, -1.53, 35.0, 180.0, 0.0],
     [25.0, -1.53, 35.0, 180.0, 0.0],
   ];
 
-  // Semitrailer heading lags the tractor through the left turn and straightens as it enters NE 140th Ct
-  const trailerHeadingKeyframes = [
-    [0.0, 270.0],
-    [2.0, 267.0],
-    [4.5, 248.0],
-    [7.0, 212.0],
-    [9.0, 187.0],
-    [10.43, 178.0],
-    [13.0, 179.5],
-    [16.5, 180.0],
-    [25.0, 180.0],
+  const trailerKeyframes = [
+    [0.0, -9.8, -27.43, 270.0, 1.4],
+    [2.5, -5.6, -27.1, 261.0, 2.0],
+    [5.0, -1.2, -24.5, 234.0, 3.0],
+    [7.5, -0.5, -17.2, 200.0, 4.5],
+    [10.43, -1.29, -0.25, 178.0, 6.0],
+    [13.5, -1.53, 16.0, 180.0, 4.0],
+    [17.5, -1.53, 26.0, 180.0, 0.0],
+    [25.0, -1.53, 26.0, 180.0, 0.0],
   ];
 
   function sampleScalar(pairs, t) {
@@ -685,7 +680,7 @@ export default function createWorld(THREE, assets) {
   // ---------- 9. WITNESSES ----------
   const witnesses = [
     {
-      id: 'witness_A',
+      id: 'wit_witness_A',
       name: 'Witness A (Westbound Driver)',
       label: 'Witness A (westbound pickup driver ~0.25 mi behind truck in WB outside lane)',
       position: [257.26, 0, -34.75],
@@ -698,7 +693,7 @@ export default function createWorld(THREE, assets) {
         'docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12; docket_vehicle_dynamics_study.txt p.2, p.4; witness_A.md p.1',
     },
     {
-      id: 'witness_B',
+      id: 'wit_witness_B',
       name: 'Witness B (Store Pedestrian)',
       label: 'Witness B (pedestrian standing at marked position #2 on Exhibit 4, [7.5, 0, 12.0] m)',
       position: [7.5, 0, 12.0],
@@ -711,7 +706,7 @@ export default function createWorld(THREE, assets) {
         'Depo Witness B 17:01 (5 ft 6 in tall), 41:10-41:20, 52:00-52:07 ("watched it the whole way, right up until it hit"), 1:54:30 (Exhibit 4 pen mark #2 at [7.5, 0, 12.0] m)',
     },
     {
-      id: 'witness_C',
+      id: 'wit_witness_C',
       name: 'Witness C (Stopped Westbound Driver)',
       label: 'Witness C (pickup driver stopped in WB inside lane 18 m west of NE 140th Ct crossover)',
       position: [-18.0, 0, -31.09],
@@ -723,7 +718,7 @@ export default function createWorld(THREE, assets) {
       citation: 'witness_C.md p.1; police_report.md p.1',
     },
     {
-      id: 'witness_D',
+      id: 'wit_witness_D',
       name: 'Witness D (Store Counter Clerk)',
       label: 'Witness D (counter clerk inside retail store behind register at [24.0, 0, 15.0] m)',
       position: [24.0, 0, 15.0],
@@ -895,22 +890,9 @@ export default function createWorld(THREE, assets) {
     vehTractor.node.position.set(stateTrac.x, ry(stateTrac.x, stateTrac.z), stateTrac.z);
     vehTractor.node.rotation.y = -stateTrac.headingDeg * D2R;
 
-    // Articulated semitrailer coupled at fifth-wheel / kingpin
-    // Fifth wheel is ~1.75 m behind tractor center along tractor's local +Z (rearward) axis.
-    // Semitrailer kingpinOffset (along local -Z forward axis) is ~6.60 m from trailer footprint center (or node.userData.kingpinOffset).
-    const tracRad = stateTrac.headingDeg * D2R;
-    const fifthWheelOffset = -1.75; // meters forward of tractor center (negative = behind center)
-    const kx = stateTrac.x + Math.sin(tracRad) * fifthWheelOffset;
-    const kz = stateTrac.z - Math.cos(tracRad) * fifthWheelOffset;
-
-    const trailHeadingDeg = sampleScalar(trailerHeadingKeyframes, clampedT);
-    const trailRad = trailHeadingDeg * D2R;
-    const kpOffset = vehTrailer.node.userData?.kingpinOffset ?? 6.6;
-    const tx = kx - Math.sin(trailRad) * kpOffset;
-    const tz = kz + Math.cos(trailRad) * kpOffset;
-
-    vehTrailer.node.position.set(tx, ry(tx, tz), tz);
-    vehTrailer.node.rotation.y = -trailHeadingDeg * D2R;
+    const stateTrail = sampleHermite(trailerKeyframes, clampedT);
+    vehTrailer.node.position.set(stateTrail.x, ry(stateTrail.x, stateTrail.z), stateTrail.z);
+    vehTrailer.node.rotation.y = -stateTrail.headingDeg * D2R;
 
     // 3. Update Witness A Pickup
     const stateWitA = sampleHermite(witAKeyframes, clampedT);

@@ -14,3 +14,11 @@
 [20:53:53] repair 17s in_progress
 [20:54:09] repair 33s in_progress
 [20:54:25] repair 49s in_progress
+[20:54:41] repair 65s in_progress
+[20:54:57] repair 80s in_progress
+[20:55:13] repair 96s in_progress
+[20:55:29] repair 113s completed
+[20:55:35] repair applied 7 / 7 → VALID 
+[20:56:10] validate VALID 0 errors 2 warnings
+[20:56:17] saved cases/demo-full/worlds/world_v3.js | wit_witness_A: BLOCKED by veh_witness_a_pickup (25/25 blocked, robust) ; wit_witness_B: CLEAR (0/25 blocked, not_blocked) ; wit_witness_C: CLEAR (5/25 blocked, partial) ; wit_witness_D: CLEAR (10/25 blocked, partial)
+[20:56:17] non-pass checks: sightline:wit_witness_A

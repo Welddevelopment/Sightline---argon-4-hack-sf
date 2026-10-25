@@ -553,14 +553,15 @@ function fitOverhead(t) {
   else if (pts.length) { ref = new THREE.Vector3(); pts.forEach((p) => ref.add(p)); ref.multiplyScalar(1 / pts.length); }
   else ref = new THREE.Vector3();
   const roi = new THREE.Box3();
-  pts.forEach((p) => roi.expandByPoint(p));
+  // overhead framing = region of interest: far-off witnesses (e.g. a driver 270 m back) / vehicles don't zoom the plan out
+  pts.forEach((p) => { if (!impact || Math.hypot(p.x - ref.x, p.z - ref.z) <= 70) roi.expandByPoint(p); });
   const near = (bx, r) => { const c = centreOf(bx); return Math.hypot(c.x - ref.x, c.z - ref.z) <= r; };
   for (const [id, o] of entries) {
     if (!o.node) continue;
     const bx = boxOf(o);
     if (bx.isEmpty()) continue;
     const sz = bx.getSize(new THREE.Vector3());
-    if (o.kind === 'vehicle') { roi.union(bx); continue; }
+    if (o.kind === 'vehicle') { if (!impact || near(bx, 80)) roi.union(bx); continue; }
     if (o.kind === 'road' || id.startsWith('road_')) continue;
     if (sz.x > 150 || sz.z > 150) continue;
     if (o.kind === 'mark' || id.startsWith('mark_')) { if (near(bx, 120)) roi.union(bx); continue; }

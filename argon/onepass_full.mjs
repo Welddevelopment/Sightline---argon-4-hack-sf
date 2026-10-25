@@ -163,9 +163,9 @@ async function followUp(ai, meta, text, maxOut, label) {
   fs.writeFileSync(path.join(OUT, `${label}_result.json`), JSON.stringify(r, null, 1));
   return { id: it.id, status: r.status, usage: r.usage || null, text: outputText(r), sec: Math.round((Date.now() - t0) / 1000) };
 }
-const latestVersion = (dir) => Math.max(0, ...fs.readdirSync(dir).map((f) => Number((/^world_v(\d+)\.js$/.exec(f) || [])[1] || 0)));
-const sightSummary = (checks) => checks.filter((c) => c.check === 'sightline').map((c) =>
-  `${c.subject}: ${c.pass ? 'CLEAR' : 'BLOCKED by ' + (c.blockedBy || '?')}${c.robustness ? ` (${c.robustness.blocked}/${c.robustness.samples} blocked, ${c.robustness.verdict})` : ''}`);
+function latestVersion(dir) { return Math.max(0, ...fs.readdirSync(dir).map((f) => Number((/^world_v(\d+)\.js$/.exec(f) || [])[1] || 0))); }
+function sightSummary(checks) { return checks.filter((c) => c.check === 'sightline').map((c) =>
+  `${c.subject}: ${c.pass ? 'CLEAR' : 'BLOCKED by ' + (c.blockedBy || '?')}${c.robustness ? ` (${c.robustness.blocked}/${c.robustness.samples} blocked, ${c.robustness.verdict})` : ''}`); }
 
 async function runStage(stage) {
   const { validateWorldFile, syntaxCheck, formatErrors } = await import('./validate_world.js');
@@ -181,6 +181,11 @@ async function runStage(stage) {
     const file = path.join(OUT, 'world_onepass.js');
     let src = rd(file);
     meta.followups = meta.followups || [];
+    const prevRepair = path.join(OUT, 'repair_result.json');
+    if (fs.existsSync(prevRepair) && !meta.followups.some((f) => f.kind === 'repair')) {
+      const rr = JSON.parse(rd(prevRepair));
+      meta.followups.push({ kind: 'repair', id: rr.id, status: rr.status, usage: rr.usage || null, note: 'applied in an earlier finish run (7/7 edits applied; validator then VALID)' });
+    }
     // 1) truncated at the cap → ONE short continuation
     if (syntaxCheck(file) && meta.status === 'incomplete') {
       const tail = src.split('\n').slice(-30).join('\n');
