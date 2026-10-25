@@ -22,6 +22,12 @@ Built at the Gemini 4 Argon SF Hackathon, Oct 25, 2026. Track: **More Dimensions
 
 In the demo case, Witness B says she clearly saw the driver's head in the last second before impact. She marks where she stood on a map exhibit 27 minutes into the deposition, and never says the position out loud. Argon's first draft places her from her words; after watching the renders against the video, it moves her to the marked spot, and the ray-cast check shows the turning truck blocking her view from 1.3 s before impact. A transcript-only baseline (Gemini Flash, chunk-and-summarize) calls her testimony consistent.
 
+## Why it needs Argon
+
+The hard part is the input, not the output. In one pass Argon reads the whole case file and watches the full 30-minute deposition as video: about 164k input tokens, roughly 128k of them video, inside its 1M-token input context (which leaves room for more depositions, dashcam and our renders). Nobody points it at the right moment: in the live run it located Witness B's map mark at Depo 27:05 on its own, a position that is never spoken and so is invisible to a transcript pipeline. It then writes a complete to-scale world module in one call (129 s in the live run; the module fits well inside Argon's 32,768-token output limit), and in the critique round it watches its own renders next to the evidence and patches the world.
+
+For comparison, a paid forensic crash animation costs roughly $2k to $20k+ and takes weeks.
+
 ## Run it
 
 Requirements: Node 22, ffmpeg, Python 3 with Pillow (only for rebuilding the deposition video). Chromium for rendering is installed with the npm packages.
@@ -117,6 +123,19 @@ Everything in this repo was written on Oct 25, 2026, between 10:30 AM and 5:00 P
 - the demo case, built from public NTSB report HAR-17/02, with fictional witnesses
 
 We used open-source libraries (Three.js, Express, Playwright, @sparticuz/chromium, ffmpeg, pdf-parse, mammoth, multer) and the Gemini API (`@google/genai`). No code from earlier projects.
+
+## What a skeptical expert would ask — and our answer
+
+- **No qualified expert signs it.** Sightline is the analysis a lawyer runs before deciding to spend $5–20k; its output is a cited draft for their expert, not trial evidence.
+- **Is it reproducible?** Every world version records the model, prompt version (hash) and a hash of every input (`cases/<id>/worlds/world_vN.provenance.json`). The checks are deterministic, so any run can be replayed.
+- **Confidentiality and privilege?** Roadmap: enterprise deployment, no-training and no-retention terms, per-matter access control, audit log.
+- **Event data recorder?** An EDR report is just another evidence type that Argon reads and cites (roadmap).
+- **Accuracy is unvalidated.** We validate against public NTSB investigations with known answers: **TODO X of Y** measured facts match on this case (`cases/demo/cache/validation.json`, not yet generated). Next, a benchmark across dozens of cases.
+- **Geometry from documents, not a survey.** Every dimension is cited; inferred values are labeled and drawn in amber. Roadmap: aerial imagery and scans.
+- **Kinematic, not physics.** Motion is fitted to cited evidence and checked for physical plausibility (over 1 g, teleports, impossible speeds). Roadmap: export to crash-physics tools.
+- **Her map mark is only good to ±1–2 m.** We ray-cast from 25 positions in a 2 m disc around it (eye height ±0.1 m): blocked from **TODO N of 25** (`checks[].robustness` in `cases/demo/cache/state.json`, not yet generated).
+- **Line of sight is not the same as noticing.** We report the angle between her gaze and the target, flag anything past 30° as peripheral, and state the 60° camera field of view. Findings say "had line of sight", never "could see".
+- **Night and glare.** Lighting objects are cited from the evidence; a sun-angle glare check is on the roadmap.
 
 ## Limits
 

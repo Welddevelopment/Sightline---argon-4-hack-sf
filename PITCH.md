@@ -12,7 +12,9 @@ The script below is written for the real demo case (NTSB HWY16FH018, Williston F
 
 - [ ] `case/deposition_script.json` → `npm run deposition` built the full ~31-minute deposition (`deposition/out/deposition.mp4`), not the 2:42 sample.
 - [ ] `node argon/seed_demo.js` re-run, so `cases/demo/` holds the Williston evidence, world and cache.
-- [ ] Witness B's finding chips read **Depo 27:04** (map mark) and **Depo 27:45** (claim), and the blocker is **the truck (veh_T_tractor / veh_T_trailer)**. If the cache still says "shelter / signal / 01:16", either re-seed or swap those words in the script lines below (the beats stay the same).
+- [ ] Witness B's finding chips read **Depo 27:04 or 27:05** (map mark; the X goes down at 1624.9 s, and Argon's live run placed it at 27:05) and **Depo 27:46** (claim), and the blocker is **the truck (veh_T_tractor / veh_T_trailer)**. Say whatever the chip says. If the cache still says "signal / 01:16", either re-seed or swap those words in the script lines below (the beats stay the same).
+- [ ] Credibility numbers are filled in: the robustness chip on wit_B ("blocked from N of 25"), the gaze angle, and the NTSB match panel ("X of Y"). Copy the real numbers into the 1:45 beat and into section 3 wherever it says **TODO**. Sources: `cases/demo/cache/state.json` → `checks[].robustness` / `checks[].gaze`; `cases/demo/cache/validation.json` → `matched` / `total`.
+- [ ] Never say "a million tokens out". Argon's output limit is 32,768 tokens; the 1M figure is input context.
 - [ ] The Flash baseline result (`cases/demo/cache/baseline.json`) is visible somewhere in the UI. If it is not wired into the viewer, open the JSON in a tab ahead of time and switch to it at 1:50.
 - [ ] Laptop is in `SIGHTLINE_MODE=live` with `GEMINI_API_KEY` set, so the judge's live witness is a real Argon call. Test one statement before the slot.
 - [ ] Browser tabs open in order: (1) `/cases.html`, (2) `/?case=demo`, (3) baseline (if separate). Zoom 125% so the back row can read it.
@@ -44,31 +46,39 @@ Rule of thumb: about 140 spoken words per minute. Lines in quotes are said out l
     Open /?case=demo. Overhead camera. Scrub time once so the truck turns and the car arrives.
     Click the trailer → panel shows its label and citation (e.g. "NTSB/HAR-17/02 p.1, p.6"). Click the citation chip so it opens the source.
 
-### 0:55 – 1:50 · The loop: Witness B
+### 0:55 – 1:45 · The loop: Witness B
 
 > "Here's the verification loop. Witness B testified she clearly saw the driver's head, looking down at the dash, in the last second before impact. That matters: it's the whole distraction theory."
 
     Open the findings panel. Point at Witness B's finding.
 
-> "In the deposition she only says 'over by the corner, near the shelter.' But on video, at 27 minutes in, she marks an X on the map exhibit. That position is never spoken. It only exists in the video."
+> "In the deposition she only says 'over by the corner, near the shelter.' But on video, 27 minutes in, she marks an X on the map exhibit. That position is never spoken. Argon found that moment on its own."
 
-    Click the "Depo 27:04" chip → the deposition player seeks to the moment she marks the X. Let it play 2–3 seconds so the red mark appears.
+    Click the "Depo 27:05" chip (or whatever the chip says) → the deposition player seeks to the moment she marks the X. Let it play 2–3 seconds so the red mark appears.
 
-> "Argon's first draft put her where she said she was. Then we rendered the world from her eye height, Argon watched those renders next to the deposition, caught that her marked spot is different, and patched the world. Now look from where she actually stood."
+> "Then we rendered the world from her eyes, Argon watched those renders next to the deposition, caught the mismatch, and patched the world. Now look from where she actually stood."
 
     Switch camera to wit_B at t ≈ 9.9 s. The truck fills the view where the car should be.
 
-> "The truck is between her and the car. And this isn't Argon grading itself: a separate geometry check, plain ray-casting with no AI in it, confirms the line from her eye to the driver is blocked by the tractor from 1.3 seconds before impact. Contradiction, with three citations: the video mark, her claim at 27:45, and the NTSB truck dimensions."
+> "The truck is between her and the car. And this isn't Argon grading itself: a separate geometry check, plain ray-casting with no AI in it, confirms the line from her eye to the driver is blocked by the tractor from 1.3 seconds before impact. Contradiction, with three citations: the video mark, her claim at 27:46, and the NTSB truck dimensions."
 
     Point at the Independent checks panel: wit_B → veh_A: BLOCKED by veh_T_tractor.
 
-### 1:50 – 2:05 · Flash baseline
+### 1:45 – 2:00 · Credibility (why an expert won't laugh at it)
+
+> "Before you trust that: her mark could be off a meter or two, so we test 25 spots in a two-meter circle around it. The truck blocks her from N of 25. The car was X degrees off her line of gaze. And this world matches X of Y facts NTSB measured. Model, prompt and input hashes are all logged."
+
+    Point, in order: (1) robustness chip on wit_B ("blocked from N of 25"), (2) gaze angle + "60° camera FOV" note,
+    (3) NTSB match panel ("X of Y measured facts"), (4) methodology panel (model, prompt version, input hashes, kinematic label).
+    Fill N / X / Y from the screen before the slot (see section 0). If a panel isn't there, say only the lines whose panel you can point at.
+
+### 2:00 – 2:12 · Flash baseline
 
 > "Same case through a smaller model, Gemini Flash, using the usual chunk-and-summarize of the transcript. It says her testimony is consistent. It isn't wrong about the words. It just can't see where she put the pen."
 
     Show baseline result: status "consistent", and the line "exact location not stated in the transcript."
 
-### 2:05 – 2:40 · Judge's live witness
+### 2:12 – 2:40 · Judge's live witness
 
 > "Now you try. Give me a witness statement: where you were standing and what you saw."
 
@@ -85,9 +95,9 @@ Rule of thumb: about 140 spoken words per minute. Lines in quotes are said out l
 
 ### 2:40 – 3:00 · Close
 
-> "This only works with Argon. It watches a 30-minute deposition as video, not as a transcript, holds the reports, the exhibits and the renders in one context, and writes a whole 3D world in one long output, then fixes it. The expert still signs off. Sightline gives them the first draft and the contradictions, with every frame cited, in minutes instead of weeks."
+> "This only works with Argon. In one pass it read the whole case file, watched the full 30-minute deposition, found the moment she marked the map, and wrote a to-scale world in about two minutes. Then it watched its own renders and fixed them. The expert still signs. We give them a cited first draft in minutes, not weeks."
 
-**Word budget:** ~430 words spoken. If you are running long at 2:05, skip the live witness explanation line and go straight to typing.
+**Word budget:** ~460 words spoken. If you are running long at 2:12, skip the live witness explanation line and go straight to typing. If you are still long, cut the methodology sentence from the credibility beat, never the robustness line.
 
 ---
 
@@ -100,19 +110,19 @@ It's not meant to be shown to a jury. It's a case-analysis tool for the lawyer a
 No. Argon proposes and critiques, but the verdicts that matter come from independent code with no model in it: ray-cast sightlines from each witness's eye height at the moment they describe, and physics checks (skid-length vs speed, speed along the timeline). In the demo, the ray-cast says "blocked by the tractor" on its own. If Argon and the check disagree, the finding is shown as a disagreement, not resolved by the model.
 
 **3. "Why does this need Argon specifically?"**
-Three things at once. Long video: the key evidence is a pen mark that appears 27 minutes into a deposition and is never spoken, so a transcript pipeline misses it (that's what the Flash baseline shows). Unified 1M context: reports, exhibits, the full video and our own renders go into the same call, so the critique can line up a render frame against a video timestamp against a report page. Long output: the world is a full module of code written in one pass and rewritten as a patch each round.
+Because one call does what a pipeline can't. In a single pass Argon reads the whole case file and watches the full 30-minute deposition as video: about 164k input tokens, roughly 128k of them video, inside a 1M-token input context that leaves room for more depositions, dashcam and our own renders. Nobody told it where to look: it found the moment Witness B marks the map (Depo 27:05) on its own. That position is never spoken, so a transcript pipeline misses it, which is exactly what the Flash baseline shows. It then wrote a complete to-scale world module in 129 seconds, and in the critique round it watched its own renders next to the deposition and patched the world. (If asked about output size: the world is a compact code module, well inside Argon's 32,768-token output limit. The long part is the input, not the output.)
 
 **4. "What's real and what's synthetic, and why?"**
 Physical facts are real and public: NTSB report HAR-17/02 for crash HWY16FH018 (road geometry, speeds, truck dimensions, timing), cited by page. Witnesses A, B and C are fictional, and the deposition is a simulated video we generated today, both labeled on screen. We did that because real depositions are private and real witnesses deserve privacy. Modeling choices NTSB didn't specify (e.g. trailer bed height, truck turn speed) are marked "assumed" in the case file.
 
 **5. "Who pays for this?"**
-Personal injury firms and insurance-defense firms, and the reconstruction experts they hire. A reconstruction runs thousands to tens of thousands of dollars and takes weeks, and most cases never get one because the stakes don't justify it. Per-case pricing (a few hundred dollars) for the first pass, with a firm subscription for volume. Insurers' claims and litigation teams are the second buyer.
+Personal injury firms and insurance-defense firms, and the reconstruction experts they hire. A paid forensic crash animation runs roughly $2k to $20k+ and takes weeks, and most cases never get one because the stakes don't justify it. Per-case pricing (a few hundred dollars) for the first pass, with a firm subscription for volume. Insurers' claims and litigation teams are the second buyer.
 
 **6. "What did you build today?"**
 All of it, between 10:30 and 5:00: the case ingest and upload flow, the text and video pipeline, the prompts and loop (generate → render → critique → patch), the headless renderer, the independent checks, the viewer and findings panel, the simulated deposition video, and the demo case file built from the NTSB report. We used open-source libraries (Three.js, Express, Playwright, ffmpeg) and the Gemini API. No prior code. The repo history shows it.
 
 **7. "How accurate is it?"**
-It's as accurate as the evidence and it tells you where it's guessing. Geometry is boxes at real dimensions, not a photoreal scan. Positions come from documents and marks, so a witness's location is only as good as their mark. The sightline check is exact for the model it's given; the model's uncertainty is in the inputs, which are cited and labeled. Treat its output as "this testimony deserves a closer look," with the reason attached, not as a final answer.
+It's as accurate as the evidence and it tells you where it's guessing. Geometry is boxes at real dimensions, not a photoreal scan. Positions come from documents and marks, so a witness's location is only as good as their mark. The sightline check is exact for the model it's given; the model's uncertainty is in the inputs, which are cited and labeled. Treat its output as "this testimony deserves a closer look," with the reason attached, not as a final answer. On this case the world matches **TODO X of Y** facts NTSB measured (see section 3); the expert-level follow-ups are in section 3.
 
 **8. "What happens with a brand-new case?"**
 Nothing in the engine knows about this crash. Prompts, checks, loop, server and viewer contain no case-specific facts. You create a case, upload PDFs, text, images and videos, press Run, and Argon extracts the vehicles, occluders, timing and witness positions (including ones shown only on video) and writes that case's world. A new case needs a live run (minutes, mostly video upload and long generation); the demo case is cached so judging doesn't depend on Wi-Fi. If you want, we'll start one on a case you name and show the result at the end.
@@ -124,7 +134,43 @@ Spare answers if time allows:
 
 ---
 
-## 3. 1-minute submission video — shot list
+## 3. What a skeptical expert would ask — and our answer
+
+For the reconstruction expert, the trial lawyer or the judge who has seen a paid crash animation. One or two lines each; say the line, then point at the panel if there is one. Items marked **TODO** need the real number from the cache before you go on stage (section 0).
+
+**"No qualified expert signs this."**
+Right, and it isn't meant to be signed. Sightline is the analysis a lawyer runs before deciding to spend $5–20k; its output is a cited draft for their expert, not trial evidence.
+
+**"Is it reproducible?"**
+Yes. Every world version records the model, the prompt version (hash), and a hash of every input file (`worlds/world_vN.provenance.json`). The checks are deterministic code, so any run can be replayed and gives the same verdicts.
+
+**"What about confidentiality and privilege?"**
+Roadmap: enterprise deployment, no-training and no-retention terms with the model provider, per-matter access control, and an audit log of who ran what on which evidence.
+
+**"Where's the event data recorder?"**
+An EDR report is just another evidence type: Argon reads it and cites it like any report page (roadmap: a structured EDR parser so speeds and brake timing feed the checks directly).
+
+**"Your accuracy is unvalidated."**
+We validate against public NTSB investigations with known answers: **TODO X of Y** measured facts match on this case (from `cases/demo/cache/validation.json`, not yet generated). Next, a benchmark across dozens of NTSB cases.
+
+**"The geometry comes from documents, not a survey."**
+Every dimension is cited to a page; anything inferred rather than stated is labeled and drawn in amber. Roadmap: aerial imagery and scene scans as inputs.
+
+**"That's kinematic, not physics."**
+Correct, and it says so on screen. Motion is fitted to cited evidence and checked for physical plausibility (flags anything over 1 g, teleports, impossible speeds). Roadmap: export to crash-physics tools for the expert's own simulation.
+
+**"Her map mark is only good to a meter or two."**
+So we don't test one point. We ray-cast from 25 positions in a 2 m disc around her mark, with eye height ±0.1 m: the truck blocks her from **TODO N of 25** (from `checks[].robustness` in `cases/demo/cache/state.json`, not yet generated).
+
+**"Line of sight doesn't mean she'd notice."**
+Agreed. We report the angle between her gaze and the target, flag peripheral vision past 30°, and state the 60° camera field of view on every witness render. The finding says "had line of sight", never "could see". That's more honest than most paid animations.
+
+**"It was dusk / there was glare."**
+Lighting objects (headlights, signals, streetlights) are cited from the evidence like everything else. Sun-angle glare check is on the roadmap.
+
+---
+
+## 4. 1-minute submission video — shot list
 
 Screen-record at 1920×1080, browser at 125% zoom, cursor highlighted. Voice-over can reuse lines from the script. Burn a small caption in the corner: "Real NTSB facts · fictional witnesses · simulated deposition."
 
@@ -134,7 +180,7 @@ Screen-record at 1920×1080, browser at 125% zoom, cursor highlighted. Voice-ove
 | 2 | 0:06–0:12 | `/cases.html`: case list, click "New case", show the drop zone with a PDF + MP4 dragged in, show the step list. | "Upload any crash case: reports, photos, depositions, dashcam." |
 | 3 | 0:12–0:20 | Run log of a live run streaming steps (Uploading videos to Argon → Generating world → Rendering → Checks → Critique). Speed up 4× if long. | "Argon reads and watches it all, and writes a 3D world in one pass." |
 | 4 | 0:20–0:27 | `/?case=demo` overhead, scrub time so the truck turns and the car arrives; click the trailer, show the citation. | "Every object is cited to the NTSB report." |
-| 5 | 0:27–0:37 | Findings panel → click "Depo 27:04" → video jumps to the red X being drawn on the map. | "Witness B marks where she stood. She never says it out loud." |
+| 5 | 0:27–0:37 | Findings panel → click the map-mark chip ("Depo 27:05" / "27:04") → video jumps to the red X being drawn on the map. | "Witness B marks where she stood. She never says it out loud." |
 | 6 | 0:37–0:45 | Camera to wit_B at t≈9.9 s: truck blocks the car. Checks panel: BLOCKED by veh_T_tractor. | "From that spot, the truck blocks her view. An independent ray-cast check confirms." |
 | 7 | 0:45–0:50 | Baseline result: Flash says "consistent". | "A transcript-only model calls it consistent." |
 | 8 | 0:50–0:57 | Type a new statement → witness placed → verdict. | "Add any witness statement and test it." |
@@ -144,7 +190,7 @@ Upload unlisted to YouTube (or Loom), check it plays logged out, paste the link 
 
 ---
 
-## 4. Submission checklist
+## 5. Submission checklist
 
 - [ ] Repo is **public** on GitHub; `.env` is not committed (`git log -p | grep -i "AIza"` returns nothing).
 - [ ] First commit is from today; commit history shows the build across the day (commit at least every hour from here).
@@ -165,6 +211,6 @@ Upload unlisted to YouTube (or Loom), check it plays logged out, paste the link 
 
 ---
 
-## 5. README draft
+## 6. README draft
 
 The full draft is in `README.md` at the repo root.

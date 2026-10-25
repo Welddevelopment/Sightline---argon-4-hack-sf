@@ -1,11 +1,15 @@
 // Sightline independent geometry/physics checks. Node ES module; depends only on three.
 import * as THREE from 'three';
+import { sightlineRobustness, gazeAngle } from './robustness.js';
+import * as physics from './physics.js';
+
+export { KINEMATIC_LABEL } from './physics.js';
 
 const G = 9.81;
 const MPS_TO_MPH = 2.2369362920544;
 const r1 = (x) => Math.round(x * 10) / 10;
 
-function prep(world, t) {
+export function prep(world, t) {
   if (t !== undefined && t !== null) world.setTime(t);
   world.root.updateMatrixWorld(true);
 }
@@ -21,7 +25,7 @@ function isDescendant(node, ancestor) {
 }
 
 // Aim point on the target: bbox center, or near the top for tall things (signals, > 3 m).
-function aimPoint(obj) {
+export function aimPoint(obj) {
   const box = new THREE.Box3().setFromObject(obj.node);
   if (box.isEmpty()) {
     const p = new THREE.Vector3();
@@ -34,26 +38,31 @@ function aimPoint(obj) {
   return c;
 }
 
-function findWitness(world, id) {
+export function findWitness(world, id) {
   const w = (world.witnesses || []).find((x) => x.id === id);
   if (!w) throw new Error(`Unknown witness ${id}`);
   return w;
 }
 
-export function sightline(world, witnessId, targetId, t) {
-  prep(world, t);
-  const w = findWitness(world, witnessId);
-  const eye = new THREE.Vector3(w.position[0], w.eyeHeight ?? w.position[1] ?? 1.6, w.position[2]);
+// Witness eye position (absolute y: ground is y=0, eyeHeight is the eye's height above it).
+export function witnessEye(w) {
+  return [w.position[0], w.eyeHeight ?? w.position[1] ?? 1.6, w.position[2]];
+}
 
-  let to, targetNode = null;
-  if (Array.isArray(targetId)) {
-    to = new THREE.Vector3(...targetId);
-  } else {
-    const tgt = world.objects[targetId];
-    if (!tgt) throw new Error(`Unknown target ${targetId}`);
-    targetNode = tgt.node;
-    to = aimPoint(tgt);
-  }
+// Resolve a target (object id or [x,y,z]) to an aim point in the CURRENT world state.
+export function resolveTarget(world, targetId) {
+  if (Array.isArray(targetId)) return { to: new THREE.Vector3(...targetId), targetNode: null };
+  const tgt = world.objects[targetId];
+  if (!tgt) throw new Error(`Unknown target ${targetId}`);
+  return { to: aimPoint(tgt), targetNode: tgt.node };
+}
+
+// Ray-cast from eye [x,y,z] to targetId in the current (already setTime'd) world state.
+// Pass { prepared: true } when world.setTime(t) + updateMatrixWorld already ran (batch use).
+export function castRay(world, eyeArr, targetId, t, opts = {}) {
+  if (!opts.prepared) prep(world, t);
+  const eye = new THREE.Vector3(...eyeArr);
+  const { to, targetNode } = opts.resolved || resolveTarget(world, targetId);
 
   const dir = to.clone().sub(eye);
   const distance = dir.length();
@@ -83,6 +92,11 @@ export function sightline(world, witnessId, targetId, t) {
     break;
   }
   return out;
+}
+
+export function sightline(world, witnessId, targetId, t) {
+  const w = findWitness(world, witnessId);
+  return castRay(world, witnessEye(w), targetId, t);
 }
 
 export function skidSpeed(lengthM, mu = 0.7) {
@@ -143,6 +157,37 @@ function shortName(name) {
   return String(name || '').replace(/\s*\([^)]*\)\s*$/, '').trim();
 }
 
+function robustnessSentence(rb, nm) {
+  if (!rb) return '';
+  const where = `within ${rb.radiusM} m of ${nm}'s mark`;
+  if (rb.blocked === 0) return ` Clear from all ${rb.samples} positions ${where}.`;
+  const base = ` Blocked from ${rb.blocked} of ${rb.samples} positions ${where}`;
+  return rb.blocked < rb.samples ? `${base}; the result depends on ${nm}'s exact position.` : `${base}.`;
+}
+
+function gazeSentence(gz) {
+  if (!gz) return '';
+  const tags = [];
+  if (gz.peripheral) tags.push('peripheral');
+  if (gz.assumed) tags.push(`gaze assumed toward ${gz.source}`);
+  return `; target ${Math.round(gz.offAxisDeg)}° from gaze${tags.length ? ` (${tags.join('; ')})` : ''}`;
+}
+
+function timingResults(world) {
+  if (typeof physics.prtAll !== 'function') return [];
+  let items = [];
+  try { items = physics.prtAll(world) || []; } catch (e) { return [{ check: 'timing', subject: 'world', pass: false, detail: `Could not evaluate perception-reaction timing: ${e.message}`, citation: '' }]; }
+  return items.map((r) => {
+    const prt = r.prt || { availableS: r.availableS ?? null, rangeS: r.rangeS || [1.0, 2.5], typicalS: r.typicalS ?? 1.5, verdict: r.verdict || 'unverifiable' };
+    const base = r.check ? { ...r } : {
+      check: 'timing', subject: r.subject || r.observerId || 'world',
+      pass: prt.verdict !== 'insufficient', detail: r.detail || '', citation: r.citation || '',
+      target: r.targetId, impactT: r.impactT ?? null,
+    };
+    return { ...base, prt };
+  });
+}
+
 export function runAll(world) {
   const out = [];
   for (const w of world.witnesses || []) {
@@ -157,15 +202,32 @@ export function runAll(world) {
       out.push({ check: 'sightline', subject: w.id, pass: false, detail: `Could not evaluate sight line for ${nm}: ${e.message}`, citation: w.citation || '' });
       continue;
     }
+    let robustness = null, gaze = null;
+    try { robustness = sightlineRobustness(world, w.id, target, t); } catch { robustness = null; }
+    try { gaze = gazeAngle(world, w.id, target, t); } catch { gaze = null; }
     const claim = w.claim ? ` Claim: "${w.claim}"` : '';
     const dist = `${r1(r.distance)} m`;
+    const head = `From ${nm}'s marked position (${w.citation})`;
     const detail = r.visible
-      ? `From ${nm}'s marked position (${w.citation}) the line of sight to ${tLabel} is clear at t=${r1(t)}s (distance ${dist}).${claim}`
-      : `From ${nm}'s marked position (${w.citation}) the line of sight to ${tLabel} is blocked by ${r.blockedBy} at t=${r1(t)}s (distance ${dist}).${claim}`;
-    out.push({ check: 'sightline', subject: w.id, pass: r.visible, detail, citation: w.citation || '', blockedBy: r.blockedBy, target: tLabel, t, distance: r.distance, from: r.from, to: r.to, hitPoint: r.hitPoint });
+      ? `${head} ${nm} had line of sight to ${tLabel} at t=${r1(t)}s (distance ${dist})${gazeSentence(gaze)}.${robustnessSentence(robustness, nm)}${claim}`
+      : `${head} the line of sight to ${tLabel} is blocked by ${r.blockedBy} at t=${r1(t)}s (distance ${dist}).${robustnessSentence(robustness, nm)}${claim}`;
+    out.push({ check: 'sightline', subject: w.id, pass: r.visible, detail, citation: w.citation || '', blockedBy: r.blockedBy, target: tLabel, t, distance: r.distance, from: r.from, to: r.to, hitPoint: r.hitPoint, robustness, gaze });
   }
   for (const s of timingCheck(world)) {
-    out.push({ check: 'skid_vs_speed', subject: s.vehicle, pass: s.pass, detail: s.detail, citation: s.citation, t: s.t, requiredMph: s.required.mph, actualMph: s.actual.mph });
+    const res = { check: 'skid_vs_speed', subject: s.vehicle, pass: s.pass, detail: s.detail, citation: s.citation, t: s.t, requiredMph: s.required.mph, actualMph: s.actual.mph };
+    if (typeof physics.skidRange === 'function') {
+      try {
+        const len = (world.skids || []).find((k) => k.vehicle === s.vehicle)?.length;
+        res.range = physics.skidRange(len);
+        res.detail += ` Across friction ${res.range.mu[0]}-${res.range.mu[1]} the minimum is ${r1(res.range.mph[0])}-${r1(res.range.mph[1])} mph.`;
+      } catch { /* leave without range */ }
+    }
+    out.push(res);
+  }
+  out.push(...timingResults(world));
+  if (typeof physics.plausibilityCheck === 'function') {
+    try { out.push(...(physics.plausibilityCheck(world) || [])); }
+    catch (e) { out.push({ check: 'plausibility', subject: 'world', pass: false, maxAccelG: null, maxSpeedMph: null, issues: [e.message], detail: `Could not evaluate plausibility: ${e.message}` }); }
   }
   return out;
 }

@@ -1,2 +1,5 @@
 node_modules
 .env
+
+# raw downloaded model packs (large; curated models get copied into web/models/)
+assets_src/

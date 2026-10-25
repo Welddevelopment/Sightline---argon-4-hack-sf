@@ -5,5 +5,33 @@
     "mimeType": "video/mp4",
     "expiresAt": "2026-10-27T18:39:00.240625014Z",
     "uploadedAt": "2026-10-25T18:39:16.706Z"
+  },
+  "cases/live1/renders/world_v1/overhead.mp4|87542|1792954328020": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/0xqtfuuz8d2g",
+    "name": "files/0xqtfuuz8d2g",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T18:55:14.154501077Z",
+    "uploadedAt": "2026-10-25T18:55:20.957Z"
+  },
+  "cases/live1/renders/world_v1/wit_A.mp4|255804|1792954452792": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/yvbatebki9tg",
+    "name": "files/yvbatebki9tg",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T18:55:21.939445470Z",
+    "uploadedAt": "2026-10-25T18:55:25.529Z"
+  },
+  "cases/live1/renders/world_v1/wit_B.mp4|269018|1792954384956": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/0bp2tb6a352m",
+    "name": "files/0bp2tb6a352m",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T18:55:26.693494026Z",
+    "uploadedAt": "2026-10-25T18:55:33.412Z"
+  },
+  "cases/live1/renders/world_v1/wit_C.mp4|134149|1792954512206": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/vmq4c1x7xpp2",
+    "name": "files/vmq4c1x7xpp2",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T18:55:34.287537637Z",
+    "uploadedAt": "2026-10-25T18:55:37.870Z"
   }
 }

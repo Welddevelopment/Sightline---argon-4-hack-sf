@@ -16,6 +16,7 @@ export const TYPE_BY_EXT = {
   '.mp4': 'video', '.mov': 'video', '.webm': 'video', '.m4v': 'video', '.mkv': 'video',
 };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const KINEMATIC_LABEL_FALLBACK = 'Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation.';
 
 export function slugify(s) {
   return String(s || 'case').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'case';
@@ -239,8 +240,32 @@ export function mountCases(app, h) {
     if (!m) return res.status(404).json({ error: 'no such case' });
     let state = null;
     try { state = await withChecks(id, await stateFor(id)); } catch (e) { state = { error: h.errMsg(e) }; }
-    res.json({ ...m, status: getRun(id).running ? 'running' : m.status, files: (m.files || []).map((f) => fileUrls(id, f)), state, running: getRun(id).running });
+    res.json({ ...m, status: getRun(id).running ? 'running' : m.status, files: (m.files || []).map((f) => fileUrls(id, f)), state, running: getRun(id).running,
+      ...(await credibility(id)) });
   });
+
+  // CREDIBILITY v1: provenance per world version, validation vs published facts, kinematic label.
+  async function credibility(id) {
+    const provenance = {};
+    try {
+      const wd = store.dir(id, 'worlds');
+      if (fs.existsSync(wd)) {
+        for (const f of fs.readdirSync(wd).filter((n) => n.endsWith('.provenance.json')).sort()) {
+          const p = store.readJson(path.join(wd, f));
+          if (!p || typeof p !== 'object') continue;
+          const key = (typeof p.world === 'string' && p.world) ? (p.world.startsWith('/') ? p.world : '/' + p.world) : urlFor(id, 'worlds/' + f.replace(/\.provenance\.json$/, '.js'));
+          provenance[key] = p;
+        }
+      }
+    } catch { /* degrade: empty */ }
+    const validation = store.readJson(store.dir(id, 'cache', 'validation.json'), null);
+    let kinematicLabel = KINEMATIC_LABEL_FALLBACK;
+    try {
+      const ck = await h.tryImport('checks/checks.js');
+      if (ck.mod && typeof ck.mod.KINEMATIC_LABEL === 'string') kinematicLabel = ck.mod.KINEMATIC_LABEL;
+    } catch { /* fallback literal */ }
+    return { provenance, validation, kinematicLabel };
+  }
 
   // ---- delete ----
   app.delete('/api/cases/:id', (req, res) => {
