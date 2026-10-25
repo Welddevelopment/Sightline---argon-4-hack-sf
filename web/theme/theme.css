@@ -126,15 +126,6 @@ html .ao-fig figcaption { font-size: 12px; }
 html .ao-fig figcaption b { font-size: 12px; }
 html .finds li > .ao-keyframes .ao-fig figcaption { font-size: 12px; }
 html .finds li > .ao-keyframes .ao-fig figcaption b { font-size: 12px; }
-html details.ao-baseline > summary { font-size: 12px; letter-spacing: normal; text-transform: none; }
-html .ao-bsub { font-size: 12px; }
-html .ao-mname { font-size: 12px; }
-html .ao-mname span { font-size: 12px; }
-html .ao-col .cmp-verdict { font-size: 12px; letter-spacing: normal; text-transform: none; }
-html .ao-checks { font-size: 12px; }
-html .ao-why { font-size: 12px; }
-html .ao-ans { font-size: 12px; }
-html .ao-note { font-size: 12px; }
 /* from cases.css */
 html .btn { font-size: 13px; }
 html .btn.sm { font-size: 12px; }
@@ -164,8 +155,11 @@ html .files .rm { font-size: 16px; }
 html .step { font-size: 12px; }
 html #log .st { text-transform: none; font-size: 12px; letter-spacing: normal; }
 /* from exports.js (injected) */
-html .sl-export-preview { font-size: 12px; }
 html .sl-export-err { font-size: 12px; }
+html .sl-more > summary .caret { font-size: 12px; }
+html .sl-menu h4 { font-size: 12px; letter-spacing: normal; text-transform: none; }
+html .sl-menu .sub { font-size: 12px; }
+html .sl-menu .note { font-size: 12px; }
 /* from jobs.js (injected) */
 html .sj-pill { font-size: 12px; letter-spacing: normal; text-transform: none; }
 html .sj-resume { font-size: 12px; }
@@ -200,6 +194,21 @@ html .mth-round-n { font-size: 12px; letter-spacing: normal; text-transform: non
 html .mth-round-t { font-size: 12px; }
 html .mth-k { font-size: 12px; letter-spacing: normal; text-transform: none; }
 html .mth-foot { font-size: 12px; }
+/* from overlays.css */
+html .slo-t { letter-spacing: normal; }
+html .slo-clock.approx { font-size: 12px; }
+html .slo-imp { letter-spacing: normal; }
+html .slo-sig { font-size: 12px; }
+html .slo-veh { font-size: 12px; }
+html .slo-veh em { font-size: 12px; }
+html .slo-sight { font-size: 12px; }
+html .slo-sight span { font-size: 12px; }
+html .slo-mark { font-size: 12px; }
+html .slo-mark span { font-size: 12px; }
+html .slo-gaplbl { font-size: 12px; }
+html .slo-road b { font-size: 12px; letter-spacing: normal; text-transform: none; }
+html .slo-road span { font-size: 12px; }
+html .slo-toggle { font-size: 12px; }
 /* from report.css */
 html .screenbar .notice { letter-spacing: normal; }
 html .screenbar .notice.sim { letter-spacing: normal; font-size: 12px; }
@@ -235,6 +244,7 @@ html .rv-steps li { font-size: 12px; }
 html .rv-steps li::before { font-size: 12px; }
 html .rv-meta .model { font-size: 12px; }
 html .notes b { font-size: 12px; letter-spacing: normal; text-transform: none; }
+html .notes summary span::after { font-size: 12px; }
 html .sect-h .muted { font-size: 12px; }
 html .scene label { font-size: 12px; letter-spacing: normal; text-transform: none; }
 html .scene-foot { font-size: 12px; }
@@ -1082,3 +1092,210 @@ html:root:has(link[href="/report.css"]) body table:has(th.r:last-child) td.r:las
 html:root:has(link[href="/report.css"]) body table:has(th.r + th.r + th.r) td.r { white-space: normal; overflow-wrap: normal; word-break: normal; }
 html:root:has(link[href="/report.css"]) body table:has(th.r + th.r + th.r) th.r { width: 88px !important; }
 html:root:has(link[href="/report.css"]) body table:has(th.r + th.r + th.r) th:last-child { width: 168px !important; }
+
+/* ---- 60 type system (runs last) ------------------------------------------
+   Ten roles, nothing else:
+     title     sans 20/600 text       page title only
+     heading   sans 14/600 text       panel / section headings
+     strong    sans 13/500 text       item titles, summaries, button labels
+     body      sans 13/400 text       prose
+     body-2    sans 13/400 text-2     explanatory prose
+     meta      sans 12/400 muted      notes, subtitles, counts
+     label     sans 12/500 muted      field labels, table headers, small caps replacement
+     data      mono 12-13/400         numbers, ids, timecodes, model ids — never bold
+     cite      mono 12/400 accent     citations
+     status    sans 12/500 status     the only coloured text
+   Rules: status colour lives in tags and markers, never on whole sentences.
+   Emphasis inside a sentence is weight 500 in the same colour, never 600+.
+   Mono is for data tokens only; prose and labels are sans.
+   -------------------------------------------------------------------------- */
+
+/* Emphasis inside running text: 500, same colour */
+html body :is(p, li, div, span, td, dd, summary, figcaption) > :is(b, strong) { font-weight: 500; color: inherit; }
+html body :is(.btn, button, .btn.primary, button.primary) { font-weight: 500; }
+
+/* ---------- mono only for data ---------- */
+/* prose/labels that were set in mono → sans */
+html body :is(.case-sub, .crumb, .crumb a, .crumb .mono, #crumb a.mono, .doclist .df, td.ty, .depo-bar, #meta, #meta .mono, .count, #findCount, #checkCount, .sl-hud-cam, .sl-eye, .m-line, .sl-menu, .sl-menu *, .cmp-model) {
+  font-family: var(--t-sans);
+}
+html body :is(.case-sub, .doclist .df, td.ty, #meta, .count, #findCount, #checkCount) { font-size: var(--fs-12); font-weight: 400; color: var(--c-muted); font-variant-numeric: tabular-nums; }
+html body td.ty { text-transform: none; }
+html body td.ty::first-letter { text-transform: uppercase; }
+/* data stays mono, regular weight, one size per context */
+html body :is(.mono, td.num, td.id, td.val, .model, .ao-model, .conf, #timeLabel, .sl-hud-time, .tick span, .seek-row input, .item .k, .item .k span) { font-family: var(--t-mono); font-weight: 400; font-variant-numeric: tabular-nums; }
+html body td.val { font-size: var(--fs-13); color: var(--c-text); }
+
+/* ---------- headings & item titles ---------- */
+html body .panel > h2 { font: 600 var(--fs-14)/1.3 var(--t-sans); }
+html body .panel > h2 .count { margin-left: 6px; }
+html body :is(.panel h3, .sl-menu h4, .side-head h3) { font: 500 var(--fs-12)/1.3 var(--t-sans); color: var(--c-muted); text-transform: none; letter-spacing: normal; }
+html body :is(.m-head, .card .ct, .ao-bh) { font: 500 var(--fs-13)/1.4 var(--t-sans); color: var(--c-text); }
+html body .m-head .muted { font-size: var(--fs-12); font-variant-numeric: tabular-nums; }
+html body .cmp-model { font: 400 var(--fs-12)/1.4 var(--t-sans); color: var(--c-muted); }
+html body .cmp-model b, html body .cmp-model b.ao-inl { font: 500 var(--fs-13)/1.35 var(--t-sans); color: var(--c-text); display: block; }
+
+/* ---------- prose ---------- */
+html body :is(.f-sum) { font: 400 var(--fs-13)/1.5 var(--t-sans); color: var(--c-text); }
+html body :is(.cmp-why, .ao-why, .ao-ans p, .lede) { font: 400 var(--fs-13)/1.5 var(--t-sans); color: var(--c-text-2); }
+html body :is(.cmp-miss, .ao-note, #depoNote, .sl-menu .note, .sl-menu .sub, .mth-sum) { font: 400 var(--fs-12)/1.45 var(--t-sans); color: var(--c-muted); }
+html body .cmp-miss b, html body .mth-sum b { color: var(--c-text); font-weight: 500; }
+
+/* ---------- status only on markers and tags, not sentences ---------- */
+html body .m-line, html body .m-line.ok, html body .m-line.bad, html body .m-line.warn { color: var(--c-text-2); font: 400 var(--fs-13)/1.5 var(--t-sans); padding-left: 14px; }
+html body .m-line.bad { color: var(--c-text); }
+html body .m-line::before { width: 6px; height: 6px; top: .55em; border-radius: 1px; }
+html body .checklist li > span:last-child { color: var(--c-text-2); }
+/* the HUD row text stays white; only the marker carries status */
+html body .sl-eye-row, html body .sl-eye-row.ok, html body .sl-eye-row.bad, html body .sl-eye-row.warn { color: var(--ov-text); font: 400 var(--fs-12)/1.5 var(--t-sans); padding-left: 12px; }
+html body .sl-eye-row::before { width: 6px; height: 6px; top: .5em; border-radius: 1px; }
+html body .sl-eye-row.note { color: var(--ov-muted); }
+html body .ao-y, html body .ao-n, html body .ao-q { color: inherit; }
+
+/* status tags: one recipe */
+html body :is(.pill, .ck-tag, .verdict, .cmp-verdict, .tag, .bdg, .ao-tag, .sj-pill) { font-weight: 500; font-size: var(--fs-12); line-height: 1; }
+
+/* ---------- the case-size line: one weight, numbers in text colour ---------- */
+html body .ao-banner b { font-weight: 400; color: var(--c-text); }
+html body .ao-stage .ao-banner b { color: var(--ov-text); }
+html body .ao-banner .ao-k { font-weight: 400; }
+html body .ao-banner .ao-sep { margin: 0 6px; }
+
+/* ---------- citations ---------- */
+html body .chip { font: 400 var(--fs-12)/1.5 var(--t-mono); text-decoration: none; color: var(--c-accent-text); }
+html body .chip:hover { text-decoration: underline; text-underline-offset: 3px; }
+html body .chip span { font: inherit; }
+
+/* ---------- disclosure rows: no boxes inside boxes ---------- */
+html body :is(#compare details, #measures details, details.ao-baseline, #checksWrap) {
+  border: 0; border-top: 1px solid var(--c-line); border-radius: 0; background: transparent; margin: 0;
+}
+html body :is(#compare summary, #measures summary, details.ao-baseline > summary, #checksWrap > summary) {
+  padding: var(--s-2) 0; font: 500 var(--fs-13)/1.4 var(--t-sans); color: var(--c-text);
+  list-style: none; display: block; cursor: pointer;
+}
+html body :is(#compare summary, #measures summary, details.ao-baseline > summary, #checksWrap > summary)::-webkit-details-marker { display: none; }
+html body :is(#compare summary, #measures summary, details.ao-baseline > summary, #checksWrap > summary)::before {
+  content: ""; display: inline-block; vertical-align: 2px; width: 6px; height: 6px;
+  border-right: 1.5px solid var(--c-muted); border-bottom: 1.5px solid var(--c-muted);
+  transform: rotate(-45deg); margin: 0 8px 0 2px; transition: transform .12s;
+}
+html body :is(#compare details[open], #measures details[open], details.ao-baseline[open], #checksWrap[open]) > summary::before { transform: rotate(45deg); }
+html body .cmp-grid, html body .ao-cols { border: 1px solid var(--c-line); border-radius: var(--r-2); overflow: hidden; }
+html body .cmp-miss { border-radius: 0; }
+html body .m-list { padding: 0 0 var(--s-2); border-top: 0; }
+html body .m-item:first-child { padding-top: 0; }
+html body #compare, html body #measures { margin-bottom: 0; }
+
+/* findings: rows with a status rule, not floating cards */
+html body #findings { border-top: 1px solid var(--c-line); }
+html body .finding { border: 0; border-bottom: 1px solid var(--c-line); border-left: 2px solid var(--c-line-strong); border-radius: 0; margin: 0; padding: var(--s-3) var(--s-3) var(--s-3) var(--s-3); background: transparent; }
+html body .finding:hover, html body .finding.active { background: var(--c-surface-2); border-color: var(--c-line); }
+html body .finding.contradiction { border-left-color: var(--c-contra); }
+html body .finding.consistent { border-left-color: var(--c-consistent); }
+html body .finding.unverifiable { border-left-color: var(--c-unverif); }
+html body .finding.active { border-left-width: 2px; }
+
+/* ---------- exports menu (exports.js) ---------- */
+html body .sl-menu { background: var(--c-surface); border: 1px solid var(--c-line-strong); border-radius: var(--r-3); box-shadow: var(--elev-pop); padding: var(--s-1) 0; }
+html body .sl-menu h4 { margin: var(--s-2) var(--s-3) var(--s-1); }
+html body .sl-menu :is(a, button.sl-item) { font: 400 var(--fs-13)/1.35 var(--t-sans); color: var(--c-text); padding: 6px var(--s-3); border-radius: 0; }
+html body .sl-menu :is(a, button.sl-item):hover { background: var(--c-surface-2); text-decoration: none; }
+html body .sl-menu .sub { font-size: var(--fs-12); }
+html body .sl-menu .sub.ok { color: var(--c-consistent); } html body .sl-menu .sub.bad { color: var(--c-contra); }
+html body .sl-menu hr { border-top-color: var(--c-line); }
+html body .sl-more > summary .caret { font-size: var(--fs-12); opacity: .6; }
+html body .sl-export-err { font-size: var(--fs-12); }
+
+/* ---------- 3D overlays: one sans voice, numbers tabular, no glow ---------- */
+html body .slo-layer { font-family: var(--t-sans); color: var(--ov-text); }
+html body .slo-layer * { text-shadow: none; }
+html body .slo-panel {
+  background: var(--ov-bg); border: 1px solid var(--ov-line); border-left: 1px solid var(--ov-line);
+  border-radius: var(--r-2); box-shadow: none; padding: 6px var(--s-2) 7px; min-width: 150px;
+}
+html body .slo-t { font: 400 var(--fs-16)/1.25 var(--t-mono); letter-spacing: normal; color: var(--ov-text); }
+html body .slo-clock, html body .slo-clock.approx { font: 400 var(--fs-12)/1.5 var(--t-mono); color: var(--ov-muted); }
+html body .slo-imp { font: 500 var(--fs-12)/1.5 var(--t-sans); letter-spacing: normal; font-variant-numeric: tabular-nums; margin-top: 2px; }
+html body .slo-imp.pre { color: var(--bp-orange5); }
+html body .slo-imp.now { color: #fff; background: var(--bp-red2); border-radius: var(--r-1); padding: 0 6px; }
+html body .slo-imp.post { color: var(--bp-red5); }
+html body .slo-sig { font: 400 var(--fs-12)/1.3 var(--t-sans); color: var(--ov-muted); border-top-color: var(--ov-line); }
+html body .slo-sig b { font-weight: 500; color: var(--ov-text); }
+html body .slo-sig i { box-shadow: 0 0 0 1px rgba(255,255,255,.25); }
+html body .slo-sig.red i { background: var(--bp-red3); box-shadow: none; } html body .slo-sig.red b { color: var(--bp-red5); }
+html body :is(.slo-sig.yellow, .slo-sig.amber) i { background: var(--bp-orange4); box-shadow: none; } html body :is(.slo-sig.yellow, .slo-sig.amber) b { color: var(--bp-orange5); }
+html body .slo-sig.green i { background: var(--bp-green4); box-shadow: none; } html body .slo-sig.green b { color: var(--bp-green5); }
+/* object tags on the plan */
+html body .slo-veh { font: 500 var(--fs-12)/20px var(--t-sans); background: var(--ov-bg); border: 1px solid var(--ov-line); border-radius: var(--r-1); padding: 0 6px; gap: 6px; height: 22px; }
+html body .slo-veh .n { color: var(--ov-text); font-weight: 500; }
+html body .slo-veh b { font: 400 var(--fs-12)/20px var(--t-mono); color: var(--ov-text); }
+html body .slo-veh em { font: 400 var(--fs-12)/20px var(--t-sans); color: var(--ov-muted); margin-left: 0; }
+html body .slo-veh.hid { background: rgba(17,20,24,.6); border-style: dashed; }
+html body .slo-veh.inf { border: 1px dashed var(--bp-orange4); }
+html body :is(.slo-sight, .slo-mark, .slo-gaplbl) {
+  font: 500 var(--fs-12)/1.45 var(--t-sans); background: var(--ov-bg); color: var(--ov-text);
+  border: 1px solid var(--ov-line); border-radius: var(--r-1); padding: 4px var(--s-2) 5px;
+}
+html body :is(.slo-sight, .slo-mark) span, html body .slo-sight span.c { font: 400 var(--fs-12)/1.45 var(--t-sans); color: var(--ov-muted); font-variant-numeric: tabular-nums; }
+html body .slo-sight b { font-weight: 500; }
+html body .slo-sight.ok { border-left: 2px solid var(--bp-green4); } html body .slo-sight.ok b { color: var(--ov-text); }
+html body .slo-sight.bad { border-left: 2px solid var(--bp-red3); } html body .slo-sight.bad b { color: var(--ov-text); }
+html body .slo-mark { border-top: 1px solid var(--ov-line); border-left: 2px solid var(--ov-muted); }
+html body .slo-mark.brake { border-left-color: var(--bp-orange4); } html body .slo-mark.brake b { color: var(--ov-text); }
+html body .slo-mark.none { border-left-color: var(--bp-red3); } html body .slo-mark.none b { color: var(--ov-text); }
+html body .slo-gaplbl { height: 20px; line-height: 18px; padding: 0 6px; font-variant-numeric: tabular-nums; }
+html body .slo-gap line { stroke: var(--bp-blue4); }
+/* street / lane labels painted on the plan: need a halo to read over terrain */
+html body .slo-road { text-shadow: 0 0 2px rgba(17,20,24,.95), 0 0 4px rgba(17,20,24,.8); }
+html body .slo-road b { font: 500 var(--fs-12)/1.25 var(--t-sans); letter-spacing: normal; text-transform: none; color: #fff; }
+html body .slo-road span { font: 400 var(--fs-12)/1.2 var(--t-mono); color: var(--bp-lg1); }
+html body .slo-road.inf b { color: var(--bp-orange5); }
+html body .slo-ret.ok :is(circle, line) { stroke: var(--bp-green4); }
+html body .slo-ret.bad :is(circle, line) { stroke: var(--bp-red4); }
+html body .slo-toggle {
+  top: auto; bottom: 34px; right: var(--s-3);
+  font: 500 var(--fs-12)/1 var(--t-sans); padding: 5px var(--s-2); color: var(--ov-text);
+  background: var(--ov-bg); border: 1px solid var(--ov-line); border-radius: var(--r-2);
+}
+html body .slo-toggle:hover { border-color: rgba(255,255,255,.35); }
+html body .slo-toggle.off { color: var(--ov-muted); }
+
+/* case-size strip: top-right so the clock panel keeps the top-left corner */
+html body .ao-stage { left: auto; right: var(--s-3); max-width: calc(100% - 210px); }
+
+/* line-of-sight banner: firm, not shouting */
+html body .sl-banner { font: 500 var(--fs-14)/1.3 var(--t-sans); padding: 6px var(--s-3); max-width: min(560px, 80%); }
+
+/* HUD voice */
+html body .sl-hud { font: 400 var(--fs-12)/1.3 var(--t-sans); }
+html body .sl-hud-cam { font-weight: 500; }
+html body .sl-hud-time { font-family: var(--t-mono); }
+
+/* stragglers from the audit */
+html body .chip > span { font-weight: 400; }
+html body .wit-name { font-weight: 500; }
+html body #meta b, html body #meta span > b { font: 400 var(--fs-12) var(--t-mono); color: var(--c-text); }
+html body .ao-fig figcaption b { font: 500 var(--fs-12)/1.35 var(--t-sans); font-variant-numeric: tabular-nums; }
+html body .sl-hud-cam { font-family: var(--t-sans); }
+
+/* header density: give the camera group room */
+html body #top { gap: var(--s-2); }
+html body .brand { flex: 0 1 220px; min-width: 140px; }
+html body #casePick { max-width: 200px; }
+html body #cams button { padding: 0 10px; }
+html body .theme-toggle.in-header { margin-left: var(--s-1); }
+
+/* review: source-kind icon only for video (documents are the default), sign-off counts in text colour */
+html body .chip.k-doc i { display: none; }
+html body .chip.k-vid i { color: var(--c-muted); }
+html body .tally b, html body .tally .a b, html body .tally .r b { font: 400 var(--fs-16)/1.3 var(--t-mono); color: var(--c-text); }
+html body .tally span { font: 400 var(--fs-12)/1.3 var(--t-sans); color: var(--c-muted); }
+
+/* summary counts sit inline after the label */
+html body :is(#checksWrap, #compare details, #measures details) > summary .count { margin-left: 6px; }
+
+/* report: the simulated-deposition notice text arrives in capitals; sentence-case it */
+html:root:has(link[href="/report.css"]) body :is(.notice.sim, .noticebox.sim .t) { text-transform: lowercase; display: inline-block; }
+html:root:has(link[href="/report.css"]) body :is(.notice.sim, .noticebox.sim .t)::first-letter { text-transform: uppercase; }
+html:root:has(link[href="/report.css"]) body .noticebox.sim .t { display: block; }
