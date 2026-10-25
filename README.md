@@ -2,144 +2,133 @@
 
 **Test witness testimony inside a 3D reconstruction of the crash.**
 
-Sightline is for personal injury and insurance-defense lawyers and the reconstruction experts they work with. You upload a crash case (police and NTSB reports, statements, photos, diagrams, and video such as videotaped depositions, dashcam or bodycam). Gemini 4 Argon reads and watches all of it, writes a 3D world of the crash as code in one pass, and then checks its own work in a loop: we render the world from each witness's eye position, Argon watches those renders next to the evidence, independent geometry and physics checks run, and Argon patches the world. The output is a reconstruction you can stand inside and a list of findings, each with citations to report pages and video timestamps.
+Sightline is for personal-injury and insurance-defense lawyers and the reconstruction experts they work with. You upload a crash case: reports, statements, photos, diagrams, and video such as videotaped depositions or dashcam. Gemini 4 Argon reads and watches all of it in one call and extracts vehicles, occluders, timing and witness positions. A human confirms them. Argon then writes a 3D world of the crash as code, and the loop checks its own work:
 
-Built at the Gemini 4 Argon SF Hackathon, Oct 25, 2026. Track: **More Dimensions**.
+1. We render the world from each witness's eyes.
+2. Independent geometry and physics checks run, with no AI in them.
+3. Argon watches the renders next to the evidence and patches the world.
 
-- Demo video (1 min): `<VIDEO LINK>`
-- Team: `<NAME (@github)>`, `<NAME (@github)>`
+The output is a reconstruction you can stand inside, plus findings that cite report pages and video timestamps, exportable as a PDF report.
 
-> **Data notice.** The demo case uses **real public crash facts** from NTSB Highway Accident Report NTSB/HAR-17/02 (accident HWY16FH018, US-27A near Williston, Florida, May 7, 2016), cited by page. **Witnesses A, B and C are fictional.** The **deposition video is simulated**, generated today from a script. No real names are used. Values NTSB did not report are marked "assumed" in the case file. Sightline is a case-analysis aid, not evidence; a qualified expert should review any conclusion.
+Built at the Gemini 4 Argon SF Hackathon, Oct 25, 2026. **Track 2: More Dimensions.**
 
-## What it does
+- Demo video (1 min): `TODO`
+- Team: `TODO name (@github)`, `TODO name (@github)`
 
-1. **Ingest any case.** Create a case and drop in PDFs, text, Word docs, images and videos. Text is extracted with page markers so citations like "p.3" open the right page.
-2. **Generate.** Argon gets the full case text, the images, and every video (via the Files API) in one context and writes a world module: road, vehicles with timed motion, occluders, witnesses with position, eye height, observation time and claim. Every object carries a citation.
-3. **Render.** A headless browser renders the world from overhead and from each witness's eyes at the moment they describe.
-4. **Check (no AI).** Ray-cast sightlines from each witness to what they claim to have seen, plus speed and skid-length physics checks.
-5. **Critique and patch.** Argon watches the renders against the evidence and the check results, writes findings (contradiction / consistent / unverifiable) with citations, and returns a patched world if the world itself was wrong. The loop repeats up to 3 rounds.
-6. **Ask "what if".** Type a new witness statement; Argon places that witness in the world and the same checks give a verdict. Or place a witness on the map by hand.
+> **Data notice.** The demo case uses **real public crash facts**: the NTSB docket and Highway Accident Report NTSB/HAR-17/02 for accident **HWY16FH018** (US-27A near Williston, Florida, May 7, 2016), cited by page. **Witnesses A–D are fictional, and both deposition videos are simulated** (generated from scripts; no real names). The aerial photo is **USGS The National Map / NAIP** (public domain). Values NTSB did not report are labeled as inferred. Sightline is an analysis aid for experts, not evidence.
 
-In the demo case, Witness B says she had a clear view of the car the whole way in, right up until it hit. She marks where she stood on a map exhibit 27 minutes into the deposition, and never says the position out loud. Argon's first draft places her from her words; after watching the renders against the video, it moves her to the marked spot, and the ray-cast check shows the turning truck blocking her view from 1.3 s before impact, from all 25 test positions within 2 m of her mark. For comparison, a Gemini Flash chunk-and-summarize pipeline over the transcript only (no video) returned "consistent".
+## Run it on a laptop
 
-## Why it needs Argon
-
-The hard part is the input, not the output. In one pass Argon reads the whole case file and watches the full 30-minute deposition as video: about 164k input tokens, roughly 128k of them video, inside its 1M-token input context (which leaves room for more depositions, dashcam and our renders). Nobody points it at the right moment: in the live run it located Witness B's map mark at Depo 27:05 on its own, a position that is never spoken and so is invisible to a transcript pipeline. It then writes a complete to-scale world module in one call (129 s in the live run; the module fits well inside the 32,768-token default output (long decode goes higher)), and in the critique round it watches its own renders next to the evidence and patches the world (77.5 s in the live run, which found Witness B's contradiction; the independent ray-cast agreed: blocked by the semitrailer at t = 9.8 s).
-
-For comparison, a paid forensic crash animation costs roughly $2k to $20k+ and takes weeks.
-
-## Run it
-
-Requirements: Node 22, ffmpeg, Python 3 with Pillow (only for rebuilding the deposition video). Chromium for rendering is installed with the npm packages.
+Requirements: Node 22 and ffmpeg. Chromium for headless rendering comes with the npm packages.
 
 ```bash
+git clone https://github.com/Welddevelopment/Sightline---argon-4-hack-sf.git sightline
+cd sightline
 npm install
-cp .env.example .env        # leave SIGHTLINE_MODE=mock to start
-npm run dev                 # http://localhost:5173
+cp .env.example .env
 ```
 
-- `http://localhost:5173/cases.html` — case list, new case upload, run a reconstruction.
-- `http://localhost:5173/?case=demo` — the demo case viewer.
+Edit `.env` (never commit it):
 
-### Mock mode (default, no API key)
-
-`SIGHTLINE_MODE=mock` replays the cached Argon outputs in `cases/<caseId>/cache/`. Rendering and the independent checks still run for real. The demo case is pre-run, so it works offline. A brand-new case has no cache and needs live mode.
-
-```bash
-node argon/loop.js --case demo          # replay the full loop from cache (add --no-render to skip rendering)
 ```
-
-### Live mode (calls Gemini)
-
-```bash
-# .env
-GEMINI_API_KEY=...                       # never commit this
-ARGON_MODEL=gemini-4-argon
-BASELINE_MODEL=gemini-3.8-flash
+GEMINI_API_KEY=your-key
 SIGHTLINE_MODE=live
 ```
 
 ```bash
-npm run smoke                            # checks the key and both models
-npm run dev                              # then create a case at /cases.html and press "Run reconstruction"
-node argon/loop.js --case <caseId>       # or run the loop from the command line
-node argon/baseline.js --case <caseId>   # Flash transcript-only baseline for comparison
+npm run dev
 ```
 
-Live outputs are written back to `cases/<caseId>/cache/`, so any case run live can be replayed in mock mode afterwards.
+1. Open **http://localhost:5173/cases.html**.
+2. Click **Demo case**, then **Start demo**.
+3. Walk the step bar: Upload → Extract → Review & confirm → Reconstruct → Findings → Test a witness → Export.
 
-### Rebuild the demo case
+The demo case is a copy of the pre-run `demo-full` case. **Extract and Reconstruct replay the recorded live run**: a badge says so, and the log prints the real timings. Everything after that runs for real on your machine: confirming (and moving) witnesses re-runs the independent checks, a new witness statement is a live Argon call, and export builds the report.
+
+Without a key, `SIGHTLINE_MODE=mock` replays cached Argon outputs. Rendering and checks still run. A brand-new case needs live mode: create it at `/cases.html`, upload files, and press Run.
+
+Other commands:
 
 ```bash
-npm run deposition                       # case/deposition_script.json -> deposition/out/deposition.mp4 (+ .srt)
-node argon/seed_demo.js                  # sync case/ + deposition into cases/demo/ and seed its cache
+npm run smoke                              # check the key and models
+node argon/loop.js --case <caseId>         # generate → render → check → critique → patch from the CLI
+node argon/fleet.mjs demo-full             # replay the Managed Agents verification run (add --live to run it)
 ```
+
+## What happens in the demo case
+
+- **Input:** 212 pages from 17 documents of the real NTSB HWY16FH018 docket, plus two simulated depositions of fictional witnesses (Witness B 2 h 00 min, Witness D 45 min), plus the Exhibit 4 map. In total, one Argon call reads **849,454 input tokens: 704,100 video, 131,190 text, 14,164 image** (`cases/demo-full/cache/generate_world.meta.json`).
+- **The visual-only fact:** at **Depo Witness B 1:54:30** Witness B marks where she stood on Exhibit 4 with a pen and says only "Right about here." Argon found and cited that moment.
+- **The verdict:** from her marked position, the independent ray-cast finds her view of the car **blocked by the tractor at t = 9.8 s**, from **21 of 25** positions in a 2 m disc around her mark. Her claim is "I had a clear view of the car the whole way in… Nothing was in the way." The gaze angle to the car is 31.5° (peripheral, gaze assumed toward the impact point).
+- **The loop:** the world was generated in 146.8 s and critiqued in 159.2 s. The critique confirmed the contradiction and patched two modeling artifacts (a witness's own vehicle blocking his view; a missing storefront occluder).
+- **Second opinion:** 22 Managed Agents re-ran every check in separate sandboxes, and 17/17 compared metrics agreed (see below).
+
+## Why it needs Argon
+
+- **Long context, video-native.** One call over 849k tokens: nearly three hours of video and a 212-page docket. The decisive position is only drawn on screen, never spoken, so a transcript pipeline has nothing to read.
+- **Long decode.** One Argon response wrote the whole full-case world from 839,188 input tokens: 16,798 output tokens, 952 lines, 251 s. For the small 30-minute case, one response wrote a fully hand-built world of 63,079 output tokens (4,266 lines) that loads and passes the timing and plausibility checks. In a test, one response produced 200,000 output tokens (493k characters) in about 31 minutes (`cases/demo/cache/longdecode_test/meta.json`, not used in the product).
+- **Honest limit.** On our small 30-minute case, Gemini Flash given the same video and documents also found the contradiction (`status/baseline_fair.md`). The viewer's comparison card is labeled exactly: "Gemini Flash · chunk-and-summarize pipeline over the transcript · no video". The case for Argon is the scale of the full case. A one-pass world's self-correction round is still TODO (`status/onepass_full.md`); as of now, that world misplaces Witness B, and it is not used in the demo.
 
 ## Architecture
 
 ```
 evidence (PDF, text, images, video)
-        │  server/cases.js: upload, text extraction, ffprobe
-        ▼
-cases/<caseId>/{evidence, text}
-        │  argon/generate_world.js  (Argon: whole case + videos in one context → world module JS)
-        ▼
-cases/<caseId>/worlds/world_vN.js ──► render/record.js (Playwright + Three.js) ──► renders/*.png|mp4
-        │                                              │
-        │  checks/checks.js (ray-cast sightlines,      │
-        │  skid/speed physics, no model)               │
-        ▼                                              ▼
-argon/critique.js  (Argon: evidence + renders + check results → findings with citations + patched world)
-        │
-        └── argon/loop.js: generate → render → check → critique → patch, up to 3 rounds
-                         ▼
-        web/ viewer: 3D world, witness cameras, findings with citation chips that open the page or seek the deposition video
+   │  server/cases.js: upload, text extraction with page markers, ffprobe
+   ▼
+argon/extract.js ── Argon, whole case + videos in one context ──► extraction (vehicles, occluders, witnesses, citations)
+   │
+web/review.html ── human confirms / drags witnesses ──► confirmed_facts.json
+   │
+argon/generate_world.js ── Argon writes a world module (JS) ──► argon/validate_world.js (+ one repair call)
+   │
+   ├─► render/record.js (Playwright + Three.js): overhead + witness-eye stills
+   ├─► checks/ (no model): ray-cast sightlines, 25-point robustness disc, gaze angle, timing, plausibility
+   ▼
+argon/critique.js ── Argon watches renders + depositions + check results ──► findings with citations + patched world
+   │       (argon/loop.js runs generate → render → check → critique → patch)
+   ├─► argon/fleet.mjs ── Argon plans → N Managed Agents re-run checks in sandboxes → Argon merges
+   ▼
+web/ viewer: 3D world over the USGS aerial, witness cameras, findings with citation chips that open the page or seek the video
+server/report.js, scene_export.js, clips.js: PDF report, .glb/.json scene, witness-view clips
 ```
 
 | Path | What it is |
 |---|---|
-| `server/` | Express API and static server (port 5173), case storage and ingest |
-| `argon/` | Gemini client (mock/live), prompts, generate, critique, new witness, loop, Flash baseline |
-| `checks/` | Independent geometry and physics checks |
-| `render/` | Headless renderer for witness and overhead views |
-| `web/` | Case list/upload page and the 3D viewer |
-| `worlds/` | World contract example, hand-written reference world, world tests |
-| `deposition/` | Simulated deposition video generator (script → MP4 + SRT, map marks drawn on screen only) |
-| `case/` | Demo case source files built from NTSB/HAR-17/02 |
-| `cases/demo/` | Pre-run demo case (evidence, extracted text, worlds, renders, cached Argon outputs) |
+| `server/` | Express API and static server (port 5173): cases, ingest, review, demo replay, aerial, exports |
+| `argon/` | Gemini client (mock/live), prompts, extract, generate, validate, critique, new witness, loop, fleet, one-pass and long-decode runners |
+| `checks/` | Independent geometry and physics checks (no model) |
+| `render/` | Headless renderer |
+| `web/` | Case list, review screen, 3D viewer, asset library (`web/assets/`) |
+| `deposition/`, `case_full/` | Simulated-deposition generator and scripts (fictional witnesses) |
+| `cases/demo-full/` | Pre-run full case: docket text, depositions, worlds, cached Argon outputs, fleet results |
+| `cases/demo/` | Smaller 30-minute version of the same crash |
 
-The engine is case-generic: prompts, checks, loop, server and viewer contain no facts about any particular crash. Vehicles, occluders, timing and witness positions (including positions shown only in video) are extracted by Argon from the uploaded evidence. World modules follow a fixed contract (`SPEC.md`): plain ES modules that receive Three.js, use meters with Y up, expose `setTime(t)`, and give every object and witness a citation.
+World modules follow a fixed contract (`SPEC.md`). Each is a plain ES module that receives Three.js and the asset library, uses meters with Y up, exposes a deterministic `setTime(t)`, and gives every object and witness a citation. The engine is case-generic: prompts, checks and viewer contain no facts about this crash.
+
+## Managed Agents verification
+
+`argon/fleet.mjs`: Argon (gemini-4-argon) reads the current checks and findings and plans verification jobs. Each job runs as its own Google-hosted Managed Agent: the Antigravity agent on gemini-3.8-flash, in a 10-vCPU Linux sandbox that mounts the public repo and receives the exact world file inline. The jobs cover sightline, robustness discs, gaze, perception-reaction time, speed and time what-ifs, and a CPU software render with pixel visibility. Argon then merges the returned result files against the local checks.
+
+Live run on demo-full: **22 agents, 22 ok, 345 s wall against a 5,204 s sequential estimate (15.1×), 17/17 metrics agree, no code drift**. New finding: Witness B is clear from t = 7.8 to 9.3 s and blocked at 9.8 s; only a Vehicle A at least 20% faster clears it. The API key is never placed in a prompt, source, environment variable or sandbox. Results: `cases/demo-full/cache/fleet/`.
+
+## Accuracy and limits
+
+- **NTSB validation:** the reference world rebuilt from the case file matches **12 of 12** NTSB-measured facts (`status/wq_contract.md`). Argon-written worlds on the small case scored 11/12 and 10/12, and every miss is printed (`status/validation.md`).
+- **Aerial:** registered to the USGS NAIP photo (0.30 m/px); the road edges line up within about 0.3 m. The side road's real skew is straightened in the model, and the overhead view shows this.
+- Geometry comes from documents, not a survey. Motion is kinematic, not a physics simulation.
+- A witness's position is only as good as their mark. The checks report robustness and gaze, and findings say "had line of sight", never "could see".
 
 ## What was built today
 
-Everything in this repo was written on Oct 25, 2026, between 10:30 AM and 5:00 PM, at the Gemini 4 Argon SF Hackathon:
+Everything in this repo was written on Oct 25, 2026 at the Gemini 4 Argon SF Hackathon:
 
-- case ingest and upload (PDF, DOCX, text, images, video)
-- Argon prompts and the generate → render → critique → patch loop, with mock replay and live modes
-- headless renderer for witness-eye and overhead views
-- independent ray-cast sightline and physics checks
-- the 3D viewer with witness cameras, findings and citation chips
-- the simulated deposition video generator
-- the demo case, built from public NTSB report HAR-17/02, with fictional witnesses
+- case ingest and the review/confirm screen
+- the Argon extract → generate → render → check → critique → patch loop
+- the world validator and asset library
+- the independent checks
+- the Managed Agents verification fleet
+- the 3D viewer with the USGS aerial
+- PDF, scene and clip exports
+- the simulated-deposition generator and the demo cases built from the public NTSB docket
 
-We used open-source libraries (Three.js, Express, Playwright, @sparticuz/chromium, ffmpeg, pdf-parse, mammoth, multer) and the Gemini API (`@google/genai`). No code from earlier projects.
-
-## What a skeptical expert would ask — and our answer
-
-- **No qualified expert signs it.** Sightline is the analysis a lawyer runs before deciding to spend $5–20k; its output is a cited draft for their expert, not trial evidence.
-- **Is it reproducible?** Every world version records the model, prompt version (hash) and a hash of every input (`cases/<id>/worlds/world_vN.provenance.json`). The checks are deterministic, so any run can be replayed.
-- **Confidentiality and privilege?** Roadmap: enterprise deployment, no-training and no-retention terms, per-matter access control, audit log.
-- **Event data recorder?** An EDR report is just another evidence type that Argon reads and cites (roadmap).
-- **Accuracy is unvalidated.** We validate against public NTSB investigations with known answers: **11 of 12** measured facts match on this case (`cases/demo/cache/validation.json`; the miss is NTSB's 10.4 s crest-to-impact time, which can't be checked because the modeled car path starts about 1.6 m short of the crest). Next, a benchmark across dozens of cases.
-- **Geometry from documents, not a survey.** Every dimension is cited; inferred values are labeled and drawn in amber. Roadmap: aerial imagery and scans.
-- **Kinematic, not physics.** Motion is fitted to cited evidence and checked for physical plausibility (over 1 g, teleports, impossible speeds). Roadmap: export to crash-physics tools.
-- **Her map mark is only good to ±1–2 m.** We ray-cast from 25 positions in a 2 m disc around it (eye height ±0.1 m): blocked from **25 of 25** in both the demo world (tractor 14, trailer 11) and the live-run world.
-- **Line of sight is not the same as noticing.** We report the angle between her gaze and the target (demo, gaze assumed toward impact: B 28.4°, A 2.4°, C 17.3°), flag anything past 30° as peripheral, and state the 60° camera field of view. Findings say "had line of sight", never "could see".
-- **Lighting and glare.** Lighting is cited from the evidence (demo: daylight, sun high behind the eastbound car, HAR-17/02 p.5). The computed sun position for 4:36 p.m. EDT, May 7, 2016 at Williston is about 45° up at azimuth 265°, at least 45° off every near-horizontal witness sightline, so no glare. Roadmap: compute it automatically per case (date, time, place) and flag sightlines near the sun.
-
-## Limits
-
-- Geometry is simple boxes at real dimensions, not a photoreal scan.
-- A witness's position is only as good as their own mark or description; the source of every position is cited.
-- Checks are exact for the world they are given; the uncertainty is in the inputs, which are cited and labeled.
-- Use it to find which testimony needs a closer look and why, not as a final opinion.
+We used open-source libraries (Three.js, Express, Playwright, @sparticuz/chromium, ffmpeg, pdf-parse, mammoth, multer) and the Gemini API (`@google/genai`).

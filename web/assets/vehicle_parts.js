@@ -744,29 +744,64 @@ export function stackGeometry(THREE, levels, o) {
   return { geo, grid, H, M };
 }
 
-/** Raycast helper against finished meshes: hit([x,y,z], [dx,dy,dz]) -> {p:[..], n:[..] (smooth, facing the ray)} | null */
-export function surfaceCaster(THREE, meshes) {
-  const rc = new THREE.Raycaster();
-  const o = new THREE.Vector3(), d = new THREE.Vector3(), bc = new THREE.Vector3();
-  const A = new THREE.Vector3(), B = new THREE.Vector3(), C = new THREE.Vector3();
-  for (const m of meshes) m.updateMatrixWorld(true);
+/** Raycast helper against finished meshes (spatial-hash accelerated, front faces only):
+ *  hit([x,y,z], [dx,dy,dz], far) -> {p:[..], n:[..] (smooth vertex normal, facing the ray)} | null */
+export function surfaceCaster(THREE, meshes, cell = 0.12) {
+  const tris = [];       // [ax,ay,az,bx,..., na.., nb.., nc..]
+  const V = THREE.Vector3;
+  for (const m of meshes) {
+    m.updateMatrixWorld(true);
+    const g = m.geometry, P = g.attributes.position, N = g.attributes.normal, I = g.index;
+    const nm = new THREE.Matrix3().getNormalMatrix(m.matrixWorld);
+    const cnt = I ? I.count : P.count;
+    const pv = (i) => new V().fromBufferAttribute(P, i).applyMatrix4(m.matrixWorld);
+    const nv = (i) => (N ? new V().fromBufferAttribute(N, i).applyMatrix3(nm).normalize() : null);
+    for (let t = 0; t < cnt; t += 3) {
+      const ia = I ? I.getX(t) : t, ib = I ? I.getX(t + 1) : t + 1, ic = I ? I.getX(t + 2) : t + 2;
+      tris.push({ a: pv(ia), b: pv(ib), c: pv(ic), na: nv(ia), nb: nv(ib), nc: nv(ic) });
+    }
+  }
+  const hash = new Map();
+  const key = (i, j, k) => i + ',' + j + ',' + k;
+  tris.forEach((t, id) => {
+    const x0 = Math.floor(Math.min(t.a.x, t.b.x, t.c.x) / cell), x1 = Math.floor(Math.max(t.a.x, t.b.x, t.c.x) / cell);
+    const y0 = Math.floor(Math.min(t.a.y, t.b.y, t.c.y) / cell), y1 = Math.floor(Math.max(t.a.y, t.b.y, t.c.y) / cell);
+    const z0 = Math.floor(Math.min(t.a.z, t.b.z, t.c.z) / cell), z1 = Math.floor(Math.max(t.a.z, t.b.z, t.c.z) / cell);
+    for (let i = x0; i <= x1; i++) for (let j = y0; j <= y1; j++) for (let k = z0; k <= z1; k++) {
+      const kk = key(i, j, k); let arr = hash.get(kk); if (!arr) hash.set(kk, arr = []); arr.push(id);
+    }
+  });
+  const ray = new THREE.Ray(), o = new V(), d = new V(), hp = new V(), bc = new V();
   return (origin, dir, far = 6) => {
-    o.set(origin[0], origin[1], origin[2]); d.set(dir[0], dir[1], dir[2]).normalize();
-    rc.set(o, d); rc.far = far;
-    const hits = rc.intersectObjects(meshes, false);
-    const h = hits[0];
-    if (!h) return null;
-    const g = h.object.geometry, P = g.attributes.position, N = g.attributes.normal;
-    A.fromBufferAttribute(P, h.face.a); B.fromBufferAttribute(P, h.face.b); C.fromBufferAttribute(P, h.face.c);
-    const lp = h.object.worldToLocal(h.point.clone());
-    THREE.Triangle.getBarycoord(lp, A, B, C, bc);
-    const n = new THREE.Vector3();
-    if (N) {
-      n.addScaledVector(A.fromBufferAttribute(N, h.face.a), bc.x).addScaledVector(B.fromBufferAttribute(N, h.face.b), bc.y).addScaledVector(C.fromBufferAttribute(N, h.face.c), bc.z);
-    } else n.copy(h.face.normal);
-    n.transformDirection(h.object.matrixWorld);
+    o.set(origin[0], origin[1], origin[2]); d.set(dir[0], dir[1], dir[2]).normalize(); ray.set(o, d);
+    const seen = new Set(); let best = null, bd = far;
+    const step = cell * 0.5;
+    let lastKey = null;
+    for (let s = 0; s <= far + cell; s += step) {
+      if (s > bd + cell) break;
+      const px = o.x + d.x * s, py = o.y + d.y * s, pz = o.z + d.z * s;
+      const ci = Math.floor(px / cell), cj = Math.floor(py / cell), ck = Math.floor(pz / cell);
+      const kk = key(ci, cj, ck); if (kk === lastKey) continue; lastKey = kk;
+      for (let di = -1; di <= 1; di++) for (let dj = -1; dj <= 1; dj++) for (let dk = -1; dk <= 1; dk++) {
+        const arr = hash.get(key(ci + di, cj + dj, ck + dk)); if (!arr) continue;
+        for (const id of arr) {
+          if (seen.has(id)) continue; seen.add(id);
+          const t = tris[id];
+          if (!ray.intersectTriangle(t.a, t.b, t.c, true, hp)) continue;
+          const dist = hp.distanceTo(o);
+          if (dist < bd) { bd = dist; best = { t, p: hp.clone() }; }
+        }
+      }
+    }
+    if (!best) return null;
+    const t = best.t;
+    let n;
+    if (t.na) {
+      THREE.Triangle.getBarycoord(best.p, t.a, t.b, t.c, bc);
+      n = new V().addScaledVector(t.na, bc.x).addScaledVector(t.nb, bc.y).addScaledVector(t.nc, bc.z).normalize();
+    } else n = new THREE.Triangle(t.a, t.b, t.c).getNormal(new V());
     if (n.dot(d) > 0) n.negate();
-    return { p: [h.point.x, h.point.y, h.point.z], n: [n.x, n.y, n.z] };
+    return { p: [best.p.x, best.p.y, best.p.z], n: [n.x, n.y, n.z] };
   };
 }
 
