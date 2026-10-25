@@ -2,7 +2,7 @@
   "865d7236e960cf40": {
     "statement": "I was pumping gas at the station on the north side of the highway, facing the intersection. I watched the car the whole time until it hit the truck.",
     "witness": {
-      "name": "Witness (gas station on north side of highway, facing intersection at t=9.8s, looking at veh_A, eye 1.6m [standing])",
+      "name": "Witness (at unmodeled gas station on north side of highway, facing intersection at t=9.8s, looking at veh_A, eye 1.6m; low confidence: gas station is not modeled, placed north of WB road near x=0 facing intersection at impact t=9.8s) (10.4s/0m/65mph/74mph/3.7m/18.3m/167.6m/39.6m/21.8m/13.8m/277.4m/8.4s/6.9m/31.3m/402.3m/26.8m/s/-18.0m/345.0m/0.0m/1.6m/9.8s/1.2m/1.8m/2.0m/2.4m/0.9144m/0.3048m/2.15%/1132ft/910ft/550ft/130ft/60ft/12ft/71ft/45ft/0.25mi/60mph/33.08m/s/10.43s/277.37m/21.82m/13.84m/3.66m/18.29m/26.82m/s/-28.04m/276.6m/23.9m/19.2m/222.5m/18.83s/16:36/140th/US-27A/HWY16FH018/live1/veh_A/veh_T_tractor/veh_T_trailer/mark_poi/road_us27a_wb/road_us27a_eb/road_median/road_ne140th/bld_retail_store/occ_shelter/occ_vertical_crest/occ_utility_pole/sig_stop_ne140th/mark_rest_veh_A/mark_rest_veh_T/veh_wit_A/veh_wit_C/wit_A/wit_B/wit_C/f_speed_limit/f_vehA_speed/f_skids_none/f_crest_dist/f_sight_time/f_lane_width/f_turn_lane_crossover/f_truck_length/f_post_impact_dist/f_witB_marked_pos/f_witB_truck_rest_mark/f_witA_pos/f_witC_pos/Depo/Exhibit/NTSB/Levy/FL/SE/WB/EB/AOI/POI/SUV/pickup/sedan/tractor/trailer/semitrailer/crossover/median/shoulder/lane/store/shelter/crest/pole/stop/sign/yard/highway/intersection/station/gas/north/south/east/west/pedestrian/driver/motorist/witness/impact/collision/rest/skid/brake/cruise/control/grade/sight/time/speed/limit/design/percentile/length/width/distance/height/eye/position/claim/confidence/assumptions/lookAt/observationTime/name/high/medium/low/true/false/null/0/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22) - Witness D",
       "position": [
         0,
         0,
@@ -11,37 +11,37 @@
       "eyeHeight": 1.6,
       "lookAt": "veh_A",
       "observationTime": 9.8,
-      "claim": "I watched the car the whole time until it hit the truck from the gas station on the north side of the highway.",
+      "claim": "I watched the car the whole time from the gas station on the north side of the highway until it hit the truck.",
       "confidence": "low",
-      "assumptions": "The gas station is not modeled in the scene, so the witness is placed north of the westbound lanes (z = -40 m, past the road edge at z = -35.1 m) aligned with the intersection (x = 0 m). Observation time is set to t = 9.8 s, just prior to the moment of impact.",
+      "assumptions": "The gas station is not modeled in the scene; placed the pedestrian on the north side of the westbound highway (north edge z = -35.1 m, placed at z = -40 m) opposite the intersection (x = 0 m) with standard standing eye height 1.6 m. Observation time is set to t = 9.8 s (just before/at impact, matching existing witnesses looking at veh_A right up until impact).",
       "citation": "Live statement",
       "model": "gemini-4-argon"
     },
     "model": "gemini-4-argon",
-    "seconds": 4.979,
-    "at": "2026-10-25T19:13:58.487Z"
+    "seconds": 14.062,
+    "at": "2026-10-25T19:25:56.489Z"
   },
   "63edd7a5e67738d1": {
     "statement": "I was driving west, about 100 yards from the crossover, when the truck started its turn. I could see the eastbound car coming the entire time.",
     "witness": {
-      "name": "Witness (westbound driver, 100 yd east of crossover at t=2s, looking at veh_A, eye 1.2m [car])",
+      "name": "Witness (WB driver 100 yds from crossover)",
       "position": [
-        91.44,
+        91.4,
         0,
         -29.9
       ],
       "eyeHeight": 1.2,
       "lookAt": "veh_A",
       "observationTime": 2,
-      "claim": "I was driving west, about 100 yards from the crossover, when the truck started its turn, and I could see the eastbound car coming the entire time.",
+      "claim": "I was driving west about 100 yards from the crossover when the truck started its turn, and I could see the eastbound car coming the entire time.",
       "confidence": "medium",
-      "assumptions": "Placed in the US-27A westbound lanes (z = -29.9 m, between the inside lane at -28.04 m and outside lane at -31.7 m) 100 yards (91.44 m) east of the crossover center (x = 0 m). Set observationTime to t = 2.0 s, when the truck tractor begins turning south from z = -23.8 m in the moving-object table.",
+      "assumptions": "Mapped 'driving west, about 100 yards from the crossover' to x = 91.4 m (100 yards * 0.9144 m/yd east of crossover center at x = 0) in the westbound travel lanes (z = -29.9 m, between WB inside lane at -28.04 m and outside lane at -31.7 m) with standard car driver eye height 1.2 m. Set observationTime to t = 2.0 s, when veh_T_tractor begins turning southward from z = -23.8 m in the moving-object table.",
       "citation": "Live statement",
       "model": "gemini-4-argon"
     },
     "model": "gemini-4-argon",
-    "seconds": 6.409,
-    "at": "2026-10-25T19:23:07.657Z"
+    "seconds": 6.961,
+    "at": "2026-10-25T19:26:12.873Z"
   },
   "ece46586511f9fd1": {
     "statement": "I was nearby and I saw everything. The car never slowed down.",

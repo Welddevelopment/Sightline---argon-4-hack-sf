@@ -1,1 +1,10 @@
-{"name":"Witness (westbound driver, 100 yd east of crossover at t=2s, looking at veh_A, eye 1.2m [car])","position":[91.44,0,-29.9],"eyeHeight":1.2,"lookAt":"veh_A","observationTime":2,"claim":"I was driving west, about 100 yards from the crossover, when the truck started its turn, and I could see the eastbound car coming the entire time.","confidence":"medium","assumptions":"Placed in the US-27A westbound lanes (z = -29.9 m, between the inside lane at -28.04 m and outside lane at -31.7 m) 100 yards (91.44 m) east of the crossover center (x = 0 m). Set observationTime to t = 2.0 s, when the truck tractor begins turning south from z = -23.8 m in the moving-object table."}
+{
+  "name": "Witness (WB driver 100 yds from crossover)",
+  "position": [91.4, 0, -29.9],
+  "eyeHeight": 1.2,
+  "lookAt": "veh_A",
+  "observationTime": 2.0,
+  "claim": "I was driving west about 100 yards from the crossover when the truck started its turn, and I could see the eastbound car coming the entire time.",
+  "confidence": "medium",
+  "assumptions": "Mapped 'driving west, about 100 yards from the crossover' to x = 91.4 m (100 yards * 0.9144 m/yd east of crossover center at x = 0) in the westbound travel lanes (z = -29.9 m, between WB inside lane at -28.04 m and outside lane at -31.7 m) with standard car driver eye height 1.2 m. Set observationTime to t = 2.0 s, when veh_T_tractor begins turning southward from z = -23.8 m in the moving-object table."
+}

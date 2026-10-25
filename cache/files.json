@@ -82,5 +82,12 @@
     "mimeType": "video/mp4",
     "expiresAt": "2026-10-27T19:22:11.513458925Z",
     "uploadedAt": "2026-10-25T19:22:15.148Z"
+  },
+  "../../../tmp/claude-0/-home-claude/19c8862f-35f6-521f-b076-4851a50cf262/scratchpad/sightline_baseline_fair/demo/deposition_part01.mp4|1323611|1792956160541": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/4matqhrlk96s",
+    "name": "files/4matqhrlk96s",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T19:25:43.761724791Z",
+    "uploadedAt": "2026-10-25T19:26:01.923Z"
   }
 }
