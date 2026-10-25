@@ -176,3 +176,10 @@ Skip path: if `cases/<id>/confirmed_facts.json` does not exist, generate_world i
   `{ ok: true, confirmed: <Confirmed> }`, where Confirmed (= cases/<id>/confirmed_facts.json) is
   `{ caseId, confirmedAt: "ISO", confirmedBy, extractionCreatedAt, scene, facts, vehicles, objects, witnesses }`.
   Body `{ clear: true }` deletes confirmed_facts.json (back to the skip path) → `{ ok: true, confirmed: null }`.
+
+## EXPORTS (12:10)
+### Witness-view clips — owner PRODUCT-C (server/clips.js). PRODUCT-A's web/exports.js codes against these.
+- `GET /api/cases/:id/clips` → `{ caseId, mode, world, fps, width, height, clips: [{ camera, t0, t1, url, cached, cacheFile, check }] }` — one entry per camera (`overhead` + every witness id), with the default window and a ready-to-use `url`. `check` = `{ pass, target, blockedBy, t, text }` (null for overhead). Use this to build one "Download clip" button per camera.
+- `GET /api/cases/:id/clips/:camera.mp4?t0=&t1=[&download=1]` → `video/mp4` (H.264, 1280x720, 24 fps, faststart; Range supported so it plays in `<video>`). Default window: witness observation time (state.checks sightline `t`, else witness.observationTime) −3 s … +1 s; overhead: min(obs)−3 … max(obs)+1; clamped to [0, duration], max 30 s. `download=1` → `Content-Disposition: attachment; filename="sightline_<case>_<camera>_<t0>-<t1>.mp4"`. Errors are JSON: 400 bad t0/t1, 404 unknown case/camera, 409 no world yet, 500 render failed.
+- Frames are the viewer in `?clean=1` mode (WebGL + HUD/labels/verdict overlay) plus a burned-in caption strip: "SIMULATED / FICTIONAL RECONSTRUCTION | case | camera" and the sightline check result + clip window.
+- Cached at `cases/<id>/exports/clips/<camera>__<world>.<sha8>__<t0>-<t1>.mp4` (+ `.json` sidecar with caption/check/renderSeconds); key = (case, world content, camera, t0, t1). Headers: `X-Clip-Cache: hit|miss|fallback`, `X-Clip-Window`, `X-Clip-Render-Seconds`. A miss renders synchronously (~1–2 min for a 4 s clip; serialized via scripts/render_lock.sh), so show a spinner; demo defaults are pre-rendered (instant). Mock mode never re-renders a cached clip (`fresh=1` is live-only).

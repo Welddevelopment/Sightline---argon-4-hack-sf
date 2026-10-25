@@ -400,7 +400,7 @@ export function createAssets(THREE, opts = {}) {
       }, o.id || 'ground', { kind });
     },
     environment(o = {}) {
-      const env = run('environment', 'environment', D(0, 0, 0), [{ ...o, headless }], () => builtinEnvironment(o), o.id || 'environment');
+      const env = run('environment', 'environment', D(0, 0, 0), [{ ...o, Sky: o.Sky || opts.Sky, headless }], () => builtinEnvironment(o), o.id || 'environment');
       return wrapEnvironment(env, o);
     },
   };
@@ -408,9 +408,14 @@ export function createAssets(THREE, opts = {}) {
   // ----- environment -----
   function sunFromOpts(o) {
     if (Number.isFinite(o.sunAzimuthDeg) && Number.isFinite(o.sunElevationDeg)) return { az: o.sunAzimuthDeg, el: o.sunElevationDeg };
-    const sp = modOrder.map((n) => modules[n].solarPosition).find((f) => typeof f === 'function') || solarPosition;
     if (o.date && Number.isFinite(o.lat) && Number.isFinite(o.lon)) {
-      try { const r = sp({ date: o.date, time: o.timeOfDay, lat: o.lat, lon: o.lon, utcOffset: o.utcOffset }); const az = r.azimuthDeg ?? r.azimuth, el = r.elevationDeg ?? r.elevation; if (Number.isFinite(az) && Number.isFinite(el)) return { az, el }; } catch {}
+      try {
+        const em = modules.environment;
+        let r;
+        if (em && typeof em.solarPosition === 'function' && typeof em.resolveDate === 'function') r = em.solarPosition(em.resolveDate(o.date, o.timeOfDay, o.utcOffset, o.lon).date, o.lat, o.lon);
+        else r = solarPosition({ date: String(o.date).slice(0, 10), time: o.timeOfDay, lat: o.lat, lon: o.lon, utcOffset: o.utcOffset });
+        if (Number.isFinite(r.azimuthDeg) && Number.isFinite(r.elevationDeg)) return { az: r.azimuthDeg, el: r.elevationDeg };
+      } catch {}
     }
     const hm = String(o.timeOfDay || '12:00').split(':').map(Number);
     const h = (hm[0] || 12) + (hm[1] || 0) / 60;
@@ -439,7 +444,12 @@ export function createAssets(THREE, opts = {}) {
   }
   function wrapEnvironment(env, o) {
     let g = env;
-    if (!env || !env.isObject3D) {
+    if (env && !env.isObject3D && env.group?.isObject3D) {            // environment.js: { group, sun, hemisphere, sky, fog, update, info }
+      g = env.group;
+      g.userData.envApi = env;                                         // viewer: scene.fog = envApi.fog; envApi.update(camera)
+      g.userData.sky = { ...(env.info || {}), fog: env.fog || null, background: env.background || null, skyMesh: env.sky || null };
+      g.lights = [env.sun, env.hemisphere].filter(Boolean);
+    } else if (!env || !env.isObject3D) {
       g = new THREE.Group();
       for (const l of env?.lights || []) if (l?.isObject3D) g.add(l);
       g.userData.sky = env?.sky || {};

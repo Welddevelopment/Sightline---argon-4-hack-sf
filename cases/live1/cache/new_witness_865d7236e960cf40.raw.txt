@@ -1,0 +1,10 @@
+{
+  "name": "New Witness (at gas station on north side)",
+  "position": [0, 0, -40],
+  "eyeHeight": 1.6,
+  "lookAt": "veh_A",
+  "observationTime": 10.4,
+  "claim": "I watched the car the whole time until it hit the truck from the gas station on the north side of the highway.",
+  "confidence": "low",
+  "assumptions": "The gas station on the north side of the highway is not modeled in the scene, so the witness is placed as a standing pedestrian (eye height 1.6 m) just north of the US-27A westbound road edge (z = -35.1 m) at [0, 0, -40] facing the intersection (x = 0). Observation time is set to 10.4 s, the moment of impact when Vehicle A hits the truck."
+}

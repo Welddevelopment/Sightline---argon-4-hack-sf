@@ -1,0 +1,33 @@
+{
+  "name": "extraction_raw",
+  "model": "gemini-4-argon",
+  "hash": "4076a7ed1850dfa1",
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 160665,
+    "candidatesTokenCount": 7259,
+    "totalTokenCount": 167924,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 31631
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 1092
+      },
+      {
+        "modality": "VIDEO",
+        "tokenCount": 127942
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7259
+      }
+    ]
+  },
+  "seconds": 83.2,
+  "at": "2026-10-25T19:11:27.908Z"
+}

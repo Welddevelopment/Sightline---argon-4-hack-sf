@@ -1,5 +1,6 @@
 // Sightline viewer: loads a world module, renders it, exposes window.sl
 import * as THREE from 'three';
+import { applyRenderQuality } from './render_quality.js';
 
 const params = new URLSearchParams(location.search);
 const DEFAULT_WORLD = '/worlds/reference_world.js';
@@ -19,9 +20,9 @@ const emit = (type, detail) => sl.events.dispatchEvent(new CustomEvent(type, { d
 // ---------- renderer / scene ----------
 const stage = document.getElementById('stage') || document.body;
 const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+// ?quality=render (headless clips/stills) = 2x supersampled + 4096 shadows; default 'interactive'
+const RENDER_QUALITY = params.get('quality') === 'render' ? 'render' : 'interactive';
+applyRenderQuality(renderer, null, { quality: RENDER_QUALITY });
 const canvas = renderer.domElement;
 canvas.style.display = 'block';
 canvas.style.width = '100%';
@@ -805,6 +806,10 @@ async function loadWorld(url) {
   const kind = (world.meta.lighting || 'day').toLowerCase();
   setupLighting(kind);
   addHeadlights();
+  // render quality (web/render_quality.js): tone mapping/exposure, single shadowed sun fit to the ROI, PMREM sky fill, AA
+  sl.renderQuality = applyRenderQuality(renderer, scene, { quality: RENDER_QUALITY, lighting: kind, sun, roi: bounds, world,
+    overlays: [markerGroup, labelGroup, rayGroup, hiGroup, previewGroup, infGroup] });
+  await sl.renderQuality.ready;
   rebuildMarkers();
   highlightIds = [];
   curT = 0;

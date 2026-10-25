@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Environment Preview</title>
+<script type="importmap">
+{ "imports": {
+  "three": "/node_modules/three/build/three.module.js",
+  "three/addons/": "/node_modules/three/examples/jsm/"
+} }
+</script>
+<style>
+  html, body { margin: 0; background: #111; color: #ddd; font: 12px/1.3 system-ui, sans-serif; }
+  #grid { position: relative; }
+  canvas { display: block; }
+  .lab { position: absolute; padding: 4px 6px; background: rgba(0,0,0,.55); color: #fff; font: 11px/1.35 ui-monospace, monospace; pointer-events: none; white-space: pre; }
+</style>
+</head>
+<body>
+<div id="grid"></div>
+<script type="module">
+// Environment preview: the demo case (US-27A at NE 140th Ct, Williston FL, 7 May 2016) at four local times.
+// Query: ?times=06:45,12:00,16:36,19:45&weather=clear&date=2016-05-07&off=-04:00&lat=29.4106&lon=-82.5393&w=1600&h=760&t=9.9
+import * as THREE from 'three';
+import { Sky } from 'three/addons/objects/Sky.js';
+import { environment, configureRenderer } from '/web/assets/environment.js';
+
+const q = new URLSearchParams(location.search);
+const times = (q.get('times') || '06:45,12:00,16:36,19:45').split(',');
+const weather = q.get('weather') || 'clear';
+const date = q.get('date') || '2016-05-07';
+const off = q.get('off') || '-04:00';
+const lat = +(q.get('lat') || 29.4106), lon = +(q.get('lon') || -82.5393);
+const W = +(q.get('w') || 1600), H = +(q.get('h') || 760);
+const tEvent = +(q.get('t') || 9.9);
+const worldUrl = q.get('world') || '/cases/demo/worlds/world_v2.js';
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(W, H);
+configureRenderer(THREE, renderer);
+renderer.setScissorTest(true);
+document.getElementById('grid').appendChild(renderer.domElement);
+
+const { default: createWorld } = await import(worldUrl);
+const cols = times.length, rows = 2;
+const cw = Math.floor(W / cols), ch = Math.floor(H / rows);
+const panels = [];
+for (const [i, tod] of times.entries()) {
+  const scene = new THREE.Scene();
+  const world = createWorld(THREE);
+  // the world ships its own fixed lights; the environment replaces them
+  world.root.traverse((o) => { if (o.isLight) o.visible = false; });
+  world.root.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+  world.setTime(tEvent);
+  scene.add(world.root);
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(4000, 4000), new THREE.MeshStandardMaterial({ color: 0x6f7f4f, roughness: 1 }));
+  ground.rotation.x = -Math.PI / 2; ground.position.y = -0.02; ground.receiveShadow = true;
+  scene.add(ground);
+  const env = environment(THREE, { date, timeOfDay: tod, utcOffset: off, lat, lon, weather, Sky, center: [0, 0], radius: 90 });
+  scene.add(env.group);
+  scene.fog = env.fog;
+  // row 0: Witness B eye view toward the car; row 1: elevated oblique from the south-east showing shadows
+  const wb = world.witnesses.find((w) => w.id === 'wit_B');
+  const carPos = new THREE.Vector3(); world.objects.veh_A.node.getWorldPosition(carPos);
+  const cam0 = new THREE.PerspectiveCamera(60, cw / ch, 0.1, 2000);
+  cam0.position.set(wb.position[0], wb.eyeHeight, wb.position[2]);
+  cam0.lookAt(carPos.x, 1.6, carPos.z);
+  const cam1 = new THREE.PerspectiveCamera(50, cw / ch, 0.1, 2000);
+  cam1.position.set(45, 28, 55);
+  cam1.lookAt(-5, 0, -8);
+  panels.push({ scene, env, cams: [cam0, cam1], tod });
+}
+
+function label(x, y, text) {
+  const d = document.createElement('div');
+  d.className = 'lab'; d.style.left = x + 'px'; d.style.top = y + 'px'; d.textContent = text;
+  document.getElementById('grid').appendChild(d);
+}
+
+function draw() {
+  panels.forEach((p, i) => {
+    p.cams.forEach((cam, r) => {
+      p.env.update(cam, r === 1 ? [-5, 0, -8] : undefined);
+      const x = i * cw, yTop = r * ch;
+      renderer.setViewport(x, H - yTop - ch, cw, ch);
+      renderer.setScissor(x, H - yTop - ch, cw, ch);
+      renderer.render(p.scene, cam);
+    });
+  });
+}
+draw();
+panels.forEach((p, i) => {
+  const f = p.env.info;
+  label(i * cw + 4, 4, `${p.tod} EDT  ${weather}\nsun az ${f.sunAzimuth.toFixed(1)}  el ${f.sunElevation.toFixed(1)}  ${f.phase}\nglobal ${f.illuminanceLux.global} lx`);
+  label(i * cw + 4, ch + 4, i === 0 ? `oblique (SE), t=${tEvent}s  sunrise ${f.sunrise} sunset ${f.sunset}` : `oblique (SE)`);
+});
+window.__envInfo = panels.map((p) => p.env.info);
+window.__ready = true;
+</script>
+</body>
+</html>

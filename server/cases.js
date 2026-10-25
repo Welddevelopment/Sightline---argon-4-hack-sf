@@ -162,6 +162,12 @@ export function mountCases(app, h) {
     url: urlFor(id, 'evidence/' + encodeURIComponent(f.name)),
     textUrl: f.textPath ? urlFor(id, f.textPath.split('/').map(encodeURIComponent).join('/')) : null,
   });
+  // Evidence listing: files with fresh meta + video count and total real duration (multiple depositions per case).
+  const evidenceListing = (id, m) => {
+    const files = (m.files || []).map((f) => fileUrls(id, f));
+    const vids = files.filter((f) => f.type === 'video');
+    return { files, videoCount: vids.length, totalVideoSec: Math.round(vids.reduce((n, f) => n + (Number(f.durationSec) || 0), 0) * 10) / 10 };
+  };
 
   function caseState(id) {
     const s = store.readJson(store.dir(id, 'cache', 'state.json'));
@@ -231,7 +237,7 @@ export function mountCases(app, h) {
       }
       m.status = 'ready';
       store.saveManifest(m);
-      res.status(201).json({ ...m, files: m.files.map((f) => fileUrls(caseId, f)), ...(skipped.length ? { skipped } : {}) });
+      res.status(201).json({ ...m, ...evidenceListing(caseId, m), ...(skipped.length ? { skipped } : {}) });
     } catch (e) {
       cleanup();
       res.status(500).json({ error: h.errMsg(e) });
@@ -250,7 +256,7 @@ export function mountCases(app, h) {
       m.files.push(await ingestFile(store, id, name));
     }
     store.saveManifest(m);
-    res.json({ ...m, files: m.files.map((f) => fileUrls(id, f)) });
+    res.json({ ...m, ...evidenceListing(id, m) });
   });
 
   // ---- get one ----
@@ -260,7 +266,7 @@ export function mountCases(app, h) {
     if (!m) return res.status(404).json({ error: 'no such case' });
     let state = null;
     try { state = await withChecks(id, await stateFor(id)); } catch (e) { state = { error: h.errMsg(e) }; }
-    res.json({ ...m, status: getRun(id).running ? 'running' : m.status, files: (m.files || []).map((f) => fileUrls(id, f)), state, running: getRun(id).running,
+    res.json({ ...m, status: getRun(id).running ? 'running' : m.status, ...evidenceListing(id, m), state, running: getRun(id).running,
       ...(await credibility(id)) });
   });
 

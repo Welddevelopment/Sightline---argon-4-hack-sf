@@ -196,11 +196,13 @@ function mostCommonLookAt(world) {
   for (const w of world.witnesses || []) if (typeof w.lookAt === 'string' && world.objects?.[w.lookAt]) n[w.lookAt] = (n[w.lookAt] || 0) + 1;
   return Object.entries(n).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
 }
-function mostCommonTime(world) {
-  const n = {};
-  for (const w of world.witnesses || []) if (w.observationTime != null) n[w.observationTime] = (n[w.observationTime] || 0) + 1;
-  const t = Object.entries(n).sort((a, b) => b[1] - a[1])[0]?.[0];
-  return t != null ? Number(t) : (world.duration || 0) / 2;
+/** Parser's observation time: just before an impact-time fact, else the latest time an existing witness is tested at. */
+function defaultTime(world) {
+  const f = (world.facts || []).find((x) => /impact|collision|crash/i.test(`${x.id} ${x.text}`) && /^s(ec)?$/i.test(x.unit || '') && x.value > 0 && x.value <= world.duration);
+  if (f) return { t: r1(Math.max(0, f.value - 0.5)), why: `0.5 s before impact (${f.id})` };
+  const ts = (world.witnesses || []).map((w) => Number(w.observationTime)).filter(Number.isFinite);
+  if (ts.length) return { t: Math.max(...ts), why: 'latest time existing witnesses are tested at' };
+  return { t: r1((world.duration || 0) / 2), why: 'mid-timeline' };
 }
 
 function matchLandmark(phrase, world, bx) {
@@ -299,7 +301,7 @@ export async function parseStatement(statement, world) {
   if (/\b(car|sedan|coupe)\b/.test(s)) lookAt = byLabel(/sedan|\bcar\b|coupe/);
   if (!lookAt && /\b(truck|trailer|semi|rig)\b/.test(s)) lookAt = byLabel(/trailer/) || byLabel(/truck|tractor/);
   lookAt = lookAt || mostCommonLookAt(world) || vehs[0];
-  const observationTime = mostCommonTime(world);
+  const { t: observationTime, why: timeWhy } = defaultTime(world);
 
   return {
     name: 'Live witness',
@@ -307,7 +309,7 @@ export async function parseStatement(statement, world) {
     eyeHeight, lookAt, observationTime,
     claim: statement.length > 160 ? statement.slice(0, 157) + '...' : statement,
     confidence: 'low',
-    assumptions: `Deterministic parser (Argon unavailable): ${notes.join('; ')}. lookAt ${lookAt}; observationTime ${observationTime}s = the time existing witnesses are tested at.`,
+    assumptions: `Deterministic parser (Argon unavailable): ${notes.join('; ')}. lookAt ${lookAt}; observationTime ${observationTime}s = ${timeWhy}.`,
   };
 }
 

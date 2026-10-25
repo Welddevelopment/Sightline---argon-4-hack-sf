@@ -1,0 +1,68 @@
+{
+  "865d7236e960cf40": {
+    "statement": "I was pumping gas at the station on the north side of the highway, facing the intersection. I watched the car the whole time until it hit the truck.",
+    "witness": {
+      "name": "New Witness (at gas station on north side)",
+      "position": [
+        0,
+        0,
+        -40
+      ],
+      "eyeHeight": 1.6,
+      "lookAt": "veh_A",
+      "observationTime": 10.4,
+      "claim": "I watched the car the whole time until it hit the truck from the gas station on the north side of the highway.",
+      "confidence": "low",
+      "assumptions": "The gas station on the north side of the highway is not modeled in the scene, so the witness is placed as a standing pedestrian (eye height 1.6 m) just north of the US-27A westbound road edge (z = -35.1 m) at [0, 0, -40] facing the intersection (x = 0). Observation time is set to 10.4 s, the moment of impact when Vehicle A hits the truck.",
+      "citation": "Live statement",
+      "model": "gemini-4-argon"
+    },
+    "model": "gemini-4-argon",
+    "seconds": 7.5,
+    "at": "2026-10-25T19:11:49.072Z"
+  },
+  "63edd7a5e67738d1": {
+    "statement": "I was driving west, about 100 yards from the crossover, when the truck started its turn. I could see the eastbound car coming the entire time.",
+    "witness": {
+      "name": "Westbound motorist (100 yd from crossover)",
+      "position": [
+        91.4,
+        0,
+        -29.9
+      ],
+      "eyeHeight": 1.2,
+      "lookAt": "veh_A",
+      "observationTime": 2,
+      "claim": "I was driving west about 100 yards from the crossover when the truck started its turn, and I could see the eastbound car coming the entire time.",
+      "confidence": "medium",
+      "assumptions": "Placed 100 yards (91.44 m) east of the NE 140th Ct / crossover center (x=0) at x=91.4 m in the westbound lanes (z=-29.9 m, between the WB inside lane at -28.0 m and outside lane at -31.7 m) with standard car driver eye height of 1.2 m. Observation time is set to t=2.0 s, the moment in the trajectory table when the truck tractor begins turning south from its westbound approach (z=-23.8 m).",
+      "citation": "Live statement",
+      "model": "gemini-4-argon"
+    },
+    "model": "gemini-4-argon",
+    "seconds": 5.728,
+    "at": "2026-10-25T19:12:18.260Z"
+  },
+  "ece46586511f9fd1": {
+    "statement": "I was nearby and I saw everything. The car never slowed down.",
+    "witness": {
+      "name": "New Witness",
+      "position": [
+        6,
+        0,
+        6
+      ],
+      "eyeHeight": 1.6,
+      "lookAt": "veh_A",
+      "observationTime": 10,
+      "claim": "I was nearby and I saw everything, and the car never slowed down.",
+      "confidence": "low",
+      "assumptions": "The statement 'nearby' is extremely vague and gives no specific landmark or vehicle, so the witness is placed as a standing pedestrian on the walkable southeast corner near the stop sign and retail store at [6.0, 0.0, 6.0]. The observation time is set to 10.0s, just before impact, to correspond with watching the car ('veh_A') approach without slowing down.",
+      "citation": "Live statement",
+      "model": "gemini-4-argon"
+    },
+    "model": "gemini-4-argon",
+    "seconds": 4.199,
+    "at": "2026-10-25T19:12:02.726Z"
+  }
+}

@@ -256,8 +256,8 @@ export function lightLevels({ sunEl, moonEl = -90, moonFraction = 0, moonPhaseDe
   const starlight = 0.002; // natural night sky (airglow + stars), lux, moonless clear
   diffuse = Math.max(diffuse, starlight * (w.direct === 0 ? 0.5 : 1));
   const globalLux = directNormal * sinEl + moonNormal * Math.max(0, sinD(moonEl)) + diffuse;
-  const Eref = 60000;  // global illuminance at which luxToIntensity gives intensity ~ "1.5 per 60 klux"
-  const k = 1.5 / Eref;
+  const Eref = 60000;  // global illuminance at which luxToIntensity gives intensity 3.0 (a white horizontal surface at ~45 deg sun renders near, not above, display white)
+  const k = 3.0 / Eref;
   const luxToIntensity = k * Math.pow(Eref / globalLux, 0.75);
   // colour: white-balanced to a high sun (camera 'daylight' balance, AM 1.2) so noon sun is neutral and a low sun turns amber
   const Twb = transmittance(56, w.beta);
@@ -444,8 +444,8 @@ export function environment(THREE, opts = {}) {
     const pe = preethamSunE(Math.max(sp.elevationDeg, -10));
     const peRef = preethamSunE(45);
     const pb = L.perceivedBrightness;
-    let gain = 0.55 * pb / Math.max(Math.pow(pe / peRef, 0.9), 0.06);
-    if (!sunUp) gain = 0.55 * pb / 0.06;
+    let gain = 0.45 * pb / Math.max(Math.pow(pe / peRef, 0.9), 0.06);
+    if (!sunUp) gain = 0.45 * pb / 0.06;
     u.skyGain.value = clamp(gain, 0, 20);
     // twilight term: strongest just after sunset, gone by the end of nautical twilight; scaled to perceived light
     const dep = -sp.elevationDeg;
@@ -528,7 +528,7 @@ export function environment(THREE, opts = {}) {
 
   return {
     group, sun, hemisphere, sky, fog, background, update, info, dispose,
-    recommendedRenderer: { toneMapping: 'NeutralToneMapping', toneMappingExposure: 1.0, outputColorSpace: 'srgb', shadowMapType: 'PCFSoftShadowMap' },
+    recommendedRenderer: { toneMapping: 'NeutralToneMapping', toneMappingExposure: 1.0, outputColorSpace: 'srgb', shadowMapType: 'PCFShadowMap' },
   };
 }
 
@@ -538,5 +538,5 @@ export function configureRenderer(THREE, renderer) {
   renderer.toneMappingExposure = 1.0;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap;   // PCFSoft was removed in r18x
 }

@@ -67,3 +67,5 @@ Evidence inventory: {{INVENTORY}}
 ```
 
 The evidence videos/images and the render videos/stills follow. Watch them all, then answer with the JSON only.
+
+**Citing videos.** If the case has more than one video (see `videoIndex` in the inventory and the "VIDEO n: deposition of <label> (length)" headers before each video), every video citation must name which video it is from: "Depo <label> MM:SS" for a deposition (e.g. "Depo Brandt 27:04" or "Depo B 27:04"), "<label> MM:SS" otherwise, where MM:SS is that video's own clock. Never cite a bare "Depo MM:SS" when there are several depositions; with a single deposition "Depo MM:SS" is fine.

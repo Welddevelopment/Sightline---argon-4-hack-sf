@@ -50,3 +50,5 @@ Evidence inventory: {{INVENTORY}}
 {{CASE_TEXT}}
 
 Now study the text above and watch/inspect every video and image attached to this message, then output the complete world module in a single ```js block.
+
+**Citing videos.** If the case has more than one video (see `videoIndex` in the inventory and the "VIDEO n: deposition of <label> (length)" headers before each video), every video citation must name which video it is from: "Depo <label> MM:SS" for a deposition (e.g. "Depo Brandt 27:04" or "Depo B 27:04"), "<label> MM:SS" otherwise, where MM:SS is that video's own clock. Never cite a bare "Depo MM:SS" when there are several depositions; with a single deposition "Depo MM:SS" is fine.

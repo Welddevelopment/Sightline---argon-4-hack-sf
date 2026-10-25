@@ -1,8 +1,10 @@
 // RENDER slice: headless Playwright -> per-view mp4 + PNG stills.
 // CLI: node render/record.js --world /worlds/reference_world.js --views overhead,wit_A,wit_B --fps 10 --out renders/<name>
 // Lib: import { renderViews } from './render/record.js'
-// Env: RENDER_CHROME=packaged|playwright (default auto), BASE_URL (use a running app server), RENDER_PAGE (default /web/index.html),
-//      RENDER_W / RENDER_H (default 960x540)
+// Env: RENDER_CHROME=packaged|playwright (default auto), BASE_URL (use a running app server), RENDER_PAGE (default /, may carry ?case=),
+//      RENDER_W / RENDER_H (clip size, default 960x540), RENDER_STILL_W / RENDER_STILL_H (stills, default 1280x720),
+//      RENDER_QUALITY=render|interactive (default render: 2x supersampled, 4096 shadows; see web/render_quality.js),
+//      RENDER_CLEAN=0 to keep the app chrome (default: ?clean=1, full-bleed 3D view + HUD only)
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -56,6 +58,24 @@ export async function launchBrowser() {
 const wait = ms => new Promise(r => setTimeout(r, ms));
 const pad = n => String(n).padStart(5, '0');
 
+// Build the viewer URL. pagePath may already carry a query (e.g. '/?case=demo'): merge, never append a second '?'.
+export function viewUrl(base, pagePath, q) {
+  const u = new URL(pagePath || '/', base.replace(/\/$/, '') + '/');
+  for (const [k, v] of Object.entries(q)) if (v != null && v !== false) u.searchParams.set(k, String(v));
+  return u.href;
+}
+
+// After sl.ready: wait for async assets (GLB vehicles, sky) if the world/viewer exposes a ready hook, then redraw.
+async function waitAssets(page, ms = 20000) {
+  await page.evaluate(async (ms) => {
+    const sl = window.sl, w = sl && sl.world;
+    const hooks = [sl && sl.assetsReady, sl && sl.assets && sl.assets.ready, w && w.assets && w.assets.ready, w && w.ready, sl && sl.renderQuality && sl.renderQuality.ready];
+    const jobs = hooks.filter(Boolean).map((h) => { try { return Promise.resolve(typeof h === 'function' ? h.call((w && w.assets) || sl) : h); } catch (_) { return null; } });
+    await Promise.race([Promise.allSettled(jobs), new Promise((r) => setTimeout(r, ms))]);
+    if (sl && sl.renderFrame) sl.renderFrame();
+  }, ms);
+}
+
 function ffmpegMp4(framesDir, fps, outFile) {
   // output at min(fps,12) is unnecessary; keep input fps. even dimensions for yuv420p.
   const r = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(fps), '-i', path.join(framesDir, 'f%05d.png'),
@@ -78,6 +98,9 @@ export async function renderViews({ world, worldUrl: worldUrlOpt, views = 'all',
   outDir = path.resolve(outDir || path.join(ROOT, 'renders', path.basename(worldUrl, '.js')));
   fs.mkdirSync(outDir, { recursive: true });
   const W = +(width || process.env.RENDER_W || 960), H = +(height || process.env.RENDER_H || 540);
+  const SW = +(width || process.env.RENDER_STILL_W || 1280), SH = +(height || process.env.RENDER_STILL_H || 720);
+  const quality = process.env.RENDER_QUALITY || 'render';
+  const clean = process.env.RENDER_CLEAN !== '0';
   pagePath = pagePath || process.env.RENDER_PAGE || '/';
 
   let srv = null, base = baseUrl || process.env.BASE_URL;
@@ -86,19 +109,20 @@ export async function renderViews({ world, worldUrl: worldUrlOpt, views = 'all',
   const browser = await launchBrowser();
   const result = { videos: [], stills: [], files: [], mp4s: [], pngs: [], duration: null, browser: browser.__how };
   try {
-    const ctx = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
+    const ctx = await browser.newContext({ viewport: stillOnly ? { width: SW, height: SH } : { width: W, height: H }, deviceScaleFactor: 1 });
     const openView = async (cam, t) => {
       const page = await ctx.newPage();
       const errs = [];
       const hasExtra = extraWitnesses && extraWitnesses.length > 0;
       page.on('pageerror', e => errs.push(String(e)));
       page.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
-      const u = `${base}${pagePath}?world=${encodeURIComponent(worldUrl)}&cam=${encodeURIComponent(hasExtra ? 'overhead' : cam)}${t != null ? '&t=' + t : ''}`;
+      const u = viewUrl(base, pagePath, { world: worldUrl, cam: hasExtra ? 'overhead' : cam, t, quality, clean: clean ? 1 : null });
       await page.goto(u, { waitUntil: 'load' });
       try {
         await page.waitForFunction(() => window.sl && window.sl.ready, null, { timeout: 30000 });
         await page.evaluate(() => window.sl.ready);
       } catch (e) { throw new Error(`viewer not ready for ${u}: ${e.message}\n${errs.join('\n')}`); }
+      await waitAssets(page);
       if (extraWitnesses && extraWitnesses.length) {
         await page.evaluate(({ ws, cam }) => {
           const list = window.sl.world.witnesses || (window.sl.world.witnesses = []);
@@ -142,15 +166,18 @@ export async function renderViews({ world, worldUrl: worldUrlOpt, views = 'all',
       const page = await openView(view);
       const framesDir = fs.mkdtempSync(path.join(os.tmpdir(), `sl_${view}_`));
       const n = Math.floor(info.duration * fps) + 1;
+      const tc0 = Date.now();
       for (let i = 0; i < n; i++) {
         await page.evaluate(t => { window.sl.setTime(t); window.sl.renderFrame(); }, Math.min(i / fps, info.duration));
         await page.screenshot({ path: path.join(framesDir, `f${pad(i + 1)}.png`) });
       }
+      (result.secPerFrame || (result.secPerFrame = {}))[view] = +((Date.now() - tc0) / 1000 / n).toFixed(3);
       const mp4 = path.join(outDir, `${view}.mp4`);
       ffmpegMp4(framesDir, fps, mp4);
       result.videos.push(mp4);
       if (stills) {
         const ts = obs[view] != null ? obs[view] : info.duration / 2;
+        if (SW !== W || SH !== H) { await page.setViewportSize({ width: SW, height: SH }); await wait(50); }
         await page.evaluate(t => { window.sl.setTime(t); window.sl.renderFrame(); }, ts);
         const png = path.join(outDir, `${view}.png`);
         await page.screenshot({ path: png });

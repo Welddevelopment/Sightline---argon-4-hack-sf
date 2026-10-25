@@ -8,8 +8,9 @@
 // opts:
 //   quality   'interactive' (default; MSAA, dpr<=2, 2048 shadow map) | 'render' (2x supersampled, 4096 shadow map)
 //   env       optional environment source: THREE.Texture | THREE.Object3D/Scene (PMREM'd) | 'room' | 'sky' | function(THREE) -> one of those.
-//             Default: web/assets/environment.js if it exists and exposes a sky (see resolveSkyModule), else a sky-gradient
-//             built from scene.background; 'room' forces three's RoomEnvironment.
+//             Default: the sky dome already in the scene (web/assets/environment.js names it 'env_sky'; any mesh named
+//             sky* or with userData.envSource also counts) baked to PMREM, else a sky gradient built from scene.background.
+//             'room' forces three's RoomEnvironment.
 //   lighting  'day' | 'dawn' | 'night' (scales environment + exposure)
 //   sun       the viewer's shadow-casting DirectionalLight. If the world module authored its own directional light
 //             (e.g. 'light_sun' with the case's real sun azimuth/elevation), that direction/colour is adopted for the
@@ -102,30 +103,6 @@ function envFromSource(renderer, src) {
     return getPmrem(renderer).fromEquirectangular(src).texture;
   }
   if (src.isObject3D) return pmremFromObject(renderer, src);
-  return null;
-}
-
-// Optional sky module written alongside this file. Accepts several export shapes so it can evolve independently:
-// envSource|skyEnvironment|createEnvironmentScene|createSkyEnvironment|createSky|default -> Texture | Object3D | function(THREE)
-let skyModPromise = null;
-function resolveSkyModule() {
-  if (!skyModPromise) {
-    const url = new URL('./assets/environment.js', import.meta.url).href;
-    skyModPromise = fetch(url, { method: 'HEAD' }).then((r) => (r.ok ? import(url) : null)).catch(() => null);
-  }
-  return skyModPromise;
-}
-function skyFromModule(mod, opts) {
-  if (!mod) return null;
-  for (const k of ['envSource', 'skyEnvironment', 'createEnvironmentScene', 'createSkyEnvironment', 'createSky', 'default']) {
-    const v = mod[k];
-    if (!v) continue;
-    try {
-      const r = typeof v === 'function' ? v(THREE, { lighting: opts.lighting, forEnvironment: true }) : v;
-      if (r && (r.isTexture || r.isObject3D)) return r;
-      if (r && (r.sky || r.scene || r.texture)) return r.texture || r.scene || r.sky;
-    } catch (_) {}
-  }
   return null;
 }
 
@@ -278,10 +255,6 @@ export function applyRenderQuality(renderer, scene, opts = {}) {
       if (sky) setEnv(pmremFromObject(renderer, sky), 'scene-sky');
       else {
         setEnv(gradient(), 'gradient');
-        handle.ready = resolveSkyModule().then((mod) => {
-          const src = skyFromModule(mod, { lighting });
-          if (src) { try { setEnv(envFromSource(renderer, src), 'environment.js'); } catch (e) { console.warn('render_quality: sky env failed', e); } }
-        });
       }
     }
   } catch (e) {

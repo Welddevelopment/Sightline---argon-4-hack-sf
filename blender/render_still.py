@@ -176,14 +176,15 @@ def m_dark_metal(nt, base):
 def m_asphalt(nt, base):
     big = nt.noise(0.15, 3, 0.5)            # patching / wear, several meters
     fine = nt.noise(80.0, 2, 0.7)           # aggregate, ~1 cm
+    base = (max(base[0], 0.07) * 1.02, max(base[1], 0.07), max(base[2], 0.07) * 0.97)  # sun-bleached, warm-neutral grey
     c = nt.ramp(big, scale(base, 0.75), scale(base, 1.25), 0.35, 0.7)
     agg = nt.ramp(fine, (0, 0, 0), (1, 1, 1), 0.4, 0.75)
     m = nt.n('ShaderNodeMix', data_type='RGBA', blend_type='OVERLAY')
     m.inputs['Factor'].default_value = 0.35
     nt.link(c, m.inputs[6]); nt.link(agg, m.inputs[7])
     nt.link(m.outputs[2], nt.bsdf.inputs['Base Color'])
-    nt.link(nt.map_range(big, 0.82, 0.95), nt.bsdf.inputs['Roughness'])
-    nt.set(spec=0.4)
+    nt.link(nt.map_range(big, 0.85, 0.97), nt.bsdf.inputs['Roughness'])
+    nt.set(spec=0.3)
     nt.bump(fine, 0.35, 0.004)
 
 
@@ -268,6 +269,42 @@ def upgrade(mat):
     m_plain(nt, base); return 'plain'
 
 
+SKY_PARAMS = {}
+
+
+def add_haze(mat, dist_k=9000.0):
+    """Aerial perspective: blend toward the sky colour seen along the (horizon-clamped) view ray, by view distance."""
+    t = mat.node_tree
+    out = next(n for n in t.nodes if n.type == 'OUTPUT_MATERIAL')
+    if not out.inputs['Surface'].links:
+        return
+    src = out.inputs['Surface'].links[0].from_socket
+    N = t.nodes.new
+    cd = N('ShaderNodeCameraData')
+    geo = N('ShaderNodeNewGeometry')
+    neg = N('ShaderNodeVectorMath'); neg.operation = 'MULTIPLY'; neg.inputs[1].default_value = (-1, -1, 0)
+    t.links.new(geo.outputs['Incoming'], neg.inputs[0])
+    up = N('ShaderNodeVectorMath'); up.operation = 'ADD'; up.inputs[1].default_value = (0, 0, 0.04)
+    t.links.new(neg.outputs[0], up.inputs[0])
+    nrm = N('ShaderNodeVectorMath'); nrm.operation = 'NORMALIZE'
+    t.links.new(up.outputs[0], nrm.inputs[0])
+    sk = N('ShaderNodeTexSky')
+    for k, v in SKY_PARAMS.items():
+        setattr(sk, k, v)
+    t.links.new(nrm.outputs[0], sk.inputs['Vector'])
+    em = N('ShaderNodeEmission'); em.inputs['Strength'].default_value = SKY_STRENGTH
+    t.links.new(sk.outputs['Color'], em.inputs['Color'])
+    f = N('ShaderNodeMath'); f.operation = 'DIVIDE'; f.inputs[1].default_value = -dist_k
+    t.links.new(cd.outputs['View Distance'], f.inputs[0])
+    ex = N('ShaderNodeMath'); ex.operation = 'EXPONENT'; t.links.new(f.outputs[0], ex.inputs[0])
+    one = N('ShaderNodeMath'); one.operation = 'SUBTRACT'; one.inputs[0].default_value = 1.0
+    t.links.new(ex.outputs[0], one.inputs[1])
+    mx = N('ShaderNodeMixShader')
+    t.links.new(one.outputs[0], mx.inputs['Fac'])
+    t.links.new(src, mx.inputs[1]); t.links.new(em.outputs[0], mx.inputs[2])
+    t.links.new(mx.outputs[0], out.inputs['Surface'])
+
+
 roles = {}
 for mat in list(bpy.data.materials):
     r = upgrade(mat)
@@ -306,7 +343,8 @@ for k, v in (('altitude', 30.0), ('air_density', 1.0), ('aerosol_density', 1.3),
     if hasattr(sky, k):
         setattr(sky, k, v)
 bg = wn.new('ShaderNodeBackground')
-bg.inputs['Strength'].default_value = 0.22
+SKY_STRENGTH = 0.3
+bg.inputs['Strength'].default_value = SKY_STRENGTH
 wout = wn.new('ShaderNodeOutputWorld')
 world.node_tree.links.new(sky.outputs['Color'], bg.inputs['Color'])
 world.node_tree.links.new(bg.outputs['Background'], wout.inputs['Surface'])
@@ -318,6 +356,12 @@ sun_data.color = (1.0, 0.96, 0.9)
 sun = bpy.data.objects.new('sl_sun', sun_data)
 scn.collection.objects.link(sun)
 sun.rotation_euler = d.to_track_quat('Z', 'Y').to_euler()   # lamp shines along its -Z, i.e. from d toward the scene
+
+SKY_PARAMS.update({k: getattr(sky, k) for k in ('sky_type', 'sun_disc', 'sun_elevation', 'sun_rotation', 'altitude',
+                   'air_density', 'aerosol_density', 'ozone_density') if hasattr(sky, k)})
+for mat in bpy.data.materials:
+    if mat.use_nodes:
+        add_haze(mat)
 
 # ---------------------------------------------------------------- camera
 cam = bpy.data.objects.get('cam_' + a.camera) or bpy.data.objects.get(a.camera)

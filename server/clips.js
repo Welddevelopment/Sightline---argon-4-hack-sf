@@ -253,7 +253,7 @@ async function renderJob(job) {
     const errs = [];
     page.on('pageerror', (e) => errs.push(String(e)));
     const hasExtra = (job.extraWitnesses || []).some((w) => w.id === job.camera);
-    const u = `${job.base}/index.html?clean=1&world=${encodeURIComponent(job.worldUrl)}&cam=${encodeURIComponent(hasExtra ? 'overhead' : job.camera)}&t=${job.t0}`;
+    const u = `${job.base}/index.html?clean=1&world=${encodeURIComponent(job.worldUrl)}&cam=${encodeURIComponent(hasExtra ? 'overhead' : job.camera)}&t=${job.t0}${process.env.CLIP_QUALITY ? '&quality=' + encodeURIComponent(process.env.CLIP_QUALITY) : ''}`;
     await page.goto(u, { waitUntil: 'load' });
     try {
       await page.waitForFunction(() => window.sl && window.sl.ready, null, { timeout: 60000 });

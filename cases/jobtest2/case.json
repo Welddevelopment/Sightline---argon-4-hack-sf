@@ -1,0 +1,55 @@
+{
+  "caseId": "jobtest2",
+  "title": "Job test 2",
+  "createdAt": "2026-10-25T18:08:32.681Z",
+  "files": [
+    {
+      "name": "deposition.mp4",
+      "type": "video",
+      "size": 4244843,
+      "durationSec": 1801.8
+    },
+    {
+      "name": "deposition.srt",
+      "type": "text",
+      "size": 1763,
+      "textPath": "text/deposition.txt"
+    },
+    {
+      "name": "facts.md",
+      "type": "text",
+      "size": 6883,
+      "textPath": "text/facts.txt"
+    },
+    {
+      "name": "map.png",
+      "type": "image",
+      "size": 54576
+    },
+    {
+      "name": "police_report.md",
+      "type": "text",
+      "size": 6532,
+      "textPath": "text/police_report.txt"
+    },
+    {
+      "name": "witness_A.md",
+      "type": "text",
+      "size": 1729,
+      "textPath": "text/witness_A.txt"
+    },
+    {
+      "name": "witness_C.md",
+      "type": "text",
+      "size": 1507,
+      "textPath": "text/witness_C.txt"
+    },
+    {
+      "name": "deposition_transcript.txt",
+      "type": "text",
+      "size": 20708,
+      "textPath": "text/deposition_transcript.txt"
+    }
+  ],
+  "status": "done"
+}
