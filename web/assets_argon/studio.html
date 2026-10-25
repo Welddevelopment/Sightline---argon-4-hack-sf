@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Asset Forge Studio</title>
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#d9dcdf}#tag{position:fixed;left:10px;bottom:8px;font:12px/1.2 system-ui,sans-serif;color:#2a3138;background:rgba(255,255,255,.75);padding:3px 7px;border-radius:3px}</style>
+<script type="importmap">
+{ "imports": { "three": "/node_modules/three/build/three.module.js", "three/addons/": "/node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="tag"></div>
+<script type="module">
+// Neutral studio for asset_forge stills: ?asset=&mode=argon|current&src=<module url>&cfg=<json framing>
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+const q = new URLSearchParams(location.search);
+const asset = q.get('asset'), mode = q.get('mode'), src = q.get('src');
+const cfg = JSON.parse(q.get('cfg') || '{}');
+document.getElementById('tag').textContent = `${mode === 'current' ? 'CURRENT web/assets' : 'ARGON'} · ${asset} · 1 m grid`;
+
+async function build() {
+  const opts = { id: asset + '_1', color: cfg.color };
+  if (mode === 'argon') { const m = await import(src); return m.default(THREE, opts); }
+  const [fn, arg] = cfg.current || [];
+  if (fn === 'vehicle') { const v = await import('/web/assets/vehicles.js'); return v.createVehicle(THREE, arg, opts); }
+  if (fn === 'surface') { const t = await import('/web/assets/textures.js'); return t.surfaceMaterial(arg); }
+  if (fn === 'box') { const [L, W, H] = arg; const g = new THREE.Group(); const m = new THREE.Mesh(new THREE.BoxGeometry(W, H, L), new THREE.MeshStandardMaterial({ color: 0x9aa0a6, roughness: 0.8 })); m.position.y = H / 2; m.castShadow = m.receiveShadow = true; g.add(m); return g; }
+  const f = await import('/web/assets/furniture.js');
+  return f[fn](arg);
+}
+
+const done = (o) => { window.__done = o; };
+try {
+  const W = innerWidth, H = innerHeight;
+  const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  renderer.setPixelRatio(1); renderer.setSize(W, H);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  document.body.appendChild(renderer.domElement);
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xd9dcdf);
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environmentIntensity = 0.8;
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8f94, 0.5));
+  const dims = cfg.dims || [16, 16, 2];
+  const S = Math.max(dims[0], dims[1], dims[2], 8) * 1.4;
+  const sun = new THREE.DirectionalLight(0xfff6ea, 2.4);
+  sun.position.set(-0.55 * S, 1.0 * S, -0.45 * S).add(new THREE.Vector3(...cfg.t));
+  sun.target.position.set(...cfg.t); scene.add(sun.target);
+  sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+  Object.assign(sun.shadow.camera, { left: -S, right: S, top: S, bottom: -S, near: 0.5, far: S * 4 });
+  sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.02; scene.add(sun);
+
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(600, 600), new THREE.MeshStandardMaterial({ color: 0xc4c8cc, roughness: 0.92 }));
+  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+  const gs = Math.ceil(S * 2.5);
+  const grid = new THREE.GridHelper(gs, gs, 0x6d757d, 0x8f979e); grid.position.y = 0.003;
+  grid.material.transparent = true; grid.material.opacity = 0.6; scene.add(grid);
+
+  const obj = await build();
+  let info = { ok: true };
+  if (cfg.kind === 'material') {
+    if (!obj || !obj.isMaterial) throw new Error('module did not return a Material');
+    const N = 16; const g = new THREE.PlaneGeometry(N, N, 1, 1);
+    const uv = g.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * N, uv.getY(i) * N);
+    const patch = new THREE.Mesh(g, obj); patch.rotation.x = -Math.PI / 2; patch.position.set(0, 0.01, -3.5); patch.receiveShadow = true; scene.add(patch);
+    sun.position.set(-12, 9, 6);
+    info.material = { type: obj.type, map: !!obj.map, normalMap: !!obj.normalMap, roughnessMap: !!obj.roughnessMap };
+  } else {
+    if (!obj || !obj.isObject3D) throw new Error('module did not return an Object3D');
+    scene.add(obj);
+    obj.traverse((o) => { if (o.isMesh && o.castShadow === undefined) o.castShadow = true; });
+    obj.updateMatrixWorld(true);
+    const b = new THREE.Box3().setFromObject(obj, true); const sz = b.getSize(new THREE.Vector3());
+    let tris = 0; obj.traverse((o) => { if (o.isMesh && o.geometry?.attributes?.position) { const g = o.geometry; tris += ((g.index ? g.index.count : g.attributes.position.count) / 3) * (o.isInstancedMesh ? o.count : 1); } });
+    info.bbox = { length: +sz.z.toFixed(2), width: +sz.x.toFixed(2), height: +sz.y.toFixed(2), minY: +b.min.y.toFixed(3) };
+    info.tris = Math.round(tris);
+  }
+  const cam = new THREE.PerspectiveCamera(35, W / H, 0.05, 2000);
+  const az = cfg.az * Math.PI / 180, el = cfg.el * Math.PI / 180, d = cfg.d;
+  const t = new THREE.Vector3(...cfg.t);
+  cam.position.set(t.x - d * Math.cos(el) * Math.sin(az), t.y + d * Math.sin(el), t.z - d * Math.cos(el) * Math.cos(az));
+  cam.lookAt(t);
+  // give lazily-created textures / async work a moment, then render twice
+  await new Promise((r) => setTimeout(r, 300));
+  renderer.render(scene, cam);
+  await new Promise((r) => requestAnimationFrame(() => r()));
+  renderer.render(scene, cam);
+  await new Promise((r) => requestAnimationFrame(() => r()));
+  done(info);
+} catch (e) {
+  document.getElementById('tag').textContent += ' · ERROR: ' + (e && e.message);
+  console.error('studio error: ' + (e && (e.stack || e.message)));
+  done({ ok: false, error: String(e && (e.stack || e.message)).slice(0, 600) });
+}
+</script>
+</body>
+</html>

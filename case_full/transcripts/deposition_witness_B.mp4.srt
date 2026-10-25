@@ -1,0 +1,6727 @@
+1
+00:00:00,000 --> 00:00:05,349
+VIDEOGRAPHER: We are now on the record. This is the videotaped deposition of Witness B, taken in
+
+2
+00:00:05,349 --> 00:00:11,938
+VIDEOGRAPHER: connection with the wrongful death action arising from the collision on U.S. Highway 27A at Northeast
+
+3
+00:00:11,938 --> 00:00:17,221
+VIDEOGRAPHER: 140th Court on May 7, 2016. Today's date is the fourteenth. The time on the video
+
+4
+00:00:17,221 --> 00:00:22,440
+VIDEOGRAPHER: monitor is 9:02 a.m. Will counsel please state their appearances for the record.
+
+5
+00:00:22,440 --> 00:00:26,704
+ATTORNEY: Good morning. I represent the estate of the driver of Vehicle A,
+
+6
+00:00:26,704 --> 00:00:31,700
+ATTORNEY: the plaintiff in this matter, and I'll be conducting the examination today.
+
+7
+00:00:31,700 --> 00:00:36,681
+OPPOSING COUNSEL: Good morning. I appear on behalf of the defendant motor carrier and the
+
+8
+00:00:36,681 --> 00:00:41,802
+OPPOSING COUNSEL: driver of Vehicle T. We'll reserve all objections except as to form until
+
+9
+00:00:41,802 --> 00:00:45,590
+OPPOSING COUNSEL: the time of trial, and the witness will read and sign.
+
+10
+00:00:45,590 --> 00:00:51,290
+ATTORNEY: That's agreed. Is there anyone else present in the room that should be noted?
+
+11
+00:00:51,290 --> 00:00:54,140
+OPPOSING COUNSEL: No one else on our side.
+
+12
+00:00:54,140 --> 00:00:58,770
+ATTORNEY: Nor on ours. Would the court reporter please swear the witness.
+
+13
+00:00:58,770 --> 00:01:02,190
+VIDEOGRAPHER: Let the record reflect the witness has been sworn
+
+14
+00:01:02,190 --> 00:01:05,540
+VIDEOGRAPHER: by the court reporter. Counsel, you may proceed.
+
+15
+00:01:05,540 --> 00:01:07,680
+ATTORNEY: Thank you. Good morning.
+
+16
+00:01:07,680 --> 00:01:09,100
+WITNESS B: Good morning.
+
+17
+00:01:09,100 --> 00:01:14,800
+ATTORNEY: Could you please state your name for the record. For purposes of this video we'll
+
+18
+00:01:14,800 --> 00:01:20,500
+ATTORNEY: refer to you as Witness B, and that's how you'll be identified in the transcript.
+
+19
+00:01:20,500 --> 00:01:26,200
+WITNESS B: Okay. I understand. I gave my full name to the reporter before we started.
+
+20
+00:01:26,200 --> 00:01:31,900
+ATTORNEY: That's fine. You understand that you've just taken an oath to tell the truth?
+
+21
+00:01:31,900 --> 00:01:33,680
+WITNESS B: Yes, I do.
+
+22
+00:01:33,680 --> 00:01:38,485
+ATTORNEY: And that oath is the same oath you would take if you were
+
+23
+00:01:38,485 --> 00:01:43,290
+ATTORNEY: testifying in a courtroom in front of a judge and a jury?
+
+24
+00:01:43,290 --> 00:01:45,430
+WITNESS B: Yes, I understand that.
+
+25
+00:01:45,430 --> 00:01:48,990
+ATTORNEY: Have you ever had your deposition taken before?
+
+26
+00:01:48,990 --> 00:01:54,340
+WITNESS B: No. This is my first time. I've never been in anything like this.
+
+27
+00:01:54,340 --> 00:01:58,970
+ATTORNEY: Have you ever testified in court, in any kind of case?
+
+28
+00:01:58,970 --> 00:02:02,925
+WITNESS B: No. I got called for jury duty one time, years
+
+29
+00:02:02,925 --> 00:02:06,450
+WITNESS B: ago, but they sent me home the first day.
+
+30
+00:02:06,450 --> 00:02:09,631
+ATTORNEY: Have you ever been a party to a lawsuit?
+
+31
+00:02:09,631 --> 00:02:13,210
+ATTORNEY: Meaning you sued someone or someone sued you?
+
+32
+00:02:13,210 --> 00:02:14,640
+WITNESS B: No, never.
+
+33
+00:02:14,640 --> 00:02:18,797
+ATTORNEY: All right. Since this is your first deposition, let me go
+
+34
+00:02:18,797 --> 00:02:23,172
+ATTORNEY: through a few ground rules. They help keep the record clean,
+
+35
+00:02:23,172 --> 00:02:27,110
+ATTORNEY: and frankly they make the day go faster. Is that okay?
+
+36
+00:02:27,110 --> 00:02:28,170
+WITNESS B: Sure.
+
+37
+00:02:28,170 --> 00:02:34,146
+ATTORNEY: The court reporter is taking down everything that's said in this room, and the camera
+
+38
+00:02:34,146 --> 00:02:39,349
+ATTORNEY: is recording you. So it's important that you answer out loud. A nod of the
+
+39
+00:02:39,349 --> 00:02:44,200
+ATTORNEY: head or a shrug doesn't show up in the transcript. Do you understand?
+
+40
+00:02:44,200 --> 00:02:45,270
+WITNESS B: Yes.
+
+41
+00:02:45,270 --> 00:02:51,052
+ATTORNEY: Along the same lines, try to avoid answers like uh-huh or huh-uh. They look
+
+42
+00:02:51,052 --> 00:02:55,600
+ATTORNEY: nearly the same on paper. Yes or no is better when it fits.
+
+43
+00:02:55,600 --> 00:03:00,940
+WITNESS B: Okay. I'll try. I'm a talker, so you might have to remind me.
+
+44
+00:03:00,940 --> 00:03:07,040
+ATTORNEY: That's perfectly fine. Second, please let me finish my question before you start your
+
+45
+00:03:07,040 --> 00:03:11,777
+ATTORNEY: answer, even if you think you know where I'm going. And I'll do my
+
+46
+00:03:11,777 --> 00:03:16,370
+ATTORNEY: best to let you finish your answer before I ask the next one. If
+
+47
+00:03:16,370 --> 00:03:21,250
+ATTORNEY: we talk over each other, the reporter can't take us both down. Fair?
+
+48
+00:03:21,250 --> 00:03:22,670
+WITNESS B: That's fair.
+
+49
+00:03:22,670 --> 00:03:28,483
+ATTORNEY: Third, if you don't understand a question, please tell me, and I'll rephrase it. If you
+
+50
+00:03:28,483 --> 00:03:34,430
+ATTORNEY: go ahead and answer, I'm going to assume you understood the question. Is that reasonable?
+
+51
+00:03:34,430 --> 00:03:35,490
+WITNESS B: Yes.
+
+52
+00:03:35,490 --> 00:03:40,405
+ATTORNEY: Fourth, I don't want you to guess. If you know something, tell me. If
+
+53
+00:03:40,405 --> 00:03:45,107
+ATTORNEY: you don't know, it's perfectly fine to say I don't know or I don't
+
+54
+00:03:45,107 --> 00:03:50,450
+ATTORNEY: remember. Do you understand the difference between a guess and an estimate?
+
+55
+00:03:50,450 --> 00:03:54,370
+WITNESS B: I think so. Can you explain what you mean?
+
+56
+00:03:54,370 --> 00:04:00,428
+ATTORNEY: Sure. If I asked you how long this table is, you probably couldn't tell me exactly,
+
+57
+00:04:00,428 --> 00:04:06,195
+ATTORNEY: but you could look at it and give me a reasonable estimate. That's fine. What I
+
+58
+00:04:06,195 --> 00:04:12,180
+ATTORNEY: don't want is for you to make something up about something you never saw or heard.
+
+59
+00:04:12,180 --> 00:04:17,520
+WITNESS B: Okay. That makes sense. So if I don't know, I just say so.
+
+60
+00:04:17,520 --> 00:04:21,281
+ATTORNEY: Exactly. And if you're giving me an estimate, it
+
+61
+00:04:21,281 --> 00:04:24,650
+ATTORNEY: helps if you tell me that it's an estimate.
+
+62
+00:04:24,650 --> 00:04:26,070
+WITNESS B: All right.
+
+63
+00:04:26,070 --> 00:04:29,983
+ATTORNEY: From time to time the other attorney may object to one of my
+
+64
+00:04:29,983 --> 00:04:35,266
+ATTORNEY: questions. Unless you're instructed not to answer, you should go ahead and answer
+
+65
+00:04:35,266 --> 00:04:40,680
+ATTORNEY: the question after the objection. The objection is just for the record. Understood?
+
+66
+00:04:40,680 --> 00:04:44,240
+WITNESS B: So I still answer even when he objects.
+
+67
+00:04:44,240 --> 00:04:46,730
+ATTORNEY: Correct, unless you're told otherwise.
+
+68
+00:04:46,730 --> 00:04:47,800
+WITNESS B: Okay.
+
+69
+00:04:47,800 --> 00:04:52,532
+ATTORNEY: If you need a break at any time, just let me know. The only
+
+70
+00:04:52,532 --> 00:04:57,505
+ATTORNEY: thing I'd ask is that you not take a break while a question is
+
+71
+00:04:57,505 --> 00:05:03,120
+ATTORNEY: pending. Answer the question, and then we can take a break. All right?
+
+72
+00:05:03,120 --> 00:05:05,970
+WITNESS B: That's fine. I'm okay for now.
+
+73
+00:05:05,970 --> 00:05:10,576
+ATTORNEY: Are you taking any medication today, or is there anything else that would
+
+74
+00:05:10,576 --> 00:05:15,940
+ATTORNEY: affect your ability to understand my questions or give truthful and complete answers?
+
+75
+00:05:15,940 --> 00:05:18,080
+WITNESS B: No. Nothing like that.
+
+76
+00:05:18,080 --> 00:05:24,130
+ATTORNEY: That's understandable. Is there any reason at all you can't give your best testimony today?
+
+77
+00:05:24,130 --> 00:05:26,630
+WITNESS B: No. I can do it.
+
+78
+00:05:26,630 --> 00:05:30,346
+ATTORNEY: Good. Let's start with a little background. Where do you
+
+79
+00:05:30,346 --> 00:05:34,460
+ATTORNEY: currently live? I don't need a street address, just generally.
+
+80
+00:05:34,460 --> 00:05:40,870
+WITNESS B: I live here in the county. Out on the west side, kind of in between towns.
+
+81
+00:05:40,870 --> 00:05:44,430
+ATTORNEY: How long have you lived in the county?
+
+82
+00:05:44,430 --> 00:05:47,640
+WITNESS B: About fourteen years now. Going on fifteen.
+
+83
+00:05:47,640 --> 00:05:49,420
+ATTORNEY: And before that?
+
+84
+00:05:49,420 --> 00:05:54,857
+WITNESS B: Before that I lived a couple of counties north. I moved down here when
+
+85
+00:05:54,857 --> 00:05:59,750
+WITNESS B: my sister did. We're close, so we wanted to be near each other.
+
+86
+00:05:59,750 --> 00:06:02,240
+ATTORNEY: Do you live with anyone?
+
+87
+00:06:02,240 --> 00:06:05,848
+WITNESS B: Just me now. My son lived with me until a
+
+88
+00:06:05,848 --> 00:06:09,720
+WITNESS B: few years ago, but he's grown and moved out.
+
+89
+00:06:09,720 --> 00:06:12,570
+ATTORNEY: Where did you go to school?
+
+90
+00:06:12,570 --> 00:06:17,079
+WITNESS B: I went to high school up north, where I grew up. I graduated.
+
+91
+00:06:17,079 --> 00:06:22,550
+WITNESS B: And then later I took classes at the community college for my certificate.
+
+92
+00:06:22,550 --> 00:06:24,680
+ATTORNEY: What certificate is that?
+
+93
+00:06:24,680 --> 00:06:28,600
+WITNESS B: For home health. I'm a certified home health aide.
+
+94
+00:06:28,600 --> 00:06:31,810
+ATTORNEY: Is that what you do for work?
+
+95
+00:06:31,810 --> 00:06:35,370
+WITNESS B: Yes. I've done it for about eleven years.
+
+96
+00:06:35,370 --> 00:06:40,360
+ATTORNEY: Can you describe for the jury what a home health aide does?
+
+97
+00:06:40,360 --> 00:06:44,235
+WITNESS B: I go to people's houses, mostly older folks, and help them with
+
+98
+00:06:44,235 --> 00:06:49,339
+WITNESS B: daily things. Getting around the house, meals, light housekeeping, making sure they
+
+99
+00:06:49,339 --> 00:06:53,890
+WITNESS B: take their medicine on time. Some days it's just keeping somebody company.
+
+100
+00:06:53,890 --> 00:06:57,810
+ATTORNEY: Do you work for an agency or for yourself?
+
+101
+00:06:57,810 --> 00:07:02,440
+WITNESS B: For an agency. They give me my clients and my schedule.
+
+102
+00:07:02,440 --> 00:07:06,710
+ATTORNEY: How many clients do you typically see in a week?
+
+103
+00:07:06,710 --> 00:07:11,343
+WITNESS B: It changes. Usually three or four regular clients. Sometimes more
+
+104
+00:07:11,343 --> 00:07:14,550
+WITNESS B: if someone's out and they need me to fill in.
+
+105
+00:07:14,550 --> 00:07:18,110
+ATTORNEY: Are your clients spread out around the county?
+
+106
+00:07:18,110 --> 00:07:22,956
+WITNESS B: Yes, all over. That's a big part of the job, really. I'm
+
+107
+00:07:22,956 --> 00:07:27,370
+WITNESS B: in the car a lot, going from one house to the next.
+
+108
+00:07:27,370 --> 00:07:33,430
+ATTORNEY: About how many miles would you say you drive in a typical week for work?
+
+109
+00:07:33,430 --> 00:07:36,852
+WITNESS B: Oh, a lot. I'd guess a few hundred. I don't
+
+110
+00:07:36,852 --> 00:07:40,910
+WITNESS B: keep exact track. The agency reimburses some of it.
+
+111
+00:07:40,910 --> 00:07:43,050
+ATTORNEY: So that's an estimate.
+
+112
+00:07:43,050 --> 00:07:46,250
+WITNESS B: Yes, that's an estimate. A few hundred.
+
+113
+00:07:46,250 --> 00:07:51,240
+ATTORNEY: Were you working as a home health aide in May of 2016?
+
+114
+00:07:51,240 --> 00:07:53,020
+WITNESS B: Yes. Same agency.
+
+115
+00:07:53,020 --> 00:07:56,580
+ATTORNEY: Were you working on Saturday, May 7, 2016?
+
+116
+00:07:56,580 --> 00:08:00,850
+WITNESS B: No. That was my day off. I usually have Saturdays.
+
+117
+00:08:00,850 --> 00:08:04,944
+ATTORNEY: We'll come back to that day in a little while. I want
+
+118
+00:08:04,944 --> 00:08:10,120
+ATTORNEY: to finish up some background first. Do you have a driver's license?
+
+119
+00:08:10,120 --> 00:08:11,180
+WITNESS B: Yes.
+
+120
+00:08:11,180 --> 00:08:14,030
+ATTORNEY: How long have you been driving?
+
+121
+00:08:14,030 --> 00:08:17,600
+WITNESS B: Since I was sixteen. So a long time.
+
+122
+00:08:17,600 --> 00:08:21,510
+ATTORNEY: Do you need glasses or contact lenses to drive?
+
+123
+00:08:21,510 --> 00:08:27,157
+WITNESS B: No. I have reading glasses, for close-up things. Paperwork, my phone, that kind of
+
+124
+00:08:27,157 --> 00:08:31,840
+WITNESS B: thing. But I don't need anything for driving or for seeing far away.
+
+125
+00:08:31,840 --> 00:08:36,120
+ATTORNEY: Is there a restriction on your license for corrective lenses?
+
+126
+00:08:36,120 --> 00:08:38,250
+WITNESS B: No, there's no restriction.
+
+127
+00:08:38,250 --> 00:08:42,530
+ATTORNEY: When was the last time you had your eyes checked?
+
+128
+00:08:42,530 --> 00:08:46,712
+WITNESS B: Before this happened, it would have been maybe a year or
+
+129
+00:08:46,712 --> 00:08:51,117
+WITNESS B: so before. They told me my distance vision was fine. That's
+
+130
+00:08:51,117 --> 00:08:55,000
+WITNESS B: when they said I could use the readers for close up.
+
+131
+00:08:55,000 --> 00:08:56,780
+OPPOSING COUNSEL: Object to form.
+
+132
+00:08:56,780 --> 00:09:01,065
+ATTORNEY: You can answer. Let me ask it more simply. As of May
+
+133
+00:09:01,065 --> 00:09:05,680
+ATTORNEY: 2016, did you wear any glasses for seeing at a distance?
+
+134
+00:09:05,680 --> 00:09:09,600
+WITNESS B: No. Only the reading glasses, and only for reading.
+
+135
+00:09:09,600 --> 00:09:12,800
+ATTORNEY: Do you have them with you today?
+
+136
+00:09:12,800 --> 00:09:18,150
+WITNESS B: They're in my purse. I might need them if you show me papers.
+
+137
+00:09:18,150 --> 00:09:22,079
+ATTORNEY: That's fine. Feel free to use them whenever you need
+
+138
+00:09:22,079 --> 00:09:25,630
+ATTORNEY: to. Do you have any problems with your hearing?
+
+139
+00:09:25,630 --> 00:09:28,120
+WITNESS B: No. My hearing is good.
+
+140
+00:09:28,120 --> 00:09:33,110
+ATTORNEY: Now, before today, did you do anything to prepare for this deposition?
+
+141
+00:09:33,110 --> 00:09:38,090
+WITNESS B: I looked over my statement. The one I wrote for the deputy.
+
+142
+00:09:38,090 --> 00:09:44,510
+ATTORNEY: Let's talk about that. You said a statement you wrote for the deputy. What is that?
+
+143
+00:09:44,510 --> 00:09:49,516
+WITNESS B: A few days after the accident, a deputy from the sheriff's office
+
+144
+00:09:49,516 --> 00:09:53,598
+WITNESS B: called me and asked if I would come in and write down
+
+145
+00:09:53,598 --> 00:09:57,680
+WITNESS B: what I saw. So I did. It's about a page, handwritten.
+
+146
+00:09:57,680 --> 00:10:02,670
+ATTORNEY: Do you remember about how many days after the crash that was?
+
+147
+00:10:02,670 --> 00:10:08,412
+WITNESS B: I think it was three or four days after. It was the next week, during
+
+148
+00:10:08,412 --> 00:10:14,070
+WITNESS B: the week. I remember I had to move a client's visit around to go in.
+
+149
+00:10:14,070 --> 00:10:18,340
+ATTORNEY: And you wrote that statement yourself, in your own handwriting?
+
+150
+00:10:18,340 --> 00:10:22,667
+WITNESS B: Yes. The deputy gave me a form and I wrote it out.
+
+151
+00:10:22,667 --> 00:10:27,600
+WITNESS B: He asked me a couple of questions, but I wrote it myself.
+
+152
+00:10:27,600 --> 00:10:30,810
+ATTORNEY: Did anyone tell you what to write?
+
+153
+00:10:30,810 --> 00:10:36,150
+WITNESS B: No. He just said write down what you saw, in your own words.
+
+154
+00:10:36,150 --> 00:10:38,290
+ATTORNEY: Did you sign it?
+
+155
+00:10:38,290 --> 00:10:42,560
+WITNESS B: Yes, I signed it at the bottom and dated it.
+
+156
+00:10:42,560 --> 00:10:46,480
+ATTORNEY: When did you review it in preparation for today?
+
+157
+00:10:46,480 --> 00:10:51,335
+WITNESS B: I read it again last night, and once a couple of weeks
+
+158
+00:10:51,335 --> 00:10:55,740
+WITNESS B: ago when I got the paper saying I had to come in.
+
+159
+00:10:55,740 --> 00:10:59,660
+ATTORNEY: The paper you're referring to, is that the subpoena?
+
+160
+00:10:59,660 --> 00:11:01,440
+WITNESS B: Yes. The subpoena.
+
+161
+00:11:01,440 --> 00:11:06,430
+ATTORNEY: Where did you get the copy of the statement that you reviewed?
+
+162
+00:11:06,430 --> 00:11:11,377
+WITNESS B: I kept a copy. The deputy made me a copy that day, and
+
+163
+00:11:11,377 --> 00:11:16,050
+WITNESS B: I put it in a folder at home with the other papers.
+
+164
+00:11:16,050 --> 00:11:22,100
+ATTORNEY: Other than your written statement, did you review any other documents to prepare for today?
+
+165
+00:11:22,100 --> 00:11:23,880
+WITNESS B: No. Just that.
+
+166
+00:11:23,880 --> 00:11:27,800
+ATTORNEY: Did you look at any photographs of the scene?
+
+167
+00:11:27,800 --> 00:11:28,870
+WITNESS B: No.
+
+168
+00:11:28,870 --> 00:11:31,010
+ATTORNEY: Any maps or diagrams?
+
+169
+00:11:31,010 --> 00:11:32,070
+WITNESS B: No.
+
+170
+00:11:32,070 --> 00:11:36,710
+ATTORNEY: Any news articles, videos, anything on the internet about the crash?
+
+171
+00:11:36,710 --> 00:11:40,620
+WITNESS B: No. I've stayed away from all that on purpose.
+
+172
+00:11:40,620 --> 00:11:42,400
+ATTORNEY: Why is that?
+
+173
+00:11:42,400 --> 00:11:46,235
+WITNESS B: Because I was there. I don't need to watch it
+
+174
+00:11:46,235 --> 00:11:50,240
+WITNESS B: on the news. It was hard enough the first time.
+
+175
+00:11:50,240 --> 00:11:56,300
+ATTORNEY: I understand. Did you meet with any attorney before today to prepare for this deposition?
+
+176
+00:11:56,300 --> 00:12:00,531
+WITNESS B: No. I talked to somebody from your office on the phone
+
+177
+00:12:00,531 --> 00:12:04,840
+WITNESS B: once to set up the date, but that was about scheduling.
+
+178
+00:12:04,840 --> 00:12:09,830
+ATTORNEY: Did you discuss the substance of what you saw during that call?
+
+179
+00:12:09,830 --> 00:12:14,460
+WITNESS B: No. Just the date and the time and where to come.
+
+180
+00:12:14,460 --> 00:12:20,160
+ATTORNEY: Have you spoken with anyone from the motor carrier, or any attorney representing them?
+
+181
+00:12:20,160 --> 00:12:21,230
+WITNESS B: No.
+
+182
+00:12:21,230 --> 00:12:25,860
+ATTORNEY: Has anyone ever asked you to change anything in your statement?
+
+183
+00:12:25,860 --> 00:12:27,280
+WITNESS B: No. Nobody.
+
+184
+00:12:27,280 --> 00:12:32,198
+ATTORNEY: Having reread your statement last night, is there anything in it that
+
+185
+00:12:32,198 --> 00:12:36,190
+ATTORNEY: you believe is wrong or that you'd like to change today?
+
+186
+00:12:36,190 --> 00:12:37,970
+OPPOSING COUNSEL: Object to form.
+
+187
+00:12:37,970 --> 00:12:39,750
+ATTORNEY: You can answer.
+
+188
+00:12:39,750 --> 00:12:45,450
+WITNESS B: No. I wrote what I remembered, and I still remember it the same way.
+
+189
+00:12:45,450 --> 00:12:50,440
+ATTORNEY: Have you talked to anyone else about today's deposition? Family, friends, coworkers?
+
+190
+00:12:50,440 --> 00:12:54,489
+WITNESS B: My sister knows I'm here. She drove me, actually. And I
+
+191
+00:12:54,489 --> 00:12:58,980
+WITNESS B: told my supervisor I needed the morning off. That's about it.
+
+192
+00:12:58,980 --> 00:13:05,400
+ATTORNEY: Did you discuss the details of what you saw with your sister in preparing for today?
+
+193
+00:13:05,400 --> 00:13:08,733
+WITNESS B: Not to prepare, no. We talked about it right
+
+194
+00:13:08,733 --> 00:13:12,520
+WITNESS B: after it happened, of course. But not about today.
+
+195
+00:13:12,520 --> 00:13:17,046
+ATTORNEY: We'll get into those conversations later. I'd like to turn now to
+
+196
+00:13:17,046 --> 00:13:21,780
+ATTORNEY: the location. Are you familiar with U.S. Highway 27A in this county?
+
+197
+00:13:21,780 --> 00:13:23,210
+WITNESS B: Yes, very.
+
+198
+00:13:23,210 --> 00:13:26,060
+ATTORNEY: How are you familiar with it?
+
+199
+00:13:26,060 --> 00:13:30,169
+WITNESS B: I drive it all the time. It's the main road out my
+
+200
+00:13:30,169 --> 00:13:34,607
+WITNESS B: way. Several of my clients are off of it, and it's the
+
+201
+00:13:34,607 --> 00:13:38,880
+WITNESS B: way to get into town for groceries and the pharmacy.
+
+202
+00:13:38,880 --> 00:13:45,290
+ATTORNEY: Specifically, are you familiar with the stretch of 27A near the intersection with Northeast 140th Court?
+
+203
+00:13:45,290 --> 00:13:48,140
+WITNESS B: Yes. I go right through there.
+
+204
+00:13:48,140 --> 00:13:53,840
+ATTORNEY: How often, back in 2016, would you say you drove through that particular stretch?
+
+205
+00:13:53,840 --> 00:13:59,420
+WITNESS B: At least once a week. Usually more. I had a client back then who lived
+
+206
+00:13:59,420 --> 00:14:05,240
+WITNESS B: a few miles past there, and I went out to her every Tuesday and Thursday.
+
+207
+00:14:05,240 --> 00:14:09,150
+ATTORNEY: So at least weekly, and often twice a week?
+
+208
+00:14:09,150 --> 00:14:13,780
+WITNESS B: Yes. At least weekly. Sometimes more if I was running errands.
+
+209
+00:14:13,780 --> 00:14:17,350
+ATTORNEY: And today, do you still drive through there?
+
+210
+00:14:17,350 --> 00:14:21,021
+WITNESS B: I do. Not as much as I used to. I'll be
+
+211
+00:14:21,021 --> 00:14:25,540
+WITNESS B: honest, I go another way sometimes now if I can.
+
+212
+00:14:25,540 --> 00:14:30,170
+ATTORNEY: When you drove that stretch, which direction were you usually going?
+
+213
+00:14:30,170 --> 00:14:33,255
+WITNESS B: Both. Going out to my client I'd go one
+
+214
+00:14:33,255 --> 00:14:37,290
+WITNESS B: way, and coming back the other. So both directions.
+
+215
+00:14:37,290 --> 00:14:41,570
+ATTORNEY: How long have you been driving that stretch of road?
+
+216
+00:14:41,570 --> 00:14:45,490
+WITNESS B: Since I moved down here. So about fourteen years.
+
+217
+00:14:45,490 --> 00:14:50,092
+WITNESS B: Yes, plenty of times. It's a little country store. I'd stop
+
+218
+00:14:50,092 --> 00:14:53,680
+WITNESS B: for a drink or gas or a snack between clients.
+
+219
+00:14:53,680 --> 00:14:59,020
+ATTORNEY: Before May 7, 2016, had you ever seen an accident at that intersection?
+
+220
+00:14:59,020 --> 00:15:02,230
+WITNESS B: No. I'd never seen one there myself.
+
+221
+00:15:02,230 --> 00:15:06,500
+ATTORNEY: Had you ever been in an accident anywhere on 27A?
+
+222
+00:15:06,500 --> 00:15:07,570
+WITNESS B: No.
+
+223
+00:15:07,570 --> 00:15:13,270
+ATTORNEY: Have you ever been in any car accident, as a driver or a passenger?
+
+224
+00:15:13,270 --> 00:15:17,207
+WITNESS B: One time, a long time ago, somebody backed into me
+
+225
+00:15:17,207 --> 00:15:20,750
+WITNESS B: in a parking lot. Nobody was hurt. That's it.
+
+226
+00:15:20,750 --> 00:15:24,347
+ATTORNEY: Other than that parking lot incident, have you ever
+
+227
+00:15:24,347 --> 00:15:27,520
+ATTORNEY: witnessed a serious crash before May 7, 2016?
+
+228
+00:15:27,520 --> 00:15:29,650
+WITNESS B: No. Never like that.
+
+229
+00:15:29,650 --> 00:15:33,981
+ATTORNEY: Now, I'm going to ask you some general questions about the
+
+230
+00:15:33,981 --> 00:15:38,312
+ATTORNEY: road itself. I'm not asking about that day yet, just about
+
+231
+00:15:38,312 --> 00:15:42,120
+ATTORNEY: the road as you know it from driving it. All right?
+
+232
+00:15:42,120 --> 00:15:43,190
+WITNESS B: Okay.
+
+233
+00:15:43,190 --> 00:15:46,750
+ATTORNEY: Is 27A in that area a divided highway?
+
+234
+00:15:46,750 --> 00:15:51,740
+WITNESS B: Yes. It's two lanes going each way with grass in the middle.
+
+235
+00:15:51,740 --> 00:15:56,370
+ATTORNEY: And what's the speed limit in that area, if you know?
+
+236
+00:15:56,370 --> 00:16:01,950
+WITNESS B: I believe it's sixty-five. That's what I've always gone by. I think there's
+
+237
+00:16:01,950 --> 00:16:06,340
+WITNESS B: a sign for it, but I couldn't swear to exactly where it is.
+
+238
+00:16:06,340 --> 00:16:08,120
+OPPOSING COUNSEL: Object to foundation.
+
+239
+00:16:08,120 --> 00:16:13,820
+ATTORNEY: You can answer, though I think you have. You said you believe it's sixty-five?
+
+240
+00:16:13,820 --> 00:16:18,090
+WITNESS B: Yes, I believe so. That's my understanding from driving it.
+
+241
+00:16:18,090 --> 00:16:21,300
+ATTORNEY: Is that stretch generally straight or curvy?
+
+242
+00:16:21,300 --> 00:16:26,428
+WITNESS B: Pretty straight through there. There's a hill to the west, coming toward
+
+243
+00:16:26,428 --> 00:16:30,132
+WITNESS B: the store from the west side. Not a big hill, but it
+
+244
+00:16:30,132 --> 00:16:34,120
+WITNESS B: rises up and then you come down toward the intersection.
+
+245
+00:16:34,120 --> 00:16:38,757
+ATTORNEY: We'll talk about the layout in more detail a little later. For now,
+
+246
+00:16:38,757 --> 00:16:43,740
+ATTORNEY: generally, would you describe traffic on that stretch as heavy or light?
+
+247
+00:16:43,740 --> 00:16:49,049
+WITNESS B: It depends on the time of day. During the week, mornings and afternoons it
+
+248
+00:16:49,049 --> 00:16:54,430
+WITNESS B: can be busy. Weekends it's usually lighter. There are a lot of trucks, too.
+
+249
+00:16:54,430 --> 00:17:00,480
+ATTORNEY: Thank you. Let me ask you about yourself for a moment. How tall are you?
+
+250
+00:17:00,480 --> 00:17:02,620
+WITNESS B: About five foot six.
+
+251
+00:17:02,620 --> 00:17:06,180
+ATTORNEY: Was that the same in May of 2016?
+
+252
+00:17:06,180 --> 00:17:08,670
+WITNESS B: Yes. I haven't grown any.
+
+253
+00:17:08,670 --> 00:17:12,728
+ATTORNEY: Fair enough. Do you have any medical condition that affects
+
+254
+00:17:12,728 --> 00:17:16,510
+ATTORNEY: your balance or your ability to stand for long periods?
+
+255
+00:17:16,510 --> 00:17:21,850
+WITNESS B: No. I'm on my feet all day at work. Standing is no problem.
+
+256
+00:17:21,850 --> 00:17:26,286
+ATTORNEY: Let me ask you about one more document before we move on. You
+
+257
+00:17:26,286 --> 00:17:31,304
+ATTORNEY: mentioned the folder at home where you kept a copy of your statement.
+
+258
+00:17:31,304 --> 00:17:35,740
+ATTORNEY: Is there anything else in that folder relating to this crash?
+
+259
+00:17:35,740 --> 00:17:42,150
+WITNESS B: The subpoena. And a card the deputy gave me with his name and number. That's all.
+
+260
+00:17:42,150 --> 00:17:45,378
+ATTORNEY: Did you ever write down any notes of your
+
+261
+00:17:45,378 --> 00:17:48,920
+ATTORNEY: own, apart from the statement for the deputy?
+
+262
+00:17:48,920 --> 00:17:51,770
+WITNESS B: No. I didn't write anything else.
+
+263
+00:17:51,770 --> 00:17:57,470
+ATTORNEY: Did you ever take any photographs that day, with a phone or a camera?
+
+264
+00:17:57,470 --> 00:18:00,320
+WITNESS B: No. I didn't take any pictures.
+
+265
+00:18:00,320 --> 00:18:05,660
+ATTORNEY: Have you received any payment or anything of value for your testimony today?
+
+266
+00:18:05,660 --> 00:18:11,010
+WITNESS B: No. Nobody's paid me anything. I lost a morning of work, if anything.
+
+267
+00:18:11,010 --> 00:18:16,710
+ATTORNEY: Do you have any relationship with the family of the driver of Vehicle A?
+
+268
+00:18:16,710 --> 00:18:19,550
+WITNESS B: No. I didn't know anybody involved.
+
+269
+00:18:19,550 --> 00:18:24,540
+ATTORNEY: Any relationship with the motor carrier, or anyone who works for it?
+
+270
+00:18:24,540 --> 00:18:25,610
+WITNESS B: No.
+
+271
+00:18:25,610 --> 00:18:30,240
+ATTORNEY: Do you have any interest in the outcome of this case?
+
+272
+00:18:30,240 --> 00:18:32,020
+OPPOSING COUNSEL: Object to form.
+
+273
+00:18:32,020 --> 00:18:35,720
+WITNESS B: No. I just came because I was asked to say
+
+274
+00:18:35,720 --> 00:18:39,860
+WITNESS B: what I saw. I don't have anything riding on it.
+
+275
+00:18:39,860 --> 00:18:44,675
+ATTORNEY: Before I move on to the afternoon itself, I want to make sure we're
+
+276
+00:18:44,675 --> 00:18:49,275
+ATTORNEY: on the same page about one thing. When I use the term Vehicle A,
+
+277
+00:18:49,275 --> 00:18:55,168
+ATTORNEY: I'm referring to the dark four-door sedan that was involved in the collision. When
+
+278
+00:18:55,168 --> 00:19:00,127
+ATTORNEY: I use the term Vehicle T, I'm referring to the tractor with the white
+
+279
+00:19:00,127 --> 00:19:04,080
+ATTORNEY: trailer. Will you understand those terms if I use them?
+
+280
+00:19:04,080 --> 00:19:06,930
+WITNESS B: Yes. The car and the truck.
+
+281
+00:19:06,930 --> 00:19:12,980
+ATTORNEY: Exactly. And if at any point you're not sure which vehicle I mean, ask me.
+
+282
+00:19:12,980 --> 00:19:14,410
+WITNESS B: I will.
+
+283
+00:19:14,410 --> 00:19:18,394
+ATTORNEY: And when I refer to the intersection, I mean where 27A
+
+284
+00:19:18,394 --> 00:19:22,600
+ATTORNEY: meets Northeast 140th Court, by the store. Is that clear?
+
+285
+00:19:22,600 --> 00:19:24,380
+WITNESS B: Yes, that's clear.
+
+286
+00:19:24,380 --> 00:19:30,325
+ATTORNEY: All right. One last question on background. Is there anything about that day, May 7,
+
+287
+00:19:30,325 --> 00:19:35,420
+ATTORNEY: 2016, that makes it stand out in your mind, apart from the crash itself?
+
+288
+00:19:35,420 --> 00:19:38,868
+WITNESS B: No. It was just a normal Saturday. I was off, I
+
+289
+00:19:38,868 --> 00:19:42,902
+WITNESS B: went shopping, I was waiting on my sister. If it hadn't
+
+290
+00:19:42,902 --> 00:19:47,890
+WITNESS B: been for what happened, I wouldn't remember anything about that day.
+
+291
+00:19:47,890 --> 00:19:50,380
+ATTORNEY: But you do remember it.
+
+292
+00:19:50,380 --> 00:19:55,370
+WITNESS B: I remember it very well. I don't think I'll ever forget it.
+
+293
+00:19:55,370 --> 00:20:00,000
+ATTORNEY: Thank you. I want to turn now to that afternoon in more detail.
+
+294
+00:20:00,000 --> 00:20:03,373
+ATTORNEY: I'd like to turn now to the afternoon of
+
+295
+00:20:03,373 --> 00:20:07,420
+ATTORNEY: Saturday, May 7, 2016. Do you remember that day?
+
+296
+00:20:07,420 --> 00:20:12,610
+WITNESS B: Yes. I remember it very well. I don't think I'll forget it.
+
+297
+00:20:12,610 --> 00:20:18,550
+ATTORNEY: Why were you in the area of US-27A and Northeast 140th Court that afternoon?
+
+298
+00:20:18,550 --> 00:20:22,958
+WITNESS B: I was waiting for my sister. She was supposed to pick
+
+299
+00:20:22,958 --> 00:20:27,450
+WITNESS B: me up at the store there after I finished my shopping.
+
+300
+00:20:27,450 --> 00:20:30,420
+ATTORNEY: Which store are we talking about?
+
+301
+00:20:30,420 --> 00:20:34,917
+WITNESS B: The little store on the corner there, on the south side of the
+
+302
+00:20:34,917 --> 00:20:40,430
+WITNESS B: highway. They sell a bit of everything. Feed, drinks, snacks, some hardware.
+
+303
+00:20:40,430 --> 00:20:44,880
+ATTORNEY: And how did you get to the store that day?
+
+304
+00:20:44,880 --> 00:20:48,659
+WITNESS B: A neighbor dropped me off. My car was in the
+
+305
+00:20:48,659 --> 00:20:53,040
+WITNESS B: shop that week, so I was getting rides from people.
+
+306
+00:20:53,040 --> 00:20:57,130
+ATTORNEY: About what time did your neighbor drop you off?
+
+307
+00:20:57,130 --> 00:21:01,950
+WITNESS B: Around ten after four. Maybe a minute or two either way.
+
+308
+00:21:01,950 --> 00:21:06,400
+ATTORNEY: How do you know it was around ten after four?
+
+309
+00:21:06,400 --> 00:21:11,174
+WITNESS B: Because my sister texted me she'd be there around five, and
+
+310
+00:21:11,174 --> 00:21:15,300
+WITNESS B: I remember thinking I had close to an hour to kill.
+
+311
+00:21:15,300 --> 00:21:19,010
+ATTORNEY: Did your sister in fact arrive around five?
+
+312
+00:21:19,010 --> 00:21:23,028
+WITNESS B: Yes. Right about five. A little after, maybe, because
+
+313
+00:21:23,028 --> 00:21:26,060
+WITNESS B: of everything that was going on by then.
+
+314
+00:21:26,060 --> 00:21:32,360
+ATTORNEY: We'll get to that later. When you were dropped off, what did you do first?
+
+315
+00:21:32,360 --> 00:21:38,360
+WITNESS B: I went inside and did my shopping. I picked up a few things. Some bread,
+
+316
+00:21:38,360 --> 00:21:43,860
+WITNESS B: a jug of tea, some batteries, and a bag of birdseed for my mother.
+
+317
+00:21:43,860 --> 00:21:47,570
+ATTORNEY: About how long were you inside the store?
+
+318
+00:21:47,570 --> 00:21:52,020
+WITNESS B: Fifteen minutes, maybe. Not long. It's not a big store.
+
+319
+00:21:52,020 --> 00:21:54,990
+ATTORNEY: Did you pay for your items?
+
+320
+00:21:54,990 --> 00:21:57,220
+WITNESS B: Yes. At the counter.
+
+321
+00:21:57,220 --> 00:22:00,930
+ATTORNEY: And after you paid, where did you go?
+
+322
+00:22:00,930 --> 00:22:06,860
+WITNESS B: I went back outside. Out front of the store, to wait for my sister.
+
+323
+00:22:06,860 --> 00:22:10,570
+ATTORNEY: Why did you wait outside rather than inside?
+
+324
+00:22:10,570 --> 00:22:14,396
+WITNESS B: It was a nice day. And it's a little stuffy in
+
+325
+00:22:14,396 --> 00:22:19,470
+WITNESS B: there. I'd rather be outside than stand around in the aisles.
+
+326
+00:22:19,470 --> 00:22:25,040
+ATTORNEY: So from the time you finished shopping until the collision, you were outside?
+
+327
+00:22:25,040 --> 00:22:28,380
+WITNESS B: Yes. Outside, out front of the store.
+
+328
+00:22:28,380 --> 00:22:33,940
+ATTORNEY: Did you go back inside the store at any point before the collision?
+
+329
+00:22:33,940 --> 00:22:36,170
+WITNESS B: No. I stayed outside.
+
+330
+00:22:36,170 --> 00:22:40,990
+ATTORNEY: Did you sit down at any point while you were waiting?
+
+331
+00:22:40,990 --> 00:22:46,550
+WITNESS B: Off and on. I can't tell you exactly when. I was mostly standing.
+
+332
+00:22:46,550 --> 00:22:48,410
+OPPOSING COUNSEL: Object to form.
+
+333
+00:22:48,410 --> 00:22:51,842
+ATTORNEY: Let me ask it differently. At the time of the
+
+334
+00:22:51,842 --> 00:22:56,570
+ATTORNEY: collision, do you recall whether you were standing or sitting?
+
+335
+00:22:56,570 --> 00:22:58,420
+WITNESS B: I was standing.
+
+336
+00:22:58,420 --> 00:23:03,620
+ATTORNEY: Let's talk about the conditions that afternoon. What was the weather like?
+
+337
+00:23:03,620 --> 00:23:09,920
+WITNESS B: Clear. Sunny. No rain at all. It was warm but not hot like summer gets.
+
+338
+00:23:09,920 --> 00:23:13,260
+ATTORNEY: Were there any clouds that you recall?
+
+339
+00:23:13,260 --> 00:23:19,200
+WITNESS B: Maybe a few way off. Nothing over us. It was a bright, clear afternoon.
+
+340
+00:23:19,200 --> 00:23:23,280
+ATTORNEY: Had it rained earlier that day, to your knowledge?
+
+341
+00:23:23,280 --> 00:23:28,470
+WITNESS B: Not that I know of. The road was dry. Everything was dry.
+
+342
+00:23:28,470 --> 00:23:32,180
+ATTORNEY: How do you know the road was dry?
+
+343
+00:23:32,180 --> 00:23:36,926
+WITNESS B: I could see it. There weren't any puddles, nothing shiny.
+
+344
+00:23:36,926 --> 00:23:40,340
+WITNESS B: It looked like a dry road on a sunny day.
+
+345
+00:23:40,340 --> 00:23:44,050
+ATTORNEY: What about the light? Was it full daylight?
+
+346
+00:23:44,050 --> 00:23:48,130
+WITNESS B: Yes. Full daylight. The sun was still pretty high.
+
+347
+00:23:48,130 --> 00:23:52,950
+ATTORNEY: Do you recall where the sun was in the sky, generally?
+
+348
+00:23:52,950 --> 00:23:57,273
+WITNESS B: Up and kind of over to the west. Behind the traffic
+
+349
+00:23:57,273 --> 00:24:01,850
+WITNESS B: coming from the west, I'd say. It wasn't down low yet.
+
+350
+00:24:01,850 --> 00:24:03,710
+OPPOSING COUNSEL: Object to form.
+
+351
+00:24:03,710 --> 00:24:08,160
+ATTORNEY: Was there any haze, smoke, or fog in the area?
+
+352
+00:24:08,160 --> 00:24:10,390
+WITNESS B: No. None of that.
+
+353
+00:24:10,390 --> 00:24:12,980
+ATTORNEY: Any wind that you noticed?
+
+354
+00:24:12,980 --> 00:24:16,320
+WITNESS B: A little breeze. Nothing to speak of.
+
+355
+00:24:16,320 --> 00:24:22,260
+ATTORNEY: Now, how would you describe the traffic on the highway while you were waiting?
+
+356
+00:24:22,260 --> 00:24:26,963
+WITNESS B: Light. It's a Saturday afternoon out there. You'd get a few
+
+357
+00:24:26,963 --> 00:24:30,790
+WITNESS B: cars, then nothing for a while, then a few more.
+
+358
+00:24:30,790 --> 00:24:34,130
+ATTORNEY: Were there trucks as well as cars?
+
+359
+00:24:34,130 --> 00:24:38,950
+WITNESS B: Some. Mostly cars and pickups. Every so often a bigger truck.
+
+360
+00:24:38,950 --> 00:24:43,770
+ATTORNEY: Can you estimate how many vehicles passed in, say, a minute?
+
+361
+00:24:43,770 --> 00:24:46,740
+OPPOSING COUNSEL: Object to form. Calls for speculation.
+
+362
+00:24:46,740 --> 00:24:48,590
+ATTORNEY: If you can.
+
+363
+00:24:48,590 --> 00:24:53,343
+WITNESS B: I really can't give you a number. It wasn't busy. Sometimes
+
+364
+00:24:53,343 --> 00:24:57,130
+WITNESS B: a minute would go by and nothing passed at all.
+
+365
+00:24:57,130 --> 00:25:02,320
+ATTORNEY: What about noise? What could you hear while you were standing outside?
+
+366
+00:25:02,320 --> 00:25:07,252
+WITNESS B: The cars going by, mainly. They make that whoosh at highway speed.
+
+367
+00:25:07,252 --> 00:25:11,960
+WITNESS B: Some birds. A radio from inside the store when the door opened.
+
+368
+00:25:11,960 --> 00:25:15,670
+ATTORNEY: Was there any construction or machinery running nearby?
+
+369
+00:25:15,670 --> 00:25:18,270
+WITNESS B: No. Not that I remember.
+
+370
+00:25:18,270 --> 00:25:24,200
+ATTORNEY: Was it loud enough that you'd have had trouble hearing someone talk to you?
+
+371
+00:25:24,200 --> 00:25:30,140
+WITNESS B: No. Only when a truck went by. Otherwise it was pretty quiet out there.
+
+372
+00:25:30,140 --> 00:25:36,400
+ATTORNEY: I'd like you to describe the road for us in words. We'll look at a map
+
+373
+00:25:36,400 --> 00:25:42,750
+ATTORNEY: later in the day, but for now, just in your own words. Can you do that?
+
+374
+00:25:42,750 --> 00:25:44,230
+WITNESS B: I'll try.
+
+375
+00:25:44,230 --> 00:25:48,690
+ATTORNEY: Start with the highway itself. How many lanes are there?
+
+376
+00:25:48,690 --> 00:25:52,400
+WITNESS B: Four. Two going east and two going west.
+
+377
+00:25:52,400 --> 00:25:57,220
+ATTORNEY: Is there anything separating the eastbound lanes from the westbound lanes?
+
+378
+00:25:57,220 --> 00:26:01,118
+WITNESS B: Yes. A big grassy median in between. It's wide.
+
+379
+00:26:01,118 --> 00:26:04,270
+WITNESS B: Wider than a lot of roads around here.
+
+380
+00:26:04,270 --> 00:26:07,980
+ATTORNEY: Can you estimate how wide the median is?
+
+381
+00:26:07,980 --> 00:26:13,026
+WITNESS B: I'm not good with feet. Wide enough you could park a couple of
+
+382
+00:26:13,026 --> 00:26:17,990
+WITNESS B: trucks end to end across it, maybe. Sixty feet? I don't know.
+
+383
+00:26:17,990 --> 00:26:19,850
+OPPOSING COUNSEL: Object to form.
+
+384
+00:26:19,850 --> 00:26:24,670
+ATTORNEY: Fair enough. Which side of the highway is the store on?
+
+385
+00:26:24,670 --> 00:26:27,640
+WITNESS B: The south side. The eastbound side.
+
+386
+00:26:27,640 --> 00:26:32,090
+ATTORNEY: So the lanes nearest the store are the eastbound lanes?
+
+387
+00:26:32,090 --> 00:26:36,092
+WITNESS B: Yes. The eastbound lanes are closest. Then the median,
+
+388
+00:26:36,092 --> 00:26:39,130
+WITNESS B: then the westbound lanes on the far side.
+
+389
+00:26:39,130 --> 00:26:44,700
+ATTORNEY: Is there a place where you can cross the median at that intersection?
+
+390
+00:26:44,700 --> 00:26:49,035
+WITNESS B: Yes. There's a crossover. A cut in the median where
+
+391
+00:26:49,035 --> 00:26:52,860
+WITNESS B: you can go across from one side to the other.
+
+392
+00:26:52,860 --> 00:26:56,570
+ATTORNEY: Is there a traffic light at that crossover?
+
+393
+00:26:56,570 --> 00:27:02,870
+WITNESS B: No. No light. No stop light, no blinking light. Just the cut through the median.
+
+394
+00:27:02,870 --> 00:27:05,100
+ATTORNEY: Are there stop signs?
+
+395
+00:27:05,100 --> 00:27:08,840
+WITNESS B: I think there's a stop sign on the side road
+
+396
+00:27:08,840 --> 00:27:13,260
+WITNESS B: coming up to the highway. Not on the highway itself.
+
+397
+00:27:13,260 --> 00:27:17,710
+ATTORNEY: On the highway, are there turn lanes near the crossover?
+
+398
+00:27:17,710 --> 00:27:24,027
+WITNESS B: Yes. There's a left-turn lane on each side, I believe. It's kind of cut into the
+
+399
+00:27:24,027 --> 00:27:29,950
+WITNESS B: median before the crossover so people can get out of the fast lane to turn.
+
+400
+00:27:29,950 --> 00:27:35,890
+ATTORNEY: Let's focus on the westbound side. Is there a left-turn lane for westbound traffic?
+
+401
+00:27:35,890 --> 00:27:40,832
+WITNESS B: Yes. If you're heading west and want to turn left onto 140th,
+
+402
+00:27:40,832 --> 00:27:45,530
+WITNESS B: you pull into that turn lane in the median and wait there.
+
+403
+00:27:45,530 --> 00:27:51,100
+ATTORNEY: And from that westbound turn lane, a vehicle turning left would cross what?
+
+404
+00:27:51,100 --> 00:27:57,770
+WITNESS B: It'd go through the crossover and across both of the eastbound lanes, and then onto 140th.
+
+405
+00:27:57,770 --> 00:28:03,340
+ATTORNEY: Tell me about 140th Court. Which direction does it run from the highway?
+
+406
+00:28:03,340 --> 00:28:08,530
+WITNESS B: South. It goes south off the highway, right there by the store.
+
+407
+00:28:08,530 --> 00:28:12,240
+ATTORNEY: Does 140th Court continue north of the highway?
+
+408
+00:28:12,240 --> 00:28:17,810
+WITNESS B: Not that I've ever seen. I've only ever known it to go south.
+
+409
+00:28:17,810 --> 00:28:21,140
+ATTORNEY: What's 140th Court like? Is it paved?
+
+410
+00:28:21,140 --> 00:28:25,232
+WITNESS B: It's paved. It's a smaller road. Two lanes, one each
+
+411
+00:28:25,232 --> 00:28:28,930
+WITNESS B: way, no median. Some houses and fields down it.
+
+412
+00:28:28,930 --> 00:28:33,010
+ATTORNEY: Where is the store in relation to 140th Court?
+
+413
+00:28:33,010 --> 00:28:39,690
+WITNESS B: It's right on the corner. On the east side of 140th, where it meets the highway.
+
+414
+00:28:39,690 --> 00:28:44,510
+ATTORNEY: So the store sits at the southeast corner of the intersection?
+
+415
+00:28:44,510 --> 00:28:46,370
+WITNESS B: Yes. That's right.
+
+416
+00:28:46,370 --> 00:28:50,072
+ATTORNEY: Now I'd like to ask about the area to the west
+
+417
+00:28:50,072 --> 00:28:54,900
+ATTORNEY: of the intersection. What's the land like in that direction?
+
+418
+00:28:54,900 --> 00:28:58,602
+WITNESS B: There's a hill. The highway comes over a rise to
+
+419
+00:28:58,602 --> 00:29:02,690
+WITNESS B: the west and then comes down toward the intersection.
+
+420
+00:29:02,690 --> 00:29:07,140
+ATTORNEY: How far west is the top of that hill, roughly?
+
+421
+00:29:07,140 --> 00:29:09,370
+OPPOSING COUNSEL: Object to form. Foundation.
+
+422
+00:29:09,370 --> 00:29:13,080
+ATTORNEY: Just your best sense, if you have one.
+
+423
+00:29:13,080 --> 00:29:18,370
+WITNESS B: A good ways. A quarter mile maybe. I've never measured it. When
+
+424
+00:29:18,370 --> 00:29:22,736
+WITNESS B: you drive it, you come over the top and then you can
+
+425
+00:29:22,736 --> 00:29:26,430
+WITNESS B: see the store down the hill in front of you.
+
+426
+00:29:26,430 --> 00:29:29,030
+ATTORNEY: Is it a steep hill?
+
+427
+00:29:29,030 --> 00:29:32,571
+WITNESS B: No. Gentle. It's not a big hill. It's just
+
+428
+00:29:32,571 --> 00:29:36,450
+WITNESS B: enough that you can't see what's past the top.
+
+429
+00:29:36,450 --> 00:29:41,827
+ATTORNEY: And when you drive east on that stretch yourself, as you said you
+
+430
+00:29:41,827 --> 00:29:46,460
+ATTORNEY: do weekly, what do you see when you come over that rise?
+
+431
+00:29:46,460 --> 00:29:51,367
+WITNESS B: You see the road go down and the intersection ahead, and the
+
+432
+00:29:51,367 --> 00:29:56,110
+WITNESS B: store on the right. It's pretty open from the top on down.
+
+433
+00:29:56,110 --> 00:30:01,670
+ATTORNEY: What about east of the intersection? What is it like in that direction?
+
+434
+00:30:01,670 --> 00:30:06,772
+WITNESS B: Flatter. The highway runs on straight. There are fences, some yards and
+
+435
+00:30:06,772 --> 00:30:10,940
+WITNESS B: houses back off the road, some power poles along the side.
+
+436
+00:30:10,940 --> 00:30:15,020
+ATTORNEY: Are there trees along the highway near the intersection?
+
+437
+00:30:15,020 --> 00:30:21,700
+WITNESS B: Some, back from the road. Not right on the shoulder. It's mostly grass along the edges.
+
+438
+00:30:21,700 --> 00:30:26,150
+ATTORNEY: Are there any buildings at the intersection besides the store?
+
+439
+00:30:26,150 --> 00:30:32,460
+WITNESS B: Not right there, no. The store is the main thing. There are houses further off.
+
+440
+00:30:32,460 --> 00:30:36,170
+ATTORNEY: Is there a parking area at the store?
+
+441
+00:30:36,170 --> 00:30:40,392
+WITNESS B: Yes. A gravel and dirt lot in front and along the
+
+442
+00:30:40,392 --> 00:30:44,700
+WITNESS B: side. People pull in off the highway or off 140th.
+
+443
+00:30:44,700 --> 00:30:49,150
+ATTORNEY: How many cars were parked there while you were waiting?
+
+444
+00:30:49,150 --> 00:30:55,830
+WITNESS B: A couple. One or two. It wasn't busy. People would pull in, run in, and leave.
+
+445
+00:30:55,830 --> 00:31:02,130
+ATTORNEY: Were there any vehicles parked between the store and the highway while you were outside?
+
+446
+00:31:02,130 --> 00:31:07,700
+WITNESS B: Not that I remember. Not big ones. Maybe a car came and went.
+
+447
+00:31:07,700 --> 00:31:09,550
+OPPOSING COUNSEL: Object to form.
+
+448
+00:31:09,550 --> 00:31:14,370
+ATTORNEY: I'll move on. Is the shoulder of the eastbound lanes paved?
+
+449
+00:31:14,370 --> 00:31:20,310
+WITNESS B: There's a paved strip along the edge and then grass. Then the store lot.
+
+450
+00:31:20,310 --> 00:31:25,870
+ATTORNEY: Is there a speed limit sign anywhere near there that you know of?
+
+451
+00:31:25,870 --> 00:31:30,077
+WITNESS B: There's one somewhere back up the road. I believe it's
+
+452
+00:31:30,077 --> 00:31:33,660
+WITNESS B: sixty-five out there, but don't hold me to it.
+
+453
+00:31:33,660 --> 00:31:35,150
+OPPOSING COUNSEL: Object. Foundation.
+
+454
+00:31:35,150 --> 00:31:38,490
+ATTORNEY: You're not certain of the posted limit?
+
+455
+00:31:38,490 --> 00:31:44,420
+WITNESS B: No, I'm not certain. That's just what I think it is from driving it.
+
+456
+00:31:44,420 --> 00:31:47,796
+ATTORNEY: Let me go back to what you had with you that
+
+457
+00:31:47,796 --> 00:31:53,320
+ATTORNEY: afternoon. When you went outside after shopping, what were you carrying?
+
+458
+00:31:53,320 --> 00:31:57,600
+WITNESS B: My purse, and a shopping bag. One of those plastic
+
+459
+00:31:57,600 --> 00:32:01,110
+WITNESS B: bags from the store with my things in it.
+
+460
+00:32:01,110 --> 00:32:02,970
+ATTORNEY: Just one bag?
+
+461
+00:32:02,970 --> 00:32:09,640
+WITNESS B: Just the one. The birdseed was the heaviest thing. I had it all in one bag.
+
+462
+00:32:09,640 --> 00:32:12,980
+ATTORNEY: Which hand were you holding it in?
+
+463
+00:32:12,980 --> 00:32:17,764
+WITNESS B: I'd switch. It was heavy. I think I had it in my left
+
+464
+00:32:17,764 --> 00:32:23,000
+WITNESS B: hand most of the time, with my purse on my right shoulder.
+
+465
+00:32:23,000 --> 00:32:27,080
+ATTORNEY: Did you set the bag down at any point?
+
+466
+00:32:27,080 --> 00:32:33,351
+WITNESS B: I might have, on and off. I don't remember exactly. When everything happened, I know
+
+467
+00:32:33,351 --> 00:32:38,950
+WITNESS B: I still had it, because I remember it banging against my leg when I jumped.
+
+468
+00:32:38,950 --> 00:32:43,030
+ATTORNEY: When you say you jumped, what do you mean?
+
+469
+00:32:43,030 --> 00:32:47,850
+WITNESS B: From the noise. The crash. It made me jump. That's all.
+
+470
+00:32:47,850 --> 00:32:51,478
+ATTORNEY: We'll come to the crash in detail later. Did
+
+471
+00:32:51,478 --> 00:32:55,270
+ATTORNEY: you have a cell phone with you that afternoon?
+
+472
+00:32:55,270 --> 00:32:57,500
+WITNESS B: Yes. In my purse.
+
+473
+00:32:57,500 --> 00:33:01,950
+ATTORNEY: Were you using your phone while you were waiting outside?
+
+474
+00:33:01,950 --> 00:33:06,625
+WITNESS B: Not right then. Earlier I'd read my sister's text, when I
+
+475
+00:33:06,625 --> 00:33:10,480
+WITNESS B: first got there. After that it was in my purse.
+
+476
+00:33:10,480 --> 00:33:16,040
+ATTORNEY: So in the minutes before the collision, were you looking at your phone?
+
+477
+00:33:16,040 --> 00:33:20,490
+WITNESS B: No. It was in my purse. I wasn't on it.
+
+478
+00:33:20,490 --> 00:33:26,430
+ATTORNEY: Were you talking to anyone on the phone in the minutes before the collision?
+
+479
+00:33:26,430 --> 00:33:30,140
+WITNESS B: No. I called my sister after. Not before.
+
+480
+00:33:30,140 --> 00:33:34,590
+ATTORNEY: Were you texting, reading, or doing anything with the phone?
+
+481
+00:33:34,590 --> 00:33:38,478
+WITNESS B: No. I know people will say I was on my phone,
+
+482
+00:33:38,478 --> 00:33:43,490
+WITNESS B: but I wasn't. I was just standing there watching the road.
+
+483
+00:33:43,490 --> 00:33:47,200
+OPPOSING COUNSEL: Move to strike the last part as nonresponsive.
+
+484
+00:33:47,200 --> 00:33:50,910
+ATTORNEY: Were you listening to anything? Earbuds, headphones, music?
+
+485
+00:33:50,910 --> 00:33:53,510
+WITNESS B: No. Nothing in my ears.
+
+486
+00:33:53,510 --> 00:33:56,480
+ATTORNEY: Were you wearing glasses that afternoon?
+
+487
+00:33:56,480 --> 00:34:01,670
+WITNESS B: No. I only wear reading glasses, and those were in my purse.
+
+488
+00:34:01,670 --> 00:34:06,120
+ATTORNEY: Do you need glasses to see things at a distance?
+
+489
+00:34:06,120 --> 00:34:12,060
+WITNESS B: No. My distance vision is fine. I just need the readers for small print.
+
+490
+00:34:12,060 --> 00:34:14,280
+ATTORNEY: Were you wearing sunglasses?
+
+491
+00:34:14,280 --> 00:34:18,360
+WITNESS B: No. I didn't have sunglasses with me that day.
+
+492
+00:34:18,360 --> 00:34:23,180
+ATTORNEY: Did the sun bother you at all while you were waiting?
+
+493
+00:34:23,180 --> 00:34:27,640
+WITNESS B: No. It wasn't in my face. I could see fine.
+
+494
+00:34:27,640 --> 00:34:29,490
+OPPOSING COUNSEL: Object to form.
+
+495
+00:34:29,490 --> 00:34:33,940
+ATTORNEY: Were you wearing a hat or anything with a brim?
+
+496
+00:34:33,940 --> 00:34:37,280
+WITNESS B: No hat. Just my hair pulled back.
+
+497
+00:34:37,280 --> 00:34:40,990
+ATTORNEY: Was anyone with you while you were outside?
+
+498
+00:34:40,990 --> 00:34:43,590
+WITNESS B: No. I was by myself.
+
+499
+00:34:43,590 --> 00:34:48,040
+ATTORNEY: Were you talking with anyone in person while you waited?
+
+500
+00:34:48,040 --> 00:34:53,600
+WITNESS B: Not really. A man said hello going into the store. That's about it.
+
+501
+00:34:53,600 --> 00:34:56,940
+ATTORNEY: Do you know who that man was?
+
+502
+00:34:56,940 --> 00:35:01,020
+WITNESS B: No. Never seen him before. Just somebody stopping in.
+
+503
+00:35:01,020 --> 00:35:04,730
+ATTORNEY: Did you see where he went after that?
+
+504
+00:35:04,730 --> 00:35:09,920
+WITNESS B: Inside. I don't know after that. I wasn't paying him any attention.
+
+505
+00:35:09,920 --> 00:35:14,000
+ATTORNEY: While you were waiting, what were you doing, generally?
+
+506
+00:35:14,000 --> 00:35:19,049
+WITNESS B: Just waiting. Watching the road, watching for my sister's car. She'd
+
+507
+00:35:19,049 --> 00:35:22,910
+WITNESS B: be coming from the west, so I kept looking that way.
+
+508
+00:35:22,910 --> 00:35:26,990
+ATTORNEY: Why would your sister be coming from the west?
+
+509
+00:35:26,990 --> 00:35:31,291
+WITNESS B: Because she lives west of there. She'd come down the highway
+
+510
+00:35:31,291 --> 00:35:35,520
+WITNESS B: over that hill, same as anybody coming from that direction.
+
+511
+00:35:35,520 --> 00:35:39,970
+ATTORNEY: So you were watching westbound or eastbound traffic for her?
+
+512
+00:35:39,970 --> 00:35:44,790
+WITNESS B: Eastbound. She'd be heading east toward me, coming down the hill.
+
+513
+00:35:44,790 --> 00:35:48,500
+ATTORNEY: What kind of car does your sister drive?
+
+514
+00:35:48,500 --> 00:35:52,580
+WITNESS B: A little silver hatchback. I was looking for that.
+
+515
+00:35:52,580 --> 00:35:58,150
+ATTORNEY: Did you watch the cars that came over the hill while you waited?
+
+516
+00:35:58,150 --> 00:36:02,517
+WITNESS B: Every one of them. Every time something came over
+
+517
+00:36:02,517 --> 00:36:05,190
+WITNESS B: I'd look to see if it was her.
+
+518
+00:36:05,190 --> 00:36:07,050
+OPPOSING COUNSEL: Object to form.
+
+519
+00:36:07,050 --> 00:36:13,720
+ATTORNEY: Was there anything that afternoon, before the collision, that seemed unusual to you about the traffic?
+
+520
+00:36:13,720 --> 00:36:20,030
+WITNESS B: No. It was just a normal afternoon. Cars going by. Nothing unusual until it happened.
+
+521
+00:36:20,030 --> 00:36:23,953
+ATTORNEY: Did you notice any vehicles pulling into or out of
+
+522
+00:36:23,953 --> 00:36:28,190
+ATTORNEY: the store lot in the few minutes before the collision?
+
+523
+00:36:28,190 --> 00:36:32,270
+WITNESS B: I don't remember any right then. It was quiet.
+
+524
+00:36:32,270 --> 00:36:37,090
+ATTORNEY: Did you notice anyone walking along the highway, or crossing it?
+
+525
+00:36:37,090 --> 00:36:38,950
+WITNESS B: No. Nobody walking.
+
+526
+00:36:38,950 --> 00:36:41,170
+ATTORNEY: Any bicycles or motorcycles?
+
+527
+00:36:41,170 --> 00:36:43,400
+WITNESS B: Not that I remember.
+
+528
+00:36:43,400 --> 00:36:48,220
+ATTORNEY: Any emergency vehicles, police cars, anything with lights, before the collision?
+
+529
+00:36:48,220 --> 00:36:52,300
+WITNESS B: No. Not before. Afterward, yes, a lot of them.
+
+530
+00:36:52,300 --> 00:36:56,123
+ATTORNEY: Let me ask one more general question about where you
+
+531
+00:36:56,123 --> 00:37:00,460
+ATTORNEY: were. Throughout the time you were waiting, where were you?
+
+532
+00:37:00,460 --> 00:37:04,540
+WITNESS B: Outside. Out front of the store. I've said that.
+
+533
+00:37:04,540 --> 00:37:09,942
+ATTORNEY: You have. I'm just making sure the record is clear. Did you go
+
+534
+00:37:09,942 --> 00:37:14,560
+ATTORNEY: around to the side or back of the store at any point?
+
+535
+00:37:14,560 --> 00:37:17,160
+WITNESS B: No. I stayed out front.
+
+536
+00:37:17,160 --> 00:37:22,720
+ATTORNEY: Did you walk out toward the highway at any point before the collision?
+
+537
+00:37:22,720 --> 00:37:25,690
+WITNESS B: No. I stayed by the store.
+
+538
+00:37:25,690 --> 00:37:30,510
+ATTORNEY: Did you cross 140th Court at any point before the collision?
+
+539
+00:37:30,510 --> 00:37:31,620
+WITNESS B: No.
+
+540
+00:37:31,620 --> 00:37:36,450
+ATTORNEY: Had you ever waited outside that store before, on another day?
+
+541
+00:37:36,450 --> 00:37:40,322
+WITNESS B: A few times. When I've gotten rides. It's an
+
+542
+00:37:40,322 --> 00:37:43,490
+WITNESS B: easy place for people to pick me up.
+
+543
+00:37:43,490 --> 00:37:49,060
+ATTORNEY: So you were familiar with what the intersection looks like from the store?
+
+544
+00:37:49,060 --> 00:37:53,140
+WITNESS B: Yes. I know what it looks like from there.
+
+545
+00:37:53,140 --> 00:37:58,330
+ATTORNEY: Before May 7, had you ever seen a collision at that intersection?
+
+546
+00:37:58,330 --> 00:38:04,640
+WITNESS B: No. Never. I'd heard people say it's a bad crossing, but I'd never seen anything.
+
+547
+00:38:04,640 --> 00:38:07,600
+OPPOSING COUNSEL: Object. Move to strike as hearsay.
+
+548
+00:38:07,600 --> 00:38:11,647
+ATTORNEY: I'll ask you just about what you saw yourself. Before
+
+549
+00:38:11,647 --> 00:38:15,770
+ATTORNEY: that day, had you yourself seen any near misses there?
+
+550
+00:38:15,770 --> 00:38:20,220
+WITNESS B: Not that I can remember. Nothing that stuck with me.
+
+551
+00:38:20,220 --> 00:38:23,443
+ATTORNEY: All right. In the minutes leading up to the
+
+552
+00:38:23,443 --> 00:38:27,640
+ATTORNEY: collision, about how long had you been standing outside?
+
+553
+00:38:27,640 --> 00:38:31,379
+WITNESS B: Ten minutes. Maybe a little more. I'd finished shopping
+
+554
+00:38:31,379 --> 00:38:35,050
+WITNESS B: at around twenty-five after, so ten or twelve minutes.
+
+555
+00:38:35,050 --> 00:38:38,020
+ATTORNEY: And how are you estimating that?
+
+556
+00:38:38,020 --> 00:38:42,423
+WITNESS B: From when I got there and how long I was inside.
+
+557
+00:38:42,423 --> 00:38:46,550
+WITNESS B: I didn't look at a clock. It's my best guess.
+
+558
+00:38:46,550 --> 00:38:50,758
+ATTORNEY: Understood. Did anything distract you in those minutes before? Any
+
+559
+00:38:50,758 --> 00:38:54,710
+ATTORNEY: noise, anything that pulled your attention away from the road?
+
+560
+00:38:54,710 --> 00:38:56,570
+OPPOSING COUNSEL: Object to form.
+
+561
+00:38:56,570 --> 00:39:02,500
+WITNESS B: No. Nothing like that. I was just looking at the road for my sister.
+
+562
+00:39:02,500 --> 00:39:08,070
+ATTORNEY: Were you hungry, tired, not feeling well, anything of that sort that day?
+
+563
+00:39:08,070 --> 00:39:12,033
+WITNESS B: No. I felt fine. I'd had lunch. I was a little
+
+564
+00:39:12,033 --> 00:39:16,600
+WITNESS B: tired from the week, but nothing out of the ordinary.
+
+565
+00:39:16,600 --> 00:39:22,160
+ATTORNEY: Had you had anything to drink that day other than water or tea?
+
+566
+00:39:22,160 --> 00:39:25,130
+WITNESS B: No. Tea and water. That's all.
+
+567
+00:39:25,130 --> 00:39:30,320
+ATTORNEY: Were you taking any medication that affects your vision or your memory?
+
+568
+00:39:30,320 --> 00:39:32,550
+WITNESS B: No. Nothing like that.
+
+569
+00:39:32,550 --> 00:39:37,889
+ATTORNEY: Okay. I think that covers the background of the afternoon. Next I want to
+
+570
+00:39:37,889 --> 00:39:43,301
+ATTORNEY: move to the traffic you saw coming from the west, beginning with the first
+
+571
+00:39:43,301 --> 00:39:48,932
+ATTORNEY: time you noticed the car. Before I do, is there anything about the conditions
+
+572
+00:39:48,932 --> 00:39:53,320
+ATTORNEY: or the road we've discussed that you want to add or correct?
+
+573
+00:39:53,320 --> 00:39:56,536
+WITNESS B: No. I think I've said it. It was clear,
+
+574
+00:39:56,536 --> 00:40:00,000
+WITNESS B: it was quiet, and I was out front waiting.
+
+575
+00:40:00,000 --> 00:40:04,111
+ATTORNEY: Let's turn now to the car itself. You told me a few minutes
+
+576
+00:40:04,111 --> 00:40:08,850
+ATTORNEY: ago that you were outside, out front of the store, when it happened.
+
+577
+00:40:08,850 --> 00:40:13,170
+ATTORNEY: I want to take this slowly. When did you first notice the car?
+
+578
+00:40:13,170 --> 00:40:17,067
+WITNESS B: When it came over the hill. Off to the west, to my
+
+579
+00:40:17,067 --> 00:40:21,510
+WITNESS B: left if I'm facing the road. That's where I first saw it.
+
+580
+00:40:21,510 --> 00:40:25,214
+ATTORNEY: The hill crest you described earlier, the one about
+
+581
+00:40:25,214 --> 00:40:27,610
+ATTORNEY: a quarter mile or so to the west?
+
+582
+00:40:27,610 --> 00:40:33,070
+WITNESS B: Yes. It comes over that rise and then it's sort of downhill toward the intersection.
+
+583
+00:40:33,070 --> 00:40:37,250
+ATTORNEY: What was it about the car that made you notice it?
+
+584
+00:40:37,250 --> 00:40:42,565
+WITNESS B: It was dark, and it was by itself. There wasn't anybody right behind it or
+
+585
+00:40:42,565 --> 00:40:47,520
+WITNESS B: right in front of it. It just kind of stood out coming down the hill.
+
+586
+00:40:47,520 --> 00:40:50,410
+ATTORNEY: Can you describe the car for me?
+
+587
+00:40:50,410 --> 00:40:54,638
+WITNESS B: A dark car. A sedan, four doors I think. Low to the ground.
+
+588
+00:40:54,638 --> 00:40:59,080
+WITNESS B: Black or a real dark color, I couldn't tell you exactly which.
+
+589
+00:40:59,080 --> 00:41:01,330
+ATTORNEY: Which direction was it traveling?
+
+590
+00:41:01,330 --> 00:41:05,180
+WITNESS B: East. Coming toward the intersection from the west, heading east.
+
+591
+00:41:05,180 --> 00:41:10,000
+ATTORNEY: How well could you see the car as it came toward the intersection?
+
+592
+00:41:10,000 --> 00:41:15,223
+WITNESS B: I had a clear view of the car the whole way in. I watched
+
+593
+00:41:15,223 --> 00:41:20,720
+WITNESS B: it right up until the moment it hit. Nothing was in the way.
+
+594
+00:41:20,720 --> 00:41:22,560
+OPPOSING COUNSEL: Object to form.
+
+595
+00:41:22,560 --> 00:41:28,480
+ATTORNEY: You can go ahead. Is there anything you want to add to that answer?
+
+596
+00:41:28,480 --> 00:41:31,800
+WITNESS B: No. That's what happened. I saw it.
+
+597
+00:41:31,800 --> 00:41:37,794
+ATTORNEY: All right. Let me break that down a little. When you first saw it at the
+
+598
+00:41:37,794 --> 00:41:44,370
+ATTORNEY: top of the hill, about how far away would you say it was from the intersection?
+
+599
+00:41:44,370 --> 00:41:48,153
+WITNESS B: Far. I don't know in feet. It was up at
+
+600
+00:41:48,153 --> 00:41:52,130
+WITNESS B: the top of the hill. However far that is.
+
+601
+00:41:52,130 --> 00:41:56,315
+ATTORNEY: That's fine. I don't want you to guess. Would it
+
+602
+00:41:56,315 --> 00:41:59,890
+ATTORNEY: be fair to say it was some distance away?
+
+603
+00:41:59,890 --> 00:42:03,210
+WITNESS B: It was a good ways off, yes.
+
+604
+00:42:03,210 --> 00:42:08,020
+ATTORNEY: And once you noticed it, did you keep looking at it?
+
+605
+00:42:08,020 --> 00:42:10,970
+WITNESS B: Yes. I kept looking at it.
+
+606
+00:42:10,970 --> 00:42:14,300
+ATTORNEY: Why did you keep looking at it?
+
+607
+00:42:14,300 --> 00:42:19,500
+WITNESS B: I don't really know. I was waiting on my sister, so I was looking
+
+608
+00:42:19,500 --> 00:42:25,340
+WITNESS B: up the road anyway for her car. She'd be coming from that direction, from
+
+609
+00:42:25,340 --> 00:42:29,820
+WITNESS B: the west. So I was watching the cars come over the hill.
+
+610
+00:42:29,820 --> 00:42:34,990
+ATTORNEY: So you were looking for your sister's car coming from the west?
+
+611
+00:42:34,990 --> 00:42:40,008
+WITNESS B: Right. She drives a light-colored car, so when I saw a dark
+
+612
+00:42:40,008 --> 00:42:44,600
+WITNESS B: one I knew it wasn't her, but I just kept watching it.
+
+613
+00:42:44,600 --> 00:42:50,510
+ATTORNEY: About how long did you watch that dark car before it reached the intersection?
+
+614
+00:42:50,510 --> 00:42:54,950
+WITNESS B: Not long. A few seconds. It was going pretty good.
+
+615
+00:42:54,950 --> 00:43:01,230
+ATTORNEY: When you say a few seconds, can you give me any better estimate than that?
+
+616
+00:43:01,230 --> 00:43:05,415
+WITNESS B: No. I wasn't counting. It wasn't a long time. It
+
+617
+00:43:05,415 --> 00:43:08,990
+WITNESS B: came down the hill and then it was there.
+
+618
+00:43:08,990 --> 00:43:13,509
+ATTORNEY: Let's talk about speed. Do you have an estimate of how
+
+619
+00:43:13,509 --> 00:43:17,860
+ATTORNEY: fast the car was traveling as it came down the hill?
+
+620
+00:43:17,860 --> 00:43:19,330
+OPPOSING COUNSEL: Objection. Foundation.
+
+621
+00:43:19,330 --> 00:43:23,030
+ATTORNEY: You can answer if you have an estimate.
+
+622
+00:43:23,030 --> 00:43:28,570
+WITNESS B: It was fast. Highway speed. It wasn't slowing down that I could tell.
+
+623
+00:43:28,570 --> 00:43:33,380
+ATTORNEY: When you say highway speed, what do you mean by that?
+
+624
+00:43:33,380 --> 00:43:39,354
+WITNESS B: I mean like the other cars that go through there. People go fast on that
+
+625
+00:43:39,354 --> 00:43:44,830
+WITNESS B: road. It's a highway. It was going like a car on the highway goes.
+
+626
+00:43:44,830 --> 00:43:48,160
+ATTORNEY: Can you put a number on it?
+
+627
+00:43:48,160 --> 00:43:50,010
+OPPOSING COUNSEL: Same objection. Foundation.
+
+628
+00:43:50,010 --> 00:43:53,890
+WITNESS B: No, I can't put a number on it. I'm not
+
+629
+00:43:53,890 --> 00:43:57,770
+WITNESS B: going to make up a number. It was fast.
+
+630
+00:43:57,770 --> 00:44:01,320
+ATTORNEY: That's fair, and I don't want you to make up a
+
+631
+00:44:01,320 --> 00:44:06,260
+ATTORNEY: number. Have you ever been trained in estimating vehicle speeds?
+
+632
+00:44:06,260 --> 00:44:07,370
+WITNESS B: No.
+
+633
+00:44:07,370 --> 00:44:12,920
+ATTORNEY: Ever worked in law enforcement, or as a crossing guard, anything like that?
+
+634
+00:44:12,920 --> 00:44:19,200
+WITNESS B: No. Nothing like that. I take care of people in their homes. That's my job.
+
+635
+00:44:19,200 --> 00:44:24,574
+ATTORNEY: Compared to the other eastbound traffic you had seen that afternoon while you
+
+636
+00:44:24,574 --> 00:44:29,180
+ATTORNEY: were waiting, was the car going faster, slower, or about the same?
+
+637
+00:44:29,180 --> 00:44:31,390
+OPPOSING COUNSEL: Object to form. Foundation.
+
+638
+00:44:31,390 --> 00:44:35,603
+WITNESS B: I'd say about the same or maybe a little faster. I really
+
+639
+00:44:35,603 --> 00:44:40,630
+WITNESS B: couldn't tell you more than that. Everybody goes fast through there.
+
+640
+00:44:40,630 --> 00:44:47,280
+ATTORNEY: Did you see the car change speed at any point as it came toward the intersection?
+
+641
+00:44:47,280 --> 00:44:52,460
+WITNESS B: Not that I saw. It looked like it was just going steady.
+
+642
+00:44:52,460 --> 00:44:56,520
+ATTORNEY: Did you see any brake lights on the car?
+
+643
+00:44:56,520 --> 00:45:02,949
+WITNESS B: The car was coming toward me, sort of, so I wouldn't have seen brake lights
+
+644
+00:45:02,949 --> 00:45:08,350
+WITNESS B: on the back. I didn't see it slow down, is what I can tell you.
+
+645
+00:45:08,350 --> 00:45:14,630
+ATTORNEY: Did you hear any sound from the car as it approached, tires, anything like that?
+
+646
+00:45:14,630 --> 00:45:19,323
+WITNESS B: Not really. There's wind out there and the road noise. I didn't
+
+647
+00:45:19,323 --> 00:45:24,240
+WITNESS B: hear any squealing or anything like that, if that's what you mean.
+
+648
+00:45:24,240 --> 00:45:26,820
+ATTORNEY: Did you hear any horn?
+
+649
+00:45:26,820 --> 00:45:29,780
+WITNESS B: No. I don't remember any horn.
+
+650
+00:45:29,780 --> 00:45:36,060
+ATTORNEY: Now, the eastbound side of the highway has two lanes, correct? You described that earlier.
+
+651
+00:45:36,060 --> 00:45:38,650
+WITNESS B: Yes, two lanes going east.
+
+652
+00:45:38,650 --> 00:45:43,084
+ATTORNEY: Do you know which of the two eastbound lanes the
+
+653
+00:45:43,084 --> 00:45:46,410
+ATTORNEY: car was in as it came down the hill?
+
+654
+00:45:46,410 --> 00:45:51,292
+WITNESS B: I think it was in the right one, the outside one, closer
+
+655
+00:45:51,292 --> 00:45:55,650
+WITNESS B: to my side. But I'm not a hundred percent on that.
+
+656
+00:45:55,650 --> 00:45:57,490
+OPPOSING COUNSEL: Object to form.
+
+657
+00:45:57,490 --> 00:46:01,560
+ATTORNEY: When you say you think, how sure are you?
+
+658
+00:46:01,560 --> 00:46:06,488
+WITNESS B: Pretty sure. But I'm not going to swear on the lane. I'm
+
+659
+00:46:06,488 --> 00:46:10,800
+WITNESS B: sure it was going east and I'm sure I watched it.
+
+660
+00:46:10,800 --> 00:46:15,230
+ATTORNEY: Did you see the car change lanes at any point?
+
+661
+00:46:15,230 --> 00:46:20,030
+WITNESS B: No. It stayed where it was, as far as I saw.
+
+662
+00:46:20,030 --> 00:46:24,092
+ATTORNEY: Did you see the car move toward the shoulder or toward
+
+663
+00:46:24,092 --> 00:46:28,530
+ATTORNEY: the median at any point before it reached the intersection?
+
+664
+00:46:28,530 --> 00:46:32,600
+WITNESS B: No. It just came straight. Straight down the road.
+
+665
+00:46:32,600 --> 00:46:38,880
+ATTORNEY: Were there any other vehicles in the eastbound lanes near that car at that time?
+
+666
+00:46:38,880 --> 00:46:42,669
+WITNESS B: Not near it. There might have been cars way back
+
+667
+00:46:42,669 --> 00:46:47,010
+WITNESS B: up the hill, I don't remember. Nothing right around it.
+
+668
+00:46:47,010 --> 00:46:50,878
+ATTORNEY: Any vehicles in the westbound lanes that you remember,
+
+669
+00:46:50,878 --> 00:46:54,030
+ATTORNEY: other than the truck we'll talk about later?
+
+670
+00:46:54,030 --> 00:46:57,165
+WITNESS B: There might have been one or two going the
+
+671
+00:46:57,165 --> 00:47:01,420
+WITNESS B: other way. I don't remember anything specific about them.
+
+672
+00:47:01,420 --> 00:47:07,019
+ATTORNEY: I want to go back to the hill for a moment. When the car first
+
+673
+00:47:07,019 --> 00:47:13,250
+ATTORNEY: came over the crest, could you see the whole car, or just part of it?
+
+674
+00:47:13,250 --> 00:47:17,266
+WITNESS B: At first just the top of it, kind of, as it
+
+675
+00:47:17,266 --> 00:47:21,750
+WITNESS B: came over. Then the whole thing as it came down.
+
+676
+00:47:21,750 --> 00:47:26,550
+ATTORNEY: And from that point on, could you see the whole car?
+
+677
+00:47:26,550 --> 00:47:27,660
+WITNESS B: Yes.
+
+678
+00:47:27,660 --> 00:47:33,570
+ATTORNEY: Was the sun a factor at all in how you were seeing the car?
+
+679
+00:47:33,570 --> 00:47:37,265
+WITNESS B: No. The sun was up high. It wasn't in my
+
+680
+00:47:37,265 --> 00:47:41,330
+WITNESS B: eyes. It was a bright afternoon, a nice day.
+
+681
+00:47:41,330 --> 00:47:45,030
+ATTORNEY: Were you wearing any glasses at that time?
+
+682
+00:47:45,030 --> 00:47:49,354
+WITNESS B: No. I only wear my reading glasses, and those were
+
+683
+00:47:49,354 --> 00:47:53,160
+WITNESS B: in my purse. I don't need them for far away.
+
+684
+00:47:53,160 --> 00:47:57,076
+ATTORNEY: Were you doing anything else while you watched the car?
+
+685
+00:47:57,076 --> 00:48:00,920
+ATTORNEY: Talking to anybody, looking at anything in your hands?
+
+686
+00:48:00,920 --> 00:48:05,174
+WITNESS B: No. I had my bag, my shopping bag, but I wasn't doing
+
+687
+00:48:05,174 --> 00:48:10,150
+WITNESS B: anything with it. I was just standing there watching the road.
+
+688
+00:48:10,150 --> 00:48:12,740
+ATTORNEY: Was anyone standing with you?
+
+689
+00:48:12,740 --> 00:48:16,070
+WITNESS B: No. I was by myself out there.
+
+690
+00:48:16,070 --> 00:48:22,720
+ATTORNEY: Did anybody walk in front of you or by you while you were watching the car?
+
+691
+00:48:22,720 --> 00:48:27,150
+WITNESS B: No. Nobody was out there. It was a slow afternoon.
+
+692
+00:48:27,150 --> 00:48:30,445
+ATTORNEY: Did you hear anything from inside the store at
+
+693
+00:48:30,445 --> 00:48:34,170
+ATTORNEY: that time, music, anything that drew your attention?
+
+694
+00:48:34,170 --> 00:48:37,870
+WITNESS B: No. The door was shut. I was outside.
+
+695
+00:48:37,870 --> 00:48:42,151
+ATTORNEY: Let me ask it this way. Between the time you first
+
+696
+00:48:42,151 --> 00:48:45,748
+ATTORNEY: saw the car at the top of the hill and the
+
+697
+00:48:45,748 --> 00:48:50,800
+ATTORNEY: time it reached the intersection, did you look away at all?
+
+698
+00:48:50,800 --> 00:48:53,760
+OPPOSING COUNSEL: Object to form. Asked and answered.
+
+699
+00:48:53,760 --> 00:48:55,610
+ATTORNEY: You can answer.
+
+700
+00:48:55,610 --> 00:48:58,190
+WITNESS B: No. I didn't look away.
+
+701
+00:48:58,190 --> 00:49:03,740
+ATTORNEY: Not even for a second, to look for your sister or anything else?
+
+702
+00:49:03,740 --> 00:49:08,170
+WITNESS B: No. Once I saw that car I watched that car.
+
+703
+00:49:08,170 --> 00:49:11,762
+ATTORNEY: Were you looking at the car the entire time,
+
+704
+00:49:11,762 --> 00:49:15,190
+ATTORNEY: or were you looking generally at the road?
+
+705
+00:49:15,190 --> 00:49:19,260
+WITNESS B: At the car. I was looking at the car.
+
+706
+00:49:19,260 --> 00:49:24,430
+ATTORNEY: Why do you think you were so focused on that particular car?
+
+707
+00:49:24,430 --> 00:49:27,380
+OPPOSING COUNSEL: Object to form. Calls for speculation.
+
+708
+00:49:27,380 --> 00:49:31,430
+WITNESS B: I don't know why. It was coming fast and it was the
+
+709
+00:49:31,430 --> 00:49:36,990
+WITNESS B: only one. Sometimes you just watch something. I couldn't tell you why.
+
+710
+00:49:36,990 --> 00:49:41,115
+ATTORNEY: Okay. As the car got closer to the intersection,
+
+711
+00:49:41,115 --> 00:49:44,380
+ATTORNEY: did your view of it change in any way?
+
+712
+00:49:44,380 --> 00:49:46,230
+OPPOSING COUNSEL: Object to form.
+
+713
+00:49:46,230 --> 00:49:52,880
+WITNESS B: No. I could see it. It was closer, so I could see it better if anything.
+
+714
+00:49:52,880 --> 00:49:59,160
+ATTORNEY: Could you see the side of the car, the front of the car, which part?
+
+715
+00:49:59,160 --> 00:50:04,449
+WITNESS B: Mostly the side and a little of the front. It was going across
+
+716
+00:50:04,449 --> 00:50:09,140
+WITNESS B: in front of me, more or less, going from left to right.
+
+717
+00:50:09,140 --> 00:50:12,470
+ATTORNEY: Going from your left to your right?
+
+718
+00:50:12,470 --> 00:50:17,640
+WITNESS B: Yes. West to east. Left to right the way I was facing.
+
+719
+00:50:17,640 --> 00:50:21,710
+ATTORNEY: And you were facing the highway at that time?
+
+720
+00:50:21,710 --> 00:50:24,660
+WITNESS B: Yes. I was facing the road.
+
+721
+00:50:24,660 --> 00:50:29,100
+ATTORNEY: Could you see whether there was anyone inside the car?
+
+722
+00:50:29,100 --> 00:50:33,831
+WITNESS B: No. I couldn't see inside. The windows were dark and it
+
+723
+00:50:33,831 --> 00:50:37,960
+WITNESS B: was going too fast for that. I just saw the car.
+
+724
+00:50:37,960 --> 00:50:43,035
+ATTORNEY: I'm not going to ask you anything about who was in the car or
+
+725
+00:50:43,035 --> 00:50:48,276
+ATTORNEY: what anyone in the car was doing. I just want to be clear about
+
+726
+00:50:48,276 --> 00:50:53,850
+ATTORNEY: what you could see. You saw the car itself, its body, its movement?
+
+727
+00:50:53,850 --> 00:50:59,030
+WITNESS B: Yes. The car itself. Where it was and where it was going.
+
+728
+00:50:59,030 --> 00:51:03,821
+ATTORNEY: Thank you. Now, as best you can, I want you to describe the last
+
+729
+00:51:03,821 --> 00:51:10,110
+ATTORNEY: part of the car's approach, the last few seconds before it reached the intersection.
+
+730
+00:51:10,110 --> 00:51:15,501
+WITNESS B: It came down the bottom of the hill, it was coming straight, it didn't
+
+731
+00:51:15,501 --> 00:51:21,200
+WITNESS B: slow down, and then it went into the intersection, and that's when it hit.
+
+732
+00:51:21,200 --> 00:51:25,260
+ATTORNEY: When you say it hit, what did it hit?
+
+733
+00:51:25,260 --> 00:51:30,440
+WITNESS B: The truck. The trailer part of the truck. The big white trailer.
+
+734
+00:51:30,440 --> 00:51:34,915
+ATTORNEY: We'll talk about the truck in detail in a bit, so I
+
+735
+00:51:34,915 --> 00:51:39,566
+ATTORNEY: don't want to get too far ahead. For now, I just want
+
+736
+00:51:39,566 --> 00:51:44,480
+ATTORNEY: to stay with the car. Did you see the moment of contact?
+
+737
+00:51:44,480 --> 00:51:45,590
+WITNESS B: Yes.
+
+738
+00:51:45,590 --> 00:51:50,760
+ATTORNEY: And you were looking at the car at the moment of contact?
+
+739
+00:51:50,760 --> 00:51:52,980
+OPPOSING COUNSEL: Object to form. Leading.
+
+740
+00:51:52,980 --> 00:51:56,529
+ATTORNEY: Let me rephrase. Where were you looking at the
+
+741
+00:51:56,529 --> 00:52:00,000
+ATTORNEY: moment the car made contact with the trailer?
+
+742
+00:52:00,000 --> 00:52:03,380
+WITNESS B: At the car. I never lost sight of it. I
+
+743
+00:52:03,380 --> 00:52:07,540
+WITNESS B: watched it the whole way, right up until it hit.
+
+744
+00:52:07,540 --> 00:52:10,280
+ATTORNEY: How confident are you in that?
+
+745
+00:52:10,280 --> 00:52:14,493
+WITNESS B: I'm confident. I know what I saw. People have asked me
+
+746
+00:52:14,493 --> 00:52:18,160
+WITNESS B: that and I tell them the same thing every time.
+
+747
+00:52:18,160 --> 00:52:20,560
+ATTORNEY: Who has asked you that?
+
+748
+00:52:20,560 --> 00:52:24,937
+WITNESS B: The deputy, when I gave my statement. And my sister. And the
+
+749
+00:52:24,937 --> 00:52:29,460
+WITNESS B: lawyers when I met with them. I tell everybody the same thing.
+
+750
+00:52:29,460 --> 00:52:32,210
+OPPOSING COUNSEL: Move to strike the nonresponsive portion.
+
+751
+00:52:32,210 --> 00:52:36,722
+ATTORNEY: Your objection is noted. When you gave your written statement to the
+
+752
+00:52:36,722 --> 00:52:40,770
+ATTORNEY: deputy a few days later, did you describe the car's approach?
+
+753
+00:52:40,770 --> 00:52:46,150
+WITNESS B: I did. Not as much as today. It was short. But I wrote that
+
+754
+00:52:46,150 --> 00:52:50,710
+WITNESS B: I saw the car come over the hill and I saw it hit.
+
+755
+00:52:50,710 --> 00:52:53,896
+ATTORNEY: Is anything you've told me today about the car
+
+756
+00:52:53,896 --> 00:52:57,220
+ATTORNEY: different from what you wrote in that statement?
+
+757
+00:52:57,220 --> 00:53:01,330
+WITNESS B: No. Today's just more detail because you're asking more questions.
+
+758
+00:53:01,330 --> 00:53:04,870
+ATTORNEY: Fair enough. Let me ask about the moments just
+
+759
+00:53:04,870 --> 00:53:08,180
+ATTORNEY: before the hit. Did you see the car swerve?
+
+760
+00:53:08,180 --> 00:53:10,920
+WITNESS B: No. I didn't see it swerve.
+
+761
+00:53:10,920 --> 00:53:15,370
+ATTORNEY: Did you see it move left or right in its lane?
+
+762
+00:53:15,370 --> 00:53:19,490
+WITNESS B: Not that I could tell. It just kept going straight.
+
+763
+00:53:19,490 --> 00:53:24,630
+ATTORNEY: Did you see any smoke or dust from the tires before the contact?
+
+764
+00:53:24,630 --> 00:53:26,680
+WITNESS B: No. Nothing like that.
+
+765
+00:53:26,680 --> 00:53:30,319
+ATTORNEY: Did the car's speed seem any different right before
+
+766
+00:53:30,319 --> 00:53:33,530
+ATTORNEY: the contact than it did coming down the hill?
+
+767
+00:53:33,530 --> 00:53:35,250
+OPPOSING COUNSEL: Objection. Foundation. Form.
+
+768
+00:53:35,250 --> 00:53:40,040
+WITNESS B: It looked the same to me. Fast. Same as it had been.
+
+769
+00:53:40,040 --> 00:53:43,810
+ATTORNEY: And you don't have a number for that speed.
+
+770
+00:53:43,810 --> 00:53:48,610
+WITNESS B: No. I told you, fast. Highway speed. That's all I can say.
+
+771
+00:53:48,610 --> 00:53:53,750
+ATTORNEY: Understood. Have you ever driven that stretch yourself coming down that hill eastbound?
+
+772
+00:53:53,750 --> 00:53:57,520
+WITNESS B: Lots of times. Every week, like I said before.
+
+773
+00:53:57,520 --> 00:54:01,630
+ATTORNEY: When you drive it, what speed do you usually go?
+
+774
+00:54:01,630 --> 00:54:04,370
+OPPOSING COUNSEL: Object to relevance. But go ahead.
+
+775
+00:54:04,370 --> 00:54:09,160
+WITNESS B: The speed limit, more or less. I don't speed. My car's old.
+
+776
+00:54:09,160 --> 00:54:13,409
+ATTORNEY: Without guessing at a number, would you say the car you saw
+
+777
+00:54:13,409 --> 00:54:17,730
+ATTORNEY: was going faster or slower than you usually drive that hill?
+
+778
+00:54:17,730 --> 00:54:20,130
+OPPOSING COUNSEL: Objection. Foundation. Calls for speculation.
+
+779
+00:54:20,130 --> 00:54:24,222
+WITNESS B: Faster, I'd say. But I really can't give you a number.
+
+780
+00:54:24,222 --> 00:54:28,010
+WITNESS B: I'm not trying to be difficult, I just don't know.
+
+781
+00:54:28,010 --> 00:54:32,482
+ATTORNEY: You're not being difficult. That's exactly the kind of answer I
+
+782
+00:54:32,482 --> 00:54:35,890
+ATTORNEY: need. If you don't know, tell me you don't know.
+
+783
+00:54:35,890 --> 00:54:36,920
+WITNESS B: Okay.
+
+784
+00:54:36,920 --> 00:54:41,584
+ATTORNEY: Let me ask a few questions about time. Do you know what time
+
+785
+00:54:41,584 --> 00:54:46,170
+ATTORNEY: it was when you first noticed the car coming over the hill?
+
+786
+00:54:46,170 --> 00:54:52,330
+WITNESS B: Not exactly. It was around four-thirty, a little after. I'd been out there a while waiting.
+
+787
+00:54:52,330 --> 00:54:55,070
+ATTORNEY: Had you checked the time recently?
+
+788
+00:54:55,070 --> 00:54:58,950
+WITNESS B: A little before. My sister said she'd be there around
+
+789
+00:54:58,950 --> 00:55:02,610
+WITNESS B: five, and I remember thinking I still had a while.
+
+790
+00:55:02,610 --> 00:55:05,350
+ATTORNEY: Where did you check the time?
+
+791
+00:55:05,350 --> 00:55:10,490
+WITNESS B: My watch. I wear a watch. I don't like taking my phone out.
+
+792
+00:55:10,490 --> 00:55:14,945
+ATTORNEY: Before the dark car came over the hill, how many other eastbound
+
+793
+00:55:14,945 --> 00:55:19,400
+ATTORNEY: cars had you watched come over that hill while you were waiting?
+
+794
+00:55:19,400 --> 00:55:25,570
+WITNESS B: I don't know. Some. Not a lot. It wasn't busy. Maybe a car every little while.
+
+795
+00:55:25,570 --> 00:55:29,680
+ATTORNEY: Did any of those other cars stand out to you?
+
+796
+00:55:29,680 --> 00:55:31,730
+WITNESS B: No. Just regular traffic.
+
+797
+00:55:31,730 --> 00:55:34,820
+ATTORNEY: Was the road surface wet or dry?
+
+798
+00:55:34,820 --> 00:55:38,590
+WITNESS B: Dry. It hadn't rained. It was a clear day.
+
+799
+00:55:38,590 --> 00:55:39,960
+ATTORNEY: Any wind?
+
+800
+00:55:39,960 --> 00:55:42,360
+WITNESS B: A little breeze. Nothing much.
+
+801
+00:55:42,360 --> 00:55:46,390
+ATTORNEY: Any haze, glare off the road, anything that made it
+
+802
+00:55:46,390 --> 00:55:49,550
+ATTORNEY: harder to see down the road to the west?
+
+803
+00:55:49,550 --> 00:55:54,350
+WITNESS B: No. It was a clear day. You could see a long way.
+
+804
+00:55:54,350 --> 00:55:59,603
+ATTORNEY: All right. I want to ask you one more time about the approach, and then
+
+805
+00:55:59,603 --> 00:56:04,783
+ATTORNEY: we'll move on. From the time the car came over the crest to the moment
+
+806
+00:56:04,783 --> 00:56:10,110
+ATTORNEY: of contact, was there anything at all that came between you and the car?
+
+807
+00:56:10,110 --> 00:56:12,850
+OPPOSING COUNSEL: Object to form. Asked and answered.
+
+808
+00:56:12,850 --> 00:56:14,560
+ATTORNEY: You can answer.
+
+809
+00:56:14,560 --> 00:56:19,010
+WITNESS B: No. Like I said. I could see it the whole time.
+
+810
+00:56:19,010 --> 00:56:22,780
+ATTORNEY: Did you hear anything at the moment of contact?
+
+811
+00:56:22,780 --> 00:56:27,240
+WITNESS B: Yes. A big bang. Loud. Louder than anything I've ever heard.
+
+812
+00:56:27,240 --> 00:56:32,741
+ATTORNEY: We'll get to the sound and what happened after in more detail later this morning. For
+
+813
+00:56:32,741 --> 00:56:38,890
+ATTORNEY: now, is there anything else about the car's approach that you remember that we haven't covered?
+
+814
+00:56:38,890 --> 00:56:43,178
+WITNESS B: I don't think so. It came over the hill, it came down
+
+815
+00:56:43,178 --> 00:56:47,790
+WITNESS B: fast, it didn't slow down, and it hit. That's what I saw.
+
+816
+00:56:47,790 --> 00:56:52,250
+ATTORNEY: Did you have any trouble seeing the color of the car?
+
+817
+00:56:52,250 --> 00:56:57,390
+WITNESS B: No. It was dark. I said black or dark gray, something like that.
+
+818
+00:56:57,390 --> 00:57:02,870
+ATTORNEY: Did you notice anything on the car, any marks, any roof rack, anything unusual?
+
+819
+00:57:02,870 --> 00:57:09,040
+WITNESS B: No. It was just a plain dark car. Nothing on top of it that I saw.
+
+820
+00:57:09,040 --> 00:57:12,810
+ATTORNEY: Had you ever seen that car before that day?
+
+821
+00:57:12,810 --> 00:57:15,550
+WITNESS B: No. Not that I know of.
+
+822
+00:57:15,550 --> 00:57:21,030
+ATTORNEY: Did you see where the car came from before it came over the hill?
+
+823
+00:57:21,030 --> 00:57:25,570
+WITNESS B: No. You can't see past the hill from there. The first
+
+824
+00:57:25,570 --> 00:57:28,910
+WITNESS B: I saw it was when it came over the top.
+
+825
+00:57:28,910 --> 00:57:32,650
+ATTORNEY: Okay. Let me take a step back. You've said a couple of
+
+826
+00:57:32,650 --> 00:57:36,597
+ATTORNEY: times that you watched the car the whole way in. Was that
+
+827
+00:57:36,597 --> 00:57:41,930
+ATTORNEY: something you thought about at the time, or something you realized afterward?
+
+828
+00:57:41,930 --> 00:57:43,640
+OPPOSING COUNSEL: Object to form.
+
+829
+00:57:43,640 --> 00:57:46,040
+WITNESS B: I don't understand the question.
+
+830
+00:57:46,040 --> 00:57:50,393
+ATTORNEY: Fair enough. Let me try again. At the time you were watching
+
+831
+00:57:50,393 --> 00:57:54,600
+ATTORNEY: the car, did you think to yourself, I'm watching this car?
+
+832
+00:57:54,600 --> 00:57:58,370
+WITNESS B: No. You don't think like that. I was just looking
+
+833
+00:57:58,370 --> 00:58:02,140
+WITNESS B: at it. Afterward I knew I'd seen the whole thing.
+
+834
+00:58:02,140 --> 00:58:07,620
+ATTORNEY: When did you first tell someone that you had seen the car come in?
+
+835
+00:58:07,620 --> 00:58:11,992
+WITNESS B: Right after. The lady from the store came out and I
+
+836
+00:58:11,992 --> 00:58:15,850
+WITNESS B: told her. I was shaking. I told her I saw it.
+
+837
+00:58:15,850 --> 00:58:18,240
+OPPOSING COUNSEL: Objection. Hearsay. Move to strike.
+
+838
+00:58:18,240 --> 00:58:22,871
+ATTORNEY: Noted. I'm not asking what the store employee said. I'm just asking
+
+839
+00:58:22,871 --> 00:58:26,810
+ATTORNEY: about timing. That was within a few minutes of the crash?
+
+840
+00:58:26,810 --> 00:58:30,580
+WITNESS B: A few minutes. Maybe less. She came right out.
+
+841
+00:58:30,580 --> 00:58:33,999
+ATTORNEY: We'll come back to that conversation later. Have you
+
+842
+00:58:33,999 --> 00:58:37,090
+ATTORNEY: ever had any problem with your distance vision?
+
+843
+00:58:37,090 --> 00:58:43,250
+WITNESS B: No. My eyes are fine far away. I had them checked last year for my license.
+
+844
+00:58:43,250 --> 00:58:44,970
+ATTORNEY: Did you pass?
+
+845
+00:58:44,970 --> 00:58:47,370
+WITNESS B: Yes. No restrictions except reading.
+
+846
+00:58:47,370 --> 00:58:51,104
+ATTORNEY: Is there anything about how you were feeling that afternoon,
+
+847
+00:58:51,104 --> 00:58:54,900
+ATTORNEY: tired, sick, anything, that would have affected what you saw?
+
+848
+00:58:54,900 --> 00:59:00,040
+WITNESS B: No. I felt fine. I'd just done my shopping. I was just waiting.
+
+849
+00:59:00,040 --> 00:59:04,435
+ATTORNEY: I think that covers the car's approach. In a moment I'm going
+
+850
+00:59:04,435 --> 00:59:08,685
+ATTORNEY: to turn to the truck. Before I do, is there anything you've
+
+851
+00:59:08,685 --> 00:59:12,720
+ATTORNEY: said about the car that you'd like to change or correct?
+
+852
+00:59:12,720 --> 00:59:14,780
+WITNESS B: No. That's all true.
+
+853
+00:59:14,780 --> 00:59:17,868
+ATTORNEY: Counsel, I'm about to move on to a new
+
+854
+00:59:17,868 --> 00:59:21,280
+ATTORNEY: subject. Do you need anything before I do?
+
+855
+00:59:21,280 --> 00:59:23,000
+OPPOSING COUNSEL: No, go ahead.
+
+856
+00:59:23,000 --> 00:59:27,430
+ATTORNEY: All right. Just one more on the car. When the car came down
+
+857
+00:59:27,430 --> 00:59:32,010
+ATTORNEY: the hill, you said you watched it from the top. How would you
+
+858
+00:59:32,010 --> 00:59:37,040
+ATTORNEY: describe the grade, the slope of the hill, from what you could see?
+
+859
+00:59:37,040 --> 00:59:39,990
+WITNESS B: Gentle. It's not steep. It just goes down a
+
+860
+00:59:39,990 --> 00:59:43,900
+WITNESS B: little toward the intersection, and then it's flat there.
+
+861
+00:59:43,900 --> 00:59:48,690
+ATTORNEY: Did the slope affect your ability to see the car at all?
+
+862
+00:59:48,690 --> 00:59:50,410
+OPPOSING COUNSEL: Object to form.
+
+863
+00:59:50,410 --> 00:59:54,276
+WITNESS B: No. If anything, it made it easier, because it was
+
+864
+00:59:54,276 --> 00:59:57,600
+WITNESS B: coming down toward me. I could see it fine.
+
+865
+00:59:57,600 --> 01:00:00,000
+ATTORNEY: Thank you. Let's turn to the truck.
+
+866
+01:00:00,000 --> 01:00:03,668
+ATTORNEY: All right. I want to shift now from the
+
+867
+01:00:03,668 --> 01:00:07,430
+ATTORNEY: car to the truck. Is that okay with you?
+
+868
+01:00:07,430 --> 01:00:08,910
+WITNESS B: That's fine.
+
+869
+01:00:08,910 --> 01:00:12,584
+ATTORNEY: At some point that afternoon, before the crash, did
+
+870
+01:00:12,584 --> 01:00:15,970
+ATTORNEY: you notice a large truck near the intersection?
+
+871
+01:00:15,970 --> 01:00:21,540
+WITNESS B: Yes. A big white truck. A tractor with a long trailer behind it.
+
+872
+01:00:21,540 --> 01:00:25,260
+ATTORNEY: Do you remember when you first noticed it?
+
+873
+01:00:25,260 --> 01:00:30,390
+WITNESS B: Not to the minute. It was a little while before everything happened.
+
+874
+01:00:30,390 --> 01:00:34,540
+WITNESS B: I just noticed it sitting over there on the other side.
+
+875
+01:00:34,540 --> 01:00:39,000
+ATTORNEY: When you say the other side, what do you mean?
+
+876
+01:00:39,000 --> 01:00:42,663
+WITNESS B: The westbound side. Across the median from the store.
+
+877
+01:00:42,663 --> 01:00:46,050
+WITNESS B: The lanes going the other direction, toward town.
+
+878
+01:00:46,050 --> 01:00:51,250
+ATTORNEY: Was it in one of the westbound travel lanes, or somewhere else?
+
+879
+01:00:51,250 --> 01:00:57,940
+WITNESS B: It was in the turn lane. The little left-turn lane they have there for the crossover.
+
+880
+01:00:57,940 --> 01:01:02,233
+ATTORNEY: Just so the record is clear, that's the turn lane on the
+
+881
+01:01:02,233 --> 01:01:07,600
+ATTORNEY: westbound side that lets you turn left across the median toward 140th?
+
+882
+01:01:07,600 --> 01:01:09,450
+WITNESS B: Yes. That one.
+
+883
+01:01:09,450 --> 01:01:15,770
+ATTORNEY: How did you know it was in the turn lane and not the regular lane?
+
+884
+01:01:15,770 --> 01:01:22,122
+WITNESS B: Because it was over on the left, by the median, where the lane cuts in. The
+
+885
+01:01:22,122 --> 01:01:28,390
+WITNESS B: regular lanes were to the right of it, and cars were going by it in those.
+
+886
+01:01:28,390 --> 01:01:33,220
+ATTORNEY: Did you see cars going by it in the westbound lanes?
+
+887
+01:01:33,220 --> 01:01:37,680
+WITNESS B: A couple, I think. Not a lot. It wasn't busy.
+
+888
+01:01:37,680 --> 01:01:43,250
+ATTORNEY: Tell me what you remember about the truck itself. Start with the trailer.
+
+889
+01:01:43,250 --> 01:01:47,174
+WITNESS B: The trailer was white. Long. A box trailer, all
+
+890
+01:01:47,174 --> 01:01:50,680
+WITNESS B: closed in. Like a big metal box on wheels.
+
+891
+01:01:50,680 --> 01:01:55,130
+ATTORNEY: Did you notice anything on the front of the trailer?
+
+892
+01:01:55,130 --> 01:01:59,652
+WITNESS B: There was a unit up on the front of it, up high, behind
+
+893
+01:01:59,652 --> 01:02:05,160
+WITNESS B: the cab. A refrigeration thing, I'd guess. I could hear it running.
+
+894
+01:02:05,160 --> 01:02:07,760
+ATTORNEY: What did it sound like?
+
+895
+01:02:07,760 --> 01:02:10,819
+WITNESS B: A hum. Kind of a steady hum, like a
+
+896
+01:02:10,819 --> 01:02:15,190
+WITNESS B: big air conditioner. You hear them at truck stops.
+
+897
+01:02:15,190 --> 01:02:20,390
+ATTORNEY: Could you hear that hum from where you were outside the store?
+
+898
+01:02:20,390 --> 01:02:22,250
+OPPOSING COUNSEL: Object to form.
+
+899
+01:02:22,250 --> 01:02:24,100
+ATTORNEY: You can answer.
+
+900
+01:02:24,100 --> 01:02:30,420
+WITNESS B: Yes. Once things got quiet between cars, you could hear it. It's a constant sound.
+
+901
+01:02:30,420 --> 01:02:35,990
+ATTORNEY: What about the cab, the tractor part. What do you remember about that?
+
+902
+01:02:35,990 --> 01:02:42,018
+WITNESS B: It was darker than the trailer. I don't remember the exact color. A regular
+
+903
+01:02:42,018 --> 01:02:46,760
+WITNESS B: big rig cab. Not one of the flat-front ones, it had a hood.
+
+904
+01:02:46,760 --> 01:02:51,590
+ATTORNEY: Do you have any estimate of how long the trailer was?
+
+905
+01:02:51,590 --> 01:02:55,719
+WITNESS B: Long. The regular long kind. I couldn't give you feet.
+
+906
+01:02:55,719 --> 01:02:59,390
+WITNESS B: I'm not good with distances, I said that before.
+
+907
+01:02:59,390 --> 01:03:03,067
+ATTORNEY: That's fine. Would you say it was the size of
+
+908
+01:03:03,067 --> 01:03:07,560
+ATTORNEY: trailer you typically see on the highway, the big ones?
+
+909
+01:03:07,560 --> 01:03:09,790
+OPPOSING COUNSEL: Object to form. Leading.
+
+910
+01:03:09,790 --> 01:03:14,610
+WITNESS B: Yes, the big ones. Not a short one. The full size.
+
+911
+01:03:14,610 --> 01:03:18,353
+ATTORNEY: When you first noticed the truck in the turn
+
+912
+01:03:18,353 --> 01:03:21,670
+ATTORNEY: lane, was it stopped, or was it moving?
+
+913
+01:03:21,670 --> 01:03:24,643
+WITNESS B: I really can't tell you for sure. It was
+
+914
+01:03:24,643 --> 01:03:28,730
+WITNESS B: either stopped or just barely rolling. Creeping, maybe.
+
+915
+01:03:28,730 --> 01:03:32,810
+ATTORNEY: What makes you say it might have been creeping?
+
+916
+01:03:32,810 --> 01:03:38,780
+WITNESS B: It just didn't seem totally still to me. But I wasn't staring at it. It
+
+917
+01:03:38,780 --> 01:03:44,330
+WITNESS B: could have been stopped. I don't want to say one way or the other.
+
+918
+01:03:44,330 --> 01:03:48,538
+ATTORNEY: I understand. I don't want you to guess. Is it fair
+
+919
+01:03:48,538 --> 01:03:53,240
+ATTORNEY: to say you don't know whether it was stopped or creeping?
+
+920
+01:03:53,240 --> 01:03:59,180
+WITNESS B: That's fair. It was one or the other. Sitting there or close to it.
+
+921
+01:03:59,180 --> 01:04:05,870
+ATTORNEY: Do you know how long it was in the turn lane before it began its turn?
+
+922
+01:04:05,870 --> 01:04:09,348
+WITNESS B: No. It was there when I noticed it. I
+
+923
+01:04:09,348 --> 01:04:12,920
+WITNESS B: don't know how long it had been there.
+
+924
+01:04:12,920 --> 01:04:19,610
+ATTORNEY: Were there any other vehicles in that turn lane, in front of it or behind it?
+
+925
+01:04:19,610 --> 01:04:22,950
+WITNESS B: Not that I remember. Just the truck.
+
+926
+01:04:22,950 --> 01:04:27,410
+ATTORNEY: Okay. At some point did the truck begin to turn?
+
+927
+01:04:27,410 --> 01:04:28,520
+WITNESS B: Yes.
+
+928
+01:04:28,520 --> 01:04:32,240
+ATTORNEY: Describe for me what you saw it do.
+
+929
+01:04:32,240 --> 01:04:36,724
+WITNESS B: It started coming across. It pulled out of the turn lane, into
+
+930
+01:04:36,724 --> 01:04:40,990
+WITNESS B: the crossover, the gap in the median, and then the front of
+
+931
+01:04:40,990 --> 01:04:45,980
+WITNESS B: it started across the eastbound lanes. Toward our side. Toward 140th.
+
+932
+01:04:45,980 --> 01:04:50,104
+ATTORNEY: When you say our side, you mean the south side
+
+933
+01:04:50,104 --> 01:04:53,780
+ATTORNEY: of the highway, the side the store is on?
+
+934
+01:04:53,780 --> 01:04:56,010
+WITNESS B: Yes. The store side.
+
+935
+01:04:56,010 --> 01:04:59,720
+ATTORNEY: Which part of the truck came across first?
+
+936
+01:04:59,720 --> 01:05:04,143
+WITNESS B: The cab. The front. Then the trailer follows behind it,
+
+937
+01:05:04,143 --> 01:05:07,520
+WITNESS B: the way they do. It kind of swings around.
+
+938
+01:05:07,520 --> 01:05:11,980
+ATTORNEY: Describe the path of the cab, as best you can.
+
+939
+01:05:11,980 --> 01:05:16,718
+WITNESS B: It came out of the median and angled across, toward the side
+
+940
+01:05:16,718 --> 01:05:21,693
+WITNESS B: road. Heading for 140th. It was turning left, so it was curving
+
+941
+01:05:21,693 --> 01:05:25,720
+WITNESS B: toward my left as I looked at it. Toward the south.
+
+942
+01:05:25,720 --> 01:05:27,580
+OPPOSING COUNSEL: Object to form.
+
+943
+01:05:27,580 --> 01:05:31,532
+ATTORNEY: I'll rephrase. From where you were, which way did
+
+944
+01:05:31,532 --> 01:05:35,000
+ATTORNEY: the cab appear to be heading as it crossed?
+
+945
+01:05:35,000 --> 01:05:40,200
+WITNESS B: Toward 140th. Toward the side road that goes down past the store.
+
+946
+01:05:40,200 --> 01:05:46,150
+ATTORNEY: Did it appear to you to be making a normal left turn into 140th?
+
+947
+01:05:46,150 --> 01:05:48,380
+OPPOSING COUNSEL: Object to form. Foundation.
+
+948
+01:05:48,380 --> 01:05:50,600
+ATTORNEY: If you can answer.
+
+949
+01:05:50,600 --> 01:05:54,757
+WITNESS B: It looked like a regular left turn to me. It was
+
+950
+01:05:54,757 --> 01:05:59,520
+WITNESS B: going where the road goes. I'm not an expert in trucks.
+
+951
+01:05:59,520 --> 01:06:03,600
+ATTORNEY: How fast was the truck moving as it turned?
+
+952
+01:06:03,600 --> 01:06:04,720
+WITNESS B: Slow.
+
+953
+01:06:04,720 --> 01:06:08,800
+ATTORNEY: Can you give me any sense of how slow?
+
+954
+01:06:08,800 --> 01:06:10,660
+OPPOSING COUNSEL: Object to form.
+
+955
+01:06:10,660 --> 01:06:15,561
+WITNESS B: Slow like a big truck turning. A little faster than somebody walking,
+
+956
+01:06:15,561 --> 01:06:20,320
+WITNESS B: maybe. Not much. They don't go fast when they're turning like that.
+
+957
+01:06:20,320 --> 01:06:24,770
+ATTORNEY: Did the speed change as it went through the turn?
+
+958
+01:06:24,770 --> 01:06:30,404
+WITNESS B: Not that I could tell. It was kind of steady. Slow and steady. Maybe
+
+959
+01:06:30,404 --> 01:06:35,540
+WITNESS B: it picked up a little once it was moving. I really don't know.
+
+960
+01:06:35,540 --> 01:06:41,490
+ATTORNEY: Did you see it stop at any point during the turn, before the crash?
+
+961
+01:06:41,490 --> 01:06:47,060
+WITNESS B: No. I didn't see it stop. Once it started across, it kept going.
+
+962
+01:06:47,060 --> 01:06:53,740
+ATTORNEY: How long, from when it started moving out of the turn lane, did the turn take?
+
+963
+01:06:53,740 --> 01:06:55,600
+OPPOSING COUNSEL: Object to form.
+
+964
+01:06:55,600 --> 01:06:59,390
+WITNESS B: A few seconds. I don't know. It felt slow. It
+
+965
+01:06:59,390 --> 01:07:03,770
+WITNESS B: wasn't like a car whipping across. It took its time.
+
+966
+01:07:03,770 --> 01:07:10,080
+ATTORNEY: When you say a few seconds, are you able to put any number on that?
+
+967
+01:07:10,080 --> 01:07:13,963
+WITNESS B: No. I'd be making it up. Several seconds. It
+
+968
+01:07:13,963 --> 01:07:17,140
+WITNESS B: was slow. That's all I can tell you.
+
+969
+01:07:17,140 --> 01:07:23,830
+ATTORNEY: I'm not asking you to make anything up. If you don't know, that's a fine answer.
+
+970
+01:07:23,830 --> 01:07:30,510
+WITNESS B: Then I don't know the exact number. It was a few seconds, and it was slow.
+
+971
+01:07:30,510 --> 01:07:34,970
+ATTORNEY: As the truck turned, did you hear anything from it?
+
+972
+01:07:34,970 --> 01:07:39,425
+WITNESS B: The engine. You could hear the engine working, like a low
+
+973
+01:07:39,425 --> 01:07:43,880
+WITNESS B: rumble when they pull out. And that hum from the trailer.
+
+974
+01:07:43,880 --> 01:07:47,600
+ATTORNEY: Did the engine noise change during the turn?
+
+975
+01:07:47,600 --> 01:07:51,937
+WITNESS B: It got a little louder when it started pulling. Then it
+
+976
+01:07:51,937 --> 01:07:56,510
+WITNESS B: was just steady. Like a big diesel. That's all I remember.
+
+977
+01:07:56,510 --> 01:08:00,590
+ATTORNEY: Did you hear the truck's horn at any point?
+
+978
+01:08:00,590 --> 01:08:03,570
+WITNESS B: No. I don't remember any horn.
+
+979
+01:08:03,570 --> 01:08:08,020
+ATTORNEY: Did you hear any air brakes, that hiss trucks make?
+
+980
+01:08:08,020 --> 01:08:13,220
+WITNESS B: No. I didn't hear brakes. Not from the truck, not from anybody.
+
+981
+01:08:13,220 --> 01:08:19,160
+ATTORNEY: Did you hear any other sounds from the truck, any squeal, anything like that?
+
+982
+01:08:19,160 --> 01:08:22,510
+WITNESS B: No. Just the engine and the hum.
+
+983
+01:08:22,510 --> 01:08:26,960
+ATTORNEY: Did you notice whether the truck had any lights on?
+
+984
+01:08:26,960 --> 01:08:32,530
+WITNESS B: I didn't notice lights. It was broad daylight. I wasn't looking for that.
+
+985
+01:08:32,530 --> 01:08:36,620
+ATTORNEY: Did you notice a turn signal on the truck?
+
+986
+01:08:36,620 --> 01:08:40,703
+WITNESS B: I don't remember. I didn't notice it either way.
+
+987
+01:08:40,703 --> 01:08:43,680
+WITNESS B: I'm not saying it was or wasn't on.
+
+988
+01:08:43,680 --> 01:08:48,085
+ATTORNEY: Understood. Now, as the truck came across the eastbound lanes,
+
+989
+01:08:48,085 --> 01:08:51,850
+ATTORNEY: where did the trailer end up relative to those lanes?
+
+990
+01:08:51,850 --> 01:08:57,050
+WITNESS B: Across them. The trailer was stretched across the road. Both eastbound lanes.
+
+991
+01:08:57,050 --> 01:08:58,530
+ATTORNEY: Both lanes?
+
+992
+01:08:58,530 --> 01:09:02,884
+WITNESS B: Both. The inside lane and the outside lane. It was long
+
+993
+01:09:02,884 --> 01:09:07,080
+WITNESS B: enough that it covered the whole thing, more or less.
+
+994
+01:09:07,080 --> 01:09:10,967
+ATTORNEY: When you say covered, do you mean the trailer was
+
+995
+01:09:10,967 --> 01:09:15,250
+ATTORNEY: across both of the eastbound lanes at the same moment?
+
+996
+01:09:15,250 --> 01:09:19,955
+WITNESS B: Yes. At one point it was across both of them. The cab was
+
+997
+01:09:19,955 --> 01:09:25,650
+WITNESS B: over toward 140th and the trailer was back across the road behind it.
+
+998
+01:09:25,650 --> 01:09:27,500
+OPPOSING COUNSEL: Object to form.
+
+999
+01:09:27,500 --> 01:09:30,885
+ATTORNEY: Let me break that down. At the moment the
+
+1000
+01:09:30,885 --> 01:09:34,930
+ATTORNEY: trailer was across both lanes, where was the cab?
+
+1001
+01:09:34,930 --> 01:09:39,741
+WITNESS B: The cab was mostly across already. Up near the edge of the
+
+1002
+01:09:39,741 --> 01:09:44,220
+WITNESS B: road on our side, starting into 140th, or close to it.
+
+1003
+01:09:44,220 --> 01:09:48,300
+ATTORNEY: And the back of the trailer, where was that?
+
+1004
+01:09:48,300 --> 01:09:52,689
+WITNESS B: Still back in the median area, I think. Back toward where it
+
+1005
+01:09:52,689 --> 01:09:57,590
+WITNESS B: came from. The back wheels were still coming through the crossover.
+
+1006
+01:09:57,590 --> 01:10:02,410
+ATTORNEY: Are you confident about where the back of the trailer was?
+
+1007
+01:10:02,410 --> 01:10:07,282
+WITNESS B: Not exactly confident. It was back there somewhere. In the median
+
+1008
+01:10:07,282 --> 01:10:11,330
+WITNESS B: or right near it. I wasn't looking at the back wheels.
+
+1009
+01:10:11,330 --> 01:10:16,900
+ATTORNEY: Okay. Was the trailer moving or stopped when it was across both lanes?
+
+1010
+01:10:16,900 --> 01:10:20,610
+WITNESS B: Moving. Slow, still moving. It was still turning.
+
+1011
+01:10:20,610 --> 01:10:25,440
+ATTORNEY: Was the trailer straight across the road, or at an angle?
+
+1012
+01:10:25,440 --> 01:10:27,300
+OPPOSING COUNSEL: Object to form.
+
+1013
+01:10:27,300 --> 01:10:31,608
+WITNESS B: At an angle, I'd say. Because it was still bending around
+
+1014
+01:10:31,608 --> 01:10:35,840
+WITNESS B: the turn. Not straight across like a wall, more slanted.
+
+1015
+01:10:35,840 --> 01:10:39,550
+ATTORNEY: Slanted in which direction, if you can say?
+
+1016
+01:10:39,550 --> 01:10:44,029
+WITNESS B: I can't really say better than that. It was angled. The
+
+1017
+01:10:44,029 --> 01:10:48,100
+WITNESS B: front was ahead of the back. That's how they turn.
+
+1018
+01:10:48,100 --> 01:10:53,670
+ATTORNEY: Fair enough. Which side of the trailer was facing the oncoming eastbound traffic?
+
+1019
+01:10:53,670 --> 01:10:55,900
+OPPOSING COUNSEL: Object to form. Foundation.
+
+1020
+01:10:55,900 --> 01:10:57,750
+ATTORNEY: If you know.
+
+1021
+01:10:57,750 --> 01:11:03,720
+WITNESS B: The side of it. The long side. Coming from the west you'd be looking at
+
+1022
+01:11:03,720 --> 01:11:09,270
+WITNESS B: the long side. The right side of it, I guess, if you're the truck.
+
+1023
+01:11:09,270 --> 01:11:13,089
+ATTORNEY: Okay. Let me go back a step. When the truck
+
+1024
+01:11:13,089 --> 01:11:17,440
+ATTORNEY: started its turn, where was the car, if you know?
+
+1025
+01:11:17,440 --> 01:11:19,290
+OPPOSING COUNSEL: Object to form.
+
+1026
+01:11:19,290 --> 01:11:23,418
+WITNESS B: Coming down the hill. Coming east. It had already come
+
+1027
+01:11:23,418 --> 01:11:27,470
+WITNESS B: over the top, I think, when the truck started moving.
+
+1028
+01:11:27,470 --> 01:11:30,060
+ATTORNEY: You think, or you know?
+
+1029
+01:11:30,060 --> 01:11:35,396
+WITNESS B: I think. I believe the car was already over the hill when the truck
+
+1030
+01:11:35,396 --> 01:11:41,210
+WITNESS B: pulled out. That's how I remember it. But I wouldn't swear to the second.
+
+1031
+01:11:41,210 --> 01:11:47,425
+ATTORNEY: In your earlier testimony this morning you said you first noticed the car as it
+
+1032
+01:11:47,425 --> 01:11:53,090
+ATTORNEY: came over the hill. Was the truck still in the turn lane at that moment?
+
+1033
+01:11:53,090 --> 01:11:57,598
+WITNESS B: I think it was still in the turn lane, or just starting.
+
+1034
+01:11:57,598 --> 01:12:02,750
+WITNESS B: It started across after, or about the same time. Not long after.
+
+1035
+01:12:02,750 --> 01:12:07,430
+ATTORNEY: So the sequence you recall is the car comes over the hill,
+
+1036
+01:12:07,430 --> 01:12:12,030
+ATTORNEY: and then the truck begins across, or about the same time?
+
+1037
+01:12:12,030 --> 01:12:15,000
+OPPOSING COUNSEL: Object to form. Asked and answered.
+
+1038
+01:12:15,000 --> 01:12:16,860
+ATTORNEY: You can answer.
+
+1039
+01:12:16,860 --> 01:12:23,550
+WITNESS B: Yes. That's my memory. Car over the hill, truck starts across, about together or right after.
+
+1040
+01:12:23,550 --> 01:12:27,503
+ATTORNEY: Did you see the truck at any point stop, back
+
+1041
+01:12:27,503 --> 01:12:31,720
+ATTORNEY: up, or pause once it was in the eastbound lanes?
+
+1042
+01:12:31,720 --> 01:12:34,320
+WITNESS B: No. It kept coming across.
+
+1043
+01:12:34,320 --> 01:12:40,630
+ATTORNEY: Were there any other eastbound vehicles anywhere near the intersection while the truck was turning?
+
+1044
+01:12:40,630 --> 01:12:46,200
+WITNESS B: No. Just the car. I don't remember anybody else coming east right then.
+
+1045
+01:12:46,200 --> 01:12:49,550
+ATTORNEY: And westbound, while the truck was turning?
+
+1046
+01:12:49,550 --> 01:12:53,095
+WITNESS B: I think a car went by westbound, maybe one.
+
+1047
+01:12:53,095 --> 01:12:56,970
+WITNESS B: I really don't remember for sure. It was quiet.
+
+1048
+01:12:56,970 --> 01:13:01,669
+ATTORNEY: Let's talk about the car's position relative to the truck. As
+
+1049
+01:13:01,669 --> 01:13:05,520
+ATTORNEY: the truck moved across, which lane was the car in?
+
+1050
+01:13:05,520 --> 01:13:11,090
+WITNESS B: The right lane. The outside one, nearest the store. Like I said before.
+
+1051
+01:13:11,090 --> 01:13:16,290
+ATTORNEY: Did the car stay in that lane while the truck was turning?
+
+1052
+01:13:16,290 --> 01:13:19,260
+WITNESS B: Yes. It stayed right there. Straight.
+
+1053
+01:13:19,260 --> 01:13:23,158
+ATTORNEY: Did you see the car move toward the left lane, or
+
+1054
+01:13:23,158 --> 01:13:28,170
+ATTORNEY: toward the shoulder, at any point while the truck was crossing?
+
+1055
+01:13:28,170 --> 01:13:33,370
+WITNESS B: No. It didn't move over. It just kept straight in its lane.
+
+1056
+01:13:33,370 --> 01:13:36,995
+ATTORNEY: Did the car appear to you to slow down
+
+1057
+01:13:36,995 --> 01:13:40,430
+ATTORNEY: as the truck crossed in front of it?
+
+1058
+01:13:40,430 --> 01:13:42,660
+OPPOSING COUNSEL: Object to form. Foundation.
+
+1059
+01:13:42,660 --> 01:13:45,630
+ATTORNEY: I'm asking only what you saw.
+
+1060
+01:13:45,630 --> 01:13:49,759
+WITNESS B: I didn't see it slow down. It kept coming the
+
+1061
+01:13:49,759 --> 01:13:53,430
+WITNESS B: same as it was. I didn't see any change.
+
+1062
+01:13:53,430 --> 01:13:57,880
+ATTORNEY: Did you hear any braking from the car? Tires, anything?
+
+1063
+01:13:57,880 --> 01:14:02,340
+WITNESS B: No. No tires, no squealing. Nothing until the crash itself.
+
+1064
+01:14:02,340 --> 01:14:06,050
+ATTORNEY: Did you hear a horn from the car?
+
+1065
+01:14:06,050 --> 01:14:08,650
+WITNESS B: No. No horn from anybody.
+
+1066
+01:14:08,650 --> 01:14:14,489
+ATTORNEY: Now, I'm going to ask you about the last moment before the impact, but I'm
+
+1067
+01:14:14,489 --> 01:14:20,170
+ATTORNEY: not going to ask you yet about the impact itself. We'll get there. Okay?
+
+1068
+01:14:20,170 --> 01:14:21,280
+WITNESS B: Okay.
+
+1069
+01:14:21,280 --> 01:14:25,000
+ATTORNEY: Just before the impact, where was the truck?
+
+1070
+01:14:25,000 --> 01:14:29,081
+WITNESS B: Across the road. The cab was over on our side, heading
+
+1071
+01:14:29,081 --> 01:14:33,540
+WITNESS B: into 140th, and the trailer was across the eastbound lanes.
+
+1072
+01:14:33,540 --> 01:14:37,250
+ATTORNEY: Was the truck still moving at that moment?
+
+1073
+01:14:37,250 --> 01:14:40,590
+WITNESS B: I think so. Still slow. Still going.
+
+1074
+01:14:40,590 --> 01:14:45,050
+ATTORNEY: And the car, just before the impact, where was it?
+
+1075
+01:14:45,050 --> 01:14:49,880
+WITNESS B: Right there. In the right lane, coming up to the trailer.
+
+1076
+01:14:49,880 --> 01:14:56,190
+ATTORNEY: Which part of the truck did the car come up on? The cab, the trailer?
+
+1077
+01:14:56,190 --> 01:14:58,050
+OPPOSING COUNSEL: Object to form.
+
+1078
+01:14:58,050 --> 01:15:04,360
+WITNESS B: The trailer. The side of the trailer. Not the cab. The cab was already past.
+
+1079
+01:15:04,360 --> 01:15:09,190
+ATTORNEY: Do you know about where along the trailer? Front, middle, back?
+
+1080
+01:15:09,190 --> 01:15:13,796
+WITNESS B: Somewhere in the middle, more toward the back maybe. Behind the
+
+1081
+01:15:13,796 --> 01:15:18,110
+WITNESS B: cab, ahead of the back wheels. I couldn't tell you exactly.
+
+1082
+01:15:18,110 --> 01:15:21,965
+ATTORNEY: Okay. We'll come back to that. I want to ask a
+
+1083
+01:15:21,965 --> 01:15:26,826
+ATTORNEY: few more general things about the truck. Had you seen that
+
+1084
+01:15:26,826 --> 01:15:31,100
+ATTORNEY: truck before that day, at the store or on the road?
+
+1085
+01:15:31,100 --> 01:15:34,272
+WITNESS B: No. Not that I know of. Lots of trucks
+
+1086
+01:15:34,272 --> 01:15:38,530
+WITNESS B: go through there. I wouldn't know one from another.
+
+1087
+01:15:38,530 --> 01:15:44,180
+ATTORNEY: Going back to that afternoon. While the truck was in the turn lane, before it
+
+1088
+01:15:44,180 --> 01:15:50,050
+ATTORNEY: started across, did you see anything about the truck that seemed unusual to you?
+
+1089
+01:15:50,050 --> 01:15:51,900
+OPPOSING COUNSEL: Object to form.
+
+1090
+01:15:51,900 --> 01:15:55,239
+WITNESS B: No. It was just a truck waiting to turn.
+
+1091
+01:15:55,239 --> 01:15:59,330
+WITNESS B: Nothing stood out. I didn't think anything of it.
+
+1092
+01:15:59,330 --> 01:16:04,900
+ATTORNEY: Did you see any doors open on it, anything loose, anything like that?
+
+1093
+01:16:04,900 --> 01:16:07,130
+WITNESS B: No. Nothing like that.
+
+1094
+01:16:07,130 --> 01:16:10,740
+ATTORNEY: Okay. Did the trailer at any point cross into
+
+1095
+01:16:10,740 --> 01:16:14,190
+ATTORNEY: the area of 140th itself, before the crash?
+
+1096
+01:16:14,190 --> 01:16:18,305
+WITNESS B: The front part of the truck was going into 140th. The
+
+1097
+01:16:18,305 --> 01:16:22,730
+WITNESS B: trailer was still mostly on the highway when it happened.
+
+1098
+01:16:22,730 --> 01:16:26,815
+ATTORNEY: How much of the truck, if any, was on 140th
+
+1099
+01:16:26,815 --> 01:16:30,900
+ATTORNEY: at the moment of the crash, if you can say?
+
+1100
+01:16:30,900 --> 01:16:32,760
+OPPOSING COUNSEL: Object to form.
+
+1101
+01:16:32,760 --> 01:16:36,861
+WITNESS B: The cab, maybe. Starting onto it. Maybe a little of
+
+1102
+01:16:36,861 --> 01:16:40,560
+WITNESS B: the front of the trailer. I can't say exactly.
+
+1103
+01:16:40,560 --> 01:16:44,318
+ATTORNEY: Okay. Let me ask it this way. Was the cab on
+
+1104
+01:16:44,318 --> 01:16:49,100
+ATTORNEY: the highway or past the highway when the crash happened?
+
+1105
+01:16:49,100 --> 01:16:53,828
+WITNESS B: At the edge, or just past it. Going onto 140th. It was
+
+1106
+01:16:53,828 --> 01:16:58,380
+WITNESS B: most of the way through the turn with the front end.
+
+1107
+01:16:58,380 --> 01:17:04,700
+ATTORNEY: And you're describing the cab's position there based on what you saw at the time?
+
+1108
+01:17:04,700 --> 01:17:07,670
+WITNESS B: Yes. Based on what I saw.
+
+1109
+01:17:07,670 --> 01:17:09,530
+ATTORNEY: Okay. One moment.
+
+1110
+01:17:09,530 --> 01:17:13,858
+ATTORNEY: I want to make sure I have the timeline straight. You noticed
+
+1111
+01:17:13,858 --> 01:17:19,180
+ATTORNEY: the truck sitting in the westbound turn lane, stopped or creeping, correct?
+
+1112
+01:17:19,180 --> 01:17:20,300
+WITNESS B: Yes.
+
+1113
+01:17:20,300 --> 01:17:24,380
+ATTORNEY: You don't know how long it had been there?
+
+1114
+01:17:24,380 --> 01:17:25,500
+WITNESS B: No.
+
+1115
+01:17:25,500 --> 01:17:31,810
+ATTORNEY: At about the time the car came over the hill, the truck began its turn?
+
+1116
+01:17:31,810 --> 01:17:34,040
+OPPOSING COUNSEL: Object to form. Mischaracterizes.
+
+1117
+01:17:34,040 --> 01:17:38,120
+ATTORNEY: Is that a fair summary of what you said?
+
+1118
+01:17:38,120 --> 01:17:41,470
+WITNESS B: About that time, or right after. Yes.
+
+1119
+01:17:41,470 --> 01:17:44,654
+ATTORNEY: The truck moved out of the turn lane, through
+
+1120
+01:17:44,654 --> 01:17:48,900
+ATTORNEY: the crossover, and across the eastbound lanes, toward 140th?
+
+1121
+01:17:48,900 --> 01:17:50,010
+WITNESS B: Yes.
+
+1122
+01:17:50,010 --> 01:17:51,120
+ATTORNEY: Slowly?
+
+1123
+01:17:51,120 --> 01:17:52,240
+WITNESS B: Slowly.
+
+1124
+01:17:52,240 --> 01:17:54,840
+ATTORNEY: Without stopping, that you saw?
+
+1125
+01:17:54,840 --> 01:17:57,440
+WITNESS B: Without stopping that I saw.
+
+1126
+01:17:57,440 --> 01:18:02,270
+ATTORNEY: And at some point the trailer was across both eastbound lanes?
+
+1127
+01:18:02,270 --> 01:18:04,490
+WITNESS B: Yes. Both of them.
+
+1128
+01:18:04,490 --> 01:18:10,440
+ATTORNEY: And during that time, you didn't hear a horn and you didn't hear brakes?
+
+1129
+01:18:10,440 --> 01:18:14,890
+WITNESS B: No horn. No brakes. Just the engine and the hum.
+
+1130
+01:18:14,890 --> 01:18:21,580
+ATTORNEY: Is there anything about the truck's movements that you remember that I haven't asked you about?
+
+1131
+01:18:21,580 --> 01:18:25,480
+WITNESS B: I don't think so. That's what I remember. It came
+
+1132
+01:18:25,480 --> 01:18:29,380
+WITNESS B: across slow, and the trailer was across the road.
+
+1133
+01:18:29,380 --> 01:18:35,320
+ATTORNEY: Did you say anything out loud, or call out, while the truck was turning?
+
+1134
+01:18:35,320 --> 01:18:40,303
+WITNESS B: No. There wasn't time to say anything, and I don't know who
+
+1135
+01:18:40,303 --> 01:18:44,610
+WITNESS B: I would have said it to. I was just standing there.
+
+1136
+01:18:44,610 --> 01:18:49,810
+ATTORNEY: Was anyone else outside the store with you during the truck's turn?
+
+1137
+01:18:49,810 --> 01:18:53,965
+WITNESS B: Not right with me. I don't remember anybody else outside
+
+1138
+01:18:53,965 --> 01:18:57,600
+WITNESS B: right then. The girl who worked there was inside.
+
+1139
+01:18:57,600 --> 01:19:00,950
+ATTORNEY: How do you know she was inside?
+
+1140
+01:19:00,950 --> 01:19:06,520
+WITNESS B: Because she came out after. After the crash. She came out the door.
+
+1141
+01:19:06,520 --> 01:19:10,503
+ATTORNEY: We'll get to that. Before the crash, did you see
+
+1142
+01:19:10,503 --> 01:19:14,320
+ATTORNEY: anyone else on the store property, in the lot?
+
+1143
+01:19:14,320 --> 01:19:20,260
+WITNESS B: There might have been a car parked. I don't remember people. It was quiet.
+
+1144
+01:19:20,260 --> 01:19:25,460
+ATTORNEY: Just a few more about the truck. After the truck got across, and
+
+1145
+01:19:25,460 --> 01:19:30,660
+ATTORNEY: we'll talk about this more later, did you see where it ended up?
+
+1146
+01:19:30,660 --> 01:19:33,972
+WITNESS B: It went on down 140th. It kept going a
+
+1147
+01:19:33,972 --> 01:19:37,720
+WITNESS B: ways and stopped down there past the store.
+
+1148
+01:19:37,720 --> 01:19:43,660
+ATTORNEY: We'll come back to exactly where. Did it stop right away, or keep going?
+
+1149
+01:19:43,660 --> 01:19:47,519
+WITNESS B: It kept going a little. It didn't stop right at
+
+1150
+01:19:47,519 --> 01:19:51,460
+WITNESS B: the highway. It went down some and then stopped.
+
+1151
+01:19:51,460 --> 01:19:56,105
+ATTORNEY: Okay. We'll pick that up later this morning. I'm going to move
+
+1152
+01:19:56,105 --> 01:20:00,000
+ATTORNEY: now to the moment of impact, which is the next area.
+
+1153
+01:20:00,000 --> 01:20:05,522
+ATTORNEY: I want to move now to the collision itself. I'm going to ask you about
+
+1154
+01:20:05,522 --> 01:20:12,070
+ATTORNEY: what you heard and what you saw, and then about what happened afterward. All right?
+
+1155
+01:20:12,070 --> 01:20:13,580
+WITNESS B: All right.
+
+1156
+01:20:13,580 --> 01:20:19,230
+ATTORNEY: What is the first thing you noticed at the moment of the impact?
+
+1157
+01:20:19,230 --> 01:20:24,683
+WITNESS B: The sound. It was the loudest thing I ever heard. It was like
+
+1158
+01:20:24,683 --> 01:20:29,420
+WITNESS B: a bang and a scrape at the same time, metal on metal.
+
+1159
+01:20:29,420 --> 01:20:34,320
+ATTORNEY: How long did the sound last, as best you can estimate?
+
+1160
+01:20:34,320 --> 01:20:36,200
+OPPOSING COUNSEL: Object to form.
+
+1161
+01:20:36,200 --> 01:20:38,090
+ATTORNEY: You can answer.
+
+1162
+01:20:38,090 --> 01:20:42,721
+WITNESS B: Maybe a second or two for the main part. Then there was
+
+1163
+01:20:42,721 --> 01:20:47,520
+WITNESS B: more noise after, further off. I'll get to that, I guess.
+
+1164
+01:20:47,520 --> 01:20:53,170
+ATTORNEY: We will. Before the bang, did you hear any other sound? Any horn?
+
+1165
+01:20:53,170 --> 01:20:56,570
+WITNESS B: No horn. I didn't hear a horn.
+
+1166
+01:20:56,570 --> 01:20:59,960
+ATTORNEY: Any squealing of tires, any braking sound?
+
+1167
+01:20:59,960 --> 01:21:06,370
+WITNESS B: Not that I heard. I've thought about it a lot. I don't remember any squealing.
+
+1168
+01:21:06,370 --> 01:21:12,410
+ATTORNEY: Are you saying there was no such sound, or that you don't recall one?
+
+1169
+01:21:12,410 --> 01:21:14,290
+OPPOSING COUNSEL: Object to form.
+
+1170
+01:21:14,290 --> 01:21:20,330
+WITNESS B: I'm saying I didn't hear one. If there was one, I didn't hear it.
+
+1171
+01:21:20,330 --> 01:21:25,230
+ATTORNEY: After that first bang, what did you see the car do?
+
+1172
+01:21:25,230 --> 01:21:28,995
+WITNESS B: It kept going. It came out the other side of
+
+1173
+01:21:28,995 --> 01:21:33,530
+WITNESS B: the trailer and just kept going east. It didn't stop.
+
+1174
+01:21:33,530 --> 01:21:38,050
+ATTORNEY: When you say the other side, what do you mean?
+
+1175
+01:21:38,050 --> 01:21:43,457
+WITNESS B: The car went under the trailer, the middle part, and came out on
+
+1176
+01:21:43,457 --> 01:21:48,610
+WITNESS B: the far side, the east side, and kept on going down the road.
+
+1177
+01:21:48,610 --> 01:21:53,890
+ATTORNEY: Which side of the trailer did the car strike, if you know?
+
+1178
+01:21:53,890 --> 01:21:55,780
+OPPOSING COUNSEL: Object to foundation.
+
+1179
+01:21:55,780 --> 01:21:57,660
+ATTORNEY: If you know.
+
+1180
+01:21:57,660 --> 01:22:04,450
+WITNESS B: The side facing west. The side facing toward the hill. That's the side it came at.
+
+1181
+01:22:04,450 --> 01:22:10,860
+ATTORNEY: Did the car stay on the highway after it came out from under the trailer?
+
+1182
+01:22:10,860 --> 01:22:17,650
+WITNESS B: Not for long. It went off to the right. Off the south side of the road.
+
+1183
+01:22:17,650 --> 01:22:23,310
+ATTORNEY: The south side, that's the same side of the highway as the store?
+
+1184
+01:22:23,310 --> 01:22:25,190
+WITNESS B: Yes. Our side.
+
+1185
+01:22:25,190 --> 01:22:31,600
+ATTORNEY: About how fast was the car moving after it came out from under the trailer?
+
+1186
+01:22:31,600 --> 01:22:33,870
+OPPOSING COUNSEL: Object to form. Foundation.
+
+1187
+01:22:33,870 --> 01:22:36,880
+ATTORNEY: You can answer if you're able.
+
+1188
+01:22:36,880 --> 01:22:41,397
+WITNESS B: I can't give you a number. It was still going fast.
+
+1189
+01:22:41,397 --> 01:22:45,560
+WITNESS B: It didn't look like it slowed down much at all.
+
+1190
+01:22:45,560 --> 01:22:49,700
+ATTORNEY: Did you see it slow down at any point?
+
+1191
+01:22:49,700 --> 01:22:53,480
+WITNESS B: Not right away. Not that I could tell.
+
+1192
+01:22:53,480 --> 01:22:59,510
+ATTORNEY: Describe for me what you saw the car do after it left the road.
+
+1193
+01:22:59,510 --> 01:23:03,462
+WITNESS B: It went into the grass and then there was a fence.
+
+1194
+01:23:03,462 --> 01:23:07,730
+WITNESS B: It went right through the fence. I could hear the wire
+
+1195
+01:23:07,730 --> 01:23:12,710
+WITNESS B: and the posts, like snapping. Then it went through another one.
+
+1196
+01:23:12,710 --> 01:23:16,860
+ATTORNEY: How many fences did you see it go through?
+
+1197
+01:23:16,860 --> 01:23:20,373
+WITNESS B: At least two. I think two. There may have
+
+1198
+01:23:20,373 --> 01:23:24,400
+WITNESS B: been more. It was getting further away by then.
+
+1199
+01:23:24,400 --> 01:23:28,550
+ATTORNEY: What kind of fences were they, if you remember?
+
+1200
+01:23:28,550 --> 01:23:34,200
+WITNESS B: Like farm fences. Wire fences with wooden posts. There's pasture down that way.
+
+1201
+01:23:34,200 --> 01:23:39,480
+ATTORNEY: Was the car moving in a straight line or was it turning?
+
+1202
+01:23:39,480 --> 01:23:41,370
+OPPOSING COUNSEL: Object to form.
+
+1203
+01:23:41,370 --> 01:23:46,009
+WITNESS B: Mostly straight, I think. Kind of angling away from the road.
+
+1204
+01:23:46,009 --> 01:23:50,040
+WITNESS B: It wasn't spinning or anything like that, that I saw.
+
+1205
+01:23:50,040 --> 01:23:51,930
+ATTORNEY: And then what?
+
+1206
+01:23:51,930 --> 01:23:56,521
+WITNESS B: Then it hit a pole. A power pole, way down the road.
+
+1207
+01:23:56,521 --> 01:24:01,730
+WITNESS B: There was another big bang, not as loud because it was far,
+
+1208
+01:24:01,730 --> 01:24:05,880
+WITNESS B: but you could hear it. And I saw the pole move.
+
+1209
+01:24:05,880 --> 01:24:10,410
+ATTORNEY: When you say the pole moved, what did you see?
+
+1210
+01:24:10,410 --> 01:24:14,458
+WITNESS B: It shook. It leaned. I remember the wires swinging.
+
+1211
+01:24:14,458 --> 01:24:17,950
+WITNESS B: I thought the lines were going to come down.
+
+1212
+01:24:17,950 --> 01:24:20,210
+ATTORNEY: Did they come down?
+
+1213
+01:24:20,210 --> 01:24:23,980
+WITNESS B: I don't think so. Not that I saw.
+
+1214
+01:24:23,980 --> 01:24:28,510
+ATTORNEY: About how far away from the intersection was that pole?
+
+1215
+01:24:28,510 --> 01:24:31,530
+OPPOSING COUNSEL: Object to form. Calls for speculation.
+
+1216
+01:24:31,530 --> 01:24:33,790
+ATTORNEY: Just your best estimate.
+
+1217
+01:24:33,790 --> 01:24:39,625
+WITNESS B: Far. A long way. I'd say a couple football fields, maybe more. I told the
+
+1218
+01:24:39,625 --> 01:24:45,860
+WITNESS B: deputy it was way down there. I'm not good with distances, I said that before.
+
+1219
+01:24:45,860 --> 01:24:51,890
+ATTORNEY: I understand. Did the car come to a stop after it hit the pole?
+
+1220
+01:24:51,890 --> 01:24:57,352
+WITNESS B: It went a little further after that, I think, and then it stopped. It
+
+1221
+01:24:57,352 --> 01:25:03,210
+WITNESS B: ended up in somebody's yard down there. There's a house back off the road.
+
+1222
+01:25:03,210 --> 01:25:06,980
+ATTORNEY: Could you see the car once it stopped?
+
+1223
+01:25:06,980 --> 01:25:11,690
+WITNESS B: I could see it was there. I could see the shape of
+
+1224
+01:25:11,690 --> 01:25:16,400
+WITNESS B: it. It was a long way off. I couldn't see details.
+
+1225
+01:25:16,400 --> 01:25:20,883
+ATTORNEY: From the time of the first bang to the time you
+
+1226
+01:25:20,883 --> 01:25:25,080
+ATTORNEY: saw the car hit the pole, how long was that?
+
+1227
+01:25:25,080 --> 01:25:26,960
+OPPOSING COUNSEL: Object to form.
+
+1228
+01:25:26,960 --> 01:25:31,535
+WITNESS B: A few seconds. It felt longer. It felt like it went
+
+1229
+01:25:31,535 --> 01:25:36,020
+WITNESS B: on and on, but it was probably only a few seconds.
+
+1230
+01:25:36,020 --> 01:25:42,050
+ATTORNEY: Let me turn to the truck. What did the truck do after the impact?
+
+1231
+01:25:42,050 --> 01:25:45,950
+WITNESS B: It kept going a little. It finished the turn,
+
+1232
+01:25:45,950 --> 01:25:49,590
+WITNESS B: kind of. It went on across and down 140th.
+
+1233
+01:25:49,590 --> 01:25:51,850
+ATTORNEY: Down 140th, meaning south?
+
+1234
+01:25:51,850 --> 01:25:56,000
+WITNESS B: Yes, south. Down the side road, past the store.
+
+1235
+01:25:56,000 --> 01:25:59,020
+ATTORNEY: Did you see the truck stop?
+
+1236
+01:25:59,020 --> 01:26:04,680
+WITNESS B: Yes. It stopped down there on 140th. South of the store some ways.
+
+1237
+01:26:04,680 --> 01:26:09,200
+ATTORNEY: How far south of the store, if you can estimate?
+
+1238
+01:26:09,200 --> 01:26:11,090
+OPPOSING COUNSEL: Object to form.
+
+1239
+01:26:11,090 --> 01:26:16,854
+WITNESS B: Not that far. The whole truck was past the corner, I think. The back of
+
+1240
+01:26:16,854 --> 01:26:22,780
+WITNESS B: the trailer was down past the edge of the store lot. Something like that.
+
+1241
+01:26:22,780 --> 01:26:28,060
+ATTORNEY: Did it stop quickly or slowly, as far as you could tell?
+
+1242
+01:26:28,060 --> 01:26:30,320
+OPPOSING COUNSEL: Object to form. Foundation.
+
+1243
+01:26:30,320 --> 01:26:37,110
+WITNESS B: I don't know. It wasn't sudden, like a slam. It just rolled down there and stopped.
+
+1244
+01:26:37,110 --> 01:26:42,390
+ATTORNEY: Did you see any damage to the trailer from where you were?
+
+1245
+01:26:42,390 --> 01:26:48,756
+WITNESS B: I saw it later, when it was stopped. The side was messed up. There was a
+
+1246
+01:26:48,756 --> 01:26:55,210
+WITNESS B: big dent, kind of torn along the bottom edge. I didn't go up close to it.
+
+1247
+01:26:55,210 --> 01:26:58,600
+ATTORNEY: Which side of the trailer was damaged?
+
+1248
+01:26:58,600 --> 01:27:04,029
+WITNESS B: The side that had been facing the car. After it turned, that side
+
+1249
+01:27:04,029 --> 01:27:08,790
+WITNESS B: was facing kind of west, toward the road. I could see it.
+
+1250
+01:27:08,790 --> 01:27:15,159
+ATTORNEY: I'm not going to ask you about any person. I just want to understand where you
+
+1251
+01:27:15,159 --> 01:27:21,610
+ATTORNEY: were and what you did. Immediately after the car hit the pole, what did you do?
+
+1252
+01:27:21,610 --> 01:27:26,744
+WITNESS B: I just stood there. I couldn't move for a second. I think I
+
+1253
+01:27:26,744 --> 01:27:31,790
+WITNESS B: said something out loud, like oh my God. I dropped my bag.
+
+1254
+01:27:31,790 --> 01:27:34,810
+ATTORNEY: The shopping bag you mentioned earlier?
+
+1255
+01:27:34,810 --> 01:27:41,600
+WITNESS B: Yes. Stuff went all over. I didn't even care. I left it there for a while.
+
+1256
+01:27:41,600 --> 01:27:45,370
+ATTORNEY: Did you move from where you were standing?
+
+1257
+01:27:45,370 --> 01:27:49,576
+WITNESS B: Not much. I stayed out front of the store. I took
+
+1258
+01:27:49,576 --> 01:27:54,040
+WITNESS B: a couple steps, toward the road, and then I stopped.
+
+1259
+01:27:54,040 --> 01:27:56,300
+ATTORNEY: Why did you stop?
+
+1260
+01:27:56,300 --> 01:28:00,924
+WITNESS B: Because I didn't know what to do. There were cars still
+
+1261
+01:28:00,924 --> 01:28:05,548
+WITNESS B: coming on the highway, I didn't want to walk out there.
+
+1262
+01:28:05,548 --> 01:28:09,500
+WITNESS B: And it was so far down there where the car was.
+
+1263
+01:28:09,500 --> 01:28:14,780
+ATTORNEY: Did you ever walk down to where the car came to rest?
+
+1264
+01:28:14,780 --> 01:28:21,570
+WITNESS B: No. I didn't go down there. I didn't want to see. I'll be honest about that.
+
+1265
+01:28:21,570 --> 01:28:26,642
+ATTORNEY: That's fine. Nobody is going to ask you to describe anything you
+
+1266
+01:28:26,642 --> 01:28:31,000
+ATTORNEY: didn't see. Did anyone else go down there that you saw?
+
+1267
+01:28:31,000 --> 01:28:35,687
+WITNESS B: Some people stopped their cars on the highway and ran down
+
+1268
+01:28:35,687 --> 01:28:40,050
+WITNESS B: there. A couple of people. I don't know who they were.
+
+1269
+01:28:40,050 --> 01:28:43,820
+ATTORNEY: About how many vehicles stopped, if you remember?
+
+1270
+01:28:43,820 --> 01:28:50,610
+WITNESS B: Two or three at first. Then more. After a while there were cars pulled off everywhere.
+
+1271
+01:28:50,610 --> 01:28:54,760
+ATTORNEY: Did you make a phone call at some point?
+
+1272
+01:28:54,760 --> 01:28:57,400
+WITNESS B: Yes. I called my sister.
+
+1273
+01:28:57,400 --> 01:29:01,550
+ATTORNEY: How soon after the crash did you call her?
+
+1274
+01:29:01,550 --> 01:29:06,830
+WITNESS B: A few minutes. Maybe a minute or two. I had to find my
+
+1275
+01:29:06,830 --> 01:29:12,110
+WITNESS B: phone, it was in my bag and the bag was on the ground.
+
+1276
+01:29:12,110 --> 01:29:14,370
+ATTORNEY: Did you call 911?
+
+1277
+01:29:14,370 --> 01:29:19,586
+WITNESS B: No. I thought about it, but somebody said they already called. And
+
+1278
+01:29:19,586 --> 01:29:24,170
+WITNESS B: then the lady from the store came out and said she called.
+
+1279
+01:29:24,170 --> 01:29:27,940
+ATTORNEY: Who said they already called, the first time?
+
+1280
+01:29:27,940 --> 01:29:29,450
+OPPOSING COUNSEL: Object. Hearsay.
+
+1281
+01:29:29,450 --> 01:29:35,860
+ATTORNEY: I'm not asking for the truth of it. Just who said it, if you know.
+
+1282
+01:29:35,860 --> 01:29:39,492
+WITNESS B: One of the people who stopped. A man, I
+
+1283
+01:29:39,492 --> 01:29:43,030
+WITNESS B: think. He yelled it. I don't know him.
+
+1284
+01:29:43,030 --> 01:29:47,550
+ATTORNEY: What did you say to your sister on the phone?
+
+1285
+01:29:47,550 --> 01:29:49,060
+OPPOSING COUNSEL: Object. Hearsay.
+
+1286
+01:29:49,060 --> 01:29:50,950
+ATTORNEY: You can answer.
+
+1287
+01:29:50,950 --> 01:29:55,240
+WITNESS B: I told her there was a terrible wreck right in front
+
+1288
+01:29:55,240 --> 01:29:59,282
+WITNESS B: of the store and to hurry up, and that she should
+
+1289
+01:29:59,282 --> 01:30:04,150
+WITNESS B: be careful coming because the road was going to be blocked.
+
+1290
+01:30:04,150 --> 01:30:06,410
+ATTORNEY: What did she say?
+
+1291
+01:30:06,410 --> 01:30:07,920
+OPPOSING COUNSEL: Same objection.
+
+1292
+01:30:07,920 --> 01:30:12,887
+WITNESS B: She said she was close and she was coming. That's about
+
+1293
+01:30:12,887 --> 01:30:16,590
+WITNESS B: it. I was crying, so it was hard to talk.
+
+1294
+01:30:16,590 --> 01:30:23,380
+ATTORNEY: Let's talk about the store employee. At some point did someone come out of the store?
+
+1295
+01:30:23,380 --> 01:30:28,280
+WITNESS B: Yes. The woman who worked the counter. She came running out.
+
+1296
+01:30:28,280 --> 01:30:32,430
+ATTORNEY: How soon after the crash did she come out?
+
+1297
+01:30:32,430 --> 01:30:38,890
+WITNESS B: Pretty fast. Right after. Maybe while I was still standing there. Before I called my
+
+1298
+01:30:38,890 --> 01:30:44,120
+WITNESS B: sister, I think. Or around the same time. I'm not sure of the order.
+
+1299
+01:30:44,120 --> 01:30:48,270
+ATTORNEY: When she came out, did you talk with her?
+
+1300
+01:30:48,270 --> 01:30:49,400
+WITNESS B: Yes.
+
+1301
+01:30:49,400 --> 01:30:52,800
+ATTORNEY: Tell me what you said to her.
+
+1302
+01:30:52,800 --> 01:30:54,310
+OPPOSING COUNSEL: Object. Hearsay.
+
+1303
+01:30:54,310 --> 01:30:58,080
+ATTORNEY: These are her own statements. You can answer.
+
+1304
+01:30:58,080 --> 01:31:01,962
+WITNESS B: I told her a car went under the truck. I told
+
+1305
+01:31:01,962 --> 01:31:05,931
+WITNESS B: her it went way down there and hit the pole. I
+
+1306
+01:31:05,931 --> 01:31:11,280
+WITNESS B: was pointing. I was pretty upset. I don't remember every word.
+
+1307
+01:31:11,280 --> 01:31:14,290
+ATTORNEY: Did she ask you any questions?
+
+1308
+01:31:14,290 --> 01:31:17,853
+WITNESS B: She asked me what happened. She asked if I
+
+1309
+01:31:17,853 --> 01:31:21,840
+WITNESS B: was okay. She asked if anybody called for help.
+
+1310
+01:31:21,840 --> 01:31:24,480
+ATTORNEY: Did she stay with you?
+
+1311
+01:31:24,480 --> 01:31:29,005
+WITNESS B: For a little while. Then she went back in and out
+
+1312
+01:31:29,005 --> 01:31:33,530
+WITNESS B: a couple of times. She was on the phone, I think.
+
+1313
+01:31:33,530 --> 01:31:38,050
+ATTORNEY: Did you tell her anything else about what you saw?
+
+1314
+01:31:38,050 --> 01:31:39,940
+OPPOSING COUNSEL: Object to form.
+
+1315
+01:31:39,940 --> 01:31:45,145
+WITNESS B: Probably. I was talking a lot. I kept saying it over and
+
+1316
+01:31:45,145 --> 01:31:49,792
+WITNESS B: over. I think I said I saw the whole thing. I know
+
+1317
+01:31:49,792 --> 01:31:53,510
+WITNESS B: I said that to a lot of people that day.
+
+1318
+01:31:53,510 --> 01:31:58,790
+ATTORNEY: Do you remember anything she said to you, other than the questions?
+
+1319
+01:31:58,790 --> 01:31:59,920
+OPPOSING COUNSEL: Hearsay.
+
+1320
+01:31:59,920 --> 01:32:04,483
+WITNESS B: She said something like she didn't see it, she just heard it
+
+1321
+01:32:04,483 --> 01:32:09,350
+WITNESS B: from inside. She said it shook the windows. Something like that.
+
+1322
+01:32:09,350 --> 01:32:14,260
+ATTORNEY: Did the two of you talk about where you were standing?
+
+1323
+01:32:14,260 --> 01:32:16,140
+OPPOSING COUNSEL: Object to form.
+
+1324
+01:32:16,140 --> 01:32:20,330
+WITNESS B: I don't remember that. I don't think we talked about
+
+1325
+01:32:20,330 --> 01:32:24,440
+WITNESS B: it like that. We were just talking about the wreck.
+
+1326
+01:32:24,440 --> 01:32:28,590
+ATTORNEY: All right. Did any police or emergency vehicles arrive?
+
+1327
+01:32:28,590 --> 01:32:35,370
+WITNESS B: Yes. Deputies came. And an ambulance, and the fire truck, I think. A bunch of them.
+
+1328
+01:32:35,370 --> 01:32:39,900
+ATTORNEY: How long after the crash did the first one arrive?
+
+1329
+01:32:39,900 --> 01:32:41,790
+OPPOSING COUNSEL: Object to form.
+
+1330
+01:32:41,790 --> 01:32:48,570
+WITNESS B: It felt like forever. But it was probably ten minutes. Maybe less. I really don't know.
+
+1331
+01:32:48,570 --> 01:32:52,340
+ATTORNEY: Did any of them stop at the intersection?
+
+1332
+01:32:52,340 --> 01:32:56,333
+WITNESS B: Later, yes. A deputy car parked up by the crossover
+
+1333
+01:32:56,333 --> 01:33:00,640
+WITNESS B: with the lights on. And they started blocking the road.
+
+1334
+01:33:00,640 --> 01:33:03,280
+ATTORNEY: Did they close the highway?
+
+1335
+01:33:03,280 --> 01:33:07,838
+WITNESS B: The eastbound side, at least. They were waving people around.
+
+1336
+01:33:07,838 --> 01:33:11,200
+WITNESS B: It was a while before cars could get through.
+
+1337
+01:33:11,200 --> 01:33:15,350
+ATTORNEY: Was your sister able to get to the store?
+
+1338
+01:33:15,350 --> 01:33:21,104
+WITNESS B: Yes. She got there around five. She had to come around a different way,
+
+1339
+01:33:21,104 --> 01:33:26,290
+WITNESS B: I think, or they let her through. She pulled into the store lot.
+
+1340
+01:33:26,290 --> 01:33:29,680
+ATTORNEY: Did you leave when your sister arrived?
+
+1341
+01:33:29,680 --> 01:33:33,341
+WITNESS B: No. Not right away. I wanted to tell somebody
+
+1342
+01:33:33,341 --> 01:33:36,840
+WITNESS B: what I saw. I thought somebody should know.
+
+1343
+01:33:36,840 --> 01:33:40,620
+ATTORNEY: Did you speak to a deputy that day?
+
+1344
+01:33:40,620 --> 01:33:47,400
+WITNESS B: Yes. One of them came up to the store. He was asking if anybody saw it.
+
+1345
+01:33:47,400 --> 01:33:50,040
+ATTORNEY: What did you tell him?
+
+1346
+01:33:50,040 --> 01:33:51,550
+OPPOSING COUNSEL: Object. Hearsay.
+
+1347
+01:33:51,550 --> 01:33:53,440
+ATTORNEY: You can answer.
+
+1348
+01:33:53,440 --> 01:33:57,085
+WITNESS B: I told him I saw it. I told him I saw
+
+1349
+01:33:57,085 --> 01:34:02,010
+WITNESS B: the car come down the hill and go under the truck.
+
+1350
+01:34:02,010 --> 01:34:06,640
+WITNESS B: I told him it went down there and hit the pole.
+
+1351
+01:34:06,640 --> 01:34:09,650
+ATTORNEY: Did the deputy write anything down?
+
+1352
+01:34:09,650 --> 01:34:13,908
+WITNESS B: He wrote some things in a little notebook. He took
+
+1353
+01:34:13,908 --> 01:34:17,570
+WITNESS B: my name and my phone number and my address.
+
+1354
+01:34:17,570 --> 01:34:22,480
+ATTORNEY: Did he ask you to give a written statement that day?
+
+1355
+01:34:22,480 --> 01:34:28,781
+WITNESS B: No, not that day. He said somebody would contact me. And then a few days later
+
+1356
+01:34:28,781 --> 01:34:34,920
+WITNESS B: they did, and I wrote it out. That's the statement I looked at before today.
+
+1357
+01:34:34,920 --> 01:34:39,179
+ATTORNEY: We'll talk about that statement in more detail later. How
+
+1358
+01:34:39,179 --> 01:34:42,840
+ATTORNEY: long did you talk with the deputy that afternoon?
+
+1359
+01:34:42,840 --> 01:34:48,500
+WITNESS B: Not long. Five minutes. He was busy. There were a lot of people.
+
+1360
+01:34:48,500 --> 01:34:53,020
+ATTORNEY: Did he ask you where you were when it happened?
+
+1361
+01:34:53,020 --> 01:34:54,910
+OPPOSING COUNSEL: Object to form.
+
+1362
+01:34:54,910 --> 01:34:59,387
+WITNESS B: He asked if I was there. I said I was out front
+
+1363
+01:34:59,387 --> 01:35:04,340
+WITNESS B: of the store. I don't think he asked more than that.
+
+1364
+01:35:04,340 --> 01:35:09,620
+ATTORNEY: Did he show you anything, a diagram, a photo, anything like that?
+
+1365
+01:35:09,620 --> 01:35:11,880
+WITNESS B: No. Nothing like that.
+
+1366
+01:35:11,880 --> 01:35:16,030
+ATTORNEY: Did any other official talk with you that day?
+
+1367
+01:35:16,030 --> 01:35:19,800
+WITNESS B: Not that I remember. Just the one deputy.
+
+1368
+01:35:19,800 --> 01:35:24,700
+ATTORNEY: Did you see the truck get moved while you were there?
+
+1369
+01:35:24,700 --> 01:35:29,600
+WITNESS B: No. It was still sitting down on 140th when we left.
+
+1370
+01:35:29,600 --> 01:35:32,620
+ATTORNEY: About what time did you leave?
+
+1371
+01:35:32,620 --> 01:35:37,520
+WITNESS B: Maybe five thirty. Quarter to six. It was still light out.
+
+1372
+01:35:37,520 --> 01:35:42,430
+ATTORNEY: Did anyone tell you anything about the people in the car?
+
+1373
+01:35:42,430 --> 01:35:44,690
+OPPOSING COUNSEL: Object. Calls for hearsay.
+
+1374
+01:35:44,690 --> 01:35:49,358
+ATTORNEY: I'll withdraw that. Let me ask it differently. Did you yourself
+
+1375
+01:35:49,358 --> 01:35:53,360
+ATTORNEY: see anything about the condition of anyone in the car?
+
+1376
+01:35:53,360 --> 01:35:57,012
+WITNESS B: No. I didn't go down there, and I didn't see
+
+1377
+01:35:57,012 --> 01:36:01,660
+WITNESS B: anything like that. I'd rather not talk about that part.
+
+1378
+01:36:01,660 --> 01:36:07,261
+ATTORNEY: That's fine. I'm not going to ask you about that. Let me go back to
+
+1379
+01:36:07,261 --> 01:36:12,862
+ATTORNEY: a couple of things. You said the car went off the south side of the
+
+1380
+01:36:12,862 --> 01:36:18,630
+ATTORNEY: road. Do you know about where along the highway it left the pavement?
+
+1381
+01:36:18,630 --> 01:36:20,520
+OPPOSING COUNSEL: Object to form.
+
+1382
+01:36:20,520 --> 01:36:25,800
+WITNESS B: Not exactly. A ways past the intersection. Past the store. Further down.
+
+1383
+01:36:25,800 --> 01:36:28,810
+ATTORNEY: Past the store to the east?
+
+1384
+01:36:28,810 --> 01:36:30,320
+WITNESS B: Yes, east.
+
+1385
+01:36:30,320 --> 01:36:33,960
+ATTORNEY: Did you see where the car went relative to
+
+1386
+01:36:33,960 --> 01:36:37,860
+ATTORNEY: the store itself? Did it come near the store?
+
+1387
+01:36:37,860 --> 01:36:42,867
+WITNESS B: No, it didn't come near the store. It was out on the road
+
+1388
+01:36:42,867 --> 01:36:48,050
+WITNESS B: and then off past it, down the shoulder and into the field.
+
+1389
+01:36:48,050 --> 01:36:52,630
+ATTORNEY: Was there any other vehicle on the eastbound side of the
+
+1390
+01:36:52,630 --> 01:36:56,720
+ATTORNEY: highway at the moment of the impact, that you saw?
+
+1391
+01:36:56,720 --> 01:36:58,600
+OPPOSING COUNSEL: Object to form.
+
+1392
+01:36:58,600 --> 01:37:04,260
+WITNESS B: No. Not right there. There was nobody else right there that I remember.
+
+1393
+01:37:04,260 --> 01:37:07,280
+ATTORNEY: What about on the westbound side?
+
+1394
+01:37:07,280 --> 01:37:14,070
+WITNESS B: I don't remember anything on the westbound side right then. Maybe something further off. Nothing close.
+
+1395
+01:37:14,070 --> 01:37:18,970
+ATTORNEY: After the impact, did any eastbound cars come over the hill?
+
+1396
+01:37:18,970 --> 01:37:24,481
+WITNESS B: Yes. A minute or so after, I think, a car came over and slowed way
+
+1397
+01:37:24,481 --> 01:37:30,660
+WITNESS B: down. Then pulled over. That might have been one of the ones that stopped.
+
+1398
+01:37:30,660 --> 01:37:35,940
+ATTORNEY: Did any vehicle have to go around the truck on the highway?
+
+1399
+01:37:35,940 --> 01:37:40,534
+WITNESS B: No, by then the truck was already off the highway. It was
+
+1400
+01:37:40,534 --> 01:37:45,370
+WITNESS B: down 140th. The road was clear except for, you know, pieces.
+
+1401
+01:37:45,370 --> 01:37:47,250
+ATTORNEY: Pieces of what?
+
+1402
+01:37:47,250 --> 01:37:51,066
+WITNESS B: Debris. Glass and parts. There was stuff on the
+
+1403
+01:37:51,066 --> 01:37:54,800
+WITNESS B: road by the crossover. I could see it shining.
+
+1404
+01:37:54,800 --> 01:37:59,320
+ATTORNEY: Did you touch or pick up any of that debris?
+
+1405
+01:37:59,320 --> 01:38:03,090
+WITNESS B: No. I didn't go out on the road.
+
+1406
+01:38:03,090 --> 01:38:09,500
+ATTORNEY: At any point that afternoon, did you go out into the highway or the median?
+
+1407
+01:38:09,500 --> 01:38:13,650
+WITNESS B: No. I stayed by the store the whole time.
+
+1408
+01:38:13,650 --> 01:38:19,690
+ATTORNEY: When you say by the store, you mean out front, the area you've described?
+
+1409
+01:38:19,690 --> 01:38:23,460
+WITNESS B: Yes. Out front. And inside that one time.
+
+1410
+01:38:23,460 --> 01:38:27,230
+ATTORNEY: All right. Did your sister see the crash?
+
+1411
+01:38:27,230 --> 01:38:31,000
+WITNESS B: No. She wasn't there yet. She came after.
+
+1412
+01:38:31,000 --> 01:38:35,900
+ATTORNEY: When your sister arrived, did you tell her what you saw?
+
+1413
+01:38:35,900 --> 01:38:40,564
+WITNESS B: Yes, I told her the whole thing in the car on the way
+
+1414
+01:38:40,564 --> 01:38:46,460
+WITNESS B: home. I told her again later too. I couldn't stop talking about it.
+
+1415
+01:38:46,460 --> 01:38:49,860
+ATTORNEY: How were you feeling physically that afternoon?
+
+1416
+01:38:49,860 --> 01:38:53,857
+WITNESS B: Shaky. My legs were like jelly. I wasn't hurt. I
+
+1417
+01:38:53,857 --> 01:38:57,770
+WITNESS B: was just upset. I didn't sleep good that night.
+
+1418
+01:38:57,770 --> 01:39:04,064
+ATTORNEY: Thinking back on everything that happened after the impact, from the bang to the time
+
+1419
+01:39:04,064 --> 01:39:09,470
+ATTORNEY: you left, is there anything you saw that you haven't told us about today?
+
+1420
+01:39:09,470 --> 01:39:11,350
+OPPOSING COUNSEL: Object to form.
+
+1421
+01:39:11,350 --> 01:39:16,847
+WITNESS B: I don't think so. I think I've told you all of it. The bang, the car
+
+1422
+01:39:16,847 --> 01:39:23,800
+WITNESS B: going down there, the pole, the truck stopping. The lady from the store. The deputies.
+
+1423
+01:39:23,800 --> 01:39:29,080
+ATTORNEY: Is there anything about what you heard that you haven't told us?
+
+1424
+01:39:29,080 --> 01:39:33,804
+WITNESS B: Just that it was loud. Then after, it got real quiet for a
+
+1425
+01:39:33,804 --> 01:39:39,260
+WITNESS B: little bit. Except the truck. That hum kept going. I remember that.
+
+1426
+01:39:39,260 --> 01:39:44,956
+ATTORNEY: All right. I'm going to shift gears in a moment to your written statement
+
+1427
+01:39:44,956 --> 01:39:50,808
+ATTORNEY: and some other things. Before I do, is there anything about your answers in
+
+1428
+01:39:50,808 --> 01:39:55,100
+ATTORNEY: the last few minutes that you want to change or add to?
+
+1429
+01:39:55,100 --> 01:39:57,740
+WITNESS B: No. That's what I remember.
+
+1430
+01:39:57,740 --> 01:40:00,000
+ATTORNEY: Okay. Thank you. Let's keep going.
+
+1431
+01:40:00,000 --> 01:40:06,663
+ATTORNEY: Let's keep going. I want to circle back to a few things from earlier before I
+
+1432
+01:40:06,663 --> 01:40:13,240
+ATTORNEY: show you a document. Are you doing all right? Do you need water or anything?
+
+1433
+01:40:13,240 --> 01:40:16,850
+WITNESS B: I'm fine. I have water. Thank you.
+
+1434
+01:40:16,850 --> 01:40:20,649
+ATTORNEY: Earlier you told us your sister picked you up
+
+1435
+01:40:20,649 --> 01:40:24,870
+ATTORNEY: that afternoon. About what time did she get there?
+
+1436
+01:40:24,870 --> 01:40:28,890
+WITNESS B: Around five. Maybe a couple of minutes after.
+
+1437
+01:40:28,890 --> 01:40:36,110
+ATTORNEY: So from the time of the collision until your sister arrived, about how long was that?
+
+1438
+01:40:36,110 --> 01:40:40,120
+WITNESS B: Twenty-five minutes, something like that. It felt longer.
+
+1439
+01:40:40,120 --> 01:40:46,140
+ATTORNEY: During those twenty-five minutes, did you stay at the store the entire time?
+
+1440
+01:40:46,140 --> 01:40:51,350
+WITNESS B: Yes. I didn't leave the store property. I stayed out front.
+
+1441
+01:40:51,350 --> 01:40:57,370
+ATTORNEY: Did you ever walk down the highway toward where the car ended up?
+
+1442
+01:40:57,370 --> 01:41:02,190
+WITNESS B: No. I didn't go down there. I didn't want to.
+
+1443
+01:41:02,190 --> 01:41:07,000
+ATTORNEY: Did you walk down Northeast 140th Court toward the truck?
+
+1444
+01:41:07,000 --> 01:41:10,610
+WITNESS B: No. I stayed up by the store.
+
+1445
+01:41:10,610 --> 01:41:14,620
+ATTORNEY: When your sister arrived, where did she park?
+
+1446
+01:41:14,620 --> 01:41:19,045
+WITNESS B: In the little lot by the store. She couldn't get in
+
+1447
+01:41:19,045 --> 01:41:24,250
+WITNESS B: easy because of all the deputies' cars, but she squeezed in.
+
+1448
+01:41:24,250 --> 01:41:27,860
+ATTORNEY: Did you tell her what had happened?
+
+1449
+01:41:27,860 --> 01:41:32,476
+WITNESS B: Some. Not a lot right then. I was pretty shook
+
+1450
+01:41:32,476 --> 01:41:36,290
+WITNESS B: up. I told her more on the drive home.
+
+1451
+01:41:36,290 --> 01:41:42,310
+OPPOSING COUNSEL: Object to form, to the extent it calls for the content of conversations.
+
+1452
+01:41:42,310 --> 01:41:49,130
+ATTORNEY: I'm not asking what you said yet. Just whether you talked about it. You did?
+
+1453
+01:41:49,130 --> 01:41:51,940
+WITNESS B: Yes, on the way home.
+
+1454
+01:41:51,940 --> 01:41:56,750
+ATTORNEY: Did your sister see any part of the collision herself?
+
+1455
+01:41:56,750 --> 01:42:00,760
+WITNESS B: No. She wasn't there yet. She came after.
+
+1456
+01:42:00,760 --> 01:42:05,074
+ATTORNEY: Before we get to the exhibit, a few more questions about
+
+1457
+01:42:05,074 --> 01:42:10,390
+ATTORNEY: that afternoon. When the deputies arrived, about how many were there?
+
+1458
+01:42:10,390 --> 01:42:14,739
+WITNESS B: At first one car, then more. Four or five cars, I
+
+1459
+01:42:14,739 --> 01:42:19,620
+WITNESS B: think, and then the fire trucks and the ambulance came.
+
+1460
+01:42:19,620 --> 01:42:26,840
+ATTORNEY: Did any of them come from the west, the same direction the car had come from?
+
+1461
+01:42:26,840 --> 01:42:30,605
+WITNESS B: Some of them did. Some came from the other
+
+1462
+01:42:30,605 --> 01:42:34,460
+WITNESS B: way. I really couldn't tell you which ones.
+
+1463
+01:42:34,460 --> 01:42:38,880
+ATTORNEY: Were the eastbound lanes blocked off at some point?
+
+1464
+01:42:38,880 --> 01:42:43,204
+WITNESS B: Yes. They put cars across the road and were waving
+
+1465
+01:42:43,204 --> 01:42:47,700
+WITNESS B: traffic around. It got backed up up toward the hill.
+
+1466
+01:42:47,700 --> 01:42:53,320
+ATTORNEY: Did you see anyone take photographs or measurements while you were there?
+
+1467
+01:42:53,320 --> 01:42:55,330
+OPPOSING COUNSEL: Object to form.
+
+1468
+01:42:55,330 --> 01:43:00,973
+WITNESS B: I saw a deputy with a camera, I think. And later somebody with
+
+1469
+01:43:00,973 --> 01:43:06,160
+WITNESS B: a tape, a long tape, on the road. I didn't watch closely.
+
+1470
+01:43:06,160 --> 01:43:12,980
+ATTORNEY: Did anyone ask you to point anything out on the road while you were there?
+
+1471
+01:43:12,980 --> 01:43:17,791
+WITNESS B: No. The deputy just asked what I saw and wrote it
+
+1472
+01:43:17,791 --> 01:43:22,210
+WITNESS B: on a pad. Then he said someone might call me.
+
+1473
+01:43:22,210 --> 01:43:25,020
+ATTORNEY: And did someone call you?
+
+1474
+01:43:25,020 --> 01:43:30,630
+WITNESS B: Yes, a few days later. That's when I did the written one.
+
+1475
+01:43:30,630 --> 01:43:33,440
+ATTORNEY: Where did you write it?
+
+1476
+01:43:33,440 --> 01:43:38,452
+WITNESS B: At the sheriff's office. They had me sit at a table
+
+1477
+01:43:38,452 --> 01:43:43,070
+WITNESS B: and write it out by hand, and then I signed it.
+
+1478
+01:43:43,070 --> 01:43:47,480
+ATTORNEY: Did anyone tell you what to put in it?
+
+1479
+01:43:47,480 --> 01:43:53,500
+WITNESS B: No. They just said write down what you saw, in your own words.
+
+1480
+01:43:53,500 --> 01:43:58,796
+ATTORNEY: Okay. You mentioned a deputy took your information that afternoon. Did
+
+1481
+01:43:58,796 --> 01:44:02,730
+ATTORNEY: that deputy ask you to write anything down that day?
+
+1482
+01:44:02,730 --> 01:44:07,160
+WITNESS B: No, not that day. He took my name and number and
+
+1483
+01:44:07,160 --> 01:44:11,960
+WITNESS B: asked me a few questions. The written one was later.
+
+1484
+01:44:11,960 --> 01:44:15,816
+ATTORNEY: And that written statement is the one we've talked
+
+1485
+01:44:15,816 --> 01:44:19,980
+ATTORNEY: about this morning, the one you reviewed before today?
+
+1486
+01:44:19,980 --> 01:44:22,390
+WITNESS B: Yes. That's the one.
+
+1487
+01:44:22,390 --> 01:44:26,384
+ATTORNEY: Between the day of the collision and the day you
+
+1488
+01:44:26,384 --> 01:44:31,210
+ATTORNEY: wrote that statement, did you go back to the intersection?
+
+1489
+01:44:31,210 --> 01:44:34,820
+WITNESS B: I drove past it. I didn't stop.
+
+1490
+01:44:34,820 --> 01:44:37,230
+ATTORNEY: Why didn't you stop?
+
+1491
+01:44:37,230 --> 01:44:42,050
+WITNESS B: I just didn't want to. It was still too fresh.
+
+1492
+01:44:42,050 --> 01:44:46,460
+ATTORNEY: Since then, have you stopped at that store again?
+
+1493
+01:44:46,460 --> 01:44:51,631
+WITNESS B: A few times. It's the closest store to my sister's place. I
+
+1494
+01:44:51,631 --> 01:44:56,890
+WITNESS B: go in and out. I don't really hang around out front anymore.
+
+1495
+01:44:56,890 --> 01:45:03,710
+ATTORNEY: Has anything about the intersection changed since that day, as far as you can tell?
+
+1496
+01:45:03,710 --> 01:45:06,120
+OPPOSING COUNSEL: Object to form. Foundation.
+
+1497
+01:45:06,120 --> 01:45:09,730
+ATTORNEY: Just from your own observation, driving through.
+
+1498
+01:45:09,730 --> 01:45:15,102
+WITNESS B: Not that I noticed. The road looks the same to me. Same store,
+
+1499
+01:45:15,102 --> 01:45:20,560
+WITNESS B: same side road. I don't pay much attention to it now, honestly.
+
+1500
+01:45:20,560 --> 01:45:26,873
+ATTORNEY: Fair enough. Now, before I show you the exhibit, I want to make sure I understand
+
+1501
+01:45:26,873 --> 01:45:34,200
+ATTORNEY: some directions, so we're using the same words. The highway runs east and west there, correct?
+
+1502
+01:45:34,200 --> 01:45:36,610
+WITNESS B: Yes. East and west.
+
+1503
+01:45:36,610 --> 01:45:40,620
+ATTORNEY: And the car you've described was traveling east?
+
+1504
+01:45:40,620 --> 01:45:45,040
+WITNESS B: East. Coming from the hill side, from the west.
+
+1505
+01:45:45,040 --> 01:45:51,860
+ATTORNEY: And the truck was in the westbound lanes, in the turn lane, before it turned?
+
+1506
+01:45:51,860 --> 01:45:57,470
+WITNESS B: Yes. In the turn lane on the other side of the median.
+
+1507
+01:45:57,470 --> 01:46:02,290
+ATTORNEY: And Northeast 140th Court runs which direction off the highway?
+
+1508
+01:46:02,290 --> 01:46:06,300
+WITNESS B: South. It goes south, down past the store.
+
+1509
+01:46:06,300 --> 01:46:11,110
+ATTORNEY: And the store is on which side of 140th Court?
+
+1510
+01:46:11,110 --> 01:46:18,340
+WITNESS B: The east side. The store's on the corner there, on the south side of the highway.
+
+1511
+01:46:18,340 --> 01:46:22,750
+ATTORNEY: When the truck turned, which direction did it turn?
+
+1512
+01:46:22,750 --> 01:46:26,914
+WITNESS B: Left. From where it was, it turned left, across
+
+1513
+01:46:26,914 --> 01:46:30,370
+WITNESS B: our side of the highway and onto 140th.
+
+1514
+01:46:30,370 --> 01:46:35,190
+ATTORNEY: When you say 'our side,' you mean the eastbound lanes?
+
+1515
+01:46:35,190 --> 01:46:40,000
+WITNESS B: Yes, sorry. The eastbound lanes. The side by the store.
+
+1516
+01:46:40,000 --> 01:46:44,617
+ATTORNEY: No need to apologize. That's exactly why I'm asking. I'd
+
+1517
+01:46:44,617 --> 01:46:48,410
+ATTORNEY: like to show you what we'll mark as Exhibit 4.
+
+1518
+01:46:48,410 --> 01:46:54,914
+ATTORNEY: For the record, Exhibit 4 is an aerial-style map of the intersection of U.S. 27A and
+
+1519
+01:46:54,914 --> 01:47:01,030
+ATTORNEY: Northeast 140th Court. I'm handing a copy to the witness and a copy to counsel.
+
+1520
+01:47:01,030 --> 01:47:04,856
+OPPOSING COUNSEL: Thank you. I'll note for the record that this is a
+
+1521
+01:47:04,856 --> 01:47:09,830
+OPPOSING COUNSEL: demonstrative and we haven't stipulated to its scale or accuracy.
+
+1522
+01:47:09,830 --> 01:47:13,575
+ATTORNEY: Understood. Ma'am, take a moment to look it over.
+
+1523
+01:47:13,575 --> 01:47:17,090
+ATTORNEY: Have you ever seen this document before today?
+
+1524
+01:47:17,090 --> 01:47:19,770
+WITNESS B: No. I've never seen this.
+
+1525
+01:47:19,770 --> 01:47:26,270
+ATTORNEY: Have you seen any map or photograph of the intersection taken from above, before today?
+
+1526
+01:47:26,270 --> 01:47:32,770
+WITNESS B: Not that I remember. Maybe on a phone map, years ago, but not for this.
+
+1527
+01:47:32,770 --> 01:47:37,360
+ATTORNEY: Take your time with it. Do you recognize what's shown?
+
+1528
+01:47:37,360 --> 01:47:42,514
+WITNESS B: Yes. That's the highway, going across. That's the median in the middle
+
+1529
+01:47:42,514 --> 01:47:47,300
+WITNESS B: with the grass. And this is the crossover where the truck turned.
+
+1530
+01:47:47,300 --> 01:47:51,510
+ATTORNEY: Do you see the side road, Northeast 140th Court?
+
+1531
+01:47:51,510 --> 01:47:54,570
+WITNESS B: Yes, here, going down. Going south.
+
+1532
+01:47:54,570 --> 01:47:57,620
+ATTORNEY: And do you see the store?
+
+1533
+01:47:57,620 --> 01:48:01,450
+WITNESS B: Yes. That's the building, here. That's the store.
+
+1534
+01:48:01,450 --> 01:48:04,750
+ATTORNEY: Do you see the lanes of the highway, the
+
+1535
+01:48:04,750 --> 01:48:08,710
+ATTORNEY: two eastbound lanes and the two westbound lanes?
+
+1536
+01:48:08,710 --> 01:48:12,920
+WITNESS B: Yes. Two and two, with the grass between them.
+
+1537
+01:48:12,920 --> 01:48:17,890
+ATTORNEY: Do you see the crossover, the paved opening in the median?
+
+1538
+01:48:17,890 --> 01:48:22,100
+WITNESS B: Yes, right here, lined up with the side road.
+
+1539
+01:48:22,100 --> 01:48:28,600
+ATTORNEY: And to the right of the store, to the east, is there anything you recognize?
+
+1540
+01:48:28,600 --> 01:48:34,223
+WITNESS B: That's the field and the fences, going down toward where the houses are.
+
+1541
+01:48:34,223 --> 01:48:39,300
+WITNESS B: The car went off down that way, but it's further than this shows.
+
+1542
+01:48:39,300 --> 01:48:45,040
+ATTORNEY: So the place where the car came to rest isn't on this map?
+
+1543
+01:48:45,040 --> 01:48:50,390
+WITNESS B: I don't think so. It was way down. Past the edge here.
+
+1544
+01:48:50,390 --> 01:48:54,557
+ATTORNEY: There's an arrow in the corner of the map marked
+
+1545
+01:48:54,557 --> 01:48:58,810
+ATTORNEY: with an N. Do you understand that to point north?
+
+1546
+01:48:58,810 --> 01:48:59,950
+WITNESS B: Yes.
+
+1547
+01:48:59,950 --> 01:49:05,880
+ATTORNEY: So the top of the page is north, the bottom is south, the left side
+
+1548
+01:49:05,880 --> 01:49:11,810
+ATTORNEY: is west, and the right side is east. Is that how you understand it?
+
+1549
+01:49:11,810 --> 01:49:15,803
+WITNESS B: Yes, that makes sense. The hill would be off
+
+1550
+01:49:15,803 --> 01:49:19,070
+WITNESS B: this way, to the left, off the page.
+
+1551
+01:49:19,070 --> 01:49:23,009
+ATTORNEY: Okay. Is there anything on this map that looks wrong
+
+1552
+01:49:23,009 --> 01:49:27,100
+ATTORNEY: to you, compared to how you remember the intersection?
+
+1553
+01:49:27,100 --> 01:49:29,020
+OPPOSING COUNSEL: Object to form.
+
+1554
+01:49:29,020 --> 01:49:30,930
+ATTORNEY: You can answer.
+
+1555
+01:49:30,930 --> 01:49:36,374
+WITNESS B: Not really. It's a picture from the top, so it looks different than
+
+1556
+01:49:36,374 --> 01:49:41,250
+WITNESS B: standing there. But the road and the store look right to me.
+
+1557
+01:49:41,250 --> 01:49:47,275
+ATTORNEY: Does the map, in general, fairly show the layout of the roads and the
+
+1558
+01:49:47,275 --> 01:49:52,340
+ATTORNEY: store as they were on May 7th, 2016, as best you can tell?
+
+1559
+01:49:52,340 --> 01:49:54,250
+OPPOSING COUNSEL: Same objection. Foundation.
+
+1560
+01:49:54,250 --> 01:49:59,610
+WITNESS B: As best I can tell, yes. The roads are where they were.
+
+1561
+01:49:59,610 --> 01:50:04,647
+ATTORNEY: I'm going to ask you to make some marks on this map. I'm
+
+1562
+01:50:04,647 --> 01:50:09,773
+ATTORNEY: handing you a pen. It's a red pen, so the marks will show
+
+1563
+01:50:09,773 --> 01:50:14,900
+ATTORNEY: up. Please don't make any marks until I ask you to. Okay?
+
+1564
+01:50:14,900 --> 01:50:16,050
+WITNESS B: Okay.
+
+1565
+01:50:16,050 --> 01:50:20,764
+ATTORNEY: And if you're not sure about something, it's fine to tell
+
+1566
+01:50:20,764 --> 01:50:25,230
+ATTORNEY: me that instead of marking. I don't want you to guess.
+
+1567
+01:50:25,230 --> 01:50:26,760
+WITNESS B: All right.
+
+1568
+01:50:26,760 --> 01:50:32,454
+ATTORNEY: Let's start with the truck. Before it began its turn, you said it was
+
+1569
+01:50:32,454 --> 01:50:38,230
+ATTORNEY: in the westbound left-turn lane. Do you see that turn lane on the map?
+
+1570
+01:50:38,230 --> 01:50:43,960
+WITNESS B: Yes. It's this little lane right by the median, on the top side.
+
+1571
+01:50:43,960 --> 01:50:48,444
+ATTORNEY: I'm not going to have you mark that. I just want to make
+
+1572
+01:50:48,444 --> 01:50:54,290
+ATTORNEY: sure we're oriented. Now, after the collision, did the truck keep moving?
+
+1573
+01:50:54,290 --> 01:50:59,260
+WITNESS B: Yes. It kept going. It went on down the side road.
+
+1574
+01:50:59,260 --> 01:51:03,080
+ATTORNEY: Did you watch it come to a stop?
+
+1575
+01:51:03,080 --> 01:51:08,088
+WITNESS B: I saw it stopped. I saw it sitting there down the road.
+
+1576
+01:51:08,088 --> 01:51:12,640
+WITNESS B: I don't know if I saw the exact second it stopped.
+
+1577
+01:51:12,640 --> 01:51:17,610
+ATTORNEY: Understood. How long after the collision did you notice it stopped?
+
+1578
+01:51:17,610 --> 01:51:22,580
+WITNESS B: Pretty quick. Seconds. I looked that way and it was stopped.
+
+1579
+01:51:22,580 --> 01:51:28,320
+ATTORNEY: When you first noticed the truck stopped, were you looking south down 140th?
+
+1580
+01:51:28,320 --> 01:51:33,413
+WITNESS B: I turned and looked that way, yes. Everybody was looking every
+
+1581
+01:51:33,413 --> 01:51:37,110
+WITNESS B: which way. It was loud and then it was quiet.
+
+1582
+01:51:37,110 --> 01:51:42,470
+ATTORNEY: Was the truck's engine still running, as far as you could hear?
+
+1583
+01:51:42,470 --> 01:51:45,923
+WITNESS B: I think so. I remember a rumbling for a
+
+1584
+01:51:45,923 --> 01:51:49,730
+WITNESS B: while. I couldn't tell you when it stopped.
+
+1585
+01:51:49,730 --> 01:51:54,090
+ATTORNEY: Before the collision, as the truck began turning, was
+
+1586
+01:51:54,090 --> 01:51:57,380
+ATTORNEY: it moving in a straight line or a curve?
+
+1587
+01:51:57,380 --> 01:52:00,846
+WITNESS B: A curve, the way you'd turn. The cab went
+
+1588
+01:52:00,846 --> 01:52:04,650
+WITNESS B: first and the trailer swung around behind it.
+
+1589
+01:52:04,650 --> 01:52:10,000
+ATTORNEY: Using the pen, please mark where the truck came to a stop.
+
+1590
+01:52:10,000 --> 01:52:18,080
+WITNESS B: It was down here. Down 140th, past the store. About here.
+
+1591
+01:52:18,080 --> 01:52:24,190
+ATTORNEY: Thank you. Would you put the number 1 next to that mark?
+
+1592
+01:52:24,190 --> 01:52:26,810
+WITNESS B: Okay. There. Number 1.
+
+1593
+01:52:26,810 --> 01:52:31,255
+ATTORNEY: Is that mark where the front of the truck was,
+
+1594
+01:52:31,255 --> 01:52:35,990
+ATTORNEY: the back of the trailer, or somewhere in between?
+
+1595
+01:52:35,990 --> 01:52:41,002
+WITNESS B: I was just marking the truck. Where the truck part was,
+
+1596
+01:52:41,002 --> 01:52:46,470
+WITNESS B: the cab. The trailer was behind it, back toward the highway.
+
+1597
+01:52:46,470 --> 01:52:52,590
+ATTORNEY: Did the trailer still extend back toward the highway after it stopped?
+
+1598
+01:52:52,590 --> 01:53:00,010
+WITNESS B: Some of it, yes. It's a long trailer. I couldn't tell you exactly how much.
+
+1599
+01:53:00,010 --> 01:53:06,570
+ATTORNEY: That's fine. Did the truck move again after that, while you were there?
+
+1600
+01:53:06,570 --> 01:53:14,430
+WITNESS B: Not that I saw. It stayed there. The deputies were all around it after a while.
+
+1601
+01:53:14,430 --> 01:53:20,110
+ATTORNEY: Do you remember anyone getting into or out of the truck?
+
+1602
+01:53:20,110 --> 01:53:22,290
+OPPOSING COUNSEL: Object to form.
+
+1603
+01:53:22,290 --> 01:53:29,008
+WITNESS B: I don't remember that. I wasn't looking at it the whole time. I was mostly
+
+1604
+01:53:29,008 --> 01:53:36,270
+WITNESS B: looking the other way, down the highway, and then at my phone calling my sister.
+
+1605
+01:53:36,270 --> 01:53:42,952
+ATTORNEY: All right. I want to go back to the moment the car reached the intersection.
+
+1606
+01:53:42,952 --> 01:53:49,810
+ATTORNEY: You've told us this morning you were outside, out front of the store. Correct?
+
+1607
+01:53:49,810 --> 01:53:51,120
+WITNESS B: Yes.
+
+1608
+01:53:51,120 --> 01:53:58,990
+ATTORNEY: About how long had you been there, outside, by the time the car reached the intersection?
+
+1609
+01:53:58,990 --> 01:54:02,782
+WITNESS B: A good while. I'd done my shopping and come
+
+1610
+01:54:02,782 --> 01:54:07,720
+WITNESS B: out, and I'd been waiting maybe fifteen, twenty minutes.
+
+1611
+01:54:07,720 --> 01:54:12,090
+ATTORNEY: Were you standing or sitting at that point?
+
+1612
+01:54:12,090 --> 01:54:18,640
+WITNESS B: Standing. I'd been standing a while. I had my bag at my feet.
+
+1613
+01:54:18,640 --> 01:54:23,450
+ATTORNEY: I'd like you to show us on the map.
+
+1614
+01:54:23,450 --> 01:54:30,000
+ATTORNEY: And please mark where you were standing when the car reached the intersection.
+
+1615
+01:54:30,000 --> 01:54:38,240
+WITNESS B: Right about here.
+
+1616
+01:54:38,240 --> 01:54:44,189
+ATTORNEY: Thank you. Let the record reflect the witness has marked Exhibit
+
+1617
+01:54:44,189 --> 01:54:48,650
+ATTORNEY: 4. Would you put the number 2 next to that mark?
+
+1618
+01:54:48,650 --> 01:54:50,810
+WITNESS B: Number 2. Okay.
+
+1619
+01:54:50,810 --> 01:54:58,180
+ATTORNEY: And would you put your initials and today's date at the bottom of the page?
+
+1620
+01:54:58,180 --> 01:54:59,480
+WITNESS B: Here?
+
+1621
+01:54:59,480 --> 01:55:02,950
+ATTORNEY: Anywhere at the bottom is fine.
+
+1622
+01:55:02,950 --> 01:55:04,690
+WITNESS B: Okay. Done.
+
+1623
+01:55:04,690 --> 01:55:09,318
+ATTORNEY: Were you in that same general spot the whole time
+
+1624
+01:55:09,318 --> 01:55:14,230
+ATTORNEY: the car was approaching, from when you first saw it?
+
+1625
+01:55:14,230 --> 01:55:16,830
+OPPOSING COUNSEL: Object to form. Compound.
+
+1626
+01:55:16,830 --> 01:55:21,730
+ATTORNEY: I'll rephrase. From when you first noticed the car until
+
+1627
+01:55:21,730 --> 01:55:25,930
+ATTORNEY: the collision, did you move from where you were?
+
+1628
+01:55:25,930 --> 01:55:31,570
+WITNESS B: No. I was just standing there waiting. I wasn't walking around.
+
+1629
+01:55:31,570 --> 01:55:35,832
+ATTORNEY: Thank you. At this time I'll offer Exhibit 4,
+
+1630
+01:55:35,832 --> 01:55:39,810
+ATTORNEY: as marked by the witness, into the record.
+
+1631
+01:55:39,810 --> 01:55:45,178
+OPPOSING COUNSEL: No objection to it being attached to the transcript, subject to
+
+1632
+01:55:45,178 --> 01:55:49,780
+OPPOSING COUNSEL: the objection I made earlier as to scale and accuracy.
+
+1633
+01:55:49,780 --> 01:55:54,980
+ATTORNEY: Understood. I'll pass the witness. Counsel, do you have questions?
+
+1634
+01:55:54,980 --> 01:55:59,105
+OPPOSING COUNSEL: Just a few. Ma'am, I represent the motor carrier.
+
+1635
+01:55:59,105 --> 01:56:03,650
+OPPOSING COUNSEL: I'll be brief. You understand you're still under oath?
+
+1636
+01:56:03,650 --> 01:56:04,950
+WITNESS B: Yes.
+
+1637
+01:56:04,950 --> 01:56:09,290
+OPPOSING COUNSEL: Before today, had anyone shown you Exhibit 4?
+
+1638
+01:56:09,290 --> 01:56:12,320
+WITNESS B: No. Today's the first time.
+
+1639
+01:56:12,320 --> 01:56:17,305
+OPPOSING COUNSEL: When you made the marks on Exhibit 4 a few minutes
+
+1640
+01:56:17,305 --> 01:56:22,290
+OPPOSING COUNSEL: ago, did anyone help you decide where to put them?
+
+1641
+01:56:22,290 --> 01:56:26,630
+WITNESS B: No. Nobody helped me. I did it myself.
+
+1642
+01:56:26,630 --> 01:56:30,778
+OPPOSING COUNSEL: Did anyone point to a spot on the map or
+
+1643
+01:56:30,778 --> 01:56:36,170
+OPPOSING COUNSEL: suggest a spot to you, either today or before today?
+
+1644
+01:56:36,170 --> 01:56:37,470
+WITNESS B: No.
+
+1645
+01:56:37,470 --> 01:56:44,410
+OPPOSING COUNSEL: Did you discuss with anyone, before today, where you would mark on a map?
+
+1646
+01:56:44,410 --> 01:56:50,040
+WITNESS B: No. I didn't know there was going to be a map.
+
+1647
+01:56:50,040 --> 01:56:56,550
+OPPOSING COUNSEL: The mark you labeled number 2. How sure are you of that spot?
+
+1648
+01:56:56,550 --> 01:57:01,633
+WITNESS B: Roughly, yes. I'm sure of it roughly. I wasn't measuring
+
+1649
+01:57:01,633 --> 01:57:06,080
+WITNESS B: where my feet were. But that's about where I was.
+
+1650
+01:57:06,080 --> 01:57:13,020
+OPPOSING COUNSEL: Could you have been a few feet one way or another from that mark?
+
+1651
+01:57:13,020 --> 01:57:20,830
+WITNESS B: A few feet, maybe. It's a little mark on a big picture. But that's the area.
+
+1652
+01:57:20,830 --> 01:57:25,862
+OPPOSING COUNSEL: And the mark you labeled number 1, for where the truck
+
+1653
+01:57:25,862 --> 01:57:30,800
+OPPOSING COUNSEL: stopped. Same question. How sure are you of that one?
+
+1654
+01:57:30,800 --> 01:57:38,170
+WITNESS B: About the same. That's about where it was. I wouldn't swear to the exact foot.
+
+1655
+01:57:38,170 --> 01:57:44,670
+OPPOSING COUNSEL: You'd never seen a picture of the intersection from above before today, correct?
+
+1656
+01:57:44,670 --> 01:57:45,970
+WITNESS B: Correct.
+
+1657
+01:57:45,970 --> 01:57:53,780
+OPPOSING COUNSEL: So you were translating what you saw standing on the ground onto a picture from overhead.
+
+1658
+01:57:53,780 --> 01:57:55,940
+ATTORNEY: Object to form.
+
+1659
+01:57:55,940 --> 01:57:58,110
+OPPOSING COUNSEL: You can answer.
+
+1660
+01:57:58,110 --> 01:58:05,920
+WITNESS B: I guess so. But I know that corner. I've been to that store a hundred times.
+
+1661
+01:58:05,920 --> 01:58:10,877
+OPPOSING COUNSEL: Before today, did you ever go back and stand in the
+
+1662
+01:58:10,877 --> 01:58:16,320
+OPPOSING COUNSEL: spot you marked, to check what you could see from there?
+
+1663
+01:58:16,320 --> 01:58:20,220
+WITNESS B: No. I never did anything like that.
+
+1664
+01:58:20,220 --> 01:58:24,916
+OPPOSING COUNSEL: Has anyone, an investigator or anyone else, asked you
+
+1665
+01:58:24,916 --> 01:58:28,460
+OPPOSING COUNSEL: to go out to the intersection with them?
+
+1666
+01:58:28,460 --> 01:58:32,360
+WITNESS B: No. Nobody's asked me to do that.
+
+1667
+01:58:32,360 --> 01:58:37,570
+OPPOSING COUNSEL: Did you bring any notes or drawings with you today?
+
+1668
+01:58:37,570 --> 01:58:41,470
+WITNESS B: No. Just my glasses and my water.
+
+1669
+01:58:41,470 --> 01:58:49,270
+OPPOSING COUNSEL: You mentioned earlier you wear reading glasses. Were you wearing them when you marked the exhibit?
+
+1670
+01:58:49,270 --> 01:58:54,446
+WITNESS B: Yes, to see the little lines on the map. I don't wear
+
+1671
+01:58:54,446 --> 01:59:00,110
+WITNESS B: them for distance. I didn't have them on that day outside.
+
+1672
+01:59:00,110 --> 01:59:06,770
+OPPOSING COUNSEL: Understood. Last thing. Other than your written statement and what you've told us here
+
+1673
+01:59:06,770 --> 01:59:13,120
+OPPOSING COUNSEL: today, have you given any other statement about what you saw, written or recorded?
+
+1674
+01:59:13,120 --> 01:59:19,190
+WITNESS B: No. Just the deputy that day, and the written one, and today.
+
+1675
+01:59:19,190 --> 01:59:23,090
+OPPOSING COUNSEL: Thank you, ma'am. I have nothing further.
+
+1676
+01:59:23,090 --> 01:59:27,617
+ATTORNEY: Nothing further from me either. Thank you for your
+
+1677
+01:59:27,617 --> 01:59:31,330
+ATTORNEY: time today. I know this hasn't been easy.
+
+1678
+01:59:31,330 --> 01:59:33,060
+WITNESS B: Thank you.
+
+1679
+01:59:33,060 --> 01:59:38,270
+OPPOSING COUNSEL: We'll read and sign, as we stated at the beginning.
+
+1680
+01:59:38,270 --> 01:59:40,000
+ATTORNEY: So noted.
+
+1681
+01:59:40,000 --> 01:59:51,446
+VIDEOGRAPHER: This concludes the videotaped deposition of Witness B. The original exhibit will be retained by
+
+1682
+01:59:51,446 --> 02:00:00,000
+VIDEOGRAPHER: the court reporter. We are going off the record. The time is 11:22 a.m.

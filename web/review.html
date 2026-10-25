@@ -40,7 +40,7 @@
 
   <aside class="rv-side" id="side">
     <section class="rv-card" id="mapCard">
-      <div class="rv-card-h"><h3>Scene plan</h3><span class="muted small" id="mapNote"></span></div>
+      <div class="rv-card-h"><h3>Scene plan</h3><span class="muted small" id="mapNote"></span><button class="ib" id="mapSize" aria-pressed="false" title="Enlarge the scene plan">Enlarge</button></div>
       <div class="map-wrap"><canvas id="map" width="420" height="320" aria-label="Top-down scene plan; drag witness markers to correct their positions"></canvas><div class="map-read" id="mapRead"></div></div>
       <div class="map-legend"><span><i class="lg wit"></i>Witness (drag to move)</span><span><i class="lg obj"></i>Scene object</span><span><i class="lg ref"></i>Reference point</span></div>
     </section>
@@ -66,5 +66,6 @@
 </div>
 
 <script type="module" src="/review.js"></script>
+<script src="/demo-flow.js"></script>
 </body>
 </html>

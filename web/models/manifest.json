@@ -1,0 +1,22 @@
+{
+  "owner": "VEH-CARS",
+  "updated": "2026-10-25",
+  "note": "Per-type model choice for passenger vehicles (web/assets/vehicles.js MODEL_CHOICE mirrors this). 'procedural' = crisp-section lofted body in vehicles.js; GLBs are opt-in via createVehicle(THREE, type, {source:'glb'}) or {model:'<path under web/models/>'} and are fitted per-axis to the SPEC catalog dims by web/assets/gltf_vehicle.js (async: procedural placeholder returned immediately, swapped on load; await ready()).",
+  "choice": {
+    "sedan":  { "source": "procedural", "glb_fallback": "munim/car-sedan.glb",   "reason": "procedural has real glazing + interior (driver-seat view); munim sedan is a closed shell with glass decals, rounded 3-box, no cabin" },
+    "suv":    { "source": "procedural", "glb_fallback": "munim/car-suv.glb",     "reason": "munim SUV reads boxy/cartoon in the side-by-side; no interior" },
+    "pickup": { "source": "procedural", "glb_fallback": "munim/car-pickup.glb",  "reason": "munim pickup reads toy-like (flat colour panels, oversized lamps); no interior" },
+    "van":    { "source": "procedural", "glb_fallback": "munim/car-minivan.glb", "reason": "munim minivan comparable silhouette but closed shell; procedural keeps glazing + cabin" }
+  },
+  "models": {
+    "munim/car-sedan.glb":   { "source": "npm munim-maps-vehicles@0.5.0 (assets_src/npm/munim-maps-vehicles)", "license": "Apache-2.0", "license_file": "munim/LICENSE", "tris": 14851, "src_dims_m": [4.73, 2.10, 1.45] },
+    "munim/car-suv.glb":     { "source": "npm munim-maps-vehicles@0.5.0", "license": "Apache-2.0", "license_file": "munim/LICENSE", "tris": 15244 },
+    "munim/car-pickup.glb":  { "source": "npm munim-maps-vehicles@0.5.0", "license": "Apache-2.0", "license_file": "munim/LICENSE", "tris": 15710 },
+    "munim/car-minivan.glb": { "source": "npm munim-maps-vehicles@0.5.0", "license": "Apache-2.0", "license_file": "munim/LICENSE", "tris": 15452 }
+  },
+  "rejected": {
+    "kenney car-kit (sedan, suv, truck, van, suv-luxury)": { "license": "CC0-1.0", "reason": "stylized toy proportions (chunky, ~2k tris, palette texture) - reads as a game asset in front of a jury" },
+    "khronos CarConcept": { "license": "CC-BY-4.0 (Eric Chadwick / DGG) + Khronos/3D Commerce trademark logos", "reason": "futuristic concept car (not a plausible everyday sedan), carries Khronos logos, 11.8 MB, attribution required" },
+    "munim van-delivery / car-wagon / car-hatchback / car-offroader": { "license": "Apache-2.0", "reason": "evaluated; same closed-shell construction, not better than the four kept" }
+  }
+}

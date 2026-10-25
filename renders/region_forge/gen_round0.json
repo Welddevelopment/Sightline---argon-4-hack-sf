@@ -1,0 +1,67 @@
+[
+  {
+    "id": "r4_north",
+    "round": 0,
+    "calls": [
+      {
+        "name": "rf_r0_r4_north",
+        "usage": {
+          "promptTokenCount": 15751,
+          "candidatesTokenCount": 20992,
+          "totalTokenCount": 36743,
+          "cachedContentTokenCount": 13697,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 15751
+            }
+          ],
+          "cacheTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 13697
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 20992
+            }
+          ]
+        },
+        "seconds": 216.9,
+        "finish": "STOP"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "tris": 170621,
+      "meshes": 311,
+      "instanced": 56,
+      "children": 9,
+      "bbox": {
+        "min": [
+          -1000.1,
+          -3,
+          -483.2
+        ],
+        "max": [
+          800.1,
+          26,
+          -38
+        ]
+      },
+      "buildMs": 410,
+      "bytes": 52750
+    },
+    "ok": true,
+    "seconds": 218,
+    "tokens": {
+      "out": 20992,
+      "think": 0,
+      "prompt": 15751
+    }
+  }
+]

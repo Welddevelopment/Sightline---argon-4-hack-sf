@@ -1,0 +1,774 @@
+[
+ {
+  "speaker": "Attorney",
+  "text": "Let's keep going. I want to circle back to a few things from earlier before I show you a document. Are you doing all right? Do you need water or anything?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I'm fine. I have water. Thank you."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Earlier you told us your sister picked you up that afternoon. About what time did she get there?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Around five. Maybe a couple of minutes after."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So from the time of the collision until your sister arrived, about how long was that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Twenty-five minutes, something like that. It felt longer."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "During those twenty-five minutes, did you stay at the store the entire time?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. I didn't leave the store property. I stayed out front."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you ever walk down the highway toward where the car ended up?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I didn't go down there. I didn't want to."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you walk down Northeast 140th Court toward the truck?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I stayed up by the store."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When your sister arrived, where did she park?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "In the little lot by the store. She couldn't get in easy because of all the deputies' cars, but she squeezed in."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you tell her what had happened?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Some. Not a lot right then. I was pretty shook up. I told her more on the drive home."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form, to the extent it calls for the content of conversations."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'm not asking what you said yet. Just whether you talked about it. You did?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, on the way home."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did your sister see any part of the collision herself?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. She wasn't there yet. She came after."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Before we get to the exhibit, a few more questions about that afternoon. When the deputies arrived, about how many were there?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "At first one car, then more. Four or five cars, I think, and then the fire trucks and the ambulance came."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did any of them come from the west, the same direction the car had come from?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Some of them did. Some came from the other way. I really couldn't tell you which ones."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were the eastbound lanes blocked off at some point?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. They put cars across the road and were waving traffic around. It got backed up up toward the hill."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see anyone take photographs or measurements while you were there?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I saw a deputy with a camera, I think. And later somebody with a tape, a long tape, on the road. I didn't watch closely."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did anyone ask you to point anything out on the road while you were there?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. The deputy just asked what I saw and wrote it on a pad. Then he said someone might call me."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And did someone call you?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, a few days later. That's when I did the written one."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Where did you write it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "At the sheriff's office. They had me sit at a table and write it out by hand, and then I signed it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did anyone tell you what to put in it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. They just said write down what you saw, in your own words."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. You mentioned a deputy took your information that afternoon. Did that deputy ask you to write anything down that day?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No, not that day. He took my name and number and asked me a few questions. The written one was later."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And that written statement is the one we've talked about this morning, the one you reviewed before today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. That's the one."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Between the day of the collision and the day you wrote that statement, did you go back to the intersection?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I drove past it. I didn't stop."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Why didn't you stop?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I just didn't want to. It was still too fresh."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Since then, have you stopped at that store again?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A few times. It's the closest store to my sister's place. I go in and out. I don't really hang around out front anymore."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Has anything about the intersection changed since that day, as far as you can tell?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Foundation."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Just from your own observation, driving through."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that I noticed. The road looks the same to me. Same store, same side road. I don't pay much attention to it now, honestly."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Fair enough. Now, before I show you the exhibit, I want to make sure I understand some directions, so we're using the same words. The highway runs east and west there, correct?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. East and west."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And the car you've described was traveling east?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "East. Coming from the hill side, from the west."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And the truck was in the westbound lanes, in the turn lane, before it turned?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. In the turn lane on the other side of the median."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And Northeast 140th Court runs which direction off the highway?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "South. It goes south, down past the store."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And the store is on which side of 140th Court?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The east side. The store's on the corner there, on the south side of the highway."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When the truck turned, which direction did it turn?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Left. From where it was, it turned left, across our side of the highway and onto 140th."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you say 'our side,' you mean the eastbound lanes?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, sorry. The eastbound lanes. The side by the store."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "No need to apologize. That's exactly why I'm asking. I'd like to show you what we'll mark as Exhibit 4.",
+  "anchor_sec": 6400
+ },
+ {
+  "speaker": "Attorney",
+  "text": "For the record, Exhibit 4 is an aerial-style map of the intersection of U.S. 27A and Northeast 140th Court. I'm handing a copy to the witness and a copy to counsel."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Thank you. I'll note for the record that this is a demonstrative and we haven't stipulated to its scale or accuracy."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Understood. Ma'am, take a moment to look it over. Have you ever seen this document before today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I've never seen this."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Have you seen any map or photograph of the intersection taken from above, before today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that I remember. Maybe on a phone map, years ago, but not for this."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Take your time with it. Do you recognize what's shown?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. That's the highway, going across. That's the median in the middle with the grass. And this is the crossover where the truck turned."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you see the side road, Northeast 140th Court?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, here, going down. Going south."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And do you see the store?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. That's the building, here. That's the store."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you see the lanes of the highway, the two eastbound lanes and the two westbound lanes?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. Two and two, with the grass between them."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you see the crossover, the paved opening in the median?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, right here, lined up with the side road."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And to the right of the store, to the east, is there anything you recognize?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "That's the field and the fences, going down toward where the houses are. The car went off down that way, but it's further than this shows."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So the place where the car came to rest isn't on this map?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I don't think so. It was way down. Past the edge here."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "There's an arrow in the corner of the map marked with an N. Do you understand that to point north?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So the top of the page is north, the bottom is south, the left side is west, and the right side is east. Is that how you understand it?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, that makes sense. The hill would be off this way, to the left, off the page."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. Is there anything on this map that looks wrong to you, compared to how you remember the intersection?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You can answer."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not really. It's a picture from the top, so it looks different than standing there. But the road and the store look right to me."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Does the map, in general, fairly show the layout of the roads and the store as they were on May 7th, 2016, as best you can tell?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Same objection. Foundation."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "As best I can tell, yes. The roads are where they were."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'm going to ask you to make some marks on this map. I'm handing you a pen. It's a red pen, so the marks will show up. Please don't make any marks until I ask you to. Okay?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Okay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And if you're not sure about something, it's fine to tell me that instead of marking. I don't want you to guess."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "All right."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let's start with the truck. Before it began its turn, you said it was in the westbound left-turn lane. Do you see that turn lane on the map?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. It's this little lane right by the median, on the top side."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'm not going to have you mark that. I just want to make sure we're oriented. Now, after the collision, did the truck keep moving?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. It kept going. It went on down the side road."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you watch it come to a stop?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I saw it stopped. I saw it sitting there down the road. I don't know if I saw the exact second it stopped."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Understood. How long after the collision did you notice it stopped?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Pretty quick. Seconds. I looked that way and it was stopped."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you first noticed the truck stopped, were you looking south down 140th?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I turned and looked that way, yes. Everybody was looking every which way. It was loud and then it was quiet."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was the truck's engine still running, as far as you could hear?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I think so. I remember a rumbling for a while. I couldn't tell you when it stopped."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Before the collision, as the truck began turning, was it moving in a straight line or a curve?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A curve, the way you'd turn. The cab went first and the trailer swung around behind it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Using the pen, please mark where the truck came to a stop."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It was down here. Down 140th, past the store. About here.",
+  "anchor_sec": 6730,
+  "exhibit": {
+   "type": "map_mark",
+   "x_m": 0.0,
+   "z_m": 40.0,
+   "note": "B1: truck stop point on 140th Ct south of store"
+  }
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Thank you. Would you put the number 1 next to that mark?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Okay. There. Number 1."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is that mark where the front of the truck was, the back of the trailer, or somewhere in between?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I was just marking the truck. Where the truck part was, the cab. The trailer was behind it, back toward the highway."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did the trailer still extend back toward the highway after it stopped?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Some of it, yes. It's a long trailer. I couldn't tell you exactly how much."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "That's fine. Did the truck move again after that, while you were there?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that I saw. It stayed there. The deputies were all around it after a while."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you remember anyone getting into or out of the truck?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I don't remember that. I wasn't looking at it the whole time. I was mostly looking the other way, down the highway, and then at my phone calling my sister."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "All right. I want to go back to the moment the car reached the intersection. You've told us this morning you were outside, out front of the store. Correct?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "About how long had you been there, outside, by the time the car reached the intersection?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A good while. I'd done my shopping and come out, and I'd been waiting maybe fifteen, twenty minutes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you standing or sitting at that point?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Standing. I'd been standing a while. I had my bag at my feet."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'd like you to show us on the map."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And please mark where you were standing when the car reached the intersection."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Right about here.",
+  "anchor_sec": 6870,
+  "exhibit": {
+   "type": "map_mark",
+   "x_m": 7.5,
+   "z_m": 6.5,
+   "note": "B2: witness position at moment car reached crossover"
+  }
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Thank you. Let the record reflect the witness has marked Exhibit 4. Would you put the number 2 next to that mark?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Number 2. Okay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And would you put your initials and today's date at the bottom of the page?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Here?"
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Anywhere at the bottom is fine."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Okay. Done."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you in that same general spot the whole time the car was approaching, from when you first saw it?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Compound."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'll rephrase. From when you first noticed the car until the collision, did you move from where you were?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I was just standing there waiting. I wasn't walking around."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Thank you. At this time I'll offer Exhibit 4, as marked by the witness, into the record."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "No objection to it being attached to the transcript, subject to the objection I made earlier as to scale and accuracy."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Understood. I'll pass the witness. Counsel, do you have questions?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Just a few. Ma'am, I represent the motor carrier. I'll be brief. You understand you're still under oath?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Before today, had anyone shown you Exhibit 4?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Today's the first time."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "When you made the marks on Exhibit 4 a few minutes ago, did anyone help you decide where to put them?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Nobody helped me. I did it myself."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Did anyone point to a spot on the map or suggest a spot to you, either today or before today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Did you discuss with anyone, before today, where you would mark on a map?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I didn't know there was going to be a map."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "The mark you labeled number 2. How sure are you of that spot?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Roughly, yes. I'm sure of it roughly. I wasn't measuring where my feet were. But that's about where I was."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Could you have been a few feet one way or another from that mark?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A few feet, maybe. It's a little mark on a big picture. But that's the area."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "And the mark you labeled number 1, for where the truck stopped. Same question. How sure are you of that one?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "About the same. That's about where it was. I wouldn't swear to the exact foot."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "You'd never seen a picture of the intersection from above before today, correct?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Correct."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "So you were translating what you saw standing on the ground onto a picture from overhead."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "You can answer."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I guess so. But I know that corner. I've been to that store a hundred times."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Before today, did you ever go back and stand in the spot you marked, to check what you could see from there?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I never did anything like that."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Has anyone, an investigator or anyone else, asked you to go out to the intersection with them?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Nobody's asked me to do that."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Did you bring any notes or drawings with you today?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Just my glasses and my water."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "You mentioned earlier you wear reading glasses. Were you wearing them when you marked the exhibit?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, to see the little lines on the map. I don't wear them for distance. I didn't have them on that day outside."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Understood. Last thing. Other than your written statement and what you've told us here today, have you given any other statement about what you saw, written or recorded?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Just the deputy that day, and the written one, and today."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Thank you, ma'am. I have nothing further."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Nothing further from me either. Thank you for your time today. I know this hasn't been easy."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Thank you."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "We'll read and sign, as we stated at the beginning."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So noted."
+ },
+ {
+  "speaker": "Videographer",
+  "text": "This concludes the videotaped deposition of Witness B. The original exhibit will be retained by the court reporter. We are going off the record. The time is 11:22 a.m.",
+  "anchor_sec": 7180
+ }
+]

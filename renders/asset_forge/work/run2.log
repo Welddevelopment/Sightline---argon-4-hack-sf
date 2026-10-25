@@ -1,0 +1,24 @@
+20:16:50 reference notes: 15582 chars
+20:16:51 [forge] semitrailer_box r0: resumed valid=false
+20:16:52 [forge] pickup r0: resumed valid=false
+20:16:53 [forge] signal_mast r0: resumed valid=true
+20:16:53 [forge] suv r0: resumed valid=true
+20:16:54 [forge] truck_tractor r0: resumed valid=true
+20:16:54 [forge] sedan r0: resumed valid=true
+20:16:55 [forge] bus_shelter r0: resumed valid=true
+20:16:56 [forge] utility_pole r0: resumed valid=true
+20:16:58 [forge] gas_station_canopy r0: resumed valid=true
+20:16:59 [forge] pedestrian r0: resumed valid=true
+20:16:59 [forge] oak_tree r0: resumed valid=false
+20:16:59 [forge] pine_tree r0: resumed valid=true
+20:17:00 [forge] grass_material r0: resumed valid=true
+20:17:01 [forge] road_surface_material r0: resumed valid=true
+20:17:01 [render] batch r0.0: 7 stills (waiting for render lock, attempt 1)
+20:27:04 [render] batch r0.0: 7 stills (waiting for render lock, attempt 2)
+[render] sedan_current.png 13.3s 
+[render] sedan_r0.png 8.8s 
+[render] suv_current.png 14.6s 
+[render] suv_r0.png 9.8s 
+[render] pickup_current.png 12.3s 
+[render] pickup_r0.png 6.5s errs=1
+[render] truck_tractor_current.png 8.9s 

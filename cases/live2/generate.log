@@ -1,0 +1,7 @@
+(node:32019) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[argon] generate_world: calling gemini-4-argon (6 parts, maxOutputTokens=65536)
+..........
+[argon] generate_world: done in 53.9s, finish=STOP, chars=12235
+[generate_world] validation: OK, 0 warning(s), 181 lines / 12226 chars
+[generate_world] case=live2 mode=live outcome=argon wrote /cases/live2/worlds/world_v1.js (12226 chars) problems=0

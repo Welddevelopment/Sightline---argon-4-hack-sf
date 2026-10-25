@@ -1,0 +1,187 @@
+[
+  {
+    "asset": "sedan",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        0.609,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 6.657382901786374,
+      "kind": "vehicle",
+      "dims": [
+        4.9,
+        1.9,
+        1.45
+      ],
+      "color": "#a9adb2",
+      "current": [
+        "vehicle",
+        "sedan"
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/sedan_current.png"
+  },
+  {
+    "asset": "sedan",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        0.609,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 6.657382901786374,
+      "kind": "vehicle",
+      "dims": [
+        4.9,
+        1.9,
+        1.45
+      ],
+      "color": "#a9adb2",
+      "current": [
+        "vehicle",
+        "sedan"
+      ]
+    },
+    "src": "/renders/asset_forge/work/sedan.r0.js?v=1792959421286",
+    "out": "/home/claude/sightline/renders/asset_forge/sedan_r0.png"
+  },
+  {
+    "asset": "suv",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        0.735,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 6.677790220509366,
+      "kind": "vehicle",
+      "dims": [
+        4.8,
+        1.95,
+        1.75
+      ],
+      "color": "#1d3f7a",
+      "current": [
+        "vehicle",
+        "suv"
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/suv_current.png"
+  },
+  {
+    "asset": "suv",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        0.735,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 6.677790220509366,
+      "kind": "vehicle",
+      "dims": [
+        4.8,
+        1.95,
+        1.75
+      ],
+      "color": "#1d3f7a",
+      "current": [
+        "vehicle",
+        "suv"
+      ]
+    },
+    "src": "/renders/asset_forge/work/suv.r0.js?v=1792959421287",
+    "out": "/home/claude/sightline/renders/asset_forge/suv_r0.png"
+  },
+  {
+    "asset": "pickup",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        0.7979999999999999,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 7.9532786847821635,
+      "kind": "vehicle",
+      "dims": [
+        5.9,
+        2,
+        1.9
+      ],
+      "color": "#e9eaea",
+      "current": [
+        "vehicle",
+        "pickup"
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/pickup_current.png"
+  },
+  {
+    "asset": "pickup",
+    "mode": "argon",
+    "cfg": {
+      "t": [
+        0,
+        0.7979999999999999,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 7.9532786847821635,
+      "kind": "vehicle",
+      "dims": [
+        5.9,
+        2,
+        1.9
+      ],
+      "color": "#e9eaea",
+      "current": [
+        "vehicle",
+        "pickup"
+      ]
+    },
+    "src": "/renders/asset_forge/work/pickup.r0.js?v=1792959421287",
+    "out": "/home/claude/sightline/renders/asset_forge/pickup_r0.png"
+  },
+  {
+    "asset": "truck_tractor",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        1.512,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 9.573200313733148,
+      "kind": "vehicle",
+      "dims": [
+        6.5,
+        2.5,
+        3.6
+      ],
+      "color": "#9b1b1e",
+      "current": [
+        "vehicle",
+        "truck_tractor"
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/truck_tractor_current.png"
+  }
+]

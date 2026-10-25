@@ -1,0 +1,78 @@
+SOURCE: NTSB public docket HWY16FH018 — Highway Factual Report Attachment 5 - Florida Vehicle Spot Speed Study — https://data.ntsb.gov/Docket/Document/docBLOB?ID=40453263&FileExtension=.PDF&FileName=Highway%20Factual%20Report%20Attachment%205%20-%20Florida%20Vehicle%20Spot%20Speed%20Study-Master.PDF
+
+=== Spot Speed Study p.1 ===
+ Highway Factors Attachment 5
+
+Florida Vehicle Spot Speed Study
+
+ Williston, FL
+
+ HWY16FH018
+
+ (2 pages)
+
+=== Spot Speed Study p.2 ===
+ Form 750-010-03
+ State of Florida Department of Transportation TRAFFIC ENGINEERING
+ 10/15
+ VEHICLE SPOT SPEED STUDY
+ General Information Site Information
+Analyst/Observer: A Poole/R. Evans Location: US ALT 27 @ 140 Ct (5 miles west of Williston)
+Agency or Company: FDOT City: Williston
+Date Performed: Wednesday, August 24, 2016 County: Levy
+Time Period From: 1:59PM To: 3:15PM Roadway ID: 34010
+Weather/Road Condition: Dry Milepost : MP 29.076
+Posted Speed (mph): 65 MPH Remarks: Study paused 2:17PM - 2:51PM (Law Enforcement)
+
+ Both
+ Vehicles traveling WEST bound Vehicles traveling EAST bound
+ Speed Directions
+Cum (mph) Cum Cum
+ Total Total Total
+Total 20 15 10 5 5 10 15 20 Total Total
+ 104 1 1 ≥ 80 0 105 1 209
+ 103 1 1 78 - 79.9 0 105 1 208
+ 102 2 1 1 76 - 77.9 0 105 2 207
+ 100 0 74 - 75.9 0 105 0 205
+ 100 3 1 1 1 72 - 73.9 1 1 1 1 1 5 105 8 205
+ 97 8 1 1 1 1 1 1 1 1 70 - 71.9 1 1 1 1 1 1 6 100 14 197
+ 89 13 1 1 1 1 1 1 1 1 1 1 1 1 1 68 - 69.9 1 1 1 1 1 1 1 1 1 1 1 11 94 24 183
+ 76 18 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 66 - 67.9 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 18 83 36 159
+ 58 20 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 64 - 65.9 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 15 65 35 123
+ 38 20 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 62 - 63.9 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 17 50 37 88
+ 18 7 1 1 1 1 1 1 1 60 - 61.9 1 1 1 1 1 1 1 1 1 1 1 11 33 18 51
+ 11 8 1 1 1 1 1 1 1 1 58 - 59.9 1 1 1 1 1 1 1 1 8 22 16 33
+ 3 0 56 - 57.9 1 1 1 1 1 5 14 5 17
+ 3 0 54 - 55.9 1 1 1 1 4 9 4 12
+ 3 2 1 1 52 - 53.9 1 1 1 1 4 5 6 8
+ 1 0 50 - 51.9 1 1 1 1 2
+ 1 1 1 48 - 49.9 0 0 1 1
+ 0 0 46 - 47.9 0 0 0 0
+ 0 0 44 - 45.9 0 0 0 0
+ 0 0 42 - 43.9 0 0 0 0
+ 0 0 40 - 41.9 0 0 0 0
+ 0 0 38 - 39.9 0 0 0 0
+ 0 0 36 - 37.9 0 0 0 0
+ 0 0 34 - 35.9 0 0 0 0
+ 0 0 32 - 33.9 0 0 0 0
+ 0 0 30 - 31.9 0 0 0 0
+ 0 0 28 - 29.9 0 0 0 0
+ 0 0 26 - 27.9 0 0 0 0
+ 0 0 24 - 25.9 0 0 0 0
+ 0 0 22 - 23.9 0 0 0 0
+ 0 0 20 - 21.9 0 0 0 0
+ 0 0 18 - 19.9 0 0 0 0
+ 0 0 16 - 17.9 0 0 0 0
+ 0 0 14 - 15.9 0 0 0 0
+ 0 0 12 - 13.9 0 0 0 0
+ 0 0 10 - 11.9 0 0 0 0
+ 0 0 ≤ 10 0 0 0 0
+ 104 TOTALS 105 209
+ Both
+ Travel Direction 1 → WEST Speed Data Summary EAST ← Travel Direction 2
+ Directions
+ 88 85th Percentile Vehicle 89 178
+ 69 85th Percentile Speed 69 69
+ 62-72 10 mph Pace 60-70 60-70
+
+ OK OK OK

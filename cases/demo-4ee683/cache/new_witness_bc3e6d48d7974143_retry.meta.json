@@ -1,0 +1,31 @@
+{
+  "name": "new_witness_bc3e6d48d7974143_retry",
+  "model": "gemini-4-argon",
+  "seconds": 6.604,
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 4411,
+    "candidatesTokenCount": 269,
+    "totalTokenCount": 4680,
+    "cachedContentTokenCount": 2357,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 4411
+      }
+    ],
+    "cacheTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2357
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 269
+      }
+    ]
+  },
+  "at": "2026-10-25T19:34:01.309Z"
+}

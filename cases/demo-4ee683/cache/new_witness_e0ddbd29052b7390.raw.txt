@@ -1,0 +1,10 @@
+{
+  "name": "Witness (in front of store)",
+  "position": [18, 0, 9],
+  "eyeHeight": 1.6,
+  "lookAt": "veh_A",
+  "observationTime": 10.0,
+  "claim": "Standing in front of the store about 20 meters from the stop sign, the truck was blocking nothing.",
+  "confidence": "medium",
+  "assumptions": "Placed in front of the store (bld_store north face at z=10.95) at x=18, z=9, which is roughly 20 m from where a stop sign on NE 140th Ct would be located (stop sign is not modeled in the world). Observation time set to t=10.0 s (just before impact at 10.43 s) when the truck would be maximally across the road to test the claim that it blocked nothing."
+}

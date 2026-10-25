@@ -1,120 +1,39 @@
 [
   {
     "caseId": "live2",
-    "at": "2026-10-25T19:24:32.604Z",
+    "at": "2026-10-25T20:17:58.856Z",
     "world": "/cases/live2/worlds/world_v1.js",
     "contract": "v2",
-    "outcome": "argon_repaired",
-    "totalSeconds": 155.9,
+    "outcome": "argon",
+    "totalSeconds": 62.6,
     "attempts": [
       {
         "name": "generate_world",
         "mode": "live",
         "model": "gemini-4-argon",
-        "seconds": 56.4,
+        "seconds": 53.9,
         "finishReason": "STOP",
-        "promptTokens": 163069,
-        "outputTokens": 5374,
-        "thoughtsTokens": null,
-        "validation": {
-          "ok": false,
-          "errors": [
-            "sig_stop: signal needs state(t)",
-            "sig_speed: signal needs state(t)"
-          ],
-          "warnings": [],
-          "stats": {
-            "lines": 168,
-            "chars": 12518,
-            "geometryCalls": 0,
-            "objects": 21,
-            "witnesses": 3,
-            "facts": 14,
-            "duration": 26,
-            "moving": 4,
-            "assetCalls": 23,
-            "assetMethods": [
-              "environment",
-              "groundPlane",
-              "road",
-              "median",
-              "building",
-              "shelter",
-              "sign",
-              "pole",
-              "impactMarker",
-              "vehicle",
-              "pedestrian"
-            ],
-            "vehicleTypes": [
-              "sedan",
-              "truck_tractor",
-              "semitrailer",
-              "sedan",
-              "pickup"
-            ],
-            "citations": {
-              "inferred": 6,
-              "unlabeled": 0
-            },
-            "plausibility": [
-              {
-                "subject": "veh_A",
-                "pass": true,
-                "maxAccelG": 0,
-                "maxSpeedMph": 74
-              },
-              {
-                "subject": "veh_T_tractor",
-                "pass": true,
-                "maxAccelG": 0.7,
-                "maxSpeedMph": 21.1
-              },
-              {
-                "subject": "veh_T_trailer",
-                "pass": true,
-                "maxAccelG": 0.79,
-                "maxSpeedMph": 21
-              },
-              {
-                "subject": "veh_witA",
-                "pass": true,
-                "maxAccelG": 0.96,
-                "maxSpeedMph": 64.6
-              }
-            ],
-            "assetFallbacks": {}
-          }
-        }
-      },
-      {
-        "name": "generate_world_repair",
-        "mode": "live",
-        "model": "gemini-4-argon",
-        "seconds": 54.3,
-        "finishReason": "STOP",
-        "promptTokens": 5802,
-        "outputTokens": 5392,
+        "promptTokens": 163928,
+        "outputTokens": 5248,
         "thoughtsTokens": null,
         "validation": {
           "ok": true,
           "errors": [],
           "warnings": [],
           "stats": {
-            "lines": 168,
-            "chars": 12568,
+            "lines": 181,
+            "chars": 12226,
             "geometryCalls": 0,
-            "objects": 21,
+            "objects": 16,
             "witnesses": 3,
-            "facts": 14,
-            "duration": 26,
+            "facts": 12,
+            "duration": 25,
             "moving": 4,
-            "assetCalls": 23,
+            "assetCalls": 18,
             "assetMethods": [
               "environment",
               "groundPlane",
               "road",
-              "median",
               "building",
               "shelter",
               "sign",
@@ -130,34 +49,65 @@
               "sedan",
               "pickup"
             ],
+            "sun": {
+              "azimuthDeg": 265,
+              "elevationDeg": 45.1
+            },
             "citations": {
               "inferred": 6,
               "unlabeled": 0
             },
+            "approach": [
+              {
+                "id": "veh_A",
+                "type": "sedan",
+                "startDistM": 345.4,
+                "impactSpeedMps": 33.1,
+                "frontStartToImpactM": 345.4
+              },
+              {
+                "id": "veh_T_tractor",
+                "type": "truck_tractor",
+                "startDistM": 31,
+                "impactSpeedMps": 5.8
+              },
+              {
+                "id": "veh_T_trailer",
+                "type": "semitrailer",
+                "startDistM": 29.1,
+                "impactSpeedMps": 5.5
+              },
+              {
+                "id": "veh_witA",
+                "type": "sedan",
+                "startDistM": 279.7,
+                "impactSpeedMps": 26.8
+              }
+            ],
             "plausibility": [
               {
                 "subject": "veh_A",
                 "pass": true,
                 "maxAccelG": 0,
-                "maxSpeedMph": 74
+                "maxSpeedMph": 74.1
               },
               {
                 "subject": "veh_T_tractor",
                 "pass": true,
-                "maxAccelG": 0.7,
-                "maxSpeedMph": 21.1
+                "maxAccelG": 0.31,
+                "maxSpeedMph": 14.6
               },
               {
                 "subject": "veh_T_trailer",
                 "pass": true,
-                "maxAccelG": 0.79,
-                "maxSpeedMph": 21
+                "maxAccelG": 0.2,
+                "maxSpeedMph": 12.4
               },
               {
                 "subject": "veh_witA",
                 "pass": true,
-                "maxAccelG": 0.96,
-                "maxSpeedMph": 64.6
+                "maxAccelG": 0.57,
+                "maxSpeedMph": 60.1
               }
             ],
             "assetFallbacks": {}
@@ -170,20 +120,19 @@
       "errors": [],
       "warnings": [],
       "stats": {
-        "lines": 168,
-        "chars": 12568,
+        "lines": 181,
+        "chars": 12226,
         "geometryCalls": 0,
-        "objects": 21,
+        "objects": 16,
         "witnesses": 3,
-        "facts": 14,
-        "duration": 26,
+        "facts": 12,
+        "duration": 25,
         "moving": 4,
-        "assetCalls": 23,
+        "assetCalls": 18,
         "assetMethods": [
           "environment",
           "groundPlane",
           "road",
-          "median",
           "building",
           "shelter",
           "sign",
@@ -199,34 +148,65 @@
           "sedan",
           "pickup"
         ],
+        "sun": {
+          "azimuthDeg": 265,
+          "elevationDeg": 45.1
+        },
         "citations": {
           "inferred": 6,
           "unlabeled": 0
         },
+        "approach": [
+          {
+            "id": "veh_A",
+            "type": "sedan",
+            "startDistM": 345.4,
+            "impactSpeedMps": 33.1,
+            "frontStartToImpactM": 345.4
+          },
+          {
+            "id": "veh_T_tractor",
+            "type": "truck_tractor",
+            "startDistM": 31,
+            "impactSpeedMps": 5.8
+          },
+          {
+            "id": "veh_T_trailer",
+            "type": "semitrailer",
+            "startDistM": 29.1,
+            "impactSpeedMps": 5.5
+          },
+          {
+            "id": "veh_witA",
+            "type": "sedan",
+            "startDistM": 279.7,
+            "impactSpeedMps": 26.8
+          }
+        ],
         "plausibility": [
           {
             "subject": "veh_A",
             "pass": true,
             "maxAccelG": 0,
-            "maxSpeedMph": 74
+            "maxSpeedMph": 74.1
           },
           {
             "subject": "veh_T_tractor",
             "pass": true,
-            "maxAccelG": 0.7,
-            "maxSpeedMph": 21.1
+            "maxAccelG": 0.31,
+            "maxSpeedMph": 14.6
           },
           {
             "subject": "veh_T_trailer",
             "pass": true,
-            "maxAccelG": 0.79,
-            "maxSpeedMph": 21
+            "maxAccelG": 0.2,
+            "maxSpeedMph": 12.4
           },
           {
             "subject": "veh_witA",
             "pass": true,
-            "maxAccelG": 0.96,
-            "maxSpeedMph": 64.6
+            "maxAccelG": 0.57,
+            "maxSpeedMph": 60.1
           }
         ],
         "assetFallbacks": {}

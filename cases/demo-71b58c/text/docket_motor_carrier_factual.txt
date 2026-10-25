@@ -1,0 +1,406 @@
+SOURCE: NTSB public docket HWY16FH018 — Motor Carrier Factors Group Chairman's Factual Report — https://data.ntsb.gov/Docket/Document/docBLOB?ID=40453310&FileExtension=.PDF&FileName=Motor%20Carrier%20Factors%20Group%20Chairman%27s%20Factual%20Report-Master.PDF
+
+=== Motor Carrier Factual p.1 ===
+MOTOR CARRIER FACTORS GROUP CHAIRMAN’S
+ FACTUAL REPORT
+
+ Williston, FL
+
+ HWY16FH018
+
+ (9 pages)
+
+=== Motor Carrier Factual p.2 ===
+ NATIONAL TRANSPORTATION SAFETY BOARD
+ OFFICE OF HIGHWAY SAFETY
+ WASHINGTON, D.C.
+
+ MOTOR CARRIER FACTORS GROUP CHAIRMAN’S
+ FACTUAL REPORT
+
+A. CRASH INFORMATION
+
+ Location: US 27A, milepost 29, near Williston, Levy County, Florida.
+
+ Vehicle #1: 2015 [car manufacturer] [car model] 70D
+
+ Operator #1: Private operator
+
+ Vehicle #2: 2014 [truck manufacturer] [truck model] truck tractor in combination with a 2003 [trailer manufacturer]
+ 3000R refrigerated semi-trailer
+
+ Operator #2: Okemah Express, LLC
+ Palm Harbor, FL
+
+ Date: May 7, 2016
+
+ Time: 4:36 P.M. EDT
+
+ NTSB #: HWY16FH018
+
+B. MOTOR CARRIER FACTORS GROUP
+
+Jerome F. Cantrell, Motor Carrier Factors Group Chairman
+NTSB Office of Highway Safety
+490 L’Enfant Plaza East, S.W., Washington, DC 20594
+
+C. CRASH SUMMARY
+
+ For a summary of the crash, refer to the Crash Summary Report in the docket for this
+investigation.
+
+D. DETAILS OF THE MOTOR CARRIER FACTORS INVESTIGATION
+
+ This investigative report addresses the motor carrier history and operations of the
+commercial vehicle involved in this crash, which was a 2014 [truck manufacturer] truck tractor and 2003
+[trailer manufacturer] semi-trailer, owned and operated by Okemah Express, LLC. This report also details the
+employment history of the commercial driver, along with the safety culture and regulatory
+oversight of Okemah Express’s operations.
+
+Williston, FL – Motor Carrier Factors Factual Report Page 2 of 9
+
+=== Motor Carrier Factual p.3 ===
+ 1. Okemah Express LLC History and Operations
+
+ The motor carrier in this crash was Okemah Express, LLC. According to the Federal Motor
+Carrier Safety Administration (FMCSA) Motor Carrier Management Information System
+(MCMIS), the carrier was issued USDOT number 1065141. This number was issued on November
+17, 2005. The carrier was registered as a “for-hire” motor carrier with a primary place of business
+in Palm Harbor, FL. The carrier had active operating authority and was issued MC # 443585 This
+MC Number was issued on December 2, 2002 which indicates the carrier was operating under
+another DOT number or name prior to the current carrier. Investigation of the MCS-150 history
+indicated that the carrier was started as [driver of Vehicle T] DBA Okemah Express. This company was
+operated with a Principle Place of Business (PPOB) in Okemah, OK. In 2005 the carrier changed
+its name and corporate structure to Okemah Express, LLC was a “for-hire” carrier of general
+freight, fresh produce, grain, meat, and refrigerated food. Per the MCS-150, the carrier had 1
+vehicle and 1 driver. 1
+
+ During a telephone conversation with the owner/driver, it was discovered that the carrier
+had retained an attorney. A subpoena was presented to the carrier’s attorney with the following
+documents requested:
+ • (FMCSR 395.8(k)) Driver’s log books for the last six months
+ • (FMCSR 396.3(c)) All maintenance, service, and inspection records for both the
+ 2014 [truck manufacturer] truck-tractor and 2003 [trailer manufacturer] semitrailer for the last 12 months
+ • (FMCSR 391.51) All driver records such as:
+ o medical long form
+ o motor vehicle record
+ o driver qualification file
+ • (FMCSR 382.405(c)) Drug and alcohol testing information (name of consortium,
+ random test results, post-crash test results)
+ • (FMCSR 379.3 appendix A) Freight bills and/or bills of lading (last 12 months)
+ • Name of the driver’s primary care physician
+ • Name of the driver’s health care provider (insurance company)
+ • Copy of driver’s CDL
+ • Driver’s working history for the last 6 years (name of the employers, particularly if
+ in driving capacity)
+ • Driver’s fuel and food receipts between May 4, 2016 and May 8, 2016
+
+ These were the items that were delivered to NTSB staff from the carrier’s attorney:
+ • Driver’s log book pages from December 31, 2015 through June 30, 2016
+ • 39 maintenance records from March 12, 2015 through February 26, 2016
+ • A copy of the Medical Certificate and Long Form Medical Examination Form.
+ • A copy of the front of the accident driver’s Florida State CDL.
+
+ No other requested records were obtained from the motor carrier or the motor carrier’s
+attorney.
+
+1
+ See Motor Carrier Attachment #1 – MCS-150
+
+Williston, FL – Motor Carrier Factors Factual Report Page 3 of 9
+
+=== Motor Carrier Factual p.4 ===
+ 2. Carrier History
+
+ No interview was conducted with the carrier, therefore; the carrier history was obtained
+from the MCMIS reports as well as the accident driver’s CDLIS report.
+
+ 2.1. Company Hiring Practices
+
+ According to information provided by the motor carrier, there are no other drivers; the
+owner is also the solo driver for the carrier. When a carrier’s operation is identified as a company
+or corporation, the owner becomes an employee for the company or corporation and therefore, is
+required to abide by all the regulations required for a company and an employee. The following
+records are required to be maintained by the carrier:
+
+ • Employment Application 49 CFR 391.21
+
+ • Request for driver’s license and history 49 CFR 391.5 (b)2
+
+ • Previous employer check 49 CFR 391.53
+
+ • Road test or Equivalent 49 CFR 391.51(b)3
+
+ • Annual Abstract of Driving Record 49 CFR 391.51(b)4
+
+ • Annual Review of Driving Record 49 CFR 391.51(b)5
+
+ o After first year of employment and every year thereafter.
+
+ • Annual List of Violations 49 CFR 391.51(b)6
+
+ • Medical Certificate with expiration 49 CFR 391.41
+
+ • Pre-Employment Drug test 49 CFR 382.301
+
+ NTSB investigators requested this information from the carrier through a subpoena to the
+carrier’s attorney. The response was that the accident driver is the owner/operator and sole
+employee of the carrier and does not maintain a driver qualification file on himself.
+
+ • 2.2 Commercial Driver History
+
+ • The commercial vehicle driver was identified as a 62-year-old male. At the time
+ of the crash, the driver held a valid Florida Class A commercial driver’s license
+ (CDL), with no endorsements. His CDL was due to expire in January 2021.
+
+ A CDLIS report was obtained for the accident driver and it indicated that the driver had
+three convictions as follows:
+
+ • December 12, 2015 Failure to Use/Improper Signal in a CMV.
+
+Williston, FL – Motor Carrier Factors Factual Report Page 4 of 9
+
+=== Motor Carrier Factual p.5 ===
+ • August 9, 2013 Failure to obey Sign/Traffic Control Device in a CMV.
+
+ • June 17, 2013 Failure to Obey Traffic Signal/Light in a Non-CMV.
+
+ Additionally, the CDLIS report listed that the driving privilege had been withdrawn on five
+occasions since 1984 to 2013 as follows:
+
+ • October 28, 2013 in Florida for failure to surrender license for a commercial
+ conviction.
+
+ • April 6, 2005 in Oklahoma for failure to appear for trail/court.
+
+ • December 20, 1991 in Pennsylvania for speeding.
+
+ • October 21, 1991 in Pennsylvania for speeding.
+
+ • April 26, 1984 in Pennsylvania for unsatisfied judgement.
+
+ At the time of the crash the CDL was valid and did not list any restrictions. 2
+
+2.3 Medical Certification
+
+ • Effective May 21, 2014, medical examiners that conduct DOT medical
+ examinations must be listed on the National Registry of Certified Medical
+ Examiners. The truck driver’s DOT medical card indicated National Registry
+ number 8557666228, as the medical professional who performed the DOT
+ physical. According to the FMCSA National Registry, this medical professional
+ held the proper certifications under the federal regulations.
+
+ • At the time of the crash, the driver held a valid DOT medical certificate with an
+ issue date of 09/28/2015 and an expiration date of 09/28/2017. For further medical
+ certificate information see the Human Performance Group Chairman’s Factual
+ Report.
+
+ • 2.4 Crash Driver’s Crash History
+
+ • According to the MCMIS carrier and the driver’s CLDIS records, the driver had no
+ previous reportable crashes.
+
+2
+ See Motor Carrier Attachment #2- Accident Driver CDLIS Report.
+
+Williston, FL – Motor Carrier Factors Factual Report Page 5 of 9
+
+=== Motor Carrier Factual p.6 ===
+ 2.5 Drug and Alcohol Testing
+
+ The FHP had requested blood work to be done on the commercial driver. The report from
+the FHP as well CAMI were returned with a positive for THC. See Human Performance Factor’s
+factual for the results and further information.
+
+ 2.6 Hours of Service
+
+ At the time of the crash, the driver was using a logbook for accountability of the driver’s
+hours of service. A review by the FHP of the driver’s hours of service records indicated a total of
+15 hours on duty, 14.25 hours driving, and .75 of an hour on duty not driving from 04/30/2016 to
+5/07/2016. On the day of the crash, the hours of service records indicated 5.5 total hours on duty,
+5.25 hours driving, and .25 of an hour on duty not driving.
+
+ Reviewing the roadside inspection history of the accident driver there have been a total of
+18 roadside inspections across ten state jurisdictions and 11 of those inspections had violations
+listed in the hours of service basic. This history of HOS violations resulted in the carrier being
+alert in the HOS basic during two different time periods From November 10, 2010 until September
+23, 2011 and again from July 27, 2012 until April 24, 2015. This history resulted in a warning
+letter from FMCSA. 3
+
+ While the motor carrier did not supply all the documents requested by a subpoena issued
+by the NTSB, they did supply records of duty status reports from December 31, 2015 to June 30,
+2016. In a spot check for accuracy, three roadside inspections were compared to the reports.
+
+ • Virginia State Police report VA6354001058 dated January 27, 2016 a level three
+ inspection started at 09:15am and ended at 10:07am. The driver was cited for three
+ Hours of Service violations and was put Out of Service for Driving beyond the 14-
+ hour duty period. The drivers RODS show him in the Sleeper Berth and Off duty
+ from 17:00pm on January 26, 2016 until 18:45pm on January 27,2016 in Kenly,
+ N.C. The distance between the Inspection Point and Kenly, N.C. is 132.8 miles.
+
+ • Virginia State Police report VA4430003985 dated March 16, 2016 a level three
+ inspection started at 07:30am and ended at 07:44am. The driver was cited for
+ Failure to obey a traffic control device: NO PARKING ZONE. The vehicle was
+ parked on the entrance ramp into a rest area. The drivers RODS show him Off duty
+ and in the sleeper berth from 07:00am on March 15, 2016 until 13:45pm on March
+ 16,2016 in Kenly, N.C. The distance between the Inspection Point and Kenly, N.C.
+ is 192.6 miles.
+
+3
+ See Motor Carrier Attachment #3-CSA Warning letter for Hours of Service Alert.
+
+Williston, FL – Motor Carrier Factors Factual Report Page 6 of 9
+
+=== Motor Carrier Factual p.7 ===
+ • North Carolina State Highway Patrol report NC0005812211 dated May 26, 2016 a
+ level three inspection started at 18:20pm and ending at 18:55pm. This was the first
+ trip after the crash in Williston, FL. The driver was cited for Driving beyond the
+ 14-hour duty period on May 22, 2016. The drivers Rods show him Off duty and
+ Sleeper berth from 09:15am to 24:00 pm in Kenly, N.C. The distance between
+ Lumberton, N.C I-95 northbound weigh station and Kenly, N.C. is 91.4 miles.
+ Lumberton is south of Kenly, N.C.
+
+ These three inspections indicate a continuing issue of noncompliance with the hours of
+service regulations found in 49 CFR 395.
+
+ 3. FMCSA Oversight
+
+ 3.1. CSA and SMS
+
+ In 2010, the FMCSA introduced the Compliance, Safety, Accountability (CSA) system as
+an initiative to improve large truck and bus safety and ultimately reduce crashes, injuries, and
+fatalities that are related to Commercial Motor Vehicles. It introduced a new enforcement and
+compliance model that allows the FMCSA and its state partners to contact a larger number of
+carriers earlier to address safety problems before crashes occur. Along with CSA, the FMCSA also
+rolled out a new operational model called the Safety Measurement System (SMS), which replaced
+its predecessor, known as the SAFESTAT model. SMS uses a motor carrier’s data from roadside
+inspections, (including all safety-based violations), state-reported crashes, and the Federal Motor
+Carrier Census to quantify performance in the following Behavior Analysis and Safety
+Improvement Categories (BASICs).
+
+ After a measurement is determined, the carrier is then placed in a peer group (i.e., other
+carriers with similar numbers of inspections). Percentiles from 0 to 100 are then determined by
+comparing the BASIC measurements of the carrier to the measurements of other carriers in the
+peer group. A percentile of “100” indicates the worst performance.
+
+ The FMCSA established threshold levels that would require agency action. Unsafe
+Driving, HOS, and Crash BASICs were set at lower thresholds because of their inherent risk.
+Additionally, passenger and hazmat carriers have lower thresholds than all other carriers because
+of their inherent risk. Table 2 represents the thresholds set by the FMCSA that help prioritize
+agency intervention and resource management. 4
+
+ Table 2. BASIC thresholds. 5
+ BASIC Passenger Carrier HM Carrier All Other Motor
+ Carriers
+ Unsafe Driving, HOS, Crash 50% 60% 65%
+ Driver Fitness, Drug & 65% 75% 80%
+ Alcohol, Maintenance
+ Hazardous Materials 80% 80% 80%
+
+4
+ Retrieved from www.fmcsa.dot.gov
+5
+ Retrieved from http://csa.fmcsa.dot.gov/FAQs.aspx.
+
+Williston, FL – Motor Carrier Factors Factual Report Page 7 of 9
+
+=== Motor Carrier Factual p.8 ===
+ On a carrier’s SMS profile, which is publicly available on the SAFER website for
+passenger carriers, an alert symbol is displayed in any designated BASIC where the carrier
+has exceeded the corresponding threshold. 6 This is also referred to as having an “alert” in a BASIC.
+
+ At the time of the crash the carrier displayed no alerts. The SMS profile also showed that
+at the time of the crash, the carrier’s vehicle out-of-service rate was 0.0 percent. The carrier’s
+driver out-of-service rate was 16.7 percent, exceeding the national average of 5.5 percent.
+
+ Okemah Express has received two warning letters from FMCSA for being alert in one of
+the BASIC’s The first letter dated March 25, 2011 for exceeding the threshold in the Hours of
+Service Basic 49 CFR 392 and 395. The second letter dated February 10, 2017 for being alert in
+the Unsafe Driving Basic 49 CFR 392 and 397. This was a result of a roadside inspection
+conducted in Richmond, KY that cited the driver for Failing to use seat belt while operating CMV.
+A state citation C195969 was issued. These alerts were prior to the crash and after the crash for
+the Unsafe Driving Basic.
+
+ 3.2. Carrier Roadside Inspections
+
+ According to the MCMIS carrier profile, Okemah Express LLC had 6 roadside or terminal
+inspections during the period from 05/05/2015 to 05/07/2016. 7 These inspections resulted in 1
+driver out-of-service (OOS) or 16.7 percent and 0 vehicle OOS or 0.0 percent. This is in
+comparison to the National Average of 5.5 percent OOS for drivers and 20.7 percent for vehicle’s
+OOS. 8 The MCMIS profile also indicated the carrier had no DOT reportable crashes in 2015.
+
+ 3.3Drug and Alcohol Testing
+
+ The FHP had requested blood work to be done on the commercial driver. See Human
+Performance Factor’s factual for the results.
+
+ 3.4. Hours of Service
+
+ At the time of the crash, the driver was using a logbook for accountability of the driver’s
+hours of service. A review by the FHP of the driver’s hours of service records indicated a total of
+15 hours on duty, 14.25 hours driving, and .75 of an hour on duty not driving from 04/30/2016 to
+5/07/2016. On the day of the crash, the hours of service records indicated 5.5 total hours on duty,
+5.25 hours driving, and .25 of an hour on duty not driving. 9
+
+6
+ FMCSA BASIC information publicly available for passenger and Hazardous Material carriers only. See additional
+information at the FMCSA Safer website: http://safer.fmcsa.dot.gov/CompanySnapshot.aspx.
+7
+ See Motor Carrier attachment #4 – Okemah Express LLC SMS Profile
+8
+ Roadside Inspection OOS Rates for both Large Truck and Bus Statistics Fiscal Year 2015, retrieved from:
+https://csa.fmcsa.dot.gov/
+9
+ Florida Highway Patrol Post-Crash Inspection report number FHBP16OFF012226 Dated 05/07/2016.
+
+Williston, FL – Motor Carrier Factors Factual Report Page 8 of 9
+
+=== Motor Carrier Factual p.9 ===
+ 4. Commercial Driver History
+
+ 4.1. Commercial Driver’s Driving Record
+
+ The commercial vehicle driver was identified as a 62-year-old male. At the time of the
+crash, the driver held a valid Florida Class A commercial driver’s license (CDL), with no
+endorsements. His CDL was due to expire in January 2021. There were no restrictions on the
+CDL.
+
+ 4.2. Medical Certification
+
+ Effective May 21, 2014, medical examiners that conduct DOT medical examinations must
+be listed on the National Registry of Certified Medical Examiners. 10 The truck driver’s DOT
+medical card indicated National Registry number 8557666228, as the medical professional who
+performed the DOT physical. According to the FMCSA National Registry, this medical
+professional held the proper certifications under the federal regulations.
+
+ At the time of the crash, the driver held a valid DOT medical certificate with an issue date
+of 09/28/2015 and an expiration date of 09/28/2017. For further medical certificate information
+see the Human Performance Group Chairman’s Factual Report.
+
+ 4.3. Crash Driver’s Crash History
+
+ According to the carrier’s records, the driver had no previous reportable crashes.
+
+E. DOCKET MATERIAL
+
+ The following attachments are included in the docket for this investigation:
+
+ LIST OF ATTACHMENTS
+
+Attachment #1 - MCS-150
+
+Attachment #2- Accident Driver CDLIS Report
+
+Attachment #3- CSA Warning Letter
+
+Attachment #4 - Okemah Express LLC SMS Profile
+
+END OF REPORT
+Jerome F Cantrell
+Motor Carrier Factors Group Chairman
+
+10
+ 49CFR§391.42 Schedule for use of medical examiners listed on the National Registry of Certified Medical
+Examiners
+
+Williston, FL – Motor Carrier Factors Factual Report Page 9 of 9

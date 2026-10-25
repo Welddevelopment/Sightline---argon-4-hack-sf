@@ -1,0 +1,32 @@
+{
+  "round": 0,
+  "file": "/home/claude/sightline/renders/asset_forge/work/pickup.r0.js",
+  "png": "/home/claude/sightline/renders/asset_forge/pickup_r0.png",
+  "finish": "STOP",
+  "usage": {
+    "promptTokenCount": 6006,
+    "candidatesTokenCount": 19397,
+    "totalTokenCount": 25403,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 6006
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 19397
+      }
+    ]
+  },
+  "seconds": 181.5,
+  "defects": null,
+  "validation": {
+    "ok": false,
+    "errors": [
+      "create() threw in Node: ReferenceError: THREE is not defined |     at addMesh (file:///home/claude/sightline/renders/asset_forge/work/pickup.r0.js?v=1792958485712:613:13) |     at Module.create (file:///home/claude/sightline/renders/asset_forge/work/pickup.r0.js?v=1792958485712:708:3)"
+    ],
+    "warnings": []
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "interactionId": "v1_ChdXbURlYXBDeUJjU2V1TVlQLWRYR2tRYxIXV21EZWFwQ3lCY1NldU1ZUC1kWEdrUWM",
+  "model": "gemini-4-argon",
+  "caseId": "demo",
+  "maxOutputTokens": 160000,
+  "thinkingLevel": "low",
+  "promptChars": 146994,
+  "video": "https://generativelanguage.googleapis.com/v1beta/files/yh4xrqu35tfm",
+  "kinematicsFrom": "cases/demo/worlds/world_v2.js",
+  "startedAt": "2026-10-25T20:02:33.090Z",
+  "status": "completed",
+  "finishReason": "completed (natural stop; 45010 of 160000 max_output_tokens used)",
+  "usage": {
+    "total_tokens": 227038,
+    "total_input_tokens": 182028,
+    "input_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 54086
+      },
+      {
+        "modality": "video",
+        "tokens": 127942
+      }
+    ],
+    "total_cached_tokens": 0,
+    "total_output_tokens": 45010,
+    "output_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 45010
+      }
+    ],
+    "total_tool_use_tokens": 0,
+    "total_thought_tokens": 0
+  },
+  "wallSec": 468,
+  "outputChars": 108254,
+  "outputLines": 3460,
+  "finishedAt": "2026-10-25T20:10:20.737Z",
+  "totalOutputTokens": 45010,
+  "mechanicalFixes": "world_long.fixed.js: 13 object ids renamed to contract prefixes (ground_base->road_ground_base, shoulder_*->road_shoulder_*, sign_*->sig_*, store_parking_apron/drainage_culvert_se/residential_driveway_east->road_*, fence_wire_*/utility_poles_south_line/veg_distant_treeline->occ_*, residential_houses_south->bld_*); 2 signs kind signal->sign. No geometry or kinematics touched."
+}

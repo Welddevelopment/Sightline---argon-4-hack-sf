@@ -18,9 +18,24 @@ export const worldContract = () => ((process.env.SIGHTLINE_WORLD_CONTRACT || 'v2
 export const generatePromptFile = () => (worldContract() === 'v1' ? 'generate_world' : 'generate_world_v2');
 const REFERENCE = path.join(ROOT, 'worlds', 'reference_world.js');
 
+/** Case scene (date/time/location/weather) for the v2 environment() rule: confirmed_facts → cache/extraction → case.json `scene`. */
+export function caseSceneHint(caseId) {
+  const d = caseDirs(caseId);
+  const src = [[path.join(d.dir, 'confirmed_facts.json'), 'human-confirmed'], [path.join(d.cache, 'extraction.json'), 'Argon extraction'], [path.join(d.dir, 'case.json'), 'case metadata']];
+  for (const [f, label] of src) {
+    const sc = readJSON(f, null)?.scene;
+    if (sc && (sc.date || sc.time)) {
+      const { frame, ...rest } = sc;
+      return `${JSON.stringify(rest)} (${label}). Missing lat/lon: approximate them from the named location.`;
+    }
+  }
+  return 'not pre-extracted — take the date, local time, location and weather from the evidence.';
+}
+
 export function buildGeneratePrompt(caseId) {
   return fill(readPrompt(generatePromptFile()), {
     CONTRACT: worldContract() === 'v1' ? loadWorldContract() : '',
+    SCENE: caseSceneHint(caseId),
     CASE_ID: caseId,
     INVENTORY: JSON.stringify(evidenceSummary(caseId)),
     CASE_TEXT: loadCaseText(caseId),
@@ -85,7 +100,7 @@ export async function generateWorld({ caseId = defaultCaseId(), version = 1,
       outcome = 'reference_fallback';
       source = `// FALLBACK: Argon's world for case "${caseId}" failed validation (see cases/${caseId}/cache/world_validation.json); ` +
         `this is worlds/reference_world.js.\n` + fs.readFileSync(REFERENCE, 'utf8');
-      v = await validateWorldSource(source, { caseId });
+      v = await validateWorldSource(source, { caseId, advisory: true });   // code-built fallback: only fatal problems count
       console.warn(`[generate_world] FALLING BACK to worlds/reference_world.js for case ${caseId}`);
     }
   }

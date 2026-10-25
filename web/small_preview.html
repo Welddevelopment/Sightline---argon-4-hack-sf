@@ -17,10 +17,11 @@
 </script>
 </head>
 <body>
-<div id="cap">Sightline small road users · 1 m grid · ?view=three|side|front|close|driver · ?env=0 disables IBL</div>
+<div id="cap">Sightline small road users · 1 m grid · ?view=three|side|front|close|people|driver|models|modelface|modeldriver · ?env=0 disables IBL · ?model=0 skips the GLB row</div>
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { createSmallVehicle, createPedestrian } from './assets/vehicles_small.js';
 
@@ -68,6 +69,25 @@ const back = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.7, 0.1), seatM); back.p
 const wheel = new THREE.Mesh(new THREE.TorusGeometry(0.19, 0.016, 10, 40), new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.6 }));
 wheel.position.set(0, 0.36, -0.42); wheel.rotation.x = -0.45; hp.add(wheel);
 [cush, back, wheel].forEach(m => { m.castShadow = m.receiveShadow = true; });
+// GLB figures (web/models/pedestrian.glb, Rocketbox Male_Adult_01) in a second row at z = +4: 1.55 / 1.75 / 1.90 m standing,
+// walking, matte mannequin, and a seated occupant on the same seat proxy (origin = H-point)
+let glbInfo = null;
+if (q.get('model') !== '0') {
+  try {
+    const gltf = await new GLTFLoader().loadAsync('models/pedestrian.glb');
+    const M = { model: gltf.scene };
+    put(createPedestrian(THREE, { ...M, id: 'g155', height: 1.55 }), -1.2, 4);
+    put(createPedestrian(THREE, { ...M, id: 'g175', height: 1.75 }), -0.4, 4);
+    put(createPedestrian(THREE, { ...M, id: 'g190', height: 1.9 }), 0.45, 4);
+    put(createPedestrian(THREE, { ...M, id: 'gw', height: 1.75, pose: 'walking' }), 1.6, 4, side);
+    put(createPedestrian(THREE, { ...M, id: 'gm', height: 1.75, matte: true }), 2.6, 4);
+    const gocc = createPedestrian(THREE, { ...M, id: 'gdrv', height: 1.75, pose: 'seated' });
+    const ghp = new THREE.Group(); ghp.position.set(5.0, 0.55, 4); scene.add(ghp); ghp.add(gocc);
+    for (const m of [cush, back, wheel]) { const c = m.clone(); ghp.add(c); }
+    const d0 = new THREE.Mesh(new THREE.SphereGeometry(0.018, 10, 8), new THREE.MeshBasicMaterial({ color: 0xff2020 })); d0.position.set(...gocc.userData.eye); gocc.add(d0);
+    glbInfo = { ok: true, eye: gocc.userData.eye, h175: items.find(o => o.name === 'g175').userData };
+  } catch (e) { glbInfo = { ok: false, err: String(e) }; }
+}
 // eye markers (small red dots) to verify userData eye positions
 const dot = new THREE.Mesh(new THREE.SphereGeometry(0.018, 10, 8), new THREE.MeshBasicMaterial({ color: 0xff2020 }));
 for (const o of items) {
@@ -84,6 +104,9 @@ const views = {
   close: [[-2.8, 1.9, 6.2], [-4.9, 0.85, 0.2]],
   people: [[2.4, 1.7, 5.5], [1.4, 0.9, 0]],
   driver: [[6.6, 1.4, -1.8], [5.0, 0.8, -0.1]],
+  models: [[1.2, 1.6, -2.4], [0.9, 0.95, 4]],
+  modelface: [[-0.25, 1.62, 2.6], [-0.4, 1.5, 4]],
+  modeldriver: [[6.6, 1.4, 2.2], [5.0, 0.8, 3.9]],
 };
 const [p, t] = views[q.get('view')] || views.three;
 cam.position.set(...p);
@@ -93,7 +116,7 @@ addEventListener('resize', () => { renderer.setSize(innerWidth, innerHeight); ca
 const draw = () => renderer.render(scene, cam);
 ctl.addEventListener('change', draw);
 draw(); requestAnimationFrame(() => { draw(); window.__ready = true; });
-window.__info = items.map(o => ({ name: o.name, ud: { ...o.userData, joints: undefined, rider: !!o.userData.rider } }));
+window.__info = { glb: glbInfo, items: items.map(o => ({ name: o.name, ud: { ...o.userData, joints: undefined, rider: !!o.userData.rider } })) };
 </script>
 </body>
 </html>

@@ -1,0 +1,4 @@
+// DEFECTS (round 1):
+// 1. Triangle count (314,526) exceeded the 250,000 budget -> fix: streamlined instanced oak/pine/palm geometries (34-76 tris each), tuned outer pasture Z-row spacing, and capped grass tufts at 8,500 instances (~168k total tris).
+// 2. Far vegetation ring encroached inside the aerial coverage box (x [-500, 500], z [-300, 300]) populated by r4/r5 -> fix: restricted all r6 3D trees and hammocks strictly to the outer ring outside x [-500, 500], z [-300, 300] while preserving the >45 m west crest sight corridor.
+// 3. Terrain vertex colors inside the aerial footprint did not distinguish dark pine-needle forest floors, the open SE field (x [60, 260], z [10, 95]), and sandy clearings/dirt lanes -> fix: mapped vertex colors and sandy soil strips directly to USGS NAIP aerial land-cover zones.

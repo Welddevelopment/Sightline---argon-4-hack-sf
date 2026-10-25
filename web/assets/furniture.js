@@ -6,6 +6,7 @@
 // to a plain PBR colour so geometry (used for ray-cast checks) is identical in both environments.
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { foliageMaterial, foliageClusterGeometry } from './textures.js';
 
 // ---------------------------------------------------------------- caches & helpers
 const GEO = new Map(), MAT = new Map(), TEX = new Map();
@@ -139,7 +140,9 @@ const M = {
     noise(g, W, H, 16, 3);
   }, { repeat: true }), 0x5d4c3b, { roughness: 0.92 }),
   porcelain: () => std('porcelain', { color: 0x8a9a92, roughness: 0.18, metalness: 0.0 }),
-  glass: () => std('glass', { color: 0xd6e6ea, roughness: 0.04, metalness: 0.1, transparent: true, opacity: 0.2, depthWrite: false, side: THREE.DoubleSide }),
+  // clear float glass: ~90% transmission, no diffuse body colour (a milky albedo reads as a frosted slab in sunlight);
+  // what remains visible is the faint grey tint + the Fresnel sky reflection from the environment map.
+  glass: () => std('glass', { color: 0x0e1416, roughness: 0.03, metalness: 0.0, transparent: true, opacity: 0.12, depthWrite: false, side: THREE.DoubleSide, envMapIntensity: 1.4 }),
   bark: () => texStd('bark', () => ctex('bark', 128, 256, (g, W, H) => {
     g.fillStyle = '#4f4438'; g.fillRect(0, 0, W, H); const R = rng(5);
     for (let i = 0; i < 90; i++) { const x = R() * W; g.strokeStyle = `rgba(${R() < 0.6 ? '28,22,17' : '110,98,84'},${0.3 + R() * 0.4})`; g.lineWidth = 1 + R() * 3; g.beginPath(); g.moveTo(x, 0); for (let y = 0; y <= H; y += 16) g.lineTo(x + (R() - 0.5) * 6, y); g.stroke(); }
@@ -491,13 +494,13 @@ export function shelter(opts = {}) {
   const id = opts.id ?? 'shelter';
   const W = opts.w ?? 3.5, D = opts.d ?? 1.5, H = opts.h ?? 2.5;
   const root = new THREE.Group();
-  const fr = std('shelterFrame', { color: 0x4a4d50, metalness: 0.8, roughness: 0.35 });
+  const fr = std('shelterFrame', { color: 0x2f3236, metalness: 0.45, roughness: 0.42 });   // dark bronze-anodised aluminium
   const post = 0.07, x0 = -W / 2 + post / 2, x1 = W / 2 - post / 2, zb = D / 2 - post / 2, zf = -D / 2 + post / 2;
   mesh(box(W + 0.4, 0.12, D + 0.5), M.concrete(), root, 0, 0.06, 0); // pad
   const posts = [[x0, zb], [x1, zb], [0, zb], [x0, zf], [x1, zf]];
   for (const [x, z] of posts) mesh(box(post, H - 0.12, post), fr, root, x, 0.12 + (H - 0.12) / 2 - 0.08, z);
   // roof: slight back-fall, deep fascia
-  const roof = mesh(box(W + 0.3, 0.06, D + 0.45), std('shelterRoof', { color: 0x9aa0a3, metalness: 0.6, roughness: 0.4 }), root, 0, H - 0.05, -0.1);
+  const roof = mesh(box(W + 0.3, 0.06, D + 0.45), std('shelterRoof', { color: 0x6f7477, metalness: 0.35, roughness: 0.5 }), root, 0, H - 0.05, -0.1);
   roof.rotation.x = -0.05;
   mesh(box(W + 0.32, 0.18, 0.04), fr, root, 0, H - 0.03, -D / 2 - 0.34);
   // glass: back (2 bays) + ends; front open unless open:false
@@ -528,7 +531,24 @@ function facadeMat(key, wM, hM, fb, draw, p = {}) {
   return memo(MAT, 'facade:' + key, () => {
     const ppm = Math.min(48, 1400 / Math.max(wM, hM));
     const t = ctex('facade:' + key, wM * ppm, hM * ppm, (g, W, H) => draw(painter(g, W, H, { x0: 0, y0: 0, x1: wM, y1: hM, w: wM, h: hM })));
-    return new THREE.MeshStandardMaterial({ color: t ? 0xffffff : fb, map: t, roughness: 0.85, side: THREE.FrontSide, shadowSide: THREE.DoubleSide, ...p });
+    // roughness + bump maps derived from the painted facade: glazing (dark, blue-grey) is glossy and recessed,
+    // mullions/trim stand proud, wall stays matte -> windows catch the sky/environment like real glass.
+    let rough = null, bump = null;
+    if (t && t.image) {
+      const W = t.image.width, H = t.image.height, src = t.image.getContext('2d').getImageData(0, 0, W, H).data;
+      const rc = document.createElement('canvas'); rc.width = W; rc.height = H; const rg = rc.getContext('2d'); const ri = rg.createImageData(W, H);
+      const bc = document.createElement('canvas'); bc.width = W; bc.height = H; const bg = bc.getContext('2d'); const bi = bg.createImageData(W, H);
+      for (let i = 0; i < src.length; i += 4) {
+        const r = src[i], g = src[i + 1], b = src[i + 2], L = 0.3 * r + 0.59 * g + 0.11 * b;
+        const glass = L < 125 && b >= r + 4;
+        const v = glass ? 22 : 200 + (L % 17); ri.data[i] = ri.data[i + 1] = ri.data[i + 2] = v; ri.data[i + 3] = 255;
+        const h = glass ? 40 : Math.min(255, 120 + L * 0.35); bi.data[i] = bi.data[i + 1] = bi.data[i + 2] = h; bi.data[i + 3] = 255;
+      }
+      rg.putImageData(ri, 0, 0); bg.putImageData(bi, 0, 0);
+      rough = new THREE.CanvasTexture(rc); bump = new THREE.CanvasTexture(bc);
+      for (const x of [rough, bump]) { x.anisotropy = 8; x.wrapS = t.wrapS; x.wrapT = t.wrapT; x.needsUpdate = true; }
+    }
+    return new THREE.MeshStandardMaterial({ color: t ? 0xffffff : fb, map: t, roughness: rough ? 1 : 0.85, roughnessMap: rough, bumpMap: bump, bumpScale: bump ? 1.5 : 1, side: THREE.FrontSide, shadowSide: THREE.DoubleSide, ...p });
   });
 }
 const PAINT = {
@@ -632,8 +652,45 @@ function buildCommercial(root, w, d, h, o) {
   mesh(box(w - 0.3, 0.05, d - 0.3), std('membrane', { color: 0x8d8f8f, roughness: 0.9 }), root, 0, h - 0.55, 0);
   const hv = std('hvac', { color: 0xb8bcbc, metalness: 0.5, roughness: 0.5 });
   for (let i = 0; i < Math.max(1, Math.floor(w / 9)); i++) { mesh(box(1.4, 0.9, 1.1), hv, root, -w / 2 + 2.5 + i * 6, h - 0.1, d * 0.1); }
-  if (o.awning !== false) { const aw = std('awning', { color: 0x2f4f5f, roughness: 0.7 }); mesh(box(w - 0.6, 0.12, 1.1), aw, root, 0, 3.2, -d / 2 - 0.55); }
+  if (o.awning !== false) storefront3D(root, w, d, o);
   mesh(box(w + 0.6, 0.12, 2.0), M.concrete(), root, 0, 0.06, -d / 2 - 1.0);
+}
+// Real storefront on the -Z face: recessed dark float-glass curtain (reflects the sky through the env map) in an anodised
+// aluminium grid (1.5 m bays, transom at 2.25 m), centred double door with push bars, and a cantilevered metal canopy
+// (fascia band + light soffit, tie rods to the wall above 3.4 m) - no columns, so eye-level sightlines past the corner
+// are unchanged from the plain wall.
+function storefront3D(root, w, d, o) {
+  const zf = -d / 2, gx0 = -w / 2 + 0.6, gx1 = w / 2 - 0.6, gw = gx1 - gx0, y0 = 0.32, y1 = 3.0;
+  const glass = std('storeGlass', { color: 0x17222a, metalness: 0.15, roughness: 0.05, envMapIntensity: 1.6 });
+  const alu = std('storeAlu', { color: 0x9da2a6, metalness: 0.6, roughness: 0.38 });
+  const dark = std('storeAluDark', { color: 0x2d3135, metalness: 0.4, roughness: 0.45 });
+  mesh(box(gw, y1 - y0, 0.02), glass, root, 0, (y0 + y1) / 2, zf - 0.03, false).userData.glass = true;
+  mesh(box(gw + 0.2, y0, 0.16), dark, root, 0, y0 / 2, zf - 0.06);                       // kick plate / sill
+  const bays = Math.max(2, Math.round(gw / 1.5)), bw = gw / bays, mul = 0.06, dep = 0.12;
+  for (let i = 0; i <= bays; i++) mesh(box(mul, y1 - y0, dep), alu, root, gx0 + i * bw, (y0 + y1) / 2, zf - 0.07);
+  for (const y of [y0 + 0.03, 2.25, y1]) mesh(box(gw + mul, 0.07, dep), alu, root, 0, y, zf - 0.07);
+  // centred double door (darker frame, push bars)
+  const dw = Math.min(1.9, bw * 1.3);
+  for (const s of [-1, 1]) {
+    mesh(box(0.08, 2.2, dep + 0.02), dark, root, s * dw / 2, y0 + 1.1 - 0.16, zf - 0.08);
+    mesh(box(dw / 2 - 0.12, 0.04, 0.05), alu, root, s * dw / 4, 1.05, zf - 0.15);
+  }
+  mesh(box(dw, 0.1, dep + 0.02), dark, root, 0, 2.2, zf - 0.08);
+  // canopy: 2.1 m deep, fascia 0.55 m, soffit 3.35 m above grade
+  const cd = 2.1, cy = 3.35, fh = 0.55, cw = w - 0.4;
+  const fascia = std('canopyFascia', { color: o.canopyColor ?? 0x34434d, metalness: 0.35, roughness: 0.45 });
+  const soffit = std('canopySoffit', { color: 0xdcd9d2, roughness: 0.8 });
+  mesh(box(cw, 0.08, cd), soffit, root, 0, cy + 0.04, zf - cd / 2);
+  mesh(box(cw, 0.12, cd), fascia, root, 0, cy + fh - 0.06, zf - cd / 2);
+  mesh(box(cw, fh, 0.06), fascia, root, 0, cy + fh / 2, zf - cd);
+  for (const s of [-1, 1]) mesh(box(0.06, fh, cd), fascia, root, s * cw / 2, cy + fh / 2, zf - cd / 2);
+  const lamp = std('soffitLamp', { color: 0xf4f2ea, emissive: 0xfff6e0, emissiveIntensity: o.lit ? 1.0 : 0.05, roughness: 0.4 });
+  for (let x = -cw / 2 + 1.5; x < cw / 2 - 1; x += 3) mesh(cyl(0.12, 0.12, 0.02, 12), lamp, root, x, cy - 0.005, zf - cd * 0.55, false);
+  const rod = std('tieRod', { color: 0x3a3e42, metalness: 0.6, roughness: 0.4 });
+  const rise = Math.max(0.3, Math.min(1.4, o.h0 ?? 0.5)), rl = Math.hypot(cd - 0.2, rise), ra = Math.atan2(cd - 0.2, rise);
+  for (let x = -cw / 2 + 0.8; x <= cw / 2 - 0.7; x += Math.max(3, (cw - 1.5) / Math.max(1, Math.round((cw - 1.5) / 4.5)))) {
+    const r = mesh(cyl(0.02, 0.02, rl, 6), rod, root, x, cy + fh + rise / 2, zf - (cd - 0.2) / 2); r.rotation.x = ra;   // top end at the wall, bottom at the fascia
+  }
 }
 function buildGas(root, w, d, h, o) {
   const cd = d * 0.55, cz = -d / 2 + cd / 2, clear = 4.9, fh = 0.9;
@@ -806,36 +863,28 @@ export function tree(opts = {}) {
     segs.forEach((g, i) => { const d = g.b.clone().sub(g.a); const L = d.length(); q.setFromUnitVectors(UP, d.normalize()); s.set(g.r, L * 1.04, g.r); m4.compose(g.a, q, s); im.setMatrixAt(i, m4); });
     im.castShadow = im.receiveShadow = true; im.name = 'wood'; root.add(im);
   }
-  // foliage blobs (instanced, per-clump colour variation)
-  const palette = { oak: [0.24, 0.34, 0.09, 0.16], pine: [0.22, 0.3, 0.1, 0.16], shrub: [0.25, 0.38, 0.11, 0.18] }[kind];
+  // foliage: alpha-clipped leaf-card clusters (alphaTest 0.5, alpha-tested shadows) + a small opaque dark core per
+  // clump so dense crowns don't show sky through the middle. Instanced; 3 cluster variants per species.
   if (clumps.length) {
+    const fk = kind === 'pine' ? 'pine' : kind === 'shrub' ? 'shrub' : 'oak';
+    const spec = { oak: { cards: 30, flat: 0.72, size: 0.75, hollow: 0.2 }, pine: { cards: 22, flat: 0.5, size: 0.85, hollow: 0.15 }, shrub: { cards: 22, flat: 0.8, size: 0.7, hollow: 0.1 } }[fk];
     const groups = [0, 1, 2].map(v => clumps.filter((_, i) => i % 3 === v));
+    // inner mass = a denser, darker leaf-card cluster (self-shadowed foliage), not an opaque smooth core: keeps the crown lacy
+    const core = new THREE.InstancedMesh(memo(GEO, `fcore:${fk}`, () => foliageClusterGeometry({ ...spec, cards: Math.round(spec.cards * 0.6), size: 1.0, hollow: 0, seed: 91 + fk.length })), foliageMaterial(fk), clumps.length);
+    const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(); let ci = 0;
     groups.forEach((cl, v) => {
       if (!cl.length) return;
-      const im = new THREE.InstancedMesh(blobGeo(v), std('foliage', { color: 0xffffff, roughness: 0.88 }), cl.length);
-      const m4 = new THREE.Matrix4(), q = new THREE.Quaternion();
+      const im = new THREE.InstancedMesh(memo(GEO, `fcluster:${fk}:${v}`, () => foliageClusterGeometry({ ...spec, seed: 11 + v * 5 + fk.length })), foliageMaterial(fk), cl.length);
       cl.forEach((c, i) => {
         q.setFromAxisAngle(UP, R() * 6.28);
-        m4.compose(c.p, q, V(c.s, c.s * (c.flat ?? 0.72), c.s)); im.setMatrixAt(i, m4);
-        col.setHSL(palette[0] + (R() - 0.5) * 0.04, palette[1] + (R() - 0.5) * 0.1, palette[2] + R() * (palette[3] - palette[2]) * 0.6); im.setColorAt(i, col);
+        const sc = V(c.s * 1.15, c.s * 1.15 * (c.flat ?? 0.72) / spec.flat, c.s * 1.15);
+        m4.compose(c.p, q, sc); im.setMatrixAt(i, m4);
+        col.setRGB(0.72 + R() * 0.16, 0.76 + R() * 0.14, 0.66 + R() * 0.14); im.setColorAt(i, col);
+        m4.compose(c.p, q, sc.multiplyScalar(0.6)); core.setColorAt(ci, col.multiplyScalar(0.5)); core.setMatrixAt(ci++, m4);
       });
-      im.castShadow = im.receiveShadow = true; im.name = 'foliage'; root.add(im);
+      im.castShadow = im.receiveShadow = true; im.name = 'leaves'; root.add(im);
     });
-    // leaf cards break up the silhouette (browser only)
-    const tex = leafTex(kind === 'pine' ? 'pine' : 'broad');
-    if (tex) {
-      const per = kind === 'shrub' ? 22 : 18, n = clumps.length * per;
-      const im = new THREE.InstancedMesh(card(), std('leafCard:' + kind, { map: tex, alphaTest: 0.45, side: THREE.DoubleSide, roughness: 0.85 }), n);
-      const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(); let i = 0;
-      for (const c of clumps) for (let k = 0; k < per; k++) {
-        const u = R() * 2 - 1, a = R() * 6.28, rr = Math.sqrt(1 - u * u), fl = c.flat ?? 0.72;
-        const p = V(rr * Math.cos(a) * c.s * 1.02, u * c.s * fl * 1.02, rr * Math.sin(a) * c.s * 1.02).add(c.p);
-        e.set(R() * 6.28, R() * 6.28, R() * 6.28); q.setFromEuler(e); const sz = c.s * (kind === 'pine' ? 0.9 : 0.75) * (0.7 + R() * 0.6);
-        m4.compose(p, q, V(sz, sz, sz)); im.setMatrixAt(i, m4);
-        col.setHSL(palette[0] + (R() - 0.5) * 0.05, palette[1] + 0.05, 0.26 + R() * 0.18); im.setColorAt(i++, col);
-      }
-      im.castShadow = true; im.receiveShadow = true; im.name = 'leaves'; root.add(im);
-    }
+    core.castShadow = core.receiveShadow = true; core.name = 'foliage_core'; root.add(core);
   }
   if (kind === 'palm') {
     const top = V(...root.userData.crown);

@@ -12,17 +12,25 @@
 // Every object: name = id, userData.{assetType, variant, dims, setLights(on, {beams}), setBrake(on), driverEye|null}.
 // Lamps are child meshes named headlight_L/R and taillight_L/R (L = driver side = -X when facing -Z).
 //
-// ARTICULATION (tractor + semitrailer are two separate objects, both children of the same parent):
-//   tractor.userData.fifthWheel = [0, 1.22, zF]   local point of the fifth-wheel pivot (zF = +1.95, behind the cab)
-//   trailer.userData.kingpinOffset = zK           local z of the kingpin (zK = -7.19, i.e. 0.91 m / 36 in behind the trailer nose)
-//   trailer.userData.kingpin = [0, 1.22, zK]
-//   With tractor at (tx, tz) heading h (= rotation.y) and trailer heading ht (= h - articulation angle):
-//     pivot P  = (tx + zF*sin h,  tz + zF*cos h)
-//     trailer.position = (P.x - zK*sin ht, 0, P.z - zK*cos ht);  trailer.rotation.y = ht
-//   coupleTrailer(tractor, trailer, articulationRad) does exactly that from the tractor's current pose;
-//   tractor.userData.hitch(trailer, articulationRad) is the same function, callable from a world without imports.
-//   For kinematic follow, the trailer heading relaxes toward the pivot path:  dht/ds = sin(h - ht) / (zF_pivot_to_trailer_axles)
-//   where the kingpin-to-tandem-centre distance is trailer.userData.kingpinToAxles (12.37 m).
+// ARTICULATION API (tractor + semitrailer are two separate objects; put both under the SAME parent)
+//   Headings: h = rotation.y (rad). Heading 0 faces -Z; positive h turns LEFT (counter-clockwise seen from above, +Y up).
+//   Articulation angle  a = h_tractor - h_trailer   (a > 0: tractor turned left of the trailer; |a| < ~1.4 rad physically)
+//   tractor.userData.fifthWheel     = [0, 1.22, zF]   local fifth-wheel pivot (zF = +1.95, over the drive tandem)
+//   trailer.userData.kingpin        = [0, 1.22, zK]   local kingpin; trailer.userData.kingpinOffset = zK (= -7.19 m,
+//                                                     0.91 m / 36 in behind the trailer nose)
+//   trailer.userData.kingpinToAxles = L  (13.37 m, kingpin to trailer tandem centre: the tractrix length)
+//   Pose rule (exact): P = tractor.position + R(h)·(0,0,zF);  trailer.rotation.y = h - a;
+//                      trailer.position = P - R(h - a)·(0,0,zK)            with R(h)·(0,0,z) = (z sin h, 0, z cos h)
+//   coupleTrailer(tractor, trailer, a)    places the trailer from the tractor's current pose (returns {pivot, trailerHeading}).
+//   followTrailer(tractor, trailer)       kinematic follow for animation: call once per frame AFTER moving the tractor;
+//                                         the trailer axle drags along the pivot path (discrete tractrix, valid forward and
+//                                         reversing, frame-rate independent for steps << L). Returns the articulation angle.
+//   articulationOf(tractor, trailer)      current a, wrapped to (-pi, pi].
+//   tractor.userData.hitch(trailer, a) / tractor.userData.follow(trailer) are the same calls without an import.
+//   Continuous form: d(h_trailer)/ds = sin(a) / L  (s = distance travelled by the pivot).
+// CONTACT SHADOW: every vehicle carries a baked soft AO footprint (userData.contactShadow, a raycast-transparent plane at
+//   y = 0.006); pass {contactShadow:false} to omit it. LAMPS: setLights(on, {beams, glow}) lights head/tail/amber/red markers
+//   (emissive) and their additive glare halos (glow default true); setBrake(on) brightens the tails.
 
 let SHARED = null;
 try { SHARED = await import('./vehicle_parts.js'); } catch (e) { SHARED = null; }   // optional; local parts below are the fallback
@@ -51,10 +59,13 @@ function mats(T) {
   const c = cacheFor(T);
   if (c.mats.chrome) return c.mats;
   const S = (o) => new T.MeshStandardMaterial(o);
+  const P = (o) => new (T.MeshPhysicalMaterial || T.MeshStandardMaterial)(o);
   const m = c.mats;
-  m.chrome = S({ color: 0xe8eaec, metalness: 1.0, roughness: 0.14 });
-  m.alum = S({ color: 0xc9cdd2, metalness: 0.9, roughness: 0.3 });
-  m.alumDull = S({ color: 0xa9adb2, metalness: 0.75, roughness: 0.45 });
+  // Env-map-friendly metals: physical materials whose look comes from scene.environment (IBL); with no env map they
+  // fall back to a mid-grey base so they never read as black voids.
+  m.chrome = P({ color: 0xeceef0, metalness: 1.0, roughness: 0.07, envMapIntensity: 1.25 });
+  m.alum = P({ color: 0xd2d6da, metalness: 1.0, roughness: 0.2, clearcoat: 0.6, clearcoatRoughness: 0.08, envMapIntensity: 1.1 });
+  m.alumDull = P({ color: 0xb2b6bb, metalness: 0.8, roughness: 0.42, envMapIntensity: 0.9 });
   m.frame = S({ color: 0x1b1c1e, metalness: 0.35, roughness: 0.55 });
   m.steelDark = S({ color: 0x2a2c2f, metalness: 0.5, roughness: 0.5 });
   m.trim = S({ color: 0x151617, metalness: 0.0, roughness: 0.55 });
@@ -62,20 +73,24 @@ function mats(T) {
   m.rubber = S({ color: 0x111112, metalness: 0.0, roughness: 0.9 });
   m.tire = S({ color: 0x18191a, metalness: 0.0, roughness: 0.88 });
   m.hole = S({ color: 0x050505, metalness: 0.0, roughness: 1.0 });
-  m.glass = new T.MeshPhysicalMaterial({ color: 0x1a252d, metalness: 0.05, roughness: 0.04, clearcoat: 1, clearcoatRoughness: 0.02, transparent: true, opacity: 0.88 });
-  m.panelWhite = S({ color: 0xe9ebea, metalness: 0.25, roughness: 0.42 });
-  m.frp = S({ color: 0xf2f2ee, metalness: 0.05, roughness: 0.38 });
+  m.well = S({ color: 0x0a0a0b, metalness: 0.0, roughness: 0.95, side: T.BackSide });
+  m.glass = P({ color: 0x1a252d, metalness: 0.05, roughness: 0.04, clearcoat: 1, clearcoatRoughness: 0.02, transparent: true, opacity: 0.88 });
+  m.panelWhite = P({ color: 0xe9ebea, metalness: 0.2, roughness: 0.38, clearcoat: 0.35, clearcoatRoughness: 0.2, envMapIntensity: 0.9 });
+  m.frp = P({ color: 0xf2f2ee, metalness: 0.0, roughness: 0.32, clearcoat: 0.5, clearcoatRoughness: 0.15, envMapIntensity: 0.9 });
   m.wood = S({ color: 0x8a6440, metalness: 0.0, roughness: 0.82 });
-  m.rimWhite = S({ color: 0xd8d8d2, metalness: 0.3, roughness: 0.4 });
+  m.rimWhite = P({ color: 0xd8d8d2, metalness: 0.3, roughness: 0.35, clearcoat: 0.6 });
+  // DOT-C2 retroreflective sheeting: bright under light, slight self-lit floor so it reads at night in headlamps
   m.reflRed = S({ color: 0xb4121a, metalness: 0.1, roughness: 0.3, emissive: 0x200000 });
   m.reflWhite = S({ color: 0xf4f4f4, metalness: 0.1, roughness: 0.25, emissive: 0x111111 });
-  m.yellowBus = new T.MeshPhysicalMaterial({ color: 0xf2a900, metalness: 0.1, roughness: 0.32, clearcoat: 1, clearcoatRoughness: 0.08 });
+  m.reflAmber = S({ color: 0xd07a0c, metalness: 0.1, roughness: 0.3, emissive: 0x1a0d00 });
+  m.yellowBus = P({ color: 0xf2a900, metalness: 0.1, roughness: 0.32, clearcoat: 1, clearcoatRoughness: 0.08 });
   m.redSign = S({ color: 0xb01018, metalness: 0.1, roughness: 0.35 });
   m.ledSign = S({ color: 0x1a1408, metalness: 0.2, roughness: 0.3, emissive: 0x3a2400, emissiveIntensity: 1 });
+  m.flapPrint = S({ color: 0xd8d8d8, metalness: 0.6, roughness: 0.3 });
   for (const k in m) m[k].name = 'heavy_' + k;
-  if (SHARED && SHARED.getMaterials) {            // library-wide look: share glass/chrome/rubber/trim with the car models
+  if (SHARED && SHARED.getMaterials) {            // library-wide look: share glass/rubber/trim with the car models
     const sm = SHARED.getMaterials(T);
-    m.glass = sm.glass; m.chrome = sm.chrome; m.rubber = sm.rubber; m.trim = sm.trim; m.tire = sm.rubber;
+    m.glass = sm.glass; m.rubber = sm.rubber; m.trim = sm.trim; m.tire = sm.rubber;
   }
   return m;
 }
@@ -363,6 +378,130 @@ function lampMesh(T, geo, mat, name, pos, rot = [0, 0, 0]) {
   return m;
 }
 
+// ---------------------------------------------------------------- contact shadow (baked soft AO footprint, no DOM needed)
+// A ground-hugging plane (y = 0.006) with a procedurally baked alpha texture: soft footprint under the body plus darker
+// contact blobs under every tyre. It never casts/receives shadows and is invisible to raycasts (LOS code is unaffected).
+// spec: { L, W, rects: [[x0,x1,z0,z1,alpha,soft]], blobs: [[x,z,rx,rz,alpha]] } in vehicle-local metres.
+function contactShadow(T, key, spec) {
+  const c = cacheFor(T);
+  c.shadow = c.shadow || {};
+  if (!c.shadow[key]) {
+    const pad = 0.7, PW = spec.W + 2 * pad, PL = spec.L + 2 * pad;
+    const nx = 48, nz = Math.max(64, Math.min(320, Math.round(nx * PL / PW)));
+    const data = new Uint8Array(nx * nz * 4);
+    const sm = (e0, e1, x) => { const t = Math.max(0, Math.min(1, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t); };
+    for (let j = 0; j < nz; j++) for (let i = 0; i < nx; i++) {
+      const x = -PW / 2 + (i + 0.5) / nx * PW, z = -PL / 2 + (j + 0.5) / nz * PL;
+      let keep = 1;
+      for (const [x0, x1, z0, z1, a, soft = 0.45] of spec.rects) {
+        const fx = sm(x0 - soft, x0 + soft * 0.4, x) * (1 - sm(x1 - soft * 0.4, x1 + soft, x));
+        const fz = sm(z0 - soft, z0 + soft * 0.4, z) * (1 - sm(z1 - soft * 0.4, z1 + soft, z));
+        keep *= 1 - a * fx * fz;
+      }
+      for (const [bx, bz, rx, rz, a] of spec.blobs) {
+        const d = Math.hypot((x - bx) / rx, (z - bz) / rz);
+        keep *= 1 - a * Math.exp(-d * d * 2.2);
+      }
+      const k = (j * nx + i) * 4;
+      data[k] = data[k + 1] = data[k + 2] = 0; data[k + 3] = Math.round((1 - keep) * 255);
+    }
+    const tex = new T.DataTexture(data, nx, nz, T.RGBAFormat);
+    tex.magFilter = T.LinearFilter; tex.minFilter = T.LinearFilter; tex.needsUpdate = true;
+    // Vertex positions are all at the origin and the quad is expanded in the vertex shader from a 'corner' attribute,
+    // so Box3.setFromObject(vehicle[, precise]) and raycasts never see the shadow plane (catalog envelopes stay exact).
+    const geo = new T.BufferGeometry();
+    geo.setAttribute('position', new T.BufferAttribute(new Float32Array(12), 3));
+    geo.setAttribute('corner', new T.BufferAttribute(new Float32Array([-PW / 2, -PL / 2, PW / 2, -PL / 2, PW / 2, PL / 2, -PW / 2, PL / 2]), 2));
+    geo.setAttribute('uv', new T.BufferAttribute(new Float32Array([0, 0, 1, 0, 1, 1, 0, 1]), 2));   // v = 0 at the front (-Z) = data row 0
+    geo.setAttribute('normal', new T.BufferAttribute(new Float32Array([0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0]), 3));
+    geo.setIndex([0, 2, 1, 0, 3, 2]);
+    geo.boundingSphere = new T.Sphere(new T.Vector3(), Math.hypot(PW, PL) / 2);
+    geo.boundingBox = new T.Box3(new T.Vector3(), new T.Vector3());
+    const mat = new T.MeshBasicMaterial({ color: 0x000000, map: tex, transparent: true, depthWrite: false, toneMapped: false,
+      polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2, opacity: 0.85 });
+    mat.onBeforeCompile = (sh) => {
+      sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nattribute vec2 corner;')
+        .replace('#include <begin_vertex>', 'vec3 transformed = vec3(position) + vec3(corner.x, 0.0, corner.y);');
+    };
+    mat.customProgramCacheKey = () => 'heavy_contact_shadow';
+    mat.name = 'heavy_contact_shadow';
+    c.shadow[key] = { geo, mat };
+  }
+  const { geo, mat } = c.shadow[key];
+  const m = new T.Mesh(geo, mat);
+  m.position.y = 0.006; m.renderOrder = -1;
+  m.castShadow = false; m.receiveShadow = false;
+  m.raycast = () => {};
+  m.userData.noOcclude = true;
+  return m;
+}
+function addContactShadow(T, root, key, spec, opts) {
+  if (opts && opts.contactShadow === false) { root.userData.contactShadow = null; return; }
+  const m = contactShadow(T, key, spec);
+  m.name = root.name + '_contact_shadow';
+  root.add(m);
+  root.userData.contactShadow = m;
+}
+// blobs for a row of wheels at ±x (dual = wider blob)
+const wheelBlobs = (x, zs, dual, R = 0.51) => zs.flatMap(z => [-1, 1].map(s => [s * x, z, dual ? 0.42 : 0.26, R * 0.55, 0.75]));
+
+// ---------------------------------------------------------------- lamp glare halos (night "star" glow, additive sprites)
+function haloTex(T) {
+  const c = cacheFor(T);
+  if (!c.halo) {
+    const n = 64, d = new Uint8Array(n * n * 4);
+    for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
+      const x = (i + 0.5) / n * 2 - 1, y = (j + 0.5) / n * 2 - 1, r = Math.hypot(x, y);
+      const core = Math.exp(-r * r * 18), glow = Math.max(0, 1 - r) ** 2.4 * 0.55;
+      const streak = Math.exp(-(y * y) * 900) * Math.max(0, 1 - Math.abs(x)) * 0.35 + Math.exp(-(x * x) * 900) * Math.max(0, 1 - Math.abs(y)) * 0.2;
+      const v = Math.min(1, core + glow + streak);
+      const k = (j * n + i) * 4; d[k] = d[k + 1] = d[k + 2] = 255; d[k + 3] = Math.round(v * 255);
+    }
+    c.halo = new T.DataTexture(d, n, n, T.RGBAFormat);
+    c.halo.magFilter = T.LinearFilter; c.halo.minFilter = T.LinearFilter; c.halo.needsUpdate = true;
+  }
+  return c.halo;
+}
+const HALO_COLOR = { head: 0xfff1d8, tail: 0xff2a14, marker: 0xff2a14, amber: 0xffa020 };
+const HALO_SIZE = { head: 1.1, tail: 0.6, marker: 0.42, amber: 0.42 };
+// Camera-facing quad built in the vertex shader (positions all at the origin, so the halo never widens bounding boxes
+// or blocks raycasts). Size = mesh scale (metres).
+const HALO_VS = `attribute vec2 corner; varying vec2 vUv;
+void main() { vUv = corner * 0.5 + 0.5; vec4 mv = modelViewMatrix * vec4(position, 1.0);
+  float s = length(modelMatrix[0].xyz); mv.xy += corner * 0.5 * s; mv.z += 0.05; gl_Position = projectionMatrix * mv; }`;
+const HALO_FS = `uniform sampler2D map; uniform vec3 color; uniform float opacity; varying vec2 vUv;
+void main() { float a = texture2D(map, vUv).a * opacity; gl_FragColor = vec4(color * a, a); }`;
+function haloSprite(T, kind) {
+  const c = cacheFor(T);
+  c.haloMat = c.haloMat || {};
+  if (!c.haloMat[kind]) {
+    c.haloMat[kind] = new T.ShaderMaterial({ uniforms: { map: { value: haloTex(T) }, color: { value: new T.Color(HALO_COLOR[kind]) }, opacity: { value: kind === 'head' ? 0.95 : 0.85 } },
+      vertexShader: HALO_VS, fragmentShader: HALO_FS, blending: T.AdditiveBlending, transparent: true, depthWrite: false });
+    c.haloMat[kind].name = 'heavy_halo_' + kind;
+  }
+  if (!c.haloGeo) {
+    const g = new T.BufferGeometry();
+    g.setAttribute('position', new T.BufferAttribute(new Float32Array(12), 3));
+    g.setAttribute('corner', new T.BufferAttribute(new Float32Array([-1, -1, 1, -1, 1, 1, -1, 1]), 2));
+    g.setIndex([0, 1, 2, 0, 2, 3]);
+    g.boundingSphere = new T.Sphere(new T.Vector3(), 0.75); g.boundingBox = new T.Box3(new T.Vector3(), new T.Vector3());
+    c.haloGeo = g;
+  }
+  const sp = new T.Mesh(c.haloGeo, c.haloMat[kind]);
+  sp.scale.setScalar(HALO_SIZE[kind] || 0.4);
+  sp.raycast = () => {};
+  sp.castShadow = false; sp.receiveShadow = false; sp.visible = false; sp.renderOrder = 10;
+  sp.userData.noOcclude = true;
+  return sp;
+}
+// wheel-well liner: dark inside of an arch cut through a body side profile, so you never see through the body
+function wheelWell(B, T, z, R, archR, halfW, inset = 0.25) {
+  const g = new T.CylinderGeometry(archR - 0.02, archR - 0.02, halfW * 2 - 0.04, 24, 1, true, 0, Math.PI);
+  g.rotateZ(Math.PI / 2);                                  // axis -> X, half-shell (x>=0 half) -> top (y>=0)
+  B.add('well', g, [0, R, z]);
+  void inset;
+}
+
 // ---------------------------------------------------------------- TRUCK TRACTOR (conventional long-nose, mid-roof sleeper)
 const TR = { front: -3.25, rear: 3.25, axF: -2.33, axD1: 1.40, axD2: 2.72, R: 0.51, fifthZ: 1.95, fifthY: 1.22 };
 function buildTractor(T) {
@@ -539,19 +678,37 @@ function buildBoxTrailer(T) {
   B.box('alum', [-hw, hw], [ST.floorBot, ST.floorTop + 0.02], [rz - 0.12, rz]);       // rear sill
   B.box('alum', [-hw, hw], [ST.roof - 0.25, ST.roof], [rz - 0.12, rz]);                // header
   B.box2('alum', [hw - 0.1, hw], [ST.floorBot, ST.roof], [rz - 0.12, rz]);            // corner posts
+  // two swing ("barn") doors, each with two vertical lock rods: rod guides, top/bottom cam keepers, a handle on its
+  // retainer, 4 hinges on the outer edge, door gasket seam; DOT-C2 upper-corner L marks.
+  const dY0 = ST.floorTop + 0.02, dY1 = ST.roof - 0.25, rodTop = dY1 + 0.12, rodBot = ST.floorBot + 0.04;
   for (const s of [-1, 1]) {
     const x0 = s > 0 ? 0.008 : -hw + 0.1, x1 = s > 0 ? hw - 0.1 : -0.008;
-    B.box('panelWhite', [x0, x1], [ST.floorTop + 0.02, ST.roof - 0.25], [rz - 0.06, rz - 0.02]);
-    for (const f of [0.28, 0.72]) {
+    B.box('panelWhite', [x0, x1], [dY0, dY1], [rz - 0.06, rz - 0.02]);
+    // door skin stiffener ribs (horizontal, shallow)
+    for (const y of [1.95, 2.65, 3.35]) B.box('alumDull', [x0 + 0.04, x1 - 0.04], [y, y + 0.03], [rz - 0.02, rz - 0.012]);
+    // gasket seam around the door
+    B.box('trim', [x0, x1], [dY0 - 0.012, dY0], [rz - 0.03, rz - 0.015]);
+    B.box('trim', [x0, x1], [dY1, dY1 + 0.012], [rz - 0.03, rz - 0.015]);
+    for (const f of [0.26, 0.74]) {
       const x = x0 + (x1 - x0) * f;
-      B.cyl('chrome', 'y', 0.017, ST.roof - 0.25 - ST.floorTop - 0.1, [x, (ST.roof - 0.25 + ST.floorTop) / 2 + 0.03, rz + 0.01], 10);
-      B.box('steelDark', [x - 0.035, x + 0.035], [1.75, 1.82], [rz - 0.02, rz + 0.03]);    // cam keeper / handle
+      B.cyl('chrome', 'y', 0.017, rodTop - rodBot, [x, (rodTop + rodBot) / 2, rz + 0.012], 12);
+      // cam keepers (top in the header, bottom in the sill) + rod guides
+      for (const y of [rodTop - 0.06, rodBot + 0.05]) B.box('steelDark', [x - 0.04, x + 0.04], [y - 0.05, y + 0.05], [rz - 0.005, rz + 0.04]);
+      for (const y of [2.3, 3.05, 3.65]) B.box('steelDark', [x - 0.032, x + 0.032], [y, y + 0.04], [rz - 0.02, rz + 0.032]);
+      // handle (folded flat, pointing toward the door's centre line) + its retainer catch
+      const hx = s > 0 ? x - 0.3 : x + 0.3;
+      B.box('steelDark', [Math.min(x, hx), Math.max(x, hx)], [1.72, 1.765], [rz + 0.022, rz + 0.042]);
+      B.box('steelDark', [x - 0.03, x + 0.03], [1.69, 1.8], [rz - 0.005, rz + 0.035]);
+      B.box('alumDull', [hx - 0.035, hx + 0.035], [1.68, 1.81], [rz - 0.01, rz + 0.03]);
     }
     for (const y of [1.75, 2.45, 3.15, 3.7]) B.box('steelDark', [s > 0 ? hw - 0.2 : -hw + 0.02, s > 0 ? hw - 0.02 : -hw + 0.2], [y, y + 0.08], [rz - 0.01, rz + 0.025]);
     // DOT-C2 upper corner L marks and lower rear tape
     B.box('reflWhite', [s > 0 ? hw - 0.32 : -hw + 0.02, s > 0 ? hw - 0.02 : -hw + 0.32], [ST.roof - 0.12, ST.roof - 0.07], [rz + 0.001, rz + 0.006]);
     B.box('reflWhite', [s > 0 ? hw - 0.07 : -hw + 0.02, s > 0 ? hw - 0.02 : -hw + 0.07], [ST.roof - 0.42, ST.roof - 0.07], [rz + 0.001, rz + 0.006]);
   }
+  // licence plate + lamp bracket (curb-side door, lower)
+  B.box('panelWhite', [0.3, 0.6], [1.5, 1.65], [rz + 0.02, rz + 0.026]);
+  B.box('steelDark', [0.28, 0.62], [1.65, 1.68], [rz, rz + 0.04]);
   B.box('trim', [-0.008, 0.008], [ST.floorTop, ST.roof - 0.25], [rz - 0.02, rz + 0.005]);
   for (let i = 0; i < 14; i++) { const x0 = -hw + 0.12 + i * ((W - 0.24) / 14); B.box(i % 2 ? 'reflWhite' : 'reflRed', [x0, x0 + (W - 0.24) / 14], [ST.floorBot + 0.04, ST.floorBot + 0.1], [rz + 0.001, rz + 0.006]); }
   return B.build();
@@ -596,6 +753,7 @@ function buildBoxTruck(T) {
   // sloped aero hood with integrated fenders + wheel arches
   const hood = [[-3.5, 0.72, 0], [-3.56, 1.38, 0.12], [-3.4, 1.58, 0.2], [-2.62, 1.78, 0.08], [-2.5, 0.72, 0], ['arch', BT.axF, BT.R, 0.6]];
   B.add('paint', sideGeo(T, hood, 2.2, 0.16, 12));
+  wheelWell(B, T, BT.axF, BT.R, 0.6, 1.08);
   // grille
   B.add('chrome', frontGeo(T, rrect(-0.5, 0.5, 0.78, 1.42, 0.06), 0.04, 0.01, [rrect(-0.44, 0.44, 0.83, 1.37, 0.04)]), [0, 0, -3.59]);
   B.box('grille', [-0.44, 0.44], [0.83, 1.37], [-3.56, -3.53]);
@@ -657,8 +815,12 @@ function buildTransit(T) {
   const body = [[-6.1, 0.32, 0.12], [-6.1, 2.15, 0], [-6.03, 2.94, 0.18], [-5.75, 3.02, 0.12], [6.1, 3.02, 0.14], [6.1, 0.32, 0.12], ['arch', axR, BU.R, 0.62], ['arch', axF, BU.R, 0.6]];
   // node order runs front-bottom -> up -> roof -> rear -> bottom back toward front: arches must be ordered rear->front
   B.add('paint', sideGeo(T, body, W, 0.14, 12));
-  B.box('trim', [-hw + 0.03, hw - 0.03], [0.3, 0.6], [-5.95, 5.95]);            // lower skirt/bumper band
-  for (const s of [-1, 1]) B.box('trim', s > 0 ? [hw - 0.005, hw + 0.005] : [-hw - 0.005, -hw + 0.005], [0.32, 0.62], [-5.95, 5.95]);
+  // lower skirt/bumper band, interrupted at the wheel arches; dark wheel-well liners inside the arches
+  for (const [z0, z1] of [[-5.95, axF - 0.62], [axF + 0.62, axR - 0.64], [axR + 0.64, 5.95]]) {
+    B.box('trim', [-hw + 0.03, hw - 0.03], [0.3, 0.6], [z0, z1]);
+    for (const s of [-1, 1]) B.box('trim', s > 0 ? [hw - 0.005, hw + 0.005] : [-hw - 0.005, -hw + 0.005], [0.32, 0.62], [z0, z1]);
+  }
+  wheelWell(B, T, axF, BU.R, 0.6, hw - 0.02); wheelWell(B, T, axR, BU.R, 0.62, hw - 0.02);
   // roof HVAC pod + rear engine-door louvres
   B.add('panelWhite', planGeo(T, [[-0.95, -1.9, 0.3], [0.95, -1.9, 0.3], [0.95, 1.4, 0.2], [-0.95, 1.4, 0.2]], 3.0, 3.2, 0.07));
   B.box('trim', [-1.0, 1.0], [0.75, 1.35], [6.1, 6.115]);
@@ -705,6 +867,7 @@ function buildSchoolBus(T) {
   // hood + fenders (yellow), black grille, bumper
   const hood = [[-6.02, 0.82, 0], [-6.05, 1.34, 0.12], [-5.9, 1.5, 0.15], [-4.95, 1.7, 0.05], [-4.84, 0.82, 0], ['arch', axF, R, 0.62]];
   B.add('paint', sideGeo(T, hood, 2.3, 0.15, 12));
+  wheelWell(B, T, axF, R, 0.62, 1.13); wheelWell(B, T, axR, R, 0.62, hw - 0.02);
   B.add('chrome', frontGeo(T, rrect(-0.5, 0.5, 0.86, 1.36, 0.06), 0.04, 0.01, [rrect(-0.44, 0.44, 0.9, 1.32, 0.04)]), [0, 0, -6.08]);
   B.box('grille', [-0.44, 0.44], [0.9, 1.32], [-6.05, -6.02]);
   for (let y = 0.94; y < 1.31; y += 0.06) B.box('chrome', [-0.43, 0.43], [y, y + 0.015], [-6.065, -6.045]);
@@ -788,13 +951,20 @@ function assemble(T, id, type, variant, geoByMat, paintHex, dims) {
 function attachLights(T, root, lamps, heads) {
   const L = lampMats(T);
   const SM = SHARED && SHARED.attachLightAPI && SHARED.getMaterials ? SHARED.getMaterials(T) : null;
-  const tails = [];
+  const tails = [], halos = [];
   for (const l of lamps) {
     const mat = SM && l.kind === 'head' ? SM.lightHead : SM && l.kind === 'tail' ? SM.lightTail : L[l.kind];
     const m = lampMesh(T, l.geo, mat, l.name, l.pos, l.rot);
     m.userData.lampKind = l.kind;
     if (l.kind === 'tail') tails.push(m);
     root.add(m);
+    if (l.halo !== false) {                       // glare halo, shown with the lamp at night (setLights(on, {glow}))
+      const h = haloSprite(T, l.kind), [x, y, z] = l.pos;
+      h.position.set(x, y, z);                        // shader pulls the quad 5 cm toward the camera
+      if (l.haloScale) h.scale.multiplyScalar(l.haloScale);
+      h.name = l.name + '_halo'; h.userData.lampKind = l.kind;
+      root.add(h); halos.push(h);
+    }
   }
   let on = false, brake = false, beams = null, base = null;
   if (SM) {
@@ -819,13 +989,16 @@ function attachLights(T, root, lamps, heads) {
       }
       if (beams) for (const b of beams) b.visible = on;
     }
-    L.amber.emissiveIntensity = on ? 1.6 : 0;
-    L.marker.emissiveIntensity = on ? 1.2 : 0;
+    L.amber.emissiveIntensity = on ? 2.4 : 0;
+    L.marker.emissiveIntensity = on ? 2.0 : 0;
+    const glow = opts.glow ?? true;
+    for (const h of halos) h.visible = glow && (h.userData.lampKind === 'tail' ? on || brake : on);
   };
   let last = {};
   root.userData.setLights = (v, opts = {}) => { on = !!v; last = opts || {}; root.userData.lightsOn = on; apply(last); return root; };
   root.userData.setBrake = (v) => { brake = !!v; apply(last); return root; };
   root.userData.lamps = lamps.map(l => l.name);
+  root.userData.halos = halos;
   root.userData.lightsOn = false;
   apply({ spot: false });
 }
@@ -850,10 +1023,18 @@ function makeTractor(T, o) {
     lamps.push(lamp(T, 'amber', 'cab_marker_' + n, 0.12, 0.05, 0.04, [s * 0.45, 3.58, 0.38]));
   }
   lamps.push(lamp(T, 'amber', 'cab_marker_C', 0.12, 0.05, 0.04, [0, 3.6, 0.36]));
+  for (const s of [-1, 1]) {   // FMVSS 108 front side markers (amber) on the hood flanks, red rear side marker on the frame end
+    const n = s < 0 ? 'L' : 'R';
+    lamps.push(lamp(T, 'amber', 'side_marker_front_' + n, 0.012, 0.05, 0.12, [s * 1.252, 1.3, -2.95]));
+    lamps.push(lamp(T, 'marker', 'side_marker_rear_' + n, 0.012, 0.05, 0.1, [s * 1.225, 1.05, 3.12]));
+  }
   attachLights(T, root, lamps, [[-0.95, 1.22, -3.06], [0.95, 1.22, -3.06]]);
+  addContactShadow(T, root, 'tractor', { L: 6.5, W: 2.5, rects: [[-1.15, 1.15, -3.15, 3.2, 0.42, 0.5]],
+    blobs: [...wheelBlobs(1.1, [TR.axF], false, TR.R), ...wheelBlobs(0.945, [TR.axD1, TR.axD2], true, TR.R)] }, o);
   root.userData.driverEye = [-0.55, 2.5, -0.45];
   root.userData.fifthWheel = [0, TR.fifthY, TR.fifthZ];
   root.userData.hitch = (trailer, art = 0) => coupleTrailer(root, trailer, art);
+  root.userData.follow = (trailer) => followTrailer(root, trailer);
   return root;
 }
 function makeTrailer(T, o) {
@@ -869,9 +1050,11 @@ function makeTrailer(T, o) {
     const n = s < 0 ? 'L' : 'R';
     lamps.push(roundLamp(T, 'tail', 'taillight_' + n, 0.075, 0.03, [s * 0.95, sillY, 8.12]));
     lamps.push(roundLamp(T, 'tail', 'taillight2_' + n, 0.075, 0.03, [s * 0.72, sillY, 8.12]));
-    lamps.push(lamp(T, 'amber', 'side_marker_front_' + n, 0.012, 0.05, 0.1, [s * 1.305, sillY + 0.05, -7.9]));
-    lamps.push(lamp(T, 'amber', 'side_marker_mid_' + n, 0.012, 0.05, 0.1, [s * 1.305, sillY + 0.05, 0.0]));
-    lamps.push(lamp(T, 'marker', 'side_marker_rear_' + n, 0.012, 0.05, 0.1, [s * 1.305, sillY + 0.05, 7.9]));
+    // FMVSS 108 side markers: amber front + intermediate, red rear (on the bottom rail, just above the C2 tape)
+    lamps.push(lamp(T, 'amber', 'side_marker_front_' + n, 0.014, 0.055, 0.12, [s * 1.31, sillY + 0.03, -7.9]));
+    lamps.push(lamp(T, 'amber', 'side_marker_mid_' + n, 0.014, 0.055, 0.12, [s * 1.31, sillY + 0.03, 0.0]));
+    lamps.push(lamp(T, 'marker', 'side_marker_rear_' + n, 0.014, 0.055, 0.12, [s * 1.31, sillY + 0.03, 7.9]));
+    if (!flat) lamps.push(lamp(T, 'marker', 'side_marker_rearupper_' + n, 0.014, 0.05, 0.1, [s * 1.31, 3.9, 7.95]));
     if (!flat) {
       lamps.push(lamp(T, 'amber', 'top_marker_front_' + n, 0.1, 0.05, 0.03, [s * 1.18, 4.03, -8.12]));
       lamps.push(lamp(T, 'marker', 'top_marker_rear_' + n, 0.1, 0.05, 0.03, [s * 1.18, 4.03, 8.11]));
@@ -879,6 +1062,9 @@ function makeTrailer(T, o) {
   }
   if (!flat) for (const x of [-0.15, 0, 0.15]) lamps.push(lamp(T, 'marker', 'id_lamp_' + x, 0.06, 0.04, 0.03, [x, 3.98, 8.11]));
   attachLights(T, root, lamps, null);
+  addContactShadow(T, root, flat ? 'flatbed' : 'van', { L: 16.2, W: 2.6,
+    rects: [[-1.25, 1.25, -8.0, 8.05, flat ? 0.16 : 0.26, 0.7], [-1.2, 1.2, 4.6, 7.75, 0.3, 0.4], [-1.0, 1.0, -8.05, -6.2, 0.18, 0.4]],
+    blobs: [...wheelBlobs(1.13 - 0.155, [ST.ax1, ST.ax2], true, ST.R), [-0.82, ST.legZ, 0.2, 0.2, 0.55], [0.82, ST.legZ, 0.2, 0.2, 0.55]] }, o);
   root.userData.driverEye = null;
   root.userData.kingpinOffset = ST.kingpinZ;
   root.userData.kingpin = [0, ST.kingpinY, ST.kingpinZ];
@@ -899,7 +1085,19 @@ function makeBoxTruck(T, o) {
     lamps.push(lamp(T, 'marker', 'top_marker_rear_' + n, 0.08, 0.05, 0.03, [s * 1.1, 3.33, 3.762]));
     lamps.push(lamp(T, 'amber', 'top_marker_front_' + n, 0.08, 0.05, 0.03, [s * 1.1, 3.33, -0.87]));
   }
+  for (const s of [-1, 1]) {
+    const n = s < 0 ? 'L' : 'R';
+    lamps.push(lamp(T, 'amber', 'side_marker_front_' + n, 0.014, 0.05, 0.12, [s * 1.262, BT.boxBot + 0.2, BT.boxF + 0.25]));
+    lamps.push(lamp(T, 'amber', 'side_marker_mid_' + n, 0.014, 0.05, 0.12, [s * 1.262, BT.boxBot + 0.2, (BT.boxF + BT.rear) / 2]));
+    lamps.push(lamp(T, 'marker', 'side_marker_rear_' + n, 0.014, 0.05, 0.12, [s * 1.262, BT.boxBot + 0.2, BT.rear - 0.25]));
+    lamps.push(lamp(T, 'amber', 'cab_marker_' + n, 0.1, 0.045, 0.04, [s * 0.42, 2.815, -1.9]));
+    lamps.push(lamp(T, 'amber', 'hood_marker_' + n, 0.012, 0.045, 0.1, [s * 1.112, 1.32, -3.2]));
+  }
+  lamps.push(lamp(T, 'amber', 'cab_marker_C', 0.1, 0.045, 0.04, [0, 2.82, -1.9]));
+  for (const x of [-0.15, 0, 0.15]) lamps.push(lamp(T, 'marker', 'id_lamp_' + x, 0.06, 0.04, 0.03, [x, 3.3, 3.762]));
   attachLights(T, root, lamps, [[-0.78, 1.18, -3.53], [0.78, 1.18, -3.53]]);
+  addContactShadow(T, root, 'boxtruck', { L: 7.5, W: 2.5, rects: [[-1.18, 1.18, -3.65, 3.7, 0.45, 0.5]],
+    blobs: [...wheelBlobs(1.05, [BT.axF], false, BT.R), ...wheelBlobs(1.07 - 0.14, [BT.axR], true, BT.R)] }, o);
   root.userData.driverEye = [-0.5, 2.28, -1.75];
   return root;
 }
@@ -924,9 +1122,18 @@ function makeBus(T, o) {
       lamps.push(lamp(T, 'amber', 'turn_front_' + n, 0.12, 0.12, 0.04, [s * 1.12, 0.72, -6.11]));
       lamps.push(lamp(T, 'tail', 'taillight_' + n, 0.14, 0.42, 0.03, [s * 1.12, 1.15, 6.115]));
       lamps.push(lamp(T, 'marker', 'top_marker_rear_' + n, 0.08, 0.05, 0.03, [s * 1.0, 2.95, 6.115]));
+      lamps.push(lamp(T, 'amber', 'top_marker_front_' + n, 0.08, 0.05, 0.03, [s * 1.05, 2.98, -6.125]));
     }
+    // side markers: amber front + mid, red rear (low on the body side)
+    const hx = school ? 1.262 : 1.285, my = school ? 0.9 : 0.68;
+    lamps.push(lamp(T, 'amber', 'side_marker_front_' + n, 0.014, 0.05, 0.12, [s * hx, my, school ? -4.6 : -5.7]));
+    lamps.push(lamp(T, 'amber', 'side_marker_mid_' + n, 0.014, 0.05, 0.12, [s * hx, my, school ? 0.4 : -0.2]));
+    lamps.push(lamp(T, 'marker', 'side_marker_rear_' + n, 0.014, 0.05, 0.12, [s * hx, my, 5.85]));
   }
   attachLights(T, root, lamps, school ? [[-0.75, 1.15, -6.1], [0.75, 1.15, -6.1]] : [[-0.92, 0.72, -6.13], [0.92, 0.72, -6.13]]);
+  const ax = c[key];
+  addContactShadow(T, root, key, { L: 12.2, W: 2.55, rects: [[-1.22, 1.22, school ? -6.05 : -6.05, 6.05, school ? 0.42 : 0.55, 0.5]],
+    blobs: [...wheelBlobs(school ? 1.04 : 1.1, [ax.axF], false, BU.R), ...wheelBlobs(school ? 0.915 : 0.955, [ax.axR], true, BU.R)] }, o);
   root.userData.driverEye = school ? [-0.62, 2.12, -4.4] : [-0.72, 2.05, -5.25];
   root.userData.axles = [c[key].axF, c[key].axR];
   return root;
@@ -947,14 +1154,36 @@ export function createHeavyVehicle(T, type, opts = {}) {
   return obj;
 }
 
-/** Couple a trailer to a tractor (same parent). articulation = tractor heading - trailer heading (rad, + = trailer swung to tractor's right... CCW convention). */
+/** Couple a trailer to a tractor (same parent). articulation a = tractor heading - trailer heading (rad; a > 0 = tractor turned left). */
 export function coupleTrailer(tractor, trailer, articulation = 0) {
   const h = tractor.rotation.y, zF = tractor.userData.fifthWheel[2];
   const ht = h - articulation, zK = trailer.userData.kingpinOffset;
   const px = tractor.position.x + zF * Math.sin(h), pz = tractor.position.z + zF * Math.cos(h);
   trailer.position.set(px - zK * Math.sin(ht), tractor.position.y, pz - zK * Math.cos(ht));
   trailer.rotation.y = ht;
+  trailer.userData._pivot = [px, pz];
   return { pivot: [px, pz], trailerHeading: ht };
+}
+const wrapPi = (a) => { a = (a + Math.PI) % (2 * Math.PI); if (a < 0) a += 2 * Math.PI; return a - Math.PI; };
+export function articulationOf(tractor, trailer) { return wrapPi(tractor.rotation.y - trailer.rotation.y); }
+/** Kinematic trailer follow (discrete tractrix). Call after moving the tractor each frame. Returns the articulation angle. */
+export function followTrailer(tractor, trailer) {
+  const h = tractor.rotation.y, zF = tractor.userData.fifthWheel[2], zK = trailer.userData.kingpinOffset;
+  const L = trailer.userData.kingpinToAxles || 13.37;
+  const px = tractor.position.x + zF * Math.sin(h), pz = tractor.position.z + zF * Math.cos(h);
+  let ht = trailer.rotation.y;
+  const prev = trailer.userData._pivot;
+  if (prev) {
+    // the trailer axle point (behind the kingpin by L) is dragged toward the new pivot position
+    const ax = prev[0] + L * Math.sin(ht), az = prev[1] + L * Math.cos(ht);
+    const dx = ax - px, dz = az - pz;
+    if (dx * dx + dz * dz > 1e-10) ht = Math.atan2(dx, dz);
+    ht = h - wrapPi(h - ht);                       // keep the heading continuous with the tractor's (no 2*pi jumps)
+  }
+  trailer.position.set(px - zK * Math.sin(ht), tractor.position.y, pz - zK * Math.cos(ht));
+  trailer.rotation.y = ht;
+  trailer.userData._pivot = [px, pz];
+  return wrapPi(h - ht);
 }
 
 // Facade (web/assets.js) looks up create<PascalType>(THREE, type, opts) per vehicle type; these route here.

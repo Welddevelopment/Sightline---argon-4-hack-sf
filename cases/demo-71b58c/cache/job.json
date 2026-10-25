@@ -1,0 +1,188 @@
+{
+  "caseId": "demo-71b58c",
+  "status": "ready",
+  "step": "done",
+  "message": "Reconstruction complete (replayed from the recorded live run of demo-full).",
+  "mode": "replay",
+  "pid": 17028,
+  "startedAt": "2026-10-25T20:53:12.836Z",
+  "buildingAt": "2026-10-25T20:53:12.836Z",
+  "finishedAt": "2026-10-25T20:53:28.293Z",
+  "error": null,
+  "resumable": false,
+  "events": [
+    {
+      "at": "2026-10-25T20:53:12.836Z",
+      "type": "start",
+      "message": "Replaying the recorded run of cases/demo-full (no Argon calls)"
+    },
+    {
+      "at": "2026-10-25T20:53:12.838Z",
+      "type": "progress",
+      "step": "evidence",
+      "round": 1,
+      "message": "Case demo-71b58c: 21 text file(s), 2 video(s), 13 image(s)",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:14.099Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "Argon is reading every document and watching every video to write the world module…",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:14.500Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "generate_world: calling gemini-4-argon (33 parts, maxOutputTokens=32768)",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:14.902Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "generate_world: done in 146.8s, finish=STOP, chars=14471",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:15.303Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "generate_world_repair: calling gemini-4-argon (1 parts, maxOutputTokens=32768)",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:15.708Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "generate_world_repair: done in 62.8s, finish=STOP, chars=14434",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:16.112Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "World module written: /cases/demo-71b58c/worlds/world_v1.js (198 lines)",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:16.516Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "live run: 147 s · 856k tokens · replayed",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:16.920Z",
+      "type": "progress",
+      "step": "render",
+      "round": 1,
+      "message": "Rendering /cases/demo-71b58c/worlds/world_v1.js from overhead + 4 witness viewpoints…",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:17.344Z",
+      "type": "progress",
+      "step": "render",
+      "round": 1,
+      "message": "Reusing 5 existing renders in /cases/demo-71b58c/renders/world_v1",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:17.766Z",
+      "type": "progress",
+      "step": "render",
+      "round": 1,
+      "message": "Rendered 0 videos, 5 stills",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:18.187Z",
+      "type": "progress",
+      "step": "checks",
+      "round": 1,
+      "message": "Independent checks: 7/10 pass — wit_A: blocked by veh_witA; wit_B: blocked by veh_T_tractor; wit_D: blocked by occ_shelter",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:19.449Z",
+      "type": "progress",
+      "step": "critique",
+      "round": 1,
+      "message": "Argon is watching the witness-view renders against the evidence videos and documents…",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:20.062Z",
+      "type": "progress",
+      "step": "critique",
+      "round": 1,
+      "message": "critique_round1: calling gemini-4-argon (43 parts, maxOutputTokens=65536)",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:20.635Z",
+      "type": "progress",
+      "step": "critique",
+      "round": 1,
+      "message": "critique_round1: done in 159.2s, finish=STOP, chars=28829",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:21.198Z",
+      "type": "progress",
+      "step": "critique",
+      "round": 1,
+      "message": "world_patched: Witness B's sworn claim that she had an unobstructed view of the approaching car right up until impact is physically contradicted by the position she marked on Exhibit 4 (mark #2 at x=8 m, z=9 m), where both the sheet-metal back panel of the bench shelter and the turning tractor-semitrailer block her line of sight. Two world modeling artifacts were also identified and patched: Witness A's pickup (`veh_witA`) was set to `occludes: true`, causing self-occlusion of his sightline from inside his own cab at t=4.5 s, and the retail store (`bld_store`) did not include the evidenced drink cooler and window posters along its north storefront that blocked Witness D's view from the register.",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:21.759Z",
+      "type": "progress",
+      "step": "critique",
+      "round": 1,
+      "message": "live run: 159 s · 881k tokens · replayed",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:22.320Z",
+      "type": "progress",
+      "step": "patch",
+      "round": 1,
+      "message": "Argon patched the world → /cases/demo-71b58c/worlds/world_v2.js",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:53:23.584Z",
+      "type": "progress",
+      "step": "checks",
+      "message": "Reviewer moved Witness B (fictional) 6.7 m on the review screen → re-running the independent checks on the recorded world with the confirmed positions (local, live)…"
+    },
+    {
+      "at": "2026-10-25T20:53:28.289Z",
+      "type": "progress",
+      "step": "checks",
+      "message": "Sightline wit_B: VISIBLE from the confirmed position (recorded run: BLOCKED by veh_T_tractor)"
+    },
+    {
+      "at": "2026-10-25T20:53:28.290Z",
+      "type": "progress",
+      "step": "checks",
+      "message": "Independent checks (live, 2303 ms): 9/10 pass — wit_D: blocked by occ_store_front · Argon findings are from the recorded run"
+    },
+    {
+      "at": "2026-10-25T20:53:28.293Z",
+      "type": "done",
+      "message": "Reconstruction complete (replayed from the recorded live run of demo-full)."
+    }
+  ],
+  "round": 1
+}

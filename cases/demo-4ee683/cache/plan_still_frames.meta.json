@@ -1,0 +1,29 @@
+{
+  "name": "plan_still_frames",
+  "model": "gemini-4-argon",
+  "hash": "218713ca394919e4",
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 22312,
+    "candidatesTokenCount": 686,
+    "totalTokenCount": 22998,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 3808
+      },
+      {
+        "modality": "VIDEO",
+        "tokenCount": 18504
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 686
+      }
+    ]
+  },
+  "seconds": 14.7,
+  "at": "2026-10-25T19:56:40.480Z"
+}

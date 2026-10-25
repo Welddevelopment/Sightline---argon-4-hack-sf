@@ -1,0 +1,9 @@
+(node:20667) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[argon] uploading cases/live2/evidence/deposition.mp4 (4.2 MB, video/mp4)
+[argon] cases/live2/evidence/deposition.mp4 ACTIVE as files/tafctlpnx12q
+[argon] generate_world: calling gemini-4-argon (6 parts, maxOutputTokens=65536)
+..........
+[argon] generate_world: done in 60.5s, finish=STOP, chars=12695
+[generate_world] validation: OK, 0 warning(s), 186 lines / 12686 chars
+[generate_world] case=live2 mode=live outcome=argon wrote /cases/live2/worlds/world_v1.js (12686 chars) problems=0

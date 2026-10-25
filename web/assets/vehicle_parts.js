@@ -67,7 +67,7 @@ export function getMaterials(THREE) {
     interior: std({ color: 0x0a0b0c, roughness: 0.95, metalness: 0, envMapIntensity: 0.3 }),
     brake: std({ color: 0x55585c, roughness: 0.5, metalness: 0.7 }),
     mirror: std({ color: 0x9aa3ab, roughness: 0.02, metalness: 1.0 }),
-    lightHead: new Phys({ color: 0xc9ced3, roughness: 0.08, metalness: 0.6, clearcoat: 1, clearcoatRoughness: 0.02, emissive: 0x000000 }),
+    lightHead: new Phys({ color: 0x5d646b, roughness: 0.08, metalness: 0.85, clearcoat: 1, clearcoatRoughness: 0.02, emissive: 0x000000 }),
     lightHeadOn: std({ color: 0xffffff, roughness: 0.2, metalness: 0, emissive: 0xfff6e8, emissiveIntensity: 6 }),
     lightTail: new Phys({ color: 0x6e0a0e, roughness: 0.12, metalness: 0.1, clearcoat: 1, clearcoatRoughness: 0.03, emissive: 0x1a0000 }),
     lightTailOn: std({ color: 0xff2a2a, roughness: 0.3, metalness: 0, emissive: 0xff1010, emissiveIntensity: 4 }),
@@ -75,6 +75,12 @@ export function getMaterials(THREE) {
     lightAmberOn: std({ color: 0xffa020, roughness: 0.3, emissive: 0xff8a00, emissiveIntensity: 3 }),
     lightRev: std({ color: 0xdadde0, roughness: 0.1, metalness: 0.5 }),
     plate: std({ color: 0xf1f1ec, roughness: 0.45, metalness: 0.1 }),
+    seat: std({ color: 0x1e2024, roughness: 0.9, metalness: 0 }),
+    dash: std({ color: 0x15171a, roughness: 0.85, metalness: 0 }),
+    steering: std({ color: 0x0e0f11, roughness: 0.7, metalness: 0 }),
+    cabinLining: std({ color: 0x1a1c1f, roughness: 0.92, metalness: 0, side: THREE.BackSide }),
+    glassTint: new Phys({ color: 0x1a232b, metalness: 0, roughness: 0.05, transmission: 0.7, thickness: 0.004, ior: 1.5,
+      transparent: true, opacity: 1, clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 1.2, side: THREE.DoubleSide, depthWrite: false }),
     plateText: std({ color: 0x9aa0a6, roughness: 0.6, metalness: 0 }),
   };
   m.paint = (color) => {
@@ -84,9 +90,10 @@ export function getMaterials(THREE) {
     if (!p) {
       // clearcoat automotive paint; metalness kept modest so it reads correctly with or without an env map
       const hsl = {}; col.getHSL(hsl);
-      const metallic = hsl.s < 0.25 && hsl.l > 0.25 && hsl.l < 0.8; // silver / grey read as metallic
-      p = new Phys({ color: col, metalness: metallic ? 0.55 : 0.12, roughness: metallic ? 0.32 : 0.36,
-        clearcoat: 1.0, clearcoatRoughness: 0.06, envMapIntensity: 1.0 });
+      // forensic-standard clearcoat paint (metalness 0.4 / roughness 0.25 / clearcoat 1 / cc-roughness 0.05);
+      // very light solids (white) keep a lower metalness so they still read white under weak IBL
+      const metal = hsl.l > 0.78 ? 0.15 : 0.4;
+      p = new Phys({ color: col, metalness: metal, roughness: 0.25, clearcoat: 1.0, clearcoatRoughness: 0.05, envMapIntensity: 1.0 });
       p.name = 'paint_' + key;
       c.paints.set(key, p);
     }
@@ -162,10 +169,21 @@ export function loft(THREE, spec) {
   } else {
     for (let j = 0; j < M; j++) ringT.push((j / M) * Math.PI * 2);
   }
-  const R = ringT.length;
+  let R = ringT.length;
   const spow = (v, e) => Math.sign(v) * Math.pow(Math.abs(v), e);
+  const crisp = !open && spec.section(st[0]).crisp;
+  if (crisp) { const r0 = crispRing(spec.section(st[0])); ringT.length = 0; for (const p of r0) ringT.push(p[2]); R = ringT.length; }
   for (let i = 0; i < N; i++) {
     const z = st[i], s = spec.section(z);
+    if (crisp) {
+      const ring = crispRing(s);
+      for (let j = 0; j < R; j++) {
+        let [x, y] = ring[j];
+        if (spec.clampY) y = spec.clampY(z, x, y);
+        pos.push(x, y, z); uvs.push(j / (R - 1), i / (N - 1));
+      }
+      continue;
+    }
     const yc = (s.yb + s.yt) / 2, hh = Math.max(1e-4, (s.yt - s.yb) / 2), cx = s.cx || 0;
     const nTop = s.nTop || s.n || 4, nBot = s.nBot || s.n || 4;
     for (let j = 0; j < R; j++) {
@@ -221,8 +239,102 @@ export function loft(THREE, spec) {
   return geo;
 }
 
+// ---------------------------------------------------------------- crisp sections (flat panels, defined creases)
+// s.crisp = { crease: 0..1 (height fraction of the beltline/shoulder crease = max width), tuck: rocker tuck-in (fraction of hw),
+//             shoulder: top-edge inset (fraction of hw), crown: hood/roof crown (m), r: [rocker, lowerSide, crease, shoulder, top] fillet radii (m) }
+// Fixed topology (same vertex count at every station). Returns ring [[x, y, t], ...] with t in [0, 2PI) as in loft
+// (0 = +X side, PI/2 = top), starting near t = 0 and running CCW (up over the top).
+const CRISP_SEG = [3, 1, 4, 3, 2, 5];   // straight-run subdivisions between the 7 key points
+const CRISP_FIL = 4;                    // points per fillet
+function filletPolyline(P, radii) {
+  const out = [];
+  const seg = (a, b, n, from0) => { for (let k = from0 ? 0 : 1; k <= n; k++) { const f = k / n; out.push([a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f]); } };
+  // trim points for each interior vertex
+  const cuts = P.map((B, i) => {
+    if (i === 0 || i === P.length - 1) return null;
+    const A = P[i - 1], C = P[i + 1];
+    const la = Math.hypot(A[0] - B[0], A[1] - B[1]), lc = Math.hypot(C[0] - B[0], C[1] - B[1]);
+    const d = Math.max(1e-5, Math.min(radii[i - 1] || 0.01, la * 0.45, lc * 0.45));
+    return { a: [B[0] + (A[0] - B[0]) * d / la, B[1] + (A[1] - B[1]) * d / la], c: [B[0] + (C[0] - B[0]) * d / lc, B[1] + (C[1] - B[1]) * d / lc], B };
+  });
+  let cur = P[0]; out.push(cur.slice());
+  for (let i = 1; i < P.length; i++) {
+    const end = cuts[i] ? cuts[i].a : P[i];
+    seg(cur, end, CRISP_SEG[i - 1] || 2, false);
+    if (cuts[i]) {
+      const { a, c, B } = cuts[i];
+      for (let k = 1; k <= CRISP_FIL; k++) { const t = k / (CRISP_FIL + 1), u = 1 - t; out.push([u * u * a[0] + 2 * u * t * B[0] + t * t * c[0], u * u * a[1] + 2 * u * t * B[1] + t * t * c[1]]); }
+      out.push(c.slice()); cur = c;
+    } else cur = end;
+  }
+  return out;
+}
+export function crispHalf(s) {
+  const c = s.crisp, yb = s.yb, yt = s.yt, hw = s.hw, h = Math.max(1e-3, yt - yb);
+  const yc = yb + (c.crease ?? 0.82) * h;
+  const tuck = c.tuck ?? 0.05, sh = c.shoulder ?? 0.07, crown = c.crown ?? 0.01;
+  const topY = yt - crown;
+  const P = [
+    [0, yb],
+    [hw * (1 - tuck) - Math.min(0.08, h * 0.12), yb],
+    [hw * (1 - tuck * 0.6), yb + Math.min(0.1, h * 0.16)],
+    [hw, yc],
+    [hw * (1 - sh * 0.75), Math.max(yc + 0.01, topY - Math.min(0.02, h * 0.03))],
+    [hw * (1 - sh) - Math.min(0.12, hw * 0.14), topY],
+    [0, yt],
+  ];
+  return filletPolyline(P, c.r || [0.05, 0.12, 0.018, 0.05, 0.2]);
+}
+const RING_CACHE = new WeakMap();
+export function crispRing(s) {
+  if (RING_CACHE.has(s)) return RING_CACHE.get(s);
+  const H = crispHalf(s), cx = s.cx || 0;
+  const yb = s.yb, yt = s.yt, ycen = (yb + yt) / 2, hh = Math.max(1e-4, (yt - yb) / 2), hw = Math.max(1e-4, s.hw);
+  const tOf = (x, y) => { let t = Math.atan2((y - ycen) / hh, x / hw); if (t < 0) t += Math.PI * 2; return t; };
+  // right half bottom->top, then left half top->bottom (skip the shared centre points)
+  const full = [];
+  for (const p of H) full.push([p[0], p[1]]);
+  for (let k = H.length - 2; k >= 1; k--) full.push([-H[k][0], H[k][1]]);
+  // rotate so the ring starts at the right-side point nearest t = 0 and t increases CCW (up over the top)
+  let i0 = 0, best = 1e9;
+  for (let k = 0; k < H.length; k++) { const d = Math.abs(full[k][1] - ycen); if (d < best) { best = d; i0 = k; } }
+  const ring = [];
+  for (let k = 0; k < full.length; k++) {
+    const p = full[(i0 + k) % full.length];
+    let t = tOf(p[0], p[1]);
+    if (k === 0) t = 0; else if (t < ring[k - 1][2] - 1e-6) t += Math.PI * 2;  // keep monotonic
+    if (t >= Math.PI * 2 - 1e-6 && k > 0 && k === full.length - 1) t = Math.min(t, Math.PI * 2 - 1e-4);
+    ring.push([cx + p[0], p[1], Math.min(t, Math.PI * 2 - 1e-4)]);
+  }
+  RING_CACHE.set(s, ring);
+  return ring;
+}
+/** x of a crisp section's right-hand surface at height y (max over the profile). */
+export function crispX(s, y) {
+  const H = crispHalf(s);
+  let best = 0;
+  for (let k = 0; k < H.length - 1; k++) {
+    const a = H[k], b = H[k + 1];
+    if ((a[1] - y) * (b[1] - y) <= 0 && a[1] !== b[1]) { const f = (y - a[1]) / (b[1] - a[1]); best = Math.max(best, a[0] + (b[0] - a[0]) * f); }
+  }
+  return best;
+}
+
 // point on a loft section (same formula as loft); t = ring angle; off = outward offset (m)
 export function sectionPoint(s, t, off = 0) {
+  if (s.crisp) {
+    const ring = crispRing(s);
+    const tt = ((t % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+    let k = 0; while (k < ring.length - 1 && ring[k + 1][2] < tt) k++;
+    const a = ring[k], b = ring[(k + 1) % ring.length];
+    const tb = k + 1 < ring.length ? b[2] : Math.PI * 2;
+    const f = Math.max(0, Math.min(1, (tt - a[2]) / Math.max(1e-6, tb - a[2])));
+    let x = a[0] + (b[0] - a[0]) * f, y = a[1] + (b[1] - a[1]) * f;
+    // outward offset along the segment normal
+    const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1;
+    x += (dy / l) * off; y += (-dx / l) * off;
+    return [x, y];
+  }
   const spow = (v, e) => Math.sign(v) * Math.pow(Math.abs(v), e);
   const yb = s.yb - off, yt = s.yt + off, hw = s.hw + off;
   const yc = (yb + yt) / 2, hh = Math.max(1e-4, (yt - yb) / 2);
@@ -272,13 +384,20 @@ function wheelGeos(THREE, R, W, rim) {
     tp.push(new THREE.Vector2(rr + side * 0.55, -hw * 1.0));
     tp.push(new THREE.Vector2(R - sh, -hw * 0.97));
     for (let k = 1; k <= 4; k++) { const a = (k / 5) * Math.PI / 2; tp.push(new THREE.Vector2(R - sh + Math.sin(a) * sh, -hw + sh * (1 - Math.cos(a)) * 0.9 + 0.0)); }
-    tp.push(new THREE.Vector2(R, -hw + sh)); tp.push(new THREE.Vector2(R, hw - sh));
+    // crown with 3 circumferential tread grooves (reads as tread in close-ups / low witness views)
+    { const a0 = -hw + sh, a1 = hw - sh, gd = Math.min(0.009, R * 0.025), gw = (a1 - a0) * 0.045;
+      tp.push(new THREE.Vector2(R, a0));
+      for (const f of [0.25, 0.5, 0.75]) {
+        const c = a0 + (a1 - a0) * f;
+        tp.push(new THREE.Vector2(R, c - gw), new THREE.Vector2(R - gd, c - gw * 0.7), new THREE.Vector2(R - gd, c + gw * 0.7), new THREE.Vector2(R, c + gw));
+      }
+      tp.push(new THREE.Vector2(R, a1)); }
     for (let k = 4; k >= 1; k--) { const a = (k / 5) * Math.PI / 2; tp.push(new THREE.Vector2(R - sh + Math.sin(a) * sh, hw - sh * (1 - Math.cos(a)) * 0.9)); }
     tp.push(new THREE.Vector2(R - sh, hw * 0.97));
     tp.push(new THREE.Vector2(rr + side * 0.55, hw * 1.0));
     tp.push(new THREE.Vector2(rr + side * 0.18, hw * 0.97));
     tp.push(new THREE.Vector2(rr * 0.98, hw * 0.86));
-    const tire = new THREE.LatheGeometry(tp, 40);
+    const tire = new THREE.LatheGeometry(tp, 48);
     // rim barrel + face (outboard = +y before rotation -> +X after)
     const lip = hw * 0.86;
     const rp = [
@@ -486,4 +605,62 @@ export function finalizeVehicle(THREE, root, { type, id, dims, driverEye, wheels
   root.userData.wheels = ws;
   root.userData.roll = (dist) => { for (const w of ws) w.userData.roll && w.userData.roll(dist); };
   return root;
+}
+
+
+// ---------------------------------------------------------------- interior tub (driver-seat views)
+/**
+ * makeInterior(THREE, {eye:[x,y,z], width, floorY, dashZ, rearZ, rows, wheelR}) -> Group 'interior'
+ * Dark, low-poly cabin: floor tub, dash with hood/cowl top, steering wheel + column ahead of the driver eye,
+ * front seats (+ optional rear bench). Coordinates are vehicle-local (front = -Z, driver on -X).
+ */
+export function makeInterior(THREE, o = {}) {
+  const M = getMaterials(THREE);
+  const g = new THREE.Group(); g.name = 'interior';
+  const [ex, ey, ez] = o.eye || [-0.36, 1.15, 0];
+  const W = o.width || 1.5, floorY = o.floorY ?? 0.32;
+  const dashZ = o.dashZ ?? ez - 0.85, rearZ = o.rearZ ?? ez + 1.3;
+  const add = (geo, mat, name, x, y, z, rx = 0, ry = 0, rz = 0) => {
+    const m = new THREE.Mesh(geo, mat); m.name = name; m.position.set(x, y, z); m.rotation.set(rx, ry, rz); g.add(m); return m;
+  };
+  const seatH = ey - 0.62;                       // cushion top ~0.62 m below eye
+  // floor tub
+  add(roundedBox(THREE, W, 0.04, rearZ - dashZ + 0.2, 0.01), M.interior, 'int_floor', 0, floorY, (dashZ + rearZ) / 2);
+  // dash: main block + top pad + centre stack
+  const dashTop = ey - 0.32;
+  const DW = Math.min(W, o.dashW || W);
+  add(roundedBox(THREE, DW, dashTop - floorY - 0.05, 0.38, 0.04), M.interior, 'int_dash', 0, (dashTop + floorY) / 2, dashZ - 0.12);
+  add(roundedBox(THREE, DW - 0.04, 0.05, 0.5, 0.025), M.dash || M.interior, 'int_dash_top', 0, dashTop, dashZ - 0.08, -0.12);
+  add(roundedBox(THREE, 0.26, 0.3, 0.08, 0.02), M.trimGloss, 'int_stack', 0, dashTop - 0.2, dashZ + 0.09, 0.15);
+  add(roundedBox(THREE, 0.28, 0.06, 0.6, 0.02), M.interior, 'int_console', 0, seatH - 0.05, ez + 0.25);
+  // instrument binnacle + steering wheel
+  add(roundedBox(THREE, 0.34, 0.09, 0.16, 0.03), M.interior, 'int_binnacle', ex, dashTop + 0.035, dashZ + 0.05);
+  const swZ = ez - 0.47, swY = ey - (o.swDrop ?? 0.4), T = 0.4;   // wheel plane tilted back ~23 deg
+  const ring = cachedGeo(THREE, 'int_swring', () => new THREE.TorusGeometry(0.185, 0.017, 8, 28));
+  add(ring, M.steering, 'steering_wheel', ex, swY, swZ, T, 0, 0);
+  add(cachedGeo(THREE, 'int_swhub', () => new THREE.CylinderGeometry(0.055, 0.06, 0.05, 14)), M.trim, 'steering_hub', ex, swY, swZ, Math.PI / 2 + T);
+  for (const a of [0, Math.PI, -Math.PI / 2]) {
+    const sp = add(roundedBox(THREE, 0.15, 0.024, 0.014, 0.006), M.trim, 'steering_spoke', ex, swY, swZ, T, 0, a);
+    sp.translateX(0.095);
+  }
+  const col = add(cachedGeo(THREE, 'int_col', () => new THREE.CylinderGeometry(0.035, 0.045, 0.42, 10)), M.trim, 'steering_column', ex, swY, swZ, Math.PI / 2 + T);
+  col.translateY(-0.22);
+  // seats
+  const seat = (x, z, w) => {
+    add(roundedBox(THREE, w, 0.13, 0.5, 0.05), M.seat || M.interior, 'seat_cushion', x, seatH, z);
+    const back = add(roundedBox(THREE, w, 0.62, 0.12, 0.05), M.seat || M.interior, 'seat_back', x, seatH + 0.33, z + 0.28);
+    back.rotation.x = 0.2;
+    add(roundedBox(THREE, w * 0.55, 0.18, 0.1, 0.04), M.seat || M.interior, 'headrest', x, seatH + 0.75, z + 0.38);
+    add(roundedBox(THREE, w * 0.9, seatH - floorY - 0.08, 0.4, 0.02), M.interior, 'seat_base', x, (seatH + floorY) / 2, z);
+  };
+  seat(ex, ez + 0.12, 0.5); seat(-ex, ez + 0.12, 0.5);
+  if (o.rows !== 1 && rearZ - ez > 1.05) {
+    add(roundedBox(THREE, W - 0.1, 0.13, 0.5, 0.05), M.seat || M.interior, 'rear_cushion', 0, seatH - 0.02, ez + 0.98);
+    const rb = add(roundedBox(THREE, W - 0.1, 0.6, 0.12, 0.05), M.seat || M.interior, 'rear_back', 0, seatH + 0.3, ez + 1.25); rb.rotation.x = 0.22;
+    for (const x of [-0.45, 0.45]) add(roundedBox(THREE, 0.26, 0.17, 0.1, 0.04), M.seat || M.interior, 'headrest', x, seatH + 0.68, ez + 1.33);
+  }
+  // rear-view mirror
+  add(roundedBox(THREE, 0.24, 0.07, 0.03, 0.015), M.trim, 'int_rvmirror', 0, o.mirrorY ?? ey + 0.1, o.mirrorZ ?? ez - 0.6);
+  g.traverse(m => { if (m.isMesh) { m.castShadow = false; m.receiveShadow = true; } });
+  return g;
 }

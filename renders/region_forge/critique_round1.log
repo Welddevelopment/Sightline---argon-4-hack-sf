@@ -1,0 +1,31 @@
+(node:10353) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+- 13:29 critique round 1: 6 parallel review+rewrite calls using stills from renders/region_forge/round0
+[argon] rf_r1_r1_crossover: calling gemini-4-argon (3 parts, maxOutputTokens=32768)
+[argon] rf_r1_r2_west: calling gemini-4-argon (3 parts, maxOutputTokens=32768)
+[argon] rf_r1_r3_east: calling gemini-4-argon (3 parts, maxOutputTokens=32768)
+[argon] rf_r1_r4_north: calling gemini-4-argon (3 parts, maxOutputTokens=32768)
+[argon] rf_r1_r5_south: calling gemini-4-argon (3 parts, maxOutputTokens=32768)
+[argon] rf_r1_r6_terrain: calling gemini-4-argon (3 parts, maxOutputTokens=32768)
+........................................................................................................................................................................................................................................
+[argon] rf_r1_r3_east: done in 166.8s, finish=STOP, chars=54966
+- 13:31 r3_east round 1: OK in 167s; tokens prompt 37955 / out 21292 / think 0; tris 21369, 54957 B, warn: none
+........
+[argon] rf_r1_r2_west: done in 171.7s, finish=STOP, chars=52539
+- 13:31 r2_west round 1: OK in 172s; tokens prompt 35181 / out 20741 / think 0; tris 17221, 52530 B, warn: none
+...................
+[argon] rf_r1_r6_terrain: done in 190.4s, finish=STOP, chars=50200
+- 13:32 r6_terrain round 1: OK in 191s; tokens prompt 39651 / out 20374 / think 1940; tris 279189, 50191 B, warn: triangle count 279189 above budget 250000
+...............
+[argon] rf_r1_r4_north: done in 207.8s, finish=STOP, chars=60662
+- 13:32 r4_north round 1: validation failed (triangle count 439668 exceeds the region budget 330000 by more than 25% — instance or simplify) → repair call 1
+[argon] rf_r1_r4_north_repair: calling gemini-4-argon (3 parts, maxOutputTokens=32768)
+
+[argon] rf_r1_r1_crossover: done in 208.8s, finish=STOP, chars=73520
+- 13:32 r1_crossover round 1: OK in 209s; tokens prompt 43589 / out 28844 / think 0; tris 8650, 73511 B, warn: none
+...........
+[argon] rf_r1_r5_south: done in 233.4s, finish=STOP, chars=70478
+- 13:32 r5_south round 1: OK in 234s; tokens prompt 42034 / out 27523 / think 0; tris 246183, 70469 B, warn: none
+.......................................
+[argon] rf_r1_r4_north_repair: done in 165.4s, finish=STOP, chars=54653
+- 13:35 r4_north round 1: OK in 375s; tokens prompt 83538 / out 46024 / think 0; tris 203439, 54644 B, warn: none

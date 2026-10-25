@@ -1,6 +1,7 @@
 # PRODUCT-A: PDF report export — status
 
 DONE. "Export report" button (viewer header + case page header) -> GET /api/cases/:id/report.pdf.
+Next to it, "More exports ▾" menu (web/exports.js): Preview report (/report.html?case=), Download scene (.zip) / .glb / .json?download=1 (PRODUCT-F endpoints), and one "witness-view clip" item per camera from GET /api/cases/:id/clips (fetch -> blob with "rendering…" state on a cache miss; clear/blocked tag from the clip's sight-line check).
 
 Files (mine): server/report.js, web/report.html, web/report.css, web/exports.js, cases/demo/exports/report.pdf (+ exports/figs/*.png, figs/manifest.json).
 Edits elsewhere: one mount line in server/server.js; one `<script src="/exports.js" defer>` line in web/index.html and web/cases.html.

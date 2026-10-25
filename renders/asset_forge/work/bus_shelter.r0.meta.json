@@ -1,0 +1,50 @@
+{
+  "round": 0,
+  "file": "/home/claude/sightline/renders/asset_forge/work/bus_shelter.r0.js",
+  "png": "/home/claude/sightline/renders/asset_forge/bus_shelter_r0.png",
+  "finish": "STOP",
+  "usage": {
+    "promptTokenCount": 5804,
+    "candidatesTokenCount": 13194,
+    "totalTokenCount": 18998,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 5804
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 13194
+      }
+    ]
+  },
+  "seconds": 123.9,
+  "defects": null,
+  "validation": {
+    "ok": true,
+    "errors": [],
+    "warnings": [],
+    "buildMs": 176.2,
+    "tris": 9846,
+    "meshes": 143,
+    "bbox": {
+      "min": [
+        -1.753,
+        0,
+        -0.754
+      ],
+      "max": [
+        1.753,
+        2.475,
+        0.75
+      ],
+      "size": {
+        "length": 1.504,
+        "width": 3.506,
+        "height": 2.475
+      }
+    }
+  }
+}

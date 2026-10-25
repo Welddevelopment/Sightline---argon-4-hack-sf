@@ -1,0 +1,60 @@
+{
+  "caseId": "demo-4ee683",
+  "title": "Demo case — Williston FL crash (pre-loaded)",
+  "createdAt": "2026-10-25T20:29:35.426Z",
+  "files": [
+    {
+      "name": "deposition.mp4",
+      "type": "video",
+      "size": 4244843,
+      "durationSec": 1801.8
+    },
+    {
+      "name": "deposition.srt",
+      "type": "text",
+      "size": 1763,
+      "textPath": "text/deposition.txt"
+    },
+    {
+      "name": "facts.md",
+      "type": "text",
+      "size": 6883,
+      "textPath": "text/facts.txt"
+    },
+    {
+      "name": "map.png",
+      "type": "image",
+      "size": 54576
+    },
+    {
+      "name": "police_report.md",
+      "type": "text",
+      "size": 6532,
+      "textPath": "text/police_report.txt"
+    },
+    {
+      "name": "witness_A.md",
+      "type": "text",
+      "size": 1729,
+      "textPath": "text/witness_A.txt"
+    },
+    {
+      "name": "witness_C.md",
+      "type": "text",
+      "size": 1507,
+      "textPath": "text/witness_C.txt"
+    },
+    {
+      "name": "deposition_transcript.txt",
+      "type": "text",
+      "size": 20708,
+      "textPath": "text/deposition_transcript.txt"
+    }
+  ],
+  "status": "done",
+  "sourceTitle": "Car into turning tractor-semitrailer at an uncontrolled median crossover, US-27A near Williston, Florida (2016)",
+  "replay": true,
+  "replayOf": "demo",
+  "recordedAt": "2026-10-25T19:56:40.480Z",
+  "recordedMode": "live-cached"
+}

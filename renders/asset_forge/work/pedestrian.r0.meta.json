@@ -1,0 +1,50 @@
+{
+  "round": 0,
+  "file": "/home/claude/sightline/renders/asset_forge/work/pedestrian.r0.js",
+  "png": "/home/claude/sightline/renders/asset_forge/pedestrian_r0.png",
+  "finish": "STOP",
+  "usage": {
+    "promptTokenCount": 5819,
+    "candidatesTokenCount": 18248,
+    "totalTokenCount": 24067,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 5819
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 18248
+      }
+    ]
+  },
+  "seconds": 174.2,
+  "defects": null,
+  "validation": {
+    "ok": true,
+    "errors": [],
+    "warnings": [],
+    "buildMs": 116.6,
+    "tris": 12952,
+    "meshes": 80,
+    "bbox": {
+      "min": [
+        -0.244,
+        0,
+        -0.165
+      ],
+      "max": [
+        0.244,
+        1.7,
+        0.169
+      ],
+      "size": {
+        "length": 0.334,
+        "width": 0.488,
+        "height": 1.7
+      }
+    }
+  }
+}

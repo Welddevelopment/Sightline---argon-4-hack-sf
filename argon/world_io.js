@@ -17,7 +17,8 @@ export async function loadWorldFile(file) {
   const mod = await import(pathToFileURL(abs).href + `?t=${fs.statSync(abs).mtimeMs}-${Math.random()}`);
   if (typeof mod.default !== 'function') throw new Error(`${file}: no default export createWorld(THREE)`);
   const { nodeAssets } = await import('../checks/load_world.js');   // WORLD CONTRACT v2: pass the asset library (v1 worlds ignore it)
-  return mod.default(await three(), await nodeAssets());
+  const assets = await nodeAssets(); try { assets?.beginWorld?.(); } catch {}
+  return mod.default(await three(), assets);
 }
 
 /** Contract sanity check. Returns list of problems (empty = OK). */

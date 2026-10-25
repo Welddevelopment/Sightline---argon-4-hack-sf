@@ -12,5 +12,7 @@ Page: `/review.html?case=<id>` — codes against SPEC.md "## REVIEW & CONFIRM (1
 - Scene plan canvas: uses `case.json.map {file, px_per_m, origin_px}` (image + scale) when the case manifest has it, else a metre grid auto-fitted to positions within 150 m of the origin; far items (e.g. Witness A 402 m E) are edge pointers. Witness markers are draggable (0.1 m), marking the witness edited.
 - Sign-off: tally (accepted/edited/rejected/inferred), "Reviewed by" name (remembered locally), "Confirm and build" -> POST /confirm (kept items only, `edited:true` on changed ones) -> POST /run -> SSE progress -> "Open in viewer". "Skip review" -> /cases.html?case=<id> (old path). Existing confirmed_facts are overlaid (missing items shown rejected) with "Clear confirmation".
 
-Note: cases/demo/case.json has no `map` block, so the demo shows the grid. Adding
-`"map": {"file": "map.png", "px_per_m": 10, "origin_px": [600, 450]}` (same frame as case/case.json; origin = impact point) puts Exhibit 4 under the markers.
+Map scale: uses `case.json.map` when present; otherwise, if the case's exhibit image has the same file name as `case/case.json.map.file` (demo: map.png, identical Exhibit 4), it borrows that block (10 px/m, origin [600,450]) and the note says "scale: exhibit manifest". So the demo shows Exhibit 4 under the markers. Adding a `map` block to cases/<id>/case.json still takes precedence.
+Moving a witness draws a dashed ghost at the extracted position with "extracted · N m" and the witness row shows "moved N m from extracted x, z" (the Witness B ~5.5 m correction is visible at a glance).
+Labels on the plan avoid each other (witness tags reserved first, object/edge labels slide to a free slot). "Enlarge" widens the side column for the plan (remembered locally).
+Tested PORT=5195 mock on demo with Playwright; confirm/run/stream stubbed in the test so the shared demo state (confirmed_facts.json, jobs) was not touched.

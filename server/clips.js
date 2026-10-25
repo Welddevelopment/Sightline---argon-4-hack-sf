@@ -176,16 +176,24 @@ export function mountClips(app, ctx = {}) {
       fs.writeFileSync(tmp, JSON.stringify({ ...job, base, fps: FPS, width: W, height: H }));
       const t0 = Date.now();
       try {
-        const out = await new Promise((resolve, reject) => {
+        const once = () => new Promise((resolve, reject) => {
           const ch = spawn(path.join(ROOT, 'scripts', 'render_lock.sh'), [process.execPath, path.join(ROOT, 'server', 'clips.js'), '--job', tmp],
             { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] });
           let so = '', se = '';
           ch.stdout.on('data', (d) => { so += d; });
           ch.stderr.on('data', (d) => { se += d; });
           const killer = setTimeout(() => ch.kill('SIGKILL'), 15 * 60 * 1000);
-          ch.on('close', (code) => { clearTimeout(killer); code === 0 ? resolve(so) : reject(new Error(`clip render failed (exit ${code}): ${(se || so).slice(-800)}`)); });
+          ch.on('close', (code, sig) => { clearTimeout(killer); if (sig) se += ` [signal ${sig}]`; code === 0 ? resolve(so) : reject(new Error(`clip render failed (exit ${code}): ${(se || so).slice(-800)}`)); });
           ch.on('error', reject);
         });
+        // scripts/render_lock.sh gives up after 600 s of lock contention (flock exits 1, no output): retry a few times
+        let out;
+        for (let attempt = 1; ; attempt++) {
+          try { out = await once(); break; } catch (e) {
+            if (attempt < 4 && /exit 1\): \s*$/.test(errMsg(e)) && !fs.existsSync(job.file)) { console.warn(`[clips] ${job.name}: render lock busy, retry ${attempt}`); continue; }
+            throw e;
+          }
+        }
         if (!fs.existsSync(job.file)) throw new Error('clip render produced no file: ' + out.slice(-400));
         return { seconds: (Date.now() - t0) / 1000 };
       } finally { fs.rmSync(tmp, { force: true }); }
@@ -226,12 +234,15 @@ export function mountClips(app, ctx = {}) {
       try {
         ({ seconds } = await runRender(job, `http://127.0.0.1:${req.socket.localPort}`));
       } catch (e) {
-        // mock mode: any cached clip of this camera beats an error
+        console.warn(`[clips] render ${job.name} failed: ${errMsg(e).slice(0, 600)}`);
+        if (fs.existsSync(job.file)) { cache = 'miss'; } else {
+        // mock mode: a cached clip of this camera (same world sha) beats an error
         const dir = clipDir(job.id);
         const pre = job.name.split('__').slice(0, 2).join('__') + '__'; // same camera + same world sha
         const alt = MODE === 'mock' && fs.existsSync(dir) && fs.readdirSync(dir).filter((f) => f.startsWith(pre) && f.endsWith('.mp4')).sort().pop();
         if (!alt) return res.status(500).json({ error: errMsg(e) });
         job.file = path.join(dir, alt); cache = 'fallback';
+        }
       }
     }
     const side = readJson(job.file.replace(/\.mp4$/, '.json'), {});
@@ -297,7 +308,8 @@ async function renderJob(job) {
     });
     filters.unshift('drawbox=x=0:y=0:w=iw:h=62:color=black@0.62:t=fill');
     // running scene time (top-right): t0 + frame time
-    filters.push(`drawtext=fontfile=${FONT}:text='t = %{pts\\:flt\\:${(+job.t0).toFixed(3)}} s':fontsize=18:fontcolor=white:x=w-tw-14:y=10`);
+    const T = `(t+${(+job.t0).toFixed(3)})`;
+    filters.push(`drawtext=fontfile=${FONT}:text='t = %{eif\\:floor(${T})\\:d}.%{eif\\:mod(floor(${T}*100+0.5)\\,100)\\:d\\:2} s':fontsize=18:fontcolor=white:x=w-tw-14:y=10`);
   }
   const tmpOut = job.file.replace(/\.mp4$/, `.tmp${process.pid}.mp4`);
   const r = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(job.fps), '-i', path.join(framesDir, 'f%05d.jpg'),

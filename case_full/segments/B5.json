@@ -1,0 +1,830 @@
+[
+ {
+  "speaker": "Attorney",
+  "text": "I want to move now to the collision itself. I'm going to ask you about what you heard and what you saw, and then about what happened afterward. All right?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "All right."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What is the first thing you noticed at the moment of the impact?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The sound. It was the loudest thing I ever heard. It was like a bang and a scrape at the same time, metal on metal."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How long did the sound last, as best you can estimate?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You can answer."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Maybe a second or two for the main part. Then there was more noise after, further off. I'll get to that, I guess."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "We will. Before the bang, did you hear any other sound? Any horn?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No horn. I didn't hear a horn."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Any squealing of tires, any braking sound?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that I heard. I've thought about it a lot. I don't remember any squealing."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Are you saying there was no such sound, or that you don't recall one?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I'm saying I didn't hear one. If there was one, I didn't hear it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "After that first bang, what did you see the car do?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It kept going. It came out the other side of the trailer and just kept going east. It didn't stop."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you say the other side, what do you mean?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The car went under the trailer, the middle part, and came out on the far side, the east side, and kept on going down the road."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Which side of the trailer did the car strike, if you know?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to foundation."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "If you know."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The side facing west. The side facing toward the hill. That's the side it came at."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did the car stay on the highway after it came out from under the trailer?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not for long. It went off to the right. Off the south side of the road."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "The south side, that's the same side of the highway as the store?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. Our side."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "About how fast was the car moving after it came out from under the trailer?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Foundation."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You can answer if you're able."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I can't give you a number. It was still going fast. It didn't look like it slowed down much at all."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see it slow down at any point?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not right away. Not that I could tell."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Describe for me what you saw the car do after it left the road."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It went into the grass and then there was a fence. It went right through the fence. I could hear the wire and the posts, like snapping. Then it went through another one."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How many fences did you see it go through?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "At least two. I think two. There may have been more. It was getting further away by then."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What kind of fences were they, if you remember?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Like farm fences. Wire fences with wooden posts. There's pasture down that way."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was the car moving in a straight line or was it turning?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Mostly straight, I think. Kind of angling away from the road. It wasn't spinning or anything like that, that I saw."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And then what?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Then it hit a pole. A power pole, way down the road. There was another big bang, not as loud because it was far, but you could hear it. And I saw the pole move."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you say the pole moved, what did you see?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It shook. It leaned. I remember the wires swinging. I thought the lines were going to come down."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did they come down?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I don't think so. Not that I saw."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "About how far away from the intersection was that pole?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Calls for speculation."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Just your best estimate."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Far. A long way. I'd say a couple football fields, maybe more. I told the deputy it was way down there. I'm not good with distances, I said that before."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I understand. Did the car come to a stop after it hit the pole?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It went a little further after that, I think, and then it stopped. It ended up in somebody's yard down there. There's a house back off the road."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Could you see the car once it stopped?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I could see it was there. I could see the shape of it. It was a long way off. I couldn't see details."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "From the time of the first bang to the time you saw the car hit the pole, how long was that?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A few seconds. It felt longer. It felt like it went on and on, but it was probably only a few seconds."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let me turn to the truck. What did the truck do after the impact?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It kept going a little. It finished the turn, kind of. It went on across and down 140th."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Down 140th, meaning south?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, south. Down the side road, past the store."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see the truck stop?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. It stopped down there on 140th. South of the store some ways."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How far south of the store, if you can estimate?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that far. The whole truck was past the corner, I think. The back of the trailer was down past the edge of the store lot. Something like that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did it stop quickly or slowly, as far as you could tell?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form. Foundation."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I don't know. It wasn't sudden, like a slam. It just rolled down there and stopped."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see any damage to the trailer from where you were?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I saw it later, when it was stopped. The side was messed up. There was a big dent, kind of torn along the bottom edge. I didn't go up close to it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Which side of the trailer was damaged?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The side that had been facing the car. After it turned, that side was facing kind of west, toward the road. I could see it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'm not going to ask you about any person. I just want to understand where you were and what you did. Immediately after the car hit the pole, what did you do?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I just stood there. I couldn't move for a second. I think I said something out loud, like oh my God. I dropped my bag."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "The shopping bag you mentioned earlier?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. Stuff went all over. I didn't even care. I left it there for a while."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you move from where you were standing?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not much. I stayed out front of the store. I took a couple steps, toward the road, and then I stopped."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Why did you stop?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Because I didn't know what to do. There were cars still coming on the highway, I didn't want to walk out there. And it was so far down there where the car was."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you ever walk down to where the car came to rest?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I didn't go down there. I didn't want to see. I'll be honest about that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "That's fine. Nobody is going to ask you to describe anything you didn't see. Did anyone else go down there that you saw?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Some people stopped their cars on the highway and ran down there. A couple of people. I don't know who they were."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "About how many vehicles stopped, if you remember?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Two or three at first. Then more. After a while there were cars pulled off everywhere."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you make a phone call at some point?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. I called my sister."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How soon after the crash did you call her?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "A few minutes. Maybe a minute or two. I had to find my phone, it was in my bag and the bag was on the ground."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you call 911?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I thought about it, but somebody said they already called. And then the lady from the store came out and said she called."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Who said they already called, the first time?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object. Hearsay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'm not asking for the truth of it. Just who said it, if you know."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "One of the people who stopped. A man, I think. He yelled it. I don't know him."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What did you say to your sister on the phone?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object. Hearsay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You can answer."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I told her there was a terrible wreck right in front of the store and to hurry up, and that she should be careful coming because the road was going to be blocked."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What did she say?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Same objection."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "She said she was close and she was coming. That's about it. I was crying, so it was hard to talk."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let's talk about the store employee. At some point did someone come out of the store?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. The woman who worked the counter. She came running out."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How soon after the crash did she come out?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Pretty fast. Right after. Maybe while I was still standing there. Before I called my sister, I think. Or around the same time. I'm not sure of the order."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When she came out, did you talk with her?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Tell me what you said to her."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object. Hearsay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "These are her own statements. You can answer."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I told her a car went under the truck. I told her it went way down there and hit the pole. I was pointing. I was pretty upset. I don't remember every word."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did she ask you any questions?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "She asked me what happened. She asked if I was okay. She asked if anybody called for help."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did she stay with you?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "For a little while. Then she went back in and out a couple of times. She was on the phone, I think."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you tell her anything else about what you saw?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Probably. I was talking a lot. I kept saying it over and over. I think I said I saw the whole thing. I know I said that to a lot of people that day."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you remember anything she said to you, other than the questions?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Hearsay."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "She said something like she didn't see it, she just heard it from inside. She said it shook the windows. Something like that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did the two of you talk about where you were standing?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I don't remember that. I don't think we talked about it like that. We were just talking about the wreck."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "All right. Did any police or emergency vehicles arrive?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. Deputies came. And an ambulance, and the fire truck, I think. A bunch of them."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How long after the crash did the first one arrive?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "It felt like forever. But it was probably ten minutes. Maybe less. I really don't know."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did any of them stop at the intersection?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Later, yes. A deputy car parked up by the crossover with the lights on. And they started blocking the road."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did they close the highway?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "The eastbound side, at least. They were waving people around. It was a while before cars could get through."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was your sister able to get to the store?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. She got there around five. She had to come around a different way, I think, or they let her through. She pulled into the store lot."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you leave when your sister arrived?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Not right away. I wanted to tell somebody what I saw. I thought somebody should know."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you speak to a deputy that day?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. One of them came up to the store. He was asking if anybody saw it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What did you tell him?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object. Hearsay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You can answer."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I told him I saw it. I told him I saw the car come down the hill and go under the truck. I told him it went down there and hit the pole."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did the deputy write anything down?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "He wrote some things in a little notebook. He took my name and my phone number and my address."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did he ask you to give a written statement that day?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No, not that day. He said somebody would contact me. And then a few days later they did, and I wrote it out. That's the statement I looked at before today."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "We'll talk about that statement in more detail later. How long did you talk with the deputy that afternoon?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not long. Five minutes. He was busy. There were a lot of people."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did he ask you where you were when it happened?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "He asked if I was there. I said I was out front of the store. I don't think he asked more than that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did he show you anything, a diagram, a photo, anything like that?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Nothing like that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did any other official talk with you that day?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not that I remember. Just the one deputy."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see the truck get moved while you were there?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. It was still sitting down on 140th when we left."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "About what time did you leave?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Maybe five thirty. Quarter to six. It was still light out."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did anyone tell you anything about the people in the car?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object. Calls for hearsay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'll withdraw that. Let me ask it differently. Did you yourself see anything about the condition of anyone in the car?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I didn't go down there, and I didn't see anything like that. I'd rather not talk about that part."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "That's fine. I'm not going to ask you about that. Let me go back to a couple of things. You said the car went off the south side of the road. Do you know about where along the highway it left the pavement?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Not exactly. A ways past the intersection. Past the store. Further down."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Past the store to the east?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, east."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see where the car went relative to the store itself? Did it come near the store?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No, it didn't come near the store. It was out on the road and then off past it, down the shoulder and into the field."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was there any other vehicle on the eastbound side of the highway at the moment of the impact, that you saw?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. Not right there. There was nobody else right there that I remember."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What about on the westbound side?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I don't remember anything on the westbound side right then. Maybe something further off. Nothing close."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "After the impact, did any eastbound cars come over the hill?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. A minute or so after, I think, a car came over and slowed way down. Then pulled over. That might have been one of the ones that stopped."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did any vehicle have to go around the truck on the highway?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No, by then the truck was already off the highway. It was down 140th. The road was clear except for, you know, pieces."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Pieces of what?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Debris. Glass and parts. There was stuff on the road by the crossover. I could see it shining."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you touch or pick up any of that debris?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I didn't go out on the road."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "At any point that afternoon, did you go out into the highway or the median?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. I stayed by the store the whole time."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you say by the store, you mean out front, the area you've described?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes. Out front. And inside that one time."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "All right. Did your sister see the crash?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. She wasn't there yet. She came after."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When your sister arrived, did you tell her what you saw?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Yes, I told her the whole thing in the car on the way home. I told her again later too. I couldn't stop talking about it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How were you feeling physically that afternoon?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Shaky. My legs were like jelly. I wasn't hurt. I was just upset. I didn't sleep good that night."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Thinking back on everything that happened after the impact, from the bang to the time you left, is there anything you saw that you haven't told us about today?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Object to form."
+ },
+ {
+  "speaker": "Witness B",
+  "text": "I don't think so. I think I've told you all of it. The bang, the car going down there, the pole, the truck stopping. The lady from the store. The deputies."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is there anything about what you heard that you haven't told us?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "Just that it was loud. Then after, it got real quiet for a little bit. Except the truck. That hum kept going. I remember that."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "All right. I'm going to shift gears in a moment to your written statement and some other things. Before I do, is there anything about your answers in the last few minutes that you want to change or add to?"
+ },
+ {
+  "speaker": "Witness B",
+  "text": "No. That's what I remember."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Okay. Thank you. Let's keep going."
+ }
+]

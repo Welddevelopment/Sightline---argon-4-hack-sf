@@ -27,10 +27,14 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { createVehicle, VEHICLE_DIMS } from './assets/vehicles.js';
+import { createVehicle, VEHICLE_DIMS, ready as vehiclesReady } from './assets/vehicles.js';
 
 const q = new URLSearchParams(location.search);
-const types = (q.get('types') || 'sedan,suv,pickup,van,box_truck,truck_tractor,bus,motorcycle,bicycle,pedestrian').split(',').filter(Boolean);
+// items=type[@model.glb|@procedural|@glb],...  (model paths relative to web/models/) — side-by-side comparisons
+const items = (q.get('items') || q.get('types') || 'sedan,suv,pickup,van,box_truck,truck_tractor,bus,motorcycle,bicycle,pedestrian').split(',').filter(Boolean)
+  .map(s => { const [t, m] = s.split('@'); return { t, m }; });
+const types = items.map(i => i.t);
+const srcAll = q.get('src');   // 'glb' | 'procedural' forces every passenger type
 const colors = (q.get('colors') || 'silver,white,red,navy,white,blue,yellow,black,green,gray').split(',');
 const lightsOn = q.get('lights') === '1';
 const night = q.get('night') === '1';
@@ -71,7 +75,10 @@ const labels = [];
 let x = 0; const gap = 1.6; const placed = [];
 types.forEach((t, i) => {
   const dims = VEHICLE_DIMS[t] || { width: 0.6, length: 0.5, height: 1.7 };
-  const v = createVehicle(THREE, t, { id: t + '_1', color: colors[i % colors.length] });
+  const m = items[i].m;
+  const vopts = { id: t + '_' + (i + 1), color: colors[i % colors.length] };
+  if (m === 'procedural' || m === 'glb') vopts.source = m; else if (m) vopts.model = m; else if (srcAll) vopts.source = srcAll;
+  const v = createVehicle(THREE, t, vopts);
   const w = v.userData.dims?.width || dims.width;
   x += (i ? gap : 0) + w / 2;
   v.position.x = x;
@@ -81,7 +88,7 @@ types.forEach((t, i) => {
   placed.push(v);
   const d = v.userData.dims || dims;
   const el = document.createElement('div'); el.className = 'lbl';
-  el.innerHTML = `<b>${t}</b><span>${d.length ?? '-'} × ${d.width ?? '-'} × ${d.height ?? '-'} m</span>`;
+  el.innerHTML = `<b>${t}</b><span>${q.get('tag') ? (m || 'default') + ' · ' : ''}${d.length ?? '-'} × ${d.width ?? '-'} × ${d.height ?? '-'} m</span>`;
   document.body.appendChild(el);
   labels.push({ el, pos: new THREE.Vector3(x, 0, -(d.length || 1) / 2 - 0.7) });
   x += w / 2;
@@ -93,12 +100,13 @@ for (const l of labels) l.pos.x -= cx;
 const camera = new THREE.PerspectiveCamera(parseFloat(q.get('fov') || 30), innerWidth / innerHeight, 0.05, 500);
 const focus = q.get('focus');
 let target = new THREE.Vector3(0, 1.0, 0);
+const focusIdx = focus == null ? -1 : (/^\d+$/.test(focus) ? +focus : types.indexOf(focus));
 if (focus) {
-  const v = placed[types.indexOf(focus)];
+  const v = placed[focusIdx];
   if (v) { target = new THREE.Vector3(v.position.x, (v.userData.dims?.height || 1.5) * 0.45, 0); }
 }
 const view = q.get('view') || 'threequarter';
-const span = focus ? Math.max(4, (placed[types.indexOf(focus)]?.userData.dims?.length || 5) * 1.25) : Math.max(x, 10);
+const span = focus ? Math.max(4, (placed[focusIdx]?.userData.dims?.length || 5) * 1.25) : Math.max(x, 10);
 const dist = span / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))) * (focus ? 0.62 : 0.62);
 const views = {
   threequarter: [ -0.55, 0.32, -0.78 ], front: [0, 0.15, -1], side: [-1, 0.12, 0], rear: [0.5, 0.3, 0.8], top: [0, 1, 0.001], low: [-0.7, 0.08, -0.7],
@@ -107,6 +115,12 @@ const dir = new THREE.Vector3(...(views[view] || views.threequarter)).normalize(
 camera.position.copy(target).addScaledVector(dir, dist * (focus ? 1 : 0.9));
 if (q.get('cam')) camera.position.set(...q.get('cam').split(',').map(Number));
 if (q.get('target')) target.set(...q.get('target').split(',').map(Number));
+if (view === 'driver' && focusIdx >= 0) {     // driver eye point, looking ahead past the wheel + A-pillar
+  const v = placed[focusIdx]; v.updateMatrixWorld(true);
+  const e = new THREE.Vector3(...(v.userData.driverEye || [-0.35, 1.2, 0])).applyMatrix4(v.matrixWorld);
+  camera.position.copy(e); camera.near = 0.02; camera.fov = parseFloat(q.get('fov') || 60); camera.updateProjectionMatrix();
+  target.copy(e).add(new THREE.Vector3(0.25, -0.12, -3).applyQuaternion(v.quaternion));
+}
 camera.lookAt(target);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.copy(target); controls.update();
@@ -125,7 +139,12 @@ addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; cam
 function frame() { renderer.render(scene, camera); placeLabels(); }
 controls.addEventListener('change', () => requestAnimationFrame(frame));   // render on demand (cheap for headless stills)
 frame();
-window.__previewReady = true;
+const timeout = new Promise(r => setTimeout(r, 20000));
+Promise.race([vehiclesReady(), timeout]).then(() => {
+  if (lightsOn) for (const v of placed) v.userData.setLights && v.userData.setLights(true);
+  frame(); window.__previewReady = true;
+});
+window.__placed = placed;
 </script>
 </body>
 </html>

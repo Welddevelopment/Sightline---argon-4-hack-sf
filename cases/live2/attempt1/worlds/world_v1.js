@@ -1,0 +1,185 @@
+// caseId: live2 — NTSB HWY16FH018 (US-27A at NE 140th Ct, near Williston, FL, 2016-05-07 16:36:12.7 EDT)
+// Origin (0,0,0): initial POI at center of EB outside lane on NE 140th Ct centerline (police_report.txt p.3; facts.txt).
+// Frame: +X = east, -Z = north, Y = up. Divided 4-lane US-27A (lanes 12 ft = 3.66 m, median 60 ft = 18.29 m, crossover 130 ft = 39.6 m).
+// EB center z = -1.83 (inside z = -3.66, outside z = 0); median center z = -12.8; WB turn lane z = -23.77; WB through center z = -27.43.
+// Crest 1,132 ft (345 m) W of POI; Vehicle A at 74 mph (33.08 m/s) reaches POI at impactT = 10.43 s (facts.txt F10, F17, F28).
+// Witness B marks Exhibit 4 at Depo 27:05 on the EB shoulder E of NE 140th Ct (~[4.5, 0, 2.6]), where the turning trailer blocks her view of Vehicle A before impact, contradicting her claim at Depo 27:46–28:27.
+export default function createWorld(THREE, assets) {
+  const root = new THREE.Group(), objects = {}, D2R = Math.PI / 180;
+  const add = (id, node, kind, label, citation, occludes, x = 0, z = 0, headingDeg = 0, extra = {}) => {
+    node.name = id; node.position.set(x, 0, z); node.rotation.y = -headingDeg * D2R; root.add(node);
+    return (objects[id] = { node, kind, label, citation, occludes, ...extra });
+  };
+
+  root.add(assets.environment({
+    date: '2016-05-07', timeOfDay: '16:36:12', utcOffset: '-04:00', timeZone: 'America/New_York',
+    lat: 29.387, lon: -82.531, lighting: 'day', weather: 'clear'
+  }));
+  root.add(assets.groundPlane({ id: 'ground', size: 1600, kind: 'grass' }));
+
+  add('road_us27a', assets.road({
+    id: 'road_us27a', lanes: 4, laneWidth: 3.66, length: 1400,
+    divided: true, medianWidth: 21.95, openings: [{ at: 0, width: 39.6 }],
+    markings: 'center_dashed', edgeLines: true, shoulder: 1.52
+  }), 'road', 'US-27A (4-lane divided highway, 12-ft lanes, ~60-ft grass median + WB left-turn lane)', 'facts.txt F6–F8; police_report.txt p.1, p.3', false, 0, -14.63, 90);
+
+  add('road_wb_turn', assets.road({
+    id: 'road_wb_turn', lanes: 1, laneWidth: 3.66, length: 167.6,
+    markings: 'none', edgeLines: true, shoulder: 0
+  }), 'road', 'US-27A WB left-turn lane (550 ft = 167.6 m)', 'facts.txt F8; police_report.txt p.3; evidence/map.png', false, 103.6, -23.77, 270);
+
+  add('road_ne140', assets.road({
+    id: 'road_ne140', lanes: 2, laneWidth: 3.05, length: 140,
+    markings: 'none', edgeLines: true, shoulder: 0.5
+  }), 'road', 'NE 140th Court (local two-lane paved road south of US-27A)', 'inferred: 6.1 m width from facts.txt F11 and modeling assumptions; evidence/map.png', false, 0, 73, 180);
+
+  add('sig_stop_ne140', assets.sign({ id: 'sig_stop_ne140', kind: 'stop', text: 'STOP' }),
+    'sign', 'Stop sign on NE 140th Ct approach', 'inferred: position on SE corner from police_report.txt p.1', false, 4.2, 6.0, 0);
+  add('sig_speed_us27a', assets.sign({ id: 'sig_speed_us27a', kind: 'speed_limit', text: '65' }),
+    'sign', 'US-27A 65 mph speed limit sign', 'inferred: placement along EB approach from facts.txt F13; police_report.txt p.1', false, -120, 4.5, 270);
+
+  add('bld_store', assets.building({ id: 'bld_store', w: 18, d: 13, h: 4.5, kind: 'store' }),
+    'building', 'Retail convenience/feed store on SE corner', 'inferred: footprint ~18x13 m from evidence/map.png scale bar; facts.txt F12; Depo 07:47', true, 18, 22.5, 0);
+  add('occ_shelter', assets.shelter({ id: 'occ_shelter', open: true }),
+    'shelter', 'Open-sided bench shelter in front of store', 'inferred: position from evidence/map.png; facts.txt modeling assumptions; Depo 09:04', false, 7.6, 8.2, 0);
+  add('occ_utility_pole', assets.pole({ id: 'occ_utility_pole', height: 10 }),
+    'pole', 'Wooden utility pole on south roadside (struck by Vehicle A ~8.4 s after POI)', 'inferred: ~210 m E of POI from 8.4 s post-impact airbag deployment in facts.txt F24, F26; police_report.txt p.3', false, 210, 8.5, 0);
+  add('bld_residence', assets.building({ id: 'bld_residence', w: 16, d: 12, h: 4.2, kind: 'house' }),
+    'building', 'Residence on south side of US-27A where Vehicle A came to rest', 'inferred: house dimensions and position near 910-ft (277 m) rest point from facts.txt F25; police_report.txt p.2–3', true, 280, 26, 0);
+  add('occ_crest_west', assets.building({ id: 'occ_crest_west', w: 6, d: 45, h: 3.5, kind: 'generic' }),
+    'terrain', 'Vertical crest of grade 1,132 ft (345 m) W of intersection (2.15% EB descent)', 'inferred: terrain crest at x=-345 m approximated as low embankment proxy just west of crest; facts.txt F10, F27; police_report.txt p.3', true, -352, -14.6, 0);
+
+  add('mark_poi', assets.impactMarker({ id: 'mark_poi', position: [0, 0] }),
+    'marker', 'Initial point of impact (EB outside lane on NE 140th Ct centerline)', 'facts.txt F21; police_report.txt p.3; evidence/map.png', false, 0, 0, 0);
+
+  const V = {
+    veh_A: ['sedan', '#2b2f36', 'Vehicle A (2015 4-door sedan, eastbound at 74 mph)', 'facts.txt F14, F17; police_report.txt p.1; Depo 15:45'],
+    veh_T_tractor: ['truck_tractor', '#2c3540', 'Vehicle T tractor (2014 conventional truck-tractor)', 'facts.txt F15, F19; police_report.txt p.1; Depo 13:12'],
+    veh_T_trailer: ['semitrailer', '#f4f4f4', 'Vehicle T semitrailer (2003 53-ft refrigerated van semitrailer, impact 13.84 m behind tractor front)', 'facts.txt F15, F16; police_report.txt p.1; Depo 13:12'],
+    veh_wit_A: ['sedan', '#5a626a', 'Witness A vehicle (westbound in outside lane ~0.25 mi behind truck at ~60 mph)', 'witness_A.txt p.1; facts.txt F30'],
+    veh_wit_C: ['pickup', '#6b4c3b', 'Witness C pickup (stopped in WB inside lane ~18 m W of crossover)', 'witness_C.txt p.1; police_report.txt p.1']
+  };
+  for (const id in V) {
+    const node = assets.vehicle(V[id][0], { id, color: V[id][1] });
+    if (node.userData && node.userData.setLights) node.userData.setLights(false);
+    add(id, node, 'vehicle', V[id][2], V[id][3], true);
+  }
+
+  const K = {
+    veh_A: [
+      [0, -345.0, 0, 90, 33.08],
+      [10.43, 0.0, 0, 90, 33.08],
+      [11.2, 24.5, 0.7, 92, 29.5],
+      [18.83, 210.0, 8.5, 93, 18.0],
+      [25.0, 277.0, 14.0, 0, 0]
+    ],
+    veh_T_tractor: [
+      [0, 25.0, -23.77, 270, 0.8],
+      [2.0, 21.8, -23.77, 270, 2.2],
+      [5.5, 11.2, -21.5, 232, 3.6],
+      [8.0, 3.6, -12.0, 194, 4.8],
+      [10.43, 0.0, 0.5, 180, 5.2],
+      [15.0, 0.0, 23.0, 180, 4.0],
+      [21.0, 0.0, 39.0, 180, 0]
+    ],
+    veh_T_trailer: [
+      [0, 34.9, -23.77, 270, 0.8],
+      [2.0, 31.7, -23.77, 270, 2.1],
+      [5.5, 20.6, -23.0, 252, 3.3],
+      [8.0, 10.6, -18.5, 224, 4.3],
+      [10.43, 3.6, -8.8, 202, 4.8],
+      [15.0, 0.5, 13.2, 182, 4.0],
+      [21.0, 0.0, 29.1, 180, 0]
+    ],
+    veh_wit_A: [
+      [0, 425.0, -29.26, 270, 26.82],
+      [10.43, 145.3, -29.26, 270, 26.82],
+      [14.0, 52.0, -30.0, 270, 22.0],
+      [21.0, -35.0, -31.5, 270, 0]
+    ],
+    veh_wit_C: [
+      [0, -18.0, -25.6, 270, 0],
+      [25.0, -18.0, -25.6, 270, 0]
+    ]
+  };
+
+  const pose = (k, t) => {
+    if (t <= k[0][0]) return k[0].slice(1, 4);
+    let i = 0; while (i < k.length - 2 && t > k[i + 1][0]) i++;
+    const a = k[i], b = k[i + 1]; if (t >= b[0]) return b.slice(1, 4);
+    const T = b[0] - a[0], u = (t - a[0]) / T, u2 = u * u, u3 = u2 * u, h10 = u3 - 2 * u2 + u, h01 = 3 * u2 - 2 * u3, h11 = u3 - u2;
+    const vx = (p) => p[4] * Math.sin(p[3] * D2R) * T, vz = (p) => -p[4] * Math.cos(p[3] * D2R) * T;
+    let dh = b[3] - a[3]; dh -= 360 * Math.round(dh / 360);
+    return [a[1] + (b[1] - a[1]) * h01 + vx(a) * h10 + vx(b) * h11, a[2] + (b[2] - a[2]) * h01 + vz(a) * h10 + vz(b) * h11, a[3] + dh * h01];
+  };
+
+  const duration = 25;
+  const witnesses = [
+    {
+      id: 'wit_B', name: 'Witness B', position: [4.5, 0, 2.6], eyeHeight: 1.6,
+      lookAt: 'veh_A', observationTime: 9.8,
+      claim: 'I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.',
+      citation: 'Depo 27:05 (red X mark on Exhibit 4 on EB shoulder E of NE 140th Ct); Depo 27:46–28:27'
+    },
+    {
+      id: 'wit_A', name: 'Witness A', position: [161.4, 0, -29.26], eyeHeight: 1.2,
+      lookAt: 'veh_A', observationTime: 9.8,
+      claim: 'Looking down the road ahead of me, I saw a dark car come over the hill... Once the trailer was out across the eastbound lanes, it blocked my view of the car. I didn\'t see the car hit the trailer.',
+      citation: 'witness_A.txt p.1; facts.txt F30'
+    },
+    {
+      id: 'wit_C', name: 'Witness C', position: [-18.0, 0, -25.6], eyeHeight: 1.5,
+      lookAt: 'veh_T_trailer', observationTime: 10.43,
+      claim: 'The truck started across. It was barely creeping when it pulled out, slower than a walk at first, then picking up a little as it swung across the eastbound lanes toward 140th. I was watching the truck, not the other side of the road.',
+      citation: 'witness_C.txt p.1; police_report.txt p.1'
+    }
+  ];
+
+  add('ped_wit_B', assets.pedestrian({ id: 'ped_wit_B', height: 1.65 }),
+    'pedestrian', 'Witness B standing near SE corner of US-27A & NE 140th Ct', 'Depo 27:05 (Exhibit 4 red X mark); Depo 27:24', false, 4.5, 2.6, 270);
+
+  const facts = [
+    { id: 'f_speed_A', text: 'Vehicle A cruise control and pre-impact speed (no braking before impact)', value: 74, unit: 'mph', citation: 'facts.txt F17, F18; police_report.txt p.3', kind: 'speed' },
+    { id: 'f_speed_limit', text: 'Posted speed limit on US-27A', value: 65, unit: 'mph', citation: 'facts.txt F13; police_report.txt p.1', kind: 'speed' },
+    { id: 'f_crest_dist', text: 'Vertical crest west of intersection center (2.15% EB descent)', value: 345, unit: 'm', citation: 'facts.txt F10 (1,132 ft = 345 m); police_report.txt p.3', kind: 'distance' },
+    { id: 'f_sight_time', text: 'Maximum potential visibility time between Vehicle A and Vehicle T from crest to POI at 74 mph', value: 10.4, unit: 's', citation: 'facts.txt F28; police_report.txt p.3', kind: 'time' },
+    { id: 'f_comb_len', text: 'Vehicle T tractor-semitrailer combination overall length (71 ft 7 in)', value: 21.82, unit: 'm', citation: 'facts.txt F15; police_report.txt p.1', kind: 'distance' },
+    { id: 'f_impact_offset', text: 'Impact point on semitrailer rearward of tractor front (45 ft 5 in)', value: 13.84, unit: 'm', citation: 'facts.txt F16; police_report.txt p.3', kind: 'distance' },
+    { id: 'f_post_impact_A', text: 'Vehicle A post-impact travel distance to final rest in residential yard (910 ft)', value: 277, unit: 'm', citation: 'facts.txt F25; police_report.txt p.2–3', kind: 'distance' },
+    { id: 'f_pole_time', text: 'Time from initial trailer impact to utility pole strike / airbag deployment', value: 8.4, unit: 's', citation: 'facts.txt F26; police_report.txt p.3', kind: 'time' },
+    { id: 'f_skids_none', text: 'Pre-collision roadway tire/skid marks from either vehicle', value: 0, unit: 'm', citation: 'facts.txt F22; police_report.txt p.2–3', kind: 'skid' },
+    { id: 'f_pos_wit_B', text: 'Witness B marked standing position on Exhibit 4 (on EB shoulder E of NE 140th Ct, NW of bench shelter, whereas spoken testimony was "over by the corner, near the shelter")', value: '[4.5, 0, 2.6]', unit: 'm', citation: 'Depo 27:05 (Exhibit 4 pen mark) vs Depo 09:04, 27:04', kind: 'position' },
+    { id: 'f_pos_wit_B_truck', text: 'Witness B marked truck final rest on Exhibit 4 on NE 140th Ct south of the retail store', value: '[0, 0, 39]', unit: 'm', citation: 'Depo 26:38 (Exhibit 4 pen mark); police_report.txt p.3', kind: 'position' },
+    { id: 'f_pos_wit_A', text: 'Witness A position driving westbound in outside lane ~0.25 mi behind Vehicle T at ~60 mph', value: '[161.4, 0, -29.26]', unit: 'm', citation: 'witness_A.txt p.1; facts.txt F30', kind: 'position' },
+    { id: 'f_pos_wit_C', text: 'Witness C stopped pickup position in WB inside lane ~18 m west of crossover', value: '[-18, 0, -25.6]', unit: 'm', citation: 'witness_C.txt p.1', kind: 'position' }
+  ];
+
+  function setTime(t) {
+    t = Math.min(Math.max(t, 0), duration);
+    for (const id in K) {
+      const [x, z, h] = pose(K[id], t);
+      objects[id].node.position.set(x, 0, z);
+      objects[id].node.rotation.y = -h * D2R;
+    }
+    root.updateMatrixWorld(true);
+  }
+
+  const world = {
+    meta: {
+      caseId: 'live2',
+      title: 'US-27A at NE 140th Court — Sedan Under Left-Turning Semitrailer (NTSB HWY16FH018)',
+      date: '2016-05-07',
+      timeOfDay: '16:36',
+      timeZone: 'America/New_York',
+      utcOffset: '-04:00',
+      lat: 29.387,
+      lon: -82.531,
+      lighting: 'day',
+      source: 'NTSB/HAR-17/02 (HWY16FH018); police_report.txt; facts.txt; deposition.mp4',
+      impactT: 10.43
+    },
+    root, duration, setTime, objects, witnesses, facts, skids: []
+  };
+  setTime(0);
+  return world;
+}

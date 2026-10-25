@@ -1,0 +1,40 @@
+{
+  "name": "rf_r1_r4_north_repair",
+  "model": "gemini-4-argon",
+  "hash": "9b2a386072abce81",
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 43088,
+    "candidatesTokenCount": 22156,
+    "totalTokenCount": 65244,
+    "cachedContentTokenCount": 12288,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 40906
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 2182
+      }
+    ],
+    "cacheTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 11666
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 622
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 22156
+      }
+    ]
+  },
+  "seconds": 165.4,
+  "at": "2026-10-25T20:35:20.214Z"
+}

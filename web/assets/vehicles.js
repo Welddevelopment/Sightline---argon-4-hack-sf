@@ -10,8 +10,9 @@
 // userData {assetType:'vehicle', vehicleType, dims, driverEye, setLights(on), wheels, roll(dist)},
 // child meshes headlight_L/R, taillight_L/R. No brand marks; plates are blank.
 import {
-  surfacePatch, getMaterials, makeWheel, loft, curve, roundedBox, cachedGeo, makeLamp, attachLightAPI, finalizeVehicle, smoothstep,
+  surfacePatch, getMaterials, makeWheel, loft, curve, roundedBox, cachedGeo, makeLamp, attachLightAPI, finalizeVehicle, smoothstep, makeInterior, crispX,
 } from './vehicle_parts.js';
+import * as GV from './gltf_vehicle.js';
 
 let heavy = null, small = null;
 try { heavy = await import('./vehicles_heavy.js'); } catch { heavy = null; }
@@ -43,7 +44,7 @@ export function normalizeType(type) {
 const S = { PAINT: 0, TRIM: 1, UNDER: 2, GLASS: 3, PLASTIC: 4, INTERIOR: 5, GLOSS: 6, SATIN: 7 };
 function slotMats(THREE, color) {
   const M = getMaterials(THREE);
-  return [M.paint(color), M.trim, M.underbody, M.glass, M.plastic, M.interior, M.trimGloss, M.alloy];
+  return [M.paint(color), M.trim, M.underbody, M.glassTint || M.glass, M.plastic, M.interior, M.trimGloss, M.alloy];
 }
 
 // ------------------------------------------------------------------ car configurations (u = metres from front bumper)
@@ -51,35 +52,39 @@ const CARS = {
   sedan: {
     L: 4.9, W: 1.9, H: 1.45, bodyW: 1.82,
     wheel: { r: 0.335, w: 0.235, rim: 'alloy' }, axles: [0.96, 3.81],
-    top: [[0, 0.58], [0.025, 0.66], [0.07, 0.72], [0.16, 0.765], [0.45, 0.81], [0.95, 0.86], [1.45, 0.92], [1.74, 0.955], [2.6, 0.975],
-      [3.6, 0.995], [3.96, 1.0], [4.4, 0.995], [4.7, 0.985], [4.8, 0.97], [4.845, 0.945], [4.872, 0.89], [4.89, 0.8], [4.9, 0.66]],
-    bot: [[0, 0.33], [0.06, 0.255], [0.25, 0.2], [0.5, 0.19], [4.4, 0.19], [4.7, 0.24], [4.86, 0.3], [4.9, 0.36]],
-    hw: [[0, 0.74], [0.02, 0.8], [0.08, 0.86], [0.25, 0.895], [0.6, 0.908], [1.2, 0.91], [3.9, 0.91], [4.5, 0.905], [4.75, 0.89], [4.86, 0.86], [4.9, 0.8]],
+    // raked nose (bumper face -> hood leading edge at ~0.78 m), hood rising to the cowl at ~0.95 m, beltline ~0.98 m,
+    // high short deck; plan view tapers hard at both ends so the corners read rounded, not boxed
+    top: [[0, 0.5], [0.015, 0.58], [0.04, 0.645], [0.08, 0.7], [0.14, 0.74], [0.24, 0.77], [0.45, 0.795], [0.95, 0.84], [1.45, 0.905], [1.74, 0.945], [2.6, 0.975],
+      [3.6, 1.0], [3.96, 1.01], [4.35, 1.01], [4.62, 1.0], [4.74, 0.985], [4.81, 0.96], [4.85, 0.92], [4.88, 0.84], [4.895, 0.74], [4.9, 0.6]],
+    bot: [[0, 0.3], [0.05, 0.25], [0.2, 0.205], [0.5, 0.19], [4.4, 0.19], [4.68, 0.23], [4.84, 0.28], [4.9, 0.33]],
+    hw: [[0, 0.6], [0.015, 0.68], [0.05, 0.75], [0.11, 0.81], [0.22, 0.855], [0.4, 0.885], [0.7, 0.903], [1.2, 0.91], [3.9, 0.91], [4.4, 0.903], [4.65, 0.885], [4.8, 0.85], [4.87, 0.8], [4.9, 0.72]],
     nTop: 6, nBot: 5, tumble: 0.07, flare: 0.07,
+    crisp: { drop: 0.095, tuck: 0.045, shoulder: 0.075, crown: 0.012, r: [0.05, 0.14, 0.014, 0.04, 0.22] },
     gh: { u0: 1.70, u1: 3.98, top: [[1.70, 0.94], [1.85, 1.03], [2.1, 1.19], [2.35, 1.32], [2.58, 1.405], [2.8, 1.44], [3.1, 1.45], [3.35, 1.43], [3.55, 1.35], [3.78, 1.18], [3.98, 1.0]],
       aTop: 2.62, cTop: 3.38, b: [2.93, 3.03], nTop: 3.0, tumble: 0.2, cPillarPaint: true, quarter: [3.42, 3.62] },
-    seams: [{ u: 1.86, y0: 0.3, y1: 0.99 }, { u: 2.98, y0: 0.27, y1: 0.99 }, { u: 3.9, y0: 0.4, y1: 0.99 }, { u: 0.17, top: true }, { u: 4.02, top: true }],
+    seams: [{ u: 1.86, y0: 0.3, y1: 0.99 }, { u: 2.98, y0: 0.27, y1: 0.99 }, { u: 3.9, y0: 0.4, y1: 0.99 }, { u: 0.11, top: true }, { u: 4.02, top: true }],
     eye: { u: 2.85, y: 1.16, x: -0.36 },
-    head: { y: 0.68, patch: { u: [0.012, 0.36], t0: [0.2, 0.66], t1: [1.02, 1.0] } },
-    tail: { y: 0.86, patch: { u: [4.62, 4.897], t0: [0.42, 0.1], t1: [0.78, 1.22] } },
-    grille: { y: 0.5, w: 0.8, h: 0.13, intake: { y: 0.37, w: 1.0, h: 0.08 } },
+    head: { y: 0.66, x: 0.56, w: 0.5, h: 0.11, d: 0.12, yaw: 0.42, drl: true },
+    tail: { y: 0.86, patch: { u: [4.64, 4.897], t0: [0.5, 0.35], t1: [0.95, 1.15] } },
+    grille: { y: 0.55, w: 0.8, h: 0.17, intake: { y: 0.36, w: 1.1, h: 0.09 } },
     plateF: 0.44, plateR: 0.63,
     mirror: { u: 1.98, y: 1.03 },
   },
   suv: {
     L: 4.8, W: 1.95, H: 1.75, bodyW: 1.84,
     wheel: { r: 0.37, w: 0.245, rim: 'alloy' }, axles: [0.93, 3.78],
-    top: [[0, 0.66], [0.03, 0.76], [0.08, 0.84], [0.18, 0.9], [0.5, 0.95], [1.0, 1.02], [1.45, 1.08], [1.62, 1.1], [3.0, 1.12], [4.5, 1.13],
+    top: [[0, 0.7], [0.015, 0.8], [0.04, 0.86], [0.1, 0.895], [0.25, 0.92], [0.5, 0.95], [1.0, 1.02], [1.45, 1.08], [1.62, 1.1], [3.0, 1.12], [4.5, 1.13],
       [4.68, 1.12], [4.75, 1.08], [4.785, 1.0], [4.8, 0.9]],
     bot: [[0, 0.44], [0.08, 0.35], [0.3, 0.28], [0.5, 0.27], [4.3, 0.27], [4.55, 0.33], [4.75, 0.42], [4.8, 0.48]],
-    hw: [[0, 0.72], [0.025, 0.8], [0.08, 0.86], [0.22, 0.9], [0.6, 0.915], [4.3, 0.92], [4.6, 0.905], [4.74, 0.87], [4.8, 0.8]],
+    hw: [[0, 0.62], [0.025, 0.72], [0.08, 0.81], [0.18, 0.87], [0.35, 0.905], [0.6, 0.915], [4.3, 0.92], [4.5, 0.91], [4.66, 0.89], [4.75, 0.85], [4.8, 0.77]],
     nTop: 7, nBot: 5, tumble: 0.06, flare: 0.05,
+    crisp: { drop: 0.1, tuck: 0.04, shoulder: 0.06, crown: 0.012, r: [0.05, 0.12, 0.016, 0.045, 0.22] },
     gh: { u0: 1.58, u1: 4.74, top: [[1.58, 1.09], [1.75, 1.2], [2.0, 1.4], [2.25, 1.57], [2.5, 1.675], [2.8, 1.71], [3.6, 1.715], [4.3, 1.705], [4.5, 1.68], [4.62, 1.58], [4.7, 1.36], [4.74, 1.12]],
       aTop: 2.55, cTop: 4.48, b: [2.86, 2.97], c: [3.86, 3.96], dPaint: 4.25, nTop: 3.4, tumble: 0.16 },
     seams: [{ u: 1.75, y0: 0.42, y1: 1.12 }, { u: 2.91, y0: 0.4, y1: 1.12 }, { u: 3.88, y0: 0.6, y1: 1.12 }, { u: 0.2, top: true }],
     cladding: true, roofRails: true,
     eye: { u: 2.75, y: 1.42, x: -0.37 },
-    head: { y: 0.84, patch: { u: [0.015, 0.34], t0: [0.22, 0.62], t1: [1.0, 0.98] } },
+    head: { y: 0.835, x: 0.6, w: 0.48, h: 0.11, d: 0.12, yaw: 0.3, drl: true },
     tail: { y: 1.0, patch: { u: [4.56, 4.797], t0: [0.35, 0.05], t1: [0.85, 1.1] } },
     grille: { y: 0.68, w: 0.95, h: 0.24, intake: { y: 0.47, w: 1.15, h: 0.11 } },
     plateF: 0.53, plateR: 0.78,
@@ -90,14 +95,15 @@ const CARS = {
     wheel: { r: 0.40, w: 0.275, rim: 'alloy' }, axles: [0.98, 4.66],
     top: [[0, 1.0], [0.03, 1.08], [0.1, 1.13], [0.3, 1.16], [0.9, 1.19], [1.45, 1.22], [1.62, 1.24], [3.12, 1.26]],
     bot: [[0, 0.5], [0.12, 0.44], [0.35, 0.42], [0.6, 0.43], [3.12, 0.43]],
-    hw: [[0, 0.82], [0.03, 0.885], [0.1, 0.915], [0.3, 0.935], [3.12, 0.94]],
+    hw: [[0, 0.74], [0.03, 0.83], [0.1, 0.89], [0.25, 0.925], [0.45, 0.94], [3.12, 0.94]],
     nTop: 8, nBot: 6, tumble: 0.04, flare: 0.03,
+    crisp: { drop: 0.13, tuck: 0.03, shoulder: 0.045, crown: 0.01, r: [0.04, 0.08, 0.016, 0.035, 0.2] },
     gh: { u0: 1.6, u1: 3.1, top: [[1.6, 1.24], [1.78, 1.38], [2.05, 1.6], [2.3, 1.77], [2.55, 1.865], [2.8, 1.9], [3.0, 1.895], [3.06, 1.85], [3.1, 1.6]],
       aTop: 2.5, cTop: 3.03, b: [2.42, 2.52], nTop: 4.0, tumble: 0.12, flatBack: true },
     seams: [{ u: 1.7, y0: 0.48, y1: 1.24 }, { u: 2.47, y0: 0.45, y1: 1.24 }, { u: 3.06, y0: 0.5, y1: 1.24 }],
     bed: { u0: 3.16, u1: 5.9, rail: 1.31, floor: 0.82 },
     eye: { u: 2.72, y: 1.56, x: -0.4 },
-    head: { u: 0.02, y: 0.93, x: 0.71, w: 0.30, h: 0.17, d: 0.12, yaw: 0.25 },
+    head: { u: 0.02, y: 0.93, x: 0.7, w: 0.32, h: 0.17, d: 0.12, yaw: 0.25, drl: true },
     tail: { u: 5.87, y: 1.08, x: 0.89, w: 0.1, h: 0.36, d: 0.1, yaw: 0 },
     grille: { y: 0.86, w: 1.12, h: 0.36, intake: { y: 0.52, w: 0.9, h: 0.1 } },
     plateF: 0.58, plateR: 0.56,
@@ -108,13 +114,14 @@ const CARS = {
     wheel: { r: 0.36, w: 0.235, rim: 'steel' }, axles: [0.92, 4.22],
     top: [[0, 0.72], [0.03, 0.82], [0.09, 0.9], [0.25, 0.97], [0.6, 1.06], [0.82, 1.11], [2.0, 1.13], [5.24, 1.14], [5.29, 1.1], [5.3, 1.04]],
     bot: [[0, 0.42], [0.1, 0.34], [0.3, 0.29], [5.0, 0.3], [5.22, 0.35], [5.3, 0.4]],
-    hw: [[0, 0.76], [0.03, 0.84], [0.1, 0.895], [0.3, 0.93], [0.8, 0.94], [5.15, 0.94], [5.26, 0.925], [5.3, 0.88]],
+    hw: [[0, 0.64], [0.03, 0.75], [0.1, 0.84], [0.25, 0.9], [0.5, 0.932], [0.8, 0.94], [5.15, 0.94], [5.26, 0.925], [5.3, 0.88]],
     nTop: 7, nBot: 6, tumble: 0.04, flare: 0.03,
+    crisp: { drop: 0.11, tuck: 0.035, shoulder: 0.05, crown: 0.01, r: [0.05, 0.1, 0.016, 0.04, 0.2] },
     gh: { u0: 0.8, u1: 5.3, top: [[0.8, 1.11], [0.95, 1.28], [1.15, 1.52], [1.35, 1.75], [1.55, 1.9], [1.8, 1.97], [2.1, 2.0], [5.18, 2.0], [5.27, 1.98], [5.3, 1.94]],
       aTop: 1.55, cTop: 5.3, b: [1.9, 2.0], nTop: 5.0, tumble: 0.07, flatBack: true, van: true },
     seams: [{ u: 0.96, y0: 0.62, y1: 1.12 }, { u: 1.95, y0: 0.36, y1: 1.12 }, { u: 3.18, y0: 0.36, y1: 1.12 }, { u: 5.28, y0: 0.4, y1: 1.12 }],
     eye: { u: 1.98, y: 1.58, x: -0.45 },
-    head: { y: 0.86, patch: { u: [0.02, 0.3], t0: [0.05, 0.5], t1: [0.98, 0.92] } },
+    head: { y: 0.87, x: 0.6, w: 0.44, h: 0.12, d: 0.12, yaw: 0.3, drl: true },
     tail: { y: 0.9, patch: { u: [5.22, 5.297], t0: [-0.55, -0.6], t1: [0.5, 0.5] } },
     grille: { y: 0.72, w: 0.95, h: 0.22, intake: { y: 0.47, w: 1.1, h: 0.1 } },
     plateF: 0.5, plateR: 0.55,
@@ -123,6 +130,13 @@ const CARS = {
 };
 
 // ------------------------------------------------------------------ geometry builders
+// crisp section parameters along the body: the shoulder crease sits a fixed distance below the local top
+// (beltline in the cabin, fender top over the hood), so it reads as one continuous character line.
+function crispAt(cfg, u, yb, yt) {
+  const c = cfg.crisp, h = Math.max(0.05, yt - yb);
+  const drop = typeof c.drop === 'function' ? c.drop(u) : c.drop;
+  return { crease: Math.max(0.35, Math.min(0.93, 1 - drop / h)), tuck: c.tuck, shoulder: c.shoulder, crown: c.crown, r: c.r };
+}
 function prep(cfg) {
   if (cfg._f) return cfg._f;
   if (!cfg.type) cfg.type = Object.keys(CARS).find(k => CARS[k] === cfg) || 'car';
@@ -137,16 +151,22 @@ function prep(cfg) {
   f.section = (u) => {
     const yt = f.top(u);
     const yb = Math.min(f.bot(u), yt - 0.03);
-    return { yb, yt, hw: f.hw(u), nTop: cfg.nTop, nBot: cfg.nBot, tumble: cfg.tumble, flare: cfg.flare };
+    return { yb, yt, hw: f.hw(u), nTop: cfg.nTop, nBot: cfg.nBot, tumble: cfg.tumble, flare: cfg.flare, crisp: cfg.crisp ? crispAt(cfg, u, yb, yt) : undefined };
   };
   // x of the body surface at height y (same formula as loft)
   f.sideX = (u, y) => {
     const s = f.section(u), yc = (s.yb + s.yt) / 2, hh = (s.yt - s.yb) / 2;
+    if (s.crisp) return crispX(s, Math.max(s.yb + 1e-3, Math.min(s.yt - 1e-3, y)));
     const v = Math.max(-1, Math.min(1, (y - yc) / hh));
     const n = v >= 0 ? s.nTop : s.nBot;
     const st = Math.sign(v) * Math.pow(Math.abs(v), n / 2), ct = Math.sqrt(Math.max(0, 1 - st * st));
     const fy = (y - s.yb) / (2 * hh);
     return s.hw * Math.pow(ct, 2 / n) * (1 - s.tumble * fy * fy - s.flare * (1 - fy) * (1 - fy));
+  };
+  // u where the front surface passes through (x, y)
+  f.surfU = (x, y) => {
+    for (let u = 0; u < cfg.L * 0.3; u += 0.002) { const sc = f.section(u); if (y >= sc.yb && y <= sc.yt && f.sideX(u, y) >= Math.abs(x)) return u; }
+    return 0;
   };
   // u on the front (or rear) nose surface for a given height
   f.noseU = (y, rear = false) => {
@@ -191,12 +211,15 @@ function buildBodyGeo(THREE, cfg) {
       const ar = f.arch(u); if (ar > 0 && y < ar + 0.012) return S.UNDER;
       const side = Math.abs(s) < 0.75;
       const seam = seamAt(u);
+      if (s > 0.72 && u > cfg.gh.u0 + 0.06 && u < Math.min(cfg.gh.u1, cfg.gh.cTop + 0.1) - 0.06 && Math.abs(c) * sec.hw < sec.hw - 0.07) return S.INTERIOR; // cabin floor/dash top at the belt
       if (seam) {
         if (seam.top && s > 0.6) return S.TRIM;
         if (!seam.top && side && y > seam.y0 && y < seam.y1) return S.TRIM;
       }
-      if (cfg.cladding && side && (y < 0.5 || archNear(u, y))) return S.PLASTIC;
-      if (cfg.cladding && (u < 0.12 || u > L - 0.1) && y < 0.5) return S.PLASTIC;
+      // lower cladding follows a horizontal line (per-face arch tests made a staircase around the wheel openings)
+      if (cfg.cladding && side && y < 0.47) return S.PLASTIC;
+      if (cfg.cladding && (u < 0.05 || u > L - 0.05) && y < 0.47) return S.PLASTIC;
+      void archNear;
       if (!cfg.cladding && (u < 0.06 || u > L - 0.05) && y < sec.yb + 0.09 && s < 0.2) return S.PLASTIC;
       void c;
       return S.PAINT;
@@ -281,7 +304,17 @@ function placeLamp(THREE, cfg, f, spec, kind, sideSign, rear) {
     mesh.name = name; mesh.userData.lampKind = kind;
     return mesh;
   }
-  const lamp = makeLamp(THREE, { name, kind, w: spec.w, h: spec.h, d: spec.d, r: Math.min(spec.w, spec.h) * 0.35 });
+  const lamp = makeLamp(THREE, { name, kind, w: spec.w, h: spec.h, d: spec.d, r: Math.min(spec.w, spec.h) * (spec.drl ? 0.22 : 0.35) });
+  if (spec.drl) {
+    // inner projector + LED strip so the lamp reads as an integrated unit, not a blob
+    const M = getMaterials(THREE);
+    const strip = new THREE.Mesh(roundedBox(THREE, spec.w * 0.78, 0.014, 0.02, 0.006), M.lightRev); strip.name = 'drl';
+    strip.position.set(0, -spec.h * 0.28, -spec.d / 2 - 0.003); lamp.add(strip);
+    const proj = new THREE.Mesh(roundedBox(THREE, 0.075, spec.h * 0.55, 0.02, 0.02), M.chrome); proj.name = 'projector';
+    proj.position.set(-sideSign * spec.w * 0.22, spec.h * 0.08, -spec.d / 2 - 0.002); lamp.add(proj);
+    const bez = new THREE.Mesh(roundedBox(THREE, spec.w + 0.025, spec.h + 0.02, spec.d * 0.8, Math.min(spec.w, spec.h) * 0.2), M.trimGloss); bez.name = 'lamp_bezel';
+    bez.position.set(0, 0, 0.012); lamp.add(bez);
+  }
   const y = spec.y, u = f.noseU(y, rear);
   // outward surface normal in the (z,y) plane from the profile slope
   const du = 0.006, t = (f.top(Math.min(u + du, L)) - f.top(Math.max(u - du, 0))) / (2 * du);
@@ -290,6 +323,15 @@ function placeLamp(THREE, cfg, f, spec, kind, sideSign, rear) {
   lamp.rotation.order = 'YXZ';
   lamp.rotation.x = a;
   lamp.rotation.y = rear ? Math.PI + sideSign * spec.yaw : -sideSign * spec.yaw;
+  if (spec.drl && !rear) {
+    // sit the lamp on the actual nose surface: follow its plan curvature, face ~1.5 cm proud
+    const half = spec.w * 0.45;
+    const uc = f.surfU(spec.x, y), uo = f.surfU(spec.x + half, y), ui = f.surfU(spec.x - half, y);
+    const yaw = Math.atan2(uo - ui, 2 * half);
+    lamp.rotation.y = -sideSign * yaw;
+    lamp.position.set(sideSign * spec.x, y, Math.max(uc, (uo + ui) / 2) - L / 2 + spec.d / 2 - 0.015);
+    return lamp;
+  }
   const ny = Math.sin(a), nz = (rear ? 1 : -1) * Math.cos(a);
   const inset = spec.d / 2 - 0.012;
   lamp.position.set(sideSign * spec.x, y - ny * inset, u - L / 2 - nz * inset);
@@ -323,22 +365,22 @@ function buildCarTemplate(THREE, type) {
   const uEnd = cfg.bodyEnd || L;
   addMesh(roundedBox(THREE, cfg.bodyW - 0.5, 0.08, uEnd - 1.3, 0.03), M.underbody, 'floorpan', [0, f.bot(L / 2) - 0.02, z(uEnd / 2)]);
 
-  // interior: dark tub at belt + headrests so glass reads as glass, not paint
+  // interior: dash, steering wheel, seats (driver-seat views look past the wheel + A-pillar through tinted glass)
   const g = cfg.gh;
-  const beltMid = f.top((g.u0 + g.cTop) / 2);
-  const cabLen = Math.min(g.cTop, g.u1 - 0.15) - g.aTop + 0.5;
-  addMesh(roundedBox(THREE, 2 * (f.sideX((g.aTop + g.cTop) / 2, beltMid) - 0.06), 0.03, cabLen, 0.01), M.interior, 'interior_tub', [0, beltMid + 0.02, z(g.aTop - 0.35 + cabLen / 2)]);
-  const eyeZ = z(cfg.eye.u);
-  const seatsRows = type === 'pickup' ? [cfg.eye.u + 0.18, cfg.eye.u + 0.95 > g.cTop ? null : cfg.eye.u + 0.95] : type === 'van' ? [cfg.eye.u + 0.18] : [cfg.eye.u + 0.18, cfg.eye.u + 1.0];
-  for (const su of seatsRows) {
-    if (!su || su > g.cTop + 0.2) continue;
-    for (const sx of [-1, 1]) {
-      addMesh(roundedBox(THREE, 0.5, 0.55, 0.12, 0.05), M.interior, 'seat', [sx * 0.38, cfg.eye.y - 0.42, z(su) + 0.05]);
-      addMesh(roundedBox(THREE, 0.26, 0.2, 0.1, 0.04), M.interior, 'headrest', [sx * 0.38, cfg.eye.y - 0.02, z(su) + 0.08]);
-    }
+  {
+    const beltMid = f.top((g.u0 + g.cTop) / 2);
+    const rows = type === 'sedan' || type === 'suv' ? 2 : 1;
+    // dash front must stay behind the windshield: first u where the glass clears the dash top
+    let uClear = g.u0; const dashTop = cfg.eye.y - 0.32 + 0.07;
+    while (uClear < cfg.eye.u - 0.5 && f.ghTop(uClear) < dashTop) uClear += 0.01;
+    const dashU = Math.max(uClear + 0.31, cfg.eye.u - 0.95);
+    const uD = dashU - 0.3, beltD = f.top(uD);
+    const dashW = 2 * (f.sideX(uD, beltD - 0.03) - 0.018) * (1 - g.tumble * Math.max(0, Math.min(1, (dashTop - beltD) / 0.45))) - 0.12;
+    const inter = makeInterior(THREE, { eye: [cfg.eye.x, cfg.eye.y, z(cfg.eye.u)], width: 2 * (f.sideX((g.aTop + g.cTop) / 2, beltMid) - 0.08),
+      floorY: beltMid - 0.45, dashZ: z(dashU), rearZ: z(Math.min(g.cTop, g.u1 - 0.15)), rows, swDrop: 0.31, dashW,
+      mirrorY: f.ghTop(g.aTop) - 0.08, mirrorZ: z(g.aTop + 0.08) });
+    root.add(inter);
   }
-  void eyeZ;
-  if (type === 'van') addMesh(roundedBox(THREE, cfg.bodyW - 0.2, 0.8, 0.04, 0.01), M.interior, 'bulkhead', [0, f.top(2.4) + 0.4, z(2.45)]);
 
   const ghY = (u, x) => {
     const yb0 = f.top(u), yt = Math.max(f.ghTop(u), yb0 + 0.004), sink = 0.12, ybb = yb0 - sink;
@@ -399,16 +441,21 @@ function buildCarTemplate(THREE, type) {
     buildBed(THREE, cfg, f, root, addMesh, z);
   }
 
-  // ---- mirrors (housing reaches exactly W/2)
+  // ---- mirrors: housing on a short, deep sail at the A-pillar base (housing reaches exactly W/2)
   for (const s of [-1, 1]) {
-    const mu = cfg.mirror.u, big = cfg.mirror.big, my = f.top(cfg.mirror.u) + (big ? 0.1 : 0.075);
-    const hx = big ? 0.12 : 0.16, hy = big ? 0.26 : 0.11, hz = big ? 0.08 : 0.1;
+    const mu = cfg.mirror.u, big = cfg.mirror.big, belt = f.top(mu);
+    const hx = big ? 0.12 : 0.15, hy = big ? 0.26 : 0.12, hz = big ? 0.08 : 0.085;
+    const my = belt + (big ? 0.18 : 0.085);
     const cx = s * (cfg.W / 2 - hx / 2);
-    addMesh(roundedBox(THREE, hx, hy, hz, 0.035), big ? M.trimGloss : mats[0], 'mirror_housing', [cx, my + (big ? 0.08 : 0), z(mu)], [0, -s * 0.12, 0], big ? null : 0);
-    addMesh(roundedBox(THREE, hx * 0.86, hy * 0.82, 0.01, 0.02), M.mirror, 'mirror_glass', [cx, my + (big ? 0.08 : 0), z(mu) + hz / 2 + 0.002], [0, -s * 0.12, 0]);
-    const sx = f.sideX(mu, f.top(mu) - 0.04);
-    const sy = Math.min(my - 0.03, f.top(mu) + 0.03);
-    addMesh(roundedBox(THREE, Math.max(0.02, Math.abs(cx) - hx / 2 - sx + 0.06), 0.035, 0.06, 0.012), big ? M.trimGloss : M.trim, 'mirror_stalk', [s * ((Math.abs(cx) - hx / 2 + sx - 0.06) / 2), sy, z(mu) + 0.02]);
+    const rotY = [0, -s * 0.1, 0];
+    addMesh(roundedBox(THREE, hx, hy, hz, big ? 0.03 : 0.028), big ? M.trimGloss : mats[0], 'mirror_housing', [cx, my, z(mu)], rotY, big ? null : 0);
+    addMesh(roundedBox(THREE, hx * 0.88, hy * 0.8, 0.008, 0.015), M.mirror, 'mirror_glass', [cx - s * 0.004, my, z(mu) + hz / 2 + 0.002], rotY);
+    const sx = f.sideX(mu, belt - 0.02) - 0.02;
+    const armW = Math.max(0.03, Math.abs(cx) - hx * 0.35 - sx);
+    // sail: deep, low wedge from the door top to the housing (no thin stalk)
+    addMesh(roundedBox(THREE, armW, big ? 0.05 : 0.06, big ? 0.07 : 0.15, 0.015), big ? M.trimGloss : M.trimGloss, 'mirror_sail',
+      [s * (sx + armW / 2), big ? my - 0.08 : belt + 0.035, z(mu) + (big ? 0 : 0.03)]);
+    if (!big) addMesh(roundedBox(THREE, 0.03, 0.07, 0.1, 0.01), mats[0], 'mirror_neck', [s * (Math.abs(cx) - hx * 0.3), belt + 0.06, z(mu) + 0.005], null, 0);
   }
   // ---- door handles (gloss black, flush)
   const handles = type === 'van' ? [1.6, 2.75] : type === 'pickup' ? [2.25, 2.95] : type === 'suv' ? [2.55, 3.6] : [2.62, 3.62];
@@ -512,14 +559,49 @@ export function createCar(THREE, type, opts = {}) {
     root.add(w); wheels.push(w);
   }
   const dims = VEHICLE_DIMS[type];
-  attachLightAPI(THREE, root, { headY: cfg.head.y, frontZ: -L / 2 - 0.05 });
+  const lightOpts = { headY: cfg.head.y, frontZ: -L / 2 - 0.05 };
+  attachLightAPI(THREE, root, lightOpts);
+  root.userData._relight = () => { delete root.userData.setLights; attachLightAPI(THREE, root, lightOpts); };
   finalizeVehicle(THREE, root, { type, id: opts.id || type, dims, wheels,
     driverEye: [cfg.eye.x, cfg.eye.y, cfg.eye.u - L / 2] });
   root.userData.color = '#' + paint.color.getHexString();
   root.userData.procedural = true;
   if (opts.lights) root.userData.setLights(true, { spot: opts.spot });
+  const spec = modelSpec(type, opts);
+  if (spec) GV.swapInGLB(THREE, root, spec, (clone) => {
+    clone.traverse(o => { if (o.isMesh && o.userData.paintSlot === 0) o.material = paint; });
+  });
   return root;
 }
+
+// ------------------------------------------------------------------ GLB model choice (mirrors web/models/manifest.json)
+// source:'glb' swaps a fitted GLB into the procedural placeholder when it loads (browser only; Node keeps procedural).
+// Side-by-side review (status/veh_cars.md): the procedural crisp-section bodies won for all four types (real glazed
+// greenhouse + interior for driver-seat views; the munim GLBs are closed shells with glass decals and no cabin).
+// The munim GLBs stay available as an opt-in: createVehicle(THREE, 'sedan', { source: 'glb' }) or { model: 'munim/x.glb' }.
+export const MODEL_CHOICE = {
+  sedan: { source: 'procedural', url: 'munim/car-sedan.glb' },
+  suv: { source: 'procedural', url: 'munim/car-suv.glb' },
+  pickup: { source: 'procedural', url: 'munim/car-pickup.glb' },
+  van: { source: 'procedural', url: 'munim/car-minivan.glb' },
+};
+const MODEL_BASE = new URL('../models/', import.meta.url).href;
+function modelSpec(type, opts) {
+  const ch = MODEL_CHOICE[type] || {};
+  const url = opts.model || (opts.source === 'procedural' ? null : (opts.source === 'glb' || ch.source === 'glb') ? ch.url : null);
+  if (!url) return null;
+  return { url: new URL(url, MODEL_BASE).href, modelId: url, dims: VEHICLE_DIMS[type], front: ch.front || 'auto', mats: ch.mats,
+    interior: (T, r) => addInterior(T, type, r) };
+}
+function addInterior(THREE, type, root) {
+  void THREE; void type; void root;
+}
+/** Start fetching the chosen GLB models now (call early). Resolves when they are fitted. */
+export function preloadVehicleModels(THREE, types = Object.keys(MODEL_CHOICE)) {
+  return Promise.all(types.map(t => { const s = modelSpec(t, {}); return s ? GV.warmTemplate(THREE, s) : null; }));
+}
+/** Resolves when every pending GLB load/swap has settled (await before the first still/frame). */
+export const ready = GV.ready;
 
 const PALETTE = ['silver', 'white', 'black', 'gray', 'blue', 'red', 'darkgray', 'navy', 'maroon', 'champagne'];
 function defaultColor(type, id) {

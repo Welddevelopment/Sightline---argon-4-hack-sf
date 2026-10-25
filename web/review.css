@@ -13,6 +13,8 @@ body { display: block; overflow: auto; }
 .btn:disabled { opacity: .45; cursor: default; filter: none; }
 
 .rv-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 452px; gap: 0; min-height: calc(100vh - 54px); }
+.rv-wrap.map-lg { grid-template-columns: minmax(0, 1fr) min(760px, 55vw); }
+#mapSize { margin-left: 6px; flex: none; }
 .rv-main { padding: 26px 36px 80px; min-width: 0; }
 .rv-side { border-left: 1px solid var(--line); background: var(--panel); padding: 18px 16px 40px; display: flex; flex-direction: column; gap: 14px; position: sticky; top: 54px; align-self: start; max-height: calc(100vh - 54px); overflow-y: auto; }
 
@@ -138,10 +140,12 @@ h1 { font: 600 24px/1.25 var(--serif); margin: 0 0 8px; letter-spacing: -.005em;
 /* witnesses */
 .wit-name { font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 7px; }
 .wit-dot { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #17130a; display: inline-grid; place-items: center; font: 700 10px var(--sans); flex: none; }
-.claim { color: #c9d2de; line-height: 1.45; max-width: 420px; }
+.claim { color: #c9d2de; line-height: 1.45; max-width: 420px; min-width: 200px; }
+#witTbl .wpos { max-width: 260px; }
 .claim q { quotes: "“" "”"; }
 .wpos { font: 10.5px var(--mono); color: var(--muted); display: block; margin-top: 3px; }
 .wpos.unk { color: var(--accent); }
+.wpos .moved { display: block; color: #ffd27a; margin-top: 2px; }
 
 /* side cards */
 .rv-card { background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 12px 12px 14px; }
@@ -199,7 +203,8 @@ label.f { display: block; font: 600 10px var(--sans); letter-spacing: .1em; text
 @keyframes rot { to { transform: rotate(360deg); } }
 
 @media (max-width: 1100px) {
-  .rv-wrap { grid-template-columns: 1fr; }
+  .rv-wrap, .rv-wrap.map-lg { grid-template-columns: 1fr; }
+  #mapSize { display: none; }
   .rv-side { position: static; max-height: none; border-left: none; border-top: 1px solid var(--line); }
   .rv-main { padding: 22px 16px 40px; }
   .scene { grid-template-columns: repeat(2, minmax(0, 1fr)); }

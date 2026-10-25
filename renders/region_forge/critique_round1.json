@@ -1,0 +1,414 @@
+[
+  {
+    "id": "r1_crossover",
+    "round": 1,
+    "calls": [
+      {
+        "name": "rf_r1_r1_crossover",
+        "usage": {
+          "promptTokenCount": 43589,
+          "candidatesTokenCount": 28844,
+          "totalTokenCount": 72433,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 41407
+            },
+            {
+              "modality": "IMAGE",
+              "tokenCount": 2182
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 28844
+            }
+          ]
+        },
+        "seconds": 208.8,
+        "finish": "STOP"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "tris": 8650,
+      "meshes": 161,
+      "instanced": 4,
+      "children": 7,
+      "bbox": {
+        "min": [
+          -45,
+          -1,
+          -44
+        ],
+        "max": [
+          45,
+          3.3,
+          16
+        ]
+      },
+      "buildMs": 51,
+      "bytes": 73511
+    },
+    "ok": true,
+    "seconds": 209,
+    "tokens": {
+      "out": 28844,
+      "think": 0,
+      "prompt": 43589
+    }
+  },
+  {
+    "id": "r2_west",
+    "round": 1,
+    "calls": [
+      {
+        "name": "rf_r1_r2_west",
+        "usage": {
+          "promptTokenCount": 35181,
+          "candidatesTokenCount": 20741,
+          "totalTokenCount": 55922,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 32999
+            },
+            {
+              "modality": "IMAGE",
+              "tokenCount": 2182
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 20741
+            }
+          ]
+        },
+        "seconds": 171.7,
+        "finish": "STOP"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "tris": 17221,
+      "meshes": 125,
+      "instanced": 4,
+      "children": 6,
+      "bbox": {
+        "min": [
+          -900,
+          0.4,
+          -44
+        ],
+        "max": [
+          -45,
+          7.5,
+          10
+        ]
+      },
+      "buildMs": 109,
+      "bytes": 52530
+    },
+    "ok": true,
+    "seconds": 172,
+    "tokens": {
+      "out": 20741,
+      "think": 0,
+      "prompt": 35181
+    }
+  },
+  {
+    "id": "r3_east",
+    "round": 1,
+    "calls": [
+      {
+        "name": "rf_r1_r3_east",
+        "usage": {
+          "promptTokenCount": 37955,
+          "candidatesTokenCount": 21292,
+          "totalTokenCount": 59247,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 35773
+            },
+            {
+              "modality": "IMAGE",
+              "tokenCount": 2182
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 21292
+            }
+          ]
+        },
+        "seconds": 166.8,
+        "finish": "STOP"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "tris": 21369,
+      "meshes": 218,
+      "instanced": 33,
+      "children": 5,
+      "bbox": {
+        "min": [
+          45,
+          -3.2,
+          -44
+        ],
+        "max": [
+          800,
+          0.8,
+          11.3
+        ]
+      },
+      "buildMs": 282,
+      "bytes": 54957
+    },
+    "ok": true,
+    "seconds": 167,
+    "tokens": {
+      "out": 21292,
+      "think": 0,
+      "prompt": 37955
+    }
+  },
+  {
+    "id": "r4_north",
+    "round": 1,
+    "calls": [
+      {
+        "name": "rf_r1_r4_north",
+        "usage": {
+          "promptTokenCount": 40450,
+          "candidatesTokenCount": 23868,
+          "totalTokenCount": 64318,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 38268
+            },
+            {
+              "modality": "IMAGE",
+              "tokenCount": 2182
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 23868
+            }
+          ]
+        },
+        "seconds": 207.8,
+        "finish": "STOP"
+      },
+      {
+        "name": "rf_r1_r4_north_repair",
+        "usage": {
+          "promptTokenCount": 43088,
+          "candidatesTokenCount": 22156,
+          "totalTokenCount": 65244,
+          "cachedContentTokenCount": 12288,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 40906
+            },
+            {
+              "modality": "IMAGE",
+              "tokenCount": 2182
+            }
+          ],
+          "cacheTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 11666
+            },
+            {
+              "modality": "IMAGE",
+              "tokenCount": 622
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 22156
+            }
+          ]
+        },
+        "seconds": 165.4,
+        "finish": "STOP"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "tris": 203439,
+      "meshes": 390,
+      "instanced": 19,
+      "children": 8,
+      "bbox": {
+        "min": [
+          -1000.1,
+          -3.3,
+          -474.8
+        ],
+        "max": [
+          800.1,
+          30.3,
+          -43.3
+        ]
+      },
+      "buildMs": 78,
+      "bytes": 54644
+    },
+    "ok": true,
+    "seconds": 375,
+    "tokens": {
+      "out": 46024,
+      "think": 0,
+      "prompt": 83538
+    }
+  },
+  {
+    "id": "r5_south",
+    "round": 1,
+    "calls": [
+      {
+        "name": "rf_r1_r5_south",
+        "usage": {
+          "promptTokenCount": 42034,
+          "candidatesTokenCount": 27523,
+          "totalTokenCount": 69557,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 39852
+            },
+            {
+              "modality": "IMAGE",
+              "tokenCount": 2182
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 27523
+            }
+          ]
+        },
+        "seconds": 233.4,
+        "finish": "STOP"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "tris": 246183,
+      "meshes": 789,
+      "instanced": 40,
+      "children": 10,
+      "bbox": {
+        "min": [
+          -1000.1,
+          -2.9,
+          3.3
+        ],
+        "max": [
+          800.1,
+          27.2,
+          486.2
+        ]
+      },
+      "buildMs": 362,
+      "bytes": 70469
+    },
+    "ok": true,
+    "seconds": 234,
+    "tokens": {
+      "out": 27523,
+      "think": 0,
+      "prompt": 42034
+    }
+  },
+  {
+    "id": "r6_terrain",
+    "round": 1,
+    "calls": [
+      {
+        "name": "rf_r1_r6_terrain",
+        "usage": {
+          "promptTokenCount": 39651,
+          "candidatesTokenCount": 20374,
+          "totalTokenCount": 61965,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 37469
+            },
+            {
+              "modality": "IMAGE",
+              "tokenCount": 2182
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 20374
+            }
+          ],
+          "thoughtsTokenCount": 1940
+        },
+        "seconds": 190.4,
+        "finish": "STOP"
+      }
+    ],
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "triangle count 279189 above budget 250000"
+      ],
+      "tris": 279189,
+      "meshes": 18,
+      "instanced": 4,
+      "children": 5,
+      "bbox": {
+        "min": [
+          -3200,
+          -3.3,
+          -3000
+        ],
+        "max": [
+          3000,
+          28.2,
+          3000
+        ]
+      },
+      "buildMs": 426,
+      "bytes": 50191
+    },
+    "ok": true,
+    "seconds": 191,
+    "tokens": {
+      "out": 20374,
+      "think": 1940,
+      "prompt": 39651
+    }
+  }
+]

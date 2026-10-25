@@ -31,6 +31,9 @@ const prep = (arr) => (Array.isArray(arr) ? arr : []).map((x, i) => ({ ...clone(
 const strip = (it) => { const o = {}; for (const [k, v] of Object.entries(it)) if (!k.startsWith('_')) o[k] = v; if (it._ed) o.edited = true; return o; };
 const witLetter = (w, i) => { const m = /\b([A-Z])$/.exec(String(w.name || '').trim()) || /wit_([a-z0-9])/i.exec(w.id || ''); return (m ? m[1] : String(i + 1)).toUpperCase().slice(0, 2); };
 const fmtPos = (p) => (Array.isArray(p) && p.length >= 2 && p.every(Number.isFinite)) ? `x ${p[0].toFixed(1)} m, z ${p[1].toFixed(1)} m` : null;
+// Where Argon originally put a witness (before any drag), and how far the reviewer moved it.
+const origPos = (w) => { const o = ((S.ext && S.ext.witnesses) || []).find((x) => x.id === w.id); return o && hasPos(o.markedPosition) ? o.markedPosition.map(Number) : null; };
+const movedBy = (w) => { const o = origPos(w); if (!o || !hasPos(w.markedPosition)) return 0; const p = w.markedPosition.map(Number); return Math.hypot(p[0] - o[0], p[1] - o[1]); };
 const hasPos = (p) => Array.isArray(p) && p.length >= 2 && Number.isFinite(+p[0]) && Number.isFinite(+p[1]) && p[0] !== null && p[1] !== null;
 
 function tsToSec(ts) {
@@ -248,7 +251,7 @@ function witnessesHtml() {
   const rows = S.witnesses.map((w, i) => {
     const pos = hasPos(w.markedPosition) ? fmtPos(w.markedPosition.map(Number)) : null;
     const cls = [w._rej ? 'rej' : '', w._ed ? 'ed' : '', S.selWit === i ? 'sel' : ''].join(' ');
-    const posLine = pos ? `<span class="wpos">${esc(pos)} ${chip(w.positionCitation, null, {})}</span>` : `<span class="wpos unk">Position not marked · <button class="ib ok" data-act="place">Place on plan</button></span>`;
+    const mv = movedBy(w), posLine = pos ? `<span class="wpos">${esc(pos)} ${chip(w.positionCitation, null, {})}${mv >= 0.1 ? `<span class="moved">moved ${mv.toFixed(1)} m from extracted ${esc(fmtPos(origPos(w)))}</span>` : ''}</span>` : `<span class="wpos unk">Position not marked · <button class="ib ok" data-act="place">Place on plan</button></span>`;
     if (w._editing) {
       return `<tr class="${cls}" data-wit="${i}"><td><span class="wit-dot">${esc(witLetter(w, i))}</span></td>
         <td><input data-k="name" value="${esc(w.name)}">${posLine}</td>
@@ -436,6 +439,17 @@ function clampEdge(px, py) {
   return [cx + dx * Math.min(1, k), cy + dy * Math.min(1, k), Math.atan2(dy, dx)];
 }
 const compass = (x, z) => { const d = Math.hypot(x, z); const dir = (Math.abs(x) > Math.abs(z) * 2 ? '' : z < 0 ? 'N' : 'S') + (Math.abs(z) > Math.abs(x) * 2 ? '' : x > 0 ? 'E' : 'W'); return `${Math.round(d)} m ${dir}`; };
+// Label placement: every label/marker rect drawn this frame is recorded; a new label slides
+// vertically to the nearest free slot so labels never stack on top of each other.
+let occ = [];
+const hits = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
+function place(x, y, w, h) {
+  for (const d of [0, 15, -15, 30, -30, 45, -45, 60, -60]) {
+    const r = [x, Math.max(1, Math.min(view.h - h - 1, y + d)), w, h];
+    if (!occ.some((o) => hits(r, o))) { occ.push(r); return r[1]; }
+  }
+  occ.push([x, y, w, h]); return y;
+}
 function edgeLabel(px, py, text) {
   ctx.font = '600 10px ' + getComputedStyle(document.body).getPropertyValue('--sans');
   const tw = ctx.measureText(text).width;
@@ -444,6 +458,7 @@ function edgeLabel(px, py, text) {
   if (px < EDGE + 2) { lx = px + 2; } else if (px > view.w - EDGE - 2) { lx = px - tw - 10; }
   lx = Math.max(2, Math.min(view.w - tw - 10, lx));
   ly = Math.max(10, Math.min(view.h - 10, ly));
+  ly = place(lx, ly - 8, tw + 8, 16) + 8;
   ctx.fillStyle = 'rgba(8,11,16,.85)'; ctx.fillRect(lx, ly - 8, tw + 8, 16);
   ctx.fillStyle = '#e8ecf2'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(text, lx + 4, ly);
 }
@@ -472,6 +487,27 @@ function drawMap() {
   const [ox, oy] = toPx([0, 0]);
   ctx.strokeStyle = '#9aa6b8'; ctx.lineWidth = 1.2;
   ctx.beginPath(); ctx.arc(ox, oy, 6, 0, Math.PI * 2); ctx.moveTo(ox - 10, oy); ctx.lineTo(ox + 10, oy); ctx.moveTo(ox, oy - 10); ctx.lineTo(ox, oy + 10); ctx.stroke();
+  // reserve witness markers + name tags first (highest priority), then off-plan witness pointers
+  occ = [];
+  const sans = getComputedStyle(document.body).getPropertyValue('--sans');
+  S.witnesses.forEach((wt) => {
+    if (!hasPos(wt.markedPosition)) return;
+    const [px, py] = toPx(wt.markedPosition.map(Number));
+    if (offPlan(px, py)) return;
+    ctx.font = '600 10.5px ' + sans;
+    const tw = ctx.measureText(String(wt.name || wt.id) + (wt._ed ? ' (moved)' : '')).width;
+    occ.push([px - 11, py - 11, 22, 22], [px + 12, py - 8, tw + 8, 16]);
+  });
+  S.witnesses.forEach((wt) => {
+    if (!hasPos(wt.markedPosition)) return;
+    const [px, py] = toPx(wt.markedPosition.map(Number));
+    if (!offPlan(px, py)) return;
+    const [ex, ey, a] = clampEdge(px, py);
+    ctx.globalAlpha = wt._rej ? 0.35 : 1;
+    ctx.save(); ctx.translate(ex, ey); ctx.rotate(a); ctx.fillStyle = '#e2b052'; ctx.beginPath(); ctx.moveTo(9, 0); ctx.lineTo(-5, -7); ctx.lineTo(-5, 7); ctx.closePath(); ctx.fill(); ctx.restore();
+    edgeLabel(ex, ey, `${wt.name || wt.id} · ${compass(+wt.markedPosition[0], +wt.markedPosition[1])} (off plan)`);
+    ctx.globalAlpha = 1;
+  });
   // objects
   ctx.font = '600 9.5px ' + getComputedStyle(document.body).getPropertyValue('--sans');
   S.objects.forEach((o) => {
@@ -485,20 +521,27 @@ function drawMap() {
     }
     ctx.fillStyle = '#6f7c90'; ctx.strokeStyle = '#0b0e13'; ctx.lineWidth = 1;
     ctx.fillRect(px - 4, py - 4, 8, 8); ctx.strokeRect(px - 4, py - 4, 8, 8);
-    ctx.fillStyle = '#9aa6b8'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-    const ol = String(o.label || o.kind || o.id); ctx.fillText(ol.length > 24 ? ol.slice(0, 23).replace(/\s+\S*$/, '') + '…' : ol, px + 7, py);
+    const ol0 = String(o.label || o.kind || o.id), ol = ol0.length > 24 ? ol0.slice(0, 23).replace(/\s+\S*$/, '') + '…' : ol0;
+    ctx.font = '600 9.5px ' + sans; const tw = ctx.measureText(ol).width;
+    const ly = place(px + 6, py - 7, tw + 6, 14);
+    ctx.fillStyle = 'rgba(8,11,16,.62)'; ctx.fillRect(px + 6, ly, tw + 6, 14);
+    ctx.fillStyle = '#b4bfcf'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(ol, px + 9, ly + 7);
   });
   // witnesses
   S.witnesses.forEach((wt, i) => {
     if (!hasPos(wt.markedPosition)) return;
     const [px, py] = toPx(wt.markedPosition.map(Number));
-    if (offPlan(px, py)) {
-      const [ex, ey, a] = clampEdge(px, py);
-      ctx.globalAlpha = wt._rej ? 0.35 : 1;
-      ctx.save(); ctx.translate(ex, ey); ctx.rotate(a); ctx.fillStyle = '#e2b052'; ctx.beginPath(); ctx.moveTo(9, 0); ctx.lineTo(-5, -7); ctx.lineTo(-5, 7); ctx.closePath(); ctx.fill(); ctx.restore();
-      edgeLabel(ex, ey, `${wt.name || wt.id} · ${compass(+wt.markedPosition[0], +wt.markedPosition[1])} (off plan)`);
-      ctx.globalAlpha = 1;
-      return;
+    if (offPlan(px, py)) return;
+    const o0 = movedBy(wt) >= 0.1 ? origPos(wt) : null;
+    if (o0) { // ghost of the extracted position + offset line
+      const [gx, gy] = toPx(o0);
+      ctx.save(); ctx.setLineDash([3, 3]); ctx.strokeStyle = '#e2b052'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(gx, gy, 8, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(gx, gy); ctx.lineTo(px, py); ctx.stroke(); ctx.restore();
+      const t = `extracted · ${movedBy(wt).toFixed(1)} m`; ctx.font = '600 9.5px ' + getComputedStyle(document.body).getPropertyValue('--sans');
+      const tw2 = ctx.measureText(t).width, gly = place(gx - tw2 / 2 - 4, py >= gy ? gy - 25 : gy + 11, tw2 + 8, 14);
+      ctx.fillStyle = 'rgba(8,11,16,.8)'; ctx.fillRect(gx - tw2 / 2 - 4, gly, tw2 + 8, 14);
+      ctx.fillStyle = '#e2b052'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(t, gx, gly + 7);
     }
     const hot = S.selWit === i || S.hoverWit === i || (drag && drag.i === i);
     ctx.globalAlpha = wt._rej ? 0.35 : 1;
@@ -558,6 +601,12 @@ const endDrag = () => { if (!drag) return; const moved = drag.moved; drag = null
 cv.addEventListener('pointerup', endDrag);
 cv.addEventListener('pointercancel', endDrag);
 window.addEventListener('resize', () => drawMap());
+$('#mapSize').addEventListener('click', () => {
+  const on = document.querySelector('.rv-wrap').classList.toggle('map-lg');
+  $('#mapSize').textContent = on ? 'Shrink' : 'Enlarge'; $('#mapSize').setAttribute('aria-pressed', String(on));
+  lsSet('sightline.review.mapLg', on ? '1' : ''); drawMap();
+});
+if (lsGet('sightline.review.mapLg') === '1') { document.querySelector('.rv-wrap').classList.add('map-lg'); $('#mapSize').textContent = 'Shrink'; $('#mapSize').setAttribute('aria-pressed', 'true'); }
 
 // ---------- data flow ----------
 function applyExtraction(r) {

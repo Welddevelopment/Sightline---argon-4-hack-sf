@@ -1,11 +1,11 @@
 {
   "world": "/cases/live2/worlds/world_v1.js",
   "version": 1,
-  "createdAt": "2026-10-25T19:24:23.259Z",
+  "createdAt": "2026-10-25T20:17:55.668Z",
   "mode": "live",
   "model": "gemini-4-argon",
-  "promptFile": "argon/prompts/generate_world_repair.md",
-  "promptVersion": "c2f50527ec8d",
+  "promptFile": "argon/prompts/generate_world_v2.md",
+  "promptVersion": "4ca0b52e8b71",
   "inputs": [
     {
       "file": "text/deposition.txt",
@@ -48,15 +48,15 @@
       "bytes": 54576
     }
   ],
-  "outputSha256": "508b0c79575de58faeb200b6002826bd4075753a3c01d57885c8d543847aeb00",
+  "outputSha256": "0d775906578b716d0c17833ca6db5d8974ff7962cebe3d76f9a0318fc6ee9521",
   "usage": {
-    "promptTokens": 5802,
-    "outputTokens": 5392,
+    "promptTokens": 163928,
+    "outputTokens": 5248,
     "thoughtsTokens": 0
   },
-  "seconds": 54.3,
+  "seconds": 53.9,
   "finishReason": "STOP",
   "thinkingBudget": 8192,
-  "maxOutputTokens": 32768,
+  "maxOutputTokens": 65536,
   "parentWorld": null
 }

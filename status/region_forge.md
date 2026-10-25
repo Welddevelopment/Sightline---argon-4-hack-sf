@@ -1,0 +1,23 @@
+# region_forge (step D) — status
+- 12:50 started: infra (argon/region_forge.mjs, prompts/region_forge.md, web/regions_argon/) in progress. scene_spec.json not yet present; polling.
+- 12:56 gen round 0: 6 parallel gemini-4-argon calls (thinking 6000, maxOutputTokens 32768); scene_spec present
+- 12:58 r4_north round 0: validation failed (triangle count 231058 exceeds the region budget 180000 by more than 25% — instance or simplify) → repair call
+- 12:58 r2_west round 0: OK in 145s; tokens prompt 15906 / out 15647 / think 0; tris 15800, 39675 B, warn: none
+- 12:59 r3_east round 0: OK in 174s; tokens prompt 15861 / out 18469 / think 0; tris 16029, 47464 B, warn: none
+- 12:59 r6_terrain round 0: OK in 179s; tokens prompt 15984 / out 19956 / think 0; tris 314526, 49420 B, warn: triangle count 314526 above budget 280000
+- 12:59 r1_crossover round 0: OK in 196s; tokens prompt 16063 / out 23812 / think 0; tris 6766, 60875 B, warn: none
+- 13:00 r5_south round 0: validation failed (triangle count 454468 exceeds the region budget 300000 by more than 25% — instance or simplify) → repair call
+- 13:00 r4_north round 0: FAILED in 267s; tokens prompt 47987 / out 32056 / think 537; tris undefined, undefined B, warn: none
+- 13:02 gen round 0: 1 parallel gemini-4-argon calls (thinking 6000, maxOutputTokens 32768); scene_spec present
+- 13:03 r5_south round 0: OK in 403s; tokens prompt 56889 / out 45484 / think 1067; tris 179751, 56556 B, warn: none
+- 13:05 r4_north round 0: OK in 218s; tokens prompt 15751 / out 20992 / think 0; tris 170621, 52750 B, warn: none
+- 13:15 round 0 done: 6/6 regions valid (r4 needed a fresh call, r5 one repair); 710k tris total. Lead's USGS NAIP aerial added: rotated to world frame + 50 m / 10 m grids at renders/region_forge/aerial/*.jpg, sent as 2 image parts in EVERY call (gen/repair/critique) with a conflict rule (case-keyed layout wins; land cover/forest/buildings/driveways from aerial). Layout additions: ctx.layout.aerial (north leg road, north store+lot, SW corner building/island, forest edges, SE field); west sight corridor narrowed to z [-50, 12] (aerial shows forest from z~15 south).
+- render lock heavily contended (600 s waits timing out); round 1 = aerial-grounded review (no stills yet), round 2 = still-based critique.
+- 13:29 critique round 1: 6 parallel review+rewrite calls using stills from renders/region_forge/round0
+- 13:31 r3_east round 1: OK in 167s; tokens prompt 37955 / out 21292 / think 0; tris 21369, 54957 B, warn: none
+- 13:31 r2_west round 1: OK in 172s; tokens prompt 35181 / out 20741 / think 0; tris 17221, 52530 B, warn: none
+- 13:32 r6_terrain round 1: OK in 191s; tokens prompt 39651 / out 20374 / think 1940; tris 279189, 50191 B, warn: triangle count 279189 above budget 250000
+- 13:32 r4_north round 1: validation failed (triangle count 439668 exceeds the region budget 330000 by more than 25% — instance or simplify) → repair call 1
+- 13:32 r1_crossover round 1: OK in 209s; tokens prompt 43589 / out 28844 / think 0; tris 8650, 73511 B, warn: none
+- 13:32 r5_south round 1: OK in 234s; tokens prompt 42034 / out 27523 / think 0; tris 246183, 70469 B, warn: none
+- 13:35 r4_north round 1: OK in 375s; tokens prompt 83538 / out 46024 / think 0; tris 203439, 54644 B, warn: none

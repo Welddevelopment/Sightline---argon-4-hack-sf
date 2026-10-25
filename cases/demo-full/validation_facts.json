@@ -1,0 +1,196 @@
+[
+  {
+    "id": "v_car_pre_impact",
+    "label": "Car speed just before impact",
+    "value": 74,
+    "unit": "mph",
+    "tolerance": 2,
+    "citation": "NTSB/HAR-17/02 p.2, p.15 (facts.md F17)",
+    "how": {
+      "type": "speed",
+      "role": "car",
+      "window": [
+        -1.0,
+        -0.05
+      ],
+      "relativeTo": "impact"
+    }
+  },
+  {
+    "id": "no_braking",
+    "label": "No braking before impact (max deceleration in the 5 s before impact)",
+    "value": 0,
+    "unit": "g",
+    "tolerance": 0.1,
+    "citation": "NTSB/HAR-17/02 p.15 (facts.md F18); p.5 no pre-collision roadway marks (F22)",
+    "how": {
+      "type": "max_decel",
+      "role": "car",
+      "window": [
+        -5.0,
+        -0.05
+      ],
+      "relativeTo": "impact",
+      "smoothS": 0.5
+    }
+  },
+  {
+    "id": "crest_to_impact_time",
+    "label": "Time for the car to cover the 1,132 ft from the crest to impact (NTSB mutual sight time)",
+    "value": 10.4,
+    "unit": "s",
+    "tolerance": 0.3,
+    "citation": "NTSB/HAR-17/02 p.29 (facts.md F28)",
+    "how": {
+      "type": "time_to_cover",
+      "role": "car",
+      "distanceM": 345.0,
+      "relativeTo": "impact",
+      "measure": "car front straight-line distance to impact point"
+    }
+  },
+  {
+    "id": "crest_distance",
+    "label": "Vertical crest west of the intersection (sight restriction) - distance from impact point to the crest occluder's near edge",
+    "value": 345,
+    "unit": "m",
+    "tolerance": 15,
+    "citation": "NTSB/HAR-17/02 p.22-23, p.29 (facts.md F10, F27): 1,132 ft",
+    "how": {
+      "type": "occluder_distance",
+      "role": "crest",
+      "relativeTo": "impact",
+      "along": "car_travel",
+      "edge": "near"
+    }
+  },
+  {
+    "id": "impact_location",
+    "label": "Impact in the right (outside) eastbound lane at the NE 140th Ct crossing (car front at impact vs. case-frame POI)",
+    "value": [
+      0,
+      0
+    ],
+    "unit": "m",
+    "tolerance": {
+      "x": 5.0,
+      "z": 1.83
+    },
+    "citation": "NTSB/HAR-17/02 p.3, p.5 (facts.md F21); lane 12 ft (F6) -> +/-1.83 m lateral; origin = POI per case.json coordinate_frame_note (modeling convention)",
+    "how": {
+      "type": "position",
+      "role": "car",
+      "point": "front",
+      "t": "impact",
+      "axes": [
+        "x",
+        "z"
+      ]
+    }
+  },
+  {
+    "id": "impact_offset_on_trailer",
+    "label": "Impact point on the trailer, distance behind the front of the tractor",
+    "value": 13.84,
+    "unit": "m",
+    "tolerance": 1.0,
+    "citation": "NTSB/HAR-17/02 p.6 fn.6 (facts.md F16): 45 ft 5 in; tolerance = half the car's width",
+    "how": {
+      "type": "impact_offset",
+      "car": "car",
+      "truckFront": "truck_front",
+      "t": "impact",
+      "measure": "(tractor front - car front) along tractor heading"
+    }
+  },
+  {
+    "id": "combination_length",
+    "label": "Tractor-semitrailer combination length",
+    "value": 21.82,
+    "unit": "m",
+    "tolerance": 0.5,
+    "citation": "NTSB/HAR-17/02 p.1, p.6 (facts.md F15): 71 ft 7 in",
+    "how": {
+      "type": "combination_length",
+      "front": "truck_front",
+      "rear": "trailer",
+      "t": "most_aligned",
+      "measure": "tractor front to trailer rear along tractor heading"
+    }
+  },
+  {
+    "id": "scene_time",
+    "label": "Time of day of the collision",
+    "value": "16:36:12.7",
+    "unit": "clock",
+    "tolerance": 60,
+    "citation": "NTSB/HAR-17/02 p.1, p.15 (facts.md F1): car data recorded collision at 4:36:12.7 p.m.",
+    "how": {
+      "type": "meta_time",
+      "field": "meta.timeOfDay",
+      "toleranceUnit": "s"
+    }
+  },
+  {
+    "id": "pole_strike_time",
+    "label": "Pole strike (airbag deployment) time after first impact",
+    "value": 8.4,
+    "unit": "s",
+    "tolerance": 0.5,
+    "citation": "NTSB/HAR-17/02 p.5 (facts.md F26); pole struck on post-impact path p.1 (F24)",
+    "how": {
+      "type": "contact_time",
+      "a": "car",
+      "b": "pole",
+      "after": "impact",
+      "contactGapM": 0.5,
+      "maxGapM": 1.5
+    }
+  },
+  {
+    "id": "post_impact_travel",
+    "label": "Car travel from point of impact to final rest",
+    "value": 277.4,
+    "unit": "m",
+    "tolerance": 20,
+    "citation": "NTSB/HAR-17/02 p.1, p.3 (facts.md F25; police_report p.3 'POI to final rest'): about 910 ft",
+    "how": {
+      "type": "distance",
+      "role": "car",
+      "from": "impact_point",
+      "to": "center",
+      "t": "end"
+    }
+  },
+  {
+    "id": "rest_off_right_side",
+    "label": "Final rest off the road to the right (south) of the eastbound lanes",
+    "value": 3.35,
+    "unit": "m",
+    "tolerance": 0,
+    "comparator": "gte",
+    "citation": "NTSB/HAR-17/02 p.1, p.3 (facts.md F23, F25: left the right roadside, rest in a front yard); 12-ft lane half-width + 5-ft right shoulder (F6) = 3.35 m from lane centre",
+    "how": {
+      "type": "lateral_offset",
+      "role": "car",
+      "t": "end",
+      "side": "right",
+      "relativeTo": "impact_point",
+      "frame": "car pre-impact travel direction"
+    }
+  },
+  {
+    "id": "rest_perpendicular",
+    "label": "Final rest perpendicular to the highway",
+    "value": 90,
+    "unit": "deg",
+    "tolerance": 20,
+    "citation": "NTSB/HAR-17/02 p.1, p.3 (facts.md F25)",
+    "how": {
+      "type": "heading_vs_travel",
+      "role": "car",
+      "t": "end",
+      "fold": "0-90"
+    }
+  }
+]

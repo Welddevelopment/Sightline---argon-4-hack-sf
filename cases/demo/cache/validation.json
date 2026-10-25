@@ -2,13 +2,13 @@
   "source": "NTSB HAR-17/02",
   "caseId": "demo",
   "world": "/cases/demo/worlds/world_v2.js",
-  "matched": 11,
+  "matched": 12,
   "total": 12,
   "impact": {
     "t": 10.39,
     "contact": true,
     "point": [
-      -1.32,
+      -1.34,
       0
     ]
   },
@@ -21,13 +21,13 @@
     "crest": "occ_crest"
   },
   "notes": [],
-  "generatedAt": "2026-10-25T19:07:12.604Z",
+  "generatedAt": "2026-10-25T20:27:42.114Z",
   "items": [
     {
       "id": "v_car_pre_impact",
       "label": "Car speed just before impact",
       "expected": 74,
-      "actual": 74,
+      "actual": 74.5,
       "unit": "mph",
       "tolerance": 2,
       "pass": true,
@@ -35,14 +35,14 @@
       "objects": {
         "car": "veh_A"
       },
-      "delta": 0,
+      "delta": 0.5,
       "note": "mean over t=9.39..10.34 s"
     },
     {
       "id": "no_braking",
       "label": "No braking before impact (max deceleration in the 5 s before impact)",
       "expected": 0,
-      "actual": 0,
+      "actual": 0.001,
       "unit": "g",
       "tolerance": 0.1,
       "pass": true,
@@ -50,28 +50,28 @@
       "objects": {
         "car": "veh_A"
       },
-      "delta": 0,
+      "delta": 0.001,
       "note": "over t=5.39..10.34 s, 0.5 s smoothing"
     },
     {
       "id": "crest_to_impact_time",
       "label": "Time for the car to cover the 1,132 ft from the crest to impact (NTSB mutual sight time)",
       "expected": 10.4,
-      "actual": null,
+      "actual": 10.35,
       "unit": "s",
       "tolerance": 0.3,
-      "pass": false,
+      "pass": true,
       "citation": "NTSB/HAR-17/02 p.29 (facts.md F28)",
       "objects": {
         "car": "veh_A"
       },
-      "note": "car path starts only 343.4 m (10.39 s) before impact; cannot cover 345 m"
+      "delta": -0.05
     },
     {
       "id": "crest_distance",
       "label": "Vertical crest west of the intersection (sight restriction) - distance from impact point to the crest occluder's near edge",
       "expected": 345,
-      "actual": 345.7,
+      "actual": 343.5,
       "unit": "m",
       "tolerance": 15,
       "pass": true,
@@ -79,7 +79,7 @@
       "objects": {
         "crest": "occ_crest"
       },
-      "delta": 0.7,
+      "delta": -1.5,
       "note": "impact point to the occluder edge nearest the intersection, along the car's travel direction"
     },
     {
@@ -90,7 +90,7 @@
         0
       ],
       "actual": [
-        -1.32,
+        -1.34,
         0
       ],
       "unit": "m",
@@ -104,7 +104,7 @@
         "car": "veh_A"
       },
       "delta": [
-        -1.32,
+        -1.34,
         0
       ],
       "note": "car front at t=10.39s"
@@ -113,7 +113,7 @@
       "id": "impact_offset_on_trailer",
       "label": "Impact point on the trailer, distance behind the front of the tractor",
       "expected": 13.84,
-      "actual": 13.6,
+      "actual": 13.58,
       "unit": "m",
       "tolerance": 1,
       "pass": true,
@@ -122,14 +122,14 @@
         "car": "veh_A",
         "truck_front": "veh_T_tractor"
       },
-      "delta": -0.24,
+      "delta": -0.26,
       "note": "at t=10.39s"
     },
     {
       "id": "combination_length",
       "label": "Tractor-semitrailer combination length",
       "expected": 21.82,
-      "actual": 21.82,
+      "actual": 21.86,
       "unit": "m",
       "tolerance": 0.5,
       "pass": true,
@@ -138,7 +138,7 @@
         "truck_front": "veh_T_tractor",
         "trailer": "veh_T_trailer"
       },
-      "delta": 0,
+      "delta": 0.04,
       "note": "at t=9.25s (tractor/trailer 0 deg apart)"
     },
     {
