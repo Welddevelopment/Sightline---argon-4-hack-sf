@@ -103,5 +103,12 @@
     "mimeType": "video/mp4",
     "expiresAt": "2026-10-27T20:44:52.710693396Z",
     "uploadedAt": "2026-10-25T20:46:09.665Z"
+  },
+  "cases/demo-full/evidence/deposition_witness_D.mp4|7313799|1792960608212": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/8jto7c3nwcxe",
+    "name": "files/8jto7c3nwcxe",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T20:46:10.691322698Z",
+    "uploadedAt": "2026-10-25T20:46:39.360Z"
   }
 }

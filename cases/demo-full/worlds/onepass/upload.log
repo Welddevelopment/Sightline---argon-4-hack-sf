@@ -5,3 +5,5 @@ live true
 [argon] cases/demo-full/evidence/deposition_witness_B.mp4 ACTIVE as files/5ooxvjb0o9bx
 {"uri":"https://generativelanguage.googleapis.com/v1beta/files/5ooxvjb0o9bx","name":"files/5ooxvjb0o9bx","mimeType":"video/mp4"}
 [argon] uploading cases/demo-full/evidence/deposition_witness_D.mp4 (7.3 MB, video/mp4)
+[argon] cases/demo-full/evidence/deposition_witness_D.mp4 ACTIVE as files/8jto7c3nwcxe
+{"uri":"https://generativelanguage.googleapis.com/v1beta/files/8jto7c3nwcxe","name":"files/8jto7c3nwcxe","mimeType":"video/mp4"}
