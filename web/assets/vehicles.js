@@ -10,7 +10,7 @@
 // userData {assetType:'vehicle', vehicleType, dims, driverEye, setLights(on), wheels, roll(dist)},
 // child meshes headlight_L/R, taillight_L/R. No brand marks; plates are blank.
 import {
-  surfacePatch, getMaterials, makeWheel, loft, curve, roundedBox, cachedGeo, makeLamp, attachLightAPI, finalizeVehicle, smoothstep, makeInterior,
+  surfacePatch, getMaterials, makeWheel, loft, curve, roundedBox, cachedGeo, makeLamp, attachLightAPI, finalizeVehicle, smoothstep, makeInterior, crispX,
 } from './vehicle_parts.js';
 import * as GV from './gltf_vehicle.js';
 
@@ -52,18 +52,19 @@ const CARS = {
   sedan: {
     L: 4.9, W: 1.9, H: 1.45, bodyW: 1.82,
     wheel: { r: 0.335, w: 0.235, rim: 'alloy' }, axles: [0.96, 3.81],
-    top: [[0, 0.58], [0.025, 0.66], [0.07, 0.72], [0.16, 0.765], [0.45, 0.81], [0.95, 0.86], [1.45, 0.92], [1.74, 0.955], [2.6, 0.975],
+    top: [[0, 0.6], [0.012, 0.685], [0.03, 0.725], [0.07, 0.75], [0.18, 0.768], [0.45, 0.795], [0.95, 0.84], [1.45, 0.9], [1.74, 0.94], [2.6, 0.97],
       [3.6, 0.995], [3.96, 1.0], [4.4, 0.995], [4.7, 0.985], [4.8, 0.97], [4.845, 0.945], [4.872, 0.89], [4.89, 0.8], [4.9, 0.66]],
     bot: [[0, 0.33], [0.06, 0.255], [0.25, 0.2], [0.5, 0.19], [4.4, 0.19], [4.7, 0.24], [4.86, 0.3], [4.9, 0.36]],
-    hw: [[0, 0.74], [0.02, 0.8], [0.08, 0.86], [0.25, 0.895], [0.6, 0.908], [1.2, 0.91], [3.9, 0.91], [4.5, 0.905], [4.75, 0.89], [4.86, 0.86], [4.9, 0.8]],
+    hw: [[0, 0.79], [0.02, 0.835], [0.08, 0.87], [0.25, 0.895], [0.6, 0.908], [1.2, 0.91], [3.9, 0.91], [4.5, 0.905], [4.75, 0.89], [4.86, 0.87], [4.9, 0.84]],
     nTop: 6, nBot: 5, tumble: 0.07, flare: 0.07,
+    crisp: { drop: 0.095, tuck: 0.045, shoulder: 0.075, crown: 0.012, r: [0.05, 0.14, 0.014, 0.04, 0.22] },
     gh: { u0: 1.70, u1: 3.98, top: [[1.70, 0.94], [1.85, 1.03], [2.1, 1.19], [2.35, 1.32], [2.58, 1.405], [2.8, 1.44], [3.1, 1.45], [3.35, 1.43], [3.55, 1.35], [3.78, 1.18], [3.98, 1.0]],
       aTop: 2.62, cTop: 3.38, b: [2.93, 3.03], nTop: 3.0, tumble: 0.2, cPillarPaint: true, quarter: [3.42, 3.62] },
-    seams: [{ u: 1.86, y0: 0.3, y1: 0.99 }, { u: 2.98, y0: 0.27, y1: 0.99 }, { u: 3.9, y0: 0.4, y1: 0.99 }, { u: 0.17, top: true }, { u: 4.02, top: true }],
+    seams: [{ u: 1.86, y0: 0.3, y1: 0.99 }, { u: 2.98, y0: 0.27, y1: 0.99 }, { u: 3.9, y0: 0.4, y1: 0.99 }, { u: 0.11, top: true }, { u: 4.02, top: true }],
     eye: { u: 2.85, y: 1.16, x: -0.36 },
-    head: { y: 0.68, patch: { u: [0.012, 0.36], t0: [0.2, 0.66], t1: [1.02, 1.0] } },
-    tail: { y: 0.86, patch: { u: [4.62, 4.897], t0: [0.42, 0.1], t1: [0.78, 1.22] } },
-    grille: { y: 0.5, w: 0.8, h: 0.13, intake: { y: 0.37, w: 1.0, h: 0.08 } },
+    head: { y: 0.665, x: 0.6, w: 0.5, h: 0.095, d: 0.12, yaw: 0.34, drl: true },
+    tail: { y: 0.86, patch: { u: [4.66, 4.897], t0: [0.5, 0.35], t1: [0.92, 1.12] } },
+    grille: { y: 0.53, w: 0.86, h: 0.15, intake: { y: 0.37, w: 1.05, h: 0.08 } },
     plateF: 0.44, plateR: 0.63,
     mirror: { u: 1.98, y: 1.03 },
   },
@@ -124,6 +125,13 @@ const CARS = {
 };
 
 // ------------------------------------------------------------------ geometry builders
+// crisp section parameters along the body: the shoulder crease sits a fixed distance below the local top
+// (beltline in the cabin, fender top over the hood), so it reads as one continuous character line.
+function crispAt(cfg, u, yb, yt) {
+  const c = cfg.crisp, h = Math.max(0.05, yt - yb);
+  const drop = typeof c.drop === 'function' ? c.drop(u) : c.drop;
+  return { crease: Math.max(0.35, Math.min(0.93, 1 - drop / h)), tuck: c.tuck, shoulder: c.shoulder, crown: c.crown, r: c.r };
+}
 function prep(cfg) {
   if (cfg._f) return cfg._f;
   if (!cfg.type) cfg.type = Object.keys(CARS).find(k => CARS[k] === cfg) || 'car';
@@ -138,16 +146,22 @@ function prep(cfg) {
   f.section = (u) => {
     const yt = f.top(u);
     const yb = Math.min(f.bot(u), yt - 0.03);
-    return { yb, yt, hw: f.hw(u), nTop: cfg.nTop, nBot: cfg.nBot, tumble: cfg.tumble, flare: cfg.flare };
+    return { yb, yt, hw: f.hw(u), nTop: cfg.nTop, nBot: cfg.nBot, tumble: cfg.tumble, flare: cfg.flare, crisp: cfg.crisp ? crispAt(cfg, u, yb, yt) : undefined };
   };
   // x of the body surface at height y (same formula as loft)
   f.sideX = (u, y) => {
     const s = f.section(u), yc = (s.yb + s.yt) / 2, hh = (s.yt - s.yb) / 2;
+    if (s.crisp) return crispX(s, Math.max(s.yb + 1e-3, Math.min(s.yt - 1e-3, y)));
     const v = Math.max(-1, Math.min(1, (y - yc) / hh));
     const n = v >= 0 ? s.nTop : s.nBot;
     const st = Math.sign(v) * Math.pow(Math.abs(v), n / 2), ct = Math.sqrt(Math.max(0, 1 - st * st));
     const fy = (y - s.yb) / (2 * hh);
     return s.hw * Math.pow(ct, 2 / n) * (1 - s.tumble * fy * fy - s.flare * (1 - fy) * (1 - fy));
+  };
+  // u where the front surface passes through (x, y)
+  f.surfU = (x, y) => {
+    for (let u = 0; u < cfg.L * 0.3; u += 0.002) { const sc = f.section(u); if (y >= sc.yb && y <= sc.yt && f.sideX(u, y) >= Math.abs(x)) return u; }
+    return 0;
   };
   // u on the front (or rear) nose surface for a given height
   f.noseU = (y, rear = false) => {
@@ -283,7 +297,17 @@ function placeLamp(THREE, cfg, f, spec, kind, sideSign, rear) {
     mesh.name = name; mesh.userData.lampKind = kind;
     return mesh;
   }
-  const lamp = makeLamp(THREE, { name, kind, w: spec.w, h: spec.h, d: spec.d, r: Math.min(spec.w, spec.h) * 0.35 });
+  const lamp = makeLamp(THREE, { name, kind, w: spec.w, h: spec.h, d: spec.d, r: Math.min(spec.w, spec.h) * (spec.drl ? 0.22 : 0.35) });
+  if (spec.drl) {
+    // inner projector + LED strip so the lamp reads as an integrated unit, not a blob
+    const M = getMaterials(THREE);
+    const strip = new THREE.Mesh(roundedBox(THREE, spec.w * 0.78, 0.014, 0.02, 0.006), M.lightRev); strip.name = 'drl';
+    strip.position.set(0, -spec.h * 0.28, -spec.d / 2 - 0.003); lamp.add(strip);
+    const proj = new THREE.Mesh(roundedBox(THREE, 0.075, spec.h * 0.55, 0.02, 0.02), M.chrome); proj.name = 'projector';
+    proj.position.set(-sideSign * spec.w * 0.22, spec.h * 0.08, -spec.d / 2 - 0.002); lamp.add(proj);
+    const bez = new THREE.Mesh(roundedBox(THREE, spec.w + 0.025, spec.h + 0.02, spec.d * 0.8, Math.min(spec.w, spec.h) * 0.2), M.trimGloss); bez.name = 'lamp_bezel';
+    bez.position.set(0, 0, 0.012); lamp.add(bez);
+  }
   const y = spec.y, u = f.noseU(y, rear);
   // outward surface normal in the (z,y) plane from the profile slope
   const du = 0.006, t = (f.top(Math.min(u + du, L)) - f.top(Math.max(u - du, 0))) / (2 * du);
@@ -292,6 +316,15 @@ function placeLamp(THREE, cfg, f, spec, kind, sideSign, rear) {
   lamp.rotation.order = 'YXZ';
   lamp.rotation.x = a;
   lamp.rotation.y = rear ? Math.PI + sideSign * spec.yaw : -sideSign * spec.yaw;
+  if (spec.drl && !rear) {
+    // sit the lamp on the actual nose surface: follow its plan curvature, face ~1.5 cm proud
+    const half = spec.w * 0.45;
+    const uc = f.surfU(spec.x, y), uo = f.surfU(spec.x + half, y), ui = f.surfU(spec.x - half, y);
+    const yaw = Math.atan2(uo - ui, 2 * half);
+    lamp.rotation.y = -sideSign * yaw;
+    lamp.position.set(sideSign * spec.x, y, Math.max(uc, (uo + ui) / 2) - L / 2 + spec.d / 2 - 0.015);
+    return lamp;
+  }
   const ny = Math.sin(a), nz = (rear ? 1 : -1) * Math.cos(a);
   const inset = spec.d / 2 - 0.012;
   lamp.position.set(sideSign * spec.x, y - ny * inset, u - L / 2 - nz * inset);

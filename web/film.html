@@ -28,7 +28,8 @@
   html.film body.nohud .slo-layer { display: none; }
   /* overlays.js live clock panel moves under the plan's HUD box */
   html.film #stage .slo-layer > .slo-panel { top: calc(var(--film-hud-h, 0px) + 1.1vw) !important; left: 1.4vw !important; }
-  html.film .sl-banner { top: auto !important; bottom: calc(18px + 7.2vw); font-size: 1.15vw; padding: .55vw 1.4vw; }
+  html.film .sl-banner { top: 1.2vw; font-size: 1.15vw; padding: .5vw 1.3vw; }
+  html.film .slo-card { display: none !important; }  /* the plan's lower thirds carry the narrative in the film */
   #film-img { position: absolute; z-index: 2; pointer-events: none; opacity: 0; max-width: none; }
   #film-title { position: absolute; inset: 0; z-index: 21; display: none; align-items: center; justify-content: center; background: #000; color: #fff; font-family: var(--sans); --fs: 40px; }
   #film-title .card { max-width: 78vw; text-align: center; }
@@ -40,7 +41,7 @@
   #film-title .kick { margin-top: calc(var(--fs) * .32); font-weight: 700; font-size: calc(var(--fs) * .36); letter-spacing: .16em; color: #e2b052; text-transform: uppercase; }
   #film-title .sp { height: calc(var(--fs) * .45); }
   #film-title ul { list-style: none; margin: 0 auto; padding: 0; text-align: left; display: inline-block; }
-  #film-title li { font-size: calc(var(--fs) * .4); line-height: 1.55; color: #d9dde3; padding-left: 1.2em; position: relative; }
+  #film-title li { font-size: calc(var(--fs) * .46); line-height: 1.55; color: #d9dde3; padding-left: 1.2em; position: relative; }
   #film-title li::before { content: ""; position: absolute; left: 0; top: .62em; width: .42em; height: 2px; background: #e2b052; }
   #film-hud { position: absolute; left: 1.4vw; top: 1.2vw; z-index: 7; display: none; pointer-events: none; }
   #film-hud .box { background: rgba(10, 18, 22, .84); border-left: 3px solid #e2b052; padding: .5vw .8vw; font: 500 .86vw/1.5 var(--mono); color: #e8ecf2; max-width: 44vw; }

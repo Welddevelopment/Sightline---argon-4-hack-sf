@@ -99,7 +99,17 @@ export default function createWorld(THREE, assets) {
     'road', 'NE 140th Court (runs south; 109 deg skew simplified)', ${C('NTSB/HAR-17/02 p.1, p.22; width assumed')}, false);
 
   // ---------- ground + illustrative scenery (pasture, hammock tree lines, fences, pole line) ----------
-  root.add(assets.groundPlane({ id: 'ground', size: 4000, kind: 'pasture' }));
+  const LS = assets.landscape || {};
+  const th = (x, z) => T.height(x, z), rh = (x, z) => T.roadHeight(x, z);
+  root.add((LS.pastureGround && LS.pastureGround({ id: 'ground', size: 4000, terrainHeight: th, roadHeight: rh, roads: 'auto' })) || assets.groundPlane({ id: 'ground', size: 4000, kind: 'pasture' }));
+  const ring = LS.treeline && LS.treeline({ id: 'scn_treeline_ring', distance: [300, 1100], length: 900, terrainHeight: th, roads: 'auto' });
+  if (ring) scenery(ring);
+  if (!assets.headless) {   // browser-only detail (skipped in Node checks)
+    const grass = LS.grassBlades && LS.grassBlades({ id: 'scn_grass', focus: [[7.5, 6.5], [-18, -40.5], [0, 0], [-60, 0]], radius: 45, terrainHeight: th, roadHeight: rh, roads: 'auto' });
+    if (grass) scenery(grass);
+    const clouds = LS.skyClouds && LS.skyClouds({ coverage: 0.08, sunAzimuth: 265, sunElevation: 45.1 });   // record: 'clear'; sparse fair-weather cumulus, illustrative
+    if (clouds) scenery(clouds);
+  }
   scenery(assets.treeline({ id: 'scn_trees_n', points: [[-900, -170], [-400, -190], [0, -160], [500, -185], [900, -175]], depth: 22, spacing: 8, seed: 3 }));
   scenery(assets.treeline({ id: 'scn_trees_s', points: [[-900, 150], [-300, 170], [60, 95], [400, 140], [900, 160]], depth: 26, spacing: 8, seed: 5, pineRatio: 0.45 }));
   scenery(assets.treeline({ id: 'scn_trees_s2', points: [[-260, 60], [-180, 64]], depth: 10, spacing: 7, seed: 9, height: 11 }));

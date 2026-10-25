@@ -204,6 +204,9 @@ function normV2(s, sh) {
   sh.tAt = (sec) => clampT(stm && stm.length ? piecewise(stm, sec) : sh.type === 'title' ? 0 : tFixed);
   sh.freezeAt = num(s.freezeAtT);
   sh.ovs = (Array.isArray(s.overlays) ? s.overlays : s.overlay ? [].concat(s.overlay) : []).map((o) => (typeof o === 'string' ? { kind: 'lower_third', text: o } : o));
+  // the plan may have been written before an aerial photo existed: retitle a diagram-registration caption when the photo is used
+  if (sh.type === 'aerial' && aerial) sh.ovs = sh.ovs.map((o) => (/lower|caption/i.test(o.kind || '') && /diagram|exhibit\s*4|map\.png/i.test(o.text || '')
+    ? { ...o, text: 'AERIAL PHOTO REGISTRATION \u2014 USGS NAIP orthophoto aligned to the 3D scene' + ((String(o.text).match(/\(t = [^)]*\)/) || [''])[0] ? ' ' + String(o.text).match(/\(t = [^)]*\)/)[0] : '') } : o));
   const sight = sh.ovs.find((o) => /sight/i.test(o.kind || ''));
   if (sight) sh.sel = sight.fromWitness || sight.witness || null;
   sh.rays = !!sight;
@@ -550,6 +553,31 @@ function drawChrome(sh, sec, t, cam, pose) {
   return ovs.map((o) => o.k).join(',') + '|' + pb;
 }
 
+// the viewer's witness mode x-rays the blocker (ghost + red edges) and the target (yellow fill). A film shows the occluder
+// solid, so undo that per frame unless the shot asks for xray:true (the reticle, sight line and banner still show the verdict).
+function unXray() {
+  const fx = [];
+  scene.traverse((o) => { if (o.userData && o.userData.xray) fx.push(o); });
+  for (const o of fx) {
+    o.visible = false;
+    const m = o.parent;
+    if (o.isLineSegments && o.material && o.material.color && o.material.color.getHex() === 0xff5a5a && m && m.isMesh) {
+      for (const mm of [].concat(m.material)) if (mm && mm.transparent && Math.abs(mm.opacity - 0.35) < 1e-3) { mm.opacity = 1; mm.transparent = false; mm.depthWrite = true; }
+    }
+  }
+}
+let _mg = null;
+function markerGroups() { // the viewer's witness marker groups (scaled for its own overhead zoom; we rescale for ours)
+  if (_mg) return _mg;
+  const ids = new Set(ALL_WITNESSES.map((w) => w.id));
+  for (const g of scene.children) {
+    if (!g.isGroup || g === world.root) continue;
+    let hit = false; g.traverse((o) => { if (o.userData && ids.has(o.userData.witnessId)) hit = true; });
+    if (hit) { _mg = g.children; break; }
+  }
+  return _mg || [];
+}
+
 // ---------- frame ----------
 let lastKey = null, lastMode = null, lastHud = null, lastSel, lastLR = null;
 function shotAt(i) { for (const s of shots) if (i < s.start + s.n) return s; return shots[shots.length - 1]; }
@@ -589,6 +617,7 @@ function frame(i) {
     pose = sh.poseAt(sec, t);
   } finally { suppress = false; }
   world.setTime(t); world.root.updateMatrixWorld(true);
+  if (sh.src.xray !== true) unXray();
 
   // camera
   const a = aspect();
@@ -617,7 +646,11 @@ function frame(i) {
   if (sh.src.fog === false || (sh.src.fog == null && (pose.cam === 'ortho' || pose.pos.y > 60))) scene.fog = null;
   // witnesses not featured in this shot are hidden from overlays.js (it would otherwise draw the default/failing witness's ray everywhere)
   if (!sh.sel) world.witnesses = [];
+  if (pose.cam === 'ortho') for (const g of markerGroups()) g.scale.setScalar(Math.max(1, pose.half / 55));
   try { if (op < 0.999) renderer.render(scene, cam); } finally { world.witnesses = ALL_WITNESSES; }
+  // overlays.js clock panel: park it under the plan's HUD box (inline !important beats its stylesheet)
+  const panel = stage.querySelector('.slo-layer > .slo-panel');
+  if (panel) panel.style.setProperty('top', (hudEl.style.display === 'none' ? 12 : hudEl.offsetTop + hudEl.offsetHeight + 8) + 'px', 'important');
   return out;
 }
 

@@ -67,7 +67,7 @@ export function getMaterials(THREE) {
     interior: std({ color: 0x0a0b0c, roughness: 0.95, metalness: 0, envMapIntensity: 0.3 }),
     brake: std({ color: 0x55585c, roughness: 0.5, metalness: 0.7 }),
     mirror: std({ color: 0x9aa3ab, roughness: 0.02, metalness: 1.0 }),
-    lightHead: new Phys({ color: 0xc9ced3, roughness: 0.08, metalness: 0.6, clearcoat: 1, clearcoatRoughness: 0.02, emissive: 0x000000 }),
+    lightHead: new Phys({ color: 0x5d646b, roughness: 0.08, metalness: 0.85, clearcoat: 1, clearcoatRoughness: 0.02, emissive: 0x000000 }),
     lightHeadOn: std({ color: 0xffffff, roughness: 0.2, metalness: 0, emissive: 0xfff6e8, emissiveIntensity: 6 }),
     lightTail: new Phys({ color: 0x6e0a0e, roughness: 0.12, metalness: 0.1, clearcoat: 1, clearcoatRoughness: 0.03, emissive: 0x1a0000 }),
     lightTailOn: std({ color: 0xff2a2a, roughness: 0.3, metalness: 0, emissive: 0xff1010, emissiveIntensity: 4 }),
