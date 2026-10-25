@@ -1,0 +1,39 @@
+{
+  "caseId": "jobtest",
+  "status": "building",
+  "step": "generate",
+  "message": "Replaying cached Argon world generation (cases/jobtest/cache/generate_world.js)…",
+  "mode": "mock",
+  "startedAt": "2026-10-25T19:11:06.252Z",
+  "finishedAt": null,
+  "error": null,
+  "resumable": false,
+  "events": [
+    {
+      "at": "2026-10-25T19:11:06.252Z",
+      "type": "start"
+    },
+    {
+      "at": "2026-10-25T19:11:06.258Z",
+      "type": "progress",
+      "step": "extract",
+      "message": "Extracted text from 6 document(s); 1 video(s) and 1 image(s) queued for Argon."
+    },
+    {
+      "at": "2026-10-25T19:11:06.367Z",
+      "type": "progress",
+      "step": "evidence",
+      "round": 1,
+      "message": "Case jobtest: 6 text file(s), 1 video(s), 1 image(s)"
+    },
+    {
+      "at": "2026-10-25T19:11:06.672Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "Replaying cached Argon world generation (cases/jobtest/cache/generate_world.js)…"
+    }
+  ],
+  "buildingAt": "2026-10-25T19:11:06.256Z",
+  "round": 1
+}

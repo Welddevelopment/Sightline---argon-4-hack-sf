@@ -204,13 +204,13 @@ export function sunDirection(azimuthDeg, elevationDeg) {
 
 // ---------------------------------------------------------------- illuminance model
 // Spectral optical depths at the three render primaries (680 / 550 / 450 nm): Rayleigh 0.0088*lambda^-4.05 and an
-// Angstrom aerosol term beta*lambda^-1.3 (beta = 0.08: clear rural air; ~0.2 for hazy). Kasten-Young air mass.
+// Angstrom aerosol term beta*lambda^-1.3 (beta = 0.05: clear rural air, AOD550 ~0.11; ~0.2 for hazy). Kasten-Young air mass.
 const LAMBDA = [0.68, 0.55, 0.45];
 function airMass(elDeg) {
   const z = 90 - Math.max(elDeg, -0.5);
   return 1 / (cosD(z) + 0.50572 * Math.pow(96.07995 - z, -1.6364));
 }
-function transmittance(elDeg, beta = 0.08) {
+function transmittance(elDeg, beta = 0.05) {
   const am = airMass(elDeg);
   return LAMBDA.map((l) => Math.exp(-am * (0.0088 * Math.pow(l, -4.05) + beta * Math.pow(l, -1.3))));
 }
@@ -218,7 +218,7 @@ function transmittance(elDeg, beta = 0.08) {
 const WEATHER = {
   // direct: fraction of clear-sky direct beam kept; diffuse: diffuse horizontal as a fraction of CLEAR-sky GLOBAL;
   // visibilityM: meteorological visibility (Koschmieder 2% contrast); shadows: hard sun shadows meaningful?
-  clear:    { direct: 1.0,  diffuseOfGlobal: null, visibilityM: 30000, beta: 0.08, shadows: true,  overcast: 0.0 },
+  clear:    { direct: 1.0,  diffuseOfGlobal: null, visibilityM: 30000, beta: 0.05, shadows: true,  overcast: 0.0 },
   overcast: { direct: 0.0,  diffuseOfGlobal: 0.32, visibilityM: 15000, beta: 0.15, shadows: false, overcast: 1.0 },
   rain:     { direct: 0.0,  diffuseOfGlobal: 0.16, visibilityM: 3000,  beta: 0.20, shadows: false, overcast: 1.0 },
   fog:      { direct: 0.12, diffuseOfGlobal: 0.45, visibilityM: 200,   beta: 0.30, shadows: false, overcast: 0.6 },
@@ -259,7 +259,9 @@ export function lightLevels({ sunEl, moonEl = -90, moonFraction = 0, moonPhaseDe
   const Eref = 60000;  // global illuminance at which luxToIntensity gives intensity ~ "1.5 per 60 klux"
   const k = 1.5 / Eref;
   const luxToIntensity = k * Math.pow(Eref / globalLux, 0.75);
-  const sunColor = (() => { const m = Math.max(...T); return T.map((x) => x / m); })();
+  // colour: white-balanced to a high sun (camera 'daylight' balance, AM 1.2) so noon sun is neutral and a low sun turns amber
+  const Twb = transmittance(56, w.beta);
+  const sunColor = (() => { const c = T.map((x, i) => x / Twb[i]); const m = Math.max(...c); return c.map((x) => x / m); })();
   return {
     directNormalLux: directNormal, diffuseLux: diffuse, moonNormalLux: moonNormal, globalLux,
     luxToIntensity, perceivedBrightness: Math.pow(globalLux / Eref, 0.25), sunColor,

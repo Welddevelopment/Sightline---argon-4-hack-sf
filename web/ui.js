@@ -387,7 +387,7 @@ function measureItems() {
   }
   return items;
 }
-function lineHtml(l, base = 'm-line') { return `<div class="${base} ${esc(l.cls || '')}">${esc(l.text)}</div>`; }
+function lineHtml(l, base = 'm-line') { return `<div class="${base} ${esc(l.cls || '')}"${l.title ? ` title="${esc(l.title)}"` : ''}>${esc(l.text)}</div>`; }
 function renderMeasures() {
   let box = $('measures');
   if (!box) {
@@ -488,7 +488,11 @@ function renderChecks(checks) {
   if (n.unverifiable) parts.push(`${n.unverifiable} unverifiable`);
   if (n.flag) parts.push(`${n.flag} motion flag${n.flag > 1 ? 's' : ''}`);
   else if (n.plausible) parts.push('motion plausible');
-  $('checkCount').textContent = parts.length ? ': ' + parts.join(', ') : '';
+  $('checkCount').textContent = parts.join(', ');
+  // "Independent checks: 1 contradiction confirmed, 4 consistent" (colon hugs the heading)
+  const sum = $('checkCount').parentNode;
+  const head = sum && [...sum.childNodes].find((x) => x.nodeType === 3 && x.nodeValue.trim());
+  if (head) head.nodeValue = head.nodeValue.trim().replace(/:$/, '') + (parts.length ? ': ' : ' ');
   if (!arr.length) { ul.innerHTML = '<li class="muted">No check results.</li>'; return; }
   const TAG = { contradiction: 'CONTRADICTION', consistent: 'CONSISTENT', flag: 'MOTION FLAG', plausible: 'PLAUSIBLE', unverifiable: 'UNVERIFIABLE' };
   const order = { contradiction: 0, flag: 1, consistent: 2, unverifiable: 3, plausible: 4 };

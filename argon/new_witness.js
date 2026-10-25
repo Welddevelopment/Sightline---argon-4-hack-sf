@@ -203,25 +203,29 @@ function mostCommonTime(world) {
   return t != null ? Number(t) : (world.duration || 0) / 2;
 }
 
-function matchLandmark(phrase, world) {
+function matchLandmark(phrase, world, bx) {
   const toks = phrase.toLowerCase().split(/[^a-z0-9]+/).filter((t) => t && !STOP.has(t));
   if (!toks.length) return null;
   const want = new Set(toks.flatMap((t) => [t, t.replace(/s$/, ''), ...(SYN[t] || [])]));
   let best = null, bestScore = 0;
   for (const [id, o] of Object.entries(world.objects || {})) {
     if (/^veh_/.test(id)) continue;
+    const b = bx?.[id];
+    if (b && Math.max(b.max.x - b.min.x, b.max.z - b.min.z) > 200) continue; // long roads: their center is no reference point
     const hay = new Set(`${id} ${o.label || ''} ${o.kind || ''}`.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean));
     let sc = 0; for (const t of want) if (hay.has(t)) sc += toks.includes(t) ? 2 : 1;
     if (o.kind === 'mark' && want.has('impact')) sc += 0.5;
     if (sc > bestScore) { bestScore = sc; best = id; }
   }
+  // The intersection / crossover is the scene origin in every world we generate.
+  if (!best && toks.some((t) => /^(intersection|crossover|crossing|junction|median)$/.test(t))) return 'origin';
   return best;
 }
 
 export async function parseStatement(statement, world) {
   const s = statement.toLowerCase();
   const bx = await boxes(world);
-  const center = (id) => { const b = bx[id]; return b ? [(b.min.x + b.max.x) / 2, (b.min.z + b.max.z) / 2] : [0, 0]; };
+  const center = (id) => { const b = id !== 'origin' && bx[id]; return b ? [(b.min.x + b.max.x) / 2, (b.min.z + b.max.z) / 2] : [0, 0]; };
   const roads = Object.keys(bx).filter((id) => world.objects[id].kind === 'road');
   const notes = [];
   let pos = null;
@@ -232,14 +236,14 @@ export async function parseStatement(statement, world) {
   // 1. "N units <dir> of <landmark>"
   let m = s.match(new RegExp(`${unitRe}\\s+(?:to\\s+the\\s+)?${DIR_RE}\\s+(?:of|from)\\s+${landmarkRe}`));
   if (m) {
-    const d = Number(m[1]) * UNIT[m[2]], dir = DIRS[normDir(m[3])], lm = matchLandmark(m[4], world);
+    const d = Number(m[1]) * UNIT[m[2]], dir = DIRS[normDir(m[3])], lm = matchLandmark(m[4], world, bx);
     const [cx, cz] = lm ? center(lm) : [0, 0];
     pos = [cx + dir[0] * d, cz + dir[1] * d];
     notes.push(`"${m[0]}" → ${r1(d)} m ${normDir(m[3])} of ${lm || 'origin'} [${r1(cx)}, ${r1(cz)}]`);
   }
   // 2. "N units from/before <landmark>" + travel direction → approaching, so on the side they came from
   if (!pos && (m = s.match(new RegExp(`${unitRe}\\s+(?:from|before|short\\s+of|away\\s+from|back\\s+from)\\s+${landmarkRe}`)))) {
-    const d = Number(m[1]) * UNIT[m[2]], lm = matchLandmark(m[3], world);
+    const d = Number(m[1]) * UNIT[m[2]], lm = matchLandmark(m[3], world, bx);
     const [cx, cz] = lm ? center(lm) : [0, 0];
     const tv = travel ? DIRS[normDir(travel)] : [1, 0];
     pos = [cx - tv[0] * d, cz - tv[1] * d];
@@ -252,15 +256,14 @@ export async function parseStatement(statement, world) {
     if (span.length) {
       const minZ = Math.min(...span.filter((b) => b.max.x - b.min.x > b.max.z - b.min.z).map((b) => b.min.z));
       const maxZ = Math.max(...span.filter((b) => b.max.x - b.min.x > b.max.z - b.min.z).map((b) => b.max.z));
-      const lm = matchLandmark(s.replace(m[0], ''), world);
       const x = 0;
       pos = dir[1] < 0 ? [x, minZ - 6] : dir[1] > 0 ? [x, maxZ + 6] : [dir[0] * 15, (minZ + maxZ) / 2];
-      notes.push(`"${m[0]}" → just beyond the ${normDir(m[1])} edge of the main road${lm ? '' : ''}, opposite the intersection`);
+      notes.push(`"${m[0]}" → just beyond the ${normDir(m[1])} edge of the main road, opposite the intersection`);
     }
   }
   // 4. "at/near/in front of/across from <landmark>"
   if (!pos && (m = s.match(new RegExp(`\\b(?:at|near|by|in\\s+front\\s+of|outside|beside|next\\s+to|across\\s+from)\\s+${landmarkRe}`)))) {
-    const lm = matchLandmark(m[1], world);
+    const lm = matchLandmark(m[1], world, bx);
     if (lm) {
       const b = bx[lm];
       const [cx, cz] = center(lm);
@@ -281,8 +284,10 @@ export async function parseStatement(statement, world) {
     const rd = roads.find((id) => new RegExp(`${word}|\\b${word[0]}b\\b|_${word[0]}b\\b`).test(`${id} ${world.objects[id].label || ''}`.toLowerCase()));
     if (rd) {
       const b = bx[rd], alongX = b.max.x - b.min.x > b.max.z - b.min.z;
-      const sign = word === 'westbound' || word === 'northbound' ? -1 : 1; // right-hand traffic: outer lane is on the driver's right
-      if (alongX) pos[1] = r1((b.min.z + b.max.z) / 2 + 0 * sign); else pos[0] = r1((b.min.x + b.max.x) / 2);
+      // Right-hand traffic: the through lanes sit on the driver's right edge (right of heading (dx,dz) is (-dz,dx)).
+      const [dx, dz] = DIRS[normDir(travel)];
+      if (alongX) { const half = (b.max.z - b.min.z) / 2, off = Math.min(5.5, half); pos[1] = r1(dx < 0 ? b.min.z + off : b.max.z - off); void dz; }
+      else { const half = (b.max.x - b.min.x) / 2, off = Math.min(5.5, half); pos[0] = r1(dz < 0 ? b.max.x - off : b.min.x + off); }
       notes.push(`driver placed in ${rd}`);
     }
   }

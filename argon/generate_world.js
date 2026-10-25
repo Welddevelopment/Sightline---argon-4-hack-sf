@@ -20,7 +20,11 @@ export function buildGeneratePrompt(caseId) {
 export async function generateWorld({ caseId = defaultCaseId(), version = 1,
   maxOutputTokens = Number(process.env.ARGON_WORLD_MAX_TOKENS || 65536) } = {}) {
   const d = caseDirs(caseId);
+  // Step 3 (review & confirm): if a human confirmed the extracted inputs, they override the raw evidence. Absent → unchanged.
+  const confirmed = await import('node:fs').then((fs) => { try { return fs.readFileSync(path.join(d.dir, 'confirmed_facts.json'), 'utf8'); } catch { return null; } });
   const parts = [textPart(buildGeneratePrompt(caseId)), ...(await evidenceMediaParts(caseId)),
+    ...(confirmed ? [textPart('AUTHORITATIVE CONFIRMED FACTS (human-reviewed). A reviewer checked these items against the evidence; where they differ from your own reading, ' +
+      'USE THESE values, positions and citations (keep their citations; mark items with cited:false as inferred). Items not listed: use the evidence as usual.\n' + confirmed)] : []),
     textPart('Output the complete world module now, in ONE ```js block.')];
   const res = await callArgon({ name: 'generate_world', model: ARGON_MODEL, parts, ext: 'js', maxOutputTokens, cacheDir: d.cache });
   const out = await writeWorldVersion(version, res.text, d.worlds, callProvenance({ caseId,

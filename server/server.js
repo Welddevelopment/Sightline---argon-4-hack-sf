@@ -350,6 +350,8 @@ mountCases(app, {
   legacyState: buildState,
   legacyHasWorld: () => fs.existsSync(p('cache', 'state.json')) || fs.existsSync(p('worlds', 'reference_world.js')),
 });
+await import('./review.js').then((m) => m.mountReview(app, { ROOT, MODE, tryImport, errMsg })).catch((e) => console.warn('[sightline] review API not mounted:', errMsg(e))); // B1: step 3 review & confirm
+await import('./clips.js').then((m) => m.mountClips(app, { ROOT, MODE, getThree, errMsg, legacyState: buildState })).catch((e) => console.warn('[sightline] clips API not mounted:', errMsg(e))); // PRODUCT-C: per-camera clip export
 
 app.use('/api', (req, res) => res.status(404).json({ error: `no such endpoint: ${req.method} ${req.originalUrl}` }));
 

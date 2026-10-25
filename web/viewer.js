@@ -721,12 +721,10 @@ export function robustnessLine(rb) {
 export function gazeLine(g) {
   if (!g || g.offAxisDeg == null || !Number.isFinite(Number(g.offAxisDeg))) return null;
   const per = g.peripheral != null ? !!g.peripheral : Number(g.offAxisDeg) > 30;
-  let how = '';
-  if (g.assumed) {
-    const src = g.source && world && world.objects[g.source] ? String(world.objects[g.source].label || g.source).replace(/\s*\([^)]*\)/g, '') : null;
-    how = src ? ` (gaze assumed toward ${src.toLowerCase()})` : ' (gaze direction assumed)';
-  }
-  return { cls: per ? 'warn' : '', text: `Target ${fmtDeg(g.offAxisDeg)} off gaze \u2014 ${per ? 'peripheral' : 'central'}${how}` };
+  const src = g.source && world && world.objects[g.source] ? String(world.objects[g.source].label || g.source).replace(/\s*\([^)]*\)/g, '') : null;
+  const how = g.assumed ? ' (assumed gaze)' : '';
+  return { cls: per ? 'warn' : '', text: `Target ${fmtDeg(g.offAxisDeg)} off gaze \u2014 ${per ? 'peripheral' : 'central'}${how}`,
+    title: g.assumed ? 'Gaze direction is an assumption' + (src ? ': toward ' + src.toLowerCase() : '') + '; the witness may have been looking elsewhere.' : '' };
 }
 
 function updateEyePanel() {
