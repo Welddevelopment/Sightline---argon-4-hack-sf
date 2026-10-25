@@ -567,11 +567,14 @@ export function createCar(THREE, type, opts = {}) {
 
 // ------------------------------------------------------------------ GLB model choice (mirrors web/models/manifest.json)
 // source:'glb' swaps a fitted GLB into the procedural placeholder when it loads (browser only; Node keeps procedural).
+// Side-by-side review (status/veh_cars.md): the procedural crisp-section bodies won for all four types (real glazed
+// greenhouse + interior for driver-seat views; the munim GLBs are closed shells with glass decals and no cabin).
+// The munim GLBs stay available as an opt-in: createVehicle(THREE, 'sedan', { source: 'glb' }) or { model: 'munim/x.glb' }.
 export const MODEL_CHOICE = {
-  sedan: { source: 'procedural' },
-  suv: { source: 'procedural' },
-  pickup: { source: 'procedural' },
-  van: { source: 'procedural' },
+  sedan: { source: 'procedural', url: 'munim/car-sedan.glb' },
+  suv: { source: 'procedural', url: 'munim/car-suv.glb' },
+  pickup: { source: 'procedural', url: 'munim/car-pickup.glb' },
+  van: { source: 'procedural', url: 'munim/car-minivan.glb' },
 };
 const MODEL_BASE = new URL('../models/', import.meta.url).href;
 function modelSpec(type, opts) {
