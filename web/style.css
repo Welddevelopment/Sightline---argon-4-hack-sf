@@ -162,3 +162,29 @@ html.clean .casepick { display: none; }
 #mapPlace .row { display: flex; gap: 8px; margin-top: 8px; }
 
 @media (max-width: 1200px) { .sim-badge { font-size: 9px; padding: 5px 7px; letter-spacing: .06em; } #top { gap: 10px; } }
+
+/* enlargeable deposition video */
+.depo-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font: 600 11px var(--sans); color: var(--muted); }
+.depo-bar .btn { margin-left: 6px; }
+#depoBackdrop { position: fixed; inset: 0; background: rgba(0,0,0,.72); z-index: 40; }
+#depoWrap.expanded { position: fixed; z-index: 41; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(94vw, 1180px); background: var(--panel); border: 1px solid var(--accent); border-radius: 8px; padding: 12px; box-shadow: 0 20px 80px rgba(0,0,0,.7); }
+#depoWrap.expanded #depo { max-height: 80vh; }
+#depoWrap.expanded .depo-bar { color: var(--text); font-size: 13px; }
+
+/* weaker-model comparison */
+#compare:empty { display: none; }
+#compare { margin-bottom: 10px; flex: none; }
+#compare details { margin: 0; border: 1px solid var(--line); border-radius: 6px; background: var(--panel2); }
+#compare summary { padding: 8px 10px; }
+.cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border-top: 1px solid var(--line); }
+.cmp-col { background: var(--panel2); padding: 9px 10px; min-width: 0; }
+.cmp-model { font: 700 10px/1.25 var(--sans); letter-spacing: .04em; color: var(--muted); margin-bottom: 7px; }
+.cmp-model b { display: block; color: var(--text); font-size: 11px; letter-spacing: 0; }
+.cmp-verdict { display: inline-block; font: 800 11px/1 var(--sans); letter-spacing: .12em; padding: 5px 8px; border-radius: 3px; margin-bottom: 7px; }
+.cmp-verdict.consistent { color: #c3cad6; background: rgba(138,148,166,.18); border: 1px solid var(--grey); }
+.cmp-verdict.contradiction { color: #fff; background: rgba(220,50,50,.85); border: 1px solid var(--red); }
+.cmp-verdict.unverifiable { color: var(--muted); border: 1px solid var(--line); }
+.cmp-why { font-size: 11.5px; line-height: 1.4; color: #cfd6e2; }
+.cmp-miss { grid-column: 1 / -1; background: var(--panel2); padding: 8px 10px; font-size: 11px; color: var(--muted); border-top: 1px dashed var(--line); }
+.cmp-miss b { color: var(--accent); }
+#compare .chips { margin-top: 7px; }

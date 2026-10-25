@@ -39,10 +39,22 @@ function seekDepo(tc) {
   const secs = parseTimecode(tc);
   if (secs == null) return;
   const go = () => { depo.currentTime = secs; depo.play().catch(() => {}); };
-  depo.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  expandDepo(true);
+  $('depoTc').textContent = fmtTc(secs);
   if (depo.readyState >= 1) go(); else { depo.addEventListener('loadedmetadata', go, { once: true }); depo.load(); }
   toast('Deposition video @ ' + fmtTc(secs));
 }
+function expandDepo(on) {
+  $('depoWrap').classList.toggle('expanded', !!on);
+  $('depoBackdrop').hidden = !on;
+  $('depoClose').hidden = !on;
+  $('depoExpand').hidden = !!on;
+}
+$('depoExpand').onclick = () => expandDepo(true);
+$('depoClose').onclick = () => expandDepo(false);
+$('depoBackdrop').onclick = () => expandDepo(false);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') expandDepo(false); });
+depo.addEventListener('timeupdate', () => { $('depoTc').textContent = fmtTc(depo.currentTime); });
 function fmtTc(s) { s = Math.round(s); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
 window.seekDepo = seekDepo;
 depo.addEventListener('error', () => { $('depoNote').textContent = 'Deposition video not available yet (/deposition/out/deposition.mp4).'; });
@@ -247,6 +259,48 @@ function citationsOf(f) {
   for (const c of f.citations || []) if (!out.includes(c)) out.push(c);
   return out;
 }
+// ---------- weaker-model comparison ----------
+let baseline = null;
+async function loadBaseline() {
+  baseline = null;
+  const id = CASE || 'demo';
+  try { baseline = await fetchJson('/cases/' + encodeURIComponent(id) + '/cache/baseline.json'); } catch (_) { baseline = null; }
+  renderCompare();
+}
+function shortCite(c) { const m = String(c).match(/^(Depo\w*\.?\s*\d+:\d+(?::\d+)?)/i); return m ? m[1] : String(c).replace(/\s*\(.*$/, ''); }
+function renderCompare() {
+  const box = $('compare');
+  if (!box) return;
+  const key = findings.find((f) => (f.status || '').toLowerCase() === 'contradiction');
+  if (!key || !baseline || !Array.isArray(baseline.findings)) { box.innerHTML = ''; return; }
+  const inv = key.involves || [];
+  const pool = baseline.findings.filter((b) => (b.involves || []).some((x) => inv.includes(x)));
+  const cand = pool.length ? pool : baseline.findings;
+  const rank = (b) => ({ contradiction: 0, consistent: 1, unverifiable: 2 }[(b.status || '').toLowerCase()] ?? 3);
+  // the weaker model's take on the same claim: prefer a "consistent" verdict that mentions a clear view, else the first
+  const bf = cand.slice().sort((a, b) => rank(a) - rank(b))[0] || cand[0];
+  const bst = (bf.status || 'unverifiable').toLowerCase();
+  const modelName = (m) => /flash/i.test(m || '') ? 'Gemini Flash' : String(m || 'Weaker model');
+  const cites = citationsOf(key).filter((c) => /^depo/i.test(c)).slice(0, 3);
+  const why = baseline.missed ? `<div class="cmp-miss"><b>What it missed:</b> ${esc(baseline.missed)}</div>` : '';
+  box.innerHTML = `<details open><summary>Weaker model comparison</summary>
+    <div class="cmp-grid">
+      <div class="cmp-col">
+        <div class="cmp-model"><b>${esc(modelName(baseline.model))}</b>transcript only</div>
+        <span class="cmp-verdict ${esc(bst)}">${esc(bst.toUpperCase())}</span>
+        <div class="cmp-why">${esc(bf.summary)}</div>
+      </div>
+      <div class="cmp-col">
+        <div class="cmp-model"><b>Gemini 4 Argon</b>full case + video</div>
+        <span class="cmp-verdict contradiction">CONTRADICTION</span>
+        <div class="cmp-why">${esc(key.summary)}</div>
+        <div class="chips">${cites.map((c) => `<span class="chip" data-cite="${esc(c)}">${esc(shortCite(c))}</span>`).join('')}</div>
+      </div>
+      ${why}
+    </div></details>`;
+  box.querySelectorAll('.chip').forEach((chip) => { chip.onclick = () => openCitation(chip.dataset.cite); });
+}
+
 function renderFindings() {
   const box = $('findings');
   $('findCount').textContent = findings.length ? '(' + findings.length + ')' : '';
@@ -522,6 +576,8 @@ async function loadState(allowWorldSwap) {
   }
   findings = state.findings || [];
   renderFindings();
+  renderCompare();
+  loadBaseline();
   renderChecks(state.checks);
   if (allowWorldSwap && state.world && !params.has('world') && state.world !== sl.worldUrl) {
     try {

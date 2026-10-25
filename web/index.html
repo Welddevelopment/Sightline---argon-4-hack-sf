@@ -43,7 +43,11 @@
     </section>
     <section>
       <h3>Deposition video</h3>
-      <video id="depo" controls preload="metadata" src="/deposition/out/deposition.mp4"></video>
+      <div id="depoBackdrop" hidden></div>
+      <div id="depoWrap">
+        <div class="depo-bar"><span>Deposition video &middot; <span id="depoTc" class="mono"></span></span><span><button id="depoExpand" class="btn small" title="Enlarge the video">Enlarge</button><button id="depoClose" class="btn small" hidden>Close</button></span></div>
+        <video id="depo" controls preload="metadata" src="/deposition/out/deposition.mp4"></video>
+      </div>
       <div id="depoNote" class="muted small"></div>
       <div class="seek-row">
         <input id="seekInput" placeholder="mm:ss" size="7" aria-label="Timecode">
@@ -74,6 +78,7 @@
 
   <aside id="right" class="panel">
     <h2>Findings <span id="findCount" class="count"></span></h2>
+    <div id="compare"></div>
     <div id="findings" class="scroll"><div class="muted">Loading…</div></div>
     <details id="checksWrap">
       <summary>Independent checks <span id="checkCount" class="count"></span></summary>
