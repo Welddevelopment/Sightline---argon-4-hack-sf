@@ -1,157 +1,164 @@
 {
-  "planNote": "Verify all four witnesses with core geometric and visual checks, run full suite and PRT checks, and probe contested/timing-dependent claims for Witnesses A and B with speed and time sensitivity sweeps.",
+  "planNote": "Verify all four witnesses with core sightline, robustness, gaze, and render checks, plus timing/speed sensitivity analyses for contested Witness B, time-sensitive Witness A, and partially blocked Witness D.",
   "tasks": [
     {
       "id": "full_suite",
       "type": "full_checks",
       "params": {},
-      "why": "Independently verify the baseline run_checks.mjs suite on a clean sandbox."
+      "why": "Independently verify the entire local check suite on a clean sandbox."
     },
     {
-      "id": "prt_all",
+      "id": "prt_drivers",
       "type": "prt",
       "params": {},
-      "why": "Confirm the perception-reaction time available to the colliding drivers matches the 10.43 s sight distance finding."
+      "why": "Confirm the perception-reaction time available to the colliding drivers over the hill crest."
     },
     {
-      "id": "sl_wit_A",
+      "id": "sl_wit_a",
       "type": "sightline",
-      "witness": "wit_A",
+      "witness": "wit_witness_A",
       "params": {},
-      "why": "Verify Witness A has an unblocked line of sight to Vehicle A at t=4.5s and check when the trailer blocks it."
+      "why": "Confirm Witness A had a clear view of Car A at t=4.0s before the semitrailer blocked the eastbound lanes."
     },
     {
-      "id": "rob_wit_A",
+      "id": "rob_wit_a",
       "type": "robustness",
-      "witness": "wit_A",
+      "witness": "wit_witness_A",
       "params": {},
-      "why": "Confirm Witness A's visibility verdict is robust to position perturbations inside the pickup cab."
+      "why": "Verify that Witness A's sightline to Car A at t=4.0s is robust across position tolerances."
     },
     {
-      "id": "gaze_wit_A",
+      "id": "gaze_wit_a",
       "type": "gaze",
-      "witness": "wit_A",
+      "witness": "wit_witness_A",
       "params": {},
-      "why": "Check that Vehicle A lies comfortably within Witness A's central field of view at t=4.5s."
+      "why": "Check that Car A falls within Witness A's central field of view while driving eastbound."
     },
     {
-      "id": "wt_wit_A",
+      "id": "wt_wit_a",
       "type": "whatif_time",
-      "witness": "wit_A",
+      "witness": "wit_witness_A",
       "params": {},
-      "why": "Test when the turning trailer begins to block Witness A's view of the eastbound car around t=4.5s."
+      "why": "Determine the exact time window when the turning semitrailer cuts off Witness A's view of Car A."
     },
     {
-      "id": "sl_wit_B",
+      "id": "sl_wit_b",
       "type": "sightline",
-      "witness": "wit_B",
+      "witness": "wit_witness_B",
       "params": {},
-      "why": "Verify whether the tractor blocks Witness B's view of Vehicle A right before impact at t=9.8s."
+      "why": "Test Witness B's contested claim of an unobstructed view of Car A right up until impact."
     },
     {
-      "id": "rob_wit_B",
+      "id": "rob_wit_b",
       "type": "robustness",
-      "witness": "wit_B",
+      "witness": "wit_witness_B",
       "params": {},
-      "why": "Determine how far Witness B would need to shift from her marked position to flip the partial occlusion verdict."
+      "why": "Find how far Witness B would need to move from the bench shelter to see Car A."
     },
     {
-      "id": "gaze_wit_B",
+      "id": "gaze_wit_b",
       "type": "gaze",
-      "witness": "wit_B",
+      "witness": "wit_witness_B",
       "params": {},
-      "why": "Evaluate Witness B's peripheral 31.5-degree gaze angle toward Vehicle A and test alternative gaze targets."
+      "why": "Evaluate Witness B's peripheral 29.5-degree gaze angle toward Car A and alternate marks."
     },
     {
-      "id": "ws_wit_B",
+      "id": "wt_wit_b",
+      "type": "whatif_time",
+      "witness": "wit_witness_B",
+      "params": {},
+      "why": "Check whether Witness B had a clear sightline to Car A at any time within 2 seconds of t=9.9s."
+    },
+    {
+      "id": "ws_wit_b",
       "type": "whatif_speed",
-      "witness": "wit_B",
+      "witness": "wit_witness_B",
       "params": {},
-      "why": "Test whether varying Vehicle A's approach speed clears the tractor blockage for Witness B."
+      "why": "Test whether any reasonable variation in Car A's speed would clear the obstruction for Witness B."
     },
     {
-      "id": "wt_wit_B",
+      "id": "sl_wit_c",
+      "type": "sightline",
+      "witness": "wit_witness_C",
+      "params": {},
+      "why": "Confirm Witness C's unobstructed view of the semitrailer swinging across the eastbound lanes at impact."
+    },
+    {
+      "id": "rob_wit_c",
+      "type": "robustness",
+      "witness": "wit_witness_C",
+      "params": {},
+      "why": "Verify that Witness C's view from the westbound inside lane is unaffected by minor position shifts."
+    },
+    {
+      "id": "gaze_wit_c",
+      "type": "gaze",
+      "witness": "wit_witness_C",
+      "params": {},
+      "why": "Confirm the semitrailer is directly within Witness C's forward gaze."
+    },
+    {
+      "id": "sl_wit_d",
+      "type": "sightline",
+      "witness": "wit_witness_D",
+      "params": {},
+      "why": "Confirm Witness D's statement that she could not see the collision from behind the store register."
+    },
+    {
+      "id": "rob_wit_d",
+      "type": "robustness",
+      "witness": "wit_witness_D",
+      "params": {},
+      "why": "Investigate the partial robustness (23/25 blocked) to see where inside the store a sightline opens up."
+    },
+    {
+      "id": "gaze_wit_d",
+      "type": "gaze",
+      "witness": "wit_witness_D",
+      "params": {},
+      "why": "Check Witness D's gaze alignment toward the highway from behind the counter."
+    },
+    {
+      "id": "wt_wit_d",
       "type": "whatif_time",
-      "witness": "wit_B",
+      "witness": "wit_witness_D",
       "params": {},
-      "why": "Test whether shifting Witness B's observation time by +-2s around t=9.8s provides an unobstructed view."
-    },
-    {
-      "id": "sl_wit_C",
-      "type": "sightline",
-      "witness": "wit_C",
-      "params": {},
-      "why": "Confirm Witness C's unobstructed sightline to the trailer across the eastbound lanes at impact."
-    },
-    {
-      "id": "rob_wit_C",
-      "type": "robustness",
-      "witness": "wit_C",
-      "params": {},
-      "why": "Verify that Witness C's clear view from the westbound inside lane holds across position perturbations."
-    },
-    {
-      "id": "gaze_wit_C",
-      "type": "gaze",
-      "witness": "wit_C",
-      "params": {},
-      "why": "Confirm the trailer is near the center of Witness C's gaze at t=10.43s."
-    },
-    {
-      "id": "sl_wit_D",
-      "type": "sightline",
-      "witness": "wit_D",
-      "params": {},
-      "why": "Confirm that the storefront cooler and window posters block Witness D's view of the highway at impact."
-    },
-    {
-      "id": "rob_wit_D",
-      "type": "robustness",
-      "witness": "wit_D",
-      "params": {},
-      "why": "Verify that Witness D remains completely blocked by storefront obstructions across surrounding counter positions."
-    },
-    {
-      "id": "gaze_wit_D",
-      "type": "gaze",
-      "witness": "wit_D",
-      "params": {},
-      "why": "Verify Witness D's gaze alignment toward the crash direction behind the storefront occluder."
+      "why": "Verify whether Car A was blocked from Witness D's position across the entire ±2s window around impact."
     },
     {
       "id": "r_overhead",
       "type": "render",
       "view": "overhead",
       "params": {},
-      "why": "Generate an overhead scene render to verify overall vehicle placements, geometry, and trajectories."
+      "why": "Render the overhead scene layout to confirm vehicle trajectories and obstruction geometry."
     },
     {
-      "id": "r_wit_A",
+      "id": "r_wit_a",
       "type": "render",
-      "view": "wit_A",
+      "view": "wit_witness_A",
       "params": {},
-      "why": "Render Witness A's perspective to confirm no self-occlusion from his pickup cab and clear visibility of Vehicle A."
+      "why": "Render Witness A's perspective at t=4.0s to visually confirm pixel visibility of Car A."
     },
     {
-      "id": "r_wit_B",
+      "id": "r_wit_b",
       "type": "render",
-      "view": "wit_B",
+      "view": "wit_witness_B",
       "params": {},
-      "why": "Render Witness B's perspective to confirm pixel-level occlusion of Vehicle A by the tractor."
+      "why": "Render Witness B's perspective at t=9.9s to visually confirm occlusion by the bench shelter and truck."
     },
     {
-      "id": "r_wit_C",
+      "id": "r_wit_c",
       "type": "render",
-      "view": "wit_C",
+      "view": "wit_witness_C",
       "params": {},
-      "why": "Render Witness C's perspective to visually confirm his view of the trailer at impact."
+      "why": "Render Witness C's perspective at t=10.43s to verify visibility of the turning semitrailer."
     },
     {
-      "id": "r_wit_D",
+      "id": "r_wit_d",
       "type": "render",
-      "view": "wit_D",
+      "view": "wit_witness_D",
       "params": {},
-      "why": "Render Witness D's perspective to visually confirm full blockage by the storefront cooler and posters."
+      "why": "Render Witness D's interior store perspective to confirm the retail building and fixtures block the highway."
     }
   ]
 }

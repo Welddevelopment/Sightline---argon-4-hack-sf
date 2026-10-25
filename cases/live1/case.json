@@ -51,5 +51,6 @@
       "textPath": "text/deposition_transcript.txt"
     }
   ],
-  "status": "new"
+  "status": "new",
+  "hidden": true
 }

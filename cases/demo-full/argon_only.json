@@ -19,17 +19,18 @@
     "generate_world_s": 146.8,
     "extraction_s": 224.2,
     "found_mark": true,
-    "mark_cited_as": "Depo Witness B 1:54:30",
+    "mark_cited_as": "Depo Witness B 1:54:34",
     "concluded_blocked": true,
-    "blocked_by": "veh_T_tractor",
-    "check_detail": "From Witness B's marked position (Depo Witness B 41:10, 52:00, 1:54:30 (Exhibit 4 mark #2)) the line of sight to veh_A is blocked by veh_T_tractor at t=9.8s (distance 30.2 m). Blocked from 21 of 25 positions within 2 m of Witness B's mark; the result depends on Witness B's exact position. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
+    "blocked_by": "occ_bench_shelter",
+    "check_detail": "From Witness B's marked position (Depo Witness B 17:01 (5 ft 6 in tall), 41:10-41:20, 52:00-52:07 (\"watched it the whole way, right up until it hit\"), 1:54:34 (Exhibit 4 pen mark #2 centered at [8.5, 0, 9.0] m on south edge of bench shelter)) the line of sight to veh_car_a is blocked by occ_bench_shelter at t=9.9s (distance 29.9 m). Blocked from 25 of 25 positions within 2 m of Witness B's mark. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
     "critique_verdict": "world_patched",
     "critique_summary": "Witness B's testimony that she had a clear, unobstructed view of Vehicle A all the way to impact is contradicted by her own marked position on Exhibit 4.",
-    "critique_s": 159.2
+    "critique_s": 326.4,
+    "world": "/cases/demo-full/worlds/world_v4.js"
   },
   "key_frames": {
-    "render_png": "/cases/demo-full/renders/world_v2/wit_B_t9p8.png",
-    "render_t": 9.8,
+    "render_png": "/cases/demo-full/renders/world_v4/final/wit_witness_B_t9p9.png",
+    "render_t": 9.9,
     "depo_png": "/cases/demo-full/keyframes/kf_mark_015430.png",
     "depo_timecode": "1:54:30"
   }

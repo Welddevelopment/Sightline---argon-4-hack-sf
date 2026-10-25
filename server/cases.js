@@ -206,7 +206,12 @@ export function mountCases(app, h) {
 
   // ---- list ----
   app.get('/api/cases', (req, res) => {
-    const cases = store.list().map((m) => {
+    // Sidebar hygiene: hide manifests marked hidden (test runs) and all but the newest demo clone. ?all=1 shows everything.
+    const all = req.query.all === '1';
+    const listed = store.list();
+    const newestClone = listed.filter((m) => m.replay).sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)))[0];
+    const visible = all ? listed : listed.filter((m) => !m.hidden && (!m.replay || m === newestClone));
+    const cases = visible.map((m) => {
       const s = caseState(m.caseId);
       return { caseId: m.caseId, title: m.title, createdAt: m.createdAt, status: getRun(m.caseId).running ? 'running' : m.status,
         job: jobs.get(m.caseId), fileCount: (m.files || []).length, hasWorld: !!(s && s.world) || (m.caseId === 'demo' && !!h.legacyHasWorld?.()) };

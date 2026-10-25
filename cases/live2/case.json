@@ -70,5 +70,6 @@
     "weather": "clear",
     "lighting": "day",
     "citation": "police_report.md p.1 (date, time 16:36:12.7, location, daylight, clear)"
-  }
+  },
+  "hidden": true
 }
