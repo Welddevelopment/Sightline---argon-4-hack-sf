@@ -1,0 +1,58 @@
+{
+  "model": "gemini-3.8-flash",
+  "method": "chunk-and-summarize transcript (text only, no video)",
+  "chunks": 4,
+  "summary": "Witness B's account is internally consistent: she says she was waiting at the bus stop on the corner near the crossing with \"a good view of everything\" and that nothing was between her and the signal. Nothing in the transcript contradicts the police report.",
+  "findings": [
+    {
+      "id": "B1",
+      "severity": "low",
+      "summary": "Witness B had an unobstructed view of the signal from the corner.",
+      "evidence": [
+        {
+          "source": "deposition.srt",
+          "citation": "[00:44] \"on the corner near the crossing... I had a good view of everything\""
+        },
+        {
+          "source": "deposition.srt",
+          "citation": "[02:20] \"No, nothing that I recall\""
+        }
+      ],
+      "involves": [
+        "wit_B"
+      ],
+      "status": "consistent"
+    },
+    {
+      "id": "B2",
+      "severity": "low",
+      "summary": "Witness B marked her position on Exhibit 4; exact location not stated in the transcript.",
+      "evidence": [
+        {
+          "source": "deposition.srt",
+          "citation": "[01:16] \"I was about here, a little way back from the corner, roughly in this area.\""
+        }
+      ],
+      "involves": [
+        "wit_B"
+      ],
+      "status": "unverifiable"
+    },
+    {
+      "id": "B3",
+      "severity": "low",
+      "summary": "Vehicle A skid marks indicate braking before impact; consistent with Witness A.",
+      "evidence": [
+        {
+          "source": "Police report p.3",
+          "citation": "skid marks"
+        }
+      ],
+      "involves": [
+        "veh_A"
+      ],
+      "status": "consistent"
+    }
+  ],
+  "missed": "Text-only pipeline never sees WHERE she marked on Exhibit 4, so it cannot place her behind the occluder."
+}

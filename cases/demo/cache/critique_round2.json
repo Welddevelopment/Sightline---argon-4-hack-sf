@@ -1,0 +1,107 @@
+{
+  "round": 2,
+  "verdict": "contradiction_found",
+  "summary": "With Witness B at her marked position the world matches the evidence. Her claim that she \"saw the light clearly\" and that nothing was between her and the signal is contradicted: the Bus shelter with solid ad panel (SE corner) blocks her line of sight to the signal head at t=6.5s. No further patch is needed; the contradiction is in the testimony.",
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "high",
+      "summary": "Witness B could not have seen Signal for northbound Main St (NE corner) from where she marked she was standing.",
+      "detail": "Her eye-level render at t=6.5s shows the Bus shelter with solid ad panel (SE corner) filling the direction of the signal head. The ray-cast check agrees (blocked by occ_shelter, 22.8 m to the signal). She testified \"The light was red for the northbound truck. I am certain of that. I saw it clearly.\" (Depo 01:50) and that nothing was between her and the signal (Depo 02:20).",
+      "evidence": [
+        {
+          "source": "deposition.mp4",
+          "citation": "Depo 01:16-01:36 (marked position on Exhibit 4)"
+        },
+        {
+          "source": "deposition.mp4",
+          "citation": "Depo 01:50 (claim about the signal)"
+        },
+        {
+          "source": "deposition.mp4",
+          "citation": "Depo 02:20 (\"nothing that I recall\" between her and the signal)"
+        },
+        {
+          "source": "Police report",
+          "citation": "p.3; Exhibit 1"
+        },
+        {
+          "source": "Render",
+          "citation": "wit_B.png @ t=6.5s"
+        },
+        {
+          "source": "Independent check",
+          "citation": "sightline wit_B→sig_north: blocked by occ_shelter"
+        }
+      ],
+      "involves": [
+        "wit_B",
+        "occ_shelter",
+        "sig_north"
+      ],
+      "status": "contradiction"
+    },
+    {
+      "id": "F2",
+      "severity": "low",
+      "summary": "Witness A had a clear line of sight to Pickup truck (Vehicle A), northbound Main St at t=7s.",
+      "detail": "The eye-level render and the ray-cast agree; the testimony is physically possible.",
+      "evidence": [
+        {
+          "source": "deposition.mp4",
+          "citation": "Depo 12:03"
+        },
+        {
+          "source": "Independent check",
+          "citation": "sightline wit_A→veh_A: clear"
+        }
+      ],
+      "involves": [
+        "wit_A",
+        "veh_A"
+      ],
+      "status": "consistent"
+    },
+    {
+      "id": "F3",
+      "severity": "low",
+      "summary": "Witness C had a clear line of sight to Sedan (Vehicle B), eastbound Oak Ave at t=7.5s.",
+      "detail": "The eye-level render and the ray-cast agree; the testimony is physically possible.",
+      "evidence": [
+        {
+          "source": "deposition.mp4",
+          "citation": "Depo 41:50"
+        },
+        {
+          "source": "Independent check",
+          "citation": "sightline wit_C→veh_B: clear"
+        }
+      ],
+      "involves": [
+        "wit_C",
+        "veh_B"
+      ],
+      "status": "consistent"
+    },
+    {
+      "id": "F4",
+      "severity": "low",
+      "summary": "Vehicle A's speed in the world is consistent with the 31 m skid marks.",
+      "evidence": [
+        {
+          "source": "Police report p.3",
+          "citation": "skid measurement"
+        },
+        {
+          "source": "Independent check",
+          "citation": "skid_vs_speed veh_A: pass"
+        }
+      ],
+      "involves": [
+        "veh_A"
+      ],
+      "status": "consistent"
+    }
+  ],
+  "patch": null
+}

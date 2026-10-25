@@ -1,0 +1,7 @@
+{
+  "_doc": "Maps world metres (x east, z south; north = -z) to map-image pixels. px = origin_px[0] + x_m*px_per_m ; py = origin_px[1] + z_m*px_per_m. If case/case.json has a 'map' object {image, px_per_m, origin_px:[x,y]} (origin_px = pixel of world (0,0)) it overrides these defaults. If origin_px is omitted the image centre is used as world origin.",
+  "px_per_m": 4,
+  "origin_px": null,
+  "placeholder_size_px": 800,
+  "case_caption": "Case 2026-DEMO  |  Collision at Elm St & 5th Ave  |  Deposition of Witness B"
+}

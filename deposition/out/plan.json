@@ -1,0 +1,2473 @@
+{
+ "frames_dir": "/home/claude/sightline/deposition/out/frames",
+ "caption": "Car into turning tractor-semitrailer at an uncontrolled median crossover, US-27A near Williston, Florida (2016)",
+ "map": {
+  "image": "/home/claude/sightline/case/exhibits/map.png",
+  "px_per_m": 10,
+  "origin_px": [
+   600,
+   450
+  ],
+  "size": 800
+ },
+ "states": [
+  {
+   "start": 0,
+   "end": 5.5681415929203535,
+   "speaker": "Attorney",
+   "text": "We are on the record. This is the videotaped deposition of Witness B, taken in",
+   "exhibit": null,
+   "file": "f0000.png"
+  },
+  {
+   "start": 5.5681415929203535,
+   "end": 12.064306784660765,
+   "speaker": "Attorney",
+   "text": "connection with the wrongful death action arising from the collision on U.S. Highway 27A at",
+   "exhibit": null,
+   "file": "f0001.png"
+  },
+  {
+   "start": 12.064306784660765,
+   "end": 17.917994100294983,
+   "speaker": "Attorney",
+   "text": "Northeast 140th Court in Levy County, Florida, on May 7, 2016. Today's date is the",
+   "exhibit": null,
+   "file": "f0002.png"
+  },
+  {
+   "start": 17.917994100294983,
+   "end": 24.199999999999996,
+   "speaker": "Attorney",
+   "text": "fourteenth. The time is 9:42 a.m. Counsel, please state your appearances for the record.",
+   "exhibit": null,
+   "file": "f0003.png"
+  },
+  {
+   "start": 24.2,
+   "end": 28.485294117647058,
+   "speaker": "Attorney",
+   "text": "I represent the estate of the driver of Vehicle",
+   "exhibit": null,
+   "file": "f0004.png"
+  },
+  {
+   "start": 28.485294117647058,
+   "end": 33.5,
+   "speaker": "Attorney",
+   "text": "A, and I'll be conducting the examination this morning.",
+   "exhibit": null,
+   "file": "f0005.png"
+  },
+  {
+   "start": 33.5,
+   "end": 39.30756756756757,
+   "speaker": "Opposing counsel",
+   "text": "Appearing on behalf of the defendant motor carrier and the driver of",
+   "exhibit": null,
+   "file": "f0006.png"
+  },
+  {
+   "start": 39.30756756756757,
+   "end": 45.02972972972973,
+   "speaker": "Opposing counsel",
+   "text": "Vehicle T. We'll reserve all objections except as to form until the",
+   "exhibit": null,
+   "file": "f0007.png"
+  },
+  {
+   "start": 45.02972972972973,
+   "end": 49.3,
+   "speaker": "Opposing counsel",
+   "text": "time of trial, and the witness will read and sign.",
+   "exhibit": null,
+   "file": "f0008.png"
+  },
+  {
+   "start": 49.3,
+   "end": 57,
+   "speaker": "Attorney",
+   "text": "Agreed. The witness has been sworn by the court reporter off camera. Good morning.",
+   "exhibit": null,
+   "file": "f0009.png"
+  },
+  {
+   "start": 57,
+   "end": 60.1,
+   "speaker": "Witness B",
+   "text": "Good morning.",
+   "exhibit": null,
+   "file": "f0010.png"
+  },
+  {
+   "start": 60.1,
+   "end": 66.35740740740741,
+   "speaker": "Attorney",
+   "text": "You understand you're under oath, the same oath you would take",
+   "exhibit": null,
+   "file": "f0011.png"
+  },
+  {
+   "start": 66.35740740740741,
+   "end": 71,
+   "speaker": "Attorney",
+   "text": "in a courtroom in front of a judge and a jury?",
+   "exhibit": null,
+   "file": "f0012.png"
+  },
+  {
+   "start": 71,
+   "end": 74.5,
+   "speaker": "Witness B",
+   "text": "Yes, I understand.",
+   "exhibit": null,
+   "file": "f0013.png"
+  },
+  {
+   "start": 74.5,
+   "end": 79.4,
+   "speaker": "Attorney",
+   "text": "Have you ever given a deposition before?",
+   "exhibit": null,
+   "file": "f0014.png"
+  },
+  {
+   "start": 79.4,
+   "end": 86.3,
+   "speaker": "Witness B",
+   "text": "No. Never. I've been on jury duty once but that's it.",
+   "exhibit": null,
+   "file": "f0015.png"
+  },
+  {
+   "start": 86.3,
+   "end": 92.00322580645161,
+   "speaker": "Attorney",
+   "text": "Then let me go over a few ground rules. They make the record cleaner",
+   "exhibit": null,
+   "file": "f0016.png"
+  },
+  {
+   "start": 92.00322580645161,
+   "end": 98.46129032258064,
+   "speaker": "Attorney",
+   "text": "and they make this go faster. The court reporter is taking down everything we",
+   "exhibit": null,
+   "file": "f0017.png"
+  },
+  {
+   "start": 98.46129032258064,
+   "end": 104.24838709677418,
+   "speaker": "Attorney",
+   "text": "say, and the camera is recording you. So I'll ask that you answer out",
+   "exhibit": null,
+   "file": "f0018.png"
+  },
+  {
+   "start": 104.24838709677418,
+   "end": 109.69999999999999,
+   "speaker": "Attorney",
+   "text": "loud. Nods and shrugs don't come through on the transcript. Okay?",
+   "exhibit": null,
+   "file": "f0019.png"
+  },
+  {
+   "start": 109.7,
+   "end": 112.2,
+   "speaker": "Witness B",
+   "text": "Okay.",
+   "exhibit": null,
+   "file": "f0020.png"
+  },
+  {
+   "start": 112.2,
+   "end": 119.18595041322314,
+   "speaker": "Attorney",
+   "text": "Try to let me finish my question before you start your answer, even if you know",
+   "exhibit": null,
+   "file": "f0021.png"
+  },
+  {
+   "start": 119.18595041322314,
+   "end": 126.08347107438016,
+   "speaker": "Attorney",
+   "text": "where I'm going. And I'll try to let you finish your answer before I start the",
+   "exhibit": null,
+   "file": "f0022.png"
+  },
+  {
+   "start": 126.08347107438016,
+   "end": 133.6,
+   "speaker": "Attorney",
+   "text": "next question. If we talk over each other, the reporter can't get either of us. Fair?",
+   "exhibit": null,
+   "file": "f0023.png"
+  },
+  {
+   "start": 133.6,
+   "end": 136.6,
+   "speaker": "Witness B",
+   "text": "That's fair.",
+   "exhibit": null,
+   "file": "f0024.png"
+  },
+  {
+   "start": 136.6,
+   "end": 142.80437956204378,
+   "speaker": "Attorney",
+   "text": "If you don't understand a question, tell me and I'll rephrase it. If",
+   "exhibit": null,
+   "file": "f0025.png"
+  },
+  {
+   "start": 142.80437956204378,
+   "end": 149.1,
+   "speaker": "Attorney",
+   "text": "you answer, I'm going to assume you understood it. Is that all right?",
+   "exhibit": null,
+   "file": "f0026.png"
+  },
+  {
+   "start": 149.1,
+   "end": 151.7,
+   "speaker": "Witness B",
+   "text": "Yes.",
+   "exhibit": null,
+   "file": "f0027.png"
+  },
+  {
+   "start": 151.7,
+   "end": 158.50357142857143,
+   "speaker": "Attorney",
+   "text": "From time to time the other attorney may object. Unless one of us tells you",
+   "exhibit": null,
+   "file": "f0028.png"
+  },
+  {
+   "start": 158.50357142857143,
+   "end": 165.30714285714288,
+   "speaker": "Attorney",
+   "text": "not to answer, you can go ahead and answer after the objection. If you need",
+   "exhibit": null,
+   "file": "f0029.png"
+  },
+  {
+   "start": 165.30714285714288,
+   "end": 170.9314285714286,
+   "speaker": "Attorney",
+   "text": "a break at any time, just say so. The only thing I ask is that",
+   "exhibit": null,
+   "file": "f0030.png"
+  },
+  {
+   "start": 170.9314285714286,
+   "end": 177.10000000000002,
+   "speaker": "Attorney",
+   "text": "you not take a break while a question is pending. Do you understand?",
+   "exhibit": null,
+   "file": "f0031.png"
+  },
+  {
+   "start": 177.1,
+   "end": 180.1,
+   "speaker": "Witness B",
+   "text": "I understand.",
+   "exhibit": null,
+   "file": "f0032.png"
+  },
+  {
+   "start": 180.1,
+   "end": 185.46615384615384,
+   "speaker": "Attorney",
+   "text": "Is there any reason, any medication or illness or anything else,",
+   "exhibit": null,
+   "file": "f0033.png"
+  },
+  {
+   "start": 185.46615384615384,
+   "end": 191,
+   "speaker": "Attorney",
+   "text": "that would keep you from giving full and truthful testimony today?",
+   "exhibit": null,
+   "file": "f0034.png"
+  },
+  {
+   "start": 191,
+   "end": 196.6,
+   "speaker": "Witness B",
+   "text": "No. I'm a little nervous but that's it.",
+   "exhibit": null,
+   "file": "f0035.png"
+  },
+  {
+   "start": 196.6,
+   "end": 203.2,
+   "speaker": "Attorney",
+   "text": "That's completely normal. Did you do anything to prepare for today?",
+   "exhibit": null,
+   "file": "f0036.png"
+  },
+  {
+   "start": 203.2,
+   "end": 209.89999999999998,
+   "speaker": "Witness B",
+   "text": "I met with the lawyer, with him, for about an hour last week.",
+   "exhibit": null,
+   "file": "f0037.png"
+  },
+  {
+   "start": 209.89999999999998,
+   "end": 216.59999999999997,
+   "speaker": "Witness B",
+   "text": "And I read over the statement I gave to the deputy back then.",
+   "exhibit": null,
+   "file": "f0038.png"
+  },
+  {
+   "start": 216.6,
+   "end": 222.43846153846152,
+   "speaker": "Opposing counsel",
+   "text": "Just so the record is clear, she's referring to me, and I'll instruct",
+   "exhibit": null,
+   "file": "f0039.png"
+  },
+  {
+   "start": 222.43846153846152,
+   "end": 228.7,
+   "speaker": "Opposing counsel",
+   "text": "the witness not to reveal the substance of any conversations with counsel.",
+   "exhibit": null,
+   "file": "f0040.png"
+  },
+  {
+   "start": 228.7,
+   "end": 234.55921052631578,
+   "speaker": "Attorney",
+   "text": "Understood. I'm not asking what was said. Other than the statement to the",
+   "exhibit": null,
+   "file": "f0041.png"
+  },
+  {
+   "start": 234.55921052631578,
+   "end": 240.9,
+   "speaker": "Attorney",
+   "text": "deputy, did you look at any documents, photographs, videos, anything like that?",
+   "exhibit": null,
+   "file": "f0042.png"
+  },
+  {
+   "start": 240.9,
+   "end": 249.1,
+   "speaker": "Witness B",
+   "text": "They showed me some pictures of the intersection. Just the road. And a map.",
+   "exhibit": null,
+   "file": "f0043.png"
+  },
+  {
+   "start": 249.1,
+   "end": 256.4,
+   "speaker": "Attorney",
+   "text": "Do you remember if it was the same map we'll be using today?",
+   "exhibit": null,
+   "file": "f0044.png"
+  },
+  {
+   "start": 256.4,
+   "end": 264.6,
+   "speaker": "Witness B",
+   "text": "I think so. It looked like a drawing, from the top, with the roads.",
+   "exhibit": null,
+   "file": "f0045.png"
+  },
+  {
+   "start": 264.6,
+   "end": 272.8,
+   "speaker": "Attorney",
+   "text": "Okay. We'll get to that. Let's start with a little background. How old are you?",
+   "exhibit": null,
+   "file": "f0046.png"
+  },
+  {
+   "start": 272.8,
+   "end": 275.8,
+   "speaker": "Witness B",
+   "text": "I'm forty-three.",
+   "exhibit": null,
+   "file": "f0047.png"
+  },
+  {
+   "start": 275.8,
+   "end": 283.9,
+   "speaker": "Attorney",
+   "text": "And where do you live? I don't need a street address, just the general area.",
+   "exhibit": null,
+   "file": "f0048.png"
+  },
+  {
+   "start": 283.9,
+   "end": 292.1,
+   "speaker": "Witness B",
+   "text": "I live outside Williston, maybe six or seven miles from that intersection. Toward Bronson.",
+   "exhibit": null,
+   "file": "f0049.png"
+  },
+  {
+   "start": 292.1,
+   "end": 297.5,
+   "speaker": "Attorney",
+   "text": "How long have you lived in that area?",
+   "exhibit": null,
+   "file": "f0050.png"
+  },
+  {
+   "start": 297.5,
+   "end": 301.4,
+   "speaker": "Witness B",
+   "text": "Going on eleven years.",
+   "exhibit": null,
+   "file": "f0051.png"
+  },
+  {
+   "start": 301.4,
+   "end": 305.9,
+   "speaker": "Attorney",
+   "text": "What do you do for work?",
+   "exhibit": null,
+   "file": "f0052.png"
+  },
+  {
+   "start": 305.9,
+   "end": 312.0388888888889,
+   "speaker": "Witness B",
+   "text": "I'm a home health aide. I go to people's houses, mostly older folks,",
+   "exhibit": null,
+   "file": "f0053.png"
+  },
+  {
+   "start": 312.0388888888889,
+   "end": 318.9,
+   "speaker": "Witness B",
+   "text": "and help them with bathing, medications, getting around. That kind of thing.",
+   "exhibit": null,
+   "file": "f0054.png"
+  },
+  {
+   "start": 318.9,
+   "end": 325,
+   "speaker": "Attorney",
+   "text": "Were you working in that job in May of 2016?",
+   "exhibit": null,
+   "file": "f0055.png"
+  },
+  {
+   "start": 325,
+   "end": 331.5,
+   "speaker": "Witness B",
+   "text": "Yes, same agency. I've been there about nine years now.",
+   "exhibit": null,
+   "file": "f0056.png"
+  },
+  {
+   "start": 331.5,
+   "end": 336.8,
+   "speaker": "Attorney",
+   "text": "Do you drive as part of your job?",
+   "exhibit": null,
+   "file": "f0057.png"
+  },
+  {
+   "start": 336.8,
+   "end": 343.165,
+   "speaker": "Witness B",
+   "text": "Every day. I drive all over the county. Back then I had a",
+   "exhibit": null,
+   "file": "f0058.png"
+  },
+  {
+   "start": 343.165,
+   "end": 350.2,
+   "speaker": "Witness B",
+   "text": "lot of clients out along 27A, so I was on that road constantly.",
+   "exhibit": null,
+   "file": "f0059.png"
+  },
+  {
+   "start": 350.2,
+   "end": 355.5,
+   "speaker": "Attorney",
+   "text": "So you're familiar with that stretch of highway.",
+   "exhibit": null,
+   "file": "f0060.png"
+  },
+  {
+   "start": 355.5,
+   "end": 363.7,
+   "speaker": "Witness B",
+   "text": "Very familiar. I could drive it with my eyes closed. Not that I would.",
+   "exhibit": null,
+   "file": "f0061.png"
+  },
+  {
+   "start": 363.7,
+   "end": 368.7,
+   "speaker": "Attorney",
+   "text": "Do you wear glasses or contact lenses?",
+   "exhibit": null,
+   "file": "f0062.png"
+  },
+  {
+   "start": 368.7,
+   "end": 373,
+   "speaker": "Witness B",
+   "text": "Contacts. For distance. I'm nearsighted.",
+   "exhibit": null,
+   "file": "f0063.png"
+  },
+  {
+   "start": 373,
+   "end": 380,
+   "speaker": "Attorney",
+   "text": "Were you wearing your contacts on the afternoon of May 7th, 2016?",
+   "exhibit": null,
+   "file": "f0064.png"
+  },
+  {
+   "start": 380,
+   "end": 387.7,
+   "speaker": "Witness B",
+   "text": "Yes. I put them in every morning. I don't go anywhere without them.",
+   "exhibit": null,
+   "file": "f0065.png"
+  },
+  {
+   "start": 387.7,
+   "end": 393.5,
+   "speaker": "Attorney",
+   "text": "When was your last eye exam before the accident?",
+   "exhibit": null,
+   "file": "f0066.png"
+  },
+  {
+   "start": 393.5,
+   "end": 401.7,
+   "speaker": "Witness B",
+   "text": "That January, I think. I get them checked every year because of the driving.",
+   "exhibit": null,
+   "file": "f0067.png"
+  },
+  {
+   "start": 401.7,
+   "end": 405.8,
+   "speaker": "Attorney",
+   "text": "Any problems with your hearing?",
+   "exhibit": null,
+   "file": "f0068.png"
+  },
+  {
+   "start": 405.8,
+   "end": 408.4,
+   "speaker": "Witness B",
+   "text": "No.",
+   "exhibit": null,
+   "file": "f0069.png"
+  },
+  {
+   "start": 408.4,
+   "end": 413.1556818181818,
+   "speaker": "Attorney",
+   "text": "All right. Let's talk about May 7th, 2016. Do",
+   "exhibit": null,
+   "file": "f0070.png"
+  },
+  {
+   "start": 413.1556818181818,
+   "end": 417.7,
+   "speaker": "Attorney",
+   "text": "you remember what day of the week that was?",
+   "exhibit": null,
+   "file": "f0071.png"
+  },
+  {
+   "start": 417.7,
+   "end": 422.92727272727274,
+   "speaker": "Witness B",
+   "text": "It was a Saturday. I remember because I wasn't",
+   "exhibit": null,
+   "file": "f0072.png"
+  },
+  {
+   "start": 422.92727272727274,
+   "end": 427.7,
+   "speaker": "Witness B",
+   "text": "working, I had the day off, which is rare.",
+   "exhibit": null,
+   "file": "f0073.png"
+  },
+  {
+   "start": 427.7,
+   "end": 433.4,
+   "speaker": "Attorney",
+   "text": "What were you doing that afternoon, before the collision?",
+   "exhibit": null,
+   "file": "f0074.png"
+  },
+  {
+   "start": 433.4,
+   "end": 440.88823529411764,
+   "speaker": "Witness B",
+   "text": "My car was in the shop, the transmission, so my sister was driving me around",
+   "exhibit": null,
+   "file": "f0075.png"
+  },
+  {
+   "start": 440.88823529411764,
+   "end": 447.88382352941176,
+   "speaker": "Witness B",
+   "text": "to run errands. She dropped me at the store on the corner there to pick",
+   "exhibit": null,
+   "file": "f0076.png"
+  },
+  {
+   "start": 447.88382352941176,
+   "end": 454.6823529411765,
+   "speaker": "Witness B",
+   "text": "up a few things while she went down the road to drop off something at",
+   "exhibit": null,
+   "file": "f0077.png"
+  },
+  {
+   "start": 454.6823529411765,
+   "end": 460.2,
+   "speaker": "Witness B",
+   "text": "a friend's house. She was going to come back and get me.",
+   "exhibit": null,
+   "file": "f0078.png"
+  },
+  {
+   "start": 460.2,
+   "end": 467.5,
+   "speaker": "Attorney",
+   "text": "When you say the store on the corner, which store do you mean?",
+   "exhibit": null,
+   "file": "f0079.png"
+  },
+  {
+   "start": 467.5,
+   "end": 472.9374331550802,
+   "speaker": "Witness B",
+   "text": "The little store right there at the intersection, on the south",
+   "exhibit": null,
+   "file": "f0080.png"
+  },
+  {
+   "start": 472.9374331550802,
+   "end": 478.024064171123,
+   "speaker": "Witness B",
+   "text": "side of the highway, where 140th Court goes off. It's like",
+   "exhibit": null,
+   "file": "f0081.png"
+  },
+  {
+   "start": 478.024064171123,
+   "end": 483.9,
+   "speaker": "Witness B",
+   "text": "a convenience store, feed and supplies, a little bit of everything.",
+   "exhibit": null,
+   "file": "f0082.png"
+  },
+  {
+   "start": 483.9,
+   "end": 489.7,
+   "speaker": "Attorney",
+   "text": "Approximately what time did your sister drop you off?",
+   "exhibit": null,
+   "file": "f0083.png"
+  },
+  {
+   "start": 489.7,
+   "end": 495.9,
+   "speaker": "Witness B",
+   "text": "A little after four. Maybe ten after four. I know it was after",
+   "exhibit": null,
+   "file": "f0084.png"
+  },
+  {
+   "start": 495.9,
+   "end": 503.1,
+   "speaker": "Witness B",
+   "text": "four because she was complaining about missing the start of a ball game.",
+   "exhibit": null,
+   "file": "f0085.png"
+  },
+  {
+   "start": 503.1,
+   "end": 508,
+   "speaker": "Attorney",
+   "text": "How long were you inside the store?",
+   "exhibit": null,
+   "file": "f0086.png"
+  },
+  {
+   "start": 508,
+   "end": 513.7894736842105,
+   "speaker": "Witness B",
+   "text": "Not long. Fifteen, twenty minutes. I bought some things",
+   "exhibit": null,
+   "file": "f0087.png"
+  },
+  {
+   "start": 513.7894736842105,
+   "end": 518,
+   "speaker": "Witness B",
+   "text": "and then I went outside to wait for her.",
+   "exhibit": null,
+   "file": "f0088.png"
+  },
+  {
+   "start": 518,
+   "end": 522.9,
+   "speaker": "Attorney",
+   "text": "What did you buy, if you remember?",
+   "exhibit": null,
+   "file": "f0089.png"
+  },
+  {
+   "start": 522.9,
+   "end": 527.7235294117647,
+   "speaker": "Witness B",
+   "text": "Dog food, a bag of ice, a couple of drinks. I",
+   "exhibit": null,
+   "file": "f0090.png"
+  },
+  {
+   "start": 527.7235294117647,
+   "end": 533.7261437908497,
+   "speaker": "Witness B",
+   "text": "remember the ice because by the end of everything it had",
+   "exhibit": null,
+   "file": "f0091.png"
+  },
+  {
+   "start": 533.7261437908497,
+   "end": 539.3000000000001,
+   "speaker": "Witness B",
+   "text": "all melted in the bag. I just left it sitting there.",
+   "exhibit": null,
+   "file": "f0092.png"
+  },
+  {
+   "start": 539.3,
+   "end": 544.7,
+   "speaker": "Attorney",
+   "text": "When you went outside, where did you go?",
+   "exhibit": null,
+   "file": "f0093.png"
+  },
+  {
+   "start": 544.7,
+   "end": 553.1574468085107,
+   "speaker": "Witness B",
+   "text": "I went out front to wait. There's a little bench out there with a roof over",
+   "exhibit": null,
+   "file": "f0094.png"
+  },
+  {
+   "start": 553.1574468085107,
+   "end": 560.6,
+   "speaker": "Witness B",
+   "text": "it, kind of like a bus stop. I sat there for a while with my bags.",
+   "exhibit": null,
+   "file": "f0095.png"
+  },
+  {
+   "start": 560.6,
+   "end": 564.8,
+   "speaker": "Attorney",
+   "text": "What was the weather like?",
+   "exhibit": null,
+   "file": "f0096.png"
+  },
+  {
+   "start": 564.8,
+   "end": 570.670297029703,
+   "speaker": "Witness B",
+   "text": "Hot. Sunny. It was a clear day. No rain at all. I",
+   "exhibit": null,
+   "file": "f0097.png"
+  },
+  {
+   "start": 570.670297029703,
+   "end": 576.9,
+   "speaker": "Witness B",
+   "text": "remember I was glad there was a roof over the bench.",
+   "exhibit": null,
+   "file": "f0098.png"
+  },
+  {
+   "start": 576.9,
+   "end": 583.8,
+   "speaker": "Attorney",
+   "text": "Was the road wet or dry, as far as you could tell?",
+   "exhibit": null,
+   "file": "f0099.png"
+  },
+  {
+   "start": 583.8,
+   "end": 590.3,
+   "speaker": "Witness B",
+   "text": "Dry. It hadn't rained in a while, I don't think.",
+   "exhibit": null,
+   "file": "f0100.png"
+  },
+  {
+   "start": 590.3,
+   "end": 595.2,
+   "speaker": "Attorney",
+   "text": "Where was the sun, if you recall?",
+   "exhibit": null,
+   "file": "f0101.png"
+  },
+  {
+   "start": 595.2,
+   "end": 598.6,
+   "speaker": "Opposing counsel",
+   "text": "Object to form.",
+   "exhibit": null,
+   "file": "f0102.png"
+  },
+  {
+   "start": 598.6,
+   "end": 601.9,
+   "speaker": "Attorney",
+   "text": "You can answer.",
+   "exhibit": null,
+   "file": "f0103.png"
+  },
+  {
+   "start": 601.9,
+   "end": 608.0363095238095,
+   "speaker": "Witness B",
+   "text": "Up high. It was still afternoon. It was over toward the west,",
+   "exhibit": null,
+   "file": "f0104.png"
+  },
+  {
+   "start": 608.0363095238095,
+   "end": 613.770238095238,
+   "speaker": "Witness B",
+   "text": "you know, but still pretty high. It wasn't in my eyes, if",
+   "exhibit": null,
+   "file": "f0105.png"
+  },
+  {
+   "start": 613.770238095238,
+   "end": 618.8,
+   "speaker": "Witness B",
+   "text": "that's what you're asking. I had the roof over me.",
+   "exhibit": null,
+   "file": "f0106.png"
+  },
+  {
+   "start": 618.8,
+   "end": 622.9,
+   "speaker": "Attorney",
+   "text": "Did you have sunglasses on?",
+   "exhibit": null,
+   "file": "f0107.png"
+  },
+  {
+   "start": 622.9,
+   "end": 628.1,
+   "speaker": "Witness B",
+   "text": "No. They were in my sister's car.",
+   "exhibit": null,
+   "file": "f0108.png"
+  },
+  {
+   "start": 628.1,
+   "end": 634.6,
+   "speaker": "Attorney",
+   "text": "While you were sitting on the bench, what were you doing?",
+   "exhibit": null,
+   "file": "f0109.png"
+  },
+  {
+   "start": 634.6,
+   "end": 639.8327160493827,
+   "speaker": "Witness B",
+   "text": "Just waiting. I had my phone out for a bit, I was",
+   "exhibit": null,
+   "file": "f0110.png"
+  },
+  {
+   "start": 639.8327160493827,
+   "end": 646.0265432098765,
+   "speaker": "Witness B",
+   "text": "texting my sister asking where she was. Then I put it away",
+   "exhibit": null,
+   "file": "f0111.png"
+  },
+  {
+   "start": 646.0265432098765,
+   "end": 651.9,
+   "speaker": "Witness B",
+   "text": "and I was just watching the road, watching for her car.",
+   "exhibit": null,
+   "file": "f0112.png"
+  },
+  {
+   "start": 651.9,
+   "end": 659.3,
+   "speaker": "Attorney",
+   "text": "Do you remember roughly how long you were outside before the collision happened?",
+   "exhibit": null,
+   "file": "f0113.png"
+  },
+  {
+   "start": 659.3,
+   "end": 664,
+   "speaker": "Witness B",
+   "text": "Maybe five, ten minutes. Not long.",
+   "exhibit": null,
+   "file": "f0114.png"
+  },
+  {
+   "start": 664,
+   "end": 669.7,
+   "speaker": "Attorney",
+   "text": "Which direction would your sister have been coming from?",
+   "exhibit": null,
+   "file": "f0115.png"
+  },
+  {
+   "start": 669.7,
+   "end": 674.6188118811881,
+   "speaker": "Witness B",
+   "text": "From the west. From the Bronson side. So I was",
+   "exhibit": null,
+   "file": "f0116.png"
+  },
+  {
+   "start": 674.6188118811881,
+   "end": 680.5,
+   "speaker": "Witness B",
+   "text": "looking that way, up toward the hill, watching for her.",
+   "exhibit": null,
+   "file": "f0117.png"
+  },
+  {
+   "start": 680.5,
+   "end": 684.7,
+   "speaker": "Attorney",
+   "text": "Tell me about the hill.",
+   "exhibit": null,
+   "file": "f0118.png"
+  },
+  {
+   "start": 684.7,
+   "end": 692.1033898305085,
+   "speaker": "Witness B",
+   "text": "If you're on the south side looking west, the highway goes up a rise. It's not",
+   "exhibit": null,
+   "file": "f0119.png"
+  },
+  {
+   "start": 692.1033898305085,
+   "end": 699.6966101694916,
+   "speaker": "Witness B",
+   "text": "a big hill, it's Florida, but it's enough that cars just kind of appear over the",
+   "exhibit": null,
+   "file": "f0120.png"
+  },
+  {
+   "start": 699.6966101694916,
+   "end": 707.1,
+   "speaker": "Witness B",
+   "text": "top of it. You can't see past it. Then they come down toward the intersection.",
+   "exhibit": null,
+   "file": "f0121.png"
+  },
+  {
+   "start": 707.1,
+   "end": 715.7,
+   "speaker": "Attorney",
+   "text": "About how far away is the top of that rise from the intersection, if you know?",
+   "exhibit": null,
+   "file": "f0122.png"
+  },
+  {
+   "start": 715.7,
+   "end": 720.2,
+   "speaker": "Opposing counsel",
+   "text": "Object to form. Calls for speculation.",
+   "exhibit": null,
+   "file": "f0123.png"
+  },
+  {
+   "start": 720.2,
+   "end": 724.8467391304348,
+   "speaker": "Witness B",
+   "text": "I don't know exactly. A quarter mile? Less? A",
+   "exhibit": null,
+   "file": "f0124.png"
+  },
+  {
+   "start": 724.8467391304348,
+   "end": 729.7,
+   "speaker": "Witness B",
+   "text": "few hundred yards. I'm not good with distances.",
+   "exhibit": null,
+   "file": "f0125.png"
+  },
+  {
+   "start": 729.7,
+   "end": 736.7,
+   "speaker": "Attorney",
+   "text": "That's fine. Tell me about the traffic that afternoon. Was it busy?",
+   "exhibit": null,
+   "file": "f0126.png"
+  },
+  {
+   "start": 736.7,
+   "end": 743.2009708737864,
+   "speaker": "Witness B",
+   "text": "No. It was pretty quiet. Saturday afternoon out there, there's",
+   "exhibit": null,
+   "file": "f0127.png"
+  },
+  {
+   "start": 743.2009708737864,
+   "end": 747.5,
+   "speaker": "Witness B",
+   "text": "not a lot going on. A car every so often.",
+   "exhibit": null,
+   "file": "f0128.png"
+  },
+  {
+   "start": 747.5,
+   "end": 752.8,
+   "speaker": "Attorney",
+   "text": "At some point did you notice a tractor-trailer?",
+   "exhibit": null,
+   "file": "f0129.png"
+  },
+  {
+   "start": 752.8,
+   "end": 758.3249999999999,
+   "speaker": "Witness B",
+   "text": "Yes. There was a big truck on the other side of the",
+   "exhibit": null,
+   "file": "f0130.png"
+  },
+  {
+   "start": 758.3249999999999,
+   "end": 764.5,
+   "speaker": "Witness B",
+   "text": "highway, the north side. It was in the turn lane, the one",
+   "exhibit": null,
+   "file": "f0131.png"
+  },
+  {
+   "start": 764.5,
+   "end": 769.7,
+   "speaker": "Witness B",
+   "text": "in the middle where you turn left to cross over.",
+   "exhibit": null,
+   "file": "f0132.png"
+  },
+  {
+   "start": 769.7,
+   "end": 774.6,
+   "speaker": "Attorney",
+   "text": "Which direction had that truck been traveling?",
+   "exhibit": null,
+   "file": "f0133.png"
+  },
+  {
+   "start": 774.6,
+   "end": 782.2554744525547,
+   "speaker": "Witness B",
+   "text": "It was going west. It was on the westbound side, heading toward Bronson, and",
+   "exhibit": null,
+   "file": "f0134.png"
+  },
+  {
+   "start": 782.2554744525547,
+   "end": 788.4,
+   "speaker": "Witness B",
+   "text": "it was waiting in the left turn lane to come across to 140th.",
+   "exhibit": null,
+   "file": "f0135.png"
+  },
+  {
+   "start": 788.4,
+   "end": 792.6,
+   "speaker": "Attorney",
+   "text": "Can you describe the truck?",
+   "exhibit": null,
+   "file": "f0136.png"
+  },
+  {
+   "start": 792.6,
+   "end": 798.5257425742575,
+   "speaker": "Witness B",
+   "text": "A regular big rig. The trailer was white, a box trailer. It had",
+   "exhibit": null,
+   "file": "f0137.png"
+  },
+  {
+   "start": 798.5257425742575,
+   "end": 805.0158415841585,
+   "speaker": "Witness B",
+   "text": "one of those refrigeration units on the front of the trailer, I could",
+   "exhibit": null,
+   "file": "f0138.png"
+  },
+  {
+   "start": 805.0158415841585,
+   "end": 811.6,
+   "speaker": "Witness B",
+   "text": "hear it humming. The cab was darker. I don't remember the exact color.",
+   "exhibit": null,
+   "file": "f0139.png"
+  },
+  {
+   "start": 811.6,
+   "end": 818.1,
+   "speaker": "Attorney",
+   "text": "When you first noticed the truck, was it moving or stopped?",
+   "exhibit": null,
+   "file": "f0140.png"
+  },
+  {
+   "start": 818.1,
+   "end": 824.8957142857143,
+   "speaker": "Witness B",
+   "text": "Honestly, I couldn't tell you for sure. It was either stopped or barely",
+   "exhibit": null,
+   "file": "f0141.png"
+  },
+  {
+   "start": 824.8957142857143,
+   "end": 831.5,
+   "speaker": "Witness B",
+   "text": "moving. It was just kind of sitting there in the turn lane, creeping.",
+   "exhibit": null,
+   "file": "f0142.png"
+  },
+  {
+   "start": 831.5,
+   "end": 836.8,
+   "speaker": "Attorney",
+   "text": "Did you watch the truck make its turn?",
+   "exhibit": null,
+   "file": "f0143.png"
+  },
+  {
+   "start": 836.8,
+   "end": 843.3927710843374,
+   "speaker": "Witness B",
+   "text": "Yes. It started to come across, real slow. It came out of the turn lane,",
+   "exhibit": null,
+   "file": "f0144.png"
+  },
+  {
+   "start": 843.3927710843374,
+   "end": 852,
+   "speaker": "Witness B",
+   "text": "across the median part, and started across the eastbound lanes, toward our side, toward 140th.",
+   "exhibit": null,
+   "file": "f0145.png"
+  },
+  {
+   "start": 852,
+   "end": 859.3,
+   "speaker": "Attorney",
+   "text": "When you say slow, can you give me any idea of the speed?",
+   "exhibit": null,
+   "file": "f0146.png"
+  },
+  {
+   "start": 859.3,
+   "end": 862.7,
+   "speaker": "Opposing counsel",
+   "text": "Object to form.",
+   "exhibit": null,
+   "file": "f0147.png"
+  },
+  {
+   "start": 862.7,
+   "end": 868.6673076923076,
+   "speaker": "Witness B",
+   "text": "Walking speed? A little faster than walking, maybe. It was",
+   "exhibit": null,
+   "file": "f0148.png"
+  },
+  {
+   "start": 868.6673076923076,
+   "end": 873.4,
+   "speaker": "Witness B",
+   "text": "a big truck making a tight turn. They go slow.",
+   "exhibit": null,
+   "file": "f0149.png"
+  },
+  {
+   "start": 873.4,
+   "end": 878.8,
+   "speaker": "Attorney",
+   "text": "Did the truck have its turn signal on?",
+   "exhibit": null,
+   "file": "f0150.png"
+  },
+  {
+   "start": 878.8,
+   "end": 884.4,
+   "speaker": "Witness B",
+   "text": "I don't remember. I didn't notice either way.",
+   "exhibit": null,
+   "file": "f0151.png"
+  },
+  {
+   "start": 884.4,
+   "end": 890.1,
+   "speaker": "Attorney",
+   "text": "Okay. At some point did you notice another vehicle?",
+   "exhibit": null,
+   "file": "f0152.png"
+  },
+  {
+   "start": 890.1,
+   "end": 893.6,
+   "speaker": "Witness B",
+   "text": "Yes. The car.",
+   "exhibit": null,
+   "file": "f0153.png"
+  },
+  {
+   "start": 893.6,
+   "end": 897.7,
+   "speaker": "Attorney",
+   "text": "Tell me what you saw.",
+   "exhibit": null,
+   "file": "f0154.png"
+  },
+  {
+   "start": 897.7,
+   "end": 904.3394849785408,
+   "speaker": "Witness B",
+   "text": "I was looking up toward the hill for my sister and a car came over the",
+   "exhibit": null,
+   "file": "f0155.png"
+  },
+  {
+   "start": 904.3394849785408,
+   "end": 913.7296137339056,
+   "speaker": "Witness B",
+   "text": "top. Eastbound, coming toward the intersection, on the side closest to me. And I remember thinking,",
+   "exhibit": null,
+   "file": "f0156.png"
+  },
+  {
+   "start": 913.7296137339056,
+   "end": 919.8,
+   "speaker": "Witness B",
+   "text": "at first, is that her? But it wasn't her car. Hers is a minivan.",
+   "exhibit": null,
+   "file": "f0157.png"
+  },
+  {
+   "start": 919.8,
+   "end": 927.9,
+   "speaker": "Attorney",
+   "text": "Was the truck already moving when you first saw the car come over the rise?",
+   "exhibit": null,
+   "file": "f0158.png"
+  },
+  {
+   "start": 927.9,
+   "end": 934.5366412213741,
+   "speaker": "Witness B",
+   "text": "Let me think. I think the truck was still in the turn lane when",
+   "exhibit": null,
+   "file": "f0159.png"
+  },
+  {
+   "start": 934.5366412213741,
+   "end": 941.7,
+   "speaker": "Witness B",
+   "text": "the car came over the hill. It started across after. Not long after.",
+   "exhibit": null,
+   "file": "f0160.png"
+  },
+  {
+   "start": 941.7,
+   "end": 945.9,
+   "speaker": "Attorney",
+   "text": "Can you describe the car?",
+   "exhibit": null,
+   "file": "f0161.png"
+  },
+  {
+   "start": 945.9,
+   "end": 951.9612244897959,
+   "speaker": "Witness B",
+   "text": "A sedan. Lower, sleek. Darker color. I didn't know what",
+   "exhibit": null,
+   "file": "f0162.png"
+  },
+  {
+   "start": 951.9612244897959,
+   "end": 956.7,
+   "speaker": "Witness B",
+   "text": "kind it was at the time. I found out later.",
+   "exhibit": null,
+   "file": "f0163.png"
+  },
+  {
+   "start": 956.7,
+   "end": 961.6,
+   "speaker": "Attorney",
+   "text": "Did the car have its headlights on?",
+   "exhibit": null,
+   "file": "f0164.png"
+  },
+  {
+   "start": 961.6,
+   "end": 970.2,
+   "speaker": "Witness B",
+   "text": "No. It was the middle of the afternoon. I don't think anybody had headlights on.",
+   "exhibit": null,
+   "file": "f0165.png"
+  },
+  {
+   "start": 970.2,
+   "end": 974.8,
+   "speaker": "Attorney",
+   "text": "Which lane was the car in?",
+   "exhibit": null,
+   "file": "f0166.png"
+  },
+  {
+   "start": 974.8,
+   "end": 983,
+   "speaker": "Witness B",
+   "text": "The right lane. The outside lane, closest to my side, closest to the store.",
+   "exhibit": null,
+   "file": "f0167.png"
+  },
+  {
+   "start": 983,
+   "end": 990.7,
+   "speaker": "Attorney",
+   "text": "Did the car change lanes at any point as it came down the hill?",
+   "exhibit": null,
+   "file": "f0168.png"
+  },
+  {
+   "start": 990.7,
+   "end": 996.8,
+   "speaker": "Witness B",
+   "text": "No. It stayed right in that lane. Just straight.",
+   "exhibit": null,
+   "file": "f0169.png"
+  },
+  {
+   "start": 996.8,
+   "end": 1002.5,
+   "speaker": "Attorney",
+   "text": "Could you tell how fast the car was going?",
+   "exhibit": null,
+   "file": "f0170.png"
+  },
+  {
+   "start": 1002.5,
+   "end": 1006.3,
+   "speaker": "Opposing counsel",
+   "text": "Object to form. Foundation.",
+   "exhibit": null,
+   "file": "f0171.png"
+  },
+  {
+   "start": 1006.3,
+   "end": 1010.8,
+   "speaker": "Attorney",
+   "text": "You can answer if you're able.",
+   "exhibit": null,
+   "file": "f0172.png"
+  },
+  {
+   "start": 1010.8,
+   "end": 1016.2486486486487,
+   "speaker": "Witness B",
+   "text": "It was moving along pretty good. I couldn't give you a",
+   "exhibit": null,
+   "file": "f0173.png"
+  },
+  {
+   "start": 1016.2486486486487,
+   "end": 1022,
+   "speaker": "Witness B",
+   "text": "number. I'm not good with speeds any more than distances.",
+   "exhibit": null,
+   "file": "f0174.png"
+  },
+  {
+   "start": 1022,
+   "end": 1026.2,
+   "speaker": "Attorney",
+   "text": "What gave you that impression?",
+   "exhibit": null,
+   "file": "f0175.png"
+  },
+  {
+   "start": 1026.2,
+   "end": 1032.276595744681,
+   "speaker": "Witness B",
+   "text": "Just how quick it came down the hill. One second it",
+   "exhibit": null,
+   "file": "f0176.png"
+  },
+  {
+   "start": 1032.276595744681,
+   "end": 1037.4,
+   "speaker": "Witness B",
+   "text": "was at the top and then it was right there.",
+   "exhibit": null,
+   "file": "f0177.png"
+  },
+  {
+   "start": 1037.4,
+   "end": 1044.8,
+   "speaker": "Attorney",
+   "text": "Where was the truck by the time the car got near the intersection?",
+   "exhibit": null,
+   "file": "f0178.png"
+  },
+  {
+   "start": 1044.8,
+   "end": 1053.4,
+   "speaker": "Witness B",
+   "text": "The truck was across the road by then. Across the lane the car was in.",
+   "exhibit": null,
+   "file": "f0179.png"
+  },
+  {
+   "start": 1053.4,
+   "end": 1060.3,
+   "speaker": "Attorney",
+   "text": "Did you see the car's brake lights come on at any point?",
+   "exhibit": null,
+   "file": "f0180.png"
+  },
+  {
+   "start": 1060.3,
+   "end": 1066.4620370370371,
+   "speaker": "Witness B",
+   "text": "No. I couldn't see the back of it anyway, it was coming",
+   "exhibit": null,
+   "file": "f0181.png"
+  },
+  {
+   "start": 1066.4620370370371,
+   "end": 1072.4,
+   "speaker": "Witness B",
+   "text": "toward me. But it never slowed down that I could see.",
+   "exhibit": null,
+   "file": "f0182.png"
+  },
+  {
+   "start": 1072.4,
+   "end": 1078.6,
+   "speaker": "Attorney",
+   "text": "Did you hear any braking? Tires squealing, anything like that?",
+   "exhibit": null,
+   "file": "f0183.png"
+  },
+  {
+   "start": 1078.6,
+   "end": 1085.9,
+   "speaker": "Witness B",
+   "text": "No. Nothing. No tires, no horn. There was nothing until the crash.",
+   "exhibit": null,
+   "file": "f0184.png"
+  },
+  {
+   "start": 1085.9,
+   "end": 1090.5,
+   "speaker": "Attorney",
+   "text": "Did you hear the truck's horn?",
+   "exhibit": null,
+   "file": "f0185.png"
+  },
+  {
+   "start": 1090.5,
+   "end": 1095.2,
+   "speaker": "Witness B",
+   "text": "No. I don't remember any horn.",
+   "exhibit": null,
+   "file": "f0186.png"
+  },
+  {
+   "start": 1095.2,
+   "end": 1103.7,
+   "speaker": "Attorney",
+   "text": "We've been going about forty minutes on my watch. Let's take a short break. Five minutes.",
+   "exhibit": null,
+   "file": "f0187.png"
+  },
+  {
+   "start": 1103.7,
+   "end": 1106.7,
+   "speaker": "Opposing counsel",
+   "text": "That's fine.",
+   "exhibit": null,
+   "file": "f0188.png"
+  },
+  {
+   "start": 1106.7,
+   "end": 1113.3,
+   "speaker": "Attorney",
+   "text": "We're going off the record.",
+   "exhibit": null,
+   "file": "f0189.png"
+  },
+  {
+   "start": 1113.3,
+   "end": 1119.8,
+   "speaker": "Attorney",
+   "text": "We're back on the record. You understand you're still under oath?",
+   "exhibit": null,
+   "file": "f0190.png"
+  },
+  {
+   "start": 1119.8,
+   "end": 1122.4,
+   "speaker": "Witness B",
+   "text": "Yes.",
+   "exhibit": null,
+   "file": "f0191.png"
+  },
+  {
+   "start": 1122.4,
+   "end": 1130.2,
+   "speaker": "Attorney",
+   "text": "Did you speak with anyone about the substance of your testimony during the break?",
+   "exhibit": null,
+   "file": "f0192.png"
+  },
+  {
+   "start": 1130.2,
+   "end": 1136.6,
+   "speaker": "Witness B",
+   "text": "No. I went to the restroom and got some water.",
+   "exhibit": null,
+   "file": "f0193.png"
+  },
+  {
+   "start": 1136.6,
+   "end": 1143.4823529411765,
+   "speaker": "Attorney",
+   "text": "Before the break we were talking about the car coming down the hill. I want to",
+   "exhibit": null,
+   "file": "f0194.png"
+  },
+  {
+   "start": 1143.4823529411765,
+   "end": 1151.6,
+   "speaker": "Attorney",
+   "text": "talk about the collision itself. Tell me what you saw and heard when the collision happened.",
+   "exhibit": null,
+   "file": "f0195.png"
+  },
+  {
+   "start": 1151.6,
+   "end": 1159.3890909090908,
+   "speaker": "Witness B",
+   "text": "The truck was across the eastbound lanes, the trailer was stretched across the road,",
+   "exhibit": null,
+   "file": "f0196.png"
+  },
+  {
+   "start": 1159.3890909090908,
+   "end": 1165.4163636363635,
+   "speaker": "Witness B",
+   "text": "and the car went right into the side of it. Right under it. There",
+   "exhibit": null,
+   "file": "f0197.png"
+  },
+  {
+   "start": 1165.4163636363635,
+   "end": 1171.721818181818,
+   "speaker": "Witness B",
+   "text": "was this terrible noise, like a bang and a tearing sound at the same",
+   "exhibit": null,
+   "file": "f0198.png"
+  },
+  {
+   "start": 1171.721818181818,
+   "end": 1177.1,
+   "speaker": "Witness B",
+   "text": "time. And then the car just kept going out the other side.",
+   "exhibit": null,
+   "file": "f0199.png"
+  },
+  {
+   "start": 1177.1,
+   "end": 1184,
+   "speaker": "Attorney",
+   "text": "When you say it kept going, which direction did the car go?",
+   "exhibit": null,
+   "file": "f0200.png"
+  },
+  {
+   "start": 1184,
+   "end": 1192.5184210526315,
+   "speaker": "Witness B",
+   "text": "East. It came out from under the trailer and kept going east, down the highway, and",
+   "exhibit": null,
+   "file": "f0201.png"
+  },
+  {
+   "start": 1192.5184210526315,
+   "end": 1199.6,
+   "speaker": "Witness B",
+   "text": "then drifted off the road to the right side. Off my side of the road.",
+   "exhibit": null,
+   "file": "f0202.png"
+  },
+  {
+   "start": 1199.6,
+   "end": 1207.3,
+   "speaker": "Attorney",
+   "text": "Did it slow down at all after it came out from under the trailer?",
+   "exhibit": null,
+   "file": "f0203.png"
+  },
+  {
+   "start": 1207.3,
+   "end": 1214.0954545454545,
+   "speaker": "Witness B",
+   "text": "Not much. It went a long way. It went off the road into the grass",
+   "exhibit": null,
+   "file": "f0204.png"
+  },
+  {
+   "start": 1214.0954545454545,
+   "end": 1221.4136363636362,
+   "speaker": "Witness B",
+   "text": "and through a fence and I heard it hit something. I found out later it",
+   "exhibit": null,
+   "file": "f0205.png"
+  },
+  {
+   "start": 1221.4136363636362,
+   "end": 1227.9999999999998,
+   "speaker": "Witness B",
+   "text": "hit a pole. Then it ended up way down there in somebody's yard.",
+   "exhibit": null,
+   "file": "f0206.png"
+  },
+  {
+   "start": 1228,
+   "end": 1236.2,
+   "speaker": "Attorney",
+   "text": "How far down the road did the car go before it stopped, if you know?",
+   "exhibit": null,
+   "file": "f0207.png"
+  },
+  {
+   "start": 1236.2,
+   "end": 1239.5,
+   "speaker": "Opposing counsel",
+   "text": "Object to form.",
+   "exhibit": null,
+   "file": "f0208.png"
+  },
+  {
+   "start": 1239.5,
+   "end": 1245.6543103448275,
+   "speaker": "Witness B",
+   "text": "Far. Down past a couple of houses. I've heard people say it",
+   "exhibit": null,
+   "file": "f0209.png"
+  },
+  {
+   "start": 1245.6543103448275,
+   "end": 1251.6,
+   "speaker": "Witness B",
+   "text": "was hundreds of feet. I believe that. It just kept going.",
+   "exhibit": null,
+   "file": "f0210.png"
+  },
+  {
+   "start": 1251.6,
+   "end": 1257,
+   "speaker": "Attorney",
+   "text": "What did the truck do after the impact?",
+   "exhibit": null,
+   "file": "f0211.png"
+  },
+  {
+   "start": 1257,
+   "end": 1263.65,
+   "speaker": "Witness B",
+   "text": "It kept going too, slow. It finished the turn and pulled down 140th",
+   "exhibit": null,
+   "file": "f0212.png"
+  },
+  {
+   "start": 1263.65,
+   "end": 1270.3000000000002,
+   "speaker": "Witness B",
+   "text": "Court and stopped. Past the store, down the side road a little way.",
+   "exhibit": null,
+   "file": "f0213.png"
+  },
+  {
+   "start": 1270.3,
+   "end": 1274.1,
+   "speaker": "Attorney",
+   "text": "What did you do?",
+   "exhibit": null,
+   "file": "f0214.png"
+  },
+  {
+   "start": 1274.1,
+   "end": 1281.53961352657,
+   "speaker": "Witness B",
+   "text": "I stood up. I think I dropped my bag. I just stood there for a second.",
+   "exhibit": null,
+   "file": "f0215.png"
+  },
+  {
+   "start": 1281.53961352657,
+   "end": 1289.404347826087,
+   "speaker": "Witness B",
+   "text": "Then I started walking toward the road but I didn't know what to do. A man",
+   "exhibit": null,
+   "file": "f0216.png"
+  },
+  {
+   "start": 1289.404347826087,
+   "end": 1296.1,
+   "speaker": "Witness B",
+   "text": "came out of the store and he was on the phone with 911 already.",
+   "exhibit": null,
+   "file": "f0217.png"
+  },
+  {
+   "start": 1296.1,
+   "end": 1300.7,
+   "speaker": "Attorney",
+   "text": "Did you go to the car?",
+   "exhibit": null,
+   "file": "f0218.png"
+  },
+  {
+   "start": 1300.7,
+   "end": 1307.2901639344261,
+   "speaker": "Witness B",
+   "text": "No. It was too far down. Some other people ran down there. I",
+   "exhibit": null,
+   "file": "f0219.png"
+  },
+  {
+   "start": 1307.2901639344261,
+   "end": 1314.1,
+   "speaker": "Witness B",
+   "text": "stayed by the store. I was shaking. I'm not ashamed to say it.",
+   "exhibit": null,
+   "file": "f0220.png"
+  },
+  {
+   "start": 1314.1,
+   "end": 1319.8,
+   "speaker": "Attorney",
+   "text": "Did you speak with the driver of the truck?",
+   "exhibit": null,
+   "file": "f0221.png"
+  },
+  {
+   "start": 1319.8,
+   "end": 1325.8,
+   "speaker": "Witness B",
+   "text": "No. I didn't talk to anybody from the truck.",
+   "exhibit": null,
+   "file": "f0222.png"
+  },
+  {
+   "start": 1325.8,
+   "end": 1331.6,
+   "speaker": "Attorney",
+   "text": "Did you speak with law enforcement at the scene?",
+   "exhibit": null,
+   "file": "f0223.png"
+  },
+  {
+   "start": 1331.6,
+   "end": 1338.7674418604652,
+   "speaker": "Witness B",
+   "text": "Yes. A deputy came and took my information and asked me what I saw.",
+   "exhibit": null,
+   "file": "f0224.png"
+  },
+  {
+   "start": 1338.7674418604652,
+   "end": 1345.4,
+   "speaker": "Witness B",
+   "text": "Later on, I wrote out a statement. That's the one I looked at.",
+   "exhibit": null,
+   "file": "f0225.png"
+  },
+  {
+   "start": 1345.4,
+   "end": 1351.9,
+   "speaker": "Attorney",
+   "text": "About how long after the crash did you give that statement?",
+   "exhibit": null,
+   "file": "f0226.png"
+  },
+  {
+   "start": 1351.9,
+   "end": 1358.8,
+   "speaker": "Witness B",
+   "text": "The written one was a few days later. They called me.",
+   "exhibit": null,
+   "file": "f0227.png"
+  },
+  {
+   "start": 1358.8,
+   "end": 1364.2,
+   "speaker": "Attorney",
+   "text": "When your sister came back, where were you?",
+   "exhibit": null,
+   "file": "f0228.png"
+  },
+  {
+   "start": 1364.2,
+   "end": 1372.4544378698226,
+   "speaker": "Witness B",
+   "text": "Still by the store. She couldn't get through because of all the emergency vehicles, so she",
+   "exhibit": null,
+   "file": "f0229.png"
+  },
+  {
+   "start": 1372.4544378698226,
+   "end": 1379.7,
+   "speaker": "Witness B",
+   "text": "parked across and walked over. She stayed with me while I talked to the deputy.",
+   "exhibit": null,
+   "file": "f0230.png"
+  },
+  {
+   "start": 1379.7,
+   "end": 1385.5,
+   "speaker": "Attorney",
+   "text": "Have you discussed what you saw with your sister?",
+   "exhibit": null,
+   "file": "f0231.png"
+  },
+  {
+   "start": 1385.5,
+   "end": 1391.5,
+   "speaker": "Witness B",
+   "text": "Of course. Many times. She was upset for me.",
+   "exhibit": null,
+   "file": "f0232.png"
+  },
+  {
+   "start": 1391.5,
+   "end": 1398.5,
+   "speaker": "Attorney",
+   "text": "Has anything your sister said affected your memory of what you saw?",
+   "exhibit": null,
+   "file": "f0233.png"
+  },
+  {
+   "start": 1398.5,
+   "end": 1401.8,
+   "speaker": "Opposing counsel",
+   "text": "Object to form.",
+   "exhibit": null,
+   "file": "f0234.png"
+  },
+  {
+   "start": 1401.8,
+   "end": 1408.3,
+   "speaker": "Witness B",
+   "text": "No. She didn't see anything. She was down the road.",
+   "exhibit": null,
+   "file": "f0235.png"
+  },
+  {
+   "start": 1408.3,
+   "end": 1414,
+   "speaker": "Attorney",
+   "text": "Have you read any news articles about the crash?",
+   "exhibit": null,
+   "file": "f0236.png"
+  },
+  {
+   "start": 1414,
+   "end": 1418.75,
+   "speaker": "Witness B",
+   "text": "Some. It was on the local news for a",
+   "exhibit": null,
+   "file": "f0237.png"
+  },
+  {
+   "start": 1418.75,
+   "end": 1423.5,
+   "speaker": "Witness B",
+   "text": "while. I tried not to read too much.",
+   "exhibit": null,
+   "file": "f0238.png"
+  },
+  {
+   "start": 1423.5,
+   "end": 1429.3,
+   "speaker": "Attorney",
+   "text": "Have you watched any videos or reconstructions about it?",
+   "exhibit": null,
+   "file": "f0239.png"
+  },
+  {
+   "start": 1429.3,
+   "end": 1434.635616438356,
+   "speaker": "Witness B",
+   "text": "No. I saw something on TV once, a picture",
+   "exhibit": null,
+   "file": "f0240.png"
+  },
+  {
+   "start": 1434.635616438356,
+   "end": 1438.8,
+   "speaker": "Witness B",
+   "text": "of the car, and I turned it off.",
+   "exhibit": null,
+   "file": "f0241.png"
+  },
+  {
+   "start": 1438.8,
+   "end": 1443.724778761062,
+   "speaker": "Attorney",
+   "text": "I want to go back to the moments right before impact.",
+   "exhibit": null,
+   "file": "f0242.png"
+  },
+  {
+   "start": 1443.724778761062,
+   "end": 1449.3,
+   "speaker": "Attorney",
+   "text": "Where was the trailer when the car reached the intersection?",
+   "exhibit": null,
+   "file": "f0243.png"
+  },
+  {
+   "start": 1449.3,
+   "end": 1456.517610062893,
+   "speaker": "Witness B",
+   "text": "It was across both eastbound lanes. The cab had already made it to the other",
+   "exhibit": null,
+   "file": "f0244.png"
+  },
+  {
+   "start": 1456.517610062893,
+   "end": 1464.4,
+   "speaker": "Witness B",
+   "text": "side, onto 140th, kind of, and the trailer was stretched across the road behind it.",
+   "exhibit": null,
+   "file": "f0245.png"
+  },
+  {
+   "start": 1464.4,
+   "end": 1473,
+   "speaker": "Attorney",
+   "text": "From where you were, could you see the road on the far side of the truck?",
+   "exhibit": null,
+   "file": "f0246.png"
+  },
+  {
+   "start": 1473,
+   "end": 1479.05,
+   "speaker": "Witness B",
+   "text": "The far side. You mean the north side? Parts of it. Under",
+   "exhibit": null,
+   "file": "f0247.png"
+  },
+  {
+   "start": 1479.05,
+   "end": 1485.1,
+   "speaker": "Witness B",
+   "text": "the trailer, a little, and around it. It's a big trailer.",
+   "exhibit": null,
+   "file": "f0248.png"
+  },
+  {
+   "start": 1485.1,
+   "end": 1492.8,
+   "speaker": "Attorney",
+   "text": "Could you see the car the whole time as it came down the hill?",
+   "exhibit": null,
+   "file": "f0249.png"
+  },
+  {
+   "start": 1492.8,
+   "end": 1500.6,
+   "speaker": "Witness B",
+   "text": "Most of the way, yes. I had a good view up the hill.",
+   "exhibit": null,
+   "file": "f0250.png"
+  },
+  {
+   "start": 1500.6,
+   "end": 1507.9,
+   "speaker": "Attorney",
+   "text": "Do you remember what you were looking at, specifically, right before the impact?",
+   "exhibit": null,
+   "file": "f0251.png"
+  },
+  {
+   "start": 1507.9,
+   "end": 1514.9701754385965,
+   "speaker": "Witness B",
+   "text": "The car. I was watching the car the whole time, because I knew",
+   "exhibit": null,
+   "file": "f0252.png"
+  },
+  {
+   "start": 1514.9701754385965,
+   "end": 1520.9,
+   "speaker": "Witness B",
+   "text": "it was going to hit. I couldn't take my eyes off it.",
+   "exhibit": null,
+   "file": "f0253.png"
+  },
+  {
+   "start": 1520.9,
+   "end": 1525.79010989011,
+   "speaker": "Attorney",
+   "text": "Let's mark an exhibit. I'm handing you what's been",
+   "exhibit": null,
+   "file": "f0254.png"
+  },
+  {
+   "start": 1525.79010989011,
+   "end": 1529.8,
+   "speaker": "Attorney",
+   "text": "marked as Exhibit 4. Do you recognize it?",
+   "exhibit": null,
+   "file": "f0255.png"
+  },
+  {
+   "start": 1529.8,
+   "end": 1537.2,
+   "speaker": "Witness B",
+   "text": "Yes. That's the map I saw before. The drawing of the intersection.",
+   "exhibit": null,
+   "file": "f0256.png"
+  },
+  {
+   "start": 1537.2,
+   "end": 1544.7004032258064,
+   "speaker": "Attorney",
+   "text": "For the record, Exhibit 4 is a schematic top-down diagram of the intersection of U.S. 27A",
+   "exhibit": null,
+   "file": "f0257.png"
+  },
+  {
+   "start": 1544.7004032258064,
+   "end": 1551.6951612903226,
+   "speaker": "Attorney",
+   "text": "and Northeast 140th Court. North is toward the top of the page. There's a scale bar",
+   "exhibit": null,
+   "file": "f0258.png"
+  },
+  {
+   "start": 1551.6951612903226,
+   "end": 1558.1,
+   "speaker": "Attorney",
+   "text": "at the bottom. Do you see the highway running left to right across the page?",
+   "exhibit": null,
+   "file": "f0259.png"
+  },
+  {
+   "start": 1558.1,
+   "end": 1560.7,
+   "speaker": "Witness B",
+   "text": "Yes.",
+   "exhibit": null,
+   "file": "f0260.png"
+  },
+  {
+   "start": 1560.7,
+   "end": 1565.548,
+   "speaker": "Attorney",
+   "text": "And do you see the side road, 140th Court, going",
+   "exhibit": null,
+   "file": "f0261.png"
+  },
+  {
+   "start": 1565.548,
+   "end": 1570.8,
+   "speaker": "Attorney",
+   "text": "down from the highway toward the bottom of the page?",
+   "exhibit": null,
+   "file": "f0262.png"
+  },
+  {
+   "start": 1570.8,
+   "end": 1574.7,
+   "speaker": "Witness B",
+   "text": "Yes, I see it.",
+   "exhibit": null,
+   "file": "f0263.png"
+  },
+  {
+   "start": 1574.7,
+   "end": 1579.0953488372093,
+   "speaker": "Attorney",
+   "text": "And the building at the lower right of the",
+   "exhibit": null,
+   "file": "f0264.png"
+  },
+  {
+   "start": 1579.0953488372093,
+   "end": 1583.7,
+   "speaker": "Attorney",
+   "text": "intersection, is that the store you were at?",
+   "exhibit": null,
+   "file": "f0265.png"
+  },
+  {
+   "start": 1583.7,
+   "end": 1587.6,
+   "speaker": "Witness B",
+   "text": "That's the store. Yes.",
+   "exhibit": null,
+   "file": "f0266.png"
+  },
+  {
+   "start": 1587.6,
+   "end": 1592.9509615384613,
+   "speaker": "Attorney",
+   "text": "Using this red pen, could you please put a small mark",
+   "exhibit": null,
+   "file": "f0267.png"
+  },
+  {
+   "start": 1592.9509615384613,
+   "end": 1598.1,
+   "speaker": "Attorney",
+   "text": "where the truck came to a stop after the collision?",
+   "exhibit": null,
+   "file": "f0268.png"
+  },
+  {
+   "start": 1598.1,
+   "end": 1608,
+   "speaker": "Witness B",
+   "text": "It was down here. Down 140th, past the store. About here.",
+   "exhibit": {
+    "type": "map_mark",
+    "x_m": 0,
+    "z_m": 40,
+    "note": "Witness B marks where Vehicle T stopped on NE 140th Court, south of the store (consistent with NTSB/HAR-17/02 p.1)"
+   },
+   "file": "f0269.png"
+  },
+  {
+   "start": 1608,
+   "end": 1613.7256830601093,
+   "speaker": "Attorney",
+   "text": "Let the record reflect the witness has made a mark on NE 140th",
+   "exhibit": null,
+   "file": "f0270.png"
+  },
+  {
+   "start": 1613.7256830601093,
+   "end": 1619.5437158469945,
+   "speaker": "Attorney",
+   "text": "Court, south of the store. Thank you. Now, I'd like you to show",
+   "exhibit": null,
+   "file": "f0271.png"
+  },
+  {
+   "start": 1619.5437158469945,
+   "end": 1624.8999999999999,
+   "speaker": "Attorney",
+   "text": "us where you were standing at the moment of the collision.",
+   "exhibit": null,
+   "file": "f0272.png"
+  },
+  {
+   "start": 1624.9,
+   "end": 1634,
+   "speaker": "Witness B",
+   "text": "I was over by the corner, near the shelter.",
+   "exhibit": {
+    "type": "map_mark",
+    "x_m": 7.5,
+    "z_m": 6.5,
+    "note": "Witness B marks an X just south of the eastbound shoulder and east of NE 140th Court, in front of the store near the bench shelter. Spoken only as 'over by the corner, near the shelter'. Marked position (7.5, 6.5) m; eye height ~1.6 m standing."
+   },
+   "file": "f0273.png"
+  },
+  {
+   "start": 1634,
+   "end": 1639.25,
+   "speaker": "Attorney",
+   "text": "Let the record reflect the witness has placed a mark on",
+   "exhibit": null,
+   "file": "f0274.png"
+  },
+  {
+   "start": 1639.25,
+   "end": 1644.5,
+   "speaker": "Attorney",
+   "text": "Exhibit 4. Were you sitting or standing at that moment?",
+   "exhibit": null,
+   "file": "f0275.png"
+  },
+  {
+   "start": 1644.5,
+   "end": 1650.6,
+   "speaker": "Witness B",
+   "text": "Standing. I'd stood up when I saw the truck pulling across. I",
+   "exhibit": null,
+   "file": "f0276.png"
+  },
+  {
+   "start": 1650.6,
+   "end": 1656.6,
+   "speaker": "Witness B",
+   "text": "stood up because I could tell something was going to happen.",
+   "exhibit": null,
+   "file": "f0277.png"
+  },
+  {
+   "start": 1656.6,
+   "end": 1661.7752808988764,
+   "speaker": "Attorney",
+   "text": "From that spot, in the last second or so before",
+   "exhibit": null,
+   "file": "f0278.png"
+  },
+  {
+   "start": 1661.7752808988764,
+   "end": 1666.4,
+   "speaker": "Attorney",
+   "text": "the car hit the trailer, what did you see?",
+   "exhibit": null,
+   "file": "f0279.png"
+  },
+  {
+   "start": 1666.4,
+   "end": 1673.123076923077,
+   "speaker": "Witness B",
+   "text": "I had a clear view of the car the whole way in. I watched",
+   "exhibit": null,
+   "file": "f0280.png"
+  },
+  {
+   "start": 1673.123076923077,
+   "end": 1680.2,
+   "speaker": "Witness B",
+   "text": "it right up until the moment it hit. Nothing was in the way.",
+   "exhibit": null,
+   "file": "f0281.png"
+  },
+  {
+   "start": 1680.2,
+   "end": 1685.2479591836736,
+   "speaker": "Attorney",
+   "text": "You're telling us you could see the car itself, the",
+   "exhibit": null,
+   "file": "f0282.png"
+  },
+  {
+   "start": 1685.2479591836736,
+   "end": 1689.9,
+   "speaker": "Attorney",
+   "text": "front of it, in that last second before impact.",
+   "exhibit": null,
+   "file": "f0283.png"
+  },
+  {
+   "start": 1689.9,
+   "end": 1693.7,
+   "speaker": "Opposing counsel",
+   "text": "Objection. Asked and answered.",
+   "exhibit": null,
+   "file": "f0284.png"
+  },
+  {
+   "start": 1693.7,
+   "end": 1697,
+   "speaker": "Attorney",
+   "text": "You can answer.",
+   "exhibit": null,
+   "file": "f0285.png"
+  },
+  {
+   "start": 1697,
+   "end": 1702.0257425742575,
+   "speaker": "Witness B",
+   "text": "Yes. I saw it clearly, the whole time, right up",
+   "exhibit": null,
+   "file": "f0286.png"
+  },
+  {
+   "start": 1702.0257425742575,
+   "end": 1707.8,
+   "speaker": "Witness B",
+   "text": "until it went under the trailer. I'll never forget it.",
+   "exhibit": null,
+   "file": "f0287.png"
+  },
+  {
+   "start": 1707.8,
+   "end": 1715.6,
+   "speaker": "Attorney",
+   "text": "Where was the truck's trailer at that moment, relative to you and the car?",
+   "exhibit": null,
+   "file": "f0288.png"
+  },
+  {
+   "start": 1715.6,
+   "end": 1718.9,
+   "speaker": "Opposing counsel",
+   "text": "Object to form.",
+   "exhibit": null,
+   "file": "f0289.png"
+  },
+  {
+   "start": 1718.9,
+   "end": 1725.0645161290322,
+   "speaker": "Witness B",
+   "text": "It was across the road. The car was coming at it.",
+   "exhibit": null,
+   "file": "f0290.png"
+  },
+  {
+   "start": 1725.0645161290322,
+   "end": 1730.6,
+   "speaker": "Witness B",
+   "text": "I could see the car. I'm sure of what I saw.",
+   "exhibit": null,
+   "file": "f0291.png"
+  },
+  {
+   "start": 1730.6,
+   "end": 1735.65,
+   "speaker": "Attorney",
+   "text": "Did you tell the deputy at the scene that you",
+   "exhibit": null,
+   "file": "f0292.png"
+  },
+  {
+   "start": 1735.65,
+   "end": 1740.7000000000003,
+   "speaker": "Attorney",
+   "text": "watched the car all the way in to the impact?",
+   "exhibit": null,
+   "file": "f0293.png"
+  },
+  {
+   "start": 1740.7,
+   "end": 1746.5434782608697,
+   "speaker": "Witness B",
+   "text": "I don't remember if I said it that way that day.",
+   "exhibit": null,
+   "file": "f0294.png"
+  },
+  {
+   "start": 1746.5434782608697,
+   "end": 1751.9,
+   "speaker": "Witness B",
+   "text": "I was very upset. I know I've said it since.",
+   "exhibit": null,
+   "file": "f0295.png"
+  },
+  {
+   "start": 1751.9,
+   "end": 1756.5,
+   "speaker": "Attorney",
+   "text": "Is it in your written statement?",
+   "exhibit": null,
+   "file": "f0296.png"
+  },
+  {
+   "start": 1756.5,
+   "end": 1761.7266666666667,
+   "speaker": "Witness B",
+   "text": "I don't think it's in there, no. I wrote down the",
+   "exhibit": null,
+   "file": "f0297.png"
+  },
+  {
+   "start": 1761.7266666666667,
+   "end": 1767.7,
+   "speaker": "Witness B",
+   "text": "main things. The truck turning and the car not stopping.",
+   "exhibit": null,
+   "file": "f0298.png"
+  },
+  {
+   "start": 1767.7,
+   "end": 1773.1,
+   "speaker": "Attorney",
+   "text": "All right. Thank you. I'll pass the witness.",
+   "exhibit": null,
+   "file": "f0299.png"
+  },
+  {
+   "start": 1773.1,
+   "end": 1779.2023622047243,
+   "speaker": "Opposing counsel",
+   "text": "I have just a couple of questions. Ma'am, the car you saw come",
+   "exhibit": null,
+   "file": "f0300.png"
+  },
+  {
+   "start": 1779.2023622047243,
+   "end": 1785.6,
+   "speaker": "Opposing counsel",
+   "text": "over the hill, did it ever slow down before it reached the truck?",
+   "exhibit": null,
+   "file": "f0301.png"
+  },
+  {
+   "start": 1785.6,
+   "end": 1790.8,
+   "speaker": "Witness B",
+   "text": "No, sir. Not that I could see.",
+   "exhibit": null,
+   "file": "f0302.png"
+  },
+  {
+   "start": 1790.8,
+   "end": 1793.7,
+   "speaker": "Opposing counsel",
+   "text": "Nothing further.",
+   "exhibit": null,
+   "file": "f0303.png"
+  },
+  {
+   "start": 1793.7,
+   "end": 1797.5911764705882,
+   "speaker": "Attorney",
+   "text": "Nothing further from me. We'll go off the record.",
+   "exhibit": null,
+   "file": "f0304.png"
+  },
+  {
+   "start": 1797.5911764705882,
+   "end": 1801.8,
+   "speaker": "Attorney",
+   "text": "The time is 10:16 a.m. This concludes the deposition.",
+   "exhibit": null,
+   "file": "f0305.png"
+  }
+ ]
+}

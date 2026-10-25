@@ -1,0 +1,15 @@
+{
+  "name": "Live witness (fictional)",
+  "position": [
+    -6.5,
+    0,
+    -6.5
+  ],
+  "eyeHeight": 1.6,
+  "lookAt": "sig_north",
+  "observationTime": 6.5,
+  "claim": "I was on the opposite corner waiting to cross and saw the light change just before the crash.",
+  "citation": "Live statement",
+  "confidence": "medium",
+  "assumptions": "\"Opposite corner\" resolved to the corner diagonally across from the bus stop, on the sidewalk; looking at sig_north at the time the light changed (t=6.5s)."
+}

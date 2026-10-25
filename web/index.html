@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sightline</title>
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{ "imports": {
+  "three": "/node_modules/three/build/three.module.js",
+  "three/addons/": "/node_modules/three/examples/jsm/"
+} }
+</script>
+<script>
+  // window.sl exists immediately so headless callers can await sl.ready; viewer.js fills in the rest.
+  (function () {
+    window.sl = { ready: new Promise(function (a, b) { window.__slResolve = a; window.__slReject = b; }) };
+    window.sl.ready.catch(function () {});
+    if (/[?&]clean=1/.test(location.search)) document.documentElement.classList.add('clean');
+  })();
+</script>
+</head>
+<body>
+<header id="top">
+  <div class="brand">
+    <span class="logo" aria-hidden="true"></span>
+    <div>
+      <div class="case-title" id="caseTitle">Sightline</div>
+      <div class="case-sub" id="caseSub">Loading case…</div>
+    </div>
+  </div>
+  <div class="casepick"><select id="casePick" aria-label="Case"><option value="">Loading cases…</option></select><a href="/cases.html" class="btn small newcase" id="newCaseLink">+ New case</a></div>
+  <span class="sim-badge">SIMULATED / FICTIONAL WITNESSES</span>
+  <nav id="cams" aria-label="Camera"></nav>
+</header>
+
+<main id="main">
+  <aside id="left" class="panel">
+    <h2>Evidence</h2>
+    <section>
+      <h3>Case documents</h3>
+      <ul id="docs" class="doclist"><li class="muted">Loading…</li></ul>
+    </section>
+    <section>
+      <h3>Deposition video</h3>
+      <video id="depo" controls preload="metadata" src="/deposition/out/deposition.mp4"></video>
+      <div id="depoNote" class="muted small"></div>
+      <div class="seek-row">
+        <input id="seekInput" placeholder="mm:ss" size="7" aria-label="Timecode">
+        <button id="seekBtn" class="btn small">Seek</button>
+      </div>
+    </section>
+  </aside>
+
+  <section id="center">
+    <div id="stageWrap">
+      <div id="stage"></div>
+      <div id="popover" hidden></div>
+      <div id="toast" hidden></div>
+      <div id="docview" hidden>
+        <div class="docview-head"><span id="docTitle"></span><button id="docClose" class="btn small">Close</button></div>
+        <pre id="docBody"></pre>
+      </div>
+    </div>
+    <div id="timeline">
+      <button id="play" class="btn" aria-label="Play">Play</button>
+      <div class="scrub">
+        <div id="ticks"></div>
+        <input id="scrubber" type="range" min="0" max="12" step="0.05" value="0" aria-label="Timeline">
+      </div>
+      <div id="timeLabel" class="mono">0.00 / 12.00 s</div>
+    </div>
+  </section>
+
+  <aside id="right" class="panel">
+    <h2>Findings <span id="findCount" class="count"></span></h2>
+    <div id="findings" class="scroll"><div class="muted">Loading…</div></div>
+    <details id="checksWrap">
+      <summary>Independent checks <span id="checkCount" class="count"></span></summary>
+      <ul id="checks" class="checklist"></ul>
+    </details>
+    <section id="addWit">
+      <h3>Add a witness</h3>
+      <textarea id="witText" rows="3" placeholder="Type a new statement, e.g. “I was standing at the bus stop on the south corner and saw the truck run the light.”"></textarea>
+      <div class="row">
+        <button id="witBtn" class="btn primary">Place witness &amp; test view</button>
+        <button id="loopBtn" class="btn ghost" title="Re-run the Argon loop (mock replays cache)">Re-run loop</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button id="mapBtn" class="btn" title="Click the overhead map to place the witness and what they saw">Place on map</button>
+      </div>
+      <div id="mapPlace" hidden>
+        <div id="mapStep" class="small"></div>
+        <div class="grid2">
+          <label class="small muted">Saw (target)
+            <select id="mapTarget"><option value="">Click an object on the map…</option></select>
+          </label>
+          <label class="small muted">Time (s)
+            <input id="mapTime" type="number" step="0.1" min="0">
+          </label>
+        </div>
+        <div class="row">
+          <button id="mapGo" class="btn primary" disabled>Test view</button>
+          <button id="mapCancel" class="btn ghost">Cancel</button>
+        </div>
+      </div>
+      <div id="witResult" hidden></div>
+    </section>
+  </aside>
+</main>
+<script type="module" src="viewer.js"></script>
+<script type="module" src="ui.js"></script>
+</body>
+</html>

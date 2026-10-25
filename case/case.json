@@ -1,0 +1,2224 @@
+{
+ "caseId": "HWY16FH018",
+ "title": "Car into turning tractor-semitrailer at an uncontrolled median crossover, US-27A near Williston, Florida (2016)",
+ "source_urls": [
+  "https://www.ntsb.gov/investigations/AccidentReports/Reports/HAR1702.pdf",
+  "https://www.ntsb.gov/investigations/Pages/HWY16FH018.aspx"
+ ],
+ "source_note": "Physical facts from NTSB Highway Accident Report NTSB/HAR-17/02 (accident ID HWY16FH018). Witnesses A, B and C are FICTIONAL. No real names or brand names are used. Fictional testimony describes only vehicle movements and visibility, never any real person's conduct or state. Values marked 'assumed' or 'derived' are modeling choices, not NTSB findings.",
+ "summary": "At 4:36 p.m. on a clear, dry afternoon, a passenger car (Vehicle A) traveling east on four-lane divided US-27A at about 74 mph struck the right side of a tractor-semitrailer (Vehicle T) that was turning left from the westbound left-turn lane, across the eastbound lanes, onto NE 140th Court. The car passed under the trailer, left the road to the right, went through a culvert and two fences, broke a utility pole and came to rest about 910 ft beyond the impact. No pre-impact tire marks were found. A vertical crest 1,132 ft west of the intersection was the only sight restriction, and NTSB computed up to 10.4 s of mutual sight time.",
+ "timeOfDay": "16:36",
+ "lighting": "day",
+ "weather": "clear, dry pavement; sun high and behind the eastbound car",
+ "coordinate_frame_note": "Meters. Y up, ground y=0 at the intersection. +X = east (direction of travel of Vehicle A), -Z = north. Origin = initial point of impact: center of the right (outside) eastbound lane at the centerline of NE 140th Court. Eastbound lanes are south of the median (z>-5.5), westbound north of it. NE 140th Court is modeled as running due south (+Z) from x=0; the real 109-degree skew is ignored. Eastbound approach descends at 2.15% from the crest at x=-345 m (road at the crest is y\u2248+7.4 m) to x\u2248+99.7 m, then is effectively flat; a WORLD may model the slope or keep flat ground (the crest is ~345 m away and does not affect the witness sightlines). Heading_deg is a compass bearing: 0=north(-Z), 90=east(+X), 180=south(+Z), 270/-90=west(-X). Event clock t=0 is when the car is at the crest (10.43 s before impact).",
+ "timeline": {
+  "duration_s": 22.4,
+  "t_car_at_crest": 0.0,
+  "t_impact": 10.43,
+  "t_airbag_pole": 18.83,
+  "t_car_rest": 21.94,
+  "clock_at_impact": "16:36:12.7"
+ },
+ "key_dimensions": {
+  "lane_width_m": 3.66,
+  "eb_outside_lane_z": [
+   -1.83,
+   1.83
+  ],
+  "eb_inside_lane_z": [
+   -5.49,
+   -1.83
+  ],
+  "eb_right_shoulder_z": [
+   1.83,
+   3.35
+  ],
+  "eb_left_shoulder_ft": 2,
+  "median_width_m": 18.29,
+  "median_z": [
+   -24.38,
+   -6.1
+  ],
+  "wb_left_turn_lane_z": [
+   -29.26,
+   -25.6
+  ],
+  "wb_left_turn_lane_length_m": 167.6,
+  "wb_inside_lane_z": [
+   -32.92,
+   -29.26
+  ],
+  "wb_outside_lane_z": [
+   -36.58,
+   -32.92
+  ],
+  "wb_right_shoulder_z": [
+   -38.1,
+   -36.58
+  ],
+  "median_crossover_length_m": 39.6,
+  "turnlane_median_shoulders_total_m": 23.77,
+  "side_road": {
+   "name": "NE 140th Court",
+   "x_range": [
+    -3.05,
+    3.05
+   ],
+   "runs": "south (+Z) from the eastbound edge",
+   "width_m": 6.1,
+   "width_note": "assumed; NTSB gives no width",
+   "true_skew_deg": 109
+  },
+  "crest_x_m": -345.0,
+  "eb_grade_pct": -2.15,
+  "grade_levels_x_m": 99.7,
+  "speed_limit_mph": 65,
+  "design_speed_mph": 70,
+  "nt_sb_sight_distance_m": 345.0,
+  "ntsb_mutual_sight_time_s": 10.4,
+  "post_impact_travel_m": 277.4,
+  "pole_position_approx": [
+   239.3,
+   18.5
+  ],
+  "pole_note": "derived: NTSB gives no pole location; placed on the post-impact path",
+  "car_rest_position_approx": [
+   276.6,
+   23.9
+  ]
+ },
+ "map": {
+  "file": "exhibits/map.png",
+  "px_per_m": 10,
+  "origin_px": [
+   600,
+   450
+  ],
+  "note": "pixel = origin_px + [x_m, z_m]*px_per_m (+z points down the image = south). The 1400x1000 px image covers x -60..80 m and z -45..55 m. The map is unmarked; the video draws Witness B's marks."
+ },
+ "occluders": [
+  {
+   "id": "veh_T_trailer",
+   "label": "Refrigerated van semitrailer (Vehicle T) - moving occluder",
+   "footprint": {
+    "length_m": 16.15,
+    "width_m": 2.59
+   },
+   "height": {
+    "bottom_m": 1.2,
+    "top_m": 4.11
+   },
+   "position": "keyframes in vehicles[veh_T_trailer]",
+   "citation": "NTSB/HAR-17/02 p.1 (left turn across EB lanes), p.6 (71 ft 7 in combination); NTSB p.1-2 (semitrailer blocked the witness's view of the car). Trailer width/height/bed height: standard 53-ft reefer dims, assumed"
+  },
+  {
+   "id": "veh_T_tractor",
+   "label": "Truck-tractor (Vehicle T) - moving occluder",
+   "footprint": {
+    "length_m": 6.6,
+    "width_m": 2.5
+   },
+   "height": {
+    "bottom_m": 0.3,
+    "top_m": 4.0
+   },
+   "position": "keyframes in vehicles[veh_T_tractor]",
+   "citation": "NTSB/HAR-17/02 p.1; dims assumed"
+  },
+  {
+   "id": "occ_crest",
+   "label": "Vertical crest of US-27A, 1,132 ft west",
+   "footprint": {
+    "x_m": -345.0,
+    "note": "road profile: y = 0.0215*(-x) for -345<x<0 east of crest; falls west of crest"
+   },
+   "height": {
+    "road_y_at_crest_m": 7.42
+   },
+   "position": [
+    -345.0,
+    0,
+    0
+   ],
+   "citation": "NTSB/HAR-17/02 p.22 (crest 1,132 ft W, 2.15% descent), p.29 (only sight restriction)"
+  },
+  {
+   "id": "bld_store",
+   "label": "Retail business on the SE corner (fictionalized footprint)",
+   "footprint": {
+    "x_range": [
+     9,
+     27
+    ],
+    "z_range": [
+     13,
+     25
+    ]
+   },
+   "height": 4.5,
+   "position": [
+    18,
+    0,
+    19
+   ],
+   "citation": "NTSB/HAR-17/02 p.1 ('retail business on the intersection corner'); corner, footprint and height assumed"
+  },
+  {
+   "id": "occ_shelter",
+   "label": "Open-sided covered bench shelter in front of the store (fictional, does not block)",
+   "footprint": {
+    "x_range": [
+     6.5,
+     9.5
+    ],
+    "z_range": [
+     7.0,
+     8.8
+    ]
+   },
+   "height": 2.6,
+   "position": [
+    8.0,
+    0,
+    7.9
+   ],
+   "occludes": false,
+   "citation": "Fictional scene dressing referenced in Witness B deposition (~27:04). Roof only on 0.1 m posts, so it does not block a 1.6 m eye line."
+  }
+ ],
+ "vehicles": [
+  {
+   "id": "veh_A",
+   "label": "Passenger sedan (Vehicle A), eastbound",
+   "dims": {
+    "length_m": 4.97,
+    "width_m": 1.96,
+    "height_m": 1.445
+   },
+   "hood_rear_height_m": 0.91,
+   "speed_mph": 74,
+   "keyframes_note": "vehicle CENTER, ground level; heading_deg compass",
+   "keyframes": [
+    {
+     "t": 0.0,
+     "x": -347.52,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 0.25,
+     "x": -339.25,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 0.5,
+     "x": -330.98,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 0.75,
+     "x": -322.71,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 1.0,
+     "x": -314.44,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 1.25,
+     "x": -306.17,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 1.5,
+     "x": -297.9,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 1.75,
+     "x": -289.63,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 2.0,
+     "x": -281.36,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 2.25,
+     "x": -273.09,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 2.5,
+     "x": -264.82,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 2.75,
+     "x": -256.55,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 3.0,
+     "x": -248.28,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 3.25,
+     "x": -240.01,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 3.5,
+     "x": -231.74,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 3.75,
+     "x": -223.47,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 4.0,
+     "x": -215.2,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 4.25,
+     "x": -206.93,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 4.5,
+     "x": -198.66,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 4.75,
+     "x": -190.38,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 5.0,
+     "x": -182.11,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 5.25,
+     "x": -173.84,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 5.5,
+     "x": -165.57,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 5.75,
+     "x": -157.3,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 6.0,
+     "x": -149.03,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 6.25,
+     "x": -140.76,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 6.5,
+     "x": -132.49,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 6.75,
+     "x": -124.22,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 7.0,
+     "x": -115.95,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 7.25,
+     "x": -107.68,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 7.5,
+     "x": -99.41,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 7.75,
+     "x": -91.14,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 8.0,
+     "x": -82.87,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 8.25,
+     "x": -74.6,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 8.5,
+     "x": -66.33,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 8.75,
+     "x": -58.06,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 9.0,
+     "x": -49.79,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 9.25,
+     "x": -41.52,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 9.5,
+     "x": -33.25,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 9.75,
+     "x": -24.98,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 10.0,
+     "x": -16.71,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 10.25,
+     "x": -8.44,
+     "z": 0.0,
+     "heading_deg": 90.0
+    },
+    {
+     "t": 10.5,
+     "x": -0.17,
+     "z": -0.01,
+     "heading_deg": 90.2
+    },
+    {
+     "t": 10.75,
+     "x": 8.03,
+     "z": 0.47,
+     "heading_deg": 91.0
+    },
+    {
+     "t": 11.0,
+     "x": 16.15,
+     "z": 1.08,
+     "heading_deg": 91.7
+    },
+    {
+     "t": 11.25,
+     "x": 24.21,
+     "z": 1.68,
+     "heading_deg": 92.5
+    },
+    {
+     "t": 11.5,
+     "x": 32.21,
+     "z": 2.28,
+     "heading_deg": 93.2
+    },
+    {
+     "t": 11.75,
+     "x": 40.13,
+     "z": 2.87,
+     "heading_deg": 94.0
+    },
+    {
+     "t": 12.0,
+     "x": 47.99,
+     "z": 3.46,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 12.25,
+     "x": 55.78,
+     "z": 4.08,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 12.5,
+     "x": 63.51,
+     "z": 4.68,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 12.75,
+     "x": 71.17,
+     "z": 5.29,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 13.0,
+     "x": 78.76,
+     "z": 5.88,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 13.25,
+     "x": 86.28,
+     "z": 6.48,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 13.5,
+     "x": 93.74,
+     "z": 7.06,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 13.75,
+     "x": 101.13,
+     "z": 7.64,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 14.0,
+     "x": 108.45,
+     "z": 8.22,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 14.25,
+     "x": 115.7,
+     "z": 8.79,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 14.5,
+     "x": 122.89,
+     "z": 9.36,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 14.75,
+     "x": 130.02,
+     "z": 9.92,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 15.0,
+     "x": 137.07,
+     "z": 10.47,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 15.25,
+     "x": 144.06,
+     "z": 11.02,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 15.5,
+     "x": 150.98,
+     "z": 11.57,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 15.75,
+     "x": 157.84,
+     "z": 12.11,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 16.0,
+     "x": 164.62,
+     "z": 12.64,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 16.25,
+     "x": 171.34,
+     "z": 13.17,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 16.5,
+     "x": 178.0,
+     "z": 13.69,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 16.75,
+     "x": 184.59,
+     "z": 14.21,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 17.0,
+     "x": 191.11,
+     "z": 14.73,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 17.25,
+     "x": 197.56,
+     "z": 15.23,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 17.5,
+     "x": 203.94,
+     "z": 15.74,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 17.75,
+     "x": 210.26,
+     "z": 16.23,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 18.0,
+     "x": 216.52,
+     "z": 16.73,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 18.25,
+     "x": 222.7,
+     "z": 17.21,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 18.5,
+     "x": 228.82,
+     "z": 17.69,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 18.75,
+     "x": 234.87,
+     "z": 18.17,
+     "heading_deg": 94.5
+    },
+    {
+     "t": 19.0,
+     "x": 240.75,
+     "z": 18.86,
+     "heading_deg": 89.3
+    },
+    {
+     "t": 19.25,
+     "x": 246.21,
+     "z": 19.61,
+     "heading_deg": 81.7
+    },
+    {
+     "t": 19.5,
+     "x": 251.22,
+     "z": 20.32,
+     "heading_deg": 74.1
+    },
+    {
+     "t": 19.75,
+     "x": 255.8,
+     "z": 20.99,
+     "heading_deg": 66.5
+    },
+    {
+     "t": 20.0,
+     "x": 259.93,
+     "z": 21.59,
+     "heading_deg": 58.9
+    },
+    {
+     "t": 20.25,
+     "x": 263.62,
+     "z": 22.14,
+     "heading_deg": 51.3
+    },
+    {
+     "t": 20.5,
+     "x": 266.85,
+     "z": 22.62,
+     "heading_deg": 43.7
+    },
+    {
+     "t": 20.75,
+     "x": 269.64,
+     "z": 23.03,
+     "heading_deg": 36.1
+    },
+    {
+     "t": 21.0,
+     "x": 271.97,
+     "z": 23.37,
+     "heading_deg": 28.5
+    },
+    {
+     "t": 21.25,
+     "x": 273.84,
+     "z": 23.63,
+     "heading_deg": 20.9
+    },
+    {
+     "t": 21.5,
+     "x": 275.24,
+     "z": 23.81,
+     "heading_deg": 13.3
+    },
+    {
+     "t": 21.75,
+     "x": 276.17,
+     "z": 23.91,
+     "heading_deg": 5.7
+    },
+    {
+     "t": 22.0,
+     "x": 276.56,
+     "z": 23.94,
+     "heading_deg": 0.0
+    },
+    {
+     "t": 22.25,
+     "x": 276.56,
+     "z": 23.94,
+     "heading_deg": 0.0
+    }
+   ],
+   "citation": "NTSB/HAR-17/02 p.1 (910 ft post-impact), p.2 & p.15 (74 mph, no braking, headlights off), p.5 (no pre-impact marks); dims: typical full-size sedan, assumed",
+   "recorded_data": "no brake application recorded; headlights off (NTSB/HAR-17/02 p.15)"
+  },
+  {
+   "id": "veh_T_tractor",
+   "label": "Truck-tractor (Vehicle T)",
+   "dims": {
+    "length_m": 6.6,
+    "width_m": 2.5,
+    "height_m": 4.0
+   },
+   "keyframes_note": "tractor CENTER; truck speed is NOT reported by NTSB - turn kinematics (3.0 m/s rising to 6.1 m/s at impact, 12 m turn radius) are a reconstruction assumption",
+   "keyframes": [
+    {
+     "t": 0.0,
+     "x": 14.79,
+     "z": -27.42,
+     "heading_deg": -90.1
+    },
+    {
+     "t": 0.25,
+     "x": 14.03,
+     "z": -27.4,
+     "heading_deg": -90.6
+    },
+    {
+     "t": 0.5,
+     "x": 13.26,
+     "z": -27.34,
+     "heading_deg": -91.5
+    },
+    {
+     "t": 0.75,
+     "x": 12.47,
+     "z": -27.26,
+     "heading_deg": -92.9
+    },
+    {
+     "t": 1.0,
+     "x": 11.67,
+     "z": -27.15,
+     "heading_deg": -94.8
+    },
+    {
+     "t": 1.25,
+     "x": 10.86,
+     "z": -27.01,
+     "heading_deg": -97.3
+    },
+    {
+     "t": 1.5,
+     "x": 10.04,
+     "z": -26.84,
+     "heading_deg": -100.3
+    },
+    {
+     "t": 1.75,
+     "x": 9.22,
+     "z": -26.64,
+     "heading_deg": -104.0
+    },
+    {
+     "t": 2.0,
+     "x": 8.39,
+     "z": -26.4,
+     "heading_deg": -108.2
+    },
+    {
+     "t": 2.25,
+     "x": 7.57,
+     "z": -26.1,
+     "heading_deg": -112.5
+    },
+    {
+     "t": 2.5,
+     "x": 6.76,
+     "z": -25.72,
+     "heading_deg": -117.0
+    },
+    {
+     "t": 2.75,
+     "x": 5.97,
+     "z": -25.28,
+     "heading_deg": -121.5
+    },
+    {
+     "t": 3.0,
+     "x": 5.19,
+     "z": -24.76,
+     "heading_deg": -126.1
+    },
+    {
+     "t": 3.25,
+     "x": 4.45,
+     "z": -24.17,
+     "heading_deg": -130.8
+    },
+    {
+     "t": 3.5,
+     "x": 3.75,
+     "z": -23.51,
+     "heading_deg": -135.6
+    },
+    {
+     "t": 3.75,
+     "x": 3.09,
+     "z": -22.78,
+     "heading_deg": -140.5
+    },
+    {
+     "t": 4.0,
+     "x": 2.49,
+     "z": -21.98,
+     "heading_deg": -145.4
+    },
+    {
+     "t": 4.25,
+     "x": 1.95,
+     "z": -21.12,
+     "heading_deg": -150.5
+    },
+    {
+     "t": 4.5,
+     "x": 1.48,
+     "z": -20.19,
+     "heading_deg": -155.6
+    },
+    {
+     "t": 4.75,
+     "x": 1.09,
+     "z": -19.21,
+     "heading_deg": -160.9
+    },
+    {
+     "t": 5.0,
+     "x": 0.78,
+     "z": -18.18,
+     "heading_deg": -166.2
+    },
+    {
+     "t": 5.25,
+     "x": 0.52,
+     "z": -17.11,
+     "heading_deg": -170.8
+    },
+    {
+     "t": 5.5,
+     "x": 0.31,
+     "z": -16.0,
+     "heading_deg": -174.5
+    },
+    {
+     "t": 5.75,
+     "x": 0.15,
+     "z": -14.85,
+     "heading_deg": -177.3
+    },
+    {
+     "t": 6.0,
+     "x": 0.05,
+     "z": -13.67,
+     "heading_deg": -179.1
+    },
+    {
+     "t": 6.25,
+     "x": 0.0,
+     "z": -12.46,
+     "heading_deg": -180.0
+    },
+    {
+     "t": 6.5,
+     "x": 0.0,
+     "z": -11.23,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 6.75,
+     "x": 0.0,
+     "z": -9.98,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 7.0,
+     "x": 0.0,
+     "z": -8.72,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 7.25,
+     "x": 0.0,
+     "z": -7.43,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 7.5,
+     "x": 0.0,
+     "z": -6.13,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 7.75,
+     "x": 0.0,
+     "z": -4.81,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 8.0,
+     "x": 0.0,
+     "z": -3.47,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 8.25,
+     "x": 0.0,
+     "z": -2.11,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 8.5,
+     "x": 0.0,
+     "z": -0.73,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 8.75,
+     "x": 0.0,
+     "z": 0.67,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 9.0,
+     "x": 0.0,
+     "z": 2.08,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 9.25,
+     "x": 0.0,
+     "z": 3.52,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 9.5,
+     "x": 0.0,
+     "z": 4.97,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 9.75,
+     "x": 0.0,
+     "z": 6.44,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 10.0,
+     "x": 0.0,
+     "z": 7.93,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 10.25,
+     "x": 0.0,
+     "z": 9.44,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 10.5,
+     "x": 0.0,
+     "z": 10.97,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 10.75,
+     "x": 0.0,
+     "z": 12.47,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 11.0,
+     "x": 0.0,
+     "z": 13.94,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 11.25,
+     "x": 0.0,
+     "z": 15.38,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 11.5,
+     "x": 0.0,
+     "z": 16.78,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 11.75,
+     "x": 0.0,
+     "z": 18.15,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 12.0,
+     "x": 0.0,
+     "z": 19.48,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 12.25,
+     "x": 0.0,
+     "z": 20.78,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 12.5,
+     "x": 0.0,
+     "z": 22.05,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 12.75,
+     "x": 0.0,
+     "z": 23.28,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 13.0,
+     "x": 0.0,
+     "z": 24.48,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 13.25,
+     "x": 0.0,
+     "z": 25.64,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 13.5,
+     "x": 0.0,
+     "z": 26.76,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 13.75,
+     "x": 0.0,
+     "z": 27.86,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 14.0,
+     "x": 0.0,
+     "z": 28.92,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 14.25,
+     "x": 0.0,
+     "z": 29.94,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 14.5,
+     "x": 0.0,
+     "z": 30.93,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 14.75,
+     "x": 0.0,
+     "z": 31.89,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 15.0,
+     "x": 0.0,
+     "z": 32.81,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 15.25,
+     "x": 0.0,
+     "z": 33.69,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 15.5,
+     "x": 0.0,
+     "z": 34.55,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 15.75,
+     "x": 0.0,
+     "z": 35.36,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 16.0,
+     "x": 0.0,
+     "z": 36.15,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 16.25,
+     "x": 0.0,
+     "z": 36.9,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 16.5,
+     "x": 0.0,
+     "z": 37.61,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 16.75,
+     "x": 0.0,
+     "z": 38.29,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 17.0,
+     "x": 0.0,
+     "z": 38.94,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 17.25,
+     "x": 0.0,
+     "z": 39.55,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 17.5,
+     "x": 0.0,
+     "z": 40.13,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 17.75,
+     "x": 0.0,
+     "z": 40.67,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 18.0,
+     "x": 0.0,
+     "z": 41.18,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 18.25,
+     "x": 0.0,
+     "z": 41.65,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 18.5,
+     "x": 0.0,
+     "z": 42.09,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 18.75,
+     "x": 0.0,
+     "z": 42.5,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 19.0,
+     "x": 0.0,
+     "z": 42.87,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 19.25,
+     "x": 0.0,
+     "z": 43.2,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 19.5,
+     "x": 0.0,
+     "z": 43.51,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 19.75,
+     "x": 0.0,
+     "z": 43.78,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 20.0,
+     "x": 0.0,
+     "z": 44.01,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 20.25,
+     "x": 0.0,
+     "z": 44.21,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 20.5,
+     "x": 0.0,
+     "z": 44.37,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 20.75,
+     "x": 0.0,
+     "z": 44.5,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 21.0,
+     "x": 0.0,
+     "z": 44.6,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 21.25,
+     "x": 0.0,
+     "z": 44.66,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 21.5,
+     "x": 0.0,
+     "z": 44.69,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 21.75,
+     "x": 0.0,
+     "z": 44.69,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 22.0,
+     "x": 0.0,
+     "z": 44.69,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 22.25,
+     "x": 0.0,
+     "z": 44.69,
+     "heading_deg": 180.0
+    }
+   ],
+   "citation": "NTSB/HAR-17/02 p.1 (left turn from WB turn lane onto NE 140th Ct; stopped south of retail business), p.1-2 (witness could not tell if stopped or moving very slowly)"
+  },
+  {
+   "id": "veh_T_trailer",
+   "label": "Refrigerated van semitrailer (Vehicle T)",
+   "dims": {
+    "length_m": 16.15,
+    "width_m": 2.59,
+    "height_m": 4.11,
+    "bed_bottom_m": 1.2
+   },
+   "impact_point_from_tractor_front_m": 13.84,
+   "keyframes_note": "trailer CENTER (trailer spans 5.67 m to 21.82 m behind the tractor front)",
+   "keyframes": [
+    {
+     "t": 0.0,
+     "x": 25.23,
+     "z": -27.43,
+     "heading_deg": -90.0
+    },
+    {
+     "t": 0.25,
+     "x": 24.47,
+     "z": -27.43,
+     "heading_deg": -90.0
+    },
+    {
+     "t": 0.5,
+     "x": 23.7,
+     "z": -27.43,
+     "heading_deg": -90.0
+    },
+    {
+     "t": 0.75,
+     "x": 22.9,
+     "z": -27.43,
+     "heading_deg": -90.0
+    },
+    {
+     "t": 1.0,
+     "x": 22.08,
+     "z": -27.43,
+     "heading_deg": -90.0
+    },
+    {
+     "t": 1.25,
+     "x": 21.25,
+     "z": -27.43,
+     "heading_deg": -90.0
+    },
+    {
+     "t": 1.5,
+     "x": 20.4,
+     "z": -27.43,
+     "heading_deg": -90.0
+    },
+    {
+     "t": 1.75,
+     "x": 19.52,
+     "z": -27.42,
+     "heading_deg": -90.0
+    },
+    {
+     "t": 2.0,
+     "x": 18.63,
+     "z": -27.39,
+     "heading_deg": -90.3
+    },
+    {
+     "t": 2.25,
+     "x": 17.73,
+     "z": -27.32,
+     "heading_deg": -90.8
+    },
+    {
+     "t": 2.5,
+     "x": 16.82,
+     "z": -27.21,
+     "heading_deg": -91.6
+    },
+    {
+     "t": 2.75,
+     "x": 15.89,
+     "z": -27.06,
+     "heading_deg": -92.6
+    },
+    {
+     "t": 3.0,
+     "x": 14.96,
+     "z": -26.88,
+     "heading_deg": -94.0
+    },
+    {
+     "t": 3.25,
+     "x": 14.03,
+     "z": -26.65,
+     "heading_deg": -95.6
+    },
+    {
+     "t": 3.5,
+     "x": 13.11,
+     "z": -26.39,
+     "heading_deg": -97.5
+    },
+    {
+     "t": 3.75,
+     "x": 12.19,
+     "z": -26.08,
+     "heading_deg": -99.8
+    },
+    {
+     "t": 4.0,
+     "x": 11.28,
+     "z": -25.74,
+     "heading_deg": -102.5
+    },
+    {
+     "t": 4.25,
+     "x": 10.38,
+     "z": -25.35,
+     "heading_deg": -105.6
+    },
+    {
+     "t": 4.5,
+     "x": 9.51,
+     "z": -24.93,
+     "heading_deg": -109.0
+    },
+    {
+     "t": 4.75,
+     "x": 8.66,
+     "z": -24.47,
+     "heading_deg": -112.9
+    },
+    {
+     "t": 5.0,
+     "x": 7.85,
+     "z": -23.98,
+     "heading_deg": -117.2
+    },
+    {
+     "t": 5.25,
+     "x": 7.06,
+     "z": -23.45,
+     "heading_deg": -122.0
+    },
+    {
+     "t": 5.5,
+     "x": 6.32,
+     "z": -22.9,
+     "heading_deg": -127.3
+    },
+    {
+     "t": 5.75,
+     "x": 5.62,
+     "z": -22.31,
+     "heading_deg": -132.9
+    },
+    {
+     "t": 6.0,
+     "x": 4.97,
+     "z": -21.64,
+     "heading_deg": -138.5
+    },
+    {
+     "t": 6.25,
+     "x": 4.37,
+     "z": -20.9,
+     "heading_deg": -144.3
+    },
+    {
+     "t": 6.5,
+     "x": 3.79,
+     "z": -20.09,
+     "heading_deg": -149.7
+    },
+    {
+     "t": 6.75,
+     "x": 3.22,
+     "z": -19.21,
+     "heading_deg": -154.8
+    },
+    {
+     "t": 7.0,
+     "x": 2.68,
+     "z": -18.26,
+     "heading_deg": -159.5
+    },
+    {
+     "t": 7.25,
+     "x": 2.16,
+     "z": -17.23,
+     "heading_deg": -163.8
+    },
+    {
+     "t": 7.5,
+     "x": 1.69,
+     "z": -16.13,
+     "heading_deg": -167.5
+    },
+    {
+     "t": 7.75,
+     "x": 1.25,
+     "z": -14.97,
+     "heading_deg": -170.9
+    },
+    {
+     "t": 8.0,
+     "x": 0.87,
+     "z": -13.75,
+     "heading_deg": -173.7
+    },
+    {
+     "t": 8.25,
+     "x": 0.55,
+     "z": -12.47,
+     "heading_deg": -176.0
+    },
+    {
+     "t": 8.5,
+     "x": 0.3,
+     "z": -11.14,
+     "heading_deg": -177.9
+    },
+    {
+     "t": 8.75,
+     "x": 0.12,
+     "z": -9.77,
+     "heading_deg": -179.1
+    },
+    {
+     "t": 9.0,
+     "x": 0.02,
+     "z": -8.36,
+     "heading_deg": -179.8
+    },
+    {
+     "t": 9.25,
+     "x": 0.0,
+     "z": -6.93,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 9.5,
+     "x": 0.0,
+     "z": -5.48,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 9.75,
+     "x": 0.0,
+     "z": -4.0,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 10.0,
+     "x": 0.0,
+     "z": -2.51,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 10.25,
+     "x": 0.0,
+     "z": -1.0,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 10.5,
+     "x": 0.0,
+     "z": 0.52,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 10.75,
+     "x": 0.0,
+     "z": 2.03,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 11.0,
+     "x": 0.0,
+     "z": 3.5,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 11.25,
+     "x": 0.0,
+     "z": 4.94,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 11.5,
+     "x": 0.0,
+     "z": 6.34,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 11.75,
+     "x": 0.0,
+     "z": 7.71,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 12.0,
+     "x": 0.0,
+     "z": 9.04,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 12.25,
+     "x": 0.0,
+     "z": 10.34,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 12.5,
+     "x": 0.0,
+     "z": 11.6,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 12.75,
+     "x": 0.0,
+     "z": 12.83,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 13.0,
+     "x": 0.0,
+     "z": 14.03,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 13.25,
+     "x": 0.0,
+     "z": 15.19,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 13.5,
+     "x": 0.0,
+     "z": 16.32,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 13.75,
+     "x": 0.0,
+     "z": 17.41,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 14.0,
+     "x": 0.0,
+     "z": 18.47,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 14.25,
+     "x": 0.0,
+     "z": 19.49,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 14.5,
+     "x": 0.0,
+     "z": 20.48,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 14.75,
+     "x": 0.0,
+     "z": 21.44,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 15.0,
+     "x": 0.0,
+     "z": 22.36,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 15.25,
+     "x": 0.0,
+     "z": 23.25,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 15.5,
+     "x": 0.0,
+     "z": 24.1,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 15.75,
+     "x": 0.0,
+     "z": 24.92,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 16.0,
+     "x": 0.0,
+     "z": 25.7,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 16.25,
+     "x": 0.0,
+     "z": 26.45,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 16.5,
+     "x": 0.0,
+     "z": 27.17,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 16.75,
+     "x": 0.0,
+     "z": 27.85,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 17.0,
+     "x": 0.0,
+     "z": 28.49,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 17.25,
+     "x": 0.0,
+     "z": 29.1,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 17.5,
+     "x": 0.0,
+     "z": 29.68,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 17.75,
+     "x": 0.0,
+     "z": 30.22,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 18.0,
+     "x": 0.0,
+     "z": 30.73,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 18.25,
+     "x": 0.0,
+     "z": 31.21,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 18.5,
+     "x": 0.0,
+     "z": 31.65,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 18.75,
+     "x": 0.0,
+     "z": 32.05,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 19.0,
+     "x": 0.0,
+     "z": 32.42,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 19.25,
+     "x": 0.0,
+     "z": 32.76,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 19.5,
+     "x": 0.0,
+     "z": 33.06,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 19.75,
+     "x": 0.0,
+     "z": 33.33,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 20.0,
+     "x": 0.0,
+     "z": 33.56,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 20.25,
+     "x": 0.0,
+     "z": 33.76,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 20.5,
+     "x": 0.0,
+     "z": 33.93,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 20.75,
+     "x": 0.0,
+     "z": 34.06,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 21.0,
+     "x": 0.0,
+     "z": 34.15,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 21.25,
+     "x": 0.0,
+     "z": 34.22,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 21.5,
+     "x": 0.0,
+     "z": 34.24,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 21.75,
+     "x": 0.0,
+     "z": 34.24,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 22.0,
+     "x": 0.0,
+     "z": 34.24,
+     "heading_deg": 180.0
+    },
+    {
+     "t": 22.25,
+     "x": 0.0,
+     "z": 34.24,
+     "heading_deg": 180.0
+    }
+   ],
+   "citation": "NTSB/HAR-17/02 p.6 (71 ft 7 in overall; impact 45 ft 5 in behind tractor front)"
+  }
+ ],
+ "skids": [],
+ "skids_note": "NTSB found NO pre-collision roadway marks from either vehicle (p.5). A speed check should use the recorded 74 mph (p.2, p.15), not skids.",
+ "facts": [
+  {
+   "id": "f_speed",
+   "text": "Car speed just before impact 74 mph (cruise set 4:34:21)",
+   "value": 74,
+   "unit": "mph",
+   "citation": "NTSB/HAR-17/02 p.2, p.15",
+   "kind": "speed"
+  },
+  {
+   "id": "f_limit",
+   "text": "Posted limit 65 mph",
+   "value": 65,
+   "unit": "mph",
+   "citation": "NTSB/HAR-17/02 p.23",
+   "kind": "speed"
+  },
+  {
+   "id": "f_crest",
+   "text": "Vertical crest 1,132 ft (345 m) west of intersection",
+   "value": 345.0,
+   "unit": "m",
+   "citation": "NTSB/HAR-17/02 p.22",
+   "kind": "distance"
+  },
+  {
+   "id": "f_sight",
+   "text": "Up to 10.4 s mutual sight time at 74 mph",
+   "value": 10.4,
+   "unit": "s",
+   "citation": "NTSB/HAR-17/02 p.29",
+   "kind": "time"
+  },
+  {
+   "id": "f_nomarks",
+   "text": "No pre-collision tire marks from either vehicle; no braking",
+   "value": 0,
+   "unit": "m",
+   "citation": "NTSB/HAR-17/02 p.5, p.15",
+   "kind": "skid"
+  },
+  {
+   "id": "f_post",
+   "text": "Car traveled ~910 ft after striking the trailer",
+   "value": 277.4,
+   "unit": "m",
+   "citation": "NTSB/HAR-17/02 p.1",
+   "kind": "distance"
+  },
+  {
+   "id": "f_imp_off",
+   "text": "Impact centered 45 ft 5 in behind tractor front",
+   "value": 13.84,
+   "unit": "m",
+   "citation": "NTSB/HAR-17/02 p.6 fn.6",
+   "kind": "position"
+  },
+  {
+   "id": "f_time",
+   "text": "Impact at 4:36:12.7 p.m. EDT, daylight, clear, dry",
+   "value": 16.6,
+   "unit": "h",
+   "citation": "NTSB/HAR-17/02 p.1, p.5, p.15",
+   "kind": "time"
+  }
+ ],
+ "witnesses": [
+  {
+   "id": "wit_A",
+   "name": "Witness A (fictional)",
+   "marked_position": [
+    357.2,
+    0.0,
+    -34.75
+   ],
+   "position_note": "driving westbound in the outside lane about 0.25 mi (~360 m) east of the intersection; position given at observationTime t=2.0 s (moving west at ~60 mph, 26.8 m/s). By t~6 s the turning truck blocks his view of the car, matching his statement.",
+   "eyeHeight": 1.5,
+   "lookAt": "veh_A",
+   "claim": "Saw the car come over the hill and approach before the truck began its turn; once the truck pulled across, the trailer blocked my view of the car.",
+   "observationTime_s": 2.0,
+   "citation": "Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account",
+   "expected": "consistent",
+   "position": [
+    357.2,
+    1.5,
+    -34.75
+   ]
+  },
+  {
+   "id": "wit_B",
+   "name": "Witness B (fictional)",
+   "marked_position": [
+    7.5,
+    0.0,
+    6.5
+   ],
+   "eyeHeight": 1.6,
+   "position": [
+    7.5,
+    1.6,
+    6.5
+   ],
+   "lookAt": "veh_A",
+   "claim": "I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.",
+   "observationTime_s": 9.9,
+   "citation": "Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter'",
+   "expected": "contradiction",
+   "deposition_times_sec": {
+    "position_mark": 1624.9,
+    "claim": 1666.4
+   },
+   "lookAt_point_at_obs": [
+    -19.82,
+    1.15,
+    -0.4
+   ]
+  },
+  {
+   "id": "wit_C",
+   "name": "Witness C (fictional)",
+   "marked_position": [
+    -18.0,
+    0.0,
+    -40.5
+   ],
+   "eyeHeight": 1.6,
+   "lookAt": "veh_T_tractor",
+   "claim": "The truck was barely creeping when it started across; I never heard brakes before the bang.",
+   "observationTime_s": 5.0,
+   "citation": "Witness C statement (fictional); consistent with NTSB/HAR-17/02 p.1-2 and p.5",
+   "expected": "consistent",
+   "position": [
+    -18.0,
+    1.6,
+    -40.5
+   ]
+  }
+ ],
+ "expected_contradiction": {
+  "witness": "wit_B",
+  "target": "veh_A (car cabin / front, 1.15 m sample point; car center at 0.72 m is also blocked)",
+  "observationTime_s": 9.9,
+  "from": [
+   7.5,
+   1.6,
+   6.5
+  ],
+  "to": [
+   -19.82,
+   1.15,
+   -0.4
+  ],
+  "blockedBy": "veh_T_tractor",
+  "first_blocked_t": 9.1,
+  "explanation": "From the spot Witness B marked on Exhibit 4 (x=7.5, z=6.5: SE corner, just south of the eastbound shoulder, east of NE 140th Court) the turning tractor-semitrailer passes between her and the approaching car. From t=9.1 s (about 1.3 s before impact, when the car is about 45 m away) until impact, every sightline from her 1.6 m eye height to the car passes through the tractor or the trailer box (1.2 to 4.11 m above ground). So her claim that she had a clear view of the car 'right up until the moment it hit' with 'nothing in the way' is physically impossible. Before t of about 9.0 s she could see the car coming down the grade, which is consistent with the rest of her testimony.",
+  "visibility_table": [
+   {
+    "t": 8.5,
+    "driver_head": [
+     -66.13,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": null,
+    "blocked_by_center": null
+   },
+   {
+    "t": 8.6,
+    "driver_head": [
+     -62.82,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": null,
+    "blocked_by_center": null
+   },
+   {
+    "t": 8.7,
+    "driver_head": [
+     -59.52,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": null,
+    "blocked_by_center": null
+   },
+   {
+    "t": 8.8,
+    "driver_head": [
+     -56.21,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": null,
+    "blocked_by_center": null
+   },
+   {
+    "t": 8.9,
+    "driver_head": [
+     -52.9,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": null,
+    "blocked_by_center": null
+   },
+   {
+    "t": 9.0,
+    "driver_head": [
+     -49.59,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": null,
+    "blocked_by_center": null
+   },
+   {
+    "t": 9.1,
+    "driver_head": [
+     -46.28,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": "veh_T_tractor",
+    "blocked_by_center": "veh_T_tractor"
+   },
+   {
+    "t": 9.2,
+    "driver_head": [
+     -42.97,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": "veh_T_tractor",
+    "blocked_by_center": "veh_T_tractor"
+   },
+   {
+    "t": 9.3,
+    "driver_head": [
+     -39.67,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": "veh_T_tractor",
+    "blocked_by_center": "veh_T_tractor"
+   },
+   {
+    "t": 9.4,
+    "driver_head": [
+     -36.36,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": "veh_T_tractor",
+    "blocked_by_center": "veh_T_tractor"
+   },
+   {
+    "t": 9.5,
+    "driver_head": [
+     -33.05,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": "veh_T_tractor",
+    "blocked_by_center": "veh_T_tractor"
+   },
+   {
+    "t": 9.6,
+    "driver_head": [
+     -29.74,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": "veh_T_tractor",
+    "blocked_by_center": "veh_T_tractor"
+   },
+   {
+    "t": 9.7,
+    "driver_head": [
+     -26.43,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": "veh_T_tractor",
+    "blocked_by_center": "veh_T_tractor"
+   },
+   {
+    "t": 9.8,
+    "driver_head": [
+     -23.13,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": "veh_T_tractor",
+    "blocked_by_center": "veh_T_tractor"
+   },
+   {
+    "t": 9.9,
+    "driver_head": [
+     -19.82,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": "veh_T_tractor",
+    "blocked_by_center": "veh_T_tractor"
+   },
+   {
+    "t": 10.0,
+    "driver_head": [
+     -16.51,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": "veh_T_tractor",
+    "blocked_by_center": "veh_T_tractor"
+   },
+   {
+    "t": 10.1,
+    "driver_head": [
+     -13.2,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": "veh_T_trailer",
+    "blocked_by_center": "veh_T_trailer"
+   },
+   {
+    "t": 10.2,
+    "driver_head": [
+     -9.89,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": "veh_T_trailer",
+    "blocked_by_center": "veh_T_trailer"
+   },
+   {
+    "t": 10.3,
+    "driver_head": [
+     -6.59,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": "veh_T_trailer",
+    "blocked_by_center": "veh_T_trailer"
+   },
+   {
+    "t": 10.4,
+    "driver_head": [
+     -3.28,
+     1.15,
+     -0.4
+    ],
+    "blocked_by_head": "veh_T_trailer",
+    "blocked_by_center": null
+   }
+  ],
+  "deposition_times_sec": {
+   "position_mark": 1624.9,
+   "claim": 1666.4
+  }
+ },
+ "deposition": {
+  "script": "deposition_script.json",
+  "duration_sec": 1802.6,
+  "wpm": 150
+ }
+}

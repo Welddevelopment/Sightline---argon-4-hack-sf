@@ -1,0 +1,82 @@
+[
+  {
+    "check": "sightline",
+    "subject": "wit_A",
+    "pass": true,
+    "detail": "From Witness A's marked position (Deposition 12:03) the line of sight to veh_A is clear at t=7s (distance 13.5 m). Claim: \"The pickup was going really fast and only braked right before the intersection.\"",
+    "citation": "Deposition 12:03",
+    "blockedBy": null,
+    "target": "veh_A",
+    "t": 7,
+    "distance": 13.463019091859973,
+    "from": [
+      -6,
+      1.65,
+      6.5
+    ],
+    "to": [
+      1.7999999999999998,
+      1.2499999845027925,
+      17.465987554953195
+    ],
+    "hitPoint": null
+  },
+  {
+    "check": "sightline",
+    "subject": "wit_B",
+    "pass": false,
+    "detail": "From Witness B's marked position (Deposition 27:14) the line of sight to sig_north is blocked by occ_shelter at t=6.5s (distance 22.8 m). Claim: \"I was at the bus stop and looked up; the light was green for the pickup.\"",
+    "citation": "Deposition 27:14",
+    "blockedBy": "occ_shelter",
+    "target": "sig_north",
+    "t": 6.5,
+    "distance": 22.84180651231055,
+    "from": [
+      7,
+      1.6,
+      16.5
+    ],
+    "to": [
+      5.4,
+      5.349999976158141,
+      -5.97499999832362
+    ],
+    "hitPoint": [
+      6.8505005553137215,
+      1.9503893212557495,
+      14.39999998807907
+    ]
+  },
+  {
+    "check": "sightline",
+    "subject": "wit_C",
+    "pass": true,
+    "detail": "From Witness C's marked position (Deposition 41:50) the line of sight to veh_B is clear at t=7.5s (distance 8.9 m). Claim: \"The red car went through when its light turned green; it was not speeding.\"",
+    "citation": "Deposition 41:50",
+    "blockedBy": null,
+    "target": "veh_B",
+    "t": 7.5,
+    "distance": 8.87232353830585,
+    "from": [
+      -7,
+      1.7,
+      -7
+    ],
+    "to": [
+      -7.924999975785612,
+      1.0499999898672103,
+      1.8
+    ],
+    "hitPoint": null
+  },
+  {
+    "check": "skid_vs_speed",
+    "subject": "veh_A",
+    "pass": true,
+    "detail": "A 31 m skid (mu 0.7) means Pickup truck (Vehicle A), northbound Main St was going at least 46.2 mph (20.6 m/s) when it started braking. In the reconstructed world veh_A moves at 53.7 mph at t=2.2s (peak pre-braking speed). That is consistent with the skid (skid gives a minimum; 10% tolerance).",
+    "citation": "Police report p.3",
+    "t": 2.2000000000000006,
+    "requiredMph": 46.15651219241678,
+    "actualMph": 53.68647100930655
+  }
+]

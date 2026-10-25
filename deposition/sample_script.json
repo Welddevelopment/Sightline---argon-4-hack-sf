@@ -1,0 +1,14 @@
+[
+ {"t_start_sec":0,"speaker":"Court Reporter","text":"We are on the record. This is the deposition of Witness B, a fictional witness, taken in the matter of Case 2026-DEMO."},
+ {"t_start_sec":12,"speaker":"Attorney Reyes","text":"Please state your name for the record and confirm you understand you are under oath."},
+ {"t_start_sec":24,"speaker":"Witness B","text":"Witness B. Yes, I understand I am under oath."},
+ {"t_start_sec":34,"speaker":"Attorney Reyes","text":"Where were you at approximately 6:45 on the morning of the collision?"},
+ {"t_start_sec":44,"speaker":"Witness B","text":"I was waiting for the early bus, over on the corner near the crossing. I had a good view of everything from where I was standing."},
+ {"t_start_sec":62,"speaker":"Attorney Reyes","text":"I am handing you Exhibit 4, an overhead map of the intersection. Can you mark where you were standing?"},
+ {"t_start_sec":76,"speaker":"Witness B","text":"Sure. I was about here, a little way back from the corner, roughly in this area.","exhibit":{"type":"map_mark","x_m":-14,"z_m":9,"note":"Witness B marks her position with a red X"}},
+ {"t_start_sec":96,"speaker":"Attorney Reyes","text":"Let the record reflect the witness has marked Exhibit 4. What did you see of the signal?"},
+ {"t_start_sec":110,"speaker":"Witness B","text":"The light was red for the northbound truck. I am certain of that. I saw it clearly.","exhibit":{"type":"map_mark","x_m":-14,"z_m":9,"note":"Mark remains visible"}},
+ {"t_start_sec":130,"speaker":"Attorney Reyes","text":"Was there anything between you and the signal?"},
+ {"t_start_sec":140,"speaker":"Witness B","text":"No, nothing that I recall. It was early and fairly quiet."},
+ {"t_start_sec":156,"speaker":"Attorney Reyes","text":"Thank you. No further questions at this time."}
+]
