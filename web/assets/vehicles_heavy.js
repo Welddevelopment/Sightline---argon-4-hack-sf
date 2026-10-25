@@ -166,10 +166,12 @@ function profileShape(T, nodes) {
     const n = res[i];
     if (!n.arc) continue;
     const prev = res[(i - 1 + N) % N], next = res[(i + 1) % N];
-    const yb = (prev.y + next.y) / 2;
+    const py = prev.arc ? next.y : prev.y, ny = next.arc ? prev.y : next.y;
+    const pxx = prev.arc ? prev.xc : prev.x, nxx = next.arc ? next.xc : next.x;
+    const yb = (py + ny) / 2;
     const a0 = Math.asin(Math.max(-1, Math.min(1, (yb - n.yc) / n.r)));
     const dxr = n.r * Math.cos(a0);
-    if (next.x > prev.x) { n.s = [n.xc - dxr, yb]; n.e = [n.xc + dxr, yb]; n.a = [Math.PI - a0, a0, true]; }
+    if (nxx > pxx) { n.s = [n.xc - dxr, yb]; n.e = [n.xc + dxr, yb]; n.a = [Math.PI - a0, a0, true]; }
     else { n.s = [n.xc + dxr, yb]; n.e = [n.xc - dxr, yb]; n.a = [a0, Math.PI - a0, false]; }
   }
   const endOf = (n) => (n.arc ? n.e : [n.x, n.y]);
@@ -241,7 +243,7 @@ function sideWindow(B, T, nodes, xs, sides = [-1, 1], gasket = 0.025) {
 }
 // Slanted windscreen between (zb,yb) bottom and (zt,yt) top, width w; panes split if split>0.
 function windscreen(B, T, zb, yb, zt, yt, w, split = 0, r = 0.06) {
-  const L = Math.hypot(zt - zb, yt - yb), ang = Math.atan2(zb - zt, yt - yb); // lean back = positive rotation about X
+  const L = Math.hypot(zt - zb, yt - yb), ang = Math.atan2(zt - zb, yt - yb); // lean back = positive rotation about X
   const nz = Math.cos(ang), ny = Math.sin(ang);                               // outward normal ~ (-z) direction
   const cz = (zb + zt) / 2 - nz * 0.012, cy = (yb + yt) / 2 + ny * 0.012;
   const rot = [-(Math.PI / 2) + 0, 0, 0];
@@ -250,11 +252,11 @@ function windscreen(B, T, zb, yb, zt, yt, w, split = 0, r = 0.06) {
   B.add('trim', gas, [0, cy, cz + nz * 0.004], [ang, 0, 0]);
   if (split > 0) {
     const hw = (w - split) / 2;
-    B.add('glass', frontGeo(T, rrect(-w / 2, -split / 2, -L / 2, L / 2, r), 0.012), [0, cy - ny * 0.004, cz - nz * 0.004], [ang, 0, 0]);
-    B.add('glass', frontGeo(T, rrect(split / 2, w / 2, -L / 2, L / 2, r), 0.012), [0, cy - ny * 0.004, cz - nz * 0.004], [ang, 0, 0]);
+    B.add('glass', frontGeo(T, rrect(-w / 2, -split / 2, -L / 2, L / 2, r), 0.012), [0, cy + ny * 0.004, cz - nz * 0.004], [ang, 0, 0]);
+    B.add('glass', frontGeo(T, rrect(split / 2, w / 2, -L / 2, L / 2, r), 0.012), [0, cy + ny * 0.004, cz - nz * 0.004], [ang, 0, 0]);
     void hw;
   } else {
-    B.add('glass', frontGeo(T, rrect(-w / 2, w / 2, -L / 2, L / 2, r), 0.012), [0, cy - ny * 0.004, cz - nz * 0.004], [ang, 0, 0]);
+    B.add('glass', frontGeo(T, rrect(-w / 2, w / 2, -L / 2, L / 2, r), 0.012), [0, cy + ny * 0.004, cz - nz * 0.004], [ang, 0, 0]);
   }
   void rot;
 }
@@ -530,7 +532,6 @@ function buildBoxTrailer(T) {
       B.box('steelDark', [x - 0.035, x + 0.035], [1.75, 1.82], [rz - 0.02, rz + 0.03]);    // cam keeper / handle
     }
     for (const y of [1.75, 2.45, 3.15, 3.7]) B.box('steelDark', [s > 0 ? hw - 0.2 : -hw + 0.02, s > 0 ? hw - 0.02 : -hw + 0.2], [y, y + 0.08], [rz - 0.01, rz + 0.025]);
-    conspicuityStrip(B, 0, 0, 0, 0, 0, 1);
     // DOT-C2 upper corner L marks and lower rear tape
     B.box('reflWhite', [s > 0 ? hw - 0.32 : -hw + 0.02, s > 0 ? hw - 0.02 : -hw + 0.32], [ST.roof - 0.12, ST.roof - 0.07], [rz + 0.001, rz + 0.006]);
     B.box('reflWhite', [s > 0 ? hw - 0.07 : -hw + 0.02, s > 0 ? hw - 0.02 : -hw + 0.07], [ST.roof - 0.42, ST.roof - 0.07], [rz + 0.001, rz + 0.006]);
@@ -684,10 +685,10 @@ function buildSchoolBus(T) {
   B.box2('frame', [0.4, 0.5], [0.55, 0.82], [-5.95, 5.9]);
   // body shell (high floor), wheel arches
   const body = [[-4.85, 0.78, 0], [-4.86, 2.12, 0], [-4.74, 3.02, 0.25], [-4.4, 3.2, 0.25], [5.9, 3.2, 0.25], [6.1, 3.0, 0.18], [6.1, 0.78, 0.06], ['arch', axR, R, 0.62]];
-  B.add('yellowBus', sideGeo(T, body, W, 0.08, 12));
+  B.add('paint', sideGeo(T, body, W, 0.08, 12));
   // hood + fenders (yellow), black grille, bumper
   const hood = [[-6.02, 0.82, 0], [-6.05, 1.34, 0.12], [-5.9, 1.5, 0.15], [-4.95, 1.7, 0.05], [-4.84, 0.82, 0], ['arch', axF, R, 0.62]];
-  B.add('yellowBus', sideGeo(T, hood, 2.3, 0.15, 12));
+  B.add('paint', sideGeo(T, hood, 2.3, 0.15, 12));
   B.add('chrome', frontGeo(T, rrect(-0.5, 0.5, 0.86, 1.36, 0.06), 0.04, 0.01, [rrect(-0.44, 0.44, 0.9, 1.32, 0.04)]), [0, 0, -6.08]);
   B.box('grille', [-0.44, 0.44], [0.9, 1.32], [-6.05, -6.02]);
   for (let y = 0.94; y < 1.31; y += 0.06) B.box('chrome', [-0.43, 0.43], [y, y + 0.015], [-6.065, -6.045]);

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Small Road Users</title>
+<style>
+  :root { --bg: #e9ebee; --ink: #1d2126; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1b1e22; --ink: #e6e8eb; } }
+  :root[data-theme="dark"] { --bg: #1b1e22; --ink: #e6e8eb; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 13px/1.4 system-ui, sans-serif; overflow: hidden; }
+  canvas { display: block; }
+  #cap { position: absolute; left: 12px; bottom: 10px; opacity: .75; }
+</style>
+<script type="importmap">
+{ "imports": { "three": "/node_modules/three/build/three.module.js", "three/addons/": "/node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="cap">Sightline small road users · 1 m grid · ?view=three|side|front|close|driver · ?env=0 disables IBL</div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { createSmallVehicle, createPedestrian } from './assets/vehicles_small.js';
+
+const q = new URLSearchParams(location.search);
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(2, devicePixelRatio));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xdfe3e8);
+if (q.get('env') !== '0') { const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.45; }
+scene.add(new THREE.HemisphereLight(0xf4f7ff, 0x8a8478, 0.9));
+const sun = new THREE.DirectionalLight(0xfff3e2, 2.4);
+sun.position.set(-6, 11, 7); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -9, right: 9, top: 6, bottom: -6, near: 1, far: 40 }); sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.02;
+scene.add(sun);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(60, 40), new THREE.MeshStandardMaterial({ color: 0xbfc3c7, roughness: 0.95 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+const grid = new THREE.GridHelper(40, 40, 0x7b8188, 0x9aa0a6); grid.position.y = 0.002; scene.add(grid);
+
+// lineup along X; everything faces -Z except vehicles turned side-on (rotation.y = -90deg -> facing +X... shown in profile)
+const items = [];
+const put = (o, x, z = 0, ry = 0) => { o.position.set(x, 0, z); o.rotation.y = ry; scene.add(o); items.push(o); return o; };
+const side = Math.PI / 2; // nose toward -X
+put(createSmallVehicle(THREE, 'motorcycle', { id: 'moto', color: '#8a1c1c' }), -6.6, -1.2, side);
+put(createSmallVehicle(THREE, 'motorcycle', { id: 'moto_r', color: '#24486e', rider: true }), -6.6, 1.4, side);
+put(createSmallVehicle(THREE, 'bicycle', { id: 'bike', color: '#2f6b4f' }), -3.4, -1.2, side);
+put(createSmallVehicle(THREE, 'bicycle', { id: 'bike_r', color: '#c9c9c4', rider: { clothing: '#8a5a2b', helmet: true, helmetColor: '#e0e0e0' } }), -3.4, 1.4, side);
+put(createPedestrian(THREE, { id: 'p155', height: 1.55, clothing: '#7a4b5c' }), -1.2, 0);
+put(createPedestrian(THREE, { id: 'p175', height: 1.75, clothing: '#4d6680' }), -0.4, 0);
+put(createPedestrian(THREE, { id: 'p190', height: 1.9, clothing: '#5d6b4a' }), 0.45, 0);
+put(createPedestrian(THREE, { id: 'pw', height: 1.75, pose: 'walking', clothing: '#8a6a3a' }), 1.6, 0, side);
+// bench + seated
+const bench = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.05, 0.42), new THREE.MeshStandardMaterial({ color: 0x6b5a48, roughness: 0.8 }));
+bench.position.set(3.0, 0.425, 0.08); bench.castShadow = bench.receiveShadow = true; scene.add(bench);
+put(createPedestrian(THREE, { id: 'pb', height: 1.75, pose: 'seated', seat: 'bench', seatHeight: 0.45, clothing: '#3f5f6f' }), 3.0, 0, 0);
+// car-occupant (origin = H-point) on a simple seat proxy, H-point 0.55 m above ground
+const occ = createPedestrian(THREE, { id: 'drv', height: 1.75, pose: 'seated', clothing: '#5a5f66' });
+const hp = new THREE.Group(); hp.position.set(5.0, 0.55, 0); scene.add(hp); hp.add(occ);
+const seatM = new THREE.MeshStandardMaterial({ color: 0x2b2d31, roughness: 0.8 });
+const cush = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.1, 0.5), seatM); cush.position.set(0, -0.11, -0.1); hp.add(cush);
+const back = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.7, 0.1), seatM); back.position.set(0, 0.28, 0.2); back.rotation.x = 0.3; hp.add(back);
+const wheel = new THREE.Mesh(new THREE.TorusGeometry(0.19, 0.016, 10, 40), new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.6 }));
+wheel.position.set(0, 0.36, -0.42); wheel.rotation.x = -0.45; hp.add(wheel);
+[cush, back, wheel].forEach(m => { m.castShadow = m.receiveShadow = true; });
+// eye markers (small red dots) to verify userData eye positions
+const dot = new THREE.Mesh(new THREE.SphereGeometry(0.018, 10, 8), new THREE.MeshBasicMaterial({ color: 0xff2020 }));
+for (const o of items) {
+  const e = o.userData.eye || o.userData.driverEye; if (!e) continue;
+  const d = dot.clone(); d.position.set(...e); o.add(d);
+}
+{ const d = dot.clone(); d.position.set(...occ.userData.eye); occ.add(d); }
+
+const cam = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, 0.1, 200);
+const views = {
+  three: [[3.5, 4.8, 12.5], [-0.8, 0.8, 0]],
+  side: [[-0.8, 1.0, 16], [-0.8, 0.9, 0]],
+  front: [[-0.8, 1.6, -11], [-0.8, 0.9, 0]],
+  close: [[-2.8, 1.9, 6.2], [-4.9, 0.85, 0.2]],
+  people: [[2.4, 1.7, 5.5], [1.4, 0.9, 0]],
+  driver: [[6.6, 1.4, -1.8], [5.0, 0.8, -0.1]],
+};
+const [p, t] = views[q.get('view')] || views.three;
+cam.position.set(...p);
+const ctl = new OrbitControls(cam, renderer.domElement); ctl.target.set(...t); ctl.update();
+addEventListener('resize', () => { renderer.setSize(innerWidth, innerHeight); cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); });
+let n = 0;
+renderer.setAnimationLoop(() => { ctl.update(); renderer.render(scene, cam); if (++n === 3) window.__ready = true; });
+window.__info = items.map(o => ({ name: o.name, ud: { ...o.userData, joints: undefined, rider: !!o.userData.rider } }));
+</script>
+</body>
+</html>

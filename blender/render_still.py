@@ -233,40 +233,70 @@ def m_plain(nt, base, rough=0.6):
     nt.set(base=base, rough=rough)
 
 
+def m_glass_clear(nt):
+    # v2 library glass (vehicles have cabins/interiors): real tinted transmissive glass.
+    nt.set(base=(0.55, 0.62, 0.62), metal=0.0, rough=0.0, ior=1.52, spec=1.0)
+    nt.bsdf.inputs['Transmission Weight'].default_value = 0.92
+
+
+def role_of(oid, mesh, kind, hx, lib):
+    srgb = hex_rgb(hx)
+    green = srgb[1] > srgb[0] * 1.05 and srgb[1] > srgb[2] * 1.05
+    lib = lib.split('.')[0]
+    # --- v2 asset-library materials (named in web/assets/*): upgrade the few that matter, keep the rest as imported
+    if lib:
+        if lib == 'glass': return 'glass_clear'
+        if lib == 'glassDark': return 'glass'
+        if lib in ('rubber', 'tread'): return 'rubber'
+        if lib.startswith('paint_'): return 'white_body' if min(srgb) > 0.8 else 'car_paint'
+        if lib.startswith('surface_'):
+            k = lib[8:]
+            return {'grass': 'grass', 'asphalt': 'asphalt', 'dirt': 'dirt'}.get(k, 'keep')
+        if lib in ('trim', 'plastic', 'underbody', 'interior'): return 'keep_bevel'
+        if not lib.startswith('Material'): return 'keep'   # chrome, alloy, lamps, plates, ... (importer maps PBR + clearcoat)
+    # --- v1 box worlds: infer from object kind + colour
+    if green and kind in ('road', 'occluder', 'scene') or oid == 'ground': return 'grass'
+    if kind == 'vehicle':
+        if 'light' in mesh or 'lamp' in mesh: return 'keep'
+        if 'cabin' in mesh or 'glass' in mesh or 'window' in mesh or hx == '#1b232c': return 'glass'
+        if max(srgb) < 0.1 or 'tire' in mesh or 'wheel' in mesh: return 'rubber'
+        if max(srgb) < 0.4 and abs(srgb[0] - srgb[2]) < 0.02: return 'dark_metal'
+        if min(srgb) > 0.8: return 'white_body_matte' if oid.endswith('trailer') else 'white_body'
+        return 'car_paint'
+    if kind == 'road':
+        return 'line_paint' if (hx in ('#f4f4f4', '#f2c200') or min(srgb) > 0.85) else 'asphalt'
+    if kind == 'building': return 'stucco'
+    if oid == 'occ_pole' or hx == '#8b6b4a': return 'wood'
+    if oid == 'occ_shelter': return 'metal'
+    if oid.startswith('mark_path'): return 'dirt'
+    return 'plain'
+
+
 def upgrade(mat):
     parts = mat.name.split('|')
     if len(parts) < 4:
         return 'skip'
     oid, mesh, kind, hx = parts[0], parts[1], parts[2], parts[3][:7]
-    srgb = hex_rgb(hx)
-    base = lin(srgb)
-    green = srgb[1] > srgb[0] * 1.05 and srgb[1] > srgb[2] * 1.05
+    lib = parts[4] if len(parts) > 4 else ''
+    base = lin(hex_rgb(hx))
+    role = role_of(oid, mesh, kind, hx, lib)
+    if role == 'keep':
+        return role
+    if role == 'keep_bevel':   # keep imported BSDF, add shading-only bevel
+        t = mat.node_tree
+        b = next((n for n in t.nodes if n.type == 'BSDF_PRINCIPLED'), None)
+        if b and not b.inputs['Normal'].links:
+            bv = t.nodes.new('ShaderNodeBevel'); bv.samples = 6; bv.inputs['Radius'].default_value = 0.02
+            t.links.new(bv.outputs['Normal'], b.inputs['Normal'])
+        return role
     nt = NT(mat)
-    if green and kind in ('road', 'occluder', 'scene') or oid == 'ground':
-        m_grass(nt, base); return 'grass'
-    if kind == 'vehicle':
-        if 'cabin' in mesh:
-            m_glass_tinted(nt); return 'glass'
-        if hx == '#111111':
-            m_rubber(nt); return 'rubber'
-        if max(srgb) < 0.4 and abs(srgb[0] - srgb[2]) < 0.02:
-            m_dark_metal(nt, base); return 'dark_metal'
-        if min(srgb) > 0.8:
-            m_white_body(nt, base, gloss=(oid != 'veh_T_trailer')); return 'white_body'
-        m_paint(nt, base); return 'car_paint'
-    if kind == 'road':
-        if hx in ('#f4f4f4', '#f2c200') or min(srgb) > 0.85:
-            m_line_paint(nt, base); return 'line_paint'
-        m_asphalt(nt, base); return 'asphalt'
-    if kind == 'building':
-        m_stucco(nt, base); return 'stucco'
-    if oid == 'occ_pole' or hx == '#8b6b4a':
-        m_wood(nt, base); return 'wood'
-    if oid == 'occ_shelter':
-        m_dark_metal(nt, base); return 'metal'
-    if oid == 'mark_path_A':
-        m_dirt(nt, base); return 'dirt'
-    m_plain(nt, base); return 'plain'
+    {'grass': lambda: m_grass(nt, base), 'glass': lambda: m_glass_tinted(nt), 'glass_clear': lambda: m_glass_clear(nt),
+     'rubber': lambda: m_rubber(nt), 'dark_metal': lambda: m_dark_metal(nt, base), 'metal': lambda: m_dark_metal(nt, base),
+     'white_body': lambda: m_white_body(nt, base, True), 'white_body_matte': lambda: m_white_body(nt, base, False),
+     'car_paint': lambda: m_paint(nt, base), 'line_paint': lambda: m_line_paint(nt, base), 'asphalt': lambda: m_asphalt(nt, base),
+     'stucco': lambda: m_stucco(nt, base), 'wood': lambda: m_wood(nt, base), 'dirt': lambda: m_dirt(nt, base),
+     'plain': lambda: m_plain(nt, base)}[role]()
+    return role
 
 
 SKY_PARAMS = {}

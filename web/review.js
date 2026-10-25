@@ -355,6 +355,7 @@ $('#confirmedBy').addEventListener('input', () => { lsSet('sightline.reviewer', 
 
 // ---------- scene plan (canvas) ----------
 const cv = $('#map'), ctx = cv.getContext('2d');
+const PLAN_RADIUS_M = 150;
 let view = null; // { w, h, toPx([x,z]) -> [px,py], toM([px,py]) -> [x,z], ppm }
 function mapConfig() {
   const m = (S.c && S.c.map) || (S.ext && S.ext.map) || null;
@@ -376,7 +377,8 @@ function positions() {
   const pts = [[0, 0]];
   S.witnesses.forEach((w) => hasPos(w.markedPosition) && pts.push(w.markedPosition.map(Number)));
   S.objects.forEach((o) => hasPos(o.position) && pts.push(o.position.map(Number)));
-  return pts;
+  // Keep the plan readable: far-away items (e.g. a driver 400 m down the road) are drawn as edge pointers instead.
+  return pts.filter((p) => Math.hypot(p[0], p[1]) <= PLAN_RADIUS_M);
 }
 function computeView() {
   const cssW = cv.parentElement.clientWidth || 420;
@@ -407,6 +409,24 @@ function computeView() {
   cv.style.height = cssH + 'px';
   view = { w: cssW, h: cssH, dpr, toPx, toM, ppm };
 }
+const EDGE = 16;
+function offPlan(px, py) { return px < EDGE || py < EDGE || px > view.w - EDGE || py > view.h - EDGE; }
+function clampEdge(px, py) {
+  // project from the plan centre to the inset border
+  const cx = view.w / 2, cy = view.h / 2, dx = px - cx, dy = py - cy;
+  const k = Math.min((cx - EDGE) / Math.abs(dx || 1e-9), (cy - EDGE) / Math.abs(dy || 1e-9));
+  return [cx + dx * Math.min(1, k), cy + dy * Math.min(1, k), Math.atan2(dy, dx)];
+}
+const compass = (x, z) => { const d = Math.hypot(x, z); const dir = (Math.abs(x) > Math.abs(z) * 2 ? '' : z < 0 ? 'N' : 'S') + (Math.abs(z) > Math.abs(x) * 2 ? '' : x > 0 ? 'E' : 'W'); return `${Math.round(d)} m ${dir}`; };
+function edgeLabel(px, py, text) {
+  ctx.font = '600 10px ' + getComputedStyle(document.body).getPropertyValue('--sans');
+  const tw = ctx.measureText(text).width;
+  let lx = px + 12, ly = py;
+  if (lx + tw + 8 > view.w) lx = px - 12 - tw - 8;
+  ly = Math.max(10, Math.min(view.h - 10, ly));
+  ctx.fillStyle = 'rgba(8,11,16,.85)'; ctx.fillRect(lx, ly - 8, tw + 8, 16);
+  ctx.fillStyle = '#e8ecf2'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(text, lx + 4, ly);
+}
 function niceStep(ppm, targetPx) { const raw = targetPx / ppm; const p = 10 ** Math.floor(Math.log10(raw)); return [1, 2, 5, 10].map((m) => m * p).find((s) => s >= raw) || 10 * p; }
 function drawMap() {
   if (!S.map) return;
@@ -436,7 +456,13 @@ function drawMap() {
   ctx.font = '600 9.5px ' + getComputedStyle(document.body).getPropertyValue('--sans');
   S.objects.forEach((o) => {
     if (!hasPos(o.position) || o._rej) return;
-    const [px, py] = toPx(o.position.map(Number));
+    let [px, py] = toPx(o.position.map(Number));
+    if (offPlan(px, py)) {
+      const [ex, ey, a] = clampEdge(px, py);
+      ctx.save(); ctx.translate(ex, ey); ctx.rotate(a); ctx.fillStyle = '#6f7c90'; ctx.beginPath(); ctx.moveTo(6, 0); ctx.lineTo(-4, -5); ctx.lineTo(-4, 5); ctx.closePath(); ctx.fill(); ctx.restore();
+      edgeLabel(ex, ey, `${String(o.label || o.kind || o.id).slice(0, 18)} · ${compass(+o.position[0], +o.position[1])}`);
+      return;
+    }
     ctx.fillStyle = '#6f7c90'; ctx.strokeStyle = '#0b0e13'; ctx.lineWidth = 1;
     ctx.fillRect(px - 4, py - 4, 8, 8); ctx.strokeRect(px - 4, py - 4, 8, 8);
     ctx.fillStyle = '#9aa6b8'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
@@ -446,6 +472,14 @@ function drawMap() {
   S.witnesses.forEach((wt, i) => {
     if (!hasPos(wt.markedPosition)) return;
     const [px, py] = toPx(wt.markedPosition.map(Number));
+    if (offPlan(px, py)) {
+      const [ex, ey, a] = clampEdge(px, py);
+      ctx.globalAlpha = wt._rej ? 0.35 : 1;
+      ctx.save(); ctx.translate(ex, ey); ctx.rotate(a); ctx.fillStyle = '#e2b052'; ctx.beginPath(); ctx.moveTo(9, 0); ctx.lineTo(-5, -7); ctx.lineTo(-5, 7); ctx.closePath(); ctx.fill(); ctx.restore();
+      edgeLabel(ex, ey, `${wt.name || wt.id} · ${compass(+wt.markedPosition[0], +wt.markedPosition[1])} (off plan)`);
+      ctx.globalAlpha = 1;
+      return;
+    }
     const hot = S.selWit === i || S.hoverWit === i || (drag && drag.i === i);
     ctx.globalAlpha = wt._rej ? 0.35 : 1;
     if (hot) { ctx.fillStyle = 'rgba(226,176,82,.22)'; ctx.beginPath(); ctx.arc(px, py, 16, 0, Math.PI * 2); ctx.fill(); }
@@ -475,7 +509,7 @@ const evPt = (e) => { const r = cv.getBoundingClientRect(); return [e.clientX - 
 function hitWit([x, y]) {
   if (!view) return -1;
   let best = -1, bd = 14;
-  S.witnesses.forEach((w, i) => { if (!hasPos(w.markedPosition)) return; const [px, py] = view.toPx(w.markedPosition.map(Number)); const d = Math.hypot(px - x, py - y); if (d < bd) { bd = d; best = i; } });
+  S.witnesses.forEach((w, i) => { if (!hasPos(w.markedPosition)) return; const [px, py] = view.toPx(w.markedPosition.map(Number)); if (offPlan(px, py)) return; const d = Math.hypot(px - x, py - y); if (d < bd) { bd = d; best = i; } });
   return best;
 }
 const r1 = (n) => Math.round(n * 10) / 10;

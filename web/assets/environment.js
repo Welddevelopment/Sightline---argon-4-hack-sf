@@ -232,7 +232,7 @@ const WEATHER = {
  *  is "graded". Other light sources (headlights, streetlights) that want to be physically consistent should use
  *  info.luxToIntensity too.
  */
-export function lightLevels({ sunEl, moonEl = -90, moonFraction = 0, moonPhaseDeg = 180, weather = 'clear', visibilityM } = {}) {
+export function lightLevels({ sunEl, moonEl = -90, moonFraction = 0, moonPhaseDeg = 180, weather = 'clear', visibilityM, adaptationExponent = 0.25 } = {}) {
   const w = WEATHER[weather] || WEATHER.clear;
   const E0 = 128000; // extraterrestrial illuminance, lux
   const T = transmittance(sunEl, w.beta);
@@ -258,14 +258,14 @@ export function lightLevels({ sunEl, moonEl = -90, moonFraction = 0, moonPhaseDe
   const globalLux = directNormal * sinEl + moonNormal * Math.max(0, sinD(moonEl)) + diffuse;
   const Eref = 60000;  // global illuminance at which luxToIntensity gives intensity 3.0 (a white horizontal surface at ~45 deg sun renders near, not above, display white)
   const k = 3.0 / Eref;
-  const luxToIntensity = k * Math.pow(Eref / globalLux, 0.75);
+  const luxToIntensity = k * Math.pow(Eref / globalLux, 1 - adaptationExponent);
   // colour: white-balanced to a high sun (camera 'daylight' balance, AM 1.2) so noon sun is neutral and a low sun turns amber
   const Twb = transmittance(56, w.beta);
   // partial chromatic adaptation (exponent 0.6): a 5 deg sun reads ~3200 K as an adapted eye/camera sees it, not the raw spectrum
   const sunColor = (() => { const c = T.map((x, i) => Math.pow(x / Twb[i], 0.6)); const m = Math.max(...c); return c.map((x) => x / m); })();
   return {
     directNormalLux: directNormal, diffuseLux: diffuse, moonNormalLux: moonNormal, globalLux,
-    luxToIntensity, perceivedBrightness: Math.pow(globalLux / Eref, 0.25), sunColor,
+    luxToIntensity, perceivedBrightness: Math.pow(globalLux / Eref, adaptationExponent), adaptationExponent, sunColor,
     visibilityM: visibilityM ?? w.visibilityM, shadows: w.shadows, overcast: w.overcast, weather: WEATHER[weather] ? weather : 'clear',
   };
 }
@@ -347,6 +347,8 @@ function preethamSunE(elDeg) {
  *    Sky: the Sky class from 'three/addons/objects/Sky.js' (required for the sky dome; omitted -> plain background colour),
  *    center?: [x, z] region of interest (default [0, 0]),  radius?: shadow half-extent in m (default 120),
  *    shadowMapSize?: 2048,  groundAlbedo?: 0.18,
+ *    adaptationExponent?: 0.25  (perceived brightness ~ E^a; 0 = fixed exposure (physically proportional, night is black),
+ *                                1 = full auto-exposure (night looks like day). 0.25 approximates an adapted eye.)
  *  }
  *  Returns { group, sun, hemisphere, sky, fog, background, update(camera, focus?), info, dispose(), recommendedRenderer }.
  *  Add `group` to the scene, set scene.fog = env.fog (and scene.background = env.background if there is no sky),
@@ -361,7 +363,7 @@ export function environment(THREE, opts = {}) {
   const sp = solarPosition(when, lat, lon);
   const mp = lunarPosition(when, lat, lon);
   const L = lightLevels({ sunEl: sp.elevationDeg, moonEl: mp.elevationDeg, moonFraction: mp.illuminatedFraction,
-    moonPhaseDeg: mp.phaseAngleDeg, weather, visibilityM: opts.visibilityM });
+    moonPhaseDeg: mp.phaseAngleDeg, weather, visibilityM: opts.visibilityM, adaptationExponent: opts.adaptationExponent ?? 0.25 });
   const s = L.luxToIntensity;
 
   const group = new THREE.Group();
@@ -458,7 +460,7 @@ export function environment(THREE, opts = {}) {
     u.mieCoefficient.value = 0.004 + beta * 0.01;
     u.mieDirectionalG.value = 0.78;
     if (u.cloudCoverage) u.cloudCoverage.value = 0;   // never invent clouds
-    if (u.showSunDisc) u.showSunDisc.value = keySource === 'sun' && L.overcast < 1 ? 1 : 0;
+    if (u.showSunDisc) u.showSunDisc.value = keySource === 'sun' && weather === 'clear' ? 1 : 0;
     const sd = sunDirection(sp.azimuthDeg, sp.elevationDeg);
     // Preetham fades to black at about -2.6 deg; feed it the true sun so the afterglow ends naturally, twilight term takes over
     u.sunPosition.value.set(sd[0], sd[1], sd[2]).multiplyScalar(1000);
@@ -477,9 +479,11 @@ export function environment(THREE, opts = {}) {
     u.lowSun.value = clamp(1 - sp.elevationDeg / 12, 0, 1);
     u.twilight.value = twAmt * twAmt * 0.3 / Math.max(u.skyGain.value, 1e-3) * clamp(pb * 3, 0, 1.5);
     u.nightColor.value = new THREE.Vector3(0.012, 0.016, 0.03).multiplyScalar(1 / Math.max(u.skyGain.value, 1e-3) * (sunUp ? 0 : 1));
-    u.overcastMix.value = L.overcast;
+    u.overcastMix.value = weather === 'fog' ? 0.97 : L.overcast;   // fog: the sky IS the lit fog
     const ocg = clamp(L.perceivedBrightness * 0.95, 0, 1.2) / Math.max(u.skyGain.value, 1e-3);
-    u.overcastColor.value = new THREE.Vector3(0.66 * ocg, 0.69 * ocg, 0.73 * ocg);
+    u.overcastColor.value = weather === 'fog'
+      ? new THREE.Vector3(horizonLin.r, horizonLin.g, horizonLin.b).multiplyScalar(1.15 / Math.max(u.skyGain.value, 1e-3))
+      : new THREE.Vector3(0.66 * ocg, 0.69 * ocg, 0.73 * ocg);
     u.hazeMix.value = weather === 'fog' ? 0.9 : weather === 'rain' ? 0.5 : 0;
     u.hazeColor.value = new THREE.Vector3(horizonLin.r, horizonLin.g, horizonLin.b).multiplyScalar(1 / Math.max(u.skyGain.value, 1e-3));
     group.add(sky);

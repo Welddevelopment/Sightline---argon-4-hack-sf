@@ -353,6 +353,7 @@ mountCases(app, {
 await import('./review.js').then((m) => m.mountReview(app, { ROOT, MODE, tryImport, errMsg })).catch((e) => console.warn('[sightline] review API not mounted:', errMsg(e))); // B1: step 3 review & confirm
 await import('./clips.js').then((m) => m.mountClips(app, { ROOT, MODE, getThree, errMsg, legacyState: buildState })).catch((e) => console.warn('[sightline] clips API not mounted:', errMsg(e))); // PRODUCT-C: per-camera clip export
 await import('./report.js').then((m) => m.mountReport(app, { ROOT, MODE, getThree, errMsg })).catch((e) => console.warn('[sightline] report API not mounted:', errMsg(e))); // PRODUCT-A: PDF report export
+await import('./scene_export.js').then((m) => m.mountSceneExport(app, { ROOT, MODE, errMsg })).catch((e) => console.warn('[sightline] scene export API not mounted:', errMsg(e))); // PRODUCT-F: scene .glb/.json/.zip
 
 app.use('/api', (req, res) => res.status(404).json({ error: `no such endpoint: ${req.method} ${req.originalUrl}` }));
 

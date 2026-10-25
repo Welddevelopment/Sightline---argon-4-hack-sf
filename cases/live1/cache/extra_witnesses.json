@@ -19,5 +19,26 @@
     "modelSeconds": 4.979,
     "attempt": 1,
     "id": "wit_live_1"
+  },
+  {
+    "name": "Witness (westbound driver 100 yds from crossover at t=2.0s)",
+    "position": [
+      91.44,
+      0,
+      -29.8
+    ],
+    "eyeHeight": 1.2,
+    "lookAt": "veh_A",
+    "observationTime": 2,
+    "claim": "I was driving west, about 100 yards from the crossover, when the truck started its turn, and I could see the eastbound car coming the entire time.",
+    "confidence": "medium",
+    "assumptions": "Placed 100 yards (91.44 m) east of the crossover center (x=0) in the westbound travel lanes (z=-29.8 m, between WB inside at -28.0 m and outside at -31.7 m) with standard car driver eye height (1.2 m). Observation time set to t=2.0 s, when veh_T_tractor begins turning south from z=-23.8 m in the left-turn lane.",
+    "citation": "Live statement",
+    "source": "argon-live",
+    "latencyMs": 6455,
+    "model": "gemini-4-argon",
+    "modelSeconds": 6.31,
+    "attempt": 1,
+    "id": "wit_live_2"
   }
 ]
