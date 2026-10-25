@@ -744,6 +744,8 @@ function buildBarn(root, w, d, h, o) {
 export function building(opts = {}) {
   const id = opts.id ?? 'building';
   let style = opts.style || opts.kind || 'commercial';
+  if (style === 'store' && !opts.legacy) return store(opts);                 // full detailed convenience/feed store
+  if (style === 'house' && !opts.legacy) return house({ ...opts, style: opts.houseStyle || 'ranch' }); // 3D windows/porch/shingles
   if (style === 'store' || style === 'generic') style = 'commercial';
   const D = { commercial: [18, 14, 5.2], house: [12, 9, 2.9], gas_station: [24, 30, 4.5], barn: [10, 16, 4.2] }[style] || [12, 10, 5];
   const w = opts.w ?? D[0], d = opts.d ?? D[1], h = opts.h ?? D[2];

@@ -1,0 +1,64 @@
+{
+  "id": "gz_wit_C",
+  "type": "gaze",
+  "witness": "wit_C",
+  "why": "Gaze angle for wit_C. (added for coverage)",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_ChdyM1BlYXIyMEpzbU95dE1Qbkp2QW1BNBIXcjNQZWFyMjBKc21PeXRNUG5KdkFtQTQ",
+  "dispatchedAtMs": 2500,
+  "createMs": 79289,
+  "status": "completed",
+  "environmentId": "f69b34fd1a170e8b97d2f4da195c7db1",
+  "usage": {
+    "total": 123377,
+    "input": 119386,
+    "cached": 89582
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"gz_wit_C\",\"ok\":true,\"ms\":1220}",
+    "interpretation": "At the observation time of 10.43 seconds, the trailer was only 7 degrees off Witness C's assumed line of gaze toward the point of impact, placing it within central vision rather than peripheral view."
+  },
+  "result": {
+    "task": {
+      "id": "gz_wit_C",
+      "type": "gaze",
+      "witness": "wit_C",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_T_trailer",
+      "tObs": 10.43,
+      "gaze": {
+        "offAxisDeg": 7,
+        "assumed": true,
+        "cameraFovDeg": 60,
+        "peripheral": false,
+        "source": "mark_poi"
+      },
+      "altGazeDegByMark": {
+        "mark_poi": 7.05,
+        "mark_pole_poi": 46.6,
+        "mark_tire_impression": 7.17
+      }
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 1220,
+      "worldSha": "526ea902d593",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 332920,
+  "doneAtMs": 335420
+}
