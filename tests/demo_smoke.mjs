@@ -97,7 +97,7 @@ function confirmBody(extraction, moveB) {
     ? { ...w, markedPosition: [w.markedPosition[0] + moveB[0], w.markedPosition[1] + moveB[1]] } : { ...w }));
   return { facts: extraction.facts, witnesses, vehicles: extraction.vehicles, objects: extraction.objects, scene: extraction.scene, confirmedBy: 'demo_smoke' };
 }
-const sightB = (state) => (state.checks || []).find((c) => c.check === 'sightline' && c.subject === 'wit_B');
+const sightB = (state) => (state.checks || []).find((c) => c.check === 'sightline' && /^wit_(witness_)?B$/.test(c.subject));
 
 // ================= main =================
 async function main() {
