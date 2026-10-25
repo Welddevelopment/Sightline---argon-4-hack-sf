@@ -20,3 +20,5 @@
 [render] suv_current.png 14.6s 
 [render] suv_r0.png 9.8s 
 [render] pickup_current.png 12.3s 
+[render] pickup_r0.png 6.5s errs=1
+[render] truck_tractor_current.png 8.9s 

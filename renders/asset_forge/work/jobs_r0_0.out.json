@@ -1,0 +1,110 @@
+[
+  {
+    "out": "/home/claude/sightline/renders/asset_forge/sedan_current.png",
+    "ok": true,
+    "info": {
+      "ok": true,
+      "bbox": {
+        "length": 4.9,
+        "width": 1.89,
+        "height": 1.45,
+        "minY": 0
+      },
+      "tris": 105312
+    },
+    "errors": [],
+    "seconds": 13.298
+  },
+  {
+    "out": "/home/claude/sightline/renders/asset_forge/sedan_r0.png",
+    "ok": true,
+    "info": {
+      "ok": true,
+      "bbox": {
+        "length": 4.91,
+        "width": 2.19,
+        "height": 1.46,
+        "minY": 0
+      },
+      "tris": 25512
+    },
+    "errors": [],
+    "seconds": 8.824
+  },
+  {
+    "out": "/home/claude/sightline/renders/asset_forge/suv_current.png",
+    "ok": true,
+    "info": {
+      "ok": true,
+      "bbox": {
+        "length": 4.8,
+        "width": 1.94,
+        "height": 1.75,
+        "minY": 0
+      },
+      "tris": 116848
+    },
+    "errors": [],
+    "seconds": 14.571
+  },
+  {
+    "out": "/home/claude/sightline/renders/asset_forge/suv_r0.png",
+    "ok": true,
+    "info": {
+      "ok": true,
+      "bbox": {
+        "length": 4.85,
+        "width": 2.17,
+        "height": 1.81,
+        "minY": -0.045
+      },
+      "tris": 24662
+    },
+    "errors": [],
+    "seconds": 9.802
+  },
+  {
+    "out": "/home/claude/sightline/renders/asset_forge/pickup_current.png",
+    "ok": true,
+    "info": {
+      "ok": true,
+      "bbox": {
+        "length": 5.9,
+        "width": 1.99,
+        "height": 1.9,
+        "minY": 0
+      },
+      "tris": 107956
+    },
+    "errors": [],
+    "seconds": 12.285
+  },
+  {
+    "out": "/home/claude/sightline/renders/asset_forge/pickup_r0.png",
+    "ok": false,
+    "info": {
+      "ok": false,
+      "error": "ReferenceError: THREE is not defined\n    at addMesh (http://127.0.0.1:44221/renders/asset_forge/work/pickup.r0.js?v=1792959421287:613:13)\n    at Module.create (http://127.0.0.1:44221/renders/asset_forge/work/pickup.r0.js?v=1792959421287:708:3)\n    at build (http://127.0.0.1:44221/web/assets_argon/studio.html?asset=pickup&mode=argon&src=%2Frenders%2Fasset_forge%2Fwork%2Fpickup.r0.js%3Fv%3D1792959421287&cfg=%7B%22t%22%3A%5B0%2C0.7979999999999999%2C0%5D%2C%22az%22%3A38%2C%22el%22%3A14%2C%22d%22%3A7.9532786847821635%2C%22kind%22%3A%22vehicle%22%2C%22dims%22%3A%5B5.9%2C2%2C1.9%5D%2C%22color%22%3A%2"
+    },
+    "errors": [
+      "studio error: ReferenceError: THREE is not defined\n    at addMesh (http://127.0.0.1:44221/renders/asset_forge/work/pickup.r0.js?v=1792959421287:613:13)\n    at Module.create (http://127.0.0.1:44221/renders/asset_forge/work/pickup.r0.js?v=1792959421287:708:3)\n    at build (http://127.0.0.1:44221/web/a"
+    ],
+    "seconds": 6.503
+  },
+  {
+    "out": "/home/claude/sightline/renders/asset_forge/truck_tractor_current.png",
+    "ok": true,
+    "info": {
+      "ok": true,
+      "bbox": {
+        "length": 6.51,
+        "width": 2.78,
+        "height": 3.62,
+        "minY": 0
+      },
+      "tris": 63580
+    },
+    "errors": [],
+    "seconds": 8.898
+  }
+]
