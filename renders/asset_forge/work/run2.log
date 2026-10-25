@@ -15,3 +15,8 @@
 20:17:01 [forge] road_surface_material r0: resumed valid=true
 20:17:01 [render] batch r0.0: 7 stills (waiting for render lock, attempt 1)
 20:27:04 [render] batch r0.0: 7 stills (waiting for render lock, attempt 2)
+[render] sedan_current.png 13.3s 
+[render] sedan_r0.png 8.8s 
+[render] suv_current.png 14.6s 
+[render] suv_r0.png 9.8s 
+[render] pickup_current.png 12.3s 
