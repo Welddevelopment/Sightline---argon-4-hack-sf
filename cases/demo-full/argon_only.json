@@ -1,6 +1,6 @@
 {
   "case": "demo-full",
-  "built_at": "2026-10-25T20:18:21.517Z",
+  "built_at": "2026-10-25T20:30:07.964Z",
   "tokens_total": 849454,
   "video_seconds": 9900,
   "videos": [
@@ -28,7 +28,7 @@
     "critique_s": 159.2
   },
   "key_frames": {
-    "render_png": "/cases/demo-full/renders/world_v1/wit_B_t9p8.png",
+    "render_png": "/cases/demo-full/renders/world_v2/wit_B_t9p8.png",
     "render_t": 9.8,
     "depo_png": "/cases/demo-full/keyframes/kf_mark_015430.png",
     "depo_timecode": "1:54:30"
