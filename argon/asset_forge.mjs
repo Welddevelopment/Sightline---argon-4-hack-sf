@@ -312,19 +312,37 @@ async function renderBatchChild(jobsFile) {
   fs.writeFileSync(jobsFile.replace(/\.json$/, '.out.json'), JSON.stringify(results, null, 2));
 }
 
-function runRenderBatch(jobs, tag) {
-  if (!jobs.length) return Promise.resolve([]);
-  const jf = path.join(WORK, `jobs_${tag}.json`);
-  for (const j of jobs) try { fs.unlinkSync(j.out); } catch {}
-  fs.writeFileSync(jf, JSON.stringify(jobs, null, 2));
+function runLockedOnce(jf) {
+  const outF = jf.replace(/\.json$/, '.out.json');
+  try { fs.unlinkSync(outF); } catch {}
   return new Promise((resolve) => {
-    log(`[render] batch ${tag}: ${jobs.length} stills (waiting for render lock)`);
     const p = spawn(path.join(ROOT, 'scripts', 'render_lock.sh'), [process.execPath, fileURLToPath(import.meta.url), '--render-batch', jf], { cwd: ROOT, stdio: ['ignore', 'inherit', 'inherit'] });
-    p.on('close', () => {
-      let r = []; try { r = JSON.parse(fs.readFileSync(jf.replace(/\.json$/, '.out.json'), 'utf8')); } catch {}
+    p.on('close', (code) => {
+      let r = null; try { r = JSON.parse(fs.readFileSync(outF, 'utf8')); } catch {}
       resolve(r);
     });
   });
+}
+// The shared lock times out after 10 min (many agents queue on it): retry until each chunk actually ran.
+// Chunks of <= 7 stills so we never hold the lock for long.
+async function runRenderBatch(jobs, tag) {
+  if (!jobs.length) return [];
+  for (const j of jobs) try { fs.unlinkSync(j.out); } catch {}
+  const all = [];
+  for (let c = 0; c * 7 < jobs.length; c++) {
+    const chunk = jobs.slice(c * 7, c * 7 + 7);
+    const jf = path.join(WORK, `jobs_${tag}_${c}.json`);
+    fs.writeFileSync(jf, JSON.stringify(chunk, null, 2));
+    let r = null;
+    for (let attempt = 1; attempt <= 8 && !r; attempt++) {
+      log(`[render] batch ${tag}.${c}: ${chunk.length} stills (waiting for render lock, attempt ${attempt})`);
+      r = await runLockedOnce(jf);
+      if (!r) await sleep(3000);
+    }
+    log(`[render] batch ${tag}.${c}: ${r ? r.filter((x) => x.ok).length + '/' + chunk.length + ' ok' : 'FAILED (lock)'}`);
+    if (r) all.push(...r);
+  }
+  return all;
 }
 
 // ------------------------------------------------------------------ main pipeline
@@ -341,7 +359,7 @@ async function main(args) {
   log(ref ? `reference notes: ${ref.length} chars` : 'reference notes: not found, continuing without');
 
   const state = Object.fromEntries(names.map((n) => [n, { asset: n, rounds: [], tokens: { prompt: 0, output: 0, thoughts: 0, total: 0 }, seconds: 0 }]));
-  const addUsage = (s, r) => { const u = r.usage || {}; s.tokens.prompt += u.promptTokenCount || 0; s.tokens.output += u.candidatesTokenCount || 0; s.tokens.thoughts += u.thoughtsTokenCount || 0; s.tokens.total += u.totalTokenCount || 0; s.seconds += r.seconds; };
+  const addUsage = (s, r) => { const u = r.usage || {}; r.seconds = r.seconds || 0; s.tokens.prompt += u.promptTokenCount || 0; s.tokens.output += u.candidatesTokenCount || 0; s.tokens.thoughts += u.thoughtsTokenCount || 0; s.tokens.total += u.totalTokenCount || 0; s.seconds += r.seconds; };
 
   async function generate(name, round, prev) {
     const s = state[name];
@@ -360,6 +378,19 @@ ${prev.code}
       if (prev.render?.ok && fs.existsSync(prev.png)) parts.push({ inlineData: { mimeType: 'image/png', data: fs.readFileSync(prev.png).toString('base64') } });
     }
     const rec = { round, file, png: path.join(OUT, `${name}_r${round}.png`) };
+    const metaF = file.replace(/\.js$/, '.meta.json');
+    if (args.resume && fs.existsSync(file) && fs.existsSync(metaF)) {
+      const m = JSON.parse(fs.readFileSync(metaF, 'utf8'));
+      if (!m.error) {
+        Object.assign(rec, { finish: m.finish, usage: m.usage, seconds: m.seconds, defects: m.defects, resumed: true });
+        addUsage(s, m);
+        rec.code = fs.readFileSync(file, 'utf8');
+        rec.validation = await runValidate(file, name);
+        log(`[forge] ${name} r${round}: resumed valid=${rec.validation.ok}`);
+        s.rounds.push(rec);
+        return rec;
+      }
+    }
     try {
       const r = await callArgon(parts, `${name} r${round}`);
       addUsage(s, r);

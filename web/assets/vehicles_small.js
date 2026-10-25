@@ -338,20 +338,22 @@ const MODEL_POSE = { standing: 'pedestrian_standing', walking: 'pedestrian_walki
 function pedestrianFromModel(T, opts, pose) {
   const src = opts.model && (opts.model.scene || opts.model);
   const node = src && src.getObjectByName && src.getObjectByName(MODEL_POSE[pose]);
-  if (!node || !node.isMesh) return null;
-  const meta = (src.userData && src.userData.height) ? src.userData : (src.children[0] && src.children[0].userData) || {};
+  if (!node) return null;
+  let meta = {};
+  for (let p = node; p; p = p.parent) if (p.userData && p.userData.height) { meta = p.userData; break; }
   const ud0 = node.userData || {};
   const modelH = +meta.height || 1.823;
   const H = +opts.height > 0.5 ? +opts.height : 1.7;
   const k = H / modelH;
-  let material = node.material;
-  if (opts.matte) {
-    const grey = mat(T, 'mannequin', () => new T.MeshStandardMaterial({ color: 0xa9a49c, roughness: 0.85, metalness: 0 }));
-    material = Array.isArray(node.material) ? node.material.map(m => (m.alphaTest > 0 ? m : grey)) : grey;
-  }
-  const m = new T.Mesh(node.geometry, material);
-  m.name = 'figure_mesh'; m.castShadow = true; m.receiveShadow = true;
-  m.scale.setScalar(k);
+  // GLTFLoader turns a multi-material mesh into a Group of primitives: clone whatever we got (geometry/materials shared)
+  const m = node.clone(true);
+  m.name = 'figure_mesh'; m.position.set(0, 0, 0); m.rotation.set(0, 0, 0); m.scale.setScalar(k);
+  const grey = opts.matte ? mat(T, 'mannequin', () => new T.MeshStandardMaterial({ color: 0xa9a49c, roughness: 0.85, metalness: 0 })) : null;
+  m.traverse(o => {
+    if (!o.isMesh) return;
+    o.castShadow = true; o.receiveShadow = true;
+    if (grey) o.material = Array.isArray(o.material) ? o.material.map(x => (x.alphaTest > 0 ? x : grey)) : (o.material.alphaTest > 0 ? o.material : grey);
+  });
   const root = new T.Group(); root.name = opts.id || 'pedestrian'; root.add(m);
   const eye = (ud0.eye || [0, (ud0.eyeHeight || 1.7), -0.08]).map(v => +(v * k).toFixed(3));
   const box = new T.Box3().setFromObject(root), sz = box.getSize(new T.Vector3());
