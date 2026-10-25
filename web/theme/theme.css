@@ -245,6 +245,9 @@ html .slo-toggle { font-size: 12px; }
 html .slo-toggle span { letter-spacing: normal; text-transform: none; font-size: 12px; }
 html .slo-card-s { font-size: 12px; }
 html .slo-card-s b { font-size: 12px; letter-spacing: normal; }
+html .slo-card { font-size: 12px; }
+html .slo-card-m { font-size: 12px; }
+html .slo-card-n, html .slo-card-s { font-size: 12px; }
 /* from report.css */
 html .screenbar .notice { letter-spacing: normal; }
 html .screenbar .notice.sim { letter-spacing: normal; font-size: 12px; }
