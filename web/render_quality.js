@@ -172,7 +172,9 @@ export function fitShadowCamera(light, box, mapSize = light.shadow.mapSize.x) {
 
 export function applyRenderQuality(renderer, scene, opts = {}) {
   // ?rq=off: legacy look (A/B benchmarking and before/after comparisons)
-  if (typeof location !== 'undefined' && /[?&]rq=off\b/.test(location.search)) return { quality: 'off', ready: Promise.resolve(), fitShadow() {}, pixelRatio: renderer.getPixelRatio() };
+  // Default OFF: the AO composer produced black blotches on the orthographic overhead on real GPUs, and every approved
+  // render used the plain pipeline. Opt back in with ?rq=on.
+  if (typeof location !== 'undefined' && !/[?&]rq=on\b/.test(location.search)) return { quality: 'off', ready: Promise.resolve(), fitShadow() {}, pixelRatio: renderer.getPixelRatio() };
   const quality = opts.quality === 'render' ? 'render' : 'interactive';
   const lite = opts.lite != null ? !!opts.lite : isLiteRendering(renderer);
   const P = lite ? PRESETS.lite : PRESETS[quality];

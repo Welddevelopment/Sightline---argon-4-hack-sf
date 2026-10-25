@@ -363,10 +363,20 @@ function onEvent(id, ev) {
     if (pm) { askMoreRounds(id, pm); }
     else {
       logLine({ ...ev, step: 'done', message: 'Reconstruction complete. Opening the viewer…' });
-      setTimeout(() => { location.href = '/?case=' + encodeURIComponent(id); }, 1600);
+      setTimeout(() => { location.href = '/?case=' + encodeURIComponent(id) + keyViewParams(ev.state); }, 1600);
     }
   }
   drawSteps();
+}
+// Open the viewer on the contradicted witness's own eye view at the checked moment (not the overhead).
+function keyViewParams(st) {
+  try {
+    const f = (st && st.findings || []).find((x) => x.status === 'contradiction');
+    const inv = f && (f.involves || []).find((x) => /^wit_/.test(String(x)));
+    const c = (st.checks || []).find((x) => x.check === 'sightline' && (inv ? x.subject === inv : !x.pass));
+    if (!c) return '';
+    return '&cam=' + encodeURIComponent(c.subject) + (Number.isFinite(Number(c.t)) ? '&t=' + Number(c.t) : '');
+  } catch (_) { return ''; }
 }
 // After 3 correction rounds with world errors left, the user decides whether Argon keeps going.
 function askMoreRounds(id, pm) {

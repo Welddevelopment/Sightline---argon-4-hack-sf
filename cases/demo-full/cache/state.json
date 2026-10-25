@@ -6,7 +6,7 @@
       "id": "F1",
       "severity": "high",
       "summary": "Witness B's pen mark #2 on Exhibit 4 places her at [8.5, 0, 9.0] m (immediately against the south back of the bench shelter), where both the bench shelter and the turning tractor-semitrailer block her claimed continuous view of Vehicle A right up until impact.",
-      "detail": "In her deposition, Witness B testified that she stood outside in front of the store and had 'a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way' (Depo Witness B 41:10-41:20, 52:00-52:07, 56:00-56:18). However, when asked to mark her exact standing position on Exhibit 4 (Depo Witness B 1:54:24-1:54:50; frame at 1:54:34), the center of her red circled-X pen mark (#2) falls directly on the south edge of the bench shelter rectangle (which spans X = 6.75..10.25 m, Z = 7.45..8.95 m, centered at [8.5, 8.2] m per Exhibit 4's 40 m scale bar and AOI origin [0, 0]). Measured with Exhibit 4's scale bar (8.025 px/m), her mark #2 is at [8.5, 0, 9.0] m—not [7.5, 0, 12.0] m as coded in Round 3. Furthermore, her claim 'watched it right up until the moment it hit' requires evaluating her sightline in the last second before the t=10.43s impact (t=9.9s, as shown in overhead_t9p9.png), not at t=9.5s before the truck's cab and trailer interpose. From [8.5, 0, 9.0] m, the sheet-metal back of the bench shelter (Depo Witness D 10:16-10:29) and the turning tractor-semitrailer (veh_truck_tractor and veh_semitrailer) cross directly between Witness B and Vehicle A during the final second before impact (t ≈ 9.6s to 10.43s), making her claim physically impossible. The world module is patched to place Witness B at [8.5, 0, 9.0] m with observationTime = 9.9 s.",
+      "detail": "In her deposition, Witness B testified that she stood outside in front of the store and had 'a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way' (Depo Witness B 41:10-41:20, 52:00-52:07, 56:00-56:18). However, when asked to mark her exact standing position on Exhibit 4 (Depo Witness B 1:54:24-1:54:50; frame at 1:54:34), the center of her red circled-X pen mark (#2) falls directly on the south edge of the bench shelter rectangle (which spans X = 6.75..10.25 m, Z = 7.45..8.95 m, centered at [8.5, 8.2] m per Exhibit 4's 40 m scale bar and AOI origin [0, 0]). Measured with Exhibit 4's scale bar (8.025 px/m), her mark #2 is at [8.5, 0, 9.0] m\u2014not [7.5, 0, 12.0] m as coded in Round 3. Furthermore, her claim 'watched it right up until the moment it hit' requires evaluating her sightline in the last second before the t=10.43s impact (t=9.9s, as shown in overhead_t9p9.png), not at t=9.5s before the truck's cab and trailer interpose. From [8.5, 0, 9.0] m, the sheet-metal back of the bench shelter (Depo Witness D 10:16-10:29) and the turning tractor-semitrailer (veh_truck_tractor and veh_semitrailer) cross directly between Witness B and Vehicle A during the final second before impact (t \u2248 9.6s to 10.43s), making her claim physically impossible. The world module is patched to place Witness B at [8.5, 0, 9.0] m with observationTime = 9.9 s.",
       "evidence": [
         {
           "source": "evidence/deposition_witness_B.mp4",
@@ -26,7 +26,7 @@
         },
         {
           "source": "Independent check",
-          "citation": "sightline wit_witness_B→veh_car_a @ t=9.5s: clear at [7.5, 1.57, 12.0] before tractor-trailer and shelter interpose at [8.5, 1.57, 9.0] @ t=9.9s"
+          "citation": "sightline wit_witness_B\u2192veh_car_a @ t=9.5s: clear at [7.5, 1.57, 12.0] before tractor-trailer and shelter interpose at [8.5, 1.57, 9.0] @ t=9.9s"
         }
       ],
       "involves": [
@@ -43,7 +43,7 @@
       "id": "F2",
       "severity": "medium",
       "summary": "Driving witnesses A and C were modeled with static eye coordinates rather than riding with their vehicles (`vehicleId` and `driverEye` pose updates in `setTime`), and Witness A's observationTime was set to t=7.0s (when the tractor already blocked his view) instead of during his clear-view window before the trailer entered the eastbound lanes.",
-      "detail": "Witness A was driving a black pickup truck westbound at ~60 mph (~0.25 mi behind the tractor-trailer) and testified that he saw Vehicle A crest the hill and descend for 2–3 seconds before the turning semitrailer entered the eastbound lanes and blocked his view (docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12, p.24-25; witness_A.md p.1). In the Round 3 world module, Witness A's eye position was fixed at [257.26, 0, -34.75] without `vehicleId: 'veh_witness_a_pickup'` or dynamic updates in `setTime(t)`, and his `observationTime` was set to t=7.0s, where the independent check showed `veh_truck_tractor` already blocking the ray to `veh_car_a` as the truck crossed the median. Similarly, Witness C (stopped in his pickup at [-18.0, 0, -31.09] m) lacked `vehicleId: 'veh_witness_c_pickup'` and dynamic `driverEye` updates in `setTime(t)`. In the patched world, both witnesses are bound to their vehicles via `vehicleId` and updated in `setTime(t)` from `vehicle.userData.driverEye`, and Witness A's `observationTime` is set to t=4.0s (during the 2–3 s window after Vehicle A crests the hill and before Vehicle T's turn blocks his sightline, consistent with docket_vehicle_dynamics_study.txt p.8 Table 2).",
+      "detail": "Witness A was driving a black pickup truck westbound at ~60 mph (~0.25 mi behind the tractor-trailer) and testified that he saw Vehicle A crest the hill and descend for 2\u20133 seconds before the turning semitrailer entered the eastbound lanes and blocked his view (docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12, p.24-25; witness_A.md p.1). In the Round 3 world module, Witness A's eye position was fixed at [257.26, 0, -34.75] without `vehicleId: 'veh_witness_a_pickup'` or dynamic updates in `setTime(t)`, and his `observationTime` was set to t=7.0s, where the independent check showed `veh_truck_tractor` already blocking the ray to `veh_car_a` as the truck crossed the median. Similarly, Witness C (stopped in his pickup at [-18.0, 0, -31.09] m) lacked `vehicleId: 'veh_witness_c_pickup'` and dynamic `driverEye` updates in `setTime(t)`. In the patched world, both witnesses are bound to their vehicles via `vehicleId` and updated in `setTime(t)` from `vehicle.userData.driverEye`, and Witness A's `observationTime` is set to t=4.0s (during the 2\u20133 s window after Vehicle A crests the hill and before Vehicle T's turn blocks his sightline, consistent with docket_vehicle_dynamics_study.txt p.8 Table 2).",
       "evidence": [
         {
           "source": "text/docket_har1702.txt",
@@ -67,7 +67,7 @@
         },
         {
           "source": "Independent check",
-          "citation": "sightline wit_witness_A→veh_car_a @ t=7s: blocked by veh_truck_tractor; sightline wit_witness_C→veh_semitrailer @ t=10.43s: pass"
+          "citation": "sightline wit_witness_A\u2192veh_car_a @ t=7s: blocked by veh_truck_tractor; sightline wit_witness_C\u2192veh_semitrailer @ t=10.43s: pass"
         }
       ],
       "involves": [
@@ -85,7 +85,7 @@
       "id": "F3",
       "severity": "low",
       "summary": "Witness D's testimony that she was inside the retail store behind the register and could not see the highway or the collision is physically consistent with the reconstruction.",
-      "detail": "Witness D testified that at the time of the crash she was inside the store on the southeast corner of US-27A and NE 140th Court, standing behind the register restocking cigarettes, and that the drink cooler, shelving, and window posters blocked her view of the highway so that she only heard the loud bang and came outside 10–15 seconds later (Depo Witness D 06:39-08:47, 13:39-14:45, 18:02-19:22, 41:40-42:18). The independent sightline check from `wit_witness_D` at [24.0, 1.6, 15.0] m to `veh_car_a` at t=10.43s confirms that `bld_retail_store` blocks her line of sight.",
+      "detail": "Witness D testified that at the time of the crash she was inside the store on the southeast corner of US-27A and NE 140th Court, standing behind the register restocking cigarettes, and that the drink cooler, shelving, and window posters blocked her view of the highway so that she only heard the loud bang and came outside 10\u201315 seconds later (Depo Witness D 06:39-08:47, 13:39-14:45, 18:02-19:22, 41:40-42:18). The independent sightline check from `wit_witness_D` at [24.0, 1.6, 15.0] m to `veh_car_a` at t=10.43s confirms that `bld_retail_store` blocks her line of sight.",
       "evidence": [
         {
           "source": "evidence/deposition_witness_D.mp4",
@@ -93,7 +93,7 @@
         },
         {
           "source": "Independent check",
-          "citation": "sightline wit_witness_D→veh_car_a @ t=10.43s: blocked by bld_retail_store"
+          "citation": "sightline wit_witness_D\u2192veh_car_a @ t=10.43s: blocked by bld_retail_store"
         },
         {
           "source": "Render",
@@ -112,7 +112,7 @@
       "id": "F4",
       "severity": "low",
       "summary": "Roadway geometry, vertical crest profile, vehicle speeds, impact alignment, and post-impact trajectory match the NTSB factual reports and crash reconstruction.",
-      "detail": "US-27A is modeled with four 12-ft (3.66 m) lanes, a 78-ft (23.77 m) median/turn-lane separation, a 130-ft (39.6 m) crossover, and a vertical crest 1,132 ft (345.0 m) west of the intersection descending at 2.15% (docket_har1702.txt p.13, p.21-22, p.29; docket_tech_recon_factual.txt p.3-4). Vehicle A approaches eastbound at a constant 74 mph (33.08 m/s) with no pre-impact braking skids, striking the right side of the 53-ft semitrailer 45 ft 5 in (13.84 m) behind the tractor front at t=10.43s, then departing the right roadside at ~1.7° (326 ft / 99.4 m), breaching two wire fences, severing the utility pole at 855 ft (260.6 m) at t=18.83s (8.4 s after impact), and coming to rest at 910 ft (277.4 m) (docket_har1702.txt p.11, p.15-16; docket_tech_recon_factual.txt p.4-5, p.12-13). All independent plausibility and timing checks pass.",
+      "detail": "US-27A is modeled with four 12-ft (3.66 m) lanes, a 78-ft (23.77 m) median/turn-lane separation, a 130-ft (39.6 m) crossover, and a vertical crest 1,132 ft (345.0 m) west of the intersection descending at 2.15% (docket_har1702.txt p.13, p.21-22, p.29; docket_tech_recon_factual.txt p.3-4). Vehicle A approaches eastbound at a constant 74 mph (33.08 m/s) with no pre-impact braking skids, striking the right side of the 53-ft semitrailer 45 ft 5 in (13.84 m) behind the tractor front at t=10.43s, then departing the right roadside at ~1.7\u00b0 (326 ft / 99.4 m), breaching two wire fences, severing the utility pole at 855 ft (260.6 m) at t=18.83s (8.4 s after impact), and coming to rest at 910 ft (277.4 m) (docket_har1702.txt p.11, p.15-16; docket_tech_recon_factual.txt p.4-5, p.12-13). All independent plausibility and timing checks pass.",
       "evidence": [
         {
           "source": "text/docket_har1702.txt",
@@ -124,7 +124,7 @@
         },
         {
           "source": "Independent check",
-          "citation": "plausibility veh_car_a, veh_truck_tractor, veh_semitrailer, veh_witness_a_pickup: pass; timing veh_car_a→veh_semitrailer: availableS 10.43s (sufficient)"
+          "citation": "plausibility veh_car_a, veh_truck_tractor, veh_semitrailer, veh_witness_a_pickup: pass; timing veh_car_a\u2192veh_semitrailer: availableS 10.43s (sufficient)"
         }
       ],
       "involves": [
@@ -142,8 +142,8 @@
     {
       "id": "F5",
       "severity": "low",
-      "summary": "Scene lighting, clear weather, dry pavement, sun position (azimuth 265.0°, elevation 45.1°), and absence of glare or active headlights match the documentary record and solar audit; no real scene footage exists.",
-      "detail": "The crash occurred on May 7, 2016 at 16:36:12.7 EDT (UTC-04:00) at 29.4106° N, -82.53979° W in clear daylight with dry roads (docket_har1702.txt p.11, p.15, p.32 fn.40; docket_tech_recon_factual.txt p.16; police_report.md p.1). The NOAA solar calculation and the NTSB Technical Reconstruction Group Factual Report (p.16: sun azimuth 264.2°–265.6°, elevation 46.4°–44.2°) match the rendered sun at azimuth 265.0° and elevation 45.1° (0.0° error; shadow bearing 85° E). Vehicle A's headlights are off in accordance with the downloaded ECU data (docket_driver_assistance_factual.txt p.7-8; docket_har1702.txt p.15). No witness or driver has `glareRisk: true`; the smallest sun-to-sight-line angle for any witness is 45.2° (`wit_witness_A`), and the smallest sun-to-travel-direction angle for any driver is 45.1° (`veh_witness_a_pickup`), consistent with Witness A's and Witness B's testimony that the sun was high and not in their eyes (docket_har1702.txt p.12, p.30; Depo Witness B 23:44-24:01, 34:19-34:27). No real scene footage exists to compare lighting against; lighting was compared against the documentary record and computed sun position only.",
+      "summary": "Scene lighting, clear weather, dry pavement, sun position (azimuth 265.0\u00b0, elevation 45.1\u00b0), and absence of glare or active headlights match the documentary record and solar audit; no real scene footage exists.",
+      "detail": "The crash occurred on May 7, 2016 at 16:36:12.7 EDT (UTC-04:00) at 29.4106\u00b0 N, -82.53979\u00b0 W in clear daylight with dry roads (docket_har1702.txt p.11, p.15, p.32 fn.40; docket_tech_recon_factual.txt p.16; police_report.md p.1). The NOAA solar calculation and the NTSB Technical Reconstruction Group Factual Report (p.16: sun azimuth 264.2\u00b0\u2013265.6\u00b0, elevation 46.4\u00b0\u201344.2\u00b0) match the rendered sun at azimuth 265.0\u00b0 and elevation 45.1\u00b0 (0.0\u00b0 error; shadow bearing 85\u00b0 E). Vehicle A's headlights are off in accordance with the downloaded ECU data (docket_driver_assistance_factual.txt p.7-8; docket_har1702.txt p.15). No witness or driver has `glareRisk: true`; the smallest sun-to-sight-line angle for any witness is 45.2\u00b0 (`wit_witness_A`), and the smallest sun-to-travel-direction angle for any driver is 45.1\u00b0 (`veh_witness_a_pickup`), consistent with Witness A's and Witness B's testimony that the sun was high and not in their eyes (docket_har1702.txt p.12, p.30; Depo Witness B 23:44-24:01, 34:19-34:27). No real scene footage exists to compare lighting against; lighting was compared against the documentary record and computed sun position only.",
       "evidence": [
         {
           "source": "Lighting audit",
@@ -190,7 +190,7 @@
       "check": "sightline",
       "subject": "wit_witness_A",
       "pass": true,
-      "detail": "From Witness A's marked position (docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12; docket_vehicle_dynamics_study.txt p.2, p.4, p.8 Table 2; witness_A.md p.1) Witness A had line of sight to veh_car_a at t=4s (distance 553.6 m); target 2° from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness A's mark. Claim: \"Saw the eastbound dark car come over the hill for several seconds before the turning semitrailer entered the eastbound lanes and blocked his view of the car.\"",
+      "detail": "From Witness A's marked position (docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12; docket_vehicle_dynamics_study.txt p.2, p.4, p.8 Table 2; witness_A.md p.1) Witness A had line of sight to veh_car_a at t=4s (distance 553.6 m); target 2\u00b0 from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness A's mark. Claim: \"Saw the eastbound dark car come over the hill for several seconds before the turning semitrailer entered the eastbound lanes and blocked his view of the car.\"",
       "citation": "docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12; docket_vehicle_dynamics_study.txt p.2, p.4, p.8 Table 2; witness_A.md p.1",
       "blockedBy": null,
       "target": "veh_car_a",
@@ -273,7 +273,7 @@
       "check": "sightline",
       "subject": "wit_witness_C",
       "pass": true,
-      "detail": "From Witness C's marked position (witness_C.md p.1; police_report.md p.1) Witness C had line of sight to veh_semitrailer at t=10.4s (distance 35 m); target 7° from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness C's mark. Claim: \"Stopped in WB inside lane ~18 m west of crossover watching the truck creep out of the turn lane and swing across the EB lanes; heard the crunch and saw the car emerge from the far side.\"",
+      "detail": "From Witness C's marked position (witness_C.md p.1; police_report.md p.1) Witness C had line of sight to veh_semitrailer at t=10.4s (distance 35 m); target 7\u00b0 from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness C's mark. Claim: \"Stopped in WB inside lane ~18 m west of crossover watching the truck creep out of the turn lane and swing across the EB lanes; heard the crunch and saw the car emerge from the far side.\"",
       "citation": "witness_C.md p.1; police_report.md p.1",
       "blockedBy": null,
       "target": "veh_semitrailer",
@@ -370,7 +370,7 @@
       "conflictS": 1.73,
       "cappedAtStart": true,
       "blockedBy": null,
-      "detail": "The driver of Vehicle A: 2015 4-door passenger sedan had a continuous line of sight to Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer came within 3 m of the centerline of this driver's remaining path 1.73 s before impact. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
+      "detail": "The driver of Vehicle A: 2015 4-door passenger sedan had a continuous line of sight to Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer for 10.43 s before impact (t=0.00\u201310.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1\u20132.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer came within 3 m of the centerline of this driver's remaining path 1.73 s before impact. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
       "impactSource": "meta.impactT",
       "pass": true,
       "citation": "meta.impactT",
@@ -392,7 +392,7 @@
       "maxAccelG": 0.03,
       "maxSpeedMph": 74,
       "issues": [],
-      "detail": "Vehicle A: 2015 4-door passenger sedan moves plausibly: peak speed 74 mph, peak acceleration 0.03 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A: 2015 4-door passenger sedan took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.52 g at t=21.35 s.",
+      "detail": "Vehicle A: 2015 4-door passenger sedan moves plausibly: peak speed 74 mph, peak acceleration 0.03 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A: 2015 4-door passenger sedan took part in it, so accelerations within \u00b10.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.52 g at t=21.35 s.",
       "citation": "docket_har1702.txt p.11, p.15; docket_highway_att1_fl_crash_report.txt p.2 (BLK 4D); Depo Witness B 40:51",
       "maxAccelT": 1.7000000000000002,
       "maxSpeedT": 4.15,
@@ -411,7 +411,7 @@
       "maxAccelG": 0.99,
       "maxSpeedMph": 15.4,
       "issues": [],
-      "detail": "Vehicle T (Tractor): 2014 conventional truck-tractor turning left from WB US-27A onto SB NE 140th Ct moves plausibly: peak speed 15.4 mph, peak acceleration 0.99 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within ±0.5 s of it are excluded.",
+      "detail": "Vehicle T (Tractor): 2014 conventional truck-tractor turning left from WB US-27A onto SB NE 140th Ct moves plausibly: peak speed 15.4 mph, peak acceleration 0.99 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within \u00b10.5 s of it are excluded.",
       "citation": "docket_har1702.txt p.11, p.16 fn.6; docket_highway_att1_fl_crash_report.txt p.2 (2014 FRHT CASCADIA RED)",
       "maxAccelT": 2.6500000000000004,
       "maxSpeedT": 9.25,
@@ -430,7 +430,7 @@
       "maxAccelG": 0.87,
       "maxSpeedMph": 14.1,
       "issues": [],
-      "detail": "Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer moves plausibly: peak speed 14.1 mph, peak acceleration 0.87 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.17 g at t=17.35 s.",
+      "detail": "Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer moves plausibly: peak speed 14.1 mph, peak acceleration 0.87 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer took part in it, so accelerations within \u00b10.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.17 g at t=17.35 s.",
       "citation": "docket_har1702.txt p.11, p.16-17; docket_tech_recon_factual.txt p.10-11; Depo Witness B 1:01:43",
       "maxAccelT": 4.8500000000000005,
       "maxSpeedT": 9.600000000000001,
@@ -449,7 +449,7 @@
       "maxAccelG": 0.61,
       "maxSpeedMph": 60.6,
       "issues": [],
-      "detail": "Witness A pickup truck: black pickup traveling westbound on US-27A at ~60 mph moves plausibly: peak speed 60.6 mph, peak acceleration 0.61 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within ±0.5 s of it are excluded.",
+      "detail": "Witness A pickup truck: black pickup traveling westbound on US-27A at ~60 mph moves plausibly: peak speed 60.6 mph, peak acceleration 0.61 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within \u00b10.5 s of it are excluded.",
       "citation": "docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.16; witness_A.md p.1",
       "maxAccelT": 19.35,
       "maxSpeedT": 10.75,
@@ -520,7 +520,7 @@
           "check": "sightline",
           "subject": "wit_witness_B",
           "pass": true,
-          "detail": "From Witness B's marked position (Depo Witness B 17:01 (5 ft 6 in tall), 41:10-41:20, 52:00-52:07 (\"watched it the whole way, right up until it hit\"), 1:54:30 (Exhibit 4 pen mark #2 at [7.5, 0, 12.0] m)) Witness B had line of sight to veh_car_a at t=9.5s (distance 42.5 m); target 42° from gaze (peripheral; gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness B's mark. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
+          "detail": "From Witness B's marked position (Depo Witness B 17:01 (5 ft 6 in tall), 41:10-41:20, 52:00-52:07 (\"watched it the whole way, right up until it hit\"), 1:54:30 (Exhibit 4 pen mark #2 at [7.5, 0, 12.0] m)) Witness B had line of sight to veh_car_a at t=9.5s (distance 42.5 m); target 42\u00b0 from gaze (peripheral; gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness B's mark. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
           "citation": "Depo Witness B 17:01 (5 ft 6 in tall), 41:10-41:20, 52:00-52:07 (\"watched it the whole way, right up until it hit\"), 1:54:30 (Exhibit 4 pen mark #2 at [7.5, 0, 12.0] m)",
           "blockedBy": null,
           "target": "veh_car_a",
@@ -558,7 +558,7 @@
           "check": "sightline",
           "subject": "wit_witness_C",
           "pass": true,
-          "detail": "From Witness C's marked position (witness_C.md p.1; police_report.md p.1) Witness C had line of sight to veh_semitrailer at t=10.4s (distance 35.2 m); target 7° from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness C's mark. Claim: \"Stopped in WB inside lane ~18 m west of crossover watching the truck creep out of the turn lane and swing across the EB lanes; heard the crunch and saw the car emerge from the far side.\"",
+          "detail": "From Witness C's marked position (witness_C.md p.1; police_report.md p.1) Witness C had line of sight to veh_semitrailer at t=10.4s (distance 35.2 m); target 7\u00b0 from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness C's mark. Claim: \"Stopped in WB inside lane ~18 m west of crossover watching the truck creep out of the turn lane and swing across the EB lanes; heard the crunch and saw the car emerge from the far side.\"",
           "citation": "witness_C.md p.1; police_report.md p.1",
           "blockedBy": null,
           "target": "veh_semitrailer",
@@ -655,7 +655,7 @@
           "conflictS": 1.73,
           "cappedAtStart": true,
           "blockedBy": null,
-          "detail": "The driver of Vehicle A: 2015 4-door passenger sedan had a continuous line of sight to Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer came within 3 m of the centerline of this driver's remaining path 1.73 s before impact. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
+          "detail": "The driver of Vehicle A: 2015 4-door passenger sedan had a continuous line of sight to Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer for 10.43 s before impact (t=0.00\u201310.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1\u20132.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer came within 3 m of the centerline of this driver's remaining path 1.73 s before impact. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
           "impactSource": "meta.impactT",
           "pass": true,
           "citation": "meta.impactT",
@@ -677,7 +677,7 @@
           "maxAccelG": 0.03,
           "maxSpeedMph": 74,
           "issues": [],
-          "detail": "Vehicle A: 2015 4-door passenger sedan moves plausibly: peak speed 74 mph, peak acceleration 0.03 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A: 2015 4-door passenger sedan took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.52 g at t=21.35 s.",
+          "detail": "Vehicle A: 2015 4-door passenger sedan moves plausibly: peak speed 74 mph, peak acceleration 0.03 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A: 2015 4-door passenger sedan took part in it, so accelerations within \u00b10.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.52 g at t=21.35 s.",
           "citation": "docket_har1702.txt p.11, p.15; docket_highway_att1_fl_crash_report.txt p.2 (BLK 4D); Depo Witness B 40:51",
           "maxAccelT": 1.7000000000000002,
           "maxSpeedT": 4.15,
@@ -696,7 +696,7 @@
           "maxAccelG": 0.99,
           "maxSpeedMph": 15.4,
           "issues": [],
-          "detail": "Vehicle T (Tractor): 2014 conventional truck-tractor turning left from WB US-27A onto SB NE 140th Ct moves plausibly: peak speed 15.4 mph, peak acceleration 0.99 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within ±0.5 s of it are excluded.",
+          "detail": "Vehicle T (Tractor): 2014 conventional truck-tractor turning left from WB US-27A onto SB NE 140th Ct moves plausibly: peak speed 15.4 mph, peak acceleration 0.99 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within \u00b10.5 s of it are excluded.",
           "citation": "docket_har1702.txt p.11, p.16 fn.6; docket_highway_att1_fl_crash_report.txt p.2 (2014 FRHT CASCADIA RED)",
           "maxAccelT": 2.6500000000000004,
           "maxSpeedT": 9.25,
@@ -715,7 +715,7 @@
           "maxAccelG": 0.87,
           "maxSpeedMph": 14.1,
           "issues": [],
-          "detail": "Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer moves plausibly: peak speed 14.1 mph, peak acceleration 0.87 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.17 g at t=17.35 s.",
+          "detail": "Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer moves plausibly: peak speed 14.1 mph, peak acceleration 0.87 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer took part in it, so accelerations within \u00b10.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.17 g at t=17.35 s.",
           "citation": "docket_har1702.txt p.11, p.16-17; docket_tech_recon_factual.txt p.10-11; Depo Witness B 1:01:43",
           "maxAccelT": 4.8500000000000005,
           "maxSpeedT": 9.600000000000001,
@@ -734,7 +734,7 @@
           "maxAccelG": 0.61,
           "maxSpeedMph": 60.6,
           "issues": [],
-          "detail": "Witness A pickup truck: black pickup traveling westbound on US-27A at ~60 mph moves plausibly: peak speed 60.6 mph, peak acceleration 0.61 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within ±0.5 s of it are excluded.",
+          "detail": "Witness A pickup truck: black pickup traveling westbound on US-27A at ~60 mph moves plausibly: peak speed 60.6 mph, peak acceleration 0.61 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within \u00b10.5 s of it are excluded.",
           "citation": "docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.16; witness_A.md p.1",
           "maxAccelT": 19.35,
           "maxSpeedT": 10.75,
@@ -749,13 +749,13 @@
       ],
       "critique": {
         "verdict": "world_patched",
-        "summary": "The Round 3 world module contained two evidentiary and contract errors: (1) Witness B's marked position on Exhibit 4 (Depo Witness B 1:54:34) was mis-measured as [7.5, 0, 12.0] m when the center of her red X mark is actually on the south edge of the bench shelter at [8.5, 0, 9.0] m, and her observationTime was set to t=9.5s rather than the final second before impact (t=9.9s) when the turning tractor-semitrailer blocks her sightline; and (2) driving witnesses A and C lacked `vehicleId` bindings and dynamic eye-position updates in `setTime(t)`. Patching the world module to place Witness B at her exact Exhibit 4 pen mark [8.5, 0, 9.0] m at t=9.9s and binding Witnesses A and C to their respective pickup trucks reveals the true physical contradiction in Witness B's testimony—that the turning tractor-semitrailer and bench shelter obstructed her view in the final seconds before impact—while confirming that Witness A's, Witness C's, and Witness D's accounts and the solar lighting (azimuth 265.0°, elevation 45.1°) are fully consistent with the record.",
+        "summary": "The Round 3 world module contained two evidentiary and contract errors: (1) Witness B's marked position on Exhibit 4 (Depo Witness B 1:54:34) was mis-measured as [7.5, 0, 12.0] m when the center of her red X mark is actually on the south edge of the bench shelter at [8.5, 0, 9.0] m, and her observationTime was set to t=9.5s rather than the final second before impact (t=9.9s) when the turning tractor-semitrailer blocks her sightline; and (2) driving witnesses A and C lacked `vehicleId` bindings and dynamic eye-position updates in `setTime(t)`. Patching the world module to place Witness B at her exact Exhibit 4 pen mark [8.5, 0, 9.0] m at t=9.9s and binding Witnesses A and C to their respective pickup trucks reveals the true physical contradiction in Witness B's testimony\u2014that the turning tractor-semitrailer and bench shelter obstructed her view in the final seconds before impact\u2014while confirming that Witness A's, Witness C's, and Witness D's accounts and the solar lighting (azimuth 265.0\u00b0, elevation 45.1\u00b0) are fully consistent with the record.",
         "findings": [
           {
             "id": "F1",
             "severity": "high",
             "summary": "Witness B's pen mark #2 on Exhibit 4 places her at [8.5, 0, 9.0] m (immediately against the south back of the bench shelter), where both the bench shelter and the turning tractor-semitrailer block her claimed continuous view of Vehicle A right up until impact.",
-            "detail": "In her deposition, Witness B testified that she stood outside in front of the store and had 'a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way' (Depo Witness B 41:10-41:20, 52:00-52:07, 56:00-56:18). However, when asked to mark her exact standing position on Exhibit 4 (Depo Witness B 1:54:24-1:54:50; frame at 1:54:34), the center of her red circled-X pen mark (#2) falls directly on the south edge of the bench shelter rectangle (which spans X = 6.75..10.25 m, Z = 7.45..8.95 m, centered at [8.5, 8.2] m per Exhibit 4's 40 m scale bar and AOI origin [0, 0]). Measured with Exhibit 4's scale bar (8.025 px/m), her mark #2 is at [8.5, 0, 9.0] m—not [7.5, 0, 12.0] m as coded in Round 3. Furthermore, her claim 'watched it right up until the moment it hit' requires evaluating her sightline in the last second before the t=10.43s impact (t=9.9s, as shown in overhead_t9p9.png), not at t=9.5s before the truck's cab and trailer interpose. From [8.5, 0, 9.0] m, the sheet-metal back of the bench shelter (Depo Witness D 10:16-10:29) and the turning tractor-semitrailer (veh_truck_tractor and veh_semitrailer) cross directly between Witness B and Vehicle A during the final second before impact (t ≈ 9.6s to 10.43s), making her claim physically impossible. The world module is patched to place Witness B at [8.5, 0, 9.0] m with observationTime = 9.9 s.",
+            "detail": "In her deposition, Witness B testified that she stood outside in front of the store and had 'a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way' (Depo Witness B 41:10-41:20, 52:00-52:07, 56:00-56:18). However, when asked to mark her exact standing position on Exhibit 4 (Depo Witness B 1:54:24-1:54:50; frame at 1:54:34), the center of her red circled-X pen mark (#2) falls directly on the south edge of the bench shelter rectangle (which spans X = 6.75..10.25 m, Z = 7.45..8.95 m, centered at [8.5, 8.2] m per Exhibit 4's 40 m scale bar and AOI origin [0, 0]). Measured with Exhibit 4's scale bar (8.025 px/m), her mark #2 is at [8.5, 0, 9.0] m\u2014not [7.5, 0, 12.0] m as coded in Round 3. Furthermore, her claim 'watched it right up until the moment it hit' requires evaluating her sightline in the last second before the t=10.43s impact (t=9.9s, as shown in overhead_t9p9.png), not at t=9.5s before the truck's cab and trailer interpose. From [8.5, 0, 9.0] m, the sheet-metal back of the bench shelter (Depo Witness D 10:16-10:29) and the turning tractor-semitrailer (veh_truck_tractor and veh_semitrailer) cross directly between Witness B and Vehicle A during the final second before impact (t \u2248 9.6s to 10.43s), making her claim physically impossible. The world module is patched to place Witness B at [8.5, 0, 9.0] m with observationTime = 9.9 s.",
             "evidence": [
               {
                 "source": "evidence/deposition_witness_B.mp4",
@@ -775,7 +775,7 @@
               },
               {
                 "source": "Independent check",
-                "citation": "sightline wit_witness_B→veh_car_a @ t=9.5s: clear at [7.5, 1.57, 12.0] before tractor-trailer and shelter interpose at [8.5, 1.57, 9.0] @ t=9.9s"
+                "citation": "sightline wit_witness_B\u2192veh_car_a @ t=9.5s: clear at [7.5, 1.57, 12.0] before tractor-trailer and shelter interpose at [8.5, 1.57, 9.0] @ t=9.9s"
               }
             ],
             "involves": [
@@ -792,7 +792,7 @@
             "id": "F2",
             "severity": "medium",
             "summary": "Driving witnesses A and C were modeled with static eye coordinates rather than riding with their vehicles (`vehicleId` and `driverEye` pose updates in `setTime`), and Witness A's observationTime was set to t=7.0s (when the tractor already blocked his view) instead of during his clear-view window before the trailer entered the eastbound lanes.",
-            "detail": "Witness A was driving a black pickup truck westbound at ~60 mph (~0.25 mi behind the tractor-trailer) and testified that he saw Vehicle A crest the hill and descend for 2–3 seconds before the turning semitrailer entered the eastbound lanes and blocked his view (docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12, p.24-25; witness_A.md p.1). In the Round 3 world module, Witness A's eye position was fixed at [257.26, 0, -34.75] without `vehicleId: 'veh_witness_a_pickup'` or dynamic updates in `setTime(t)`, and his `observationTime` was set to t=7.0s, where the independent check showed `veh_truck_tractor` already blocking the ray to `veh_car_a` as the truck crossed the median. Similarly, Witness C (stopped in his pickup at [-18.0, 0, -31.09] m) lacked `vehicleId: 'veh_witness_c_pickup'` and dynamic `driverEye` updates in `setTime(t)`. In the patched world, both witnesses are bound to their vehicles via `vehicleId` and updated in `setTime(t)` from `vehicle.userData.driverEye`, and Witness A's `observationTime` is set to t=4.0s (during the 2–3 s window after Vehicle A crests the hill and before Vehicle T's turn blocks his sightline, consistent with docket_vehicle_dynamics_study.txt p.8 Table 2).",
+            "detail": "Witness A was driving a black pickup truck westbound at ~60 mph (~0.25 mi behind the tractor-trailer) and testified that he saw Vehicle A crest the hill and descend for 2\u20133 seconds before the turning semitrailer entered the eastbound lanes and blocked his view (docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12, p.24-25; witness_A.md p.1). In the Round 3 world module, Witness A's eye position was fixed at [257.26, 0, -34.75] without `vehicleId: 'veh_witness_a_pickup'` or dynamic updates in `setTime(t)`, and his `observationTime` was set to t=7.0s, where the independent check showed `veh_truck_tractor` already blocking the ray to `veh_car_a` as the truck crossed the median. Similarly, Witness C (stopped in his pickup at [-18.0, 0, -31.09] m) lacked `vehicleId: 'veh_witness_c_pickup'` and dynamic `driverEye` updates in `setTime(t)`. In the patched world, both witnesses are bound to their vehicles via `vehicleId` and updated in `setTime(t)` from `vehicle.userData.driverEye`, and Witness A's `observationTime` is set to t=4.0s (during the 2\u20133 s window after Vehicle A crests the hill and before Vehicle T's turn blocks his sightline, consistent with docket_vehicle_dynamics_study.txt p.8 Table 2).",
             "evidence": [
               {
                 "source": "text/docket_har1702.txt",
@@ -816,7 +816,7 @@
               },
               {
                 "source": "Independent check",
-                "citation": "sightline wit_witness_A→veh_car_a @ t=7s: blocked by veh_truck_tractor; sightline wit_witness_C→veh_semitrailer @ t=10.43s: pass"
+                "citation": "sightline wit_witness_A\u2192veh_car_a @ t=7s: blocked by veh_truck_tractor; sightline wit_witness_C\u2192veh_semitrailer @ t=10.43s: pass"
               }
             ],
             "involves": [
@@ -834,7 +834,7 @@
             "id": "F3",
             "severity": "low",
             "summary": "Witness D's testimony that she was inside the retail store behind the register and could not see the highway or the collision is physically consistent with the reconstruction.",
-            "detail": "Witness D testified that at the time of the crash she was inside the store on the southeast corner of US-27A and NE 140th Court, standing behind the register restocking cigarettes, and that the drink cooler, shelving, and window posters blocked her view of the highway so that she only heard the loud bang and came outside 10–15 seconds later (Depo Witness D 06:39-08:47, 13:39-14:45, 18:02-19:22, 41:40-42:18). The independent sightline check from `wit_witness_D` at [24.0, 1.6, 15.0] m to `veh_car_a` at t=10.43s confirms that `bld_retail_store` blocks her line of sight.",
+            "detail": "Witness D testified that at the time of the crash she was inside the store on the southeast corner of US-27A and NE 140th Court, standing behind the register restocking cigarettes, and that the drink cooler, shelving, and window posters blocked her view of the highway so that she only heard the loud bang and came outside 10\u201315 seconds later (Depo Witness D 06:39-08:47, 13:39-14:45, 18:02-19:22, 41:40-42:18). The independent sightline check from `wit_witness_D` at [24.0, 1.6, 15.0] m to `veh_car_a` at t=10.43s confirms that `bld_retail_store` blocks her line of sight.",
             "evidence": [
               {
                 "source": "evidence/deposition_witness_D.mp4",
@@ -842,7 +842,7 @@
               },
               {
                 "source": "Independent check",
-                "citation": "sightline wit_witness_D→veh_car_a @ t=10.43s: blocked by bld_retail_store"
+                "citation": "sightline wit_witness_D\u2192veh_car_a @ t=10.43s: blocked by bld_retail_store"
               },
               {
                 "source": "Render",
@@ -861,7 +861,7 @@
             "id": "F4",
             "severity": "low",
             "summary": "Roadway geometry, vertical crest profile, vehicle speeds, impact alignment, and post-impact trajectory match the NTSB factual reports and crash reconstruction.",
-            "detail": "US-27A is modeled with four 12-ft (3.66 m) lanes, a 78-ft (23.77 m) median/turn-lane separation, a 130-ft (39.6 m) crossover, and a vertical crest 1,132 ft (345.0 m) west of the intersection descending at 2.15% (docket_har1702.txt p.13, p.21-22, p.29; docket_tech_recon_factual.txt p.3-4). Vehicle A approaches eastbound at a constant 74 mph (33.08 m/s) with no pre-impact braking skids, striking the right side of the 53-ft semitrailer 45 ft 5 in (13.84 m) behind the tractor front at t=10.43s, then departing the right roadside at ~1.7° (326 ft / 99.4 m), breaching two wire fences, severing the utility pole at 855 ft (260.6 m) at t=18.83s (8.4 s after impact), and coming to rest at 910 ft (277.4 m) (docket_har1702.txt p.11, p.15-16; docket_tech_recon_factual.txt p.4-5, p.12-13). All independent plausibility and timing checks pass.",
+            "detail": "US-27A is modeled with four 12-ft (3.66 m) lanes, a 78-ft (23.77 m) median/turn-lane separation, a 130-ft (39.6 m) crossover, and a vertical crest 1,132 ft (345.0 m) west of the intersection descending at 2.15% (docket_har1702.txt p.13, p.21-22, p.29; docket_tech_recon_factual.txt p.3-4). Vehicle A approaches eastbound at a constant 74 mph (33.08 m/s) with no pre-impact braking skids, striking the right side of the 53-ft semitrailer 45 ft 5 in (13.84 m) behind the tractor front at t=10.43s, then departing the right roadside at ~1.7\u00b0 (326 ft / 99.4 m), breaching two wire fences, severing the utility pole at 855 ft (260.6 m) at t=18.83s (8.4 s after impact), and coming to rest at 910 ft (277.4 m) (docket_har1702.txt p.11, p.15-16; docket_tech_recon_factual.txt p.4-5, p.12-13). All independent plausibility and timing checks pass.",
             "evidence": [
               {
                 "source": "text/docket_har1702.txt",
@@ -873,7 +873,7 @@
               },
               {
                 "source": "Independent check",
-                "citation": "plausibility veh_car_a, veh_truck_tractor, veh_semitrailer, veh_witness_a_pickup: pass; timing veh_car_a→veh_semitrailer: availableS 10.43s (sufficient)"
+                "citation": "plausibility veh_car_a, veh_truck_tractor, veh_semitrailer, veh_witness_a_pickup: pass; timing veh_car_a\u2192veh_semitrailer: availableS 10.43s (sufficient)"
               }
             ],
             "involves": [
@@ -891,8 +891,8 @@
           {
             "id": "F5",
             "severity": "low",
-            "summary": "Scene lighting, clear weather, dry pavement, sun position (azimuth 265.0°, elevation 45.1°), and absence of glare or active headlights match the documentary record and solar audit; no real scene footage exists.",
-            "detail": "The crash occurred on May 7, 2016 at 16:36:12.7 EDT (UTC-04:00) at 29.4106° N, -82.53979° W in clear daylight with dry roads (docket_har1702.txt p.11, p.15, p.32 fn.40; docket_tech_recon_factual.txt p.16; police_report.md p.1). The NOAA solar calculation and the NTSB Technical Reconstruction Group Factual Report (p.16: sun azimuth 264.2°–265.6°, elevation 46.4°–44.2°) match the rendered sun at azimuth 265.0° and elevation 45.1° (0.0° error; shadow bearing 85° E). Vehicle A's headlights are off in accordance with the downloaded ECU data (docket_driver_assistance_factual.txt p.7-8; docket_har1702.txt p.15). No witness or driver has `glareRisk: true`; the smallest sun-to-sight-line angle for any witness is 45.2° (`wit_witness_A`), and the smallest sun-to-travel-direction angle for any driver is 45.1° (`veh_witness_a_pickup`), consistent with Witness A's and Witness B's testimony that the sun was high and not in their eyes (docket_har1702.txt p.12, p.30; Depo Witness B 23:44-24:01, 34:19-34:27). No real scene footage exists to compare lighting against; lighting was compared against the documentary record and computed sun position only.",
+            "summary": "Scene lighting, clear weather, dry pavement, sun position (azimuth 265.0\u00b0, elevation 45.1\u00b0), and absence of glare or active headlights match the documentary record and solar audit; no real scene footage exists.",
+            "detail": "The crash occurred on May 7, 2016 at 16:36:12.7 EDT (UTC-04:00) at 29.4106\u00b0 N, -82.53979\u00b0 W in clear daylight with dry roads (docket_har1702.txt p.11, p.15, p.32 fn.40; docket_tech_recon_factual.txt p.16; police_report.md p.1). The NOAA solar calculation and the NTSB Technical Reconstruction Group Factual Report (p.16: sun azimuth 264.2\u00b0\u2013265.6\u00b0, elevation 46.4\u00b0\u201344.2\u00b0) match the rendered sun at azimuth 265.0\u00b0 and elevation 45.1\u00b0 (0.0\u00b0 error; shadow bearing 85\u00b0 E). Vehicle A's headlights are off in accordance with the downloaded ECU data (docket_driver_assistance_factual.txt p.7-8; docket_har1702.txt p.15). No witness or driver has `glareRisk: true`; the smallest sun-to-sight-line angle for any witness is 45.2\u00b0 (`wit_witness_A`), and the smallest sun-to-travel-direction angle for any driver is 45.1\u00b0 (`veh_witness_a_pickup`), consistent with Witness A's and Witness B's testimony that the sun was high and not in their eyes (docket_har1702.txt p.12, p.30; Depo Witness B 23:44-24:01, 34:19-34:27). No real scene footage exists to compare lighting against; lighting was compared against the documentary record and computed sun position only.",
             "evidence": [
               {
                 "source": "Lighting audit",
@@ -941,7 +941,7 @@
           "id": "F1",
           "severity": "high",
           "summary": "Witness B's pen mark #2 on Exhibit 4 places her at [8.5, 0, 9.0] m (immediately against the south back of the bench shelter), where both the bench shelter and the turning tractor-semitrailer block her claimed continuous view of Vehicle A right up until impact.",
-          "detail": "In her deposition, Witness B testified that she stood outside in front of the store and had 'a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way' (Depo Witness B 41:10-41:20, 52:00-52:07, 56:00-56:18). However, when asked to mark her exact standing position on Exhibit 4 (Depo Witness B 1:54:24-1:54:50; frame at 1:54:34), the center of her red circled-X pen mark (#2) falls directly on the south edge of the bench shelter rectangle (which spans X = 6.75..10.25 m, Z = 7.45..8.95 m, centered at [8.5, 8.2] m per Exhibit 4's 40 m scale bar and AOI origin [0, 0]). Measured with Exhibit 4's scale bar (8.025 px/m), her mark #2 is at [8.5, 0, 9.0] m—not [7.5, 0, 12.0] m as coded in Round 3. Furthermore, her claim 'watched it right up until the moment it hit' requires evaluating her sightline in the last second before the t=10.43s impact (t=9.9s, as shown in overhead_t9p9.png), not at t=9.5s before the truck's cab and trailer interpose. From [8.5, 0, 9.0] m, the sheet-metal back of the bench shelter (Depo Witness D 10:16-10:29) and the turning tractor-semitrailer (veh_truck_tractor and veh_semitrailer) cross directly between Witness B and Vehicle A during the final second before impact (t ≈ 9.6s to 10.43s), making her claim physically impossible. The world module is patched to place Witness B at [8.5, 0, 9.0] m with observationTime = 9.9 s.",
+          "detail": "In her deposition, Witness B testified that she stood outside in front of the store and had 'a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way' (Depo Witness B 41:10-41:20, 52:00-52:07, 56:00-56:18). However, when asked to mark her exact standing position on Exhibit 4 (Depo Witness B 1:54:24-1:54:50; frame at 1:54:34), the center of her red circled-X pen mark (#2) falls directly on the south edge of the bench shelter rectangle (which spans X = 6.75..10.25 m, Z = 7.45..8.95 m, centered at [8.5, 8.2] m per Exhibit 4's 40 m scale bar and AOI origin [0, 0]). Measured with Exhibit 4's scale bar (8.025 px/m), her mark #2 is at [8.5, 0, 9.0] m\u2014not [7.5, 0, 12.0] m as coded in Round 3. Furthermore, her claim 'watched it right up until the moment it hit' requires evaluating her sightline in the last second before the t=10.43s impact (t=9.9s, as shown in overhead_t9p9.png), not at t=9.5s before the truck's cab and trailer interpose. From [8.5, 0, 9.0] m, the sheet-metal back of the bench shelter (Depo Witness D 10:16-10:29) and the turning tractor-semitrailer (veh_truck_tractor and veh_semitrailer) cross directly between Witness B and Vehicle A during the final second before impact (t \u2248 9.6s to 10.43s), making her claim physically impossible. The world module is patched to place Witness B at [8.5, 0, 9.0] m with observationTime = 9.9 s.",
           "evidence": [
             {
               "source": "evidence/deposition_witness_B.mp4",
@@ -961,7 +961,7 @@
             },
             {
               "source": "Independent check",
-              "citation": "sightline wit_witness_B→veh_car_a @ t=9.5s: clear at [7.5, 1.57, 12.0] before tractor-trailer and shelter interpose at [8.5, 1.57, 9.0] @ t=9.9s"
+              "citation": "sightline wit_witness_B\u2192veh_car_a @ t=9.5s: clear at [7.5, 1.57, 12.0] before tractor-trailer and shelter interpose at [8.5, 1.57, 9.0] @ t=9.9s"
             }
           ],
           "involves": [
@@ -978,7 +978,7 @@
           "id": "F2",
           "severity": "medium",
           "summary": "Driving witnesses A and C were modeled with static eye coordinates rather than riding with their vehicles (`vehicleId` and `driverEye` pose updates in `setTime`), and Witness A's observationTime was set to t=7.0s (when the tractor already blocked his view) instead of during his clear-view window before the trailer entered the eastbound lanes.",
-          "detail": "Witness A was driving a black pickup truck westbound at ~60 mph (~0.25 mi behind the tractor-trailer) and testified that he saw Vehicle A crest the hill and descend for 2–3 seconds before the turning semitrailer entered the eastbound lanes and blocked his view (docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12, p.24-25; witness_A.md p.1). In the Round 3 world module, Witness A's eye position was fixed at [257.26, 0, -34.75] without `vehicleId: 'veh_witness_a_pickup'` or dynamic updates in `setTime(t)`, and his `observationTime` was set to t=7.0s, where the independent check showed `veh_truck_tractor` already blocking the ray to `veh_car_a` as the truck crossed the median. Similarly, Witness C (stopped in his pickup at [-18.0, 0, -31.09] m) lacked `vehicleId: 'veh_witness_c_pickup'` and dynamic `driverEye` updates in `setTime(t)`. In the patched world, both witnesses are bound to their vehicles via `vehicleId` and updated in `setTime(t)` from `vehicle.userData.driverEye`, and Witness A's `observationTime` is set to t=4.0s (during the 2–3 s window after Vehicle A crests the hill and before Vehicle T's turn blocks his sightline, consistent with docket_vehicle_dynamics_study.txt p.8 Table 2).",
+          "detail": "Witness A was driving a black pickup truck westbound at ~60 mph (~0.25 mi behind the tractor-trailer) and testified that he saw Vehicle A crest the hill and descend for 2\u20133 seconds before the turning semitrailer entered the eastbound lanes and blocked his view (docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12, p.24-25; witness_A.md p.1). In the Round 3 world module, Witness A's eye position was fixed at [257.26, 0, -34.75] without `vehicleId: 'veh_witness_a_pickup'` or dynamic updates in `setTime(t)`, and his `observationTime` was set to t=7.0s, where the independent check showed `veh_truck_tractor` already blocking the ray to `veh_car_a` as the truck crossed the median. Similarly, Witness C (stopped in his pickup at [-18.0, 0, -31.09] m) lacked `vehicleId: 'veh_witness_c_pickup'` and dynamic `driverEye` updates in `setTime(t)`. In the patched world, both witnesses are bound to their vehicles via `vehicleId` and updated in `setTime(t)` from `vehicle.userData.driverEye`, and Witness A's `observationTime` is set to t=4.0s (during the 2\u20133 s window after Vehicle A crests the hill and before Vehicle T's turn blocks his sightline, consistent with docket_vehicle_dynamics_study.txt p.8 Table 2).",
           "evidence": [
             {
               "source": "text/docket_har1702.txt",
@@ -1002,7 +1002,7 @@
             },
             {
               "source": "Independent check",
-              "citation": "sightline wit_witness_A→veh_car_a @ t=7s: blocked by veh_truck_tractor; sightline wit_witness_C→veh_semitrailer @ t=10.43s: pass"
+              "citation": "sightline wit_witness_A\u2192veh_car_a @ t=7s: blocked by veh_truck_tractor; sightline wit_witness_C\u2192veh_semitrailer @ t=10.43s: pass"
             }
           ],
           "involves": [
@@ -1020,7 +1020,7 @@
           "id": "F3",
           "severity": "low",
           "summary": "Witness D's testimony that she was inside the retail store behind the register and could not see the highway or the collision is physically consistent with the reconstruction.",
-          "detail": "Witness D testified that at the time of the crash she was inside the store on the southeast corner of US-27A and NE 140th Court, standing behind the register restocking cigarettes, and that the drink cooler, shelving, and window posters blocked her view of the highway so that she only heard the loud bang and came outside 10–15 seconds later (Depo Witness D 06:39-08:47, 13:39-14:45, 18:02-19:22, 41:40-42:18). The independent sightline check from `wit_witness_D` at [24.0, 1.6, 15.0] m to `veh_car_a` at t=10.43s confirms that `bld_retail_store` blocks her line of sight.",
+          "detail": "Witness D testified that at the time of the crash she was inside the store on the southeast corner of US-27A and NE 140th Court, standing behind the register restocking cigarettes, and that the drink cooler, shelving, and window posters blocked her view of the highway so that she only heard the loud bang and came outside 10\u201315 seconds later (Depo Witness D 06:39-08:47, 13:39-14:45, 18:02-19:22, 41:40-42:18). The independent sightline check from `wit_witness_D` at [24.0, 1.6, 15.0] m to `veh_car_a` at t=10.43s confirms that `bld_retail_store` blocks her line of sight.",
           "evidence": [
             {
               "source": "evidence/deposition_witness_D.mp4",
@@ -1028,7 +1028,7 @@
             },
             {
               "source": "Independent check",
-              "citation": "sightline wit_witness_D→veh_car_a @ t=10.43s: blocked by bld_retail_store"
+              "citation": "sightline wit_witness_D\u2192veh_car_a @ t=10.43s: blocked by bld_retail_store"
             },
             {
               "source": "Render",
@@ -1047,7 +1047,7 @@
           "id": "F4",
           "severity": "low",
           "summary": "Roadway geometry, vertical crest profile, vehicle speeds, impact alignment, and post-impact trajectory match the NTSB factual reports and crash reconstruction.",
-          "detail": "US-27A is modeled with four 12-ft (3.66 m) lanes, a 78-ft (23.77 m) median/turn-lane separation, a 130-ft (39.6 m) crossover, and a vertical crest 1,132 ft (345.0 m) west of the intersection descending at 2.15% (docket_har1702.txt p.13, p.21-22, p.29; docket_tech_recon_factual.txt p.3-4). Vehicle A approaches eastbound at a constant 74 mph (33.08 m/s) with no pre-impact braking skids, striking the right side of the 53-ft semitrailer 45 ft 5 in (13.84 m) behind the tractor front at t=10.43s, then departing the right roadside at ~1.7° (326 ft / 99.4 m), breaching two wire fences, severing the utility pole at 855 ft (260.6 m) at t=18.83s (8.4 s after impact), and coming to rest at 910 ft (277.4 m) (docket_har1702.txt p.11, p.15-16; docket_tech_recon_factual.txt p.4-5, p.12-13). All independent plausibility and timing checks pass.",
+          "detail": "US-27A is modeled with four 12-ft (3.66 m) lanes, a 78-ft (23.77 m) median/turn-lane separation, a 130-ft (39.6 m) crossover, and a vertical crest 1,132 ft (345.0 m) west of the intersection descending at 2.15% (docket_har1702.txt p.13, p.21-22, p.29; docket_tech_recon_factual.txt p.3-4). Vehicle A approaches eastbound at a constant 74 mph (33.08 m/s) with no pre-impact braking skids, striking the right side of the 53-ft semitrailer 45 ft 5 in (13.84 m) behind the tractor front at t=10.43s, then departing the right roadside at ~1.7\u00b0 (326 ft / 99.4 m), breaching two wire fences, severing the utility pole at 855 ft (260.6 m) at t=18.83s (8.4 s after impact), and coming to rest at 910 ft (277.4 m) (docket_har1702.txt p.11, p.15-16; docket_tech_recon_factual.txt p.4-5, p.12-13). All independent plausibility and timing checks pass.",
           "evidence": [
             {
               "source": "text/docket_har1702.txt",
@@ -1059,7 +1059,7 @@
             },
             {
               "source": "Independent check",
-              "citation": "plausibility veh_car_a, veh_truck_tractor, veh_semitrailer, veh_witness_a_pickup: pass; timing veh_car_a→veh_semitrailer: availableS 10.43s (sufficient)"
+              "citation": "plausibility veh_car_a, veh_truck_tractor, veh_semitrailer, veh_witness_a_pickup: pass; timing veh_car_a\u2192veh_semitrailer: availableS 10.43s (sufficient)"
             }
           ],
           "involves": [
@@ -1077,8 +1077,8 @@
         {
           "id": "F5",
           "severity": "low",
-          "summary": "Scene lighting, clear weather, dry pavement, sun position (azimuth 265.0°, elevation 45.1°), and absence of glare or active headlights match the documentary record and solar audit; no real scene footage exists.",
-          "detail": "The crash occurred on May 7, 2016 at 16:36:12.7 EDT (UTC-04:00) at 29.4106° N, -82.53979° W in clear daylight with dry roads (docket_har1702.txt p.11, p.15, p.32 fn.40; docket_tech_recon_factual.txt p.16; police_report.md p.1). The NOAA solar calculation and the NTSB Technical Reconstruction Group Factual Report (p.16: sun azimuth 264.2°–265.6°, elevation 46.4°–44.2°) match the rendered sun at azimuth 265.0° and elevation 45.1° (0.0° error; shadow bearing 85° E). Vehicle A's headlights are off in accordance with the downloaded ECU data (docket_driver_assistance_factual.txt p.7-8; docket_har1702.txt p.15). No witness or driver has `glareRisk: true`; the smallest sun-to-sight-line angle for any witness is 45.2° (`wit_witness_A`), and the smallest sun-to-travel-direction angle for any driver is 45.1° (`veh_witness_a_pickup`), consistent with Witness A's and Witness B's testimony that the sun was high and not in their eyes (docket_har1702.txt p.12, p.30; Depo Witness B 23:44-24:01, 34:19-34:27). No real scene footage exists to compare lighting against; lighting was compared against the documentary record and computed sun position only.",
+          "summary": "Scene lighting, clear weather, dry pavement, sun position (azimuth 265.0\u00b0, elevation 45.1\u00b0), and absence of glare or active headlights match the documentary record and solar audit; no real scene footage exists.",
+          "detail": "The crash occurred on May 7, 2016 at 16:36:12.7 EDT (UTC-04:00) at 29.4106\u00b0 N, -82.53979\u00b0 W in clear daylight with dry roads (docket_har1702.txt p.11, p.15, p.32 fn.40; docket_tech_recon_factual.txt p.16; police_report.md p.1). The NOAA solar calculation and the NTSB Technical Reconstruction Group Factual Report (p.16: sun azimuth 264.2\u00b0\u2013265.6\u00b0, elevation 46.4\u00b0\u201344.2\u00b0) match the rendered sun at azimuth 265.0\u00b0 and elevation 45.1\u00b0 (0.0\u00b0 error; shadow bearing 85\u00b0 E). Vehicle A's headlights are off in accordance with the downloaded ECU data (docket_driver_assistance_factual.txt p.7-8; docket_har1702.txt p.15). No witness or driver has `glareRisk: true`; the smallest sun-to-sight-line angle for any witness is 45.2\u00b0 (`wit_witness_A`), and the smallest sun-to-travel-direction angle for any driver is 45.1\u00b0 (`veh_witness_a_pickup`), consistent with Witness A's and Witness B's testimony that the sun was high and not in their eyes (docket_har1702.txt p.12, p.30; Depo Witness B 23:44-24:01, 34:19-34:27). No real scene footage exists to compare lighting against; lighting was compared against the documentary record and computed sun position only.",
           "evidence": [
             {
               "source": "Lighting audit",
@@ -1134,7 +1134,36 @@
         "errors": [],
         "postFix": "1 mechanical edit: driverEye read as local [x,y,z] array per WORLD CONTRACT v2 (Argon read .x/.y/.z -> NaN eye for wit_witness_A/C); Argon output kept in worlds/onepass/world_v4_argon_unfixed.js"
       },
-      "finishedAt": "2026-10-25T22:05:34.212Z"
+      "finishedAt": "2026-10-25T22:05:34.212Z",
+      "critiqueMeta": {
+        "seconds": 326.4,
+        "usage": {
+          "promptTokenCount": 863985,
+          "candidatesTokenCount": 20292,
+          "totalTokenCount": 884277,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 155493
+            },
+            {
+              "modality": "IMAGE",
+              "tokenCount": 4392
+            },
+            {
+              "modality": "VIDEO",
+              "tokenCount": 704100
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 20292
+            }
+          ]
+        },
+        "mode": "live"
+      }
     },
     {
       "round": 2,
@@ -1144,7 +1173,7 @@
           "check": "sightline",
           "subject": "wit_witness_A",
           "pass": true,
-          "detail": "From Witness A's marked position (docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12; docket_vehicle_dynamics_study.txt p.2, p.4, p.8 Table 2; witness_A.md p.1) Witness A had line of sight to veh_car_a at t=4s (distance 553.6 m); target 2° from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness A's mark. Claim: \"Saw the eastbound dark car come over the hill for several seconds before the turning semitrailer entered the eastbound lanes and blocked his view of the car.\"",
+          "detail": "From Witness A's marked position (docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12; docket_vehicle_dynamics_study.txt p.2, p.4, p.8 Table 2; witness_A.md p.1) Witness A had line of sight to veh_car_a at t=4s (distance 553.6 m); target 2\u00b0 from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness A's mark. Claim: \"Saw the eastbound dark car come over the hill for several seconds before the turning semitrailer entered the eastbound lanes and blocked his view of the car.\"",
           "citation": "docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.12; docket_vehicle_dynamics_study.txt p.2, p.4, p.8 Table 2; witness_A.md p.1",
           "blockedBy": null,
           "target": "veh_car_a",
@@ -1227,7 +1256,7 @@
           "check": "sightline",
           "subject": "wit_witness_C",
           "pass": true,
-          "detail": "From Witness C's marked position (witness_C.md p.1; police_report.md p.1) Witness C had line of sight to veh_semitrailer at t=10.4s (distance 35 m); target 7° from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness C's mark. Claim: \"Stopped in WB inside lane ~18 m west of crossover watching the truck creep out of the turn lane and swing across the EB lanes; heard the crunch and saw the car emerge from the far side.\"",
+          "detail": "From Witness C's marked position (witness_C.md p.1; police_report.md p.1) Witness C had line of sight to veh_semitrailer at t=10.4s (distance 35 m); target 7\u00b0 from gaze (gaze assumed toward mark_poi). Clear from all 25 positions within 2 m of Witness C's mark. Claim: \"Stopped in WB inside lane ~18 m west of crossover watching the truck creep out of the turn lane and swing across the EB lanes; heard the crunch and saw the car emerge from the far side.\"",
           "citation": "witness_C.md p.1; police_report.md p.1",
           "blockedBy": null,
           "target": "veh_semitrailer",
@@ -1324,7 +1353,7 @@
           "conflictS": 1.73,
           "cappedAtStart": true,
           "blockedBy": null,
-          "detail": "The driver of Vehicle A: 2015 4-door passenger sedan had a continuous line of sight to Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer came within 3 m of the centerline of this driver's remaining path 1.73 s before impact. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
+          "detail": "The driver of Vehicle A: 2015 4-door passenger sedan had a continuous line of sight to Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer for 10.43 s before impact (t=0.00\u201310.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1\u20132.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer came within 3 m of the centerline of this driver's remaining path 1.73 s before impact. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
           "impactSource": "meta.impactT",
           "pass": true,
           "citation": "meta.impactT",
@@ -1346,7 +1375,7 @@
           "maxAccelG": 0.03,
           "maxSpeedMph": 74,
           "issues": [],
-          "detail": "Vehicle A: 2015 4-door passenger sedan moves plausibly: peak speed 74 mph, peak acceleration 0.03 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A: 2015 4-door passenger sedan took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.52 g at t=21.35 s.",
+          "detail": "Vehicle A: 2015 4-door passenger sedan moves plausibly: peak speed 74 mph, peak acceleration 0.03 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A: 2015 4-door passenger sedan took part in it, so accelerations within \u00b10.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.52 g at t=21.35 s.",
           "citation": "docket_har1702.txt p.11, p.15; docket_highway_att1_fl_crash_report.txt p.2 (BLK 4D); Depo Witness B 40:51",
           "maxAccelT": 1.7000000000000002,
           "maxSpeedT": 4.15,
@@ -1365,7 +1394,7 @@
           "maxAccelG": 0.99,
           "maxSpeedMph": 15.4,
           "issues": [],
-          "detail": "Vehicle T (Tractor): 2014 conventional truck-tractor turning left from WB US-27A onto SB NE 140th Ct moves plausibly: peak speed 15.4 mph, peak acceleration 0.99 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within ±0.5 s of it are excluded.",
+          "detail": "Vehicle T (Tractor): 2014 conventional truck-tractor turning left from WB US-27A onto SB NE 140th Ct moves plausibly: peak speed 15.4 mph, peak acceleration 0.99 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within \u00b10.5 s of it are excluded.",
           "citation": "docket_har1702.txt p.11, p.16 fn.6; docket_highway_att1_fl_crash_report.txt p.2 (2014 FRHT CASCADIA RED)",
           "maxAccelT": 2.6500000000000004,
           "maxSpeedT": 9.25,
@@ -1384,7 +1413,7 @@
           "maxAccelG": 0.87,
           "maxSpeedMph": 14.1,
           "issues": [],
-          "detail": "Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer moves plausibly: peak speed 14.1 mph, peak acceleration 0.87 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.17 g at t=17.35 s.",
+          "detail": "Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer moves plausibly: peak speed 14.1 mph, peak acceleration 0.87 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer took part in it, so accelerations within \u00b10.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.17 g at t=17.35 s.",
           "citation": "docket_har1702.txt p.11, p.16-17; docket_tech_recon_factual.txt p.10-11; Depo Witness B 1:01:43",
           "maxAccelT": 4.8500000000000005,
           "maxSpeedT": 9.600000000000001,
@@ -1403,7 +1432,7 @@
           "maxAccelG": 0.61,
           "maxSpeedMph": 60.6,
           "issues": [],
-          "detail": "Witness A pickup truck: black pickup traveling westbound on US-27A at ~60 mph moves plausibly: peak speed 60.6 mph, peak acceleration 0.61 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within ±0.5 s of it are excluded.",
+          "detail": "Witness A pickup truck: black pickup traveling westbound on US-27A at ~60 mph moves plausibly: peak speed 60.6 mph, peak acceleration 0.61 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within \u00b10.5 s of it are excluded.",
           "citation": "docket_har1702.txt p.11-12, p.29-30; docket_hp_att4_witness_interview.txt p.5-6, p.16; witness_A.md p.1",
           "maxAccelT": 19.35,
           "maxSpeedT": 10.75,
@@ -1416,7 +1445,50 @@
           "label": "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation."
         }
       ],
-      "finishedAt": "2026-10-25T22:07:46.645Z"
+      "finishedAt": "2026-10-25T22:07:46.645Z",
+      "critiqueMeta": {
+        "seconds": 235.3,
+        "usage": {
+          "promptTokenCount": 863707,
+          "candidatesTokenCount": 18636,
+          "totalTokenCount": 882343,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 154115
+            },
+            {
+              "modality": "IMAGE",
+              "tokenCount": 5492
+            },
+            {
+              "modality": "VIDEO",
+              "tokenCount": 704100
+            }
+          ],
+          "candidatesTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 18636
+            }
+          ]
+        },
+        "mode": "live"
+      },
+      "critique": {
+        "verdict": "rejected_patch",
+        "summary": "Argon fixed 3 of the 4 NTSB misses (8/12 \u2192 11/12) but pushed the turning truck to 1.05 g; the independent checks rejected world_v5 and kept world_v4.",
+        "findings": [],
+        "patched": false
+      }
     }
-  ]
+  ],
+  "generateMeta": {
+    "seconds": 251,
+    "usage": {
+      "promptTokens": 839188,
+      "outputTokens": 16798
+    },
+    "mode": "live"
+  }
 }

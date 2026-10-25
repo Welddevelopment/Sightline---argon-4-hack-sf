@@ -1060,6 +1060,7 @@ window.addEventListener('resize', () => renderFrame());
       try {
         const cj = await (await fetch('/api/cases/' + encodeURIComponent(caseId))).json();
         want = cj && cj.state && cj.state.world;
+        sl._caseState = cj && cj.state;
         if (cj) setCaseData(cj);
       } catch (_) {}
       if (!want) { location.replace('/cases.html?case=' + encodeURIComponent(caseId)); return; }
@@ -1071,9 +1072,19 @@ window.addEventListener('resize', () => renderFrame());
       console.warn('Default world failed, using dev_world.js fallback:', e.message);
       await loadWorld(FALLBACK_WORLD);
     }
-    const cam = params.get('cam');
+    let cam = params.get('cam'), tq = params.has('t') ? parseFloat(params.get('t')) : null;
+    // No camera asked for: open on the contradicted witness's own eye view at the checked moment (not the overhead).
+    if (!cam && !params.has('clean')) {
+      try {
+        const st = sl._caseState || {};
+        const f = (st.findings || []).find((x) => x.status === 'contradiction');
+        const inv = f && (f.involves || []).find((x) => /^wit_/.test(String(x)));
+        const c = (st.checks || []).find((x) => x.check === 'sightline' && (inv ? x.subject === inv : !x.pass));
+        if (c && (world.witnesses || []).some((w) => w.id === c.subject)) { cam = c.subject; if (tq == null && Number.isFinite(Number(c.t))) tq = Number(c.t); }
+      } catch (_) { /* keep overhead */ }
+    }
     if (cam) setCamera(cam);
-    if (params.has('t')) { setTime(parseFloat(params.get('t'))); if (camId === 'overhead') { fitOverhead(curT); renderFrame(); } }
+    if (tq != null) { setTime(tq); if (camId === 'overhead') { fitOverhead(curT); renderFrame(); } }
     else renderFrame();
     if (params.has('rays') && params.get('rays') === '0') sl.setRays(false);
     resolveReady && resolveReady(sl);

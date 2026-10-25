@@ -271,7 +271,7 @@ export function mountDemo(app, ctx = {}) {
     const genMeta = meta('generate_world');
     if (logs['1|generate'] || genMeta || fs.existsSync(dir(id, 'cache', 'generate_world.js'))) {
       add('generate', 1, logs['1|generate'] || ['Argon is reading every document and watching every video to write the world module…',
-        rounds[0] && rounds[0].world ? `World module written: ${rounds[0].world}` : null], STEP_MS, timingLine(genMeta, 'world generation'));
+        rounds[0] && rounds[0].world ? `World module written: ${rounds[0].world}` : null], STEP_MS, timingLine(st.generateMeta || genMeta, 'world generation'));
     }
     rounds.forEach((r, i) => {
       const n = r.round ?? i + 1;
@@ -284,7 +284,7 @@ export function mountDemo(app, ctx = {}) {
         (fails.length ? ` — ${fails.map((c) => `${c.subject}: ${c.blockedBy ? 'blocked by ' + c.blockedBy : 'fail'}`).join('; ')}` : '')], LOCAL_MS);
       const cr = r.critique || {};
       add('critique', n, logs[`${n}|critique`] || ['Argon is watching the witness-view renders against the evidence videos and documents…',
-        cr.verdict ? `${cr.verdict}: ${cr.summary || ''}` : null], STEP_MS, timingLine(meta(`critique_round${n}`), `critique round ${n}`));
+        cr.verdict ? `${cr.verdict}: ${cr.summary || ''}` : null], STEP_MS, timingLine(r.critiqueMeta || meta(`critique_round${n}`), `critique round ${n}`));
       if (r.patch && r.patch.world) add('patch', n, logs[`${n}|patch`] || [`Argon patched the world → ${r.patch.world}`], LOCAL_MS);
     });
     return { plan, rounds };
