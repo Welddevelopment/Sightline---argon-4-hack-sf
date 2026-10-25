@@ -218,6 +218,7 @@ export async function runFleet({ caseId, tasks, max = Number(process.env.FLEET_M
     return run;
   }
   const tStart = Date.now();
+  for (const d of ['jobs', 'renders']) fs.rmSync(path.join(c.fleetDir, d), { recursive: true, force: true });
   const worldBuf = fs.readFileSync(c.worldAbs);
   const files = { world: worldBuf.toString('utf8'), runner: fs.readFileSync(path.join(SANDBOX_DIR, 'run_task.mjs'), 'utf8'), render: fs.readFileSync(path.join(SANDBOX_DIR, 'render_view.mjs'), 'utf8') };
   if (/GEMINI_API_KEY|AIza[0-9A-Za-z_-]{20,}/.test(files.world + files.runner + files.render)) throw new Error('refusing: key-like string in sandbox upload');
@@ -296,8 +297,8 @@ export function reportMd(run) {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const a = process.argv.slice(2);
   const opt = (k) => { const i = a.indexOf('--' + k); return i >= 0 ? a[i + 1] : null; };
-  const caseId = a.find((x) => !x.startsWith('--') && a[a.indexOf(x) - 1]?.startsWith?.('--') !== true) || 'demo-full';
-  const run = await runFleet({ caseId: a[0] && !a[0].startsWith('--') ? a[0] : caseId, max: Number(opt('max') || process.env.FLEET_MAX || 24),
+  const caseId = a[0] && !a[0].startsWith('--') ? a[0] : 'demo-full';
+  const run = await runFleet({ caseId, max: Number(opt('max') || process.env.FLEET_MAX || 24),
     renders: !a.includes('--no-renders'), only: opt('only') ? opt('only').split(',') : null });
   console.log(JSON.stringify({ timings: run.timings, agents: run.agents, headline: run.report?.headline }, null, 2));
 }
