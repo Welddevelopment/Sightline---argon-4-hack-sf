@@ -133,6 +133,9 @@ export async function callArgon({ name, model = ARGON_MODEL, parts, json = false
   if (json) config.responseMimeType = 'application/json';
   if (system) config.systemInstruction = system;
   if (process.env.ARGON_THINKING_LEVEL) config.thinkingConfig = { thinkingLevel: process.env.ARGON_THINKING_LEVEL };
+  // Thinking tokens share the 32,768 output cap; live1 spent 24.7k thinking and truncated the module.
+  // Default: reserve most of the budget for the answer.
+  else if (maxOutputTokens >= 16384) config.thinkingConfig = { thinkingBudget: Number(process.env.ARGON_THINKING_BUDGET || 8192) };
   config.httpOptions = { timeout: TIMEOUT_MS };
 
   const cleanParts = parts.map(({ _path, ...p }) => p);
