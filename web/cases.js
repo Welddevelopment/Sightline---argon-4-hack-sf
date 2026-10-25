@@ -146,6 +146,8 @@ function modeNote() {
 // ---------- case list ----------
 async function refreshList() {
   try { cases = await api('/api/cases'); } catch (e) { cases = []; }
+  // Earlier demo copies stay out of the sidebar unless one is open (each Start demo makes a fresh copy).
+  cases = cases.filter((c) => !/^demo-[0-9a-f]{6}$/.test(c.caseId) || c.caseId === current || c.caseId === new URLSearchParams(location.search).get('case'));
   const ul = $('#caselist');
   $('#caseCount').textContent = cases.length ? String(cases.length) : '';
   if (!cases.length) { ul.innerHTML = '<li class="muted small" style="padding:8px 2px">No cases yet.</li>'; return; }
@@ -432,5 +434,6 @@ $('#newBtn').onclick = showNew;
   await refreshList();
   const q = new URLSearchParams(location.search);
   const want = q.get('case');
-  if (want) selectCase(want); else if (cases.length && !q.has('new')) selectCase(cases[0].caseId); else showNew();
+  // No case in the URL: open on a clean start (demo card + new case), not on a previously run demo copy.
+  if (want) selectCase(want); else showNew();
 })();
