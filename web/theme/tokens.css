@@ -1,0 +1,102 @@
+/* Sightline design tokens — DESIGN session owns this file.
+   Palette: Palantir Blueprint (@blueprintjs/colors v5). Type: IBM Plex Sans + Mono, self-hosted.
+   Light is the default; the viewer (any page with #stage) is dark unless data-theme="light".
+   Legacy variable names from style.css / review.css / report.css are remapped at the bottom of each theme
+   so the existing stylesheets pick the new palette up without being edited. */
+
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 400; font-display: swap; src: url("/theme/fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 500; font-display: swap; src: url("/theme/fonts/ibm-plex-sans-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 600; font-display: swap; src: url("/theme/fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); }
+/* 700 requests map to 600 so nothing synthesizes a fake bold */
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 700; font-display: swap; src: url("/theme/fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("/theme/fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("/theme/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 600; font-display: swap; src: url("/theme/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 700; font-display: swap; src: url("/theme/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); }
+
+html:root {
+  /* Blueprint gray scale */
+  --bp-black: #111418;
+  --bp-dg1: #1C2127; --bp-dg2: #252A31; --bp-dg3: #2F343C; --bp-dg4: #383E47; --bp-dg5: #404854;
+  --bp-g1: #5F6B7C;  --bp-g2: #738091;  --bp-g3: #8F99A8;  --bp-g4: #ABB3BF;  --bp-g5: #C5CBD3;
+  --bp-lg1: #D3D8DE; --bp-lg2: #DCE0E5; --bp-lg3: #E5E8EB; --bp-lg4: #EDEFF2; --bp-lg5: #F6F7F9;
+  --bp-white: #FFFFFF;
+  /* Blueprint intents */
+  --bp-blue1: #184A90; --bp-blue2: #215DB0; --bp-blue3: #2D72D2; --bp-blue4: #4C90F0; --bp-blue5: #8ABBFF;
+  --bp-green1: #165A36; --bp-green2: #1C6E42; --bp-green3: #238551; --bp-green4: #32A467; --bp-green5: #72CA9B;
+  --bp-orange1: #77450D; --bp-orange2: #935610; --bp-orange3: #C87619; --bp-orange4: #EC9A3C; --bp-orange5: #FBB360;
+  --bp-red1: #8E292C; --bp-red2: #AC2F33; --bp-red3: #CD4246; --bp-red4: #E76A6E; --bp-red5: #FA999C;
+
+  /* Type */
+  --t-sans: "IBM Plex Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --t-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --fs-12: 12px; --fs-13: 13px; --fs-14: 14px; --fs-16: 16px; --fs-20: 20px;
+  --lh: 1.45;
+
+  /* Shape + spacing (4/8 grid) */
+  --r-1: 2px; --r-2: 3px; --r-3: 4px;
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px;
+  --hairline: 1px solid var(--c-line);
+  --elev-pop: 0 0 0 1px rgba(17,20,24,.10), 0 2px 4px rgba(17,20,24,.12), 0 8px 24px rgba(17,20,24,.16);
+
+  /* Semantic colors — LIGHT (default) */
+  color-scheme: light;
+  --c-bg: var(--bp-lg5);
+  --c-surface: var(--bp-white);
+  --c-surface-2: var(--bp-lg4);
+  --c-surface-3: var(--bp-lg3);
+  --c-line: #D3D8DE;
+  --c-line-strong: var(--bp-g5);
+  --c-text: var(--bp-dg1);
+  --c-text-2: var(--bp-dg5);
+  --c-muted: var(--bp-g1);
+  --c-accent: var(--bp-blue3);
+  --c-accent-hover: var(--bp-blue2);
+  --c-accent-text: var(--bp-blue2);
+  --c-accent-bg: rgba(45,114,210,.10);
+  --c-on-accent: #FFFFFF;
+  --c-focus: rgba(45,114,210,.6);
+  /* Finding status only */
+  --c-contra: var(--bp-red2);      --c-contra-bg: rgba(205,66,70,.08);  --c-contra-line: rgba(205,66,70,.45);
+  --c-consistent: var(--bp-green2); --c-consistent-bg: rgba(35,133,81,.08); --c-consistent-line: rgba(35,133,81,.45);
+  --c-unverif: var(--bp-orange2);  --c-unverif-bg: rgba(200,118,25,.10); --c-unverif-line: rgba(200,118,25,.5);
+  /* Labels that must stay visible: simulated / not-evidence */
+  --c-label-text: var(--bp-orange1); --c-label-bg: rgba(200,118,25,.12); --c-label-line: rgba(200,118,25,.55);
+
+  /* Legacy names (style.css, cases.css, review.css, methodology.css, argon_only.css, jobs.js, exports.js) */
+  --bg: var(--c-bg); --panel: var(--c-surface); --panel2: var(--c-surface-2); --line: var(--c-line);
+  --text: var(--c-text); --fg: var(--c-text); --muted: var(--c-muted); --accent: var(--c-accent);
+  --red: var(--c-contra); --green: var(--c-consistent); --grey: var(--c-muted);
+  --amber: var(--c-unverif); --inferred: var(--c-unverif);
+  --amber-bg: var(--c-unverif-bg); --amber-line: var(--c-unverif-line);
+  --pass: var(--c-consistent); --fail: var(--c-contra); --tag: var(--c-surface-2);
+  --row: rgba(17,20,24,.025);
+  --serif: var(--t-sans); --sans: var(--t-sans); --mono: var(--t-mono);
+}
+
+/* DARK — the viewer by default (any page containing the 3D #stage), or anywhere data-theme="dark" */
+html:root[data-theme="dark"],
+html:root:not([data-theme]):has(#stage) {
+  color-scheme: dark;
+  --c-bg: var(--bp-dg1);
+  --c-surface: var(--bp-dg2);
+  --c-surface-2: var(--bp-dg3);
+  --c-surface-3: var(--bp-dg4);
+  --c-line: #383E47;
+  --c-line-strong: var(--bp-dg5);
+  --c-text: var(--bp-lg5);
+  --c-text-2: var(--bp-lg1);
+  --c-muted: var(--bp-g4);
+  --c-accent: var(--bp-blue3);
+  --c-accent-hover: var(--bp-blue2);
+  --c-accent-text: var(--bp-blue5);
+  --c-accent-bg: rgba(76,144,240,.14);
+  --c-on-accent: #FFFFFF;
+  --c-focus: rgba(76,144,240,.7);
+  --c-contra: var(--bp-red5);      --c-contra-bg: rgba(231,106,110,.12); --c-contra-line: rgba(231,106,110,.5);
+  --c-consistent: var(--bp-green5); --c-consistent-bg: rgba(50,164,103,.12); --c-consistent-line: rgba(50,164,103,.5);
+  --c-unverif: var(--bp-orange5);  --c-unverif-bg: rgba(236,154,60,.12); --c-unverif-line: rgba(236,154,60,.5);
+  --c-label-text: var(--bp-orange5); --c-label-bg: rgba(236,154,60,.12); --c-label-line: rgba(236,154,60,.5);
+  --elev-pop: 0 0 0 1px rgba(17,20,24,.4), 0 2px 4px rgba(17,20,24,.4), 0 8px 24px rgba(17,20,24,.5);
+  --row: rgba(255,255,255,.025);
+}
