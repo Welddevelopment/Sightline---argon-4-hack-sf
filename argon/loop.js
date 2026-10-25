@@ -9,6 +9,7 @@ import { pathToFileURL } from 'node:url';
 import { ROOT, writeJSON, mode as envMode } from './client.js';
 import { caseDirs, defaultCaseId, evidenceSummary } from './case.js';
 import { loadWorldFile, writeWorldVersion, validateWorld, worldUrlFromFile } from './world_io.js';
+import { callProvenance } from './provenance.js';
 
 const rel = (f) => '/' + path.relative(ROOT, f).split(path.sep).join('/');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -121,7 +122,7 @@ export async function runLoop({ caseId = defaultCaseId(), mode, onProgress, maxR
     if (!c.patch) { entry.finishedAt = new Date().toISOString(); loopLog.push(entry); break; }
 
     // patch
-    const w = await writeWorldVersion(round + 1, c.patch, d.worlds);
+    const w = await writeWorldVersion(round + 1, c.patch, d.worlds, c.call ? callProvenance({ caseId, call: c.call, parentWorld: worldUrl }) : null);
     entry.patch = { world: w.url, problems: w.problems };
     entry.finishedAt = new Date().toISOString();
     loopLog.push(entry);

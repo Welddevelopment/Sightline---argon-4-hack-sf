@@ -54,7 +54,8 @@ export async function critique({ caseId = defaultCaseId(), round = 1, worldFile,
   const res = await callArgon({ name: `critique_round${round}`, model: ARGON_MODEL, parts, json: true, maxOutputTokens, cacheDir: d.cache });
   const data = res.data || {};
   const patch = normalizePatch(data.patch);
-  return { round, verdict: data.verdict || (patch ? 'world_patched' : 'consistent'), summary: data.summary || '', findings: data.findings || [], patch, mode: res.mode };
+  return { round, verdict: data.verdict || (patch ? 'world_patched' : 'consistent'), summary: data.summary || '', findings: data.findings || [], patch, mode: res.mode,
+    call: { name: `critique_round${round}`, model: res.model, mode: res.mode, cacheDir: d.cache, maxOutputTokens, promptFile: 'critique' } };
 }
 
 if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === import.meta.url) {

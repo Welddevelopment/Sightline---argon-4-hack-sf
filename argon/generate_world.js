@@ -5,6 +5,7 @@ import { pathToFileURL } from 'node:url';
 import { callArgon, ARGON_MODEL, readPrompt, fill, loadWorldContract, textPart, mode } from './client.js';
 import { caseDirs, loadCaseText, evidenceMediaParts, evidenceSummary, defaultCaseId } from './case.js';
 import { writeWorldVersion } from './world_io.js';
+import { callProvenance } from './provenance.js';
 
 export function buildGeneratePrompt(caseId) {
   return fill(readPrompt('generate_world'), {
@@ -22,7 +23,8 @@ export async function generateWorld({ caseId = defaultCaseId(), version = 1,
   const parts = [textPart(buildGeneratePrompt(caseId)), ...(await evidenceMediaParts(caseId)),
     textPart('Output the complete world module now, in ONE ```js block.')];
   const res = await callArgon({ name: 'generate_world', model: ARGON_MODEL, parts, ext: 'js', maxOutputTokens, cacheDir: d.cache });
-  const out = await writeWorldVersion(version, res.text, d.worlds);
+  const out = await writeWorldVersion(version, res.text, d.worlds, callProvenance({ caseId,
+    call: { name: 'generate_world', model: res.model, mode: res.mode, cacheDir: d.cache, maxOutputTokens, promptFile: 'generate_world' } }));
   if (out.problems.length) console.warn(`[generate_world] contract problems in world_v${version}:\n  ` + out.problems.join('\n  '));
   return { source: res.text, ...out, mode: res.mode };
 }

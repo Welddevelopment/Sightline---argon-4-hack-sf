@@ -66,7 +66,7 @@ Rule of thumb: about 140 spoken words per minute. Lines in quotes are said out l
 
 ### 1:45 – 2:00 · Credibility (why an expert won't laugh at it)
 
-> "Before you trust that: her mark could be off a meter or two, so we test 25 spots in a two-meter circle around it. The truck blocks her from N of 25. The car was X degrees off her line of gaze. And this world matches X of Y facts NTSB measured. Model, prompt and input hashes are all logged."
+> "Before you trust that: her mark could be off a meter or two, so we test 25 spots in a two-meter circle around it. The truck blocks her from [TODO N] of 25. The car was [TODO X] degrees off her line of gaze. And this world matches [TODO X of Y] facts NTSB measured. Model, prompt and input hashes are all logged."
 
     Point, in order: (1) robustness chip on wit_B ("blocked from N of 25"), (2) gaze angle + "60° camera FOV" note,
     (3) NTSB match panel ("X of Y measured facts"), (4) methodology panel (model, prompt version, input hashes, kinematic label).
