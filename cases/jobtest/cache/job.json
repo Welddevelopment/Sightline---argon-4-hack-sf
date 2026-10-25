@@ -1,111 +1,25 @@
 {
   "caseId": "jobtest",
-  "status": "ready",
-  "step": "done",
-  "message": "Reconstruction complete.",
+  "status": "building",
+  "step": "extract",
+  "message": "Extracted text from 6 document(s); 1 video(s) and 1 image(s) queued for Argon.",
   "mode": "mock",
-  "startedAt": "2026-10-25T19:13:17.360Z",
-  "finishedAt": "2026-10-25T19:13:22.051Z",
+  "pid": 24853,
+  "startedAt": "2026-10-25T19:14:21.290Z",
+  "finishedAt": null,
   "error": null,
   "resumable": false,
   "events": [
     {
-      "at": "2026-10-25T19:13:17.363Z",
+      "at": "2026-10-25T19:14:21.298Z",
       "type": "start"
     },
     {
-      "at": "2026-10-25T19:13:17.369Z",
+      "at": "2026-10-25T19:14:21.336Z",
       "type": "progress",
       "step": "extract",
       "message": "Extracted text from 6 document(s); 1 video(s) and 1 image(s) queued for Argon."
-    },
-    {
-      "at": "2026-10-25T19:13:17.371Z",
-      "type": "progress",
-      "step": "evidence",
-      "round": 1,
-      "message": "Case jobtest: 6 text file(s), 1 video(s), 1 image(s)"
-    },
-    {
-      "at": "2026-10-25T19:13:17.674Z",
-      "type": "progress",
-      "step": "generate",
-      "round": 1,
-      "message": "Replaying cached Argon world generation (cases/jobtest/cache/generate_world.js)…"
-    },
-    {
-      "at": "2026-10-25T19:13:18.019Z",
-      "type": "progress",
-      "step": "generate",
-      "round": 1,
-      "message": "World module written: /cases/jobtest/worlds/world_v1.js (295 lines)",
-      "world": "/cases/jobtest/worlds/world_v1.js"
-    },
-    {
-      "at": "2026-10-25T19:13:19.048Z",
-      "type": "progress",
-      "step": "checks",
-      "round": 1,
-      "message": "Independent checks: 8/8 pass"
-    },
-    {
-      "at": "2026-10-25T19:13:19.349Z",
-      "type": "progress",
-      "step": "critique",
-      "round": 1,
-      "message": "Replaying cached Argon critique (cases/jobtest/cache/critique_round1.json)…"
-    },
-    {
-      "at": "2026-10-25T19:13:19.655Z",
-      "type": "progress",
-      "step": "critique",
-      "round": 1,
-      "message": "world_patched: World v1 tests Witness B's claim at t=8.5s, while the car is still well up the approach. She testified she watched the car \"right up until the moment it hit\" (Depo 27:46). Re-timed to the moment she describes, the turning truck stands between her marked position and the car from about t=9.1s to impact. The world is patched and her claim must be re-tested.",
-      "verdict": "world_patched"
-    },
-    {
-      "at": "2026-10-25T19:13:20.002Z",
-      "type": "progress",
-      "step": "patch",
-      "round": 1,
-      "message": "Argon patched the world → /cases/jobtest/worlds/world_v2.js",
-      "world": "/cases/jobtest/worlds/world_v2.js"
-    },
-    {
-      "at": "2026-10-25T19:13:20.811Z",
-      "type": "progress",
-      "step": "checks",
-      "round": 2,
-      "message": "Independent checks: 7/8 pass — wit_B: blocked by veh_T_tractor"
-    },
-    {
-      "at": "2026-10-25T19:13:21.124Z",
-      "type": "progress",
-      "step": "critique",
-      "round": 2,
-      "message": "Replaying cached Argon critique (cases/jobtest/cache/critique_round2.json)…"
-    },
-    {
-      "at": "2026-10-25T19:13:21.427Z",
-      "type": "progress",
-      "step": "critique",
-      "round": 2,
-      "message": "contradiction_found: With Witness B at her Exhibit 4 mark and her claim tested at the moment she describes, the world matches the evidence. Her testimony that she watched the car \"the whole way in\" with \"nothing in the way\" is contradicted: the truck-tractor and then the refrigerated van semitrailer of Vehicle T block her line of sight for about the last 1.3 s before impact. No further patch is ne…",
-      "verdict": "contradiction_found"
-    },
-    {
-      "at": "2026-10-25T19:13:21.743Z",
-      "type": "progress",
-      "step": "done",
-      "round": 2,
-      "message": "Loop finished after 2 round(s). Final world /cases/jobtest/worlds/world_v2.js. 1 contradiction(s)."
-    },
-    {
-      "at": "2026-10-25T19:13:22.051Z",
-      "type": "done",
-      "message": "Reconstruction complete."
     }
   ],
-  "buildingAt": "2026-10-25T19:13:17.368Z",
-  "round": 2
+  "buildingAt": "2026-10-25T19:14:21.320Z"
 }

@@ -218,7 +218,7 @@ function transmittance(elDeg, beta = 0.05) {
 const WEATHER = {
   // direct: fraction of clear-sky direct beam kept; diffuse: diffuse horizontal as a fraction of CLEAR-sky GLOBAL;
   // visibilityM: meteorological visibility (Koschmieder 2% contrast); shadows: hard sun shadows meaningful?
-  clear:    { direct: 1.0,  diffuseOfGlobal: null, visibilityM: 30000, beta: 0.05, shadows: true,  overcast: 0.0 },
+  clear:    { direct: 1.0,  diffuseOfGlobal: null, visibilityM: 25000, beta: 0.05, shadows: true,  overcast: 0.0 },
   overcast: { direct: 0.0,  diffuseOfGlobal: 0.32, visibilityM: 15000, beta: 0.15, shadows: false, overcast: 1.0 },
   rain:     { direct: 0.0,  diffuseOfGlobal: 0.16, visibilityM: 3000,  beta: 0.20, shadows: false, overcast: 1.0 },
   fog:      { direct: 0.12, diffuseOfGlobal: 0.45, visibilityM: 200,   beta: 0.30, shadows: false, overcast: 0.6 },
@@ -485,9 +485,12 @@ export function environment(THREE, opts = {}) {
     group.add(sky);
   }
 
-  // ---- fog: Koschmieder visibility V -> FogExp2 density so that contrast is 2% at V: exp(-(rho V)^2) = 0.02
+  // ---- fog: Koschmieder visibility V (2% contrast) -> extinction sigma = 3.912 / V. three's FogExp2 is exp(-(rho d)^2), not
+  // exp(-sigma d), so rho is matched at d = V/2 (the distances that matter for "could she see it"): rho = sqrt(sigma V/2)/(V/2).
+  // Renders are therefore approximate; visibility arithmetic should use info.fogExtinctionPerM.
   const V = L.visibilityM;
-  const fog = new THREE.FogExp2(horizonLin.getHex(THREE.LinearSRGBColorSpace) ?? 0xaaaaaa, Math.sqrt(-Math.log(0.02)) / V);
+  const sigma = -Math.log(0.02) / V;
+  const fog = new THREE.FogExp2(0xaaaaaa, Math.sqrt(sigma * V / 2) / (V / 2));
   fog.color.copy(horizonLin);
   const background = horizonLin.clone();
 
@@ -512,7 +515,7 @@ export function environment(THREE, opts = {}) {
     needsArtificialLight: el < -0.833 || (weather !== 'clear' && L.globalLux < 1000),
     illuminanceLux: { global: +L.globalLux.toPrecision(3), directNormal: +L.directNormalLux.toPrecision(3), diffuse: +L.diffuseLux.toPrecision(3), moon: +L.moonNormalLux.toPrecision(3) },
     luxToIntensity: L.luxToIntensity,                  // multiply a physical lux value by this to get a matching three.js intensity
-    visibilityM: V,
+    visibilityM: V, fogExtinctionPerM: sigma,
     sunrise: fmt(times.sunrise), sunset: fmt(times.sunset), civilDawn: fmt(times.civilDawn), civilDusk: fmt(times.civilDusk), solarNoon: fmt(times.solarNoon),
     model: 'NOAA solar position (Meeus); Kasten-Young air mass; Rayleigh+Angstrom extinction; Preetham sky (three Sky.js) + CIE overcast; perceptual adaptation E^0.25',
   };

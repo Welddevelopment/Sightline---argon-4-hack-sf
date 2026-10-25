@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sightline Analysis Report</title>
+<link rel="stylesheet" href="/report.css">
+</head>
+<body>
+<div class="screenbar screen-only">
+  <div class="notices" id="sbNotices"><span class="notice">Analysis draft for expert review — not evidence</span></div>
+  <a class="dl" id="sbDownload" href="#">Download PDF</a>
+</div>
+<article class="sheet" id="doc"><div class="loading">Preparing report…</div></article>
+
+<script type="module">
+const params = new URLSearchParams(location.search);
+const CASE = params.get('case') || 'demo';
+const $doc = document.getElementById('doc');
+document.getElementById('sbDownload').href = `/api/cases/${encodeURIComponent(CASE)}/report.pdf`;
+
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const num = (v, d = 1) => (v == null || !Number.isFinite(Number(v)) ? '—' : Number(v).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }));
+const int = (v) => (v == null || !Number.isFinite(Number(v)) ? '—' : Math.round(Number(v)).toLocaleString('en-US'));
+const tsec = (t) => (t == null || !Number.isFinite(Number(t)) ? '—' : `t = ${num(t, 2)} s`);
+function bytes(n) {
+  if (!Number.isFinite(n)) return '—';
+  if (n >= 1e6) return `${num(n / 1048576, 1)} MB`;
+  if (n >= 1024) return `${num(n / 1024, 1)} KB`;
+  return `${int(n)} B`;
+}
+function dur(s) {
+  if (!Number.isFinite(s)) return '';
+  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = Math.round(s % 60);
+  const mmss = `${String(m).padStart(h ? 2 : 1, '0')}:${String(sec).padStart(2, '0')}`;
+  return (h ? `${h}:` : '') + mmss;
+}
+const fmtDate = (iso) => { try { return new Date(iso).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }); } catch { return iso || '—'; } };
+const fmtDay = (iso) => { try { return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); } catch { return iso || '—'; } };
+const statusChip = (s) => {
+  const k = String(s || '').toLowerCase();
+  const cls = /contradict|fail|block/.test(k) ? 'bad' : /consistent|pass|clear|verified|sufficient/.test(k) ? 'ok' : /unverif|partial|marginal|unknown|insufficient/.test(k) ? 'warn' : 'neutral';
+  return `<span class="chip ${cls}">${esc(s || 'unrated')}</span>`;
+};
+// highlight deposition timecodes and report page cites in a citation string
+const pins = (s) => esc(s)
+  .replace(/\b(Depo(?:sition)?\.?\s+\d{1,2}:\d{2}(?::\d{2})?(?:\s*[–-]\s*\d{1,2}:\d{2})?)/g, '<span class="pin">$1</span>')
+  .replace(/(?<![\w>])(pp?\.\s?\d+(?:\s?[–-]\s?\d+)?(?:,\s?\d+(?:\s?[–-]\s?\d+)?)*)/g, '<span class="pin">$1</span>');
+
+async function main() {
+  const r = await fetch(`/api/cases/${encodeURIComponent(CASE)}/report.json`);
+  const D = await r.json();
+  if (!r.ok || D.error) throw new Error(D.error || `HTTP ${r.status}`);
+  const st = D.state || {};
+  const W = D.world || { objects: {}, witnesses: [] };
+  const objLabel = (id) => {
+    if (!id) return '—';
+    const w = (W.witnesses || []).find((x) => x.id === id);
+    if (w) return w.name.replace(/\s*\(fictional\)/i, '');
+    const o = W.objects && W.objects[id];
+    return o ? String(o.label).replace(/\s*\((?:fictional|assumed|inferred)[^)]*\)/i, '') : id;
+  };
+  const N = D.notices || {};
+  const sim = N.simulation;
+  const worldName = st.world ? st.world.split('/').pop().replace(/\.js$/, '') : null;
+  const prov = D.provenance || {};
+  const provList = Object.entries(prov).map(([k, v]) => ({ key: k, ...v })).sort((a, b) => (a.version || 0) - (b.version || 0));
+  const curProv = prov[st.world] || provList[provList.length - 1] || null;
+  const src = D.source || {};
+  const ref = src.ref || D.caseId;
+  window.__reportNotices = { draft: N.draft, simulation: sim, short: `Sightline · ${ref}${worldName ? ' · ' + worldName : ''}` };
+
+  // screen bar
+  document.getElementById('sbNotices').innerHTML = `<span class="notice">${esc(N.draft)}</span>${sim ? `<span class="notice sim">${esc(sim)}</span>` : ''}`;
+  document.title = `Report — ${ref}`;
+
+  const findings = st.findings || [];
+  const checks = st.checks || [];
+  const sightByWit = Object.fromEntries(checks.filter((c) => c.check === 'sightline').map((c) => [c.subject, c]));
+
+  // ---------- figures: number them ----------
+  const figs = D.figures || [];
+  let figNo = 0;
+  const figIndex = {}; // fig id -> number label
+  const overview = figs.find((f) => f.id === 'overview');
+  if (overview) figIndex.overview = String(++figNo);
+  const witnessFigs = [];
+  for (const w of W.witnesses || []) {
+    const ov = figs.find((f) => f.id === `${w.id}_overhead`), eye = figs.find((f) => f.id === `${w.id}_eye`);
+    if (!ov && !eye) continue;
+    const n = ++figNo;
+    if (ov) figIndex[ov.id] = `${n}A`;
+    if (eye) figIndex[eye.id] = ov ? `${n}B` : String(n);
+    witnessFigs.push({ w, ov, eye, n });
+  }
+  const figsFor = (ids) => {
+    const out = [];
+    for (const id of ids || []) for (const k of [`${id}_overhead`, `${id}_eye`]) if (figIndex[k]) out.push(figIndex[k]);
+    return out;
+  };
+
+  // ---------- check text ----------
+  function checkRow(c) {
+    const subj = objLabel(c.subject);
+    if (c.check === 'sightline') {
+      const rb = c.robustness, gz = c.gaze;
+      const res = c.pass ? 'Clear' : `Blocked by ${objLabel(c.blockedBy)}`;
+      const lines = [`Line of sight ${esc(subj)} → ${esc(objLabel(c.target))} at ${tsec(c.t)}: <b>${esc(res)}</b>${c.distance != null ? ` (target ${num(c.distance, 1)} m away)` : ''}.`];
+      if (rb) {
+        const blk = Object.entries(rb.blockers || {}).map(([k, v]) => `${objLabel(k)} ${v}`).join(', ');
+        lines.push(`Robustness: blocked from <b>${int(rb.blocked)} of ${int(rb.samples)}</b> positions within ${num(rb.radiusM, 0)} m of the marked position (eye height ±${num(rb.eyeJitterM, 1)} m) — ${esc(String(rb.verdict).replace(/_/g, ' '))}${blk ? ` (${esc(blk)})` : ''}.`);
+      }
+      if (gz && gz.offAxisDeg != null) {
+        lines.push(`Gaze: target <b>${num(gz.offAxisDeg, 1)}°</b> off the line of gaze${gz.assumed ? ` <span class="inferred">(gaze assumed${gz.source ? ' toward ' + esc(objLabel(gz.source)) : ''})</span>` : ''}; ${gz.peripheral ? 'peripheral (more than 30°)' : 'not peripheral (30° or less)'}; camera FOV ${num(gz.cameraFovDeg, 0)}°.`);
+      }
+      return { name: 'Line of sight', subject: subj, ok: c.pass, chip: c.pass ? 'clear' : (rb && rb.verdict === 'partial' ? 'partial' : 'blocked'), html: lines.join('<br>'), citation: c.citation };
+    }
+    if (c.check === 'timing') {
+      const p = c.prt || { availableS: c.availableS, rangeS: c.rangeS, typicalS: c.typicalS, verdict: c.verdict };
+      const rng = Array.isArray(p.rangeS) ? `${num(p.rangeS[0], 1)}–${num(p.rangeS[1], 1)} s` : '—';
+      const html = `Perception-reaction time: ${esc(subj)} had <b>${num(p.availableS, 2)} s</b> from first sight of ${esc(objLabel(c.target || c.targetId))} to impact${c.firstVisibleT != null ? ` (first visible ${tsec(c.firstVisibleT)}${c.blockedBy ? `, earlier view blocked by ${esc(objLabel(c.blockedBy))}` : ''})` : ''}; PRT range ${rng}, typical ${num(p.typicalS, 1)} s — <b>${esc(p.verdict || '—')}</b>.`
+        + (c.conflictS != null ? `<br>Time from the conflict first arising to impact: ${num(c.conflictS, 2)} s.` : '');
+      return { name: 'Perception-reaction time', subject: subj, ok: c.pass, chip: p.verdict || (c.pass ? 'pass' : 'fail'), html, citation: c.citation || c.impactSource };
+    }
+    if (c.check === 'skid') {
+      const rg = c.range || {};
+      const mu = Array.isArray(rg.mu) ? `μ ${num(rg.mu[0], 2)}–${num(rg.mu[1], 2)}` : '';
+      const mph = Array.isArray(rg.mph) ? `${num(rg.mph[0], 0)}–${num(rg.mph[1], 0)} mph` : (c.mph != null ? `${num(c.mph, 0)} mph` : '—');
+      const html = `Skid-to-speed: ${c.lengthM != null ? `${num(c.lengthM, 1)} m skid, ` : ''}${mu} → minimum speed <b>${mph}</b>${c.claimMph != null ? ` vs claimed ${num(c.claimMph, 0)} mph` : ''}.${c.detail ? `<br><span class="muted">${esc(c.detail)}</span>` : ''}`;
+      return { name: 'Skid-speed range', subject: subj, ok: c.pass, chip: c.pass ? 'consistent' : 'inconsistent', html, citation: c.citation };
+    }
+    if (c.check === 'plausibility') {
+      const html = `Kinematic plausibility: peak ${num(c.maxAccelG, 2)} g${c.maxAccelT != null ? ` at ${tsec(c.maxAccelT)}` : ''}, peak speed ${num(c.maxSpeedMph, 1)} mph.`
+        + ((c.issues || []).length ? `<br><span class="check-issue">Flag: ${c.issues.map(esc).join('; ')}</span>` : ' No issues.');
+      return { name: 'Plausibility', subject: subj, ok: c.pass, chip: c.pass ? 'pass' : 'flag', html, citation: c.citation };
+    }
+    return { name: c.check, subject: subj, ok: c.pass, chip: c.pass ? 'pass' : 'fail', html: esc(c.detail || ''), citation: c.citation };
+  }
+  function checksFor(f) {
+    const inv = f.involves || [];
+    const wits = inv.filter((id) => (W.witnesses || []).some((w) => w.id === id) || sightByWit[id]);
+    if (wits.length) return checks.filter((c) => c.check === 'sightline' && wits.includes(c.subject));
+    return checks.filter((c) => inv.includes(c.subject) && c.check !== 'sightline');
+  }
+  const ckTable = (list, withCite) => list.length ? `<table class="ck"><thead><tr><th>Check</th><th>Result</th><th>Finding of the check</th></tr></thead><tbody>${list.map((c) => {
+    const r = checkRow(c);
+    return `<tr><td><b>${esc(r.name)}</b><span class="sub">${esc(r.subject)}</span></td><td>${statusChip(r.chip)}</td><td>${r.html}${withCite && r.citation ? `<span class="sub">Basis: ${pins(r.citation)}</span>` : ''}</td></tr>`;
+  }).join('')}</tbody></table>` : '<p class="small muted">No independent check applies to this finding.</p>';
+
+  // ---------- sections ----------
+  const statusCounts = {};
+  for (const f of findings) statusCounts[f.status || 'unrated'] = (statusCounts[f.status || 'unrated'] || 0) + 1;
+  const val = D.validation;
+  const sections = [];
+
+  // cover
+  sections.push(`<section class="cover">
+    <div class="kicker"><span>Sightline</span><span>Case ${esc(D.caseId)}</span></div>
+    <div class="doc-type">Reconstruction analysis report</div>
+    <h1>${esc(D.title || D.caseId)}</h1>
+    <div class="src">${src.text ? esc(src.text) : esc(ref)}${src.urls && src.urls.length ? `<br><span class="mono small">${src.urls.map(esc).join('<br>')}</span>` : ''}</div>
+    <hr class="rule2"><hr class="rule2">
+    <dl class="meta">
+      <dt>Case reference</dt><dd>${esc(ref)}${src.where ? ` — ${esc(src.where)}` : ''}</dd>
+      <dt>Overall result</dt><dd>${esc(String(st.verdict || 'not run').replace(/_/g, ' '))} · ${findings.length} finding${findings.length === 1 ? '' : 's'}${Object.keys(statusCounts).length ? ` (${Object.entries(statusCounts).map(([k, v]) => `${v} ${esc(k)}`).join(', ')})` : ''}</dd>
+      <dt>Reconstruction</dt><dd>${worldName ? `${esc(worldName)}${curProv && curProv.version != null ? ` (version ${esc(curProv.version)})` : ''}, ${esc(st.rounds)} review round${st.rounds === 1 ? '' : 's'}` : 'none'}</dd>
+      <dt>Validation</dt><dd>${val ? `${esc(val.matched)} of ${esc(val.total)} published facts reproduced within tolerance (${esc(val.source || 'published investigation')})` : 'no validation set for this case'}</dd>
+      <dt>Run mode</dt><dd>${esc(D.mode)}${D.mode === 'mock' ? ' — cached model outputs replayed; no live model calls were made for this report' : D.mode === 'live' ? ' — model outputs generated live' : ''}</dd>
+      <dt>Report generated</dt><dd>${esc(fmtDate(D.generatedAt))}</dd>
+    </dl>
+    <div class="noticebox"><div class="t">${esc(N.draft)}</div>
+      <p>This document is a working analysis prepared to help a qualified accident-reconstruction expert review the testimony in this case. It is not an expert opinion and is not offered as evidence. Every value in the reconstruction is tied to a citation; values marked <i>inferred</i> or <i>assumed</i> are modeling choices that an expert must confirm.</p>
+      ${D.kinematicLabel ? `<p><b>${esc(D.kinematicLabel)}</b></p>` : ''}
+    </div>
+    ${sim ? `<div class="noticebox sim"><div class="t">${esc(sim)}</div>
+      <p>The physical facts of this case are taken from the published investigation${src.ref ? ` (${esc(src.ref)})` : ''}. The witnesses, their statements and the videotaped deposition are <b>fictional</b> and were created to demonstrate the method. No real person's testimony is analysed here.</p></div>` : ''}
+    <h4>Contents</h4>
+    <ol class="contents">
+      <li><span class="n">1</span>Summary of findings</li><li><span class="n">2</span>Evidence received</li>
+      <li><span class="n">3</span>Findings</li><li><span class="n">4</span>Exhibits (figures)</li>
+      <li><span class="n">5</span>Independent checks</li><li><span class="n">6</span>Validation against ${esc(val ? val.source || 'published facts' : 'published facts')}</li>
+      <li><span class="n">7</span>Methodology</li><li><span class="n">8</span>Provenance</li>
+    </ol>
+  </section>`);
+
+  // 1 summary
+  sections.push(`<section class="part"><h2 class="sec"><span class="n">1</span>Summary of findings</h2>
+    ${findings.length ? `<table><thead><tr><th style="width:.45in">No.</th><th style="width:1.05in">Status</th><th>Finding</th><th class="r" style="width:.7in">Severity</th></tr></thead><tbody>
+    ${findings.map((f, i) => `<tr><td class="nowrap"><b>${i + 1}</b></td><td>${statusChip(f.status)}</td><td>${esc(f.summary)}</td><td class="r">${esc(f.severity || '—')}</td></tr>`).join('')}
+    </tbody></table>` : '<p>No findings have been produced for this case yet.</p>'}
+  </section>`);
+
+  // 2 evidence
+  const inputHash = (name) => {
+    const ins = (curProv && curProv.inputs) || [];
+    const base = name.replace(/\.[^.]+$/, '');
+    const hit = ins.find((x) => x.file === `evidence/${name}`) || ins.find((x) => x.file === `text/${name}`) || ins.find((x) => x.file === `text/${base}.txt`);
+    return hit ? hit.sha256 : null;
+  };
+  const typeLabel = { video: 'Video', text: 'Document', pdf: 'PDF document', image: 'Image' };
+  sections.push(`<section class="part"><h2 class="sec"><span class="n">2</span>Evidence received</h2>
+    <p class="small">Sizes and running times are read from the files as stored. Hashes are SHA-256 of the file given to the model (first 16 hex digits; full values in Section 8).</p>
+    <table><thead><tr><th style="width:.5in">Exh.</th><th>File</th><th style="width:.9in">Type</th><th class="r" style="width:.75in">Size</th><th class="r" style="width:.95in">Length</th><th style="width:1.35in">SHA-256</th></tr></thead><tbody>
+    ${(D.files || []).map((f, i) => {
+      const h = inputHash(f.name);
+      const len = f.durationSec != null ? `${dur(f.durationSec)} <span class="sub">${num(f.durationSec, 1)} s</span>` : f.pages ? `${int(f.pages)} page${f.pages === 1 ? '' : 's'}` : '—';
+      return `<tr><td class="nowrap">E-${i + 1}</td><td><span class="mono">${esc(f.name)}</span>${f.note ? `<span class="sub">${esc(f.note)}</span>` : ''}${/depo/i.test(f.name) && f.type === 'video' && sim ? '<span class="sub">Simulated deposition (fictional witness)</span>' : ''}</td><td>${esc(typeLabel[f.type] || f.type || '—')}</td><td class="r nowrap">${bytes(f.size)}<span class="sub">${int(f.size)} bytes</span></td><td class="r nowrap">${len}</td><td class="mono small">${h ? esc(h.slice(0, 16)) : '<span class="muted">not hashed</span>'}</td></tr>`;
+    }).join('')}
+    </tbody></table>
+  </section>`);
+
+  // 3 findings
+  sections.push(`<section class="part newpage"><h2 class="sec"><span class="n">3</span>Findings</h2>
+    ${findings.map((f, i) => {
+      const fl = figsFor(f.involves);
+      return `<div class="finding">
+        <div class="fhead"><span class="fno">Finding ${i + 1}</span>${statusChip(f.status)}<span class="sev">Severity: ${esc(f.severity || '—')}${f.id ? ` · ref ${esc(f.id)}` : ''}</span></div>
+        <p class="summary">${esc(f.summary)}</p>
+        ${f.detail ? `<p class="detail">${pins(f.detail)}</p>` : ''}
+        <h4>Evidence cited</h4>
+        <ol class="cites">${(f.evidence || []).map((e) => `<li><span class="srcname">${esc(e.source)}</span>${e.citation ? ` — ${pins(e.citation)}` : ''}</li>`).join('') || '<li class="muted">none recorded</li>'}</ol>
+        <h4>Independent check results</h4>
+        ${ckTable(checksFor(f), false)}
+        ${fl.length ? `<p class="seefig">See Figure${fl.length > 1 ? 's' : ''} ${fl.join(', ')}.</p>` : ''}
+      </div>`;
+    }).join('') || '<p>No findings.</p>'}
+  </section>`);
+
+  // 4 exhibits
+  const capFor = (f, w) => {
+    const ck = w ? sightByWit[w.id] : null;
+    const res = ck ? (ck.pass ? 'line of sight clear' : `line of sight blocked by ${objLabel(ck.blockedBy)}`) : '';
+    const rb = ck && ck.robustness ? `; blocked from ${ck.robustness.blocked} of ${ck.robustness.samples} positions within ${ck.robustness.radiusM} m` : '';
+    if (f.kind === 'eye') return `${esc(objLabel(w.id))} — eye-level view from the marked position${w.eyeHeight ? ` (eye height ${num(w.eyeHeight, 1)} m)` : ''} at ${tsec(f.t)}, the time of the observation tested${ck ? `, looking toward ${esc(objLabel(ck.target))}: ${esc(res)}${rb}` : ''}.`;
+    return `Overhead plan (north up) at ${tsec(f.t)} showing only ${esc(objLabel(w.id))}'s sight line${ck ? ` to ${esc(objLabel(ck.target))}` : ''}; green = clear, red = blocked, dashed grey = occluded remainder.`;
+  };
+  const figHtml = (f, label, caption, meta) => `<figure class="exhibit"><div class="frame">${f ? `<img src="${esc(f.url)}" alt="">` : '<div class="missing">Render not available</div>'}</div>
+    <figcaption><span class="figno">Figure ${esc(label)}</span>${caption}${meta ? `<span class="figmeta">${meta}</span>` : ''}</figcaption></figure>`;
+  const figMeta = (f) => f ? `Source render: ${esc(String(f.url).split('?')[0].split('/').slice(-2).join('/'))} · reconstruction ${esc(worldName || '—')}${f.fallback ? ' · loop render' : ''}` : '';
+  sections.push(`<section class="part newpage"><h2 class="sec"><span class="n">4</span>Exhibits (figures)</h2>
+    <p class="small">Figures are rendered from the 3D reconstruction at the time each observation is tested. Eye-level views use a 60° camera at the witness's marked position and eye height; the banner states the ray-cast result. Renders illustrate geometry only; they do not show what a person perceived.</p>
+    ${overview ? figHtml(overview, figIndex.overview, `Overhead plan (north up) at ${tsec(overview.t)} with every witness's sight line to the object they describe; green = clear, red = blocked.`, figMeta(overview)) : ''}
+    ${witnessFigs.map(({ w, ov, eye }, i) => `<div class="witness-plate"${i === 0 && overview ? ' style="break-before:page"' : ''}><div class="plate-head">${esc(objLabel(w.id))}${sim && /fictional/i.test(w.name) ? ' (fictional)' : ''} · observation at ${tsec((eye || ov).t)}${w.citation ? ` · ${pins(w.citation)}` : ''}</div>
+      ${ov ? figHtml(ov, figIndex[ov.id], capFor(ov, w), figMeta(ov)) : ''}
+      ${eye ? figHtml(eye, figIndex[eye.id], capFor(eye, w), figMeta(eye)) : ''}
+    </div>`).join('')}
+    ${!figs.length ? '<p class="muted">No renders are available for this case yet.</p>' : ''}
+  </section>`);
+
+  // 5 checks
+  const order = ['sightline', 'timing', 'skid', 'plausibility'];
+  const allChecks = [...checks].sort((a, b) => (order.indexOf(a.check) + 1 || 9) - (order.indexOf(b.check) + 1 || 9));
+  const hasSkid = checks.some((c) => c.check === 'skid');
+  sections.push(`<section class="part newpage"><h2 class="sec"><span class="n">5</span>Independent checks</h2>
+    <p class="small">These checks are deterministic geometry and physics computed from the reconstruction; they are not model output. Line of sight is a ray cast from the witness's eye to the target, repeated from 25 deterministic positions in a 2 m disc around the marked position (eye height ±0.1 m) to test sensitivity to where the witness stood. Perception-reaction time compares the time available against a 1.0–2.5 s range. Plausibility flags accelerations over 1.0 g outside ±0.5 s of impact, jumps over 5 m per 0.05 s and speeds over 60 m/s.</p>
+    ${ckTable(allChecks, true)}
+    ${!hasSkid ? '<p class="small muted">Skid-to-speed: not computed — the case contains no pre-impact tire marks to measure.</p>' : ''}
+  </section>`);
+
+  // 6 validation
+  const vfmt = (v, u) => {
+    if (v == null) return '<span class="muted">not reproduced</span>';
+    if (Array.isArray(v)) return `(${v.map((x) => num(x, 2)).join(', ')}) ${esc(u)}`;
+    if (typeof v === 'number') return `${num(v, Math.abs(v) >= 100 || Number.isInteger(v) ? 0 : 2)} ${esc(u === 'clock' ? '' : u)}`;
+    return esc(v);
+  };
+  const tfmt = (t, u) => (t == null ? '—' : typeof t === 'object' ? Object.entries(t).map(([k, v]) => `${esc(k)} ±${esc(v)}`).join(', ') + ` ${esc(u)}` : `±${esc(t)} ${esc(u === 'clock' ? 's' : u)}`);
+  sections.push(`<section class="part"><h2 class="sec"><span class="n">6</span>Validation against ${esc(val ? val.source || 'published facts' : 'published facts')}</h2>
+    ${val ? `<p>The reconstruction (${esc(String(val.world || '').split('/').pop())}) was measured against ${esc(val.total)} facts stated in the published investigation. <b>${esc(val.matched)} of ${esc(val.total)}</b> are reproduced within tolerance. Facts not reproduced are reported, not hidden.</p>
+    <table><thead><tr><th>Published fact</th><th class="r" style="width:.8in">Published</th><th class="r" style="width:.8in">Model</th><th class="r" style="width:.75in">Tolerance</th><th style="width:.75in">Result</th><th style="width:1.55in">Citation</th></tr></thead><tbody>
+    ${(val.items || []).map((it) => `<tr><td>${esc(it.label)}${it.note ? `<span class="sub">${esc(it.note)}</span>` : ''}</td><td class="r nowrap">${vfmt(it.expected, it.unit)}</td><td class="r nowrap">${vfmt(it.actual, it.unit)}</td><td class="r nowrap">${tfmt(it.tolerance, it.unit)}</td><td>${statusChip(it.pass ? 'match' : 'no match')}</td><td class="small">${pins(it.citation)}</td></tr>`).join('')}
+    </tbody></table>` : '<p class="muted">No validation set is available for this case (cases/&lt;id&gt;/cache/validation.json).</p>'}
+  </section>`);
+
+  // 7 methodology
+  sections.push(`<section class="part newpage"><h2 class="sec"><span class="n">7</span>Methodology</h2>
+    <ol class="method">
+      <li><b>Ingest.</b> Each evidence file is stored unchanged; text is extracted from documents and the deposition transcript is kept with its timecodes so that every statement can be cited as <span class="pin">Depo MM:SS</span>.</li>
+      <li><b>Reconstruction.</b> A multimodal model (${esc((curProv && curProv.model) || 'Gemini 4 Argon')}) reads the evidence and writes a time-parameterised 3D scene: road geometry, vehicles and their paths, occluders, and each witness's marked position, eye height and observation time. Every object and value carries a citation to the evidence it came from; values without direct support are labelled <i>inferred</i> or <i>assumed</i>.</li>
+      <li><b>Review rounds.</b> The scene is rendered from overhead and from each witness's eye position. The model reviews its own renders against the evidence and revises the scene${st.rounds ? `; this case went through ${esc(st.rounds)} round${st.rounds === 1 ? '' : 's'}` : ''}. Each version is recorded with its inputs and prompt (Section 8).</li>
+      <li><b>Independent checks.</b> Deterministic code, separate from the model, ray-casts every witness's sight line (with a 25-position robustness test), measures how far the target was from the witness's gaze, computes perception-reaction time available, skid-to-speed ranges where marks exist (μ 0.6–0.8), and flags physically implausible motion.</li>
+      <li><b>Validation.</b> Where a published investigation exists, the reconstruction is measured against its stated facts (Section 6).</li>
+      <li><b>Findings.</b> Each finding states a status (contradiction, consistent, unverifiable), cites the testimony and documents it rests on, and lists the independent checks that bear on it.</li>
+    </ol>
+    <h4>Limitations</h4>
+    <p class="small">${esc(D.kinematicLabel || 'Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation.')} Sight lines are geometric: a clear line of sight does not establish that a witness noticed an object, and gaze direction is assumed where testimony does not state it. Results depend on the marked witness position, which the robustness test brackets to 2 m. Conclusions must be confirmed by a qualified reconstructionist before any use.</p>
+  </section>`);
+
+  // 8 provenance
+  sections.push(`<section class="part"><h2 class="sec"><span class="n">8</span>Provenance</h2>
+    ${provList.length ? `<table><thead><tr><th style="width:.75in">Version</th><th style="width:.7in">Mode</th><th>Model / prompt</th><th style="width:1.25in">Created</th><th style="width:1.3in">Output SHA-256</th></tr></thead><tbody>
+    ${provList.map((p) => `<tr><td><b>${esc(String(p.world || p.key).split('/').pop().replace(/\.js$/, ''))}</b><span class="sub">v${esc(p.version ?? '—')}${p.parentWorld ? ` ← ${esc(String(p.parentWorld).split('/').pop().replace(/\.js$/, ''))}` : ''}</span></td><td>${esc(p.mode || '—')}</td><td>${p.model ? esc(p.model) : '<span class="muted">not recorded (seeded run)</span>'}<span class="sub mono">${esc(p.promptFile || '—')} @ ${esc(p.promptVersion || '—')}</span>${p.usage && p.usage.promptTokens != null ? `<span class="sub">${int(p.usage.promptTokens)} prompt / ${int(p.usage.outputTokens)} output tokens</span>` : ''}</td><td class="small">${esc(fmtDate(p.createdAt))}</td><td class="mono small">${esc(String(p.outputSha256 || '—').slice(0, 16))}</td></tr>`).join('')}
+    </tbody></table>` : '<p class="muted">No provenance records are stored for this case.</p>'}
+    ${curProv && (curProv.inputs || []).length ? `<h4>Inputs to ${esc(worldName || 'the current reconstruction')} (SHA-256)</h4>
+    <table class="hashes"><thead><tr><th style="width:1.75in">File</th><th class="r" style="width:.8in">Bytes</th><th>SHA-256</th></tr></thead><tbody>
+    ${curProv.inputs.map((x) => `<tr><td class="mono small">${esc(x.file)}</td><td class="r">${int(x.bytes)}</td><td class="mono">${esc(x.sha256)}</td></tr>`).join('')}
+    </tbody></table>` : ''}
+    <p class="small">Reconstruction file: <span class="mono">${esc(st.world || '—')}</span>${curProv && curProv.outputSha256 ? ` · SHA-256 <span class="mono">${esc(curProv.outputSha256)}</span>` : ''}. Findings and checks last updated ${esc(st.updatedAt ? fmtDate(st.updatedAt) : '—')}.</p>
+    <div class="endnote">Generated by Sightline from case <span class="mono">${esc(D.caseId)}</span> on ${esc(fmtDay(D.generatedAt))}. ${esc(N.draft)}.${sim ? ` ${esc(sim)}.` : ''}</div>
+    <div class="sig"><div>Reviewed by (reconstruction expert)</div><div>Date</div></div>
+  </section>`);
+
+  $doc.innerHTML = sections.join('\n');
+  await Promise.all([...document.images].map((i) => (i.complete ? 0 : new Promise((r) => { i.onload = i.onerror = r; }))));
+  if (document.fonts && document.fonts.ready) await document.fonts.ready;
+  window.__reportReady = true;
+}
+
+main().catch((e) => {
+  window.__reportError = String(e && e.message || e);
+  $doc.innerHTML = `<div class="loading">Could not build the report: ${esc(window.__reportError)}</div>`;
+});
+</script>
+</body>
+</html>

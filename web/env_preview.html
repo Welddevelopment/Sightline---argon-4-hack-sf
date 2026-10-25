@@ -30,6 +30,7 @@ import { environment, configureRenderer } from '/web/assets/environment.js';
 const q = new URLSearchParams(location.search);
 const times = (q.get('times') || '06:45,12:00,16:36,19:45').split(',');
 const weather = q.get('weather') || 'clear';
+const weathers = (q.get('weathers') || '').split(',').filter(Boolean);   // optional per-panel weather
 const date = q.get('date') || '2016-05-07';
 const off = q.get('off') || '-04:00';
 const lat = +(q.get('lat') || 29.4106), lon = +(q.get('lon') || -82.5393);
@@ -59,7 +60,8 @@ for (const [i, tod] of times.entries()) {
   const ground = new THREE.Mesh(new THREE.PlaneGeometry(4000, 4000), new THREE.MeshStandardMaterial({ color: 0x6f7f4f, roughness: 1 }));
   ground.rotation.x = -Math.PI / 2; ground.position.y = -0.02; ground.receiveShadow = true;
   scene.add(ground);
-  const env = environment(THREE, { date, timeOfDay: tod, utcOffset: off, lat, lon, weather, Sky, center: [0, 0], radius: 90 });
+  const wx = weathers[i] || weather;
+  const env = environment(THREE, { date, timeOfDay: tod, utcOffset: off, lat, lon, weather: wx, Sky, center: [0, 0], radius: 90 });
   scene.add(env.group);
   scene.fog = env.fog;
   // row 0: Witness B eye view toward the car; row 1: elevated oblique from the south-east showing shadows
@@ -76,7 +78,7 @@ for (const [i, tod] of times.entries()) {
   const cam2 = new THREE.PerspectiveCamera(60, cw / ch, 0.1, 2000);
   cam2.position.set(40, 1.7, 30);
   cam2.lookAt(40 + Math.sin(az) * 100, 1.7 + Math.tan(pitch) * 100, 30 - Math.cos(az) * 100);
-  panels.push({ scene, env, cams: [cam0, cam1, cam2], tod });
+  panels.push({ scene, env, cams: [cam0, cam1, cam2], tod, wx });
 }
 
 function label(x, y, text) {
@@ -99,7 +101,7 @@ function draw() {
 draw();
 panels.forEach((p, i) => {
   const f = p.env.info;
-  label(i * cw + 4, 4, `Witness B eye  ${p.tod} EDT  ${weather}\nsun az ${f.sunAzimuth.toFixed(1)}  el ${f.sunElevation.toFixed(1)}  ${f.phase}\nglobal ${f.illuminanceLux.global} lx`);
+  label(i * cw + 4, 4, `Witness B eye  ${p.tod} EDT  ${p.wx}\nsun az ${f.sunAzimuth.toFixed(1)}  el ${f.sunElevation.toFixed(1)}  ${f.phase}\nglobal ${f.illuminanceLux.global} lx`);
   label(i * cw + 4, ch + 4, i === 0 ? `oblique (SE), t=${tEvent}s  sunrise ${f.sunrise} sunset ${f.sunset}` : `oblique (SE)`);
   label(i * cw + 4, 2 * ch + 4, `toward sun az ${f.sunAzimuth.toFixed(0)}  key: ${f.keySource}`);
 });

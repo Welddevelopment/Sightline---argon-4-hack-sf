@@ -116,6 +116,7 @@ function bar(T, a, b, w, h, m, name) {
   o.scale.set(w, h, len);
   return o;
 }
+function addAt(g, o, x, y, z) { o.position.set(x, y, z); g.add(o); return o; }
 function at(o, x, y, z, rx = 0, ry = 0, rz = 0) { o.position.set(x, y, z); o.rotation.set(rx, ry, rz); return o; }
 // Merge non-indexed copies of (geometry, matrix) pairs (position+normal only).
 function merge(T, parts) {
@@ -410,11 +411,11 @@ function buildBicycle(T, o, g) {
   // drivetrain (right side = +X)
   const crank = 0.17, ca = o.crankAngle ?? 0.55; // radians from forward-horizontal
   const ring = mesh(T, discX(T, 0.1, 0.004, 40), dk, 'chainring'); ring.position.set(0.075, BB[1], BB[2]); g.add(ring);
-  g.add(mesh(T, ringX(T, 0.1, 0.005, 6, 40), M.steel(T), 'chainring_teeth')).position.set(0.075, BB[1], BB[2]);
+  addAt(g, mesh(T, ringX(T, 0.1, 0.005, 6, 40), M.steel(T), 'chainring_teeth'), 0.075, BB[1], BB[2]);
   const cas = mesh(T, discX(T, 0.045, 0.03, 24), M.steel(T), 'cassette'); cas.position.set(0.06, RA[1], RA[2]); g.add(cas);
   g.add(tube(T, [0.074, BB[1] + 0.1, BB[2]], [0.06, RA[1] + 0.045, RA[2]], 0.004, dk, 'chain'));
   g.add(tube(T, [0.074, BB[1] - 0.1, BB[2]], [0.06, RA[1] - 0.045, RA[2]], 0.004, dk, 'chain'));
-  g.add(mesh(T, discX(T, 0.02, 0.16, 12), dk, 'bb_axle')).position.set(0, BB[1], BB[2]);
+  addAt(g, mesh(T, discX(T, 0.02, 0.16, 12), dk, 'bb_axle'), 0, BB[1], BB[2]);
   const pedals = [];
   for (const [s, ang] of [[1, ca], [-1, ca + Math.PI]]) {
     const end = [s * 0.09, BB[1] + Math.sin(ang) * crank, BB[2] - Math.cos(ang) * crank];
@@ -500,7 +501,7 @@ function buildMotorcycle(T, o, g) {
   }
   for (const s of [-1, 1]) { const ts = mesh(T, ellipsoidGeo(T, 0.018, 0.012, 0.026, 10), M.amber(T), 'turn_F'); ts.position.set(s * 0.14, yC1 + 0.03, zC1 - 0.08); g.add(ts); }
   // radiator + frame + swingarm
-  g.add(bar(T, [0, 0.6, -0.42], [0, 0.6, -0.44], 0.36, 0.3, blk, 'radiator')).rotation.x += 0.2;
+  g.add(bar(T, [0, 0.66, -0.43], [0, 0.56, -0.455], 0.36, 0.05, blk, 'radiator'));
   const SH = [0, yC1 + 0.02, zC1 + 0.03], PV = 0.13;
   for (const s of [-1, 1]) {
     g.add(bar(T, [s * 0.05, SH[1], SH[2]], [s * PV, 0.8, -0.2], 0.04, 0.09, dk, 'frame_spar'));
@@ -542,8 +543,8 @@ function buildMotorcycle(T, o, g) {
     g.add(bar(T, [s * 0.12, 0.42, 0.16], [s * 0.15, 0.35, 0.04], 0.03, 0.06, alu, 'peg_bracket'));
   }
   // chain + sprockets (left)
-  g.add(mesh(T, discX(T, 0.045, 0.012, 20), dk, 'sprocket_F')).position.set(-0.11, 0.36, 0.06);
-  g.add(mesh(T, discX(T, 0.105, 0.008, 32), alu, 'sprocket_R')).position.set(-0.115, RA[1], RA[2]);
+  addAt(g, mesh(T, discX(T, 0.045, 0.012, 20), dk, 'sprocket_F'), -0.11, 0.36, 0.06);
+  addAt(g, mesh(T, discX(T, 0.105, 0.008, 32), alu, 'sprocket_R'), -0.115, RA[1], RA[2]);
   g.add(tube(T, [-0.112, 0.405, 0.06], [-0.115, RA[1] + 0.105, RA[2]], 0.007, dk, 'chain'));
   g.add(tube(T, [-0.112, 0.315, 0.06], [-0.115, RA[1] - 0.105, RA[2]], 0.007, dk, 'chain'));
   return {

@@ -8,7 +8,9 @@ import * as THREE from 'three';
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
 import fs from 'node:fs';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { pathToFileURL, fileURLToPath } from 'node:url';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 // GLTFExporter uses FileReader for binary output; Node has Blob but no FileReader.
 if (typeof globalThis.FileReader === 'undefined') {
@@ -28,11 +30,15 @@ const hex = (c) => '#' + c.getHexString();
 
 export async function exportWorld(worldFile, t, outGlb) {
   const mod = await import(pathToFileURL(path.resolve(worldFile)).href);
-  const world = mod.default(THREE);
+  // WORLD CONTRACT v2: createWorld(THREE, assets). v1 worlds ignore the second argument.
+  let assets;
+  try { const A = await import(pathToFileURL(path.join(ROOT, 'web/assets.js')).href); assets = await A.loadAssets(THREE, { headless: true }); }
+  catch (e) { console.warn('assets library unavailable (' + (e && e.message) + '); v1 worlds still work'); }
+  const world = mod.default(THREE, assets);
   world.setTime(t);
   world.root.updateMatrixWorld(true);
 
-  // Tag materials with "<top-level id>|<role hint>|<hex>" so Blender can upgrade them without touching geometry.
+  // Tag materials with "<top-level id>|<mesh name>|<kind>|<hex>|<library material name>" so Blender can upgrade them without touching geometry.
   const topId = (o) => { let n = o, id = null; while (n && n !== world.root) { if (world.objects[n.name]) id = n.name; n = n.parent; } return id || o.name || 'scene'; };
   world.root.traverse((o) => {
     if (!o.isMesh || !o.material) return;
@@ -40,7 +46,7 @@ export async function exportWorld(worldFile, t, outGlb) {
     o.material = m.map((mm) => {
       const c = mm.clone();
       const kind = (world.objects[topId(o)] || {}).kind || 'scene';
-      c.name = `${topId(o)}|${o.name || o.parent?.name || ''}|${kind}|${hex(mm.color || new THREE.Color(1, 1, 1))}`;
+      c.name = `${topId(o)}|${o.name || o.parent?.name || ''}|${kind}|${hex(mm.color || new THREE.Color(1, 1, 1))}|${mm.name || ''}`;
       return c;
     });
     if (o.material.length === 1) o.material = o.material[0];
