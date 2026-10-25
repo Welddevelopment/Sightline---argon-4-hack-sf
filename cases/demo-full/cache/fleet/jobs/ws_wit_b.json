@@ -1,0 +1,113 @@
+{
+  "id": "ws_wit_b",
+  "type": "whatif_speed",
+  "witness": "wit_witness_B",
+  "why": "Test whether any reasonable variation in Car A's speed would clear the obstruction for Witness B.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_ChdBb19lYXBQWUtiekR4ZElQLXY3VWlRcxIXQW9fZWFwUFlLYnpEeGRJUC12N1VpUXM",
+  "dispatchedAtMs": 2501,
+  "createMs": 388693,
+  "status": "completed",
+  "environmentId": "da12f3c63cf48c5255540402369b9bed",
+  "usage": {
+    "total": 20402,
+    "input": 19002,
+    "cached": 9970
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"ws_wit_b\",\"ok\":true,\"ms\":4498}",
+    "interpretation": "Witness B did not have a line of sight to car A across all tested speed variations because the view was obstructed by the bench shelter."
+  },
+  "result": {
+    "task": {
+      "id": "ws_wit_b",
+      "type": "whatif_speed",
+      "witness": "wit_witness_B",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_car_a",
+      "tObs": 9.9,
+      "impactT": 10.43,
+      "impactSource": "meta.impactT",
+      "sweep": [
+        {
+          "k": 0.7,
+          "trackT": 10.06,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 24.92,
+          "robustBlockedOf25": 25
+        },
+        {
+          "k": 0.8,
+          "trackT": 10.01,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 26.56,
+          "robustBlockedOf25": 25
+        },
+        {
+          "k": 0.9,
+          "trackT": 9.95,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 28.22,
+          "robustBlockedOf25": 25
+        },
+        {
+          "k": 1,
+          "trackT": 9.9,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 29.88,
+          "robustBlockedOf25": 25
+        },
+        {
+          "k": 1.1,
+          "trackT": 9.85,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 31.56,
+          "robustBlockedOf25": 25
+        },
+        {
+          "k": 1.2,
+          "trackT": 9.79,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 33.24,
+          "robustBlockedOf25": 25
+        },
+        {
+          "k": 1.3,
+          "trackT": 9.74,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 34.93,
+          "robustBlockedOf25": 23
+        }
+      ],
+      "note": "Speed what-if by time remapping along the cited track; other moving objects follow the same remap (approximation)."
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 4498,
+      "worldSha": "549d69915f59",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 440990,
+  "doneAtMs": 443491
+}

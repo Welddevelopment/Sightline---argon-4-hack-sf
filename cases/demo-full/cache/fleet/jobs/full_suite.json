@@ -1,0 +1,118 @@
+{
+  "id": "full_suite",
+  "type": "full_checks",
+  "why": "Independently verify the entire local check suite on a clean sandbox.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_ChdHWV9lYXFfN09NekJ4ZElQOS1hQjBBURIXR1lfZWFxXzdPTXpCeGRJUDktYUIwQVE",
+  "dispatchedAtMs": 2,
+  "createMs": 414176,
+  "status": "completed",
+  "environmentId": "9dac14b8605b542f364a94d09b5df7a6",
+  "usage": {
+    "total": 20562,
+    "input": 18946,
+    "cached": 9967
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"full_suite\",\"ok\":true,\"ms\":10702}",
+    "interpretation": "Vehicle timing and dynamics are plausible, with unobstructed sightlines for witnesses A and C, while sightlines for witnesses B and D are blocked by surrounding structures."
+  },
+  "result": {
+    "task": {
+      "id": "full_suite",
+      "type": "full_checks",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "checks": [
+        {
+          "check": "sightline",
+          "subject": "wit_witness_A",
+          "pass": true,
+          "blockedBy": null,
+          "t": 4,
+          "robustness": "not_blocked",
+          "blocked": 0,
+          "gazeDeg": 2.3
+        },
+        {
+          "check": "sightline",
+          "subject": "wit_witness_B",
+          "pass": false,
+          "blockedBy": "occ_bench_shelter",
+          "t": 9.9,
+          "robustness": "robust",
+          "blocked": 25,
+          "gazeDeg": 29.5
+        },
+        {
+          "check": "sightline",
+          "subject": "wit_witness_C",
+          "pass": true,
+          "blockedBy": null,
+          "t": 10.43,
+          "robustness": "not_blocked",
+          "blocked": 0,
+          "gazeDeg": 6.6
+        },
+        {
+          "check": "sightline",
+          "subject": "wit_witness_D",
+          "pass": false,
+          "blockedBy": "bld_retail_store",
+          "t": 10.43,
+          "robustness": "partial",
+          "blocked": 23,
+          "gazeDeg": 2.9
+        },
+        {
+          "check": "timing",
+          "subject": "veh_car_a",
+          "pass": true,
+          "blockedBy": null,
+          "verdict": "sufficient",
+          "availableS": 10.43
+        },
+        {
+          "check": "plausibility",
+          "subject": "veh_car_a",
+          "pass": true
+        },
+        {
+          "check": "plausibility",
+          "subject": "veh_truck_tractor",
+          "pass": true
+        },
+        {
+          "check": "plausibility",
+          "subject": "veh_semitrailer",
+          "pass": true
+        },
+        {
+          "check": "plausibility",
+          "subject": "veh_witness_a_pickup",
+          "pass": true
+        }
+      ]
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 10702,
+      "worldSha": "549d69915f59",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 480276,
+  "doneAtMs": 480278
+}
