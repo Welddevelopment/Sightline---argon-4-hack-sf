@@ -1022,7 +1022,7 @@ function detailKit(THREE, S, bodyMesh, ghMesh) {
   };
   // plan-outline wrap: s = arclength from the front (or rear) centre along the body outline at height y
   const outlines = new Map();
-  k.around = (end, s, y, cast = hitB) => {
+  k.around = (end, s, y, cast = hitA) => {
     let best = null, bd = 1e9;
     for (const lv of levels) {
       const yy = lv.y(0.5, end === 'F' ? lv.zF + 0.1 : lv.zR - 0.1);
@@ -1042,10 +1042,12 @@ function detailKit(THREE, S, bodyMesh, ghMesh) {
     const x = p0[0] + (p1[0] - p0[0]) * t, u = p0[1] + (p1[1] - p0[1]) * t;
     let tx = p1[0] - p0[0], tu = p1[1] - p0[1]; const l = Math.hypot(tx, tu) || 1; tx /= l; tu /= l;
     let nx = tu, nu = -tx; if (end === 'R') { nx = -tu; nu = tx; }
-    return cast([x + nx * 0.3, y, Z(u + nu * 0.3)], [-nx, 0, -nu], 1.2);
+    const h = cast([x + nx * 0.3, y, Z(u + nu * 0.3)], [-nx, 0, -nu], 1.2);
+    if (!h && typeof process !== 'undefined' && process.env && process.env.V3_DEBUG) console.log('miss around', S.type, end, s.toFixed(3), y.toFixed(3));
+    return h;
   };
   // lens-shaped patch over (s, y): lo(σ), hi(σ) with rounded ends; expand grows it uniformly (bezels)
-  k.wrapGrid = (end, s0, s1, lo, hi, { cols = 28, rows = 6, round = 0.12, expand = 0, cast = hitB } = {}) => {
+  k.wrapGrid = (end, s0, s1, lo, hi, { cols = 28, rows = 6, round = 0.12, expand = 0, cast = hitA } = {}) => {
     const out = [];
     for (let r = 0; r <= rows; r++) {
       const row = [];
@@ -1249,7 +1251,7 @@ function carDetails(THREE, S, kit, add, both, mats) {
   {
     const Gs = S.gh, yW = (x) => f.topY(x, Gs.zF(0)) + (D.wiperDy ?? 0.03);
     for (const [x0, x1] of [[-0.66, 0.02], [-0.02, 0.6]]) {
-      add(cache('wiper' + x0, () => ribbon(kit.line(20, t => { const x = x0 + (x1 - x0) * t; return kit.hitG([x, yW(x) + 0.02 * t, kit.Z(0)], [0, -(D.wiperSlope ?? 0.48), 1]); }), 0.018, 0.012)), M.trim, 'wiper');
+      add(cache('wiper' + x0, () => ribbon(kit.line(20, t => { const x = x0 + (x1 - x0) * t; return kit.hitG([x, yW(x) + 0.025 * t, kit.Z(-1)], [0, 0, 1]); }), 0.018, 0.012)), M.trim, 'wiper');
     }
   }
   // ---- rear: separate tail-lamp units, plate recess, garnish, bumper seam, reflectors, exhaust
