@@ -1,11 +1,11 @@
 {
   "world": "/cases/jobtest/worlds/world_v2.js",
   "version": 2,
-  "createdAt": "2026-10-25T19:11:54.775Z",
+  "createdAt": "2026-10-25T19:13:19.986Z",
   "mode": "mock",
   "model": "gemini-4-argon",
   "promptFile": "argon/prompts/critique.md",
-  "promptVersion": "296ce8a4b279",
+  "promptVersion": "49d847879fd8",
   "inputs": [
     {
       "file": "text/deposition.txt",

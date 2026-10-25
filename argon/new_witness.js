@@ -162,7 +162,8 @@ function parseWitnessJSON(text) {
 async function callOnce(prompt, timeoutMs, name, d, { useSchema = true, useThinking = true } = {}) {
   const ai = await getAI();
   const ctrl = new AbortController();
-  const config = { responseMimeType: 'application/json', maxOutputTokens: 4096, abortSignal: ctrl.signal, httpOptions: { timeout: timeoutMs } };
+  // No per-request httpOptions.timeout: the API rejects deadlines < 10 s; the abort + race below enforce timeoutMs.
+  const config = { responseMimeType: 'application/json', maxOutputTokens: 4096, abortSignal: ctrl.signal };
   if (useSchema) config.responseJsonSchema = SCHEMA;
   if (useThinking && process.env.ARGON_WITNESS_THINKING) config.thinkingConfig = { thinkingLevel: process.env.ARGON_WITNESS_THINKING };
   let timer;
@@ -263,10 +264,12 @@ export async function parseStatement(statement, world) {
       notes.push(`"${m[0]}" → just beyond the ${normDir(m[1])} edge of the main road, opposite the intersection`);
     }
   }
-  // 4. "at/near/in front of/across from <landmark>"
-  if (!pos && (m = s.match(new RegExp(`\\b(?:at|near|by|in\\s+front\\s+of|outside|beside|next\\s+to|across\\s+from)\\s+${landmarkRe}`)))) {
-    const lm = matchLandmark(m[1], world, bx);
-    if (lm) {
+  // 4. "at/near/in front of/across from <landmark>"; 5. last resort: any landmark named anywhere in the statement
+  const nearRe = new RegExp(`\\b(?:at|near|by|in\\s+front\\s+of|outside|beside|next\\s+to|across\\s+from)\\s+${landmarkRe}`);
+  for (const phrase of [(s.match(nearRe) || [])[0], s]) {
+    if (pos || !phrase) continue;
+    const lm = matchLandmark(phrase.replace(/^\S+\s+/, ''), world, bx);
+    if (lm && lm !== 'origin' && bx[lm]) {
       const b = bx[lm];
       const [cx, cz] = center(lm);
       // nearest face toward the origin (the crash scene), 1.5 m out
@@ -274,7 +277,7 @@ export async function parseStatement(statement, world) {
       const hx = (b.max.x - b.min.x) / 2, hz = (b.max.z - b.min.z) / 2;
       const k = Math.min(hx / Math.abs(ux / L || 1e-9), hz / Math.abs(uz / L || 1e-9));
       pos = [cx + (ux / L) * (Math.min(k, L) + 1.5), cz + (uz / L) * (Math.min(k, L) + 1.5)];
-      notes.push(`"${m[0]}" → beside ${lm}, on its side facing the crash scene`);
+      notes.push(phrase === s ? `only landmark named is ${lm}; placed beside it, facing the crash scene` : `"${phrase}" → beside ${lm}, on its side facing the crash scene`);
     }
   }
   if (!pos) return null;
@@ -372,7 +375,7 @@ export async function newWitness(statement, world, caseOpt) {
   }
   const fb = await fallbacks(errors.join(' | '));
   if (fb) return fb;
-  throw new Error(`newWitness: Argon failed (${errors.join(' | ')}) and no replay/parser match for this statement`);
+  throw new Error(`Argon is unreachable right now (${errors.join(' | ')}) and the offline parser needs a landmark, e.g. "I was 30 m north of the store"`);
 }
 
 if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === import.meta.url) {

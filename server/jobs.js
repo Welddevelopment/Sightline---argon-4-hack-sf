@@ -60,7 +60,7 @@ export function mountJobs(app, store, h = {}) {
     if (fs.existsSync(store.CASES)) {
       for (const id of fs.readdirSync(store.CASES)) {
         const j = load(id);
-        if (!j || !ACTIVE.has(j.status)) continue;
+        if (!j || !ACTIVE.has(j.status) || alive(j.pid)) continue; // still owned by another live server process
         const at = new Date().toISOString();
         Object.assign(j, { status: 'failed', step: 'error', error: 'server restarted', message: 'Server restarted while this reconstruction was running. Resume to start it again.',
           finishedAt: at, resumable: true });
@@ -89,7 +89,7 @@ export function mountJobs(app, store, h = {}) {
     /** Register a new job (status queued). Throws if one is already active for this case. */
     create(id, { mode } = {}) {
       if (api.isActive(id) && (live.has(id) || queuePos(id))) { const e = new Error('a job is already running for this case'); e.status = 409; throw e; }
-      const job = { caseId: id, status: 'queued', step: 'queued', message: 'Queued', mode: mode || h.MODE || null,
+      const job = { caseId: id, status: 'queued', step: 'queued', message: 'Queued', mode: mode || h.MODE || null, pid: process.pid,
         startedAt: new Date().toISOString(), finishedAt: null, error: null, resumable: false, events: [] };
       jobs.set(id, job); save(job);
       return job;
@@ -137,6 +137,7 @@ export function mountJobs(app, store, h = {}) {
         Object.assign(j, { status: 'failed', step: 'error', finishedAt: new Date().toISOString(), error: err ? String(err.message || err) : 'run ended without a result', resumable: true });
         save(j);
       }
+      if (!queuePos(id)) jobs.delete(id); // finished: disk is the source of truth from here on
       while (live.size < LIMIT && waiters.length) waiters.shift().resolve();
     },
   };

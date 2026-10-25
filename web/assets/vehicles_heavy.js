@@ -1,0 +1,917 @@
+// Sightline heavy-vehicle library (VEH-HEAVY). Browser + Node, no DOM at import, no THREE import (THREE is passed in).
+//
+//   import { createHeavyVehicle, coupleTrailer } from './assets/vehicles_heavy.js';
+//   const tractor = createHeavyVehicle(THREE, 'truck_tractor', { id: 'veh_T_tractor', color: 0x8a1c1c });
+//   const trailer = createHeavyVehicle(THREE, 'semitrailer',  { id: 'veh_T_trailer', variant: 'box' });   // or variant:'flatbed'
+//   const truck   = createHeavyVehicle(THREE, 'box_truck', { id: 'veh_B' });
+//   const bus     = createHeavyVehicle(THREE, 'bus', { id: 'veh_bus', variant: 'transit' });             // or variant:'school'
+//
+// WORLD CONTRACT v2: meters, Y up, origin = ground-level centre of the footprint, rotation.y = 0 faces -Z (front at -Z).
+// Catalog dims (exact): truck_tractor 6.5 x 2.5 x 3.6 · semitrailer 16.2 x 2.6 x 4.1 (flatbed: deck height 1.52)
+//                       box_truck 7.5 x 2.5 x 3.4 · bus 12.2 x 2.55 x 3.2  (mirrors excluded from width, as on spec sheets)
+// Every object: name = id, userData.{assetType, variant, dims, setLights(on, {beams}), setBrake(on), driverEye|null}.
+// Lamps are child meshes named headlight_L/R and taillight_L/R (L = driver side = -X when facing -Z).
+//
+// ARTICULATION (tractor + semitrailer are two separate objects, both children of the same parent):
+//   tractor.userData.fifthWheel = [0, 1.22, zF]   local point of the fifth-wheel pivot (zF = +1.95, behind the cab)
+//   trailer.userData.kingpinOffset = zK           local z of the kingpin (zK = -7.19, i.e. 0.91 m / 36 in behind the trailer nose)
+//   trailer.userData.kingpin = [0, 1.22, zK]
+//   With tractor at (tx, tz) heading h (= rotation.y) and trailer heading ht (= h - articulation angle):
+//     pivot P  = (tx + zF*sin h,  tz + zF*cos h)
+//     trailer.position = (P.x - zK*sin ht, 0, P.z - zK*cos ht);  trailer.rotation.y = ht
+//   coupleTrailer(tractor, trailer, articulationRad) does exactly that from the tractor's current pose;
+//   tractor.userData.hitch(trailer, articulationRad) is the same function, callable from a world without imports.
+//   For kinematic follow, the trailer heading relaxes toward the pivot path:  dht/ds = sin(h - ht) / (zF_pivot_to_trailer_axles)
+//   where the kingpin-to-tandem-centre distance is trailer.userData.kingpinToAxles (12.37 m).
+
+let SHARED = null;
+try { SHARED = await import('./vehicle_parts.js'); } catch (e) { SHARED = null; }   // optional; local parts below are the fallback
+
+const CATALOG = {
+  truck_tractor: { length: 6.5, width: 2.5, height: 3.6 },
+  semitrailer:   { length: 16.2, width: 2.6, height: 4.1 },
+  semitrailer_flatbed: { length: 16.2, width: 2.6, height: 1.52 },
+  box_truck:     { length: 7.5, width: 2.5, height: 3.4 },
+  bus:           { length: 12.2, width: 2.55, height: 3.2 },
+  bus_school:    { length: 12.2, width: 2.55, height: 3.2 },
+};
+export const HEAVY_TYPES = ['truck_tractor', 'semitrailer', 'box_truck', 'bus'];
+export const HEAVY_DIMS = CATALOG;
+
+// ---------------------------------------------------------------- caches (per THREE instance)
+const CACHES = new WeakMap();
+function cacheFor(T) {
+  let c = CACHES.get(T);
+  if (!c) { c = { mats: {}, paint: {}, built: {}, geo: {} }; CACHES.set(T, c); }
+  return c;
+}
+
+// ---------------------------------------------------------------- materials (PBR)
+function mats(T) {
+  const c = cacheFor(T);
+  if (c.mats.chrome) return c.mats;
+  const S = (o) => new T.MeshStandardMaterial(o);
+  const m = c.mats;
+  m.chrome = S({ color: 0xe8eaec, metalness: 1.0, roughness: 0.14 });
+  m.alum = S({ color: 0xc9cdd2, metalness: 0.9, roughness: 0.3 });
+  m.alumDull = S({ color: 0xa9adb2, metalness: 0.75, roughness: 0.45 });
+  m.frame = S({ color: 0x1b1c1e, metalness: 0.35, roughness: 0.55 });
+  m.steelDark = S({ color: 0x2a2c2f, metalness: 0.5, roughness: 0.5 });
+  m.trim = S({ color: 0x151617, metalness: 0.0, roughness: 0.55 });
+  m.grille = S({ color: 0x0b0c0d, metalness: 0.6, roughness: 0.45 });
+  m.rubber = S({ color: 0x111112, metalness: 0.0, roughness: 0.9 });
+  m.tire = S({ color: 0x18191a, metalness: 0.0, roughness: 0.88 });
+  m.hole = S({ color: 0x050505, metalness: 0.0, roughness: 1.0 });
+  m.glass = new T.MeshPhysicalMaterial({ color: 0x1a252d, metalness: 0.05, roughness: 0.04, clearcoat: 1, clearcoatRoughness: 0.02, transparent: true, opacity: 0.88 });
+  m.panelWhite = S({ color: 0xe9ebea, metalness: 0.25, roughness: 0.42 });
+  m.frp = S({ color: 0xf2f2ee, metalness: 0.05, roughness: 0.38 });
+  m.wood = S({ color: 0x8a6440, metalness: 0.0, roughness: 0.82 });
+  m.rimWhite = S({ color: 0xd8d8d2, metalness: 0.3, roughness: 0.4 });
+  m.reflRed = S({ color: 0xb4121a, metalness: 0.1, roughness: 0.3, emissive: 0x200000 });
+  m.reflWhite = S({ color: 0xf4f4f4, metalness: 0.1, roughness: 0.25, emissive: 0x111111 });
+  m.yellowBus = new T.MeshPhysicalMaterial({ color: 0xf2a900, metalness: 0.1, roughness: 0.32, clearcoat: 1, clearcoatRoughness: 0.08 });
+  m.redSign = S({ color: 0xb01018, metalness: 0.1, roughness: 0.35 });
+  m.ledSign = S({ color: 0x1a1408, metalness: 0.2, roughness: 0.3, emissive: 0x3a2400, emissiveIntensity: 1 });
+  for (const k in m) m[k].name = 'heavy_' + k;
+  return m;
+}
+function paint(T, hex) {
+  const c = cacheFor(T);
+  const key = String(hex);
+  if (!c.paint[key]) {
+    c.paint[key] = new T.MeshPhysicalMaterial({ color: hex, metalness: 0.25, roughness: 0.3, clearcoat: 1, clearcoatRoughness: 0.06 });
+    c.paint[key].name = 'heavy_paint_' + key;
+  }
+  return c.paint[key];
+}
+function toHex(color, dflt) {
+  if (color === undefined || color === null || color === '') return dflt;
+  if (typeof color === 'number') return color;
+  const named = { white: 0xf2f2f0, black: 0x141518, red: 0x9a1b1b, blue: 0x1f3d7a, silver: 0xb9bdc2, gray: 0x6b6f75, grey: 0x6b6f75,
+    green: 0x1f5a3a, yellow: 0xf2a900, orange: 0xd9601a, maroon: 0x5c1a1f, brown: 0x5a3d2b, gold: 0xb8913a };
+  const s = String(color).trim().toLowerCase();
+  if (named[s] !== undefined) return named[s];
+  if (/^#?[0-9a-f]{6}$/.test(s)) return parseInt(s.replace('#', ''), 16);
+  return dflt;
+}
+
+// ---------------------------------------------------------------- geometry helpers
+// Builder: accumulates transformed geometry per material key, merges once per (type, variant), cached.
+class Builder {
+  constructor(T) { this.T = T; this.b = {}; this.m4 = new T.Matrix4(); this.q = new T.Quaternion(); this.e = new T.Euler(); }
+  add(mat, geo, pos = [0, 0, 0], rot = [0, 0, 0], scl = [1, 1, 1]) {
+    const T = this.T;
+    this.e.set(rot[0], rot[1], rot[2]);
+    this.q.setFromEuler(this.e);
+    this.m4.compose(new T.Vector3(...pos), this.q, new T.Vector3(...scl));
+    const g = (geo.index ? geo.toNonIndexed() : geo.clone());
+    g.applyMatrix4(this.m4);
+    if (scl[0] * scl[1] * scl[2] < 0) flipWinding(g);
+    (this.b[mat] = this.b[mat] || []).push(g);
+    return this;
+  }
+  box(mat, [x0, x1], [y0, y1], [z0, z1], rot) {
+    const g = new this.T.BoxGeometry(Math.abs(x1 - x0), Math.abs(y1 - y0), Math.abs(z1 - z0));
+    return this.add(mat, g, [(x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2], rot);
+  }
+  // mirrored pair across x=0 for a box
+  box2(mat, [x0, x1], ys, zs) { this.box(mat, [x0, x1], ys, zs); return this.box(mat, [-x1, -x0], ys, zs); }
+  cyl(mat, axis, r, len, pos, seg = 20, r2) {
+    const g = new this.T.CylinderGeometry(r2 === undefined ? r : r2, r, len, seg);
+    const rot = axis === 'x' ? [0, 0, Math.PI / 2] : axis === 'z' ? [Math.PI / 2, 0, 0] : [0, 0, 0];
+    return this.add(mat, g, pos, rot);
+  }
+  build() {
+    const out = {};
+    for (const k in this.b) out[k] = mergeGeos(this.T, this.b[k]);
+    return out;
+  }
+}
+function flipWinding(g) {
+  const p = g.attributes.position, n = g.attributes.normal, uv = g.attributes.uv;
+  for (let i = 0; i < p.count; i += 3) for (const a of [p, n, uv]) if (a) {
+    const s = a.itemSize;
+    for (let k = 0; k < s; k++) { const t = a.array[(i + 1) * s + k]; a.array[(i + 1) * s + k] = a.array[(i + 2) * s + k]; a.array[(i + 2) * s + k] = t; }
+  }
+}
+function mergeGeos(T, list) {
+  let n = 0;
+  for (const g of list) n += g.attributes.position.count;
+  const pos = new Float32Array(n * 3), nor = new Float32Array(n * 3), uv = new Float32Array(n * 2);
+  let o = 0;
+  for (const g of list) {
+    const c = g.attributes.position.count;
+    pos.set(g.attributes.position.array, o * 3);
+    if (g.attributes.normal) nor.set(g.attributes.normal.array, o * 3);
+    if (g.attributes.uv) uv.set(g.attributes.uv.array, o * 2);
+    o += c;
+    g.dispose();
+  }
+  const out = new T.BufferGeometry();
+  out.setAttribute('position', new T.BufferAttribute(pos, 3));
+  out.setAttribute('normal', new T.BufferAttribute(nor, 3));
+  out.setAttribute('uv', new T.BufferAttribute(uv, 2));
+  out.computeBoundingBox(); out.computeBoundingSphere();
+  return out;
+}
+
+// Profile path in the vehicle's side plane. Nodes: [z, y, cornerRadius?] or ['arch', zc, yc, r] (wheel-arch cut through the
+// line between its neighbours, centre (zc,yc)). Shape coords: sx = -z, sy = y (so the extrude, rotated, puts front at -Z).
+function profileShape(T, nodes) {
+  const pts = [];
+  // resolve arch endpoints
+  const N = nodes.length;
+  const res = nodes.map(n => (n[0] === 'arch' ? { arc: true, xc: -n[1], yc: n[2], r: n[3] } : { x: -n[0], y: n[1], r: n[2] || 0 }));
+  for (let i = 0; i < N; i++) {
+    const n = res[i];
+    if (!n.arc) continue;
+    const prev = res[(i - 1 + N) % N], next = res[(i + 1) % N];
+    const yb = (prev.y + next.y) / 2;
+    const a0 = Math.asin(Math.max(-1, Math.min(1, (yb - n.yc) / n.r)));
+    const dxr = n.r * Math.cos(a0);
+    if (next.x > prev.x) { n.s = [n.xc - dxr, yb]; n.e = [n.xc + dxr, yb]; n.a = [Math.PI - a0, a0, true]; }
+    else { n.s = [n.xc + dxr, yb]; n.e = [n.xc - dxr, yb]; n.a = [a0, Math.PI - a0, false]; }
+  }
+  const endOf = (n) => (n.arc ? n.e : [n.x, n.y]);
+  const startOf = (n) => (n.arc ? n.s : [n.x, n.y]);
+  const sh = new T.Shape();
+  for (let i = 0; i < N; i++) {
+    const n = res[i];
+    if (n.arc) { sh.lineTo(n.s[0], n.s[1]); sh.absarc(n.xc, n.yc, n.r, n.a[0], n.a[1], n.a[2]); continue; }
+    const p = [n.x, n.y];
+    if (n.r > 0) {
+      const pv = endOf(res[(i - 1 + N) % N]), nx = startOf(res[(i + 1) % N]);
+      const d1 = Math.hypot(pv[0] - p[0], pv[1] - p[1]), d2 = Math.hypot(nx[0] - p[0], nx[1] - p[1]);
+      const r = Math.min(n.r, d1 * 0.49, d2 * 0.49);
+      const a = [p[0] + (pv[0] - p[0]) / d1 * r, p[1] + (pv[1] - p[1]) / d1 * r];
+      const b = [p[0] + (nx[0] - p[0]) / d2 * r, p[1] + (nx[1] - p[1]) / d2 * r];
+      if (i === 0) sh.moveTo(a[0], a[1]); else sh.lineTo(a[0], a[1]);
+      sh.quadraticCurveTo(p[0], p[1], b[0], b[1]);
+    } else {
+      if (i === 0) sh.moveTo(p[0], p[1]); else sh.lineTo(p[0], p[1]);
+    }
+  }
+  sh.closePath();
+  return sh;
+}
+// Extrude a side profile across X (total width w, centred on xc), rounded edges via bevel.
+function sideGeo(T, nodes, w, bevel = 0.04, seg = 8) {
+  const sh = profileShape(T, nodes);
+  const b = Math.min(bevel, w * 0.45);
+  const depth = Math.max(0.001, w - 2 * b);
+  const g = new T.ExtrudeGeometry(sh, { depth, bevelEnabled: b > 0, bevelThickness: b, bevelSize: b, bevelOffset: -b, bevelSegments: b > 0 ? 3 : 0, curveSegments: seg });
+  g.rotateY(Math.PI / 2);          // shape x -> -z ... (sx=-z so z' = -sx = z), extrude axis -> +x
+  g.translate(-depth / 2, 0, 0);
+  return g;
+}
+// Extrude a plan (top-view) outline [x,z,r?] vertically from y0 to y1.
+function planGeo(T, nodes, y0, y1, bevel = 0.02, seg = 8) {
+  const sh = profileShape(T, nodes.map(n => [-n[0], -n[1], n[2] || 0]));   // sx = x, sy = -z
+  const h = y1 - y0, b = Math.min(bevel, h * 0.45), depth = Math.max(0.001, h - 2 * b);
+  const g = new T.ExtrudeGeometry(sh, { depth, bevelEnabled: b > 0, bevelThickness: b, bevelSize: b, bevelOffset: -b, bevelSegments: b > 0 ? 2 : 0, curveSegments: seg });
+  g.rotateX(-Math.PI / 2);         // extrude -> +y, sy -> -z
+  g.translate(0, y0 + b, 0);
+  return g;
+}
+// Front-facing plate (outline in x,y), thickness t, front face at z = zf facing -Z.
+function frontGeo(T, nodes, t, bevel = 0.0, holes = []) {
+  const sh = profileShape(T, nodes.map(n => [-n[0], n[1], n[2] || 0]));
+  for (const h of holes) sh.holes.push(profileShape(T, h.map(n => [-n[0], n[1], n[2] || 0])));
+  const b = Math.min(bevel, t * 0.45);
+  const g = new T.ExtrudeGeometry(sh, { depth: Math.max(0.001, t - 2 * b), bevelEnabled: b > 0, bevelThickness: b, bevelSize: b, bevelOffset: -b, bevelSegments: 2, curveSegments: 8 });
+  g.translate(0, 0, b);            // z from 0..t, front face at z=0 is "toward -Z" after we place at zf
+  return g;
+}
+const rrect = (x0, x1, y0, y1, r) => [[x0, y0, r], [x1, y0, r], [x1, y1, r], [x0, y1, r]];
+
+// Windows on the body sides: outline in (z,y) nodes, gasket + glass, on side(s) at |x| = xs.
+function sideWindow(B, T, nodes, xs, sides = [-1, 1], gasket = 0.025) {
+  const g = sideGeo(T, nodes, 0.012, 0.0);
+  const grow = nodes.map(n => n); // gasket = same outline slightly behind and scaled out
+  for (const s of sides) {
+    B.add('trim', sideGeo(T, grow, 0.01, 0.0), [s * (xs + 0.002), 0, 0]);
+    B.add('glass', g, [s * (xs + 0.008), 0, 0], [0, 0, 0], [1, 1, 1]);
+  }
+  if (gasket > 0) {
+    // gasket ring: inflate around centroid
+    let cz = 0, cy = 0; for (const n of nodes) { cz += n[0]; cy += n[1]; } cz /= nodes.length; cy /= nodes.length;
+    const inf = nodes.map(n => { const dz = n[0] - cz, dy = n[1] - cy, L = Math.hypot(dz, dy) || 1; return [n[0] + dz / L * gasket, n[1] + dy / L * gasket, (n[2] || 0) + gasket * 0.5]; });
+    for (const s of sides) B.add('trim', sideGeo(T, inf, 0.01, 0.0), [s * (xs + 0.001), 0, 0]);
+  }
+}
+// Slanted windscreen between (zb,yb) bottom and (zt,yt) top, width w; panes split if split>0.
+function windscreen(B, T, zb, yb, zt, yt, w, split = 0, r = 0.06) {
+  const L = Math.hypot(zt - zb, yt - yb), ang = Math.atan2(zb - zt, yt - yb); // lean back = positive rotation about X
+  const nz = Math.cos(ang), ny = Math.sin(ang);                               // outward normal ~ (-z) direction
+  const cz = (zb + zt) / 2 - nz * 0.012, cy = (yb + yt) / 2 + ny * 0.012;
+  const rot = [-(Math.PI / 2) + 0, 0, 0];
+  // plate built in x,y then tilted: frontGeo outline (x,y) local, faces -Z
+  const gas = frontGeo(T, rrect(-w / 2 - 0.04, w / 2 + 0.04, -L / 2 - 0.04, L / 2 + 0.04, r + 0.03), 0.01);
+  B.add('trim', gas, [0, cy, cz + nz * 0.004], [ang, 0, 0]);
+  if (split > 0) {
+    const hw = (w - split) / 2;
+    B.add('glass', frontGeo(T, rrect(-w / 2, -split / 2, -L / 2, L / 2, r), 0.012), [0, cy - ny * 0.004, cz - nz * 0.004], [ang, 0, 0]);
+    B.add('glass', frontGeo(T, rrect(split / 2, w / 2, -L / 2, L / 2, r), 0.012), [0, cy - ny * 0.004, cz - nz * 0.004], [ang, 0, 0]);
+    void hw;
+  } else {
+    B.add('glass', frontGeo(T, rrect(-w / 2, w / 2, -L / 2, L / 2, r), 0.012), [0, cy - ny * 0.004, cz - nz * 0.004], [ang, 0, 0]);
+  }
+  void rot;
+}
+
+// ---------------------------------------------------------------- wheels (local parts; shared module used if compatible)
+function tireGeo(T, R, w, Rr) {
+  const P = (r, y) => new T.Vector2(r, y);
+  const pts = [P(Rr, -w * 0.40), P(Rr + 0.03, -w * 0.47), P(R - 0.075, -w * 0.5), P(R - 0.03, -w * 0.47), P(R - 0.008, -w * 0.42),
+    P(R, -w * 0.36), P(R, -w * 0.2), P(R - 0.012, -w * 0.17), P(R - 0.012, -w * 0.11), P(R, -w * 0.08), P(R, w * 0.08), P(R - 0.012, w * 0.11),
+    P(R - 0.012, w * 0.17), P(R, w * 0.2), P(R, w * 0.36), P(R - 0.008, w * 0.42), P(R - 0.03, w * 0.47), P(R - 0.075, w * 0.5),
+    P(Rr + 0.03, w * 0.47), P(Rr, w * 0.40)];
+  const g = new T.LatheGeometry(pts, 40);
+  g.rotateZ(Math.PI / 2);   // axis -> X, profile y<0 (outer face) -> +X
+  return g;
+}
+function rimGeo(T, Rr, w, style) {
+  const P = (r, y) => new T.Vector2(r, y);
+  const f = -w * 0.5;
+  const pts = style === 'steel'
+    ? [P(0.0, f + 0.05), P(0.1, f + 0.05), P(0.13, f + 0.035), P(0.2, f + 0.03), P(0.235, f + 0.045), P(Rr - 0.03, f + 0.03), P(Rr - 0.01, f + 0.005), P(Rr + 0.018, f), P(Rr + 0.02, f + 0.02), P(Rr - 0.005, f + 0.03), P(Rr - 0.01, -f)]
+    : [P(0.0, f + 0.035), P(0.12, f + 0.035), P(0.13, f + 0.05), P(Rr - 0.06, f + 0.055), P(Rr - 0.03, f + 0.03), P(Rr - 0.01, f + 0.005), P(Rr + 0.018, f), P(Rr + 0.02, f + 0.02), P(Rr - 0.005, f + 0.03), P(Rr - 0.01, -f)];
+  const g = new T.LatheGeometry(pts, 40);
+  g.rotateZ(Math.PI / 2);
+  return g;
+}
+function hubGeo(T, w, holes, style) {
+  const f = -w * 0.5;
+  const parts = [];
+  const P = (r, y) => new T.Vector2(r, y);
+  const cap = new T.LatheGeometry([P(0, f - 0.09), P(0.04, f - 0.088), P(0.07, f - 0.07), P(0.085, f - 0.03), P(0.09, f + 0.03)], 24);
+  parts.push(cap);
+  const nut = new T.CylinderGeometry(0.016, 0.016, 0.035, 6);
+  const nH = holes;
+  for (let i = 0; i < nH; i++) {
+    const a = (i / nH) * Math.PI * 2;
+    const g = nut.clone(); g.translate(Math.cos(a) * 0.143, f + (style === 'steel' ? 0.035 : 0.02), Math.sin(a) * 0.143);
+    parts.push(g);
+  }
+  return parts.map(g => { g.rotateZ(Math.PI / 2); return g; });
+}
+function handHoles(T, w, Rr, n) {
+  const f = -w * 0.5;
+  const out = [];
+  const g0 = new T.CylinderGeometry(0.036, 0.036, 0.006, 14);
+  for (let i = 0; i < n; i++) {
+    const a = ((i + 0.5) / n) * Math.PI * 2;
+    const g = g0.clone(); g.translate(Math.cos(a) * 0.205, f + 0.032, Math.sin(a) * 0.205); g.rotateZ(Math.PI / 2); out.push(g);
+  }
+  return out;
+}
+// Adds one wheel (or a dual pair) with its centre at (x, R, z). side = sign of x (outer face direction).
+function addWheel(B, T, x, z, { R = 0.51, w = 0.28, Rr = 0.286, dual = false, rim = 'alum', gap = 0.05 } = {}) {
+  const side = x < 0 ? -1 : 1;
+  const rotY = side > 0 ? 0 : Math.PI;
+  const c = cacheFor(T).geo;
+  const key = `${R}|${w}|${Rr}|${rim}`;
+  if (!c[key]) {
+    c[key] = { tire: tireGeo(T, R, w, Rr), rim: rimGeo(T, Rr, w * 0.82, rim), hub: hubGeo(T, w * 0.82, 10, rim), holes: rim === 'alum' ? handHoles(T, w * 0.82, Rr, 10) : handHoles(T, w * 0.82, Rr, 5) };
+  }
+  const W = c[key];
+  const rimMat = rim === 'alum' ? 'alum' : 'rimWhite';
+  const place = (xx) => {
+    B.add('tire', W.tire, [xx, R, z], [0, rotY, 0]);
+    B.add(rimMat, W.rim, [xx, R, z], [0, rotY, 0]);
+    for (const h of W.hub) B.add('chrome', h, [xx, R, z], [0, rotY, 0]);
+    for (const h of W.holes) B.add('hole', h, [xx, R, z], [0, rotY, 0]);
+  };
+  place(x);
+  if (dual) {
+    const xi = x - side * (w + gap);
+    B.add('tire', W.tire, [xi, R, z], [0, rotY, 0]);
+    B.add('steelDark', W.rim, [xi, R, z], [0, rotY, 0]);
+  }
+}
+function mudflap(B, x0, x1, z, yTop = 0.95, yBot = 0.22) {
+  B.box('rubber', [x0, x1], [yBot, yTop], [z, z + 0.012]);
+}
+
+// ---------------------------------------------------------------- lamps (per-instance materials)
+function lampMats(T) {
+  const S = (o) => new T.MeshStandardMaterial(o);
+  return {
+    head: S({ color: 0xdfe3e6, metalness: 0.2, roughness: 0.08, emissive: 0xfff3dc, emissiveIntensity: 0 }),
+    tail: S({ color: 0x7a0a0e, metalness: 0.1, roughness: 0.2, emissive: 0xff1810, emissiveIntensity: 0 }),
+    amber: S({ color: 0xc46a08, metalness: 0.1, roughness: 0.2, emissive: 0xff8a10, emissiveIntensity: 0 }),
+    marker: S({ color: 0x7a0a0e, metalness: 0.1, roughness: 0.2, emissive: 0xff1810, emissiveIntensity: 0 }),
+  };
+}
+function lampMesh(T, geo, mat, name, pos, rot = [0, 0, 0]) {
+  const m = new T.Mesh(geo, mat);
+  m.name = name; m.position.set(...pos); m.rotation.set(...rot);
+  m.castShadow = false; m.receiveShadow = false;
+  return m;
+}
+
+// ---------------------------------------------------------------- TRUCK TRACTOR (conventional long-nose, mid-roof sleeper)
+const TR = { front: -3.25, rear: 3.25, axF: -2.33, axD1: 1.40, axD2: 2.72, R: 0.51, fifthZ: 1.95, fifthY: 1.22 };
+function buildTractor(T) {
+  const B = new Builder(T);
+  // chassis rails + crossmembers
+  B.box2('frame', [0.38, 0.48], [0.80, 1.08], [-3.0, 3.22]);
+  for (const z of [-2.9, -1.4, 0.6, 2.05, 3.15]) B.box('frame', [-0.38, 0.38], [0.84, 1.04], [z - 0.05, z + 0.05]);
+  // front axle beam, drive axle housings, springs
+  B.box('frame', [-0.95, 0.95], [0.42, 0.56], [TR.axF - 0.06, TR.axF + 0.06]);
+  for (const z of [TR.axD1, TR.axD2]) { B.cyl('steelDark', 'x', 0.09, 1.7, [0, TR.R, z], 16); B.add('steelDark', new T.SphereGeometry(0.2, 16, 10), [0, TR.R, z], [0, 0, 0], [0.9, 1, 1]); }
+  B.box2('steelDark', [0.36, 0.5], [0.66, 0.82], [TR.axD1 - 0.5, TR.axD2 + 0.4]);
+  B.box2('steelDark', [0.36, 0.5], [0.62, 0.8], [TR.axF - 0.7, TR.axF + 0.7]);
+  // chrome bumper (wraps the corners)
+  B.add('chrome', planGeo(T, [[-1.2, -3.06, 0.1], [-0.6, -3.24, 0.4], [0.6, -3.24, 0.4], [1.2, -3.06, 0.1], [1.2, -2.94, 0], [-1.2, -2.94, 0]], 0.36, 0.76, 0.025));
+  // hood (long nose) — centre section between the fenders
+  const hood = [[-3.02, 0.78, 0], [-3.04, 1.74, 0.06], [-2.92, 1.84, 0.12], [-1.28, 2.04, 0.05], [-1.22, 0.78, 0]];
+  B.add('paint', sideGeo(T, hood, 1.36, 0.1));
+  // fenders with wheel arches
+  const fender = [[-3.0, 0.88, 0], [-3.03, 1.24, 0.2], [-2.62, 1.47, 0.35], [-1.85, 1.48, 0.25], [-1.28, 1.32, 0.1], [-1.24, 0.86, 0], ['arch', TR.axF, TR.R, 0.64]];
+  const fg = sideGeo(T, fender, 0.58, 0.12, 12);
+  B.add('paint', fg, [0.95, 0, 0]); B.add('paint', fg, [-0.95, 0, 0]);
+  // grille: chrome surround + dark mesh + horizontal bars
+  const gw = 0.56, gy0 = 0.82, gy1 = 1.78;
+  B.add('chrome', frontGeo(T, rrect(-gw - 0.06, gw + 0.06, gy0 - 0.05, gy1 + 0.05, 0.08), 0.05, 0.015, [rrect(-gw, gw, gy0, gy1, 0.05)]), [0, 0, -3.09]);
+  B.box('grille', [-gw, gw], [gy0, gy1], [-3.05, -3.02]);
+  for (let y = gy0 + 0.06; y < gy1 - 0.02; y += 0.075) B.box('chrome', [-gw + 0.01, gw - 0.01], [y, y + 0.018], [-3.075, -3.05]);
+  // cab + sleeper (one aero profile), width 2.24
+  const cabW = 2.24;
+  const cab = [[-1.26, 1.02, 0], [-1.27, 2.0, 0.06], [-1.14, 2.1, 0.08], [-0.76, 2.94, 0.1], [-0.52, 3.05, 0.25], [0.42, 3.52, 0.35], [1.72, 3.58, 0.1], [1.76, 3.4, 0.05], [1.76, 1.02, 0]];
+  B.add('paint', sideGeo(T, cab, cabW, 0.09, 10));
+  // lower cab skirt / rocker in black
+  B.box('trim', [-cabW / 2 + 0.02, cabW / 2 - 0.02], [0.98, 1.06], [-1.25, 1.74]);
+  // windscreen (2-piece) and side glass
+  windscreen(B, T, -1.13, 2.13, -0.79, 2.89, 1.96, 0.05, 0.06);
+  const xs = cabW / 2;
+  sideWindow(B, T, [[-1.0, 2.12, 0.04], [-0.72, 2.86, 0.08], [-0.2, 2.86, 0.06], [-0.2, 2.12, 0.04]], xs);
+  sideWindow(B, T, [[-0.12, 2.3, 0.03], [-0.12, 2.86, 0.06], [0.22, 2.86, 0.04], [0.22, 2.3, 0.03]], xs);      // rear quarter
+  sideWindow(B, T, [[0.75, 2.5, 0.05], [0.75, 2.85, 0.05], [1.25, 2.85, 0.05], [1.25, 2.5, 0.05]], xs, [-1, 1], 0.02); // sleeper bunk
+  // door seams + handle, sleeper baggage door
+  for (const s of [-1, 1]) {
+    const x = s * (xs + 0.003);
+    B.box('trim', [x - 0.004, x + 0.004], [1.1, 2.95], [-1.06, -1.05]);
+    B.box('trim', [x - 0.004, x + 0.004], [1.1, 2.95], [0.27, 0.28]);
+    B.box('chrome', [x - 0.012 * s, x + 0.012 * s].sort((a, b) => a - b), [1.86, 1.9], [0.05, 0.2]);
+    B.box('trim', [x - 0.004, x + 0.004], [1.15, 1.8], [0.62, 0.63]);
+    B.box('trim', [x - 0.004, x + 0.004], [1.15, 1.8], [1.32, 1.33]);
+    B.box('trim', [x - 0.004, x + 0.004], [1.8, 1.81], [0.62, 1.33]);
+    // cab extenders (side fairings at the sleeper's trailing edge)
+    B.add('paint', sideGeo(T, [[1.5, 1.2, 0], [1.5, 3.45, 0.1], [1.86, 3.45, 0], [1.86, 1.2, 0]], 0.04, 0.0), [s * (cabW / 2 + 0.025), 0, 0]);
+    // west-coast mirror on arms
+    const mx = s * 1.34;
+    B.box('chrome', [Math.min(s * 1.1, mx), Math.max(s * 1.1, mx)], [2.2, 2.23], [-1.0, -0.97]);
+    B.box('chrome', [Math.min(s * 1.1, mx), Math.max(s * 1.1, mx)], [2.82, 2.85], [-1.0, -0.97]);
+    B.add('trim', planGeo(T, [[mx - 0.05, -1.02, 0.02], [mx + 0.05, -1.02, 0.02], [mx + 0.05, -0.93, 0.02], [mx - 0.05, -0.93, 0.02]], 2.15, 2.9, 0.015));
+    // hood-mounted convex mirror
+    B.cyl('trim', 'y', 0.006, 0.25, [s * 1.12, 1.62, -2.75], 6);
+    B.add('trim', new T.SphereGeometry(0.07, 12, 8), [s * 1.14, 1.76, -2.76], [0, 0, 0], [0.5, 1, 1]);
+    // air cleaner canister (chrome) at the cowl
+    B.cyl('chrome', 'y', 0.2, 0.85, [s * 1.0, 1.85, -1.48], 24);
+    B.cyl('chrome', 'y', 0.215, 0.05, [s * 1.0, 2.28, -1.48], 24);
+    B.cyl('chrome', 'y', 0.215, 0.05, [s * 1.0, 1.42, -1.48], 24);
+    // exhaust stack + heat shield behind the cab corners
+    B.cyl('chrome', 'y', 0.065, 2.2, [s * 1.19, 2.45, 1.92], 16);
+    B.cyl('alum', 'y', 0.085, 0.9, [s * 1.19, 2.2, 1.92], 16);
+    B.cyl('chrome', 'z', 0.05, 0.3, [s * 1.19, 1.38, 1.8], 12);
+    // fuel tank (polished aluminium) with straps, step box ahead of it
+    B.cyl('alum', 'z', 0.32, 1.45, [s * 0.86, 0.74, -0.35], 28);
+    for (const z of [-0.95, 0.25]) B.cyl('trim', 'z', 0.326, 0.06, [s * 0.86, 0.74, z], 28);
+    B.box('alumDull', [s > 0 ? 0.62 : -1.2, s > 0 ? 1.2 : -0.62], [0.42, 1.02], [-1.3, -1.08]);
+    for (const y of [0.52, 0.8]) B.box('alum', [s > 0 ? 0.7 : -1.21, s > 0 ? 1.21 : -0.7], [y, y + 0.03], [-1.32, -1.04]);
+    // battery/tool box behind tank
+    B.box('trim', [s > 0 ? 0.55 : -1.15, s > 0 ? 1.15 : -0.55], [0.48, 1.0], [0.48, 1.1]);
+    // quarter fenders over drive tandem and mud flaps with chrome hangers
+    B.add('trim', sideGeo(T, [[TR.axD1 - 0.62, 1.12, 0.05], [TR.axD1 - 0.62, 1.18, 0.05], [TR.axD1 + 0.15, 1.18, 0.05], [TR.axD1 + 0.15, 1.12, 0.05]], 0.62, 0.02), [s * 0.95, 0, 0]);
+    mudflap(B, s > 0 ? 0.62 : -1.22, s > 0 ? 1.22 : -0.62, 3.2, 0.98, 0.2);
+    B.box('chrome', [s > 0 ? 0.48 : -1.22, s > 0 ? 1.22 : -0.48], [0.98, 1.03], [3.18, 3.22]);
+    // drive wheels (duals) + steer wheel
+    addWheel(B, T, s * 1.1, TR.axF, { R: TR.R });
+    addWheel(B, T, s * 1.1, TR.axD1, { R: TR.R, dual: true });
+    addWheel(B, T, s * 1.1, TR.axD2, { R: TR.R, dual: true });
+  }
+  // fifth wheel (plate with V throat toward the rear) on its mount
+  B.box2('steelDark', [0.3, 0.42], [1.08, 1.16], [TR.fifthZ - 0.35, TR.fifthZ + 0.35]);
+  B.add('steelDark', planGeo(T, [[-0.46, TR.fifthZ - 0.45, 0.25], [0.46, TR.fifthZ - 0.45, 0.25], [0.46, TR.fifthZ + 0.42, 0.06], [0.08, TR.fifthZ + 0.42, 0], [0.0, TR.fifthZ, 0], [-0.08, TR.fifthZ + 0.42, 0], [-0.46, TR.fifthZ + 0.42, 0.06]], TR.fifthY - 0.06, TR.fifthY, 0.012));
+  // deck plate between cab and fifth wheel, air lines (red/blue)
+  B.box('alumDull', [-0.5, 0.5], [1.08, 1.12], [1.76, 1.45 + 0.06]);
+  B.add('reflRed', new T.TorusGeometry(0.16, 0.012, 6, 20), [0.18, 1.6, 1.79]);
+  B.add('panelWhite', new T.TorusGeometry(0.16, 0.012, 6, 20), [-0.18, 1.6, 1.79]);
+  // rear crossmember
+  B.box('frame', [-0.55, 0.55], [0.84, 1.0], [3.14, 3.24]);
+  return B.build();
+}
+
+// ---------------------------------------------------------------- SEMITRAILER (53 ft dry van or flatbed)
+const ST = { front: -8.1, rear: 8.1, kingpinZ: -7.19, kingpinY: 1.22, floorBot: 1.17, floorTop: 1.42, roof: 4.1, ax1: 5.55, ax2: 6.8, R: 0.51, legZ: -4.65 };
+function buildTrailerCommon(B, T, deckBot, W) {
+  const hw = W / 2;
+  // upper coupler plate + kingpin
+  B.box('steelDark', [-1.1, 1.1], [ST.kingpinY, deckBot + 0.02], [-8.08, -6.2]);
+  B.cyl('steelDark', 'y', 0.045, 0.09, [0, ST.kingpinY - 0.045, ST.kingpinZ], 16);
+  B.cyl('steelDark', 'y', 0.06, 0.02, [0, ST.kingpinY - 0.075, ST.kingpinZ], 16);
+  // crossmembers (I-beams) every 0.3 m under the floor
+  const cm = new T.BoxGeometry(W - 0.12, 0.1, 0.035), cf = new T.BoxGeometry(W - 0.12, 0.012, 0.09);
+  for (let z = -6.1; z < 7.95; z += 0.3) {
+    B.add('steelDark', cm, [0, deckBot - 0.05, z]);
+    B.add('steelDark', cf, [0, deckBot - 0.1, z]);
+  }
+  // landing gear: two legs, braces, sand shoes, gearbox + crank (curb side, +X)
+  for (const s of [-1, 1]) {
+    const x = s * 0.82;
+    B.box('steelDark', [x - 0.065, x + 0.065], [0.2, deckBot - 0.02], [ST.legZ - 0.065, ST.legZ + 0.065]);
+    B.box('frame', [x - 0.05, x + 0.05], [0.07, 0.6], [ST.legZ - 0.05, ST.legZ + 0.05]);
+    B.box('frame', [x - 0.13, x + 0.13], [0.0, 0.06], [ST.legZ - 0.14, ST.legZ + 0.14]);
+    const bl = Math.hypot(0.9, deckBot - 0.6), ba = Math.atan2(0.9, deckBot - 0.6);
+    B.box('steelDark', [x - 0.025, x + 0.025], [-bl / 2, bl / 2], [-0.025, 0.025], [0, 0, 0]);
+    B.b.steelDark[B.b.steelDark.length - 1].applyMatrix4(new T.Matrix4().makeRotationX(ba)).translate(0, (deckBot + 0.6) / 2, ST.legZ - 0.45);
+    // diagonal side brace leg -> centre
+  }
+  B.box('steelDark', [-0.82, 0.82], [0.55, 0.62], [ST.legZ - 0.03, ST.legZ + 0.03]);
+  B.box('steelDark', [0.82, 1.0], [0.85, 1.0], [ST.legZ - 0.08, ST.legZ + 0.08]);
+  B.cyl('steelDark', 'x', 0.015, 0.35, [1.12, 0.9, ST.legZ], 8);
+  B.box('steelDark', [1.28, 1.31], [0.62, 0.92], [ST.legZ - 0.015, ST.legZ + 0.015]);
+  // sliding tandem: rails, hangers, axles, air springs
+  B.box2('steelDark', [0.42, 0.55], [deckBot - 0.24, deckBot - 0.1], [4.3, 7.75]);
+  for (const z of [ST.ax1, ST.ax2]) {
+    B.cyl('steelDark', 'x', 0.065, 1.9, [0, ST.R, z], 14);
+    for (const s of [-1, 1]) {
+      B.box('steelDark', [s * 0.42, s * 0.55].sort((a, b) => a - b), [ST.R, deckBot - 0.24], [z - 0.45, z - 0.35]);
+      B.box('steelDark', [s * 0.43, s * 0.54].sort((a, b) => a - b), [ST.R - 0.05, ST.R + 0.07], [z - 0.45, z + 0.3]);
+      B.cyl('rubber', 'y', 0.13, 0.25, [s * 0.49, deckBot - 0.37, z + 0.28], 16);
+      addWheel(B, T, s * (hw - 0.17), z, { R: ST.R, dual: true, rim: 'steel' });
+    }
+  }
+  for (const s of [-1, 1]) mudflap(B, s > 0 ? 0.68 : -hw + 0.06, s > 0 ? hw - 0.06 : -0.68, 7.5, deckBot - 0.25, 0.25);
+  B.box('steelDark', [-hw + 0.06, hw - 0.06], [deckBot - 0.3, deckBot - 0.24], [7.48, 7.52]);
+  // rear underride guard (ICC bar; bottom edge 0.42 m < 22 in), struts + braces, conspicuity tape on the bar
+  B.box('steelDark', [-1.13, 1.13], [0.42, 0.56], [7.92, 8.04]);
+  for (const x of [-0.92, -0.5, 0.5, 0.92]) B.box('steelDark', [x - 0.04, x + 0.04], [0.56, deckBot], [7.94, 8.02]);
+  for (let i = 0; i < 12; i++) { const x0 = -1.12 + i * (2.24 / 12); B.box(i % 2 ? 'reflWhite' : 'reflRed', [x0, x0 + 2.24 / 12], [0.44, 0.54], [8.04, 8.047]); }
+}
+function conspicuityStrip(B, z0, z1, y0, y1, x, side) {
+  // DOT-C2: alternating 18 cm white / 28 cm red, slightly proud of the panel
+  const xs = [x, x + side * 0.006].sort((a, b) => a - b);
+  let z = z0, red = true;
+  while (z < z1 - 0.01) { const L = red ? 0.28 : 0.18; const ze = Math.min(z1, z + L); B.box(red ? 'reflRed' : 'reflWhite', xs, [y0, y1], [z, ze]); z = ze + 0.0; red = !red; }
+}
+function buildBoxTrailer(T) {
+  const B = new Builder(T);
+  const W = 2.6, hw = W / 2;
+  buildTrailerCommon(B, T, ST.floorBot, W);
+  // box shell (aluminium sheet & post exterior)
+  B.box('panelWhite', [-hw + 0.012, hw - 0.012], [ST.floorBot + 0.2, ST.roof - 0.1], [ST.front + 0.04, ST.rear - 0.07]);
+  // top rails (rounded extrusion) & bottom rails
+  for (const s of [-1, 1]) {
+    B.add('alum', sideGeo(T, [[ST.front, ST.roof - 0.13, 0], [ST.front, ST.roof, 0.04], [ST.rear, ST.roof, 0.04], [ST.rear, ST.roof - 0.13, 0]], 0.08, 0.025), [s * (hw - 0.04), 0, 0]);
+    B.add('alum', sideGeo(T, [[ST.front, ST.floorBot, 0], [ST.front, ST.floorBot + 0.27, 0], [ST.rear, ST.floorBot + 0.27, 0], [ST.rear, ST.floorBot, 0]], 0.06, 0.015), [s * (hw - 0.03), 0, 0]);
+    // exterior posts every 0.61 m (24 in)
+    const post = new T.BoxGeometry(0.014, ST.roof - 0.13 - ST.floorBot - 0.27, 0.075);
+    for (let z = ST.front + 0.6; z < ST.rear - 0.4; z += 0.61) B.add('alumDull', post, [s * (hw - 0.002), (ST.roof - 0.13 + ST.floorBot + 0.27) / 2, z]);
+    conspicuityStrip(B, ST.front + 0.3, ST.rear - 0.2, ST.floorBot + 0.08, ST.floorBot + 0.13, s * (hw + 0.002), s);
+  }
+  // front wall: corner caps + horizontal rib
+  B.box('alum', [-hw, hw], [ST.floorBot, ST.roof], [ST.front, ST.front + 0.05]);
+  for (const s of [-1, 1]) B.box('alumDull', [s > 0 ? hw - 0.09 : -hw, s > 0 ? hw : -hw + 0.09], [ST.floorBot, ST.roof], [ST.front - 0.01, ST.front + 0.06]);
+  for (const y of [2.1, 3.0]) B.box('alumDull', [-hw + 0.1, hw - 0.1], [y, y + 0.04], [ST.front - 0.012, ST.front]);
+  B.box('trim', [-0.08, 0.08], [1.55, 1.75], [ST.front - 0.03, ST.front]);    // 7-way receptacle + gladhands
+  // rear frame: header, sill, corner posts, two swing doors with lock rods and hinges
+  const rz = ST.rear;
+  B.box('alum', [-hw, hw], [ST.floorBot, ST.floorTop + 0.02], [rz - 0.12, rz]);       // rear sill
+  B.box('alum', [-hw, hw], [ST.roof - 0.25, ST.roof], [rz - 0.12, rz]);                // header
+  B.box2('alum', [hw - 0.1, hw], [ST.floorBot, ST.roof], [rz - 0.12, rz]);            // corner posts
+  for (const s of [-1, 1]) {
+    const x0 = s > 0 ? 0.008 : -hw + 0.1, x1 = s > 0 ? hw - 0.1 : -0.008;
+    B.box('panelWhite', [x0, x1], [ST.floorTop + 0.02, ST.roof - 0.25], [rz - 0.06, rz - 0.02]);
+    for (const f of [0.28, 0.72]) {
+      const x = x0 + (x1 - x0) * f;
+      B.cyl('chrome', 'y', 0.017, ST.roof - 0.25 - ST.floorTop - 0.1, [x, (ST.roof - 0.25 + ST.floorTop) / 2 + 0.03, rz + 0.01], 10);
+      B.box('steelDark', [x - 0.035, x + 0.035], [1.75, 1.82], [rz - 0.02, rz + 0.03]);    // cam keeper / handle
+    }
+    for (const y of [1.75, 2.45, 3.15, 3.7]) B.box('steelDark', [s > 0 ? hw - 0.2 : -hw + 0.02, s > 0 ? hw - 0.02 : -hw + 0.2], [y, y + 0.08], [rz - 0.01, rz + 0.025]);
+    conspicuityStrip(B, 0, 0, 0, 0, 0, 1);
+    // DOT-C2 upper corner L marks and lower rear tape
+    B.box('reflWhite', [s > 0 ? hw - 0.32 : -hw + 0.02, s > 0 ? hw - 0.02 : -hw + 0.32], [ST.roof - 0.12, ST.roof - 0.07], [rz + 0.001, rz + 0.006]);
+    B.box('reflWhite', [s > 0 ? hw - 0.07 : -hw + 0.02, s > 0 ? hw - 0.02 : -hw + 0.07], [ST.roof - 0.42, ST.roof - 0.07], [rz + 0.001, rz + 0.006]);
+  }
+  B.box('trim', [-0.008, 0.008], [ST.floorTop, ST.roof - 0.25], [rz - 0.02, rz + 0.005]);
+  for (let i = 0; i < 14; i++) { const x0 = -hw + 0.12 + i * ((W - 0.24) / 14); B.box(i % 2 ? 'reflWhite' : 'reflRed', [x0, x0 + (W - 0.24) / 14], [ST.floorBot + 0.04, ST.floorBot + 0.1], [rz + 0.001, rz + 0.006]); }
+  return B.build();
+}
+function buildFlatbed(T) {
+  const B = new Builder(T);
+  const W = 2.6, hw = W / 2, deck = 1.52, beamTop = deck - 0.06;
+  buildTrailerCommon(B, T, beamTop - 0.18, W);
+  // main I-beams (cambered, deep in the middle, tapering at the ends)
+  const beam = [[-8.1, beamTop - 0.22, 0], [-6.2, beamTop - 0.3, 0.4], [-3.0, beamTop - 0.52, 1.2], [3.5, beamTop - 0.52, 1.2], [7.0, beamTop - 0.3, 0.4], [8.1, beamTop - 0.24, 0], [8.1, beamTop, 0], [-8.1, beamTop, 0]];
+  for (const s of [-1, 1]) B.add('steelDark', sideGeo(T, beam, 0.12, 0.0), [s * 0.5, 0, 0]);
+  // side rails with stake pockets
+  for (const s of [-1, 1]) {
+    B.add('alum', sideGeo(T, [[-8.1, deck - 0.24, 0], [-8.1, deck, 0], [8.1, deck, 0], [8.1, deck - 0.24, 0]], 0.08, 0.012), [s * (hw - 0.04), 0, 0]);
+    for (let z = -7.7; z < 7.9; z += 0.61) B.box('hole', [s > 0 ? hw - 0.002 : -hw - 0.004, s > 0 ? hw + 0.004 : -hw + 0.002], [deck - 0.1, deck - 0.04], [z - 0.04, z + 0.04]);
+    conspicuityStrip(B, -7.9, 7.9, deck - 0.2, deck - 0.15, s * (hw + 0.002), s);
+  }
+  // wooden deck planks
+  const nP = 14;
+  for (let i = 0; i < nP; i++) {
+    const x0 = -hw + 0.08 + i * ((W - 0.16) / nP), x1 = x0 + (W - 0.16) / nP - 0.008;
+    B.box('wood', [x0, x1], [deck - 0.05, deck - 0.005], [-8.05, 8.05]);
+  }
+  B.box('alum', [-hw, hw], [deck - 0.25, deck], [7.98, 8.1]);           // rear sill
+  B.box('alum', [-hw, hw], [deck - 0.25, deck], [-8.1, -8.0]);          // front sill
+  for (let i = 0; i < 14; i++) { const x0 = -hw + 0.12 + i * ((W - 0.24) / 14); B.box(i % 2 ? 'reflWhite' : 'reflRed', [x0, x0 + (W - 0.24) / 14], [deck - 0.2, deck - 0.14], [8.1, 8.106]); }
+  return B.build();
+}
+
+// ---------------------------------------------------------------- BOX TRUCK (class 6/7 conventional, 26 ft-class straight truck)
+const BT = { front: -3.75, rear: 3.75, axF: -2.85, axR: 2.05, R: 0.47, boxF: -0.85, boxBot: 1.08, boxTop: 3.4 };
+function buildBoxTruck(T) {
+  const B = new Builder(T);
+  const W = 2.5, hw = W / 2, cabW = 2.3;
+  B.box2('frame', [0.38, 0.47], [0.62, 0.88], [-3.5, 3.6]);
+  for (const z of [-3.4, -1.0, 0.8, 2.6, 3.55]) B.box('frame', [-0.38, 0.38], [0.66, 0.84], [z - 0.04, z + 0.04]);
+  B.box('frame', [-0.9, 0.9], [0.36, 0.48], [BT.axF - 0.05, BT.axF + 0.05]);
+  B.cyl('steelDark', 'x', 0.08, 1.6, [0, BT.R, BT.axR], 14);
+  B.add('steelDark', new T.SphereGeometry(0.18, 14, 10), [0, BT.R, BT.axR]);
+  // bumper
+  B.add('chrome', planGeo(T, [[-1.12, -3.6, 0.1], [-0.6, -3.74, 0.4], [0.6, -3.74, 0.4], [1.12, -3.6, 0.1], [1.12, -3.48, 0], [-1.12, -3.48, 0]], 0.36, 0.7, 0.02));
+  // sloped aero hood with integrated fenders + wheel arches
+  const hood = [[-3.5, 0.72, 0], [-3.56, 1.38, 0.12], [-3.4, 1.58, 0.2], [-2.62, 1.78, 0.08], [-2.5, 0.72, 0], ['arch', BT.axF, BT.R, 0.6]];
+  B.add('paint', sideGeo(T, hood, 2.2, 0.16, 12));
+  // grille
+  B.add('chrome', frontGeo(T, rrect(-0.5, 0.5, 0.78, 1.42, 0.06), 0.04, 0.01, [rrect(-0.44, 0.44, 0.83, 1.37, 0.04)]), [0, 0, -3.59]);
+  B.box('grille', [-0.44, 0.44], [0.83, 1.37], [-3.56, -3.53]);
+  for (let y = 0.88; y < 1.36; y += 0.07) B.box('steelDark', [-0.43, 0.43], [y, y + 0.02], [-3.575, -3.555]);
+  // cab
+  const cab = [[-2.6, 0.95, 0], [-2.6, 1.76, 0.05], [-2.5, 1.84, 0.06], [-2.18, 2.66, 0.08], [-2.02, 2.78, 0.15], [-1.0, 2.8, 0.1], [-0.95, 0.95, 0]];
+  B.add('paint', sideGeo(T, cab, cabW, 0.09, 10));
+  B.box('trim', [-cabW / 2 + 0.03, cabW / 2 - 0.03], [0.9, 0.98], [-2.55, -0.98]);
+  windscreen(B, T, -2.48, 1.87, -2.2, 2.6, 2.0, 0.0, 0.07);
+  sideWindow(B, T, [[-2.36, 1.86, 0.04], [-2.12, 2.6, 0.06], [-1.35, 2.62, 0.05], [-1.35, 1.86, 0.04]], cabW / 2);
+  sideWindow(B, T, [[-1.25, 2.12, 0.03], [-1.25, 2.6, 0.04], [-1.08, 2.6, 0.03], [-1.08, 2.12, 0.03]], cabW / 2);
+  for (const s of [-1, 1]) {
+    const x = s * (cabW / 2 + 0.003);
+    B.box('trim', [x - 0.004, x + 0.004], [1.0, 2.7], [-2.42, -2.41]);
+    B.box('trim', [x - 0.004, x + 0.004], [1.0, 2.7], [-1.3, -1.29]);
+    B.box('chrome', [x - 0.01, x + 0.01], [1.72, 1.75], [-1.5, -1.38]);
+    // mirrors
+    const mx = s * 1.3;
+    B.box('trim', [Math.min(s * 1.12, mx), Math.max(s * 1.12, mx)], [2.0, 2.03], [-2.3, -2.27]);
+    B.box('trim', [Math.min(s * 1.12, mx), Math.max(s * 1.12, mx)], [2.5, 2.53], [-2.3, -2.27]);
+    B.add('trim', planGeo(T, [[mx - 0.05, -2.32, 0.02], [mx + 0.05, -2.32, 0.02], [mx + 0.05, -2.24, 0.02], [mx - 0.05, -2.24, 0.02]], 1.95, 2.6, 0.015));
+    // step + tank (left) / battery box (right)
+    B.box('alumDull', [s > 0 ? 0.75 : -1.17, s > 0 ? 1.17 : -0.75], [0.42, 0.62], [-1.9, -1.3]);
+    if (s < 0) { B.cyl('alum', 'z', 0.27, 0.95, [-0.88, 0.62, -0.55], 24); for (const z of [-0.95, -0.15]) B.cyl('trim', 'z', 0.276, 0.05, [-0.88, 0.62, z], 24); }
+    else B.box('trim', [0.6, 1.1], [0.38, 0.82], [-0.9, -0.2]);
+    addWheel(B, T, s * 1.05, BT.axF, { R: BT.R, w: 0.25, Rr: 0.25 });
+    addWheel(B, T, s * 1.07, BT.axR, { R: BT.R, w: 0.25, Rr: 0.25, dual: true });
+    mudflap(B, s > 0 ? 0.62 : -1.2, s > 0 ? 1.2 : -0.62, 2.62, 0.95, 0.24);
+  }
+  // cargo box: FRP panels, aluminium corner caps, rails, scuff band
+  const zf = BT.boxF, zr = BT.rear;
+  B.box('frp', [-hw + 0.01, hw - 0.01], [BT.boxBot + 0.02, BT.boxTop - 0.02], [zf + 0.01, zr - 0.08]);
+  for (const s of [-1, 1]) {
+    B.box('alum', [s > 0 ? hw - 0.04 : -hw, s > 0 ? hw : -hw + 0.04], [BT.boxTop - 0.1, BT.boxTop], [zf, zr]);
+    B.box('alum', [s > 0 ? hw - 0.04 : -hw, s > 0 ? hw : -hw + 0.04], [BT.boxBot, BT.boxBot + 0.16], [zf, zr]);
+    B.box('alum', [s > 0 ? hw - 0.06 : -hw, s > 0 ? hw : -hw + 0.06], [BT.boxBot, BT.boxTop], [zf, zf + 0.06]);
+    B.box('alum', [s > 0 ? hw - 0.1 : -hw, s > 0 ? hw : -hw + 0.1], [BT.boxBot, BT.boxTop], [zr - 0.1, zr]);
+    conspicuityStrip(B, zf + 0.2, zr - 0.2, BT.boxBot + 0.05, BT.boxBot + 0.1, s * (hw + 0.002), s);
+    B.box('trim', [s > 0 ? hw - 0.25 : -hw, s > 0 ? hw : -hw + 0.25], [BT.boxBot - 0.1, BT.boxBot], [zf + 0.3, zr - 0.3]);   // under-box rub rail
+  }
+  B.box('alum', [-hw, hw], [BT.boxTop - 0.1, BT.boxTop], [zf, zf + 0.06]);
+  // rear: roll-up door (ribbed), header, sill, step bumper + ICC bar
+  B.box('alum', [-hw, hw], [BT.boxTop - 0.28, BT.boxTop], [zr - 0.1, zr]);
+  B.box('alum', [-hw, hw], [BT.boxBot, BT.boxBot + 0.12], [zr - 0.1, zr]);
+  B.box('panelWhite', [-hw + 0.1, hw - 0.1], [BT.boxBot + 0.12, BT.boxTop - 0.28], [zr - 0.06, zr - 0.03]);
+  for (let y = BT.boxBot + 0.12 + 0.3; y < BT.boxTop - 0.3; y += 0.3) B.box('alumDull', [-hw + 0.1, hw - 0.1], [y - 0.008, y + 0.008], [zr - 0.03, zr - 0.02]);
+  B.box('steelDark', [-0.12, 0.12], [BT.boxBot + 0.2, BT.boxBot + 0.26], [zr - 0.03, zr]);
+  B.box('alumDull', [-1.05, 1.05], [0.48, 0.6], [zr - 0.25, zr]);
+  for (const x of [-0.7, 0.7]) B.box('steelDark', [x - 0.04, x + 0.04], [0.6, BT.boxBot], [zr - 0.2, zr - 0.12]);
+  for (let i = 0; i < 10; i++) { const x0 = -1.05 + i * 0.21; B.box(i % 2 ? 'reflWhite' : 'reflRed', [x0, x0 + 0.21], [0.5, 0.58], [zr, zr + 0.006]); }
+  return B.build();
+}
+
+// ---------------------------------------------------------------- BUS (transit low-floor, or school bus type C)
+const BU = { front: -6.1, rear: 6.1, R: 0.5 };
+function buildTransit(T) {
+  const B = new Builder(T);
+  const W = 2.55, hw = W / 2, axF = -3.55, axR = 2.75;
+  const body = [[-6.1, 0.32, 0.12], [-6.1, 2.15, 0], [-6.03, 2.94, 0.18], [-5.75, 3.02, 0.12], [6.1, 3.02, 0.14], [6.1, 0.32, 0.12], ['arch', axR, BU.R, 0.62], ['arch', axF, BU.R, 0.6]];
+  // node order runs front-bottom -> up -> roof -> rear -> bottom back toward front: arches must be ordered rear->front
+  B.add('paint', sideGeo(T, body, W, 0.14, 12));
+  B.box('trim', [-hw + 0.03, hw - 0.03], [0.3, 0.6], [-5.95, 5.95]);            // lower skirt/bumper band
+  for (const s of [-1, 1]) B.box('trim', s > 0 ? [hw - 0.005, hw + 0.005] : [-hw - 0.005, -hw + 0.005], [0.32, 0.62], [-5.95, 5.95]);
+  // roof HVAC pod + rear engine-door louvres
+  B.add('panelWhite', planGeo(T, [[-0.95, -1.9, 0.3], [0.95, -1.9, 0.3], [0.95, 1.4, 0.2], [-0.95, 1.4, 0.2]], 3.0, 3.2, 0.07));
+  B.box('trim', [-1.0, 1.0], [0.75, 1.35], [6.1, 6.115]);
+  for (let y = 0.8; y < 1.33; y += 0.06) B.box('steelDark', [-0.95, 0.95], [y, y + 0.025], [6.115, 6.125]);
+  // front: windscreen, destination sign, bumper
+  B.add('trim', frontGeo(T, rrect(-1.2, 1.2, 0.78, 2.96, 0.14), 0.012), [0, 0, -6.115]);
+  B.add('glass', frontGeo(T, rrect(-1.15, 1.15, 0.85, 2.58, 0.1), 0.012), [0, 0, -6.125]);
+  B.add('ledSign', frontGeo(T, rrect(-1.0, 1.0, 2.64, 2.9, 0.03), 0.01), [0, 0, -6.125]);
+  B.box('trim', [-1.23, 1.23], [0.28, 0.62], [-6.18, -6.05]);
+  // rear window
+  B.add('trim', frontGeo(T, rrect(-1.05, 1.05, 2.05, 2.85, 0.1), 0.012), [0, 0, 6.1 + 0.002]);
+  B.add('glass', frontGeo(T, rrect(-1.0, 1.0, 2.1, 2.8, 0.08), 0.012), [0, 0, 6.1 + 0.006]);
+  // side window band: driver side (-X) continuous; curb side (+X) interrupted by front + rear doors
+  const winY0 = 1.32, winY1 = 2.62;
+  const panes = (z0, z1, n) => { const out = []; const L = (z1 - z0) / n; for (let i = 0; i < n; i++) out.push([z0 + i * L + 0.04, z0 + (i + 1) * L - 0.04]); return out; };
+  sideWindow(B, T, rrect(-5.55, -4.85, 1.05, winY1, 0.05).map(n => [n[0], n[1], n[2]]), hw, [-1], 0);   // driver window, deeper
+  for (const [a, b] of panes(-4.7, 5.5, 8)) sideWindow(B, T, rrect(a, b, winY0, winY1, 0.06), hw, [-1], 0.02);
+  for (const [a, b] of [...panes(-4.4, 0.7, 4), ...panes(2.05, 5.5, 3)]) sideWindow(B, T, rrect(a, b, winY0, winY1, 0.06), hw, [1], 0.02);
+  // curb-side doors (double-leaf glass): front ahead of the front axle, rear in mid-body
+  for (const [z0, z1] of [[-5.95, -4.6], [0.82, 1.95]]) {
+    const zm = (z0 + z1) / 2;
+    B.add('alumDull', sideGeo(T, rrect(z0, z1, 0.36, 2.78, 0.04), 0.014, 0), [hw + 0.006, 0, 0]);
+    for (const [a, b] of [[z0 + 0.06, zm - 0.02], [zm + 0.02, z1 - 0.06]]) B.add('glass', sideGeo(T, rrect(a, b, 0.48, 2.62, 0.05), 0.012, 0), [hw + 0.014, 0, 0]);
+    B.box('trim', [hw + 0.012, hw + 0.022], [0.36, 2.78], [zm - 0.02, zm + 0.02]);
+  }
+  // mirrors (forward-mounted on arms)
+  for (const s of [-1, 1]) {
+    B.box('trim', [Math.min(s * 1.1, s * 1.42), Math.max(s * 1.1, s * 1.42)], [2.5, 2.54], [-6.25, -6.21]);
+    B.add('trim', planGeo(T, [[s * 1.42 - 0.07, -6.3, 0.03], [s * 1.42 + 0.07, -6.3, 0.03], [s * 1.42 + 0.07, -6.2, 0.03], [s * 1.42 - 0.07, -6.2, 0.03]], 2.0, 2.55, 0.02));
+    addWheel(B, T, s * 1.1, axF, { R: BU.R, w: 0.3, Rr: 0.286 });
+    addWheel(B, T, s * 1.1, axR, { R: BU.R, w: 0.28, dual: true });
+  }
+  B.cyl('steelDark', 'x', 0.08, 1.7, [0, BU.R, axR], 14);
+  B.box('steelDark', [-0.9, 0.9], [0.4, 0.55], [axF - 0.06, axF + 0.06]);
+  return { geo: B.build(), axF, axR };
+}
+function buildSchoolBus(T) {
+  const B = new Builder(T);
+  const W = 2.5, hw = W / 2, axF = -5.0, axR = 2.0, R = 0.5;
+  B.box2('frame', [0.4, 0.5], [0.55, 0.82], [-5.95, 5.9]);
+  // body shell (high floor), wheel arches
+  const body = [[-4.85, 0.78, 0], [-4.86, 2.12, 0], [-4.74, 3.02, 0.25], [-4.4, 3.2, 0.25], [5.9, 3.2, 0.25], [6.1, 3.0, 0.18], [6.1, 0.78, 0.06], ['arch', axR, R, 0.62]];
+  B.add('yellowBus', sideGeo(T, body, W, 0.08, 12));
+  // hood + fenders (yellow), black grille, bumper
+  const hood = [[-6.02, 0.82, 0], [-6.05, 1.34, 0.12], [-5.9, 1.5, 0.15], [-4.95, 1.7, 0.05], [-4.84, 0.82, 0], ['arch', axF, R, 0.62]];
+  B.add('yellowBus', sideGeo(T, hood, 2.3, 0.15, 12));
+  B.add('chrome', frontGeo(T, rrect(-0.5, 0.5, 0.86, 1.36, 0.06), 0.04, 0.01, [rrect(-0.44, 0.44, 0.9, 1.32, 0.04)]), [0, 0, -6.08]);
+  B.box('grille', [-0.44, 0.44], [0.9, 1.32], [-6.05, -6.02]);
+  for (let y = 0.94; y < 1.31; y += 0.06) B.box('chrome', [-0.43, 0.43], [y, y + 0.015], [-6.065, -6.045]);
+  B.add('trim', planGeo(T, [[-1.22, -6.0, 0.08], [-0.6, -6.18, 0.4], [0.6, -6.18, 0.4], [1.22, -6.0, 0.08], [1.22, -5.9, 0], [-1.22, -5.9, 0]], 0.45, 0.82, 0.02));
+  // black rub rails + window band surround
+  for (const s of [-1, 1]) {
+    const x = s * (hw + 0.004);
+    for (const y of [0.95, 1.38]) B.box('trim', [x - 0.012, x + 0.012], [y, y + 0.07], [-4.8, 6.06]);
+    B.box('trim', [x - 0.006, x + 0.006], [1.62, 1.66], [-4.8, 6.06]);
+  }
+  B.box('trim', [-hw + 0.04, hw - 0.04], [0.78, 0.86], [-4.86, 6.06]);
+  // windows: split-sash passenger windows
+  const winY0 = 1.75, winY1 = 2.55;
+  const nW = 11, z0 = -3.55, z1 = 5.6, L = (z1 - z0) / nW;
+  for (let i = 0; i < nW; i++) {
+    const a = z0 + i * L + 0.05, b = z0 + (i + 1) * L - 0.05;
+    for (const s of [-1, 1]) {
+      if (s > 0 && i === 0) continue;
+      sideWindow(B, T, rrect(a, b, winY0, winY1, 0.06), hw, [s], 0.025);
+      B.box('alumDull', s > 0 ? [hw + 0.008, hw + 0.016] : [-hw - 0.016, -hw - 0.008], [2.2, 2.23], [a, b]);
+    }
+  }
+  // driver window (left) and entry door (right, split glass)
+  sideWindow(B, T, rrect(-4.65, -3.75, 1.7, 2.6, 0.06), hw, [-1], 0.025);
+  B.add('trim', sideGeo(T, rrect(-4.75, -3.72, 0.82, 2.65, 0.03), 0.012, 0), [hw + 0.006, 0, 0]);
+  for (const [a, b] of [[-4.7, -4.25], [-4.21, -3.77]]) for (const [y0, y1] of [[0.9, 1.65], [1.72, 2.58]]) B.add('glass', sideGeo(T, rrect(a, b, y0, y1, 0.03), 0.012, 0), [hw + 0.014, 0, 0]);
+  // windscreen (2 panes), front cap
+  windscreen(B, T, -4.84, 2.12, -4.74, 2.82, 2.2, 0.06, 0.06);
+  // rear emergency door + rear windows
+  B.add('trim', frontGeo(T, rrect(-0.5, 0.5, 0.95, 2.75, 0.04), 0.012), [0, 0, 6.1 + 0.002]);
+  B.add('glass', frontGeo(T, rrect(-0.44, 0.44, 1.95, 2.65, 0.05), 0.012), [0, 0, 6.1 + 0.006]);
+  for (const s of [-1, 1]) B.add('glass', frontGeo(T, rrect(s > 0 ? 0.62 : -1.1, s > 0 ? 1.1 : -0.62, 1.95, 2.55, 0.05), 0.012), [0, 0, 6.1 + 0.006]);
+  B.box('trim', [-1.2, 1.2], [0.55, 0.8], [6.08, 6.2]);
+  // folded stop arm (driver side) — red octagon plate
+  const oct = []; for (let i = 0; i < 8; i++) { const a = (i + 0.5) / 8 * Math.PI * 2; oct.push([-4.3 + Math.cos(a) * 0.23, 1.9 + Math.sin(a) * 0.23, 0]); }
+  B.add('redSign', sideGeo(T, oct, 0.02, 0), [-hw - 0.03, 0, 0]);
+  // crossing arm at front bumper (folded) + mirrors
+  B.box('steelDark', [0.6, 1.0], [0.62, 0.66], [-6.2, -6.16]);
+  for (const s of [-1, 1]) {
+    B.cyl('trim', 'y', 0.012, 0.9, [s * 1.38, 2.0, -4.9], 6);
+    B.add('trim', planGeo(T, [[s * 1.38 - 0.05, -4.96, 0.02], [s * 1.38 + 0.05, -4.96, 0.02], [s * 1.38 + 0.05, -4.86, 0.02], [s * 1.38 - 0.05, -4.86, 0.02]], 1.85, 2.4, 0.015));
+    B.box('trim', [Math.min(s * 1.25, s * 1.38), Math.max(s * 1.25, s * 1.38)], [2.3, 2.33], [-4.92, -4.89]);
+    B.add('trim', new T.SphereGeometry(0.1, 12, 8), [s * 0.95, 1.62, -5.95], [0, 0, 0], [1, 1, 0.5]); // crossover mirrors on hood
+    addWheel(B, T, s * 1.04, axF, { R, w: 0.28 });
+    addWheel(B, T, s * 1.06, axR, { R, w: 0.28, dual: true });
+    mudflap(B, s > 0 ? 0.65 : -1.2, s > 0 ? 1.2 : -0.65, 2.65, 0.75, 0.22);
+  }
+  B.cyl('steelDark', 'x', 0.08, 1.6, [0, R, axR], 14);
+  return { geo: B.build(), axF, axR };
+}
+
+// ---------------------------------------------------------------- assembly
+function assemble(T, id, type, variant, geoByMat, paintHex, dims) {
+  const M = mats(T);
+  const root = new T.Group();
+  root.name = id || type;
+  const body = new T.Group(); body.name = (id || type) + '_body'; root.add(body);
+  for (const k in geoByMat) {
+    const mat = k === 'paint' ? paint(T, paintHex) : M[k];
+    const mesh = new T.Mesh(geoByMat[k], mat);
+    mesh.name = `${root.name}_${k}`;
+    mesh.castShadow = k !== 'glass' && k !== 'hole';
+    mesh.receiveShadow = true;
+    body.add(mesh);
+  }
+  root.userData.assetType = type;
+  root.userData.variant = variant;
+  root.userData.dims = { ...dims };
+  return root;
+}
+function attachLights(T, root, lamps, heads) {
+  const L = lampMats(T);
+  const meshes = [];
+  for (const l of lamps) { const m = lampMesh(T, l.geo, L[l.kind], l.name, l.pos, l.rot); meshes.push([m, l.kind]); root.add(m); }
+  let on = false, brake = false, beams = null;
+  const apply = () => {
+    L.head.emissiveIntensity = on ? 3.0 : 0;
+    L.tail.emissiveIntensity = brake ? 3.2 : on ? 1.1 : 0;
+    L.amber.emissiveIntensity = on ? 1.4 : 0;
+    L.marker.emissiveIntensity = on ? 1.1 : 0;
+    if (beams) for (const b of beams) b.visible = on;
+  };
+  root.userData.setLights = (v, opts = {}) => {
+    on = !!v;
+    if (opts.beams && !beams && heads && heads.length) {
+      beams = heads.map(([x, y, z]) => {
+        const s = new T.SpotLight(0xfff2dc, 40, 60, 0.42, 0.5, 1.6);
+        s.position.set(x, y, z); s.target.position.set(x, y - 0.6, z - 20); s.castShadow = false;
+        root.add(s); root.add(s.target); return s;
+      });
+    }
+    apply();
+  };
+  root.userData.setBrake = (v) => { brake = !!v; apply(); };
+  root.userData.lamps = meshes.map(([m]) => m.name);
+  apply();
+}
+const lamp = (T, kind, name, w, h, d, pos, rot) => ({ kind, name, geo: new T.BoxGeometry(w, h, d), pos, rot });
+const roundLamp = (T, kind, name, r, d, pos, axis = 'z') => {
+  const g = new T.CylinderGeometry(r, r, d, 18);
+  if (axis === 'z') g.rotateX(Math.PI / 2); else if (axis === 'x') g.rotateZ(Math.PI / 2);
+  return { kind, name, geo: g, pos };
+};
+
+function makeTractor(T, o) {
+  const c = cacheFor(T).built;
+  c.tractor = c.tractor || buildTractor(T);
+  const dims = CATALOG.truck_tractor;
+  const root = assemble(T, o.id, 'truck_tractor', 'conventional_sleeper', c.tractor, toHex(o.color, 0x7d1c1f), dims);
+  const lamps = [];
+  for (const s of [-1, 1]) {
+    const n = s < 0 ? 'L' : 'R';
+    lamps.push(lamp(T, 'head', 'headlight_' + n, 0.36, 0.17, 0.05, [s * 0.95, 1.22, -3.03]));
+    lamps.push(lamp(T, 'amber', 'turn_front_' + n, 0.1, 0.17, 0.05, [s * 1.18, 1.18, -2.97]));
+    lamps.push(roundLamp(T, 'tail', 'taillight_' + n, 0.06, 0.03, [s * 0.66, 0.92, 3.25]));
+    lamps.push(lamp(T, 'amber', 'cab_marker_' + n, 0.12, 0.05, 0.04, [s * 0.45, 3.58, 0.38]));
+  }
+  lamps.push(lamp(T, 'amber', 'cab_marker_C', 0.12, 0.05, 0.04, [0, 3.6, 0.36]));
+  attachLights(T, root, lamps, [[-0.95, 1.22, -3.06], [0.95, 1.22, -3.06]]);
+  root.userData.driverEye = [-0.55, 2.5, -0.45];
+  root.userData.fifthWheel = [0, TR.fifthY, TR.fifthZ];
+  root.userData.hitch = (trailer, art = 0) => coupleTrailer(root, trailer, art);
+  return root;
+}
+function makeTrailer(T, o) {
+  const flat = /flat/.test(String(o.variant || ''));
+  const c = cacheFor(T).built;
+  const key = flat ? 'flatbed' : 'van';
+  c[key] = c[key] || (flat ? buildFlatbed(T) : buildBoxTrailer(T));
+  const dims = flat ? CATALOG.semitrailer_flatbed : CATALOG.semitrailer;
+  const root = assemble(T, o.id, 'semitrailer', flat ? 'flatbed' : 'box', c[key], toHex(o.color, 0xe9ebea), dims);
+  const lamps = [];
+  const sillY = flat ? 1.38 : ST.floorBot + 0.2;
+  for (const s of [-1, 1]) {
+    const n = s < 0 ? 'L' : 'R';
+    lamps.push(roundLamp(T, 'tail', 'taillight_' + n, 0.075, 0.03, [s * 0.95, sillY, 8.12]));
+    lamps.push(roundLamp(T, 'tail', 'taillight2_' + n, 0.075, 0.03, [s * 0.72, sillY, 8.12]));
+    lamps.push(lamp(T, 'amber', 'side_marker_front_' + n, 0.012, 0.05, 0.1, [s * 1.305, sillY + 0.05, -7.9]));
+    lamps.push(lamp(T, 'amber', 'side_marker_mid_' + n, 0.012, 0.05, 0.1, [s * 1.305, sillY + 0.05, 0.0]));
+    lamps.push(lamp(T, 'marker', 'side_marker_rear_' + n, 0.012, 0.05, 0.1, [s * 1.305, sillY + 0.05, 7.9]));
+    if (!flat) {
+      lamps.push(lamp(T, 'amber', 'top_marker_front_' + n, 0.1, 0.05, 0.03, [s * 1.18, 4.03, -8.12]));
+      lamps.push(lamp(T, 'marker', 'top_marker_rear_' + n, 0.1, 0.05, 0.03, [s * 1.18, 4.03, 8.11]));
+    }
+  }
+  if (!flat) for (const x of [-0.15, 0, 0.15]) lamps.push(lamp(T, 'marker', 'id_lamp_' + x, 0.06, 0.04, 0.03, [x, 3.98, 8.11]));
+  attachLights(T, root, lamps, null);
+  root.userData.driverEye = null;
+  root.userData.kingpinOffset = ST.kingpinZ;
+  root.userData.kingpin = [0, ST.kingpinY, ST.kingpinZ];
+  root.userData.kingpinToAxles = (ST.ax1 + ST.ax2) / 2 - ST.kingpinZ;
+  root.userData.underrideClearance = flat ? 1.38 - 0.18 : ST.floorBot - 0.1;   // lowest crossmember flange above ground between landing gear and tandem
+  return root;
+}
+function makeBoxTruck(T, o) {
+  const c = cacheFor(T).built;
+  c.boxtruck = c.boxtruck || buildBoxTruck(T);
+  const root = assemble(T, o.id, 'box_truck', 'conventional', c.boxtruck, toHex(o.color, 0xf2f2f0), CATALOG.box_truck);
+  const lamps = [];
+  for (const s of [-1, 1]) {
+    const n = s < 0 ? 'L' : 'R';
+    lamps.push(lamp(T, 'head', 'headlight_' + n, 0.32, 0.15, 0.05, [s * 0.78, 1.18, -3.5], [0, 0, 0]));
+    lamps.push(lamp(T, 'amber', 'turn_front_' + n, 0.08, 0.15, 0.05, [s * 1.0, 1.16, -3.45]));
+    lamps.push(lamp(T, 'tail', 'taillight_' + n, 0.08, 0.3, 0.03, [s * 1.16, 1.42, 3.762]));
+    lamps.push(lamp(T, 'marker', 'top_marker_rear_' + n, 0.08, 0.05, 0.03, [s * 1.1, 3.33, 3.762]));
+    lamps.push(lamp(T, 'amber', 'top_marker_front_' + n, 0.08, 0.05, 0.03, [s * 1.1, 3.33, -0.87]));
+  }
+  attachLights(T, root, lamps, [[-0.78, 1.18, -3.53], [0.78, 1.18, -3.53]]);
+  root.userData.driverEye = [-0.5, 2.28, -1.75];
+  return root;
+}
+function makeBus(T, o) {
+  const school = /school/.test(String(o.variant || ''));
+  const c = cacheFor(T).built;
+  const key = school ? 'school' : 'transit';
+  c[key] = c[key] || (school ? buildSchoolBus(T) : buildTransit(T));
+  const root = assemble(T, o.id, 'bus', school ? 'school' : 'transit', c[key].geo, toHex(o.color, school ? 0xf2a900 : 0xf0f1ef), CATALOG.bus);
+  const lamps = [];
+  for (const s of [-1, 1]) {
+    const n = s < 0 ? 'L' : 'R';
+    if (school) {
+      lamps.push(roundLamp(T, 'head', 'headlight_' + n, 0.09, 0.04, [s * 0.75, 1.15, -6.07]));
+      lamps.push(roundLamp(T, 'tail', 'taillight_' + n, 0.09, 0.03, [s * 0.9, 1.15, 6.115]));
+      lamps.push(roundLamp(T, 'tail', 'warn_red_front_' + n, 0.09, 0.04, [s * 0.95, 3.0, -4.78]));
+      lamps.push(roundLamp(T, 'amber', 'warn_amber_front_' + n, 0.09, 0.04, [s * 0.65, 3.0, -4.78]));
+      lamps.push(roundLamp(T, 'tail', 'warn_red_rear_' + n, 0.09, 0.04, [s * 0.95, 2.9, 6.12]));
+      lamps.push(roundLamp(T, 'amber', 'warn_amber_rear_' + n, 0.09, 0.04, [s * 0.65, 2.9, 6.12]));
+    } else {
+      lamps.push(lamp(T, 'head', 'headlight_' + n, 0.3, 0.12, 0.04, [s * 0.92, 0.72, -6.11]));
+      lamps.push(lamp(T, 'amber', 'turn_front_' + n, 0.12, 0.12, 0.04, [s * 1.12, 0.72, -6.11]));
+      lamps.push(lamp(T, 'tail', 'taillight_' + n, 0.14, 0.42, 0.03, [s * 1.12, 1.15, 6.115]));
+      lamps.push(lamp(T, 'marker', 'top_marker_rear_' + n, 0.08, 0.05, 0.03, [s * 1.0, 2.95, 6.115]));
+    }
+  }
+  attachLights(T, root, lamps, school ? [[-0.75, 1.15, -6.1], [0.75, 1.15, -6.1]] : [[-0.92, 0.72, -6.13], [0.92, 0.72, -6.13]]);
+  root.userData.driverEye = school ? [-0.62, 2.12, -4.4] : [-0.72, 2.05, -5.25];
+  root.userData.axles = [c[key].axF, c[key].axR];
+  return root;
+}
+
+/** createHeavyVehicle(THREE, type, {id, color, variant}) -> THREE.Group (see header). Unknown type -> null. */
+export function createHeavyVehicle(T, type, opts = {}) {
+  const o = opts || {};
+  let obj = null;
+  switch (type) {
+    case 'truck_tractor': case 'tractor': obj = makeTractor(T, o); break;
+    case 'semitrailer': case 'trailer': case 'semitrailer_flatbed': obj = makeTrailer(T, type === 'semitrailer_flatbed' ? { ...o, variant: 'flatbed' } : o); break;
+    case 'box_truck': obj = makeBoxTruck(T, o); break;
+    case 'bus': case 'school_bus': obj = makeBus(T, type === 'school_bus' ? { ...o, variant: 'school' } : o); break;
+    default: return null;
+  }
+  obj.userData.id = o.id;
+  return obj;
+}
+
+/** Couple a trailer to a tractor (same parent). articulation = tractor heading - trailer heading (rad, + = trailer swung to tractor's right... CCW convention). */
+export function coupleTrailer(tractor, trailer, articulation = 0) {
+  const h = tractor.rotation.y, zF = tractor.userData.fifthWheel[2];
+  const ht = h - articulation, zK = trailer.userData.kingpinOffset;
+  const px = tractor.position.x + zF * Math.sin(h), pz = tractor.position.z + zF * Math.cos(h);
+  trailer.position.set(px - zK * Math.sin(ht), tractor.position.y, pz - zK * Math.cos(ht));
+  trailer.rotation.y = ht;
+  return { pivot: [px, pz], trailerHeading: ht };
+}
+
+export const HEAVY_PARTS_SOURCE = SHARED ? 'vehicle_parts.js (present; local wheel builder in use)' : 'local';
+export default createHeavyVehicle;

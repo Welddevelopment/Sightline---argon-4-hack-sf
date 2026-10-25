@@ -4,37 +4,37 @@
   "step": "done",
   "message": "Reconstruction complete.",
   "mode": "mock",
-  "startedAt": "2026-10-25T19:11:52.602Z",
-  "finishedAt": "2026-10-25T19:11:56.692Z",
+  "startedAt": "2026-10-25T19:13:17.360Z",
+  "finishedAt": "2026-10-25T19:13:22.051Z",
   "error": null,
   "resumable": false,
   "events": [
     {
-      "at": "2026-10-25T19:11:52.602Z",
+      "at": "2026-10-25T19:13:17.363Z",
       "type": "start"
     },
     {
-      "at": "2026-10-25T19:11:52.604Z",
+      "at": "2026-10-25T19:13:17.369Z",
       "type": "progress",
       "step": "extract",
       "message": "Extracted text from 6 document(s); 1 video(s) and 1 image(s) queued for Argon."
     },
     {
-      "at": "2026-10-25T19:11:52.605Z",
+      "at": "2026-10-25T19:13:17.371Z",
       "type": "progress",
       "step": "evidence",
       "round": 1,
       "message": "Case jobtest: 6 text file(s), 1 video(s), 1 image(s)"
     },
     {
-      "at": "2026-10-25T19:11:52.907Z",
+      "at": "2026-10-25T19:13:17.674Z",
       "type": "progress",
       "step": "generate",
       "round": 1,
       "message": "Replaying cached Argon world generation (cases/jobtest/cache/generate_world.js)…"
     },
     {
-      "at": "2026-10-25T19:11:53.262Z",
+      "at": "2026-10-25T19:13:18.019Z",
       "type": "progress",
       "step": "generate",
       "round": 1,
@@ -42,21 +42,21 @@
       "world": "/cases/jobtest/worlds/world_v1.js"
     },
     {
-      "at": "2026-10-25T19:11:53.841Z",
+      "at": "2026-10-25T19:13:19.048Z",
       "type": "progress",
       "step": "checks",
       "round": 1,
       "message": "Independent checks: 8/8 pass"
     },
     {
-      "at": "2026-10-25T19:11:54.144Z",
+      "at": "2026-10-25T19:13:19.349Z",
       "type": "progress",
       "step": "critique",
       "round": 1,
       "message": "Replaying cached Argon critique (cases/jobtest/cache/critique_round1.json)…"
     },
     {
-      "at": "2026-10-25T19:11:54.448Z",
+      "at": "2026-10-25T19:13:19.655Z",
       "type": "progress",
       "step": "critique",
       "round": 1,
@@ -64,7 +64,7 @@
       "verdict": "world_patched"
     },
     {
-      "at": "2026-10-25T19:11:54.790Z",
+      "at": "2026-10-25T19:13:20.002Z",
       "type": "progress",
       "step": "patch",
       "round": 1,
@@ -72,21 +72,21 @@
       "world": "/cases/jobtest/worlds/world_v2.js"
     },
     {
-      "at": "2026-10-25T19:11:55.457Z",
+      "at": "2026-10-25T19:13:20.811Z",
       "type": "progress",
       "step": "checks",
       "round": 2,
       "message": "Independent checks: 7/8 pass — wit_B: blocked by veh_T_tractor"
     },
     {
-      "at": "2026-10-25T19:11:55.765Z",
+      "at": "2026-10-25T19:13:21.124Z",
       "type": "progress",
       "step": "critique",
       "round": 2,
       "message": "Replaying cached Argon critique (cases/jobtest/cache/critique_round2.json)…"
     },
     {
-      "at": "2026-10-25T19:11:56.071Z",
+      "at": "2026-10-25T19:13:21.427Z",
       "type": "progress",
       "step": "critique",
       "round": 2,
@@ -94,18 +94,18 @@
       "verdict": "contradiction_found"
     },
     {
-      "at": "2026-10-25T19:11:56.375Z",
+      "at": "2026-10-25T19:13:21.743Z",
       "type": "progress",
       "step": "done",
       "round": 2,
       "message": "Loop finished after 2 round(s). Final world /cases/jobtest/worlds/world_v2.js. 1 contradiction(s)."
     },
     {
-      "at": "2026-10-25T19:11:56.692Z",
+      "at": "2026-10-25T19:13:22.051Z",
       "type": "done",
       "message": "Reconstruction complete."
     }
   ],
-  "buildingAt": "2026-10-25T19:11:52.603Z",
+  "buildingAt": "2026-10-25T19:13:17.368Z",
   "round": 2
 }

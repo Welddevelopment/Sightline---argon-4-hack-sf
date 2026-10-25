@@ -282,11 +282,12 @@ function patchSkyMaterial(material) {
   material.uniforms.overcastColor = { value: [0.62, 0.65, 0.69] };
   material.uniforms.twilight = { value: 0 };
   material.uniforms.lowSun = { value: 0 };
+  material.uniforms.skyFloor = { value: 0 };
   material.uniforms.sunDirTrue = { value: [0, 1, 0] };
   material.uniforms.hazeMix = { value: 0 };
   material.uniforms.hazeColor = { value: [0.7, 0.72, 0.75] };
   material.uniforms.nightColor = { value: [0.0, 0.0, 0.0] };
-  const decl = 'uniform float skyGain; uniform float overcastMix; uniform vec3 overcastColor; uniform float twilight; uniform float lowSun; uniform vec3 sunDirTrue; uniform float hazeMix; uniform vec3 hazeColor; uniform vec3 nightColor;\n';
+  const decl = 'uniform float skyGain; uniform float overcastMix; uniform vec3 overcastColor; uniform float twilight; uniform float lowSun; uniform float skyFloor; uniform vec3 sunDirTrue; uniform float hazeMix; uniform vec3 hazeColor; uniform vec3 nightColor;\n';
   const tail = /\n\s*gl_FragColor = vec4\( texColor, 1\.0 \);/;
   if (!tail.test(fs)) throw new Error('environment: Sky.js shader layout changed; cannot patch');
   material.fragmentShader = decl + fs.replace(tail, `
@@ -313,7 +314,21 @@ function patchSkyMaterial(material) {
         // horizon haze toward fog colour
         texColor = mix( texColor, hazeColor, hazeMix * exp( -upY * 6.0 ) );
       }
-      gl_FragColor = vec4( texColor * skyGain, 1.0 );`);
+      {
+        // luminance floor tied to the scene's own diffuse light (a sky of radiance L gives pi*L on the ground): Preetham's
+        // low-sun / anti-solar sky is far too dark compared with measured skies, which are brighter than the ground they light
+        vec3 c = texColor * skyGain;
+        float l = dot( c, vec3( 0.2126, 0.7152, 0.0722 ) );
+        float upY2 = max( direction.y, 0.0 );
+        float f = skyFloor * ( 0.75 + 0.6 * exp( -upY2 * 4.0 ) );
+        if ( l < f ) {
+          vec3 hue = l > 1e-5 ? c / l : vec3( 0.8, 0.9, 1.2 );
+          hue = mix( hue, vec3( 0.80, 0.90, 1.25 ), 0.35 );
+          c = mix( c, hue * f, clamp( ( f - l ) / f, 0.0, 1.0 ) );
+        }
+        texColor = c;
+      }
+      gl_FragColor = vec4( texColor, 1.0 );`);
   material.needsUpdate = true;
 }
 
@@ -458,6 +473,7 @@ export function environment(THREE, opts = {}) {
     // twilight term: strongest just after sunset, gone by the end of nautical twilight; scaled to perceived light
     const dep = -sp.elevationDeg;
     const twAmt = dep < -4 ? 0 : clamp(1 - (dep + 4) / 16, 0, 1);  // ramps in from +4 deg to -12 deg
+    u.skyFloor.value = (L.diffuseLux * s / Math.PI) * (L.overcast >= 1 ? 0 : 0.8);
     u.lowSun.value = clamp(1 - sp.elevationDeg / 12, 0, 1);
     u.twilight.value = twAmt * twAmt * 0.3 / Math.max(u.skyGain.value, 1e-3) * clamp(pb * 3, 0, 1.5);
     u.nightColor.value = new THREE.Vector3(0.012, 0.016, 0.03).multiplyScalar(1 / Math.max(u.skyGain.value, 1e-3) * (sunUp ? 0 : 1));

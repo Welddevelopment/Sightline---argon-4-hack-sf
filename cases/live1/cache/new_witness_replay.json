@@ -2,7 +2,7 @@
   "865d7236e960cf40": {
     "statement": "I was pumping gas at the station on the north side of the highway, facing the intersection. I watched the car the whole time until it hit the truck.",
     "witness": {
-      "name": "New Witness (at gas station on north side)",
+      "name": "Witness (gas station on north side of highway, facing intersection at t=9.8s, looking at veh_A, eye 1.6m [standing])",
       "position": [
         0,
         0,
@@ -10,16 +10,16 @@
       ],
       "eyeHeight": 1.6,
       "lookAt": "veh_A",
-      "observationTime": 10.4,
+      "observationTime": 9.8,
       "claim": "I watched the car the whole time until it hit the truck from the gas station on the north side of the highway.",
       "confidence": "low",
-      "assumptions": "The gas station on the north side of the highway is not modeled in the scene, so the witness is placed as a standing pedestrian (eye height 1.6 m) just north of the US-27A westbound road edge (z = -35.1 m) at [0, 0, -40] facing the intersection (x = 0). Observation time is set to 10.4 s, the moment of impact when Vehicle A hits the truck.",
+      "assumptions": "The gas station is not modeled in the scene, so the witness is placed north of the westbound lanes (z = -40 m, past the road edge at z = -35.1 m) aligned with the intersection (x = 0 m). Observation time is set to t = 9.8 s, just prior to the moment of impact.",
       "citation": "Live statement",
       "model": "gemini-4-argon"
     },
     "model": "gemini-4-argon",
-    "seconds": 7.5,
-    "at": "2026-10-25T19:11:49.072Z"
+    "seconds": 4.979,
+    "at": "2026-10-25T19:13:58.487Z"
   },
   "63edd7a5e67738d1": {
     "statement": "I was driving west, about 100 yards from the crossover, when the truck started its turn. I could see the eastbound car coming the entire time.",

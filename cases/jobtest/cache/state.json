@@ -382,7 +382,7 @@
     {
       "round": 1,
       "world": "/cases/jobtest/worlds/world_v1.js",
-      "startedAt": "2026-10-25T19:11:53.568Z",
+      "startedAt": "2026-10-25T19:13:18.324Z",
       "contractProblems": [],
       "renders": {
         "videos": [],
@@ -890,12 +890,12 @@
         "world": "/cases/jobtest/worlds/world_v2.js",
         "problems": []
       },
-      "finishedAt": "2026-10-25T19:11:54.790Z"
+      "finishedAt": "2026-10-25T19:13:20.002Z"
     },
     {
       "round": 2,
       "world": "/cases/jobtest/worlds/world_v2.js",
-      "startedAt": "2026-10-25T19:11:55.092Z",
+      "startedAt": "2026-10-25T19:13:20.307Z",
       "contractProblems": [],
       "renders": {
         "videos": [],
@@ -1412,10 +1412,10 @@
           "status": "unverifiable"
         }
       ],
-      "finishedAt": "2026-10-25T19:11:56.373Z"
+      "finishedAt": "2026-10-25T19:13:21.735Z"
     }
   ],
   "verdict": "contradiction_found",
   "mode": "mock",
-  "updatedAt": "2026-10-25T19:11:56.684Z"
+  "updatedAt": "2026-10-25T19:13:22.046Z"
 }

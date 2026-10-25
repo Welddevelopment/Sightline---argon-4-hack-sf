@@ -1,0 +1,24 @@
+{
+  "0e94989bb4fff53d": {
+    "statement": "I was standing about 30 feet north of the store, looking toward the highway, and I saw the car hit the trailer.",
+    "witness": {
+      "name": "Witness (30 ft north of store, at impact) (live statement) (live statement 30 ft = 9.14 m from bld_store north wall z=12.8 -> z=3.7, x=18; t=10.43s impact) (adjusted for schema: clean name below) -> wait, let me just output the pure JSON object",
+      "position": [
+        18,
+        0,
+        3.7
+      ],
+      "eyeHeight": 1.6,
+      "lookAt": "veh_A",
+      "observationTime": 10.43,
+      "claim": "I was standing about 30 feet north of the store, looking toward the highway, and I saw the car hit the trailer.",
+      "confidence": "high",
+      "assumptions": "Placed 30 feet (9.14 m) north (-Z) of the store's north wall (z = 19 - 6.2 = 12.8 m, so z = 3.66 m, rounded to 3.7 m) aligned with the store's center at x = 18 m, outside the eastbound travel lanes (south edge at z = 3.3 m). Observation time set to t = 10.43 s, the moment of impact when the car hit the trailer.",
+      "citation": "Live statement",
+      "model": "gemini-4-argon"
+    },
+    "model": "gemini-4-argon",
+    "seconds": 7.347,
+    "at": "2026-10-25T19:12:58.337Z"
+  }
+}

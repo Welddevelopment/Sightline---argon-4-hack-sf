@@ -21,7 +21,8 @@
 <div id="grid"></div>
 <script type="module">
 // Environment preview: the demo case (US-27A at NE 140th Ct, Williston FL, 7 May 2016) at four local times.
-// Query: ?times=06:45,12:00,16:36,19:45&weather=clear&date=2016-05-07&off=-04:00&lat=29.4106&lon=-82.5393&w=1600&h=760&t=9.9
+// Rows: Witness B eye view toward the car at t; elevated oblique from the SE; ground view toward the sun azimuth.
+// Query: ?times=06:45,12:00,16:36,19:45&weather=clear&date=2016-05-07&off=-04:00&lat=29.4106&lon=-82.5393&w=1600&h=1020&t=9.9
 import * as THREE from 'three';
 import { Sky } from 'three/addons/objects/Sky.js';
 import { environment, configureRenderer } from '/web/assets/environment.js';
@@ -32,7 +33,7 @@ const weather = q.get('weather') || 'clear';
 const date = q.get('date') || '2016-05-07';
 const off = q.get('off') || '-04:00';
 const lat = +(q.get('lat') || 29.4106), lon = +(q.get('lon') || -82.5393);
-const W = +(q.get('w') || 1600), H = +(q.get('h') || 760);
+const W = +(q.get('w') || 1600), H = +(q.get('h') || 1020);
 const tEvent = +(q.get('t') || 9.9);
 const worldUrl = q.get('world') || '/cases/demo/worlds/world_v2.js';
 
@@ -44,7 +45,7 @@ renderer.setScissorTest(true);
 document.getElementById('grid').appendChild(renderer.domElement);
 
 const { default: createWorld } = await import(worldUrl);
-const cols = times.length, rows = 2;
+const cols = times.length, rows = 3;
 const cw = Math.floor(W / cols), ch = Math.floor(H / rows);
 const panels = [];
 for (const [i, tod] of times.entries()) {
@@ -70,7 +71,12 @@ for (const [i, tod] of times.entries()) {
   const cam1 = new THREE.PerspectiveCamera(50, cw / ch, 0.1, 2000);
   cam1.position.set(45, 28, 55);
   cam1.lookAt(-5, 0, -8);
-  panels.push({ scene, env, cams: [cam0, cam1], tod });
+  // row 2: ground-level view toward the sun's (or, below the horizon, the afterglow's) azimuth, so the disc/aureole is judged
+  const az = env.info.sunAzimuth * Math.PI / 180, pitch = Math.min(Math.max(env.info.sunElevation, 2), 22) * Math.PI / 180;
+  const cam2 = new THREE.PerspectiveCamera(60, cw / ch, 0.1, 2000);
+  cam2.position.set(40, 1.7, 30);
+  cam2.lookAt(40 + Math.sin(az) * 100, 1.7 + Math.tan(pitch) * 100, 30 - Math.cos(az) * 100);
+  panels.push({ scene, env, cams: [cam0, cam1, cam2], tod });
 }
 
 function label(x, y, text) {
@@ -82,7 +88,7 @@ function label(x, y, text) {
 function draw() {
   panels.forEach((p, i) => {
     p.cams.forEach((cam, r) => {
-      p.env.update(cam, r === 1 ? [-5, 0, -8] : undefined);
+      p.env.update(cam, r === 1 ? [-5, 0, -8] : r === 2 ? [10, 0, 0] : undefined);
       const x = i * cw, yTop = r * ch;
       renderer.setViewport(x, H - yTop - ch, cw, ch);
       renderer.setScissor(x, H - yTop - ch, cw, ch);
@@ -93,8 +99,9 @@ function draw() {
 draw();
 panels.forEach((p, i) => {
   const f = p.env.info;
-  label(i * cw + 4, 4, `${p.tod} EDT  ${weather}\nsun az ${f.sunAzimuth.toFixed(1)}  el ${f.sunElevation.toFixed(1)}  ${f.phase}\nglobal ${f.illuminanceLux.global} lx`);
+  label(i * cw + 4, 4, `Witness B eye  ${p.tod} EDT  ${weather}\nsun az ${f.sunAzimuth.toFixed(1)}  el ${f.sunElevation.toFixed(1)}  ${f.phase}\nglobal ${f.illuminanceLux.global} lx`);
   label(i * cw + 4, ch + 4, i === 0 ? `oblique (SE), t=${tEvent}s  sunrise ${f.sunrise} sunset ${f.sunset}` : `oblique (SE)`);
+  label(i * cw + 4, 2 * ch + 4, `toward sun az ${f.sunAzimuth.toFixed(0)}  key: ${f.keySource}`);
 });
 window.__envInfo = panels.map((p) => p.env.info);
 window.__ready = true;
