@@ -1,1 +1,10 @@
-{"name":"Westbound driver (100 yd out at turn start, sees car entire time, t=1s, x=91.4m, z=-32.9m, eye=1.2m, looks at veh_A, confidence=medium, assumptions=100 yd east of crossover center in WB lanes at t=1s when tractor begins turning south from z=-27.4m to -27.1m) -> Wait, schema requires clean name. Let's provide standard name.","position":[91.4,0,-32.9],"eyeHeight":1.2,"lookAt":"veh_A","observationTime":1,"claim":"I was driving west about 100 yards from the crossover when the truck started its turn, and I could see the eastbound car coming the entire time.","confidence":"medium","assumptions":"Placed 100 yards (91.44 m) east of the crossover center (x=0) in the westbound travel lanes (z=-32.9 m) with car driver eye height (1.2 m). Observation time set to t=1.0 s when the tractor begins turning south out of the left-turn lane."}
+{
+  "name": "Westbound driver (100 yd from crossover)",
+  "position": [91.44, 0, -32.9],
+  "eyeHeight": 1.2,
+  "lookAt": "veh_A",
+  "observationTime": 2,
+  "claim": "I could see the eastbound car coming the entire time as the truck started its turn.",
+  "confidence": "medium",
+  "assumptions": "Mapped 'driving west, about 100 yards from the crossover' to x = 91.44 m (100 yards east of the crossover center at x = 0, approaching westbound) in the center of the westbound lanes (z = -32.9 m) with car driver eye height (1.2 m). Set observationTime to t = 2 s when the tractor begins deflecting south out of the turn lane (z = -26.4 m) to start its turn."
+}

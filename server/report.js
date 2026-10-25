@@ -63,7 +63,9 @@ async function loadWorldMeta(ROOT, getThree, worldUrl) {
   if (!file.startsWith(ROOT + path.sep) || !fs.existsSync(file)) return null;
   const THREE = getThree ? await getThree() : await import('three');
   const mod = await import(pathToFileURL(file).href + `?t=${mtime(file)}`);
-  const w = mod.default(THREE);
+  let assets;
+  try { assets = await (await import(pathToFileURL(path.join(ROOT, 'checks', 'load_world.js')).href)).nodeAssets(); } catch { /* v1 worlds need none */ }
+  const w = await mod.default(THREE, assets); // v2 worlds need the asset library
   const objects = {};
   for (const [id, o] of Object.entries(w.objects || {})) objects[id] = { label: o.label || id, kind: o.kind || null, citation: o.citation || null };
   return {
@@ -122,9 +124,10 @@ export function mountReport(app, ctx = {}) {
       const texts = readCaseText(ROOT, id);
       let world = null, worldError = null;
       try { world = await loadWorldMeta(ROOT, ctx.getThree, state.world); } catch (e) { worldError = errMsg(e); }
+      // Statements added live in the viewer are not part of the reconstruction; listed in an appendix only with ?added=1.
       const witnesses = [...((world && world.witnesses) || [])];
-      for (const w of state.witnesses || []) if (!witnesses.some((x) => x.id === w.id)) witnesses.push({ id: w.id, name: w.name || w.id, observationTime: w.observationTime ?? null, lookAt: w.lookAt ?? null, citation: w.citation || null });
-      if (world) world.witnesses = witnesses;
+      const added = req.query.added === '1' ? (state.witnesses || []).filter((w) => !witnesses.some((x) => x.id === w.id))
+        .map((w) => ({ id: w.id, name: w.name || w.id, claim: w.claim || null, observationTime: w.observationTime ?? null, lookAt: w.lookAt ?? null, confidence: w.confidence || null, assumptions: w.assumptions || null })) : [];
       // figures: rendered set (exports/figs/manifest.json) if it matches this world, else the loop's renders for that world
       const figMan = readJson(caseDir(ROOT, id, 'exports', 'figs', 'manifest.json'));
       let figures = [];
@@ -149,7 +152,7 @@ export function mountReport(app, ctx = {}) {
         files: c.files || [],
         state: { world: state.world || null, verdict: state.verdict || null, updatedAt: state.updatedAt || null, findings: state.findings || [], checks: state.checks || [],
           rounds: Array.isArray(state.loopLog) ? state.loopLog.length : 0, warning: state.warning || null },
-        world, worldError,
+        world, worldError, added,
         provenance: c.provenance || {},
         validation: c.validation || null,
         kinematicLabel: c.kinematicLabel || null,
@@ -272,7 +275,7 @@ export async function buildReport({ ROOT = ROOT_DEFAULT, caseId, base, refigs = 
     const esc = (s) => String(s || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     const box = 'font-family: Georgia, "Times New Roman", serif; font-size: 7.5pt; color: #333; width: 100%; padding: 0 0.85in; display: flex; justify-content: space-between; align-items: center; -webkit-print-color-adjust: exact;';
     const headerTemplate = `<div style='${box} border: 0;'><span style="letter-spacing: .02em;">${esc(n.draft || NOTICE_DRAFT)}</span>${n.simulation ? `<span style="font-family: Helvetica, Arial, sans-serif; font-weight: 700; font-size: 7pt; letter-spacing: .08em; color: #8a1c1c;">${esc(n.simulation)}</span>` : '<span></span>'}</div>`;
-    const footerTemplate = `<div style='${box}'><span>${esc(n.short || 'Sightline report')}${n.simulation ? ` &nbsp;&middot;&nbsp; <b style="font-family: Helvetica, Arial, sans-serif; font-size: 6.5pt; letter-spacing: .08em; color: #8a1c1c;">${esc(n.simulation)}</b>` : ''}</span><span>${esc(n.draft || NOTICE_DRAFT)} &nbsp;&middot;&nbsp; Page <span class="pageNumber"></span> of <span class="totalPages"></span></span></div>`;
+    const footerTemplate = `<div style='${box}'><span>${esc(n.short || 'Sightline report')}</span><span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span></div>`;
     const tmp = path.join(outDir, 'report.pdf.tmp');
     await page.pdf({ path: tmp, format: 'Letter', printBackground: true, displayHeaderFooter: true, headerTemplate, footerTemplate,
       margin: { top: '0.8in', bottom: '0.8in', left: '0.85in', right: '0.85in' } });

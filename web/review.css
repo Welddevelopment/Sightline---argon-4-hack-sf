@@ -47,6 +47,12 @@ h1 { font: 600 24px/1.25 var(--serif); margin: 0 0 8px; letter-spacing: -.005em;
 .banner .btn { margin-left: auto; }
 .notes { margin: 14px 0 0; padding: 10px 12px; border-left: 2px solid #3a4658; color: #b9c3d2; font-size: 12px; line-height: 1.55; background: var(--row); }
 .notes b { color: var(--muted); font: 600 10px var(--sans); letter-spacing: .1em; text-transform: uppercase; display: block; margin-bottom: 3px; }
+.notes summary { cursor: pointer; list-style: none; }
+.notes summary::-webkit-details-marker { display: none; }
+.notes summary span::after { content: "  Show all"; color: var(--accent); font-weight: 600; font-size: 11px; }
+.notes[open] summary span { display: none; }
+.notes[open] summary b::after { content: " · hide"; color: var(--accent); letter-spacing: 0; text-transform: none; }
+.notes .nfull { margin-top: 2px; }
 
 /* sections */
 .sect { margin-top: 30px; }

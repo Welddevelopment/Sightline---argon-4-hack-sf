@@ -10,8 +10,8 @@
 //   3. Deterministic parser for "N m/yards/ft <direction> of <landmark>", "<side> side of the highway",
 //      "driving west ... from the crossover".                        [source: "parser"]
 //   Mock mode: replay → parser → cached example.
-// Env: ARGON_WITNESS_MODEL (default ARGON_MODEL), ARGON_WITNESS_TIMEOUT_MS (total, 22000), ARGON_WITNESS_HEDGE_MS (9000),
-//      ARGON_WITNESS_THINKING (thinkingLevel, e.g. LOW|MINIMAL; unset = model default).
+// Env: ARGON_WITNESS_MODEL (default ARGON_MODEL), ARGON_WITNESS_TIMEOUT_MS (total, 22000), ARGON_WITNESS_HEDGE_MS (8000),
+//      ARGON_WITNESS_THINKING (thinkingLevel, default LOW; 'default' = model default; rejected levels are dropped on the retry).
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -21,8 +21,10 @@ import { caseDirs, defaultCaseId } from './case.js';
 import { summarizeWorld } from './world_io.js';
 
 const MODEL = process.env.ARGON_WITNESS_MODEL || ARGON_MODEL;
+// LOW measured on live1/demo: median ~5 s vs ~8.6 s at the model default, same placements. 'default' = leave unset.
+const THINKING = process.env.ARGON_WITNESS_THINKING ?? 'LOW';
 const TOTAL = Number(process.env.ARGON_WITNESS_TIMEOUT_MS || 22000); // whole live budget before falling back
-const HEDGE = Number(process.env.ARGON_WITNESS_HEDGE_MS || 9000);    // start a parallel second call if the first is this slow
+const HEDGE = Number(process.env.ARGON_WITNESS_HEDGE_MS || 8000);    // start a parallel second call if the first is this slow
 
 const SCHEMA = {
   type: 'object',
@@ -165,7 +167,7 @@ async function callOnce(prompt, timeoutMs, name, d, { useSchema = true, useThink
   // No per-request httpOptions.timeout: the API rejects deadlines < 10 s; the abort + race below enforce timeoutMs.
   const config = { responseMimeType: 'application/json', maxOutputTokens: 4096, abortSignal: ctrl.signal };
   if (useSchema) config.responseJsonSchema = SCHEMA;
-  if (useThinking && process.env.ARGON_WITNESS_THINKING) config.thinkingConfig = { thinkingLevel: process.env.ARGON_WITNESS_THINKING };
+  if (useThinking && THINKING && THINKING !== 'default') config.thinkingConfig = { thinkingLevel: THINKING };
   let timer;
   const t0 = Date.now();
   try {

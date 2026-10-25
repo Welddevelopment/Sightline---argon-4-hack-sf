@@ -1,10 +1,10 @@
 {
-  "name": "Witness (WB driver 100 yds from crossover)",
-  "position": [91.4, 0, -29.9],
+  "name": "Witness (westbound driver 100 yds from crossover, watching veh_A at t=2s)",
+  "position": [91.4, 0, -28],
   "eyeHeight": 1.2,
   "lookAt": "veh_A",
-  "observationTime": 2.0,
+  "observationTime": 2,
   "claim": "I was driving west about 100 yards from the crossover when the truck started its turn, and I could see the eastbound car coming the entire time.",
   "confidence": "medium",
-  "assumptions": "Mapped 'driving west, about 100 yards from the crossover' to x = 91.4 m (100 yards * 0.9144 m/yd east of crossover center at x = 0) in the westbound travel lanes (z = -29.9 m, between WB inside lane at -28.04 m and outside lane at -31.7 m) with standard car driver eye height 1.2 m. Set observationTime to t = 2.0 s, when veh_T_tractor begins turning southward from z = -23.8 m in the moving-object table."
+  "assumptions": "100 yards (91.44 m) east of the crossover center (x=0) places a westbound driver at x=91.4 m in the westbound lanes (z=-28 m, car driver eye height 1.2 m). Observation time is set to t=2.0 s, when the truck tractor begins turning south from its initial westbound path."
 }

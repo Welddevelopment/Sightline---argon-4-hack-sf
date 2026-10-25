@@ -1,0 +1,67 @@
+/* Sightline forensic callouts (web/overlays.js). Measured, quiet, legible over imagery: dark plates, thin rules, mono figures. */
+.slo-layer { position: absolute; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #eef1f5; }
+.slo-layer[hidden] { display: none; }
+.slo-svg { position: absolute; left: 0; top: 0; overflow: visible; }
+.slo-layer > div { position: absolute; left: 0; top: 0; white-space: nowrap; }
+
+/* clock / time-to-impact / signal panel (top-left) */
+.slo-panel { left: 12px !important; top: 12px !important; min-width: 168px; padding: 7px 11px 8px; background: rgba(6, 9, 13, .80); border: 1px solid rgba(255, 255, 255, .14); border-left: 3px solid #e2b052; border-radius: 2px; box-shadow: 0 2px 10px rgba(0, 0, 0, .35); }
+.slo-t { font: 700 20px/1.15 ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: .01em; font-variant-numeric: tabular-nums; }
+.slo-clock { font: 500 12px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #b9c2d0; font-variant-numeric: tabular-nums; }
+.slo-clock.approx { font-size: 11px; color: #8794a7; }
+.slo-imp { margin-top: 3px; font: 700 12px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: .03em; font-variant-numeric: tabular-nums; }
+.slo-imp.pre { color: #f2c46b; }
+.slo-imp.now { color: #fff; background: #c62828; display: inline-block; padding: 0 6px; }
+.slo-imp.post { color: #ff9a9a; }
+.slo-sig { display: flex; align-items: center; gap: 7px; margin-top: 5px; padding-top: 5px; border-top: 1px solid rgba(255, 255, 255, .1); font: 500 11px/1.3 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #b9c2d0; }
+.slo-sig i { width: 10px; height: 10px; border-radius: 50%; background: #3a4352; box-shadow: 0 0 0 1px rgba(255, 255, 255, .25); flex: none; }
+.slo-sig b { margin-left: auto; font-weight: 700; color: #eef1f5; }
+.slo-sig.red i { background: #ff3b30; box-shadow: 0 0 6px #ff3b30; } .slo-sig.red b { color: #ff7a72; }
+.slo-sig.yellow i, .slo-sig.amber i { background: #ffc300; box-shadow: 0 0 6px #ffc300; } .slo-sig.yellow b, .slo-sig.amber b { color: #ffd65a; }
+.slo-sig.green i { background: #2fd27a; box-shadow: 0 0 6px #2fd27a; } .slo-sig.green b { color: #6fe3a3; }
+.slo-sig.flashing i { animation: slo-blink 1s steps(2) infinite; }
+@keyframes slo-blink { 50% { opacity: .2; } }
+
+/* vehicle labels */
+.slo-veh { display: flex; align-items: baseline; gap: 8px; height: 22px; box-sizing: border-box; padding: 0 8px; background: rgba(6, 9, 13, .82); border: 1px solid rgba(255, 255, 255, .22); border-radius: 2px; font: 600 11px/20px ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.slo-veh .n { color: #c9d1dc; }
+.slo-veh b { font: 700 12px/20px ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #fff; font-variant-numeric: tabular-nums; }
+.slo-veh em { font: 500 10px/20px ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-style: normal; color: #8794a7; margin-left: -4px; }
+.slo-veh.hid { border-style: dashed; background: rgba(6, 9, 13, .62); }
+.slo-veh.hid .n, .slo-veh.hid b { color: #a9b2bf; }
+.slo-veh.inf { border: 1px dashed #f5a524; }
+.slo-lead { stroke: rgba(255, 255, 255, .7); stroke-width: 1; }
+.slo-lead.hid { stroke-dasharray: 3 3; stroke: rgba(255, 255, 255, .45); }
+.slo-anc { fill: #fff; stroke: rgba(0, 0, 0, .6); stroke-width: 1; }
+
+/* sight line caption + witness-view reticle */
+.slo-sight { display: flex; flex-direction: column; padding: 4px 8px 5px; background: rgba(6, 9, 13, .84); border: 1px solid; border-radius: 2px; font: 600 11px/1.45 ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.slo-sight span { font: 500 10px/1.45 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #b9c2d0; }
+.slo-sight span.c { color: #8794a7; }
+.slo-sight.ok { border-color: rgba(61, 220, 132, .75); } .slo-sight.ok b { color: #6fe3a3; }
+.slo-sight.bad { border-color: rgba(255, 77, 77, .8); } .slo-sight.bad b { color: #ff8a8a; }
+.slo-ret circle, .slo-ret line { fill: none; stroke-width: 1.6; }
+.slo-ret.ok circle, .slo-ret.ok line { stroke: #3ddc84; }
+.slo-ret.bad circle, .slo-ret.bad line { stroke: #ff4d4d; }
+
+/* stopping distance / brake point tags */
+.slo-mark { display: flex; flex-direction: column; padding: 3px 7px 4px; background: rgba(6, 9, 13, .82); border: 1px solid rgba(255, 255, 255, .25); border-top: 2px solid #f2f4f7; border-radius: 2px; font: 600 11px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.slo-mark span { font: 500 10px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #b9c2d0; }
+.slo-mark.brake { border-top-color: #e2b052; } .slo-mark.brake b { color: #f2c46b; }
+.slo-mark.none { border-top-color: #ff4d4d; } .slo-mark.none b { color: #ff9a9a; }
+
+/* vehicle gap */
+.slo-gap line { stroke: #4dd2ff; stroke-width: 1.4; }
+.slo-gaplbl { padding: 0 7px; height: 19px; line-height: 18px; background: rgba(6, 9, 13, .84); border: 1px solid rgba(77, 210, 255, .7); border-radius: 2px; font: 600 11px/18px ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #9fe6ff; }
+
+/* street / lane labels on the plan */
+.slo-road { display: flex; flex-direction: column; align-items: center; transform-origin: 50% 50%; text-shadow: 0 0 3px rgba(0, 0, 0, .95), 0 0 1px #000; }
+.slo-road b { font: 600 10px/1.25 ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: .12em; text-transform: uppercase; color: rgba(255, 255, 255, .92); }
+.slo-road span { font: 500 9px/1.2 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: rgba(222, 228, 236, .78); }
+.slo-road.inf b { color: #ffd28a; }
+
+/* toggle (app only; exports use ?callouts=0|1) */
+.slo-toggle { position: absolute; top: 12px; right: 12px; z-index: 4; padding: 4px 10px; font: 600 11px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #e8ecf2; background: rgba(6, 9, 13, .78); border: 1px solid rgba(255, 255, 255, .25); border-radius: 2px; cursor: pointer; }
+.slo-toggle:hover { border-color: #e2b052; }
+.slo-toggle.off { color: #8794a7; }
+html.clean .slo-toggle { display: none; }

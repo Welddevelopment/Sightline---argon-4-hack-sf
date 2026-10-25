@@ -20,7 +20,7 @@ Built at the Gemini 4 Argon SF Hackathon, Oct 25, 2026. Track: **More Dimensions
 5. **Critique and patch.** Argon watches the renders against the evidence and the check results, writes findings (contradiction / consistent / unverifiable) with citations, and returns a patched world if the world itself was wrong. The loop repeats up to 3 rounds.
 6. **Ask "what if".** Type a new witness statement; Argon places that witness in the world and the same checks give a verdict. Or place a witness on the map by hand.
 
-In the demo case, Witness B says she had a clear view of the car the whole way in, right up until it hit. She marks where she stood on a map exhibit 27 minutes into the deposition, and never says the position out loud. Argon's first draft places her from her words; after watching the renders against the video, it moves her to the marked spot, and the ray-cast check shows the turning truck blocking her view from 1.3 s before impact, from all 25 test positions within 2 m of her mark. A transcript-only baseline (Gemini Flash, chunk-and-summarize) calls her testimony consistent.
+In the demo case, Witness B says she had a clear view of the car the whole way in, right up until it hit. She marks where she stood on a map exhibit 27 minutes into the deposition, and never says the position out loud. Argon's first draft places her from her words; after watching the renders against the video, it moves her to the marked spot, and the ray-cast check shows the turning truck blocking her view from 1.3 s before impact, from all 25 test positions within 2 m of her mark. For comparison, a Gemini Flash chunk-and-summarize pipeline over the transcript only (no video) returned "consistent".
 
 ## Why it needs Argon
 

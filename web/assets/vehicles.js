@@ -52,16 +52,16 @@ const CARS = {
     L: 4.9, W: 1.9, H: 1.45, bodyW: 1.82,
     wheel: { r: 0.335, w: 0.235, rim: 'alloy' }, axles: [0.96, 3.81],
     top: [[0, 0.58], [0.025, 0.66], [0.07, 0.72], [0.16, 0.765], [0.45, 0.81], [0.95, 0.86], [1.45, 0.92], [1.74, 0.955], [2.6, 0.975],
-      [3.6, 0.995], [3.96, 1.0], [4.4, 0.995], [4.66, 0.975], [4.78, 0.94], [4.85, 0.87], [4.885, 0.8], [4.9, 0.72]],
+      [3.6, 0.995], [3.96, 1.0], [4.4, 0.995], [4.7, 0.985], [4.8, 0.97], [4.845, 0.945], [4.872, 0.89], [4.89, 0.8], [4.9, 0.66]],
     bot: [[0, 0.33], [0.06, 0.255], [0.25, 0.2], [0.5, 0.19], [4.4, 0.19], [4.7, 0.24], [4.86, 0.3], [4.9, 0.36]],
-    hw: [[0, 0.70], [0.02, 0.78], [0.07, 0.84], [0.2, 0.885], [0.55, 0.905], [1.2, 0.91], [3.9, 0.91], [4.4, 0.9], [4.7, 0.87], [4.84, 0.82], [4.9, 0.74]],
+    hw: [[0, 0.74], [0.02, 0.8], [0.08, 0.86], [0.25, 0.895], [0.6, 0.908], [1.2, 0.91], [3.9, 0.91], [4.5, 0.905], [4.75, 0.89], [4.86, 0.86], [4.9, 0.8]],
     nTop: 6, nBot: 5, tumble: 0.07, flare: 0.07,
     gh: { u0: 1.70, u1: 3.98, top: [[1.70, 0.94], [1.85, 1.03], [2.1, 1.19], [2.35, 1.32], [2.58, 1.405], [2.8, 1.44], [3.1, 1.45], [3.35, 1.43], [3.55, 1.35], [3.78, 1.18], [3.98, 1.0]],
       aTop: 2.62, cTop: 3.38, b: [2.93, 3.03], nTop: 3.0, tumble: 0.2, cPillarPaint: true, quarter: [3.42, 3.62] },
     seams: [{ u: 1.86, y0: 0.3, y1: 0.99 }, { u: 2.98, y0: 0.27, y1: 0.99 }, { u: 3.9, y0: 0.4, y1: 0.99 }, { u: 0.17, top: true }, { u: 4.02, top: true }],
     eye: { u: 2.85, y: 1.16, x: -0.36 },
     head: { u: 0.1, y: 0.665, x: 0.62, w: 0.40, h: 0.095, d: 0.30, yaw: 0.42 },
-    tail: { u: 4.86, y: 0.9, x: 0.66, w: 0.36, h: 0.1, d: 0.26, yaw: 0.45 },
+    tail: { u: 4.86, y: 0.84, x: 0.6, w: 0.34, h: 0.1, d: 0.16, yaw: 0.5 },
     grille: { y: 0.55, w: 0.86, h: 0.17, intake: { y: 0.36, w: 1.1, h: 0.1 } },
     plateF: 0.44, plateR: 0.63,
     mirror: { u: 1.98, y: 1.03 },
@@ -185,7 +185,7 @@ function buildBodyGeo(THREE, cfg) {
     material: (z, t, y) => {
       const u = z + L / 2, s = Math.sin(t), c = Math.cos(t);
       const sec = f.section(u);
-      if (s < -0.55) return S.UNDER;
+      if (s < -0.86) return S.UNDER;
       const side = Math.abs(s) < 0.75;
       const seam = seamAt(u);
       if (seam) {
@@ -299,7 +299,7 @@ function buildCarTemplate(THREE, type) {
     for (const s of [-1, 1]) addMesh(roundedBox(THREE, 0.04, h * 0.75, f.Ra * 1.9, 0.015), M.underbody, 'well_liner', [s * (hwB - tw - 0.05), f.yc + 0.12, z(a)]);
   }
   const uEnd = cfg.bodyEnd || L;
-  addMesh(roundedBox(THREE, cfg.bodyW - 0.3, 0.12, uEnd - 0.5, 0.03), M.underbody, 'floorpan', [0, f.bot(L / 2) - 0.02, z(uEnd / 2)]);
+  addMesh(roundedBox(THREE, cfg.bodyW - 0.5, 0.08, uEnd - 1.3, 0.03), M.underbody, 'floorpan', [0, f.bot(L / 2) - 0.02, z(uEnd / 2)]);
 
   // interior: dark tub at belt + headrests so glass reads as glass, not paint
   const g = cfg.gh;
@@ -365,7 +365,7 @@ function buildCarTemplate(THREE, type) {
     for (const s of [-1, 1]) root.add(placeLamp(THREE, cfg, f, cfg.tail, 'tail', s, true));
     plate(cfg.plateR, false);
     const ru = f.noseU(0.45, true);
-    addMesh(roundedBox(THREE, cfg.bodyW * 0.7, 0.07, 0.06, 0.02), M.trim, 'rear_diffuser', [0, f.bot(L) + 0.06, z(L) - 0.03]);
+    addMesh(roundedBox(THREE, cfg.bodyW * 0.55, 0.05, 0.04, 0.015), M.trim, 'rear_diffuser', [0, f.bot(L) + 0.05, z(L) - 0.025]);
     void ru;
     if (type === 'van') {
       // rear door windows + split line + handles

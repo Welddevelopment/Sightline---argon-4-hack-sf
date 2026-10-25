@@ -99,7 +99,7 @@ if (focus) {
 }
 const view = q.get('view') || 'threequarter';
 const span = focus ? Math.max(4, (placed[types.indexOf(focus)]?.userData.dims?.length || 5) * 1.25) : Math.max(x, 10);
-const dist = span / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))) * (focus ? 1.05 : 0.62);
+const dist = span / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))) * (focus ? 0.62 : 0.62);
 const views = {
   threequarter: [ -0.55, 0.32, -0.78 ], front: [0, 0.15, -1], side: [-1, 0.12, 0], rear: [0.5, 0.3, 0.8], top: [0, 1, 0.001], low: [-0.7, 0.08, -0.7],
 };

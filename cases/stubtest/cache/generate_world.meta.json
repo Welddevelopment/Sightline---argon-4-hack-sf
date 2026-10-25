@@ -1,9 +1,0 @@
-{
-  "name": "generate_world",
-  "model": "gemini-4-argon",
-  "hash": "f9b2679495a68e94",
-  "finishReason": "STOP",
-  "usage": null,
-  "seconds": 0,
-  "at": "2026-10-25T19:29:27.812Z"
-}

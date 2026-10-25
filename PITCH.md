@@ -75,7 +75,7 @@ Rule of thumb: about 140 spoken words per minute. Lines in quotes are said out l
 
 ### 2:00 – 2:12 · Flash baseline
 
-> "Same case through a smaller model, Gemini Flash, using the usual chunk-and-summarize of the transcript. It says her testimony is consistent. It isn't wrong about the words. It just can't see where she put the pen."
+> "For comparison: Gemini Flash in a standard chunk-and-summarize pipeline over the transcript only, no video. That pipeline returned 'consistent'."
 
     Show baseline result: status "consistent", and the line "exact location not stated in the transcript."
 
@@ -111,7 +111,7 @@ It's not meant to be shown to a jury. It's a case-analysis tool for the lawyer a
 No. Argon proposes and critiques, but the verdicts that matter come from independent code with no model in it: ray-cast sightlines from each witness's eye height at the moment they describe, and physics checks (skid-length vs speed, speed along the timeline). In the demo, the ray-cast says "blocked by the tractor" on its own; in today's live run Argon's critique (77.5 s) found the contradiction and the ray-cast independently agreed (blocked by the semitrailer at t = 9.8 s). If Argon and the check disagree, the finding is shown as a disagreement, not resolved by the model.
 
 **3. "Why does this need Argon specifically?"**
-Because one call does what a pipeline can't. In a single pass Argon reads the whole case file and watches the full 30-minute deposition as video: about 164k input tokens, roughly 128k of them video, inside a 1M-token input context that leaves room for more depositions, dashcam and our own renders. Nobody told it where to look: it found the moment Witness B marks the map on its own (it said Depo 27:05; the X goes down at 27:04 in our script). That position is never spoken, so a transcript pipeline misses it, which is exactly what the Flash baseline shows. It then wrote a complete to-scale world module in 129 seconds, and in the critique round it watched its own renders next to the deposition and patched the world. (If asked about output size: the world is a compact code module, well inside Argon's 32,768-token output limit. The long part is the input, not the output.)
+Because one call does what a pipeline can't. In a single pass Argon reads the whole case file and watches the full 30-minute deposition as video: about 164k input tokens, roughly 128k of them video, inside a 1M-token input context that leaves room for more depositions, dashcam and our own renders. Nobody told it where to look: it found the moment Witness B marks the map on its own (it said Depo 27:05; the X goes down at 27:04 in our script). That position is never spoken aloud; she only draws it. It then wrote a complete to-scale world module in 129 seconds, and in the critique round it watched its own renders next to the deposition and patched the world. (If asked about output size: the world is a compact code module, well inside Argon's 32,768-token output limit. The long part is the input, not the output.)
 
 **4. "What's real and what's synthetic, and why?"**
 Physical facts are real and public: NTSB report HAR-17/02 for crash HWY16FH018 (road geometry, speeds, truck dimensions, timing), cited by page. Witnesses A, B and C are fictional, and the deposition is a simulated video we generated today, both labeled on screen. We did that because real depositions are private and real witnesses deserve privacy. Modeling choices NTSB didn't specify (e.g. trailer bed height, truck turn speed) are marked "assumed" in the case file.
@@ -183,7 +183,7 @@ Screen-record at 1920×1080, browser at 125% zoom, cursor highlighted. Voice-ove
 | 4 | 0:20–0:27 | `/?case=demo` overhead, scrub time so the truck turns and the car arrives; click the trailer, show the citation. | "Every object is cited to the NTSB report." |
 | 5 | 0:27–0:37 | Findings panel → click the map-mark chip ("Depo 27:05" / "27:04") → video jumps to the red X being drawn on the map. | "Witness B marks where she stood. She never says it out loud." |
 | 6 | 0:37–0:45 | Camera to wit_B at t≈9.9 s: truck blocks the car. Checks panel: BLOCKED by veh_T_tractor. | "From that spot, the truck blocks her view. An independent ray-cast check confirms." |
-| 7 | 0:45–0:50 | Baseline result: Flash says "consistent". | "A transcript-only model calls it consistent." |
+| 7 | 0:45–0:50 | Baseline card: "Gemini Flash · chunk-and-summarize over the transcript · no video" → "consistent". | "A transcript-only, chunked pipeline returned consistent." |
 | 8 | 0:50–0:57 | Type a new statement → witness placed → verdict. | "Add any witness statement and test it." |
 | 9 | 0:57–1:00 | End card: repo URL, team names, "Real public crash facts (NTSB HWY16FH018), fictional witnesses, simulated deposition." | (caption only) |
 
@@ -215,3 +215,8 @@ Upload unlisted to YouTube (or Loom), check it plays logged out, paste the link 
 ## 6. README draft
 
 The full draft is in `README.md` at the repo root.
+
+
+### Honesty guard for the Flash baseline (added 12:33)
+- Describe the card exactly as it is: Gemini Flash, chunk-and-summarize pipeline, transcript only, no video. Never say Flash "can't" do this or fails on the same inputs.
+- If a judge asks "would Flash catch it with the video?": answer truthfully — "On this 30-minute case, yes: in our own fair test, Flash given the same full video and documents also found it. The 30-minute demo is small; the full-case version is ~900k tokens of docket plus hours of depositions, which is where reading everything in one pass matters." (Only cite demo-full numbers once they are verified.)

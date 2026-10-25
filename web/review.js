@@ -288,7 +288,8 @@ function renderBody() {
   const banner = conf ? `<div class="banner">Confirmed by <b>${esc(conf.confirmedBy || 'unknown')}</b> · ${esc(new Date(conf.confirmedAt).toLocaleString())}. The reconstruction uses these inputs.<button class="btn sm" id="clearConf">Clear confirmation</button></div>` : '';
   const stale = conf && S.ext && conf.extractionCreatedAt && S.ext.createdAt && conf.extractionCreatedAt !== S.ext.createdAt ? '<div class="banner warn">A newer extraction exists than the one you confirmed. Review and confirm again.</div>' : '';
   const errB = S.status === 'error' ? `<div class="banner bad">Latest extraction run failed: ${esc(S.error || '')}. Showing the previous result.</div>` : '';
-  const notes = S.ext && S.ext.notes ? `<div class="notes"><b>Model notes</b>${esc(S.ext.notes)}</div>` : '';
+  const nt = S.ext && S.ext.notes ? String(S.ext.notes) : '';
+  const notes = nt ? `<details class="notes"><summary><b>Model notes</b><span>${esc(nt.length > 220 ? nt.slice(0, 220).replace(/\s+\S*$/, '') + '…' : nt)}</span></summary>${nt.length > 220 ? `<div class="nfull">${esc(nt).replace(/ (\d+)\. (?=[A-Z])/g, '<br><br>$1. ')}</div>` : ''}</details>` : '';
   b.innerHTML = banner + stale + errB + notes + sceneHtml() + factsHtml() + witnessesHtml() +
     itemsHtml('veh', S.vehicles, 'Vehicles', `${S.vehicles.length} identified`) +
     itemsHtml('obj', S.objects, 'Scene objects', `${S.objects.length} found · occluders, signs, structures`);
@@ -396,8 +397,8 @@ function computeView() {
     const pts = positions();
     let x0 = Math.min(...pts.map((p) => p[0])), x1 = Math.max(...pts.map((p) => p[0]));
     let z0 = Math.min(...pts.map((p) => p[1])), z1 = Math.max(...pts.map((p) => p[1]));
-    const pad = 15; x0 -= pad; x1 += pad; z0 -= pad; z1 += pad;
-    const minSpan = 60;
+    const pad = 10; x0 -= pad; x1 += pad; z0 -= pad; z1 += pad;
+    const minSpan = 50;
     if (x1 - x0 < minSpan) { const c = (x0 + x1) / 2; x0 = c - minSpan / 2; x1 = c + minSpan / 2; }
     if (z1 - z0 < minSpan * 0.72) { const c = (z0 + z1) / 2; z0 = c - minSpan * 0.36; z1 = c + minSpan * 0.36; }
     ppm = Math.min(cssW / (x1 - x0), cssH / (z1 - z0));
@@ -421,8 +422,10 @@ const compass = (x, z) => { const d = Math.hypot(x, z); const dir = (Math.abs(x)
 function edgeLabel(px, py, text) {
   ctx.font = '600 10px ' + getComputedStyle(document.body).getPropertyValue('--sans');
   const tw = ctx.measureText(text).width;
-  let lx = px + 12, ly = py;
-  if (lx + tw + 8 > view.w) lx = px - 12 - tw - 8;
+  // sit beside the pointer, hugging the border it is on, so it never covers the plan centre
+  let lx = px - (tw + 8) / 2, ly = py + (py > view.h / 2 ? -16 : 16);
+  if (px < EDGE + 2) { lx = px + 2; } else if (px > view.w - EDGE - 2) { lx = px - tw - 10; }
+  lx = Math.max(2, Math.min(view.w - tw - 10, lx));
   ly = Math.max(10, Math.min(view.h - 10, ly));
   ctx.fillStyle = 'rgba(8,11,16,.85)'; ctx.fillRect(lx, ly - 8, tw + 8, 16);
   ctx.fillStyle = '#e8ecf2'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(text, lx + 4, ly);
@@ -466,7 +469,7 @@ function drawMap() {
     ctx.fillStyle = '#6f7c90'; ctx.strokeStyle = '#0b0e13'; ctx.lineWidth = 1;
     ctx.fillRect(px - 4, py - 4, 8, 8); ctx.strokeRect(px - 4, py - 4, 8, 8);
     ctx.fillStyle = '#9aa6b8'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-    ctx.fillText(String(o.label || o.kind || o.id).slice(0, 22), px + 7, py);
+    const ol = String(o.label || o.kind || o.id); ctx.fillText(ol.length > 24 ? ol.slice(0, 23).replace(/\s+\S*$/, '') + '…' : ol, px + 7, py);
   });
   // witnesses
   S.witnesses.forEach((wt, i) => {

@@ -191,6 +191,7 @@ function buildFigure(T, o = {}) {
   // arms (L = -X, figure faces -Z)
   for (const [S, s] of [['L', -1], ['R', 1]]) {
     const sh = j['shoulder' + S] = G('shoulder' + S, j.spine, s * FIG.shoulderX, FIG.shoulderY - FIG.spineY, 0.004);
+    const trap = mesh(T, ellipsoidGeo(T, 0.06, 0.024, 0.045, 18), top, 'shoulder_yoke'); trap.position.set(s * 0.058, FIG.shoulderY - FIG.spineY - 0.004, 0.004); trap.rotation.z = -s * 0.32; j.spine.add(trap);
     const delt = mesh(T, ellipsoidGeo(T, 0.029, 0.033, 0.031), top, 'deltoid'); delt.position.set(-s * 0.003, -0.014, 0); sh.add(delt);
     sh.add(mesh(T, limbGeo(T, 0.03, 0.0225, FIG.upperArm, 0.002, 0.4), top, 'upperArm' + S));
     const el = j['elbow' + S] = G('elbow' + S, sh, 0, -FIG.upperArm, 0);
@@ -352,7 +353,7 @@ export function createPedestrian(THREE, opts = {}) {
       hip: [0, 0, 0], pelvis: 0.24, spine: 0.04, neck: -0.18, head: -0.1,
       feet: [[-0.13 * s, -0.24 * s, -0.74 * s], [0.13 * s, -0.24 * s, -0.74 * s]], footPitch: 0.75, kneeOut: 0.2,
       hands: opts.hands === false ? null : [[-0.215 * s, 0.375 * s, -0.33 * s], [0.215 * s, 0.375 * s, -0.33 * s]],
-      handFwd: [-0.15, -0.25, -1], handPalm: [1, 0.15, 0],
+      handFwd: [-0.75, -0.25, -0.6], handPalm: [0.45, 0.2, 1],
     });
     if (opts.hands === false) restArms(j, 0.9);
   }

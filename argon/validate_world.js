@@ -114,8 +114,8 @@ async function runtimeCheck(file) {
     if (typeof o.label !== 'string' || !o.label) errors.push(`${id}: label missing`);
     if (typeof o.occludes !== 'boolean') errors.push(`${id}: occludes must be true/false`);
     citeCheck(id, o.citation);
-    if (o.kind === 'signal' || id.startsWith('sig_')) {
-      if (typeof o.state !== 'function') errors.push(`${id}: signal needs state(t)`);
+    if (o.kind === 'signal' || typeof o.state === 'function') {   // signs (sig_ + kind 'sign') need no state
+      if (typeof o.state !== 'function') errors.push(`${id}: traffic signal (kind 'signal') needs state(t)`);
       else for (let t = 0; t <= (world.duration || 0); t += Math.max(0.25, world.duration / 40)) {
         let s; try { s = o.state(t); } catch (e) { errors.push(`${id}: state(${t}) threw ${e.message}`); break; }
         if (!['red', 'yellow', 'green', 'off'].includes(s)) { errors.push(`${id}: state(${t.toFixed(2)}) returned "${s}"`); break; }

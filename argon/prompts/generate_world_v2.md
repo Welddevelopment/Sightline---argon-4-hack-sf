@@ -31,7 +31,7 @@ Furniture and occluders:
 Marks:
 - `assets.skidMark({id, points: [[x, z], ...], width})` (world coordinates; do not move it) · `assets.impactMarker({id, position: [x, z]})`
 Lighting:
-- `assets.environment({timeOfDay: 'HH:MM', date: 'YYYY-MM-DD', utcOffset: '-04:00', lat, lon, lighting: 'dawn'|'day'|'dusk'|'night', weather: 'clear'|'overcast'|'rain'|'fog'})` — add the result to root ONCE. Take date, local time, place (lat/lon of the crash location; approximate from the named town/road if no coordinates are given, cite "inferred: location from <source>") and weather from THIS case's evidence. `lighting` and `meta.lighting` follow that time: "day" when the sun is clearly up (e.g. mid-afternoon), "dawn"/"dusk" only within ~40 min of sunrise/sunset, "night" otherwise. Never default to dawn.
+- `assets.environment({date: 'YYYY-MM-DD', timeOfDay: 'HH:MM[:SS]', utcOffset: '-04:00', timeZone: 'America/New_York', lat, lon, lighting: 'dawn'|'day'|'dusk'|'night', weather: 'clear'|'overcast'|'rain'|'fog'})` — add the result to root ONCE. The library computes the real sun (and moon) position, sky and fog from these values (NOAA solar position), so you NEVER create lights or place a sun yourself (no DirectionalLight/HemisphereLight/AmbientLight/SpotLight/PointLight — the validator rejects them). Take the date, local time of the event, the UTC offset in effect that day (daylight-saving aware) plus IANA time zone, the crash location's latitude/longitude (approximate from the named road/town if no coordinates are given, cite "inferred: location from <source>") and the weather from THIS case's evidence, and cite them in the header. `lighting` and `meta.lighting` follow that time: "day" when the sun is clearly up (e.g. mid-afternoon), "dawn"/"dusk" only within ~40 min of sunrise/sunset, "night" otherwise. Never default to dawn.
 Anything the catalog lacks (terrain such as a hill crest, walls, fences, vegetation masses) is still recorded: add it to `facts` (kind "position") and, if it can block a view, approximate it with the closest catalog object (e.g. `assets.building` for a solid wall or embankment, `assets.tree` for vegetation) and say so in its label and citation ("inferred: ... approximated as ...").
 
 # Sanity rules (the validator enforces them; a violation costs a repair round)
@@ -61,7 +61,7 @@ export default function createWorld(THREE, assets) {
     node.name = id; node.position.set(x, 0, z); node.rotation.y = -headingDeg * D2R; root.add(node);
     return (objects[id] = { node, kind, label, citation, occludes, ...extra });
   };
-  root.add(assets.environment({ timeOfDay: 'HH:MM', date: 'YYYY-MM-DD', utcOffset: '±HH:MM', lat: 0, lon: 0, lighting: 'day', weather: 'clear' }));
+  root.add(assets.environment({ date: 'YYYY-MM-DD', timeOfDay: 'HH:MM', utcOffset: '±HH:MM', timeZone: 'Area/City', lat: 0, lon: 0, lighting: 'day', weather: 'clear' }));
   root.add(assets.groundPlane({ id: 'ground', size: 800, kind: 'grass' }));
   add('road_main', assets.road({ id: 'road_main', lanes: 2, laneWidth: 3.6, length: 600, markings: 'center_double' }), 'road', 'Main St (2 lanes)', 'report.md p.2', false, 0, 0, 90);
   // vehicles: keyframes [t, x, z, compassHeadingDeg, speedMps] at the evidenced moments (rest = speed 0); pose() is a cubic Hermite
@@ -94,7 +94,7 @@ export default function createWorld(THREE, assets) {
 ```
 
 # World object (required keys)
-- `meta: { caseId, title, timeOfDay: 'HH:MM' (from the evidence), lighting: 'dawn'|'day'|'dusk'|'night', source, impactT }` — impactT = impact time in seconds on your event clock.
+- `meta: { caseId, title, timeOfDay: 'HH:MM' (from the evidence), lighting: 'dawn'|'day'|'dusk'|'night', source, impactT, date, timeZone, utcOffset, lat, lon }` — impactT = impact time in seconds on your event clock.
 - `root`, `duration`, `setTime(t)` (deterministic, computed from t alone), `objects` (id → `{ node, kind, label, citation, occludes }`; signals add `state(t)` returning 'red'|'yellow'|'green'|'off'), `witnesses`, `facts` (`{ id, text, value, unit, citation, kind: 'skid'|'speed'|'time'|'distance'|'position' }`, every number a reviewer would check incl. each witness's evidenced position), `skids` (`{ vehicle, length, mu, startTime, citation }`, only for recorded skid marks; pre-skid speed consistent with v = sqrt(2·mu·g·d) unless the evidence says otherwise).
 - Object id prefixes: veh_ (vehicles), ped_ (pedestrians), occ_ (occluders: shelters, parked vehicles, trees, terrain proxies), sig_ (signals/signs), road_ (road surfaces, medians, sidewalks, curbs, crosswalks), mark_ (skid marks, impact point, rest positions), bld_ (buildings). `node.name === id`. `occludes: true` for anything opaque that can block a line of sight (vehicles, buildings, solid walls, tree canopies, opaque shelter panels; an open shelter or road surface is false).
 

@@ -117,12 +117,9 @@ window.__setView = setView;
 setView(view);
 addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
 console.warn('build ms', Math.round(performance.now() - T0));
-let frames = 0;
-span.userData.setState('yellow');
-renderer.setAnimationLoop(() => {
-  controls.update(); renderer.render(scene, cam);
-  if (++frames === 2) { window.__ready = true; console.warn('first frames ms', Math.round(performance.now() - T0)); }
-});
+// render on demand (headless SwiftShader is slow); orbit re-renders on change
+controls.addEventListener('change', () => renderer.render(scene, cam));
+requestAnimationFrame(() => { renderer.render(scene, cam); requestAnimationFrame(() => { window.__ready = true; console.warn('first frame ms', Math.round(performance.now() - T0)); }); });
 window.__items = items;
 </script>
 </body>
