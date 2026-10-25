@@ -31,6 +31,9 @@ const prep = (arr) => (Array.isArray(arr) ? arr : []).map((x, i) => ({ ...clone(
 const strip = (it) => { const o = {}; for (const [k, v] of Object.entries(it)) if (!k.startsWith('_')) o[k] = v; if (it._ed) o.edited = true; return o; };
 const witLetter = (w, i) => { const m = /\b([A-Z])$/.exec(String(w.name || '').trim()) || /wit_([a-z0-9])/i.exec(w.id || ''); return (m ? m[1] : String(i + 1)).toUpperCase().slice(0, 2); };
 const fmtPos = (p) => (Array.isArray(p) && p.length >= 2 && p.every(Number.isFinite)) ? `x ${p[0].toFixed(1)} m, z ${p[1].toFixed(1)} m` : null;
+// Where Argon originally put a witness (before any drag), and how far the reviewer moved it.
+const origPos = (w) => { const o = ((S.ext && S.ext.witnesses) || []).find((x) => x.id === w.id); return o && hasPos(o.markedPosition) ? o.markedPosition.map(Number) : null; };
+const movedBy = (w) => { const o = origPos(w); if (!o || !hasPos(w.markedPosition)) return 0; const p = w.markedPosition.map(Number); return Math.hypot(p[0] - o[0], p[1] - o[1]); };
 const hasPos = (p) => Array.isArray(p) && p.length >= 2 && Number.isFinite(+p[0]) && Number.isFinite(+p[1]) && p[0] !== null && p[1] !== null;
 
 function tsToSec(ts) {
@@ -248,7 +251,7 @@ function witnessesHtml() {
   const rows = S.witnesses.map((w, i) => {
     const pos = hasPos(w.markedPosition) ? fmtPos(w.markedPosition.map(Number)) : null;
     const cls = [w._rej ? 'rej' : '', w._ed ? 'ed' : '', S.selWit === i ? 'sel' : ''].join(' ');
-    const posLine = pos ? `<span class="wpos">${esc(pos)} ${chip(w.positionCitation, null, {})}</span>` : `<span class="wpos unk">Position not marked · <button class="ib ok" data-act="place">Place on plan</button></span>`;
+    const mv = movedBy(w), posLine = pos ? `<span class="wpos">${esc(pos)} ${chip(w.positionCitation, null, {})}${mv >= 0.1 ? `<span class="moved">moved ${mv.toFixed(1)} m from extracted ${esc(fmtPos(origPos(w)))}</span>` : ''}</span>` : `<span class="wpos unk">Position not marked · <button class="ib ok" data-act="place">Place on plan</button></span>`;
     if (w._editing) {
       return `<tr class="${cls}" data-wit="${i}"><td><span class="wit-dot">${esc(witLetter(w, i))}</span></td>
         <td><input data-k="name" value="${esc(w.name)}">${posLine}</td>
@@ -499,6 +502,16 @@ function drawMap() {
       edgeLabel(ex, ey, `${wt.name || wt.id} · ${compass(+wt.markedPosition[0], +wt.markedPosition[1])} (off plan)`);
       ctx.globalAlpha = 1;
       return;
+    }
+    const o0 = movedBy(wt) >= 0.1 ? origPos(wt) : null;
+    if (o0) { // ghost of the extracted position + offset line
+      const [gx, gy] = toPx(o0);
+      ctx.save(); ctx.setLineDash([3, 3]); ctx.strokeStyle = '#e2b052'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(gx, gy, 8, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(gx, gy); ctx.lineTo(px, py); ctx.stroke(); ctx.restore();
+      const t = `extracted · ${movedBy(wt).toFixed(1)} m`; ctx.font = '600 9.5px ' + getComputedStyle(document.body).getPropertyValue('--sans');
+      const tw2 = ctx.measureText(t).width; ctx.fillStyle = 'rgba(8,11,16,.8)'; ctx.fillRect(gx - tw2 / 2 - 4, gy + 11, tw2 + 8, 14);
+      ctx.fillStyle = '#e2b052'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(t, gx, gy + 18);
     }
     const hot = S.selWit === i || S.hoverWit === i || (drag && drag.i === i);
     ctx.globalAlpha = wt._rej ? 0.35 : 1;

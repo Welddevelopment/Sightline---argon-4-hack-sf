@@ -1,0 +1,78 @@
+[
+  {
+    "asset": "sedan",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        0.609,
+        0
+      ],
+      "az": 38,
+      "el": 14,
+      "d": 6.069966763393459,
+      "kind": "vehicle",
+      "dims": [
+        4.9,
+        1.9,
+        1.45
+      ],
+      "color": "#a9adb2",
+      "current": [
+        "vehicle",
+        "sedan"
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/sedan_current.png"
+  },
+  {
+    "asset": "signal_mast",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        4.3,
+        4.6,
+        0
+      ],
+      "az": 28,
+      "el": 6,
+      "d": 15.5,
+      "kind": "object",
+      "dims": [
+        0.9,
+        9.6,
+        7.5
+      ],
+      "current": [
+        "signal",
+        {
+          "heads": 2,
+          "armLength": 9,
+          "id": "signal_mast"
+        }
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/signal_mast_current.png"
+  },
+  {
+    "asset": "road_surface_material",
+    "mode": "current",
+    "cfg": {
+      "t": [
+        0,
+        0,
+        -3.5
+      ],
+      "az": 0,
+      "el": 22,
+      "d": 9.5,
+      "material": true,
+      "kind": "material",
+      "current": [
+        "surface",
+        "asphalt"
+      ]
+    },
+    "out": "/home/claude/sightline/renders/asset_forge/road_surface_material_current.png"
+  }
+]

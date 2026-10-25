@@ -297,7 +297,8 @@ async function renderJob(job) {
     });
     filters.unshift('drawbox=x=0:y=0:w=iw:h=62:color=black@0.62:t=fill');
     // running scene time (top-right): t0 + frame time
-    filters.push(`drawtext=fontfile=${FONT}:text='t = %{pts\\:flt\\:${(+job.t0).toFixed(3)}} s':fontsize=18:fontcolor=white:x=w-tw-14:y=10`);
+    const T = `(t+${(+job.t0).toFixed(3)})`;
+    filters.push(`drawtext=fontfile=${FONT}:text='t = %{eif\\:floor(${T})\\:d}.%{eif\\:mod(floor(${T}*100+0.5)\\,100)\\:d\\:2} s':fontsize=18:fontcolor=white:x=w-tw-14:y=10`);
   }
   const tmpOut = job.file.replace(/\.mp4$/, `.tmp${process.pid}.mp4`);
   const r = spawnSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(job.fps), '-i', path.join(framesDir, 'f%05d.jpg'),

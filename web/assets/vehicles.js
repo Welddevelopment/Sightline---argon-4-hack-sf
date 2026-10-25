@@ -12,6 +12,7 @@
 import {
   surfacePatch, getMaterials, makeWheel, loft, curve, roundedBox, cachedGeo, makeLamp, attachLightAPI, finalizeVehicle, smoothstep,
 } from './vehicle_parts.js';
+import * as GV from './gltf_vehicle.js';
 
 let heavy = null, small = null;
 try { heavy = await import('./vehicles_heavy.js'); } catch { heavy = null; }
@@ -512,14 +513,46 @@ export function createCar(THREE, type, opts = {}) {
     root.add(w); wheels.push(w);
   }
   const dims = VEHICLE_DIMS[type];
-  attachLightAPI(THREE, root, { headY: cfg.head.y, frontZ: -L / 2 - 0.05 });
+  const lightOpts = { headY: cfg.head.y, frontZ: -L / 2 - 0.05 };
+  attachLightAPI(THREE, root, lightOpts);
+  root.userData._relight = () => { delete root.userData.setLights; attachLightAPI(THREE, root, lightOpts); };
   finalizeVehicle(THREE, root, { type, id: opts.id || type, dims, wheels,
     driverEye: [cfg.eye.x, cfg.eye.y, cfg.eye.u - L / 2] });
   root.userData.color = '#' + paint.color.getHexString();
   root.userData.procedural = true;
   if (opts.lights) root.userData.setLights(true, { spot: opts.spot });
+  const spec = modelSpec(type, opts);
+  if (spec) GV.swapInGLB(THREE, root, spec, (clone) => {
+    clone.traverse(o => { if (o.isMesh && o.userData.paintSlot === 0) o.material = paint; });
+  });
   return root;
 }
+
+// ------------------------------------------------------------------ GLB model choice (mirrors web/models/manifest.json)
+// source:'glb' swaps a fitted GLB into the procedural placeholder when it loads (browser only; Node keeps procedural).
+export const MODEL_CHOICE = {
+  sedan: { source: 'procedural' },
+  suv: { source: 'procedural' },
+  pickup: { source: 'procedural' },
+  van: { source: 'procedural' },
+};
+const MODEL_BASE = new URL('../models/', import.meta.url).href;
+function modelSpec(type, opts) {
+  const ch = MODEL_CHOICE[type] || {};
+  const url = opts.model || (opts.source === 'procedural' ? null : (opts.source === 'glb' || ch.source === 'glb') ? ch.url : null);
+  if (!url) return null;
+  return { url: new URL(url, MODEL_BASE).href, modelId: url, dims: VEHICLE_DIMS[type], front: ch.front || 'auto', mats: ch.mats,
+    interior: (T, r) => addInterior(T, type, r) };
+}
+function addInterior(THREE, type, root) {
+  void THREE; void type; void root;
+}
+/** Start fetching the chosen GLB models now (call early). Resolves when they are fitted. */
+export function preloadVehicleModels(THREE, types = Object.keys(MODEL_CHOICE)) {
+  return Promise.all(types.map(t => { const s = modelSpec(t, {}); return s ? GV.warmTemplate(THREE, s) : null; }));
+}
+/** Resolves when every pending GLB load/swap has settled (await before the first still/frame). */
+export const ready = GV.ready;
 
 const PALETTE = ['silver', 'white', 'black', 'gray', 'blue', 'red', 'darkgray', 'navy', 'maroon', 'champagne'];
 function defaultColor(type, id) {

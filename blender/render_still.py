@@ -27,6 +27,9 @@ ap.add_argument('--samples', type=int, default=48)
 ap.add_argument('--res', default='1280x720')
 ap.add_argument('--threads', type=int, default=2)
 ap.add_argument('--exposure', type=float, default=0.0)
+ap.add_argument('--cam-pos', help='explicit camera eye x,y,z in WORLD (three.js) coords; overrides --camera')
+ap.add_argument('--cam-look', help='explicit look-at x,y,z in WORLD (three.js) coords')
+ap.add_argument('--fov', type=float, default=60.0, help='vertical FOV deg (viewer default 60)')
 ap.add_argument('--blend', action='store_true', help='also save the .blend next to the PNG')
 a = ap.parse_args(sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else sys.argv[1:])
 
@@ -126,6 +129,17 @@ class NT:
         self.link(b.outputs['Normal'], self.bsdf.inputs['Normal'])
         return b.outputs['Normal']
 
+    def ao(self, color, distance=1.2, k=0.65):
+        """Cycles Ambient Occlusion node: extra contact darkening under vehicles/near walls (only 3 diffuse bounces)."""
+        ao = self.n('ShaderNodeAmbientOcclusion', samples=4)
+        ao.inputs['Distance'].default_value = distance
+        mp = self.map_range(ao.outputs['AO'], 1.0 - k, 1.0)
+        mul = self.n('ShaderNodeMix', data_type='RGBA', blend_type='MULTIPLY')
+        mul.inputs['Factor'].default_value = 1.0
+        self.link(color, mul.inputs[6])
+        self.link(mp, mul.inputs[7])
+        self.link(mul.outputs[2], self.bsdf.inputs['Base Color'])
+
     def bevel(self, radius=0.04, coat=True):
         """Shading-only rounded edges (Cycles Bevel node): geometry is NOT modified."""
         bv = self.n('ShaderNodeBevel', samples=6)
@@ -186,6 +200,7 @@ def m_asphalt(nt, base):
     nt.link(nt.map_range(big, 0.85, 0.97), nt.bsdf.inputs['Roughness'])
     nt.set(spec=0.3)
     nt.bump(fine, 0.35, 0.004)
+    nt.ao(m.outputs[2])
 
 
 def m_line_paint(nt, base):
@@ -209,6 +224,7 @@ def m_grass(nt, base):
     nt.link(m.outputs[2], nt.bsdf.inputs['Base Color'])
     nt.set(rough=0.92, spec=0.25)
     nt.bump(fine, 0.6, 0.02)
+    nt.ao(m.outputs[2])
 
 
 def m_stucco(nt, base):
@@ -233,10 +249,22 @@ def m_plain(nt, base, rough=0.6):
     nt.set(base=base, rough=rough)
 
 
-def m_glass_clear(nt):
+def m_glass_clear(nt, tint=(0.55, 0.62, 0.62), trans=0.92):
     # v2 library glass (vehicles have cabins/interiors): real tinted transmissive glass.
-    nt.set(base=(0.55, 0.62, 0.62), metal=0.0, rough=0.0, ior=1.52, spec=1.0)
-    nt.bsdf.inputs['Transmission Weight'].default_value = 0.92
+    nt.set(base=tint, metal=0.0, rough=0.0, ior=1.52, spec=1.0)
+    nt.bsdf.inputs['Transmission Weight'].default_value = trans
+
+
+def m_chrome(nt, base=(0.9, 0.9, 0.9)):
+    nt.set(base=base, metal=1.0, rough=0.06)
+    nt.bevel(0.01, coat=False)
+
+
+def m_concrete(nt, base):
+    nt.link(nt.ramp(nt.noise(3.0, 6, 0.6), scale(base, 0.82), scale(base, 1.06)), nt.bsdf.inputs['Base Color'])
+    nt.set(rough=0.9, spec=0.35)
+    n = nt.bevel(0.02, coat=False)
+    nt.bump(nt.noise(45, 4, 0.7), 0.25, 0.006, normal=n)
 
 
 def role_of(oid, mesh, kind, hx, lib):
@@ -245,19 +273,22 @@ def role_of(oid, mesh, kind, hx, lib):
     lib = lib.split('.')[0]
     # --- v2 asset-library materials (named in web/assets/*): upgrade the few that matter, keep the rest as imported
     if lib:
-        if lib == 'glass': return 'glass_clear'
+        if lib == 'glass': return 'glass_clear' if oid == 'veh_A' or 'sedan' in oid else 'glass_cab'
         if lib == 'glassDark': return 'glass'
         if lib in ('rubber', 'tread'): return 'rubber'
+        if lib in ('chrome', 'heavy_chrome'): return 'chrome'
         if lib.startswith('paint_'): return 'white_body' if min(srgb) > 0.8 else 'car_paint'
+        if lib == 'heavy_panelWhite': return 'white_body_matte'
         if lib.startswith('surface_'):
             k = lib[8:]
-            return {'grass': 'grass', 'asphalt': 'asphalt', 'dirt': 'dirt'}.get(k, 'keep')
+            return {'grass': 'grass', 'asphalt': 'asphalt', 'dirt': 'dirt', 'concrete': 'concrete'}.get(k, 'keep')
         if lib in ('trim', 'plastic', 'underbody', 'interior'): return 'keep_bevel'
-        if not lib.startswith('Material'): return 'keep'   # chrome, alloy, lamps, plates, ... (importer maps PBR + clearcoat)
-    # --- v1 box worlds: infer from object kind + colour
+        if not lib.startswith('Material'): return 'keep'   # lane paint/wear decals, alloy, lamps, plates ... (importer maps PBR + alpha)
+    # --- untagged meshes (v2 buildings/poles/shelter, v1 box worlds): infer from object kind + colour
+    if kind == 'mark': return 'keep'
     if green and kind in ('road', 'occluder', 'scene') or oid == 'ground': return 'grass'
     if kind == 'vehicle':
-        if 'light' in mesh or 'lamp' in mesh: return 'keep'
+        if 'marker' in mesh or 'lamp' in mesh or 'turn_' in mesh or 'light' in mesh: return 'keep'
         if 'cabin' in mesh or 'glass' in mesh or 'window' in mesh or hx == '#1b232c': return 'glass'
         if max(srgb) < 0.1 or 'tire' in mesh or 'wheel' in mesh: return 'rubber'
         if max(srgb) < 0.4 and abs(srgb[0] - srgb[2]) < 0.02: return 'dark_metal'
@@ -265,11 +296,15 @@ def role_of(oid, mesh, kind, hx, lib):
         return 'car_paint'
     if kind == 'road':
         return 'line_paint' if (hx in ('#f4f4f4', '#f2c200') or min(srgb) > 0.85) else 'asphalt'
-    if kind == 'building': return 'stucco'
-    if oid == 'occ_pole' or hx == '#8b6b4a': return 'wood'
-    if oid == 'occ_shelter': return 'metal'
+    if hx == '#2f4f5f': return 'glass'           # storefront / window glazing colour in web/assets furniture
+    if oid == 'occ_pole' or hx in ('#8b6b4a', '#5d4c3b', '#6a4a2c'): return 'wood' if srgb[0] > srgb[2] * 1.2 else 'metal'
+    if oid == 'occ_shelter': return 'metal' if max(srgb) < 0.45 else 'plain'
+    if kind in ('building', 'occluder'): return 'concrete' if abs(srgb[0] - srgb[2]) < 0.03 else 'stucco'
     if oid.startswith('mark_path'): return 'dirt'
     return 'plain'
+
+
+SURFACE_DEFAULTS = {'asphalt': '#4e4e4c', 'grass': '#5f7a3a', 'dirt': '#8a7458', 'concrete': '#a9a69f'}
 
 
 def upgrade(mat):
@@ -280,6 +315,8 @@ def upgrade(mat):
     lib = parts[4] if len(parts) > 4 else ''
     base = lin(hex_rgb(hx))
     role = role_of(oid, mesh, kind, hx, lib)
+    if hx.lower() == '#ffffff' and role in SURFACE_DEFAULTS:   # texture-driven library surfaces carry a white factor
+        base = lin(hex_rgb(SURFACE_DEFAULTS[role]))
     if role == 'keep':
         return role
     if role == 'keep_bevel':   # keep imported BSDF, add shading-only bevel
@@ -291,6 +328,8 @@ def upgrade(mat):
         return role
     nt = NT(mat)
     {'grass': lambda: m_grass(nt, base), 'glass': lambda: m_glass_tinted(nt), 'glass_clear': lambda: m_glass_clear(nt),
+     'glass_cab': lambda: m_glass_clear(nt, (0.18, 0.22, 0.24), 0.85), 'chrome': lambda: m_chrome(nt),
+     'concrete': lambda: m_concrete(nt, base),
      'rubber': lambda: m_rubber(nt), 'dark_metal': lambda: m_dark_metal(nt, base), 'metal': lambda: m_dark_metal(nt, base),
      'white_body': lambda: m_white_body(nt, base, True), 'white_body_matte': lambda: m_white_body(nt, base, False),
      'car_paint': lambda: m_paint(nt, base), 'line_paint': lambda: m_line_paint(nt, base), 'asphalt': lambda: m_asphalt(nt, base),
@@ -394,12 +433,21 @@ for mat in bpy.data.materials:
         add_haze(mat)
 
 # ---------------------------------------------------------------- camera
-cam = bpy.data.objects.get('cam_' + a.camera) or bpy.data.objects.get(a.camera)
+if a.cam_pos:
+    eye = three_to_blender([float(x) for x in a.cam_pos.split(',')])
+    look = three_to_blender([float(x) for x in (a.cam_look or '0,1,0').split(',')])
+    cam = bpy.data.objects.new('cam_explicit', bpy.data.cameras.new('cam_explicit'))
+    scn.collection.objects.link(cam)
+    cam.location = eye
+    cam.rotation_euler = (look - eye).to_track_quat('-Z', 'Y').to_euler()
+    a.camera = 'explicit'
+else:
+    cam = bpy.data.objects.get('cam_' + a.camera) or bpy.data.objects.get(a.camera)
 if not cam or cam.type != 'CAMERA':
     cams = [o.name for o in bpy.data.objects if o.type == 'CAMERA']
     sys.exit(f'camera {a.camera!r} not found; have {cams}')
 cam.data.sensor_fit = 'VERTICAL'
-cam.data.angle_y = math.radians(60)        # same as web/viewer.js PerspectiveCamera(60)
+cam.data.angle_y = math.radians(a.fov)     # 60 = web/viewer.js PerspectiveCamera(60)
 cam.data.clip_start, cam.data.clip_end = 0.05, 6000
 scn.camera = cam
 

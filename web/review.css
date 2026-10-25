@@ -142,6 +142,7 @@ h1 { font: 600 24px/1.25 var(--serif); margin: 0 0 8px; letter-spacing: -.005em;
 .claim q { quotes: "“" "”"; }
 .wpos { font: 10.5px var(--mono); color: var(--muted); display: block; margin-top: 3px; }
 .wpos.unk { color: var(--accent); }
+.wpos .moved { display: block; color: #ffd27a; margin-top: 2px; }
 
 /* side cards */
 .rv-card { background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 12px 12px 14px; }
