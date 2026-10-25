@@ -2,23 +2,23 @@
   "id": "r_wit_A",
   "type": "render",
   "view": "wit_A",
-  "why": "POV render for wit_A. (added for coverage)",
+  "why": "Render Witness A's perspective to confirm no self-occlusion from his pickup cab and clear visibility of Vehicle A.",
   "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node render_view.mjs --repo /workspace/job/repo --world /workspace/job/world.js --view wit_A --out /workspace/job/out/wit_A --fps 2 --w 480 --h 270",
-  "interactionId": "v1_ChdmM1BlYXZyY01LdkN4ZElQNjQ3ZS1BZxIXZjNQZWF2cmNNS3ZDeGRJUDY0N2UtQWc",
-  "dispatchedAtMs": 3751,
-  "createMs": 30694,
+  "interactionId": "v1_Chd1M2JlYW9PVUpiT2x5dE1QN3F1SHlBURIXdTNiZWFvT1VKYk9seXRNUDdxdUh5QVE",
+  "dispatchedAtMs": 4502,
+  "createMs": 99418,
   "status": "completed",
-  "environmentId": "b30aabaf9a6b78ba1459866c34bbec4a",
+  "environmentId": "24d94c7083ddcd898c6e18553ae1476a",
   "usage": {
-    "total": 64490,
-    "input": 61851,
-    "cached": 44859
+    "total": 22263,
+    "input": 20385,
+    "cached": 10983
   },
   "agentReply": {
     "ran": true,
     "exit_ok": true,
-    "summary_line": "{\"view\":\"wit_A\",\"frames\":51,\"renderMs\":16971,\"verdict\":\"partial\"}",
-    "interpretation": "The reconstruction yields a partial verdict for wit_A, indicating that the raycast line of sight to the car is clear at the observation time but has zero resolved pixels, with the view only temporarily obstructed by the truck between 7.0 and 8.5 seconds."
+    "summary_line": "{\"view\":\"wit_A\",\"frames\":51,\"renderMs\":18859,\"verdict\":\"clear\"}",
+    "interpretation": "The simulation confirms that witness A had an unobstructed line of sight to vehicle A at the 4.5-second observation mark."
   },
   "result": {
     "view": "wit_A",
@@ -30,7 +30,7 @@
       270
     ],
     "stillT": 4.5,
-    "renderMs": 16971,
+    "renderMs": 18859,
     "node": "v22.23.4",
     "host": "",
     "witness": {
@@ -49,10 +49,19 @@
     "pixels": {
       "target": "veh_A",
       "t": 4.5,
-      "targetPixels": 0,
-      "visiblePixels": 0,
-      "visibleFraction": 0,
-      "blockers": []
+      "zoomFovDeg": 1.07,
+      "distance": 466.8,
+      "targetPixels": 2533,
+      "visiblePixels": 2533,
+      "visibleFraction": 1,
+      "blockers": [],
+      "rawVisibleFraction": 0,
+      "rawBlockers": [
+        {
+          "id": "veh_witA",
+          "fraction": 1
+        }
+      ]
     },
     "timeline": [
       [
@@ -311,10 +320,10 @@
         null
       ]
     ],
-    "verdict": "partial"
+    "verdict": "clear"
   },
   "still": "cases/demo-full/cache/fleet/renders/wit_A.png",
   "ok": true,
-  "wallMs": 253899,
-  "doneAtMs": 257650
+  "wallMs": 194633,
+  "doneAtMs": 199135
 }

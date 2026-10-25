@@ -1058,7 +1058,7 @@ export function store(a, b) {
   const yel = std('bollardYellow', { color: 0xe8b80e, roughness: 0.45, metalness: 0.2 });
   if (o.bollards !== false) for (let x = gx0 + 0.6; x < gx1 - 0.3; x += 2.0) if (Math.abs(x - doorX) > 1.6) bollard(g, x, zf - 0.75, yel);
   const iceX = Math.min(fw / 2 - 1.1, gx1 + 1.05), iceFace = matTex('iceFaceMat', iceTex, 0xf3f5f6, { roughness: 0.4 }), iceBody = std('iceBody', { color: 0xeef1f3, roughness: 0.4, metalness: 0.1 });
-  if (o.iceChest !== false) mesh(box(1.55, 1.3, 0.8), [iceBody, iceBody, iceBody, iceBody, iceBody, iceFace], g, iceX, 0.15 + 0.65, zf - 0.5).rotation.y = Math.PI;
+  if (o.iceChest !== false) mesh(box(1.55, 1.3, 0.8), [iceBody, iceBody, iceBody, iceBody, iceBody, iceFace], g, iceX, 0.15 + 0.65, zf - 0.5);
   if (o.propane !== false && gx0 - 2.0 > -fw / 2) {
     const px = gx0 - 1.1, cage = std('propCage', { color: 0x3c4a54, metalness: 0.5, roughness: 0.45 }), tankM = std('propTank', { color: 0xe9ebe9, metalness: 0.3, roughness: 0.4 });
     for (const sx of [-0.62, 0.62]) for (const sz of [-0.42, 0.42]) wbox(g, px + sx - 0.03, px + sx + 0.03, 0.15, 1.75, zf - 0.5 + sz - 0.03, zf - 0.5 + sz + 0.03, cage);
@@ -1079,7 +1079,7 @@ export function store(a, b) {
 // parkingLot({polygon:[[x,z],...], stalls, aprons, y}) - asphalt (meter-tiled texture) inside a CCW/CW polygon,
 // white 4" stall lines, concrete wheel stops, optional blue ADA stalls, and concrete driveway aprons out to a road.
 //  stalls: number  -> one nose-in row along polygon edge 0->1, stalls extending into the lot
-//          array   -> rows [{from:[x,z], to:[x,z], width=2.75, depth=5.5, side=1|-1 (1 = into the lot), ada:[i..], wheelStops=true}]
+//          array   -> rows [{from:[x,z], to:[x,z], width=2.75, depth=5.5, side=1|-1 (1 = toward the polygon centroid), ada:[i..], wheelStops=true}]
 //  aprons: [{from:[x,z] (lot edge), to:[x,z] (road edge), width=7.3, flare=2.0}]
 // userData.stalls = [{x, z, heading}] stall centres (heading = rotation.y that points a car nose-in).
 export function parkingLot(a, b) {
@@ -1196,7 +1196,7 @@ export function house(a, b) {
     const wood = std('deckWood', { color: 0x8a7458, roughness: 0.85 }), dx = doorX, pw = 2.6, pd = 1.8;
     wbox(root, dx - pw / 2, dx + pw / 2, base - 0.08, base, -d / 2 - pd, -d / 2, wood, 1, 1);
     for (const sx of [-1, 1]) for (const sz of [0, 1]) wbox(root, dx + sx * (pw / 2 - 0.06) - 0.05, dx + sx * (pw / 2 - 0.06) + 0.05, 0, base, -d / 2 - pd * sz - 0.05 + (sz ? 0.1 : -0.1), -d / 2 - pd * sz + 0.05 + (sz ? 0.1 : -0.1), wood, 1, 1);
-    for (let k = 0; k < 3; k++) wbox(root, dx - 0.6, dx + 0.6, 0, base * (2 - k) / 3 + 0.0, -d / 2 - pd - 0.3 * (k + 1), -d / 2 - pd - 0.3 * k, wood, 1, 1);
+    for (let k = 0; k < 3; k++) wbox(root, dx - 0.6, dx + 0.6, 0, base * (3 - k) / 4, -d / 2 - pd - 0.3 * (k + 1), -d / 2 - pd - 0.3 * k, wood, 1, 1);
     for (const sx of [-1, 1]) { wbox(root, dx + sx * pw / 2 - 0.04, dx + sx * pw / 2 + 0.04, base, base + 0.95, -d / 2 - pd, -d / 2, wood, 1, 1); wbox(root, dx + sx * pw / 2 - 0.03, dx + sx * pw / 2 + 0.03, base + 0.9, base + 0.96, -d / 2 - pd, -d / 2, wood, 1, 1); }
   } else if (o.porch !== false) {
     const pw = Math.min(w * 0.45, 5.2), pd = 2.1, px = Math.max(-w / 2 + pw / 2, Math.min(w / 2 - pw / 2, doorX)), z0 = -d / 2 - pd;

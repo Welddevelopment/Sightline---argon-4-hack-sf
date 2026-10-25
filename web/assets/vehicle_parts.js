@@ -664,3 +664,159 @@ export function makeInterior(THREE, o = {}) {
   g.traverse(m => { if (m.isMesh) { m.castShadow = false; m.receiveShadow = true; } });
   return g;
 }
+
+// ---------------------------------------------------------------- loop-stack surfaces (passenger car bodies)
+// A body is a stack of closed plan-view loops ("levels"), ordered from the underbody centre line, out and up the
+// sides, over the shoulder and in to the top centre line. Each loop = front superellipse quadrant + side run + rear
+// quadrant (right half), mirrored to the left. Fronts/rears therefore wrap round in plan (real bumper corners), the
+// hood/deck/roof crown is formed by inset loops, and every vertex has a semantic address (level i, right index r).
+//   level = { zF, zR, dF, dR, nF, nR, half(u) -> side half width, y(x, u) -> height, sideU?: [u..] (NS values) }
+//   (u = metres from the front bumper; the geometry is emitted with z = u + zOff)
+export function stackHalf(lv, NQF, NQR, sideFr) {
+  const out = [];
+  const a = lv.zF + lv.dF, b = lv.zR - lv.dR;
+  const nF = lv.nF || 2.6, nR = lv.nR || 2.6;
+  const hA = Math.max(0, lv.half(a)), hB = Math.max(0, lv.half(b));
+  const pw = (v, e) => Math.pow(Math.max(0, v), e);
+  for (let k = 0; k < NQF; k++) {
+    const t = (k / NQF) * Math.PI / 2;
+    out.push({ x: hA * pw(Math.sin(t), 2 / nF), u: lv.zF + lv.dF * (1 - pw(Math.cos(t), 2 / nF)), seg: 'F', k, t: k / NQF });
+  }
+  const su = lv.sideU || sideFr.map(fr => a + (b - a) * fr);
+  su.forEach((u, k) => out.push({ x: Math.max(0, lv.half(u)), u, seg: 'S', k, t: k / Math.max(1, su.length - 1) }));
+  for (let k = NQR - 1; k >= 0; k--) {
+    const t = (k / NQR) * Math.PI / 2;
+    out.push({ x: hB * pw(Math.sin(t), 2 / nR), u: lv.zR - lv.dR * (1 - pw(Math.cos(t), 2 / nR)), seg: 'R', k, t: k / NQR });
+  }
+  return out;
+}
+
+/**
+ * stackGeometry(THREE, levels, {NQF, NQR, sideFr, zOff, material(q), cut(q), snap(p, i)}) -> {geo, grid}
+ * q = {i, r, seg, k, t, side, x(|x|), y, u, lv} describes a quad (centroid). Coincident vertices are welded so collapsed
+ * centre lines and poles shade smoothly. Faces wind outward when levels run bottom -> sides -> top.
+ */
+export function stackGeometry(THREE, levels, o) {
+  const NQF = o.NQF, NQR = o.NQR, zOff = o.zOff || 0;
+  const grid = levels.map((lv, i) => {
+    const half = stackHalf(lv, NQF, NQR, o.sideFr);
+    for (const p of half) { p.y = lv.y(p.x, p.u, p); if (o.snap) o.snap(p, i, lv); }
+    return half;
+  });
+  const H = grid[0].length, M = 2 * H - 2;
+  const pos = [], keyIdx = new Map(), vid = [];
+  const vtx = (x, y, z) => {
+    const key = Math.round(x * 2e4) + ',' + Math.round(y * 2e4) + ',' + Math.round(z * 2e4);
+    let id = keyIdx.get(key);
+    if (id == null) { id = pos.length / 3; pos.push(x, y, z); keyIdx.set(key, id); }
+    return id;
+  };
+  for (let i = 0; i < grid.length; i++) {
+    const row = [];
+    for (let j = 0; j < M; j++) {
+      const r = j < H ? j : M - j, p = grid[i][r], sx = j < H ? 1 : -1;
+      row.push(vtx(sx * p.x, p.y, p.u + zOff));
+    }
+    vid.push(row);
+  }
+  const groups = new Map();
+  const add = (g, a, b, c) => { if (a === b || b === c || a === c) return; let arr = groups.get(g); if (!arr) groups.set(g, arr = []); arr.push(a, b, c); };
+  for (let i = 0; i < grid.length - 1; i++) {
+    for (let j = 0; j < M; j++) {
+      const j2 = (j + 1) % M;
+      const rj = j < H ? j : M - j, rj2 = j2 < H ? j2 : M - j2;
+      const r = Math.min(rj, rj2), side = j < H - 1 ? 1 : -1;
+      const P = [grid[i][rj], grid[i][rj2], grid[i + 1][rj], grid[i + 1][rj2]];
+      const q = { i, r, seg: grid[i][r].seg, k: grid[i][r].k, t: grid[i][r].t, side, lv: levels[i],
+        x: (P[0].x + P[1].x + P[2].x + P[3].x) / 4, y: (P[0].y + P[1].y + P[2].y + P[3].y) / 4, u: (P[0].u + P[1].u + P[2].u + P[3].u) / 4 };
+      if (o.cut && o.cut(q)) continue;
+      const g = o.material ? o.material(q) : 0;
+      const a = vid[i][j], b = vid[i][j2], c = vid[i + 1][j], d = vid[i + 1][j2];
+      add(g, a, c, b); add(g, b, c, d);
+    }
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  const idx = []; let start = 0;
+  for (const g of [...groups.keys()].sort((a, b) => a - b)) { const arr = groups.get(g); for (const v of arr) idx.push(v); geo.addGroup(start, arr.length, g); start += arr.length; }
+  geo.setIndex(idx);
+  geo.computeVertexNormals();
+  return { geo, grid, H, M };
+}
+
+/** Raycast helper against finished meshes: hit([x,y,z], [dx,dy,dz]) -> {p:[..], n:[..] (smooth, facing the ray)} | null */
+export function surfaceCaster(THREE, meshes) {
+  const rc = new THREE.Raycaster();
+  const o = new THREE.Vector3(), d = new THREE.Vector3(), bc = new THREE.Vector3();
+  const A = new THREE.Vector3(), B = new THREE.Vector3(), C = new THREE.Vector3();
+  for (const m of meshes) m.updateMatrixWorld(true);
+  return (origin, dir, far = 6) => {
+    o.set(origin[0], origin[1], origin[2]); d.set(dir[0], dir[1], dir[2]).normalize();
+    rc.set(o, d); rc.far = far;
+    const hits = rc.intersectObjects(meshes, false);
+    const h = hits[0];
+    if (!h) return null;
+    const g = h.object.geometry, P = g.attributes.position, N = g.attributes.normal;
+    A.fromBufferAttribute(P, h.face.a); B.fromBufferAttribute(P, h.face.b); C.fromBufferAttribute(P, h.face.c);
+    const lp = h.object.worldToLocal(h.point.clone());
+    THREE.Triangle.getBarycoord(lp, A, B, C, bc);
+    const n = new THREE.Vector3();
+    if (N) {
+      n.addScaledVector(A.fromBufferAttribute(N, h.face.a), bc.x).addScaledVector(B.fromBufferAttribute(N, h.face.b), bc.y).addScaledVector(C.fromBufferAttribute(N, h.face.c), bc.z);
+    } else n.copy(h.face.normal);
+    n.transformDirection(h.object.matrixWorld);
+    if (n.dot(d) > 0) n.negate();
+    return { p: [h.point.x, h.point.y, h.point.z], n: [n.x, n.y, n.z] };
+  };
+}
+
+/** Conforming patch from a rows x cols grid of hits (null = hole). off = offset along the normal (m). */
+export function hitPatch(THREE, rows, off = 0.003) {
+  const pos = [], nor = [], idx = [], id = rows.map(r => r.map(() => -1));
+  rows.forEach((row, i) => row.forEach((h, j) => {
+    if (!h) return;
+    id[i][j] = pos.length / 3;
+    pos.push(h.p[0] + h.n[0] * off, h.p[1] + h.n[1] * off, h.p[2] + h.n[2] * off); nor.push(...h.n);
+  }));
+  for (let i = 0; i < rows.length - 1; i++) for (let j = 0; j < rows[i].length - 1; j++) {
+    const a = id[i][j], b = id[i][j + 1], c = id[i + 1][j], d = id[i + 1][j + 1];
+    if (a < 0 || b < 0 || c < 0 || d < 0) continue;
+    // wind so the face normal agrees with the surface normal
+    const pa = [pos[a * 3], pos[a * 3 + 1], pos[a * 3 + 2]], pb = [pos[b * 3], pos[b * 3 + 1], pos[b * 3 + 2]], pc = [pos[c * 3], pos[c * 3 + 1], pos[c * 3 + 2]];
+    const e1 = [pb[0] - pa[0], pb[1] - pa[1], pb[2] - pa[2]], e2 = [pc[0] - pa[0], pc[1] - pa[1], pc[2] - pa[2]];
+    const cr = [e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0]];
+    const flip = cr[0] * nor[a * 3] + cr[1] * nor[a * 3 + 1] + cr[2] * nor[a * 3 + 2] < 0;
+    if (flip) idx.push(a, c, b, b, c, d); else idx.push(a, b, c, b, d, c);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('normal', new THREE.Float32BufferAttribute(nor, 3));
+  g.setIndex(idx);
+  return g;
+}
+
+/** Strip of width w along a polyline of hits, lifted off the surface by off (panel gaps, trim strips, wipers). */
+export function hitRibbon(THREE, hits, w = 0.006, off = 0.0015) {
+  const hs = hits.filter(Boolean);
+  const rows = [[], []];
+  for (let i = 0; i < hs.length; i++) {
+    const a = hs[Math.max(0, i - 1)].p, b = hs[Math.min(hs.length - 1, i + 1)].p, n = hs[i].n;
+    const t = [b[0] - a[0], b[1] - a[1], b[2] - a[2]];
+    let s = [t[1] * n[2] - t[2] * n[1], t[2] * n[0] - t[0] * n[2], t[0] * n[1] - t[1] * n[0]];
+    const l = Math.hypot(s[0], s[1], s[2]) || 1; s = s.map(v => v / l * w / 2);
+    const p = hs[i].p;
+    rows[0].push({ p: [p[0] - s[0], p[1] - s[1], p[2] - s[2]], n });
+    rows[1].push({ p: [p[0] + s[0], p[1] + s[1], p[2] + s[2]], n });
+  }
+  return hitPatch(THREE, rows, off);
+}
+
+/** Mirror a geometry across x = 0 (flips winding so faces stay outward). */
+export function mirrorX(THREE, geo) {
+  const g = geo.clone();
+  const p = g.attributes.position, n = g.attributes.normal;
+  for (let i = 0; i < p.count; i++) { p.setX(i, -p.getX(i)); if (n) n.setX(i, -n.getX(i)); }
+  if (g.index) { const a = g.index.array; for (let i = 0; i < a.length; i += 3) { const t = a[i + 1]; a[i + 1] = a[i + 2]; a[i + 2] = t; } }
+  p.needsUpdate = true;
+  return g;
+}

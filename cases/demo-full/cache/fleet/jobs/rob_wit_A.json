@@ -2,23 +2,23 @@
   "id": "rob_wit_A",
   "type": "robustness",
   "witness": "wit_A",
-  "why": "Position robustness for wit_A. (added for coverage)",
+  "why": "Confirm Witness A's visibility verdict is robust to position perturbations inside the pickup cab.",
   "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
-  "interactionId": "v1_ChdUWFRlYXBYT0RNdU0xc2dQcTVpYzBRNBIXVFhUZWFwWE9ETXVNMXNnUHE1aWMwUTQ",
-  "dispatchedAtMs": 1000,
-  "createMs": 238493,
+  "interactionId": "v1_Chd2WGJlYXFlYUs2U3V4ZElQMEppWG9RdxIXdlhiZWFxZWFLNlN1eGRJUDBKaVhvUXc",
+  "dispatchedAtMs": 752,
+  "createMs": 105162,
   "status": "completed",
-  "environmentId": "10a48f207e0f170d51ce2dc0e49897a2",
+  "environmentId": "20b56b1087488a1e3fab51b15eba00c0",
   "usage": {
-    "total": 104692,
-    "input": 101032,
-    "cached": 78414
+    "total": 19772,
+    "input": 18611,
+    "cached": 9968
   },
   "agentReply": {
     "ran": true,
     "exit_ok": true,
-    "summary_line": "{\"id\":\"rob_wit_A\",\"ok\":true,\"ms\":2394}",
-    "interpretation": "Witness A has an unobstructed line of sight to Vehicle A at observation time t=4.5 s across all tested robustness offsets."
+    "summary_line": "{\"id\":\"rob_wit_A\",\"ok\":true,\"ms\":2497}",
+    "interpretation": "Witness wit_A had a completely unobstructed line of sight to vehicle veh_A with zero blocked samples across all tested perturbation radii."
   },
   "result": {
     "task": {
@@ -84,7 +84,7 @@
       "host": "",
       "node": "v22.23.4",
       "cpus": 10,
-      "ms": 2394,
+      "ms": 2497,
       "worldSha": "526ea902d593",
       "checksSha": {
         "checks.js": "8b54e5598ebe",
@@ -94,6 +94,6 @@
     }
   },
   "ok": true,
-  "wallMs": 522135,
-  "doneAtMs": 523135
+  "wallMs": 176067,
+  "doneAtMs": 176819
 }

@@ -67,8 +67,8 @@ for (let x = -900; x <= 900; x += 30) {
   south.push([x, 42 + 9 * Math.sin(x / 120 + 4) + 4 * Math.sin(x / 53 + 2)]);
 }
 const tB = performance.now();
-const bandN = TR.forestBand(THREE, { id: 'forest_n', polyline: north, side: 'right', depth: 80, seed: 3, floor: true });   // west->east line: right = north? (see below)
-const bandS = TR.forestBand(THREE, { id: 'forest_s', polyline: south, side: 'left', depth: 80, seed: 7, floor: true, mix: { pine: 0.65, oak: 0.35 } });
+const bandN = TR.forestBand(THREE, { id: 'forest_n', polyline: north, side: 'left', depth: 80, seed: 3, floor: true });   // west->east line: left = north (-Z)
+const bandS = TR.forestBand(THREE, { id: 'forest_s', polyline: south, side: 'right', depth: 80, seed: 7, floor: true, mix: { pine: 0.65, oak: 0.35 } });
 const bandMs = performance.now() - tB;
 scene.add(bandN, bandS);
 // lineup row for asset QA

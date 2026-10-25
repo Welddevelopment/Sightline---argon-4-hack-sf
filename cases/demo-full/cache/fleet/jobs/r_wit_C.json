@@ -2,23 +2,23 @@
   "id": "r_wit_C",
   "type": "render",
   "view": "wit_C",
-  "why": "POV render for wit_C. (added for coverage)",
+  "why": "Render Witness C's perspective to visually confirm his view of the trailer at impact.",
   "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node render_view.mjs --repo /workspace/job/repo --world /workspace/job/world.js --view wit_C --out /workspace/job/out/wit_C --fps 2 --w 480 --h 270",
-  "interactionId": "v1_ChdVWFRlYXZuNFBOdkZ4ZElQX0txZy1BZxIXVVhUZWF2bjRQTnZGeGRJUF9LcWctQWc",
-  "dispatchedAtMs": 4000,
-  "createMs": 240429,
+  "interactionId": "v1_ChdnbmJlYXB6YUxmbVV5dE1QdGNYbTBRNBIXZ25iZWFwemFMZm1VeXRNUHRjWG0wUTQ",
+  "dispatchedAtMs": 5001,
+  "createMs": 42013,
   "status": "completed",
-  "environmentId": "41e880d5ce42cb19aabacc2d5231387b",
+  "environmentId": "cd09c261cc6cc531dfaed5fddd821d81",
   "usage": {
-    "total": 54966,
-    "input": 52357,
-    "cached": 37464
+    "total": 34799,
+    "input": 32553,
+    "cached": 20696
   },
   "agentReply": {
     "ran": true,
     "exit_ok": true,
-    "summary_line": "{\"view\":\"wit_C\",\"frames\":51,\"renderMs\":19616,\"verdict\":\"partial\"}",
-    "interpretation": "The sightline analysis yields a partial verdict for Witness C because although the direct raycast line of sight to the trailer is clear at the observation time, the target is obstructed in the rendered pixel view by the witness's own vehicle."
+    "summary_line": "{\"view\":\"wit_C\",\"frames\":51,\"renderMs\":18422,\"verdict\":\"clear\"}",
+    "interpretation": "Witness C had a clear, unobstructed line of sight to the truck trailer at the time of the collision, corroborating their account."
   },
   "result": {
     "view": "wit_C",
@@ -30,7 +30,7 @@
       270
     ],
     "stillT": 10.43,
-    "renderMs": 18015,
+    "renderMs": 18422,
     "node": "v22.23.4",
     "host": "",
     "witness": {
@@ -49,10 +49,19 @@
     "pixels": {
       "target": "veh_T_trailer",
       "t": 10.43,
-      "targetPixels": 2662,
-      "visiblePixels": 0,
-      "visibleFraction": 0,
+      "zoomFovDeg": 50.07,
+      "distance": 32.4,
+      "targetPixels": 4092,
+      "visiblePixels": 4048,
+      "visibleFraction": 0.989,
       "blockers": [
+        {
+          "id": "veh_A",
+          "fraction": 0.011
+        }
+      ],
+      "rawVisibleFraction": 0,
+      "rawBlockers": [
         {
           "id": "veh_witC",
           "fraction": 1
@@ -316,10 +325,10 @@
         null
       ]
     ],
-    "verdict": "partial"
+    "verdict": "clear"
   },
   "still": "cases/demo-full/cache/fleet/renders/wit_C.png",
   "ok": true,
-  "wallMs": 501498,
-  "doneAtMs": 505498
+  "wallMs": 195871,
+  "doneAtMs": 200872
 }

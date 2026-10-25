@@ -772,7 +772,7 @@ export function forestBand(THREE, opts = {}) {
       side: mkIM(imp.side.geo, imp.side.mat, `${key}_impostor`, n, false),
       top: mkIM(imp.top.geo, imp.top.mat, `${key}_crowncard`, n, false),
     };
-    g.leaf.userData.porous = true; g.side.raycast = noRay; g.top.raycast = noRay;
+    g.leaf.userData.porous = true; g.side.raycast = noRay; g.top.raycast = noRay; g.side.userData.noShadow = g.top.userData.noShadow = true;
     G.push(g);
   }
   const lodSq = lod * lod, uCullSq = uCull * uCull;
@@ -824,7 +824,7 @@ export function forestBand(THREE, opts = {}) {
   const dg = new THREE.BufferGeometry(); dg.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0, 0, 0, 0, 0, 0, 0], 3));
   const driver = new THREE.Mesh(dg, memo('mat:driver', () => new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false })));
   driver.name = 'forest_lod_driver'; driver.frustumCulled = false; driver.renderOrder = -1e6; driver.raycast = noRay;
-  driver.onBeforeRender = (r, s, cam) => { if (cam && cam.isPerspectiveCamera) update(cam); };
+  driver.userData.noShadow = true; driver.onBeforeRender = (r, s, cam) => { if (cam && cam.isPerspectiveCamera) update(cam); };
   root.add(driver);
   if (opts.floor) {
     // pine-straw / leaf-litter floor on a 4 m grid inside the band (edge hidden under the palmetto fringe)

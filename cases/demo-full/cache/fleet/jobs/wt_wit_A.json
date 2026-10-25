@@ -1,0 +1,117 @@
+{
+  "id": "wt_wit_A",
+  "type": "whatif_time",
+  "witness": "wit_A",
+  "why": "Test when the turning trailer begins to block Witness A's view of the eastbound car around t=4.5s.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_Chd2M2JlYXQ3Qk5QYXJ5dE1QN3F6MThBWRIXdjNiZWF0N0JOUGFyeXRNUDdxejE4QVk",
+  "dispatchedAtMs": 1251,
+  "createMs": 106750,
+  "status": "completed",
+  "environmentId": "e3ce7bc600c28b27cdd6f26f7de0770b",
+  "usage": {
+    "total": 20490,
+    "input": 18864,
+    "cached": 9968
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"wt_wit_A\",\"ok\":true,\"ms\":2312}",
+    "interpretation": "Witness wit_A had a clear, unobstructed view of vehicle veh_A across the entire time sweep from 2.5 to 6.5 seconds."
+  },
+  "result": {
+    "task": {
+      "id": "wt_wit_A",
+      "type": "whatif_time",
+      "witness": "wit_A",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_A",
+      "tObs": 4.5,
+      "sweep": [
+        {
+          "dt": -2,
+          "t": 2.5,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 532.81
+        },
+        {
+          "dt": -1.5,
+          "t": 3,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 516.3
+        },
+        {
+          "dt": -1,
+          "t": 3.5,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 499.79
+        },
+        {
+          "dt": -0.5,
+          "t": 4,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 483.29
+        },
+        {
+          "dt": 0,
+          "t": 4.5,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 466.79
+        },
+        {
+          "dt": 0.5,
+          "t": 5,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 450.29
+        },
+        {
+          "dt": 1,
+          "t": 5.5,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 433.79
+        },
+        {
+          "dt": 1.5,
+          "t": 6,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 417.3
+        },
+        {
+          "dt": 2,
+          "t": 6.5,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 400.8
+        }
+      ]
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 2312,
+      "worldSha": "526ea902d593",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 188582,
+  "doneAtMs": 189833
+}

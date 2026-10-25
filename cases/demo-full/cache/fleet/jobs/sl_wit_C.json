@@ -2,23 +2,23 @@
   "id": "sl_wit_C",
   "type": "sightline",
   "witness": "wit_C",
-  "why": "Ray-cast + timeline for wit_C. (added for coverage)",
+  "why": "Confirm Witness C's unobstructed sightline to the trailer across the eastbound lanes at impact.",
   "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
-  "interactionId": "v1_ChdublBlYXFxN0xZcS15dE1QenJ5OTZBWRIXbm5QZWFxcTdMWXEteXRNUHpyeTk2QVk",
-  "dispatchedAtMs": 2010,
-  "createMs": 62901,
+  "interactionId": "v1_Chc1M2JlYXZEV0wteUcxc2dQbEl5b3NRURIXNTNiZWF2RFdMLXlHMXNnUGxJeW9zUVE",
+  "dispatchedAtMs": 2751,
+  "createMs": 145227,
   "status": "completed",
-  "environmentId": "4e8b47f2db5c8c83d5890c1562da52a5",
+  "environmentId": "28909ae74576a625903221582f7b7b85",
   "usage": {
-    "total": 26712,
-    "input": 25232,
-    "cached": 14362
+    "total": 20020,
+    "input": 18732,
+    "cached": 9968
   },
   "agentReply": {
     "ran": true,
     "exit_ok": true,
-    "summary_line": "{\"id\":\"sl_wit_C\",\"ok\":true,\"ms\":1281}",
-    "interpretation": "Witness wit_C had an unobstructed line of sight to the trailer (veh_T_trailer) at the observation time of 10.43 seconds."
+    "summary_line": "{\"id\":\"sl_wit_C\",\"ok\":true,\"ms\":1296}",
+    "interpretation": "Witness wit_C had an unobstructed view of the target trailer at the observation time of 10.43 seconds."
   },
   "result": {
     "task": {
@@ -554,7 +554,7 @@
       "host": "",
       "node": "v22.23.4",
       "cpus": 10,
-      "ms": 1281,
+      "ms": 1296,
       "worldSha": "526ea902d593",
       "checksSha": {
         "checks.js": "8b54e5598ebe",
@@ -564,6 +564,6 @@
     }
   },
   "ok": true,
-  "wallMs": 157571,
-  "doneAtMs": 159581
+  "wallMs": 184909,
+  "doneAtMs": 187660
 }

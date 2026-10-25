@@ -2,23 +2,23 @@
   "id": "sl_wit_B",
   "type": "sightline",
   "witness": "wit_B",
-  "why": "smoke",
+  "why": "Verify whether the tractor blocks Witness B's view of Vehicle A right before impact at t=9.8s.",
   "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
-  "interactionId": "v1_ChdyWFBlYXZhWUg3M2h5dE1QNE9xSGlBURIXclhQZWF2YVlINzNoeXRNUDRPcUhpQVE",
-  "dispatchedAtMs": 1,
-  "createMs": 79917,
+  "interactionId": "v1_Chc3bmJlYXItV0NNTGh5dE1QNDQtWWlROBIXN25iZWFyLVdDTUxoeXRNUDQ0LVlpUTg",
+  "dispatchedAtMs": 1501,
+  "createMs": 152921,
   "status": "completed",
-  "environmentId": "f17f6e508a6c1cef677d3892afe37ad9",
+  "environmentId": "d39d2a51415c4c0ad46d0062cc00f927",
   "usage": {
-    "total": 120993,
-    "input": 117897,
-    "cached": 95351
+    "total": 20044,
+    "input": 18756,
+    "cached": 9968
   },
   "agentReply": {
     "ran": true,
     "exit_ok": true,
-    "summary_line": "{\"id\":\"sl_wit_B\",\"ok\":true,\"ms\":1339}",
-    "interpretation": "Witness B did not have a clear line of sight to Vehicle A at her observation time of 9.8 seconds because her view was blocked by the truck tractor, contradicting her claim of an unobstructed view."
+    "summary_line": "{\"id\":\"sl_wit_B\",\"ok\":true,\"ms\":1350}",
+    "interpretation": "At the observation time of 9.8 seconds, witness wit_B did not have a clear line of sight to veh_A because it was blocked by veh_T_tractor."
   },
   "result": {
     "task": {
@@ -39,8 +39,8 @@
         "distance": 30.22
       },
       "firstVisibleT": 0,
-      "lastVisibleT": 24.75,
-      "visibleSteps": 94,
+      "lastVisibleT": 18.25,
+      "visibleSteps": 68,
       "steps": 101,
       "timeline": [
         [
@@ -415,138 +415,138 @@
         ],
         [
           18.5,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           18.75,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           19,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           19.25,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           19.5,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           19.75,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           20,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           20.25,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           20.5,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           20.75,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           21,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           21.25,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           21.5,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           21.75,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           22,
-          1,
-          null
+          0,
+          "occ_tree_0"
         ],
         [
           22.25,
-          1,
-          null
+          0,
+          "occ_tree_2"
         ],
         [
           22.5,
-          1,
-          null
+          0,
+          "occ_tree_2"
         ],
         [
           22.75,
-          1,
-          null
+          0,
+          "occ_tree_2"
         ],
         [
           23,
-          1,
-          null
+          0,
+          "occ_tree_2"
         ],
         [
           23.25,
-          1,
-          null
+          0,
+          "occ_tree_2"
         ],
         [
           23.5,
-          1,
-          null
+          0,
+          "occ_tree_2"
         ],
         [
           23.75,
-          1,
-          null
+          0,
+          "occ_tree_2"
         ],
         [
           24,
-          1,
-          null
+          0,
+          "occ_tree_2"
         ],
         [
           24.25,
-          1,
-          null
+          0,
+          "occ_tree_2"
         ],
         [
           24.5,
-          1,
-          null
+          0,
+          "occ_tree_2"
         ],
         [
           24.75,
-          1,
-          null
+          0,
+          "occ_tree_2"
         ],
         [
           25,
           0,
-          "occ_tree_4"
+          "occ_tree_2"
         ]
       ]
     },
@@ -554,7 +554,7 @@
       "host": "",
       "node": "v22.23.4",
       "cpus": 10,
-      "ms": 1339,
+      "ms": 1350,
       "worldSha": "526ea902d593",
       "checksSha": {
         "checks.js": "8b54e5598ebe",
@@ -564,6 +564,6 @@
     }
   },
   "ok": true,
-  "wallMs": 210145,
-  "doneAtMs": 210146
+  "wallMs": 201279,
+  "doneAtMs": 202780
 }

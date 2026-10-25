@@ -2,23 +2,23 @@
   "id": "r_overhead",
   "type": "render",
   "view": "overhead",
-  "why": "Overhead render. (added for coverage)",
+  "why": "Generate an overhead scene render to verify overall vehicle placements, geometry, and trajectories.",
   "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node render_view.mjs --repo /workspace/job/repo --world /workspace/job/world.js --view overhead --out /workspace/job/out/overhead --fps 2 --w 480 --h 270",
-  "interactionId": "v1_ChdTWFRlYXB5NU10NjV4ZElQMVBxSy1BOBIXU1hUZWFweTVNdDY1eGRJUDFQcUstQTg",
-  "dispatchedAtMs": 3500,
-  "createMs": 232535,
+  "interactionId": "v1_ChdHbmZlYXUtV0JxLTJ1TVlQLU12X3FBNBIXR25mZWF1LVdCcS0ydU1ZUC1Ndl9xQTQ",
+  "dispatchedAtMs": 4252,
+  "createMs": 194056,
   "status": "completed",
-  "environmentId": "06fa79ae6b94f260ad5109fb031f266d",
+  "environmentId": "dc913049eb4b802be23f6057b16433f4",
   "usage": {
-    "total": 67275,
-    "input": 64649,
-    "cached": 46343
+    "total": 21087,
+    "input": 19924,
+    "cached": 10964
   },
   "agentReply": {
     "ran": true,
     "exit_ok": true,
-    "summary_line": "{\"view\":\"overhead\",\"frames\":51,\"renderMs\":19215,\"verdict\":\"8/10 pass\"}",
-    "interpretation": "The overhead view successfully rendered 51 frames and verified that 8 out of 10 scene checks passed."
+    "summary_line": "{\"view\":\"overhead\",\"frames\":51,\"renderMs\":13810,\"verdict\":\"8/10 pass\"}",
+    "interpretation": "The overhead view rendered 51 frames successfully with 8 out of 10 verification checks passing."
   },
   "result": {
     "view": "overhead",
@@ -30,7 +30,7 @@
       270
     ],
     "stillT": 12.5,
-    "renderMs": 19215,
+    "renderMs": 13810,
     "node": "v22.23.4",
     "host": "",
     "runAll": [
@@ -108,6 +108,6 @@
   },
   "still": "cases/demo-full/cache/fleet/renders/overhead.png",
   "ok": true,
-  "wallMs": 514753,
-  "doneAtMs": 518253
+  "wallMs": 244403,
+  "doneAtMs": 248655
 }

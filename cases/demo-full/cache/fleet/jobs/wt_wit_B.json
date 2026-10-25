@@ -1,0 +1,117 @@
+{
+  "id": "wt_wit_B",
+  "type": "whatif_time",
+  "witness": "wit_B",
+  "why": "Test whether shifting Witness B's observation time by +-2s around t=9.8s provides an unobstructed view.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_ChdWM2ZlYXRyS0hJX2h5dE1QMDVPSXNBURIXVjNmZWF0cktISV9oeXRNUDA1T0lzQVE",
+  "dispatchedAtMs": 2501,
+  "createMs": 257180,
+  "status": "completed",
+  "environmentId": "efa002559c7040139591e6d1419bb7c8",
+  "usage": {
+    "total": 20376,
+    "input": 18888,
+    "cached": 9968
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"wt_wit_B\",\"ok\":true,\"ms\":1211}",
+    "interpretation": "Witness B's line of sight to vehicle A was obstructed by veh_T_tractor at the observation time of 9.8 seconds."
+  },
+  "result": {
+    "task": {
+      "id": "wt_wit_B",
+      "type": "whatif_time",
+      "witness": "wit_B",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_A",
+      "tObs": 9.8,
+      "sweep": [
+        {
+          "dt": -2,
+          "t": 7.8,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 95.43
+        },
+        {
+          "dt": -1.5,
+          "t": 8.3,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 78.98
+        },
+        {
+          "dt": -1,
+          "t": 8.8,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 62.58
+        },
+        {
+          "dt": -0.5,
+          "t": 9.3,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 46.27
+        },
+        {
+          "dt": 0,
+          "t": 9.8,
+          "visible": false,
+          "blockedBy": "veh_T_tractor",
+          "distance": 30.22
+        },
+        {
+          "dt": 0.5,
+          "t": 10.3,
+          "visible": false,
+          "blockedBy": "occ_shelter",
+          "distance": 15.26
+        },
+        {
+          "dt": 1,
+          "t": 10.8,
+          "visible": false,
+          "blockedBy": "occ_shelter",
+          "distance": 10
+        },
+        {
+          "dt": 1.5,
+          "t": 11.3,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 23.14
+        },
+        {
+          "dt": 2,
+          "t": 11.8,
+          "visible": true,
+          "blockedBy": null,
+          "distance": 39.47
+        }
+      ]
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 1211,
+      "worldSha": "526ea902d593",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 292131,
+  "doneAtMs": 294632
+}

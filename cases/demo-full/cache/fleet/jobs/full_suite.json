@@ -1,0 +1,126 @@
+{
+  "id": "full_suite",
+  "type": "full_checks",
+  "why": "Independently verify the baseline run_checks.mjs suite on a clean sandbox.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_Chc1M2JlYXNpdUZMYUExc2dQODl1ZThBWRIXNTNiZWFzaXVGTGFBMXNnUDg5dWU4QVk",
+  "dispatchedAtMs": 2,
+  "createMs": 147463,
+  "status": "completed",
+  "environmentId": "732ba62a40c022cf6b85a51e89c43e94",
+  "usage": {
+    "total": 20567,
+    "input": 19053,
+    "cached": 9967
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"full_suite\",\"ok\":true,\"ms\":3205}",
+    "interpretation": "The reconstruction verifies that vehicle kinematics and timings are physically plausible, with clear sightlines confirmed for witnesses A and C, while the views of witnesses B and D were obstructed by a tractor and a building."
+  },
+  "result": {
+    "task": {
+      "id": "full_suite",
+      "type": "full_checks",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "checks": [
+        {
+          "check": "sightline",
+          "subject": "wit_A",
+          "pass": true,
+          "blockedBy": null,
+          "t": 4.5,
+          "robustness": "not_blocked",
+          "blocked": 0,
+          "gazeDeg": 2.8
+        },
+        {
+          "check": "sightline",
+          "subject": "wit_B",
+          "pass": false,
+          "blockedBy": "veh_T_tractor",
+          "t": 9.8,
+          "robustness": "partial",
+          "blocked": 21,
+          "gazeDeg": 31.5
+        },
+        {
+          "check": "sightline",
+          "subject": "wit_C",
+          "pass": true,
+          "blockedBy": null,
+          "t": 10.43,
+          "robustness": "not_blocked",
+          "blocked": 0,
+          "gazeDeg": 7
+        },
+        {
+          "check": "sightline",
+          "subject": "wit_D",
+          "pass": false,
+          "blockedBy": "bld_store",
+          "t": 10.43,
+          "robustness": "robust",
+          "blocked": 25,
+          "gazeDeg": 1.2
+        },
+        {
+          "check": "timing",
+          "subject": "veh_A",
+          "pass": true,
+          "blockedBy": null,
+          "verdict": "sufficient",
+          "availableS": 10.43
+        },
+        {
+          "check": "timing",
+          "subject": "veh_T_tractor",
+          "pass": true,
+          "blockedBy": null,
+          "verdict": "sufficient",
+          "availableS": 10.43
+        },
+        {
+          "check": "plausibility",
+          "subject": "veh_A",
+          "pass": true
+        },
+        {
+          "check": "plausibility",
+          "subject": "veh_T_tractor",
+          "pass": true
+        },
+        {
+          "check": "plausibility",
+          "subject": "veh_T_trailer",
+          "pass": true
+        },
+        {
+          "check": "plausibility",
+          "subject": "veh_witA",
+          "pass": true
+        }
+      ]
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 3205,
+      "worldSha": "526ea902d593",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 195366,
+  "doneAtMs": 195368
+}

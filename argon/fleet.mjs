@@ -77,7 +77,7 @@ function sanitizePlan(c, tasks, { max, renders }) {
   const have = (type, w) => out.some((x) => x.type === type && (x.witness === w || x.view === w));
   for (const d of defaultPlan(c, { renders })) {
     const key = d.witness || d.view;
-    if (['full_checks', 'sightline', 'robustness', 'gaze', 'render'].includes(d.type) && !have(d.type, key) && !(d.type === 'full_checks' && out.some((x) => x.type === 'full_checks'))) {
+    if (['full_checks', 'prt', 'sightline', 'robustness', 'gaze', 'render'].includes(d.type) && !have(d.type, key) && !(['full_checks', 'prt'].includes(d.type) && out.some((x) => x.type === d.type))) {
       d.why += ' (added for coverage)'; out.push(d);
     }
   }
