@@ -15,9 +15,9 @@
 // solid yellow left edge line on divided roads; double solid / dashed yellow centre line on two-way roads;
 // solid white stop bars; turn-lane lines + arrows; raised pavement markers every 12.2 m (40 ft).
 import * as THREE from 'three';
-import { surfaceMaterial, laneWearTextures, markingTexture, skidTexture, edgeFringeTexture, sprayTexture, getTextureSet, _noise } from './textures.js';
+import { surfaceMaterial, laneWearTextures, markingTexture, skidTexture, edgeFringeTexture, sprayTexture, getTextureSet, foliageMaterial, foliageClusterGeometry, decalTexture, _noise } from './textures.js';
 
-export { getTextureSet, surfaceMaterial, setAnisotropy } from './textures.js';
+export { getTextureSet, surfaceMaterial, setAnisotropy, foliageMaterial, foliageClusterGeometry, decalTexture } from './textures.js';
 
 const { vnoise } = _noise;
 const FT = 0.3048;
@@ -878,30 +878,42 @@ export function treeline(opts = {}) {
         if (rnd() < pineRatio) {             // slash pine: tall bare trunk, small irregular crown on top
           const H = h * 1.35;
           trunks.push({ x, z, y: y0, h: H, r: 0.2 });
-          for (let k = 0; k < 3; k++) { const cr = 1.6 + rnd() * 1.4; crowns.push({ x: x + (rnd() - 0.5) * 2.5, z: z + (rnd() - 0.5) * 2.5, y: y0 + H - 1.2 - k * 1.4 - rnd(), sx: cr * 1.3, sy: cr * 0.7, sz: cr * 1.3, c: C(0.24 + rnd() * 0.05, 0.28 + rnd() * 0.05, 0.16) }); }
+          for (let k = 0; k < 3; k++) { const cr = 1.6 + rnd() * 1.4; crowns.push({ k: 'pine', x: x + (rnd() - 0.5) * 2.5, z: z + (rnd() - 0.5) * 2.5, y: y0 + H - 1.2 - k * 1.4 - rnd(), sx: cr * 1.3, sy: cr * 0.7, sz: cr * 1.3, c: C(0.24 + rnd() * 0.05, 0.28 + rnd() * 0.05, 0.16) }); }
         } else {                              // live oak / laurel oak mass: broad, low, overlapping crowns
           const w = h * (0.7 + rnd() * 0.4);
           trunks.push({ x, z, y: y0, h: h * 0.35, r: 0.32 });
           const n = 5 + Math.floor(rnd() * 4);
-          for (let k = 0; k < n; k++) crowns.push({ x: x + (rnd() - 0.5) * w * 0.9, z: z + (rnd() - 0.5) * w * 0.9, y: y0 + h * (0.42 + rnd() * 0.38), sx: w * (0.28 + rnd() * 0.2), sy: h * (0.18 + rnd() * 0.12), sz: w * (0.28 + rnd() * 0.2),
+          for (let k = 0; k < n; k++) crowns.push({ k: 'oak', x: x + (rnd() - 0.5) * w * 0.9, z: z + (rnd() - 0.5) * w * 0.9, y: y0 + h * (0.42 + rnd() * 0.38), sx: w * (0.28 + rnd() * 0.2), sy: h * (0.18 + rnd() * 0.12), sz: w * (0.28 + rnd() * 0.2),
             c: C(0.22 + rnd() * 0.07, 0.27 + rnd() * 0.07, 0.15 + rnd() * 0.04) });
         }
         // understory (palmetto, wax myrtle, young oaks) hides trunk gaps
-        if (row === 0 || rnd() < 0.4) for (let k = 0; k < 2; k++) { const sw = 2 + rnd() * 3; crowns.push({ x: x + (rnd() - 0.5) * spacing, z: z + (rnd() - 0.5) * spacing, y: y0 + sw * 0.35, sx: sw, sy: sw * (0.45 + rnd() * 0.3), sz: sw, c: C(0.25 + rnd() * 0.06, 0.29 + rnd() * 0.06, 0.16 + rnd() * 0.04) }); }
+        if (row === 0 || rnd() < 0.4) for (let k = 0; k < 2; k++) { const sw = 2 + rnd() * 3; crowns.push({ k: 'shrub', x: x + (rnd() - 0.5) * spacing, z: z + (rnd() - 0.5) * spacing, y: y0 + sw * 0.35, sx: sw, sy: sw * (0.45 + rnd() * 0.3), sz: sw, c: C(0.25 + rnd() * 0.06, 0.29 + rnd() * 0.06, 0.16 + rnd() * 0.04) }); }
       }
     }
   }
-  const crownGeo = new THREE.IcosahedronGeometry(1, 2);
-  // lumpy crowns
-  { const p = crownGeo.getAttribute('position'); for (let i = 0; i < p.count; i++) { const v = new THREE.Vector3().fromBufferAttribute(p, i); const k = 0.82 + vnoise(v.x * 2.3 + 5, v.y * 2.3 + v.z * 1.7 + 5, 1 << 20, 3) * 0.36; p.setXYZ(i, v.x * k, v.y * k, v.z * k); } crownGeo.computeVertexNormals(); }
-  const cm = new THREE.InstancedMesh(crownGeo, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.92, normalMap: getTextureSet('gravel').normalMap, normalScale: new THREE.Vector2(1.5, 1.5) }), crowns.length);
+  // crowns: instanced clusters of alpha-clipped leaf cards (alphaTest 0.5, cast alpha-tested shadows), one
+  // InstancedMesh per species; a dark inner core (shrunk, opaque) stops the sky showing through dense masses.
   const tm = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.7, 1, 1, 6), new THREE.MeshStandardMaterial({ color: 0x4a3f33, roughness: 1 }), trunks.length);
   const o = new THREE.Object3D(), col = new THREE.Color();
-  crowns.forEach((c, i) => { o.position.set(c.x, c.y, c.z); o.scale.set(c.sx, c.sy, c.sz); o.rotation.set(0, i, 0); o.updateMatrix(); cm.setMatrixAt(i, o.matrix); cm.setColorAt(i, col.setRGB(c.c[0], c.c[1], c.c[2], THREE.SRGBColorSpace)); });
-  trunks.forEach((t, i) => { o.position.set(t.x, t.y + t.h / 2, t.z); o.scale.set(t.r, t.h, t.r); o.rotation.set(0, 0, 0); o.updateMatrix(); tm.setMatrixAt(i, o.matrix); });
-  cm.castShadow = true; cm.receiveShadow = true; tm.castShadow = true;
-  cm.name = 'treeline_crowns'; tm.name = 'treeline_trunks';
-  g.add(cm, tm);
+  const SPEC = { oak: { cards: 14, flat: 0.7, size: 0.85 }, pine: { cards: 12, flat: 0.55, size: 0.9 }, shrub: { cards: 10, flat: 0.75, size: 0.8 } };
+  const coreMat = mat('treeCore', () => new THREE.MeshStandardMaterial({ color: 0x27331c, roughness: 1 }));
+  const coreGeo = new THREE.IcosahedronGeometry(0.62, 1);
+  for (const kind of Object.keys(SPEC)) {
+    const list = crowns.filter(c => c.k === kind); if (!list.length) continue;
+    const cmK = new THREE.InstancedMesh(foliageClusterGeometry({ ...SPEC[kind], seed: kind.length + seed }), foliageMaterial(kind === 'pine' ? 'pine' : kind), list.length);
+    const core = new THREE.InstancedMesh(coreGeo, coreMat, list.length);
+    list.forEach((c, i) => {
+      o.position.set(c.x, c.y, c.z); o.scale.set(c.sx, c.sy, c.sz); o.rotation.set(0, i * 2.39, 0); o.updateMatrix(); cmK.setMatrixAt(i, o.matrix);
+      o.scale.multiplyScalar(0.92); o.updateMatrix(); core.setMatrixAt(i, o.matrix);
+      cmK.setColorAt(i, col.setRGB(0.86 + (c.c[0] - 0.24) * 3, 0.9 + (c.c[1] - 0.29) * 3, 0.82 + (c.c[2] - 0.16) * 3));
+    });
+    cmK.castShadow = true; cmK.receiveShadow = true; cmK.name = 'treeline_leaves_' + kind; cmK.computeBoundingSphere();
+    core.castShadow = true; core.receiveShadow = true; core.name = 'treeline_core_' + kind; core.computeBoundingSphere();
+    g.add(cmK, core);
+  }
+  tm.castShadow = true;
+  tm.name = 'treeline_trunks'; tm.computeBoundingSphere();
+  g.add(tm);
   tag(g, id, 'treeline', { length: 0, width: depth, height }, { count: trunks.length });
   return g;
 }

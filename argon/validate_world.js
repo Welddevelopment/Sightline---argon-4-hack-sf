@@ -1,7 +1,7 @@
 // argon/validate_world.js — contract validation of an Argon-written world module (WORLD CONTRACT v1 + v2).
 //   import { validateWorldSource, validateWorldFile, logValidation } from './validate_world.js';
 //   const v = await validateWorldSource(src, { caseId });   // → { ok, errors[], warnings[], stats }
-// CLI: node argon/validate_world.js <world.js> [--json]
+// CLI: node argon/validate_world.js <world.js> [--case <id>] [--json]   (case inferred from cases/<id>/... paths; rules = case.json worldRules)
 //
 // Steps: static scan (export default createWorld; no import/require/fetch/eval/Function/DOM/random/clock) → syntax check
 // (node --check) → ISOLATED runtime check in a child process with a timeout (createWorld(THREE, recordingAssets)):
@@ -52,7 +52,52 @@ export function syntaxCheck(file) {
 }
 
 // ---------------------------------------------------------------- runtime (runs in the child process)
-async function runtimeCheck(file) {
+const HEAVY = new Set(['truck_tractor', 'semitrailer', 'bus', 'box_truck']);
+/** Vehicles moving at meta.impactT: start distance vs case rules (case.json worldRules.minApproach) and vs any
+ *  crest/hill/curve sight restriction on the approach line (the vehicle must start at or behind it). */
+function approachCheck(THREE, world, objects, ids, rules = {}) {
+  const errors = [], warnings = [], stats = [];
+  const ti = Number(world.meta?.impactT), dur = world.duration;
+  if (!(Number.isFinite(ti) && ti > 0 && ti <= dur)) { if (rules.minApproach?.length) errors.push('meta.impactT (event-clock impact time, s) is required to check where the approach starts'); return { errors, warnings, stats }; }
+  const p = new THREE.Vector3();
+  const at = (id, t) => { world.setTime(t); world.root.updateMatrixWorld(true); objects[id].node.getWorldPosition(p); return [p.x, p.z]; };
+  const dt = Math.min(0.5, ti);
+  const veh = [];
+  for (const id of ids.filter((k) => k.startsWith('veh_'))) {
+    const a = at(id, ti - dt), b = at(id, ti), s0 = at(id, 0);
+    const speed = Math.hypot(b[0] - a[0], b[1] - a[1]) / dt;
+    if (speed < 3) continue;
+    const ud = objects[id].node.userData || {};
+    const type = ud.vehicleType || (ud.assetType !== 'vehicle' ? ud.assetType : null) || null;
+    veh.push({ id, type, speed, start: s0, impact: b, dist: Math.hypot(s0[0] - b[0], s0[1] - b[1]) });
+  }
+  world.setTime(0);
+  for (const v of veh) stats.push({ id: v.id, type: v.type, startDistM: Math.round(v.dist * 10) / 10, impactSpeedMps: Math.round(v.speed * 10) / 10 });
+  const byRole = (role) => {
+    const c = veh.filter((v) => (role === 'car' ? !HEAVY.has(v.type) && !/truck|tractor|trailer/i.test(objects[v.id].label || '') : role === 'truck' ? HEAVY.has(v.type) : true));
+    return c.sort((x, y) => y.speed - x.speed)[0] || null;
+  };
+  for (const r of rules.minApproach || []) {
+    const v = r.id ? veh.find((x) => x.id === r.id) : byRole(r.role || 'car');
+    if (!v) { errors.push(`no ${r.id || r.role || 'car'} is moving at impact (meta.impactT=${ti}); cannot check that its path starts ≥ ${r.meters} m before impact (${r.citation || 'case rule'})`); continue; }
+    if (v.dist + (r.toleranceM ?? 1) < r.meters) errors.push(`${v.id} starts only ${v.dist.toFixed(0)} m before its impact position (t=0 → meta.impactT=${ti} s); the evidence (${r.citation || 'case rule'}) requires its path to start ≥ ${r.meters} m before impact${r.why ? ' (' + r.why + ')' : ''} — move its first keyframe back along the approach and keep its cited speed and impact time consistent (impactT ≈ ${r.meters} m / speed)`);
+  }
+  const SR = /crest|hill|terrain|summit|curve|bend/i;
+  for (const [oid, o] of Object.entries(objects)) {
+    if (oid.startsWith('veh_') || !SR.test(`${oid} ${o.kind || ''} ${o.label || ''}`)) continue;
+    o.node.updateMatrixWorld(true); o.node.getWorldPosition(p);
+    for (const v of veh) {
+      if (v.dist < 1) continue;
+      const ux = (v.impact[0] - v.start[0]) / v.dist, uz = (v.impact[1] - v.start[1]) / v.dist;
+      const dx = v.impact[0] - p.x, dz = v.impact[1] - p.z;
+      const back = dx * ux + dz * uz, lat = Math.abs(dx * uz - dz * ux);
+      if (lat < 40 && back > v.dist + Math.max(25, 0.1 * v.dist) && back < 3 * v.dist + 200) errors.push(`${v.id} starts ${v.dist.toFixed(0)} m before impact, in FRONT of the sight restriction ${oid} (${back.toFixed(0)} m before impact on its approach): start it at or behind ${oid} so every cited event from its first appearance is on the timeline`);
+    }
+  }
+  return { errors, warnings, stats };
+}
+
+async function runtimeCheck(file, rules = {}) {
   const errors = [], warnings = [];
   const THREE = await import('three');
   const am = await import(pathToFileURL(path.join(ROOT, 'web', 'assets.js')).href);
@@ -151,9 +196,14 @@ async function runtimeCheck(file) {
   if (!envCalls.length) errors.push('no assets.environment(...) call: add root.add(assets.environment({ date, timeOfDay, utcOffset, timeZone, lat, lon, lighting, weather })) with the case\'s cited date/time/location/weather');
   else {
     const a = envCalls[0].args[0] || {};
-    const miss = ['date', 'timeOfDay', 'lat', 'lon'].filter((k) => a[k] === undefined || a[k] === null || a[k] === '');
+    const iso = typeof a.date === 'string' ? a.date.match(/^\d{4}-\d{2}-\d{2}T(\d{1,2}:\d{2}(?::\d{2}(?:\.\d+)?)?)(Z|[+-]\d{2}:?\d{2})?$/) : null;
+    const has = (k) => a[k] !== undefined && a[k] !== null && a[k] !== '';
+    const miss = ['date', 'lat', 'lon'].filter((k) => !has(k));
+    if (!has('timeOfDay') && !iso) miss.push('timeOfDay');           // an ISO date with a time ("2016-05-07T16:36:12-04:00") counts
     if (miss.length) errors.push(`assets.environment(...) is missing ${miss.join(', ')} — pass the case's own date, local time, latitude/longitude (approximate from the named place if needed) so the sun is computed, not guessed`);
-    if (!a.utcOffset && !a.timeZone) warnings.push('assets.environment: no utcOffset/timeZone; local time is converted with a longitude guess (no DST)');
+    for (const k of ['lat', 'lon']) if (has(k) && !(Number.isFinite(a[k]) && Math.abs(a[k]) <= (k === 'lat' ? 90 : 180))) errors.push(`assets.environment: ${k} must be a number in degrees (got ${JSON.stringify(a[k])})`);
+    if (has('date') && !/^\d{4}-\d{2}-\d{2}/.test(String(a.date))) errors.push(`assets.environment: date "${a.date}" must be the case date as "YYYY-MM-DD" (or ISO with time + offset)`);
+    if (!a.utcOffset && !a.timeZone && !iso?.[2]) warnings.push('assets.environment: no utcOffset/timeZone; local time is converted with a longitude guess (no DST)');
     if (envCalls.length > 1) warnings.push(`assets.environment called ${envCalls.length} times (once is enough)`);
     let envNode = null; world.root.traverse((n) => { if (!envNode && n.userData?.isEnvironment) envNode = n; });
     if (!envNode) errors.push('the assets.environment(...) result is not added under world.root');
@@ -207,6 +257,10 @@ async function runtimeCheck(file) {
   const moving = ids.filter((id, i) => fwd.length && fwd.some((sn) => sn[i] !== fwd[0][i]));
   if (ids.some((k) => k.startsWith('veh_')) && !moving.length) warnings.push('nothing moves over [0, duration]');
 
+  // approach start: every vehicle moving at impact must enter the timeline far enough back (cited sight restriction / case rule)
+  const approach = approachCheck(THREE, world, objects, ids, rules);
+  errors.push(...approach.errors); warnings.push(...approach.warnings);
+
   // kinematic plausibility (pre-impact accelerations ≤ limit, no teleports)
   let plaus = [];
   try {
@@ -220,21 +274,22 @@ async function runtimeCheck(file) {
     errors, warnings,
     stats: { objects: ids.length, witnesses: (world.witnesses || []).length, facts: (world.facts || []).length, duration: dur, moving: moving.length,
       assetCalls: calls.length, assetMethods: [...new Set(calls.map((c) => c.method))], vehicleTypes: calls.filter((c) => c.method === 'vehicle' || c.method === 'parkedVehicle').map((c) => c.args[0]),
-      sun, citations: inferredCount, plausibility: plaus.map((p) => ({ subject: p.subject, pass: p.pass, maxAccelG: p.maxAccelG, maxSpeedMph: p.maxSpeedMph })),
+      sun, citations: inferredCount, approach: approach.stats, plausibility: plaus.map((p) => ({ subject: p.subject, pass: p.pass, maxAccelG: p.maxAccelG, maxSpeedMph: p.maxSpeedMph })),
       assetFallbacks: Object.fromEntries(Object.entries(assetStats).filter(([, s]) => s.box || s.fallback).map(([k, s]) => [k, { fallback: s.fallback, box: s.box }])) },
   };
 }
 
 // ---------------------------------------------------------------- public API
 /** Validate a module file. opts.timeoutMs (default 60 s) bounds the isolated child run. */
-export async function validateWorldFile(file, { timeoutMs = 60000 } = {}) {
+export async function validateWorldFile(file, { timeoutMs = 60000, rules = null, caseId = null } = {}) {
+  rules = rules || caseRules(caseId);
   const abs = path.resolve(file);
   const src = fs.readFileSync(abs, 'utf8');
   const st = staticScan(src);
   const errors = [...st.errors], warnings = [...st.warnings];
   const syn = syntaxCheck(abs);
   if (syn) return { ok: false, errors: [...errors, syn], warnings, stats: { lines: src.split('\n').length, chars: src.length } };
-  const r = spawnSync(process.execPath, [SELF, '--child', abs], { encoding: 'utf8', timeout: timeoutMs, maxBuffer: 16 << 20, cwd: ROOT });
+  const r = spawnSync(process.execPath, [SELF, '--child', abs, JSON.stringify(rules || {})], { encoding: 'utf8', timeout: timeoutMs, maxBuffer: 16 << 20, cwd: ROOT });
   let rt;
   if (r.error?.code === 'ETIMEDOUT' || r.signal === 'SIGTERM') rt = { errors: [`createWorld/setTime did not finish within ${timeoutMs / 1000} s (infinite loop?)`], warnings: [], stats: {} };
   else {
@@ -251,10 +306,17 @@ export async function validateWorldSource(src, { caseId, dir } = {}) {
   fs.mkdirSync(d, { recursive: true });
   const tmp = path.join(d, `.validate_${crypto.createHash('sha1').update(src).digest('hex').slice(0, 10)}.mjs`);
   fs.writeFileSync(tmp, src);
-  try { return await validateWorldFile(tmp); } finally { try { fs.unlinkSync(tmp); } catch {} }
+  try { return await validateWorldFile(tmp, { caseId }); } finally { try { fs.unlinkSync(tmp); } catch {} }
 }
 
 const dedupe = (a) => [...new Set(a)];
+
+/** Case-specific validator rules from cases/<id>/case.json `worldRules` (values must come from the case evidence), e.g.
+ *  { "minApproach": [{ "role": "car", "meters": 345, "citation": "facts.md F10/F28", "why": "car first visible at the crest" }] } */
+export function caseRules(caseId) {
+  if (!caseId) return {};
+  try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'cases', caseId, 'case.json'), 'utf8')).worldRules || {}; } catch { return {}; }
+}
 
 /** Format errors for the Argon repair prompt. */
 export const formatErrors = (v) => v.errors.map((e, i) => `${i + 1}. ${e}`).join('\n');
@@ -276,13 +338,16 @@ export function logValidation(caseId, entry) {
 // ---------------------------------------------------------------- CLI / child
 if (process.argv[1] && path.resolve(process.argv[1]) === SELF) {
   if (process.argv[2] === '--child') {
-    runtimeCheck(path.resolve(process.argv[3]))
+    let rules = {}; try { rules = JSON.parse(process.argv[4] || '{}'); } catch {}
+    runtimeCheck(path.resolve(process.argv[3]), rules)
       .then((r) => { process.stdout.write('\n' + JSON.stringify({ __validate: r }) + '\n'); process.exit(0); })
       .catch((e) => { process.stdout.write('\n' + JSON.stringify({ __validate: { errors: [`isolated import failed: ${e.message}`], warnings: [], stats: {} } }) + '\n'); process.exit(0); });
   } else {
     const file = process.argv[2];
-    if (!file) { console.error('usage: node argon/validate_world.js <world.js> [--json]'); process.exit(2); }
-    const v = await validateWorldFile(file);
+    if (!file) { console.error('usage: node argon/validate_world.js <world.js> [--case <id>] [--json]'); process.exit(2); }
+    const ci = process.argv.indexOf('--case');
+    const caseId = ci > 0 ? process.argv[ci + 1] : (path.resolve(file).match(/[\\/]cases[\\/]([^\\/]+)[\\/]/) || [])[1] || null;
+    const v = await validateWorldFile(file, { caseId });
     if (process.argv.includes('--json')) console.log(JSON.stringify(v, null, 2));
     else {
       console.log(`${v.ok ? 'VALID' : 'INVALID'} ${file}: ${v.errors.length} error(s), ${v.warnings.length} warning(s)`);

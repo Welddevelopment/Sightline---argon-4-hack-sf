@@ -1,0 +1,50 @@
+{
+  "round": 0,
+  "file": "/home/claude/sightline/renders/asset_forge/work/truck_tractor.r0.js",
+  "png": "/home/claude/sightline/renders/asset_forge/truck_tractor_r0.png",
+  "finish": "STOP",
+  "usage": {
+    "promptTokenCount": 6131,
+    "candidatesTokenCount": 19400,
+    "totalTokenCount": 25531,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 6131
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 19400
+      }
+    ]
+  },
+  "seconds": 172.8,
+  "defects": null,
+  "validation": {
+    "ok": true,
+    "errors": [],
+    "warnings": [],
+    "buildMs": 109,
+    "tris": 57056,
+    "meshes": 461,
+    "bbox": {
+      "min": [
+        -1.31,
+        -0.004,
+        -3.275
+      ],
+      "max": [
+        1.31,
+        3.6,
+        3.25
+      ],
+      "size": {
+        "length": 6.526,
+        "width": 2.62,
+        "height": 3.604
+      }
+    }
+  }
+}

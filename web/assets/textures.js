@@ -404,3 +404,155 @@ export function setAnisotropy(n) {
   for (const v of cache.values()) for (const t of Object.values(v)) if (t && t.isTexture) { t.anisotropy = n; t.needsUpdate = true; }
 }
 export const _noise = { hash2, vnoise, fbm, fbm2, worley };
+
+// ---------------------------------------------------------------- foliage (alpha-clipped leaf cards)
+/** Leaf-card texture: RGBA spray of leaves on twigs, transparent background (use alphaTest 0.5).
+ *  kind 'oak' (small dark live-oak leaves), 'pine' (needle tufts), 'shrub' (dense small leaves), 'palmetto'. */
+export function foliageTexture(kind = 'oak') {
+  return cachedTex('foliage:' + kind, () => {
+    const S = IS_BROWSER ? 512 : 64;
+    let tex;
+    if (IS_BROWSER) {
+      const cv = document.createElement('canvas'); cv.width = cv.height = S;
+      const g = cv.getContext('2d');
+      let seed = kind.length * 977 + 13; const R = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      g.clearRect(0, 0, S, S);
+      const C = (l, a = 1) => { const v = l * (0.85 + R() * 0.3); return kind === 'pine' ? `rgba(${v * 0.62 | 0},${v * 0.86 | 0},${v * 0.42 | 0},${a})` : `rgba(${v * 0.6 | 0},${v * 0.9 | 0},${v * 0.36 | 0},${a})`; };
+      const inDisc = (x, y, r = 0.47) => (x / S - 0.5) ** 2 + (y / S - 0.5) ** 2 < r * r;
+      if (kind === 'pine') {
+        // slash pine: tufts of long needles radiating from twig tips
+        g.strokeStyle = 'rgba(70,55,40,1)'; g.lineWidth = 3;
+        const tips = [];
+        for (let b = 0; b < 5; b++) { const a0 = R() * 6.28, x0 = S / 2 + Math.cos(a0) * S * 0.05, y0 = S / 2 + Math.sin(a0) * S * 0.05, x1 = S / 2 + Math.cos(a0) * S * 0.3, y1 = S / 2 + Math.sin(a0) * S * 0.3; g.beginPath(); g.moveTo(x0, y0); g.lineTo(x1, y1); g.stroke(); tips.push([x1, y1], [(x0 + x1) / 2, (y0 + y1) / 2]); }
+        tips.push([S / 2, S / 2]);
+        for (const [cx, cy] of tips) for (let i = 0; i < 90; i++) {
+          const a = R() * 6.28, l = S * (0.06 + R() * 0.13); g.strokeStyle = C(60 + R() * 90); g.lineWidth = 1.2 + R() * 1.2;
+          g.beginPath(); g.moveTo(cx, cy); g.quadraticCurveTo(cx + Math.cos(a) * l * 0.5, cy + Math.sin(a) * l * 0.5 + l * 0.08, cx + Math.cos(a) * l, cy + Math.sin(a) * l + l * 0.15); g.stroke();
+        }
+      } else {
+        const small = kind === 'shrub' ? 0.75 : kind === 'palmetto' ? 2.2 : 1;
+        // twigs
+        g.strokeStyle = 'rgba(62,50,38,1)';
+        const twigs = [];
+        for (let b = 0; b < 7; b++) { let x = S / 2 + (R() - 0.5) * S * 0.2, y = S / 2 + (R() - 0.5) * S * 0.2; const a = R() * 6.28; g.lineWidth = 2.5; g.beginPath(); g.moveTo(x, y); for (let k = 0; k < 4; k++) { x += Math.cos(a + (R() - 0.5)) * S * 0.07; y += Math.sin(a + (R() - 0.5)) * S * 0.07; g.lineTo(x, y); twigs.push([x, y]); } g.stroke(); }
+        // leaves: dark underlayer then lighter top leaves, clustered on twigs, ragged outline
+        for (const pass of [0, 1, 2]) {
+          const n = (kind === 'shrub' ? 900 : 700) * (pass === 2 ? 0.5 : 1) / small;
+          for (let i = 0; i < n; i++) {
+            const t = twigs[(R() * twigs.length) | 0], rr = S * 0.16 * Math.sqrt(R()), a = R() * 6.28;
+            const x = t[0] + Math.cos(a) * rr, y = t[1] + Math.sin(a) * rr;
+            if (!inDisc(x, y)) continue;
+            const L = (S / 512) * (7 + R() * 5) * small, Wd = L * (kind === 'palmetto' ? 0.18 : 0.45);
+            g.fillStyle = C(pass === 0 ? 55 : pass === 1 ? 85 : 120); g.save(); g.translate(x, y); g.rotate(R() * 6.28);
+            g.beginPath(); g.ellipse(0, 0, L, Wd, 0, 0, Math.PI * 2); g.fill(); g.restore();
+          }
+        }
+      }
+      tex = new THREE.CanvasTexture(cv);
+    } else {
+      const d = new Uint8ClampedArray(S * S * 4);
+      for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) { const o = (y * S + x) * 4, r = Math.hypot(x / S - 0.5, y / S - 0.5); d[o] = 70; d[o + 1] = 100; d[o + 2] = 45; d[o + 3] = r < 0.42 && hash2(x, y, 9) > 0.3 ? 255 : 0; }
+      tex = new THREE.DataTexture(d, S, S, THREE.RGBAFormat); tex.generateMipmaps = true;
+    }
+    tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = ANISO;
+    tex.minFilter = THREE.LinearMipmapLinearFilter; tex.magFilter = THREE.LinearFilter; tex.needsUpdate = true;
+    return { map: tex };
+  });
+}
+const FOLIAGE_MATS = new Map();
+/** Shared leaf-card material: alphaTest 0.5, double-sided, normals not flipped on back faces (so cluster normals
+ *  that point outward from the crown give soft volumetric shading). Use with castShadow (alpha-tested shadows). */
+export function foliageMaterial(kind = 'oak', opts = {}) {
+  const key = kind + JSON.stringify(opts);
+  if (FOLIAGE_MATS.has(key)) return FOLIAGE_MATS.get(key);
+  const m = new THREE.MeshStandardMaterial({ map: foliageTexture(kind).map, alphaTest: 0.5, side: THREE.DoubleSide, roughness: 0.88, metalness: 0, color: 0xffffff, ...opts });
+  m.onBeforeCompile = sh => { sh.fragmentShader = sh.fragmentShader.replace('#include <normal_fragment_begin>', THREE.ShaderChunk.normal_fragment_begin.replace('float faceDirection = gl_FrontFacing ? 1.0 : - 1.0;', 'float faceDirection = 1.0;')); };
+  m.customProgramCacheKey = () => 'foliage-noflip';
+  m.name = 'foliage_' + kind;
+  FOLIAGE_MATS.set(key, m);
+  return m;
+}
+/** Leaf-card cluster geometry in a unit sphere (radius 1): `cards` quads with random orientation, normals pointing
+ *  away from the cluster centre (blended with the up vector) so instanced crowns shade like volumes. flat<1 squashes Y. */
+export function foliageClusterGeometry({ cards = 9, seed = 1, flat = 0.75, size = 0.95, hollow = 0.35 } = {}) {
+  let s = seed * 7919 + 17; const R = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+  const pos = [], nor = [], uv = [], idx = [];
+  const v = new THREE.Vector3(), a = new THREE.Vector3(), b = new THREE.Vector3(), q = new THREE.Quaternion(), e = new THREE.Euler();
+  for (let c = 0; c < cards; c++) {
+    // centre on a shell (so the crown reads as a volume with a lacy edge)
+    const u = R() * 2 - 1, ph = R() * 6.28, rr = hollow + (1 - hollow) * Math.cbrt(R()) * 0.75, sq = Math.sqrt(1 - u * u);
+    const cx = sq * Math.cos(ph) * rr, cy = u * rr * flat, cz = sq * Math.sin(ph) * rr;
+    e.set(R() * 6.28, R() * 6.28, R() * 6.28); q.setFromEuler(e);
+    a.set(1, 0, 0).applyQuaternion(q); b.set(0, 1, 0).applyQuaternion(q);
+    const h = size * (0.75 + R() * 0.5) / 2, base = pos.length / 3;
+    for (const [i, j] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+      v.set(cx + (a.x * i + b.x * j) * h, cy + (a.y * i + b.y * j) * h, cz + (a.z * i + b.z * j) * h);
+      pos.push(v.x, v.y, v.z);
+      const n = new THREE.Vector3(v.x, v.y / Math.max(0.3, flat), v.z).normalize().multiplyScalar(0.8).add(new THREE.Vector3(0, 0.45, 0)).normalize();
+      nor.push(n.x, n.y, n.z); uv.push((i + 1) / 2, (j + 1) / 2);
+    }
+    idx.push(base, base + 1, base + 2, base, base + 2, base + 3);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('normal', new THREE.Float32BufferAttribute(nor, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx); g.computeBoundingSphere(); g.computeBoundingBox();
+  return g;
+}
+
+// ---------------------------------------------------------------- high-res pavement marking decals (CanvasTexture)
+/** decalTexture(kind, {pxPerM=200, w, h}) -> {map, w, h}  Worn thermoplastic paint on a transparent canvas, sized in metres.
+ *  kinds: 'arrow_left' | 'arrow_right' | 'arrow_through' | 'arrow_left_through' | 'stop_bar' | 'crosswalk' (continental,
+ *  w = walk width, h = road width) | 'nose_hatch' (yellow diagonal hatch for median noses) | 'double_yellow'.
+ *  Arrows point toward canvas top (+V). Anisotropy follows setAnisotropy(). Browser only (null in Node). */
+export function decalTexture(kind, o = {}) {
+  if (!IS_BROWSER) return null;
+  const key = 'decal:' + kind + ':' + JSON.stringify(o);
+  return cachedTex(key, () => {
+    const D = { arrow_left: [1.6, 4.0], arrow_right: [1.6, 4.0], arrow_through: [1.0, 4.0], arrow_left_through: [1.9, 4.6], stop_bar: [3.4, 0.61], crosswalk: [3.0, 7.3], nose_hatch: [4, 12], double_yellow: [0.4, 12] }[kind] || [2, 2];
+    const w = o.w ?? D[0], h = o.h ?? D[1];
+    const ppm = Math.min(o.pxPerM ?? (kind === 'nose_hatch' || kind === 'double_yellow' ? 90 : 200), 4096 / Math.max(w, h));
+    const cv = document.createElement('canvas'); cv.width = Math.max(4, Math.round(w * ppm)); cv.height = Math.max(4, Math.round(h * ppm));
+    const g = cv.getContext('2d'), W = cv.width, H = cv.height;
+    const X = m => (m + w / 2) * ppm, Y = m => H - m * ppm; // x centred, y from bottom (metres)
+    const white = '#f2f1ea', yellow = '#e5a91f';
+    g.fillStyle = o.color === 'yellow' || kind === 'nose_hatch' || kind === 'double_yellow' ? yellow : white;
+    const poly = pts => { g.beginPath(); pts.forEach(([x, y], i) => i ? g.lineTo(X(x), Y(y)) : g.moveTo(X(x), Y(y))); g.closePath(); g.fill(); };
+    const s = h / 4.0;
+    const through = [[0.11, 0], [0.11, 2.7 * s], [0.4, 2.7 * s], [0, 3.95 * s], [-0.4, 2.7 * s], [-0.11, 2.7 * s], [-0.11, 0]];
+    const left = (m = 1, dx = 0) => { // stem + curved hook to the left (m=-1 mirrors)
+      const P = [[0.11, 0], [0.11, 1.75 * s]];
+      for (let k = 0; k <= 10; k++) { const a = (k / 10) * Math.PI / 2; P.push([-0.55 + 0.66 * Math.cos(a), 1.75 * s + 0.66 * Math.sin(a) * s * 1.2]); }
+      P.push([-0.55, 2.75 * s], [-0.55, 3.15 * s], [-1.3 * 0.75, 2.42 * s * 1.0], [-0.55, 1.65 * s + 0.1], [-0.55, 2.2 * s]);
+      for (let k = 10; k >= 0; k--) { const a = (k / 10) * Math.PI / 2; P.push([-0.55 + 0.44 * Math.cos(a), 1.75 * s + 0.44 * Math.sin(a) * s * 1.2]); }
+      P.push([-0.11, 1.75 * s], [-0.11, 0]);
+      poly(P.map(([x, y]) => [x * m + dx, y]));
+    };
+    if (kind === 'arrow_through') poly(through);
+    else if (kind === 'arrow_left') left(1, 0.35);
+    else if (kind === 'arrow_right') left(-1, -0.35);
+    else if (kind === 'arrow_left_through') { poly(through.map(([x, y]) => [x + 0.35, y])); left(1, 0.35); }
+    else if (kind === 'stop_bar') g.fillRect(0, 0, W, H);
+    else if (kind === 'crosswalk') { const bar = 0.6, pitch = 1.2, n = Math.floor((h + pitch - bar) / pitch), st = (h - (n - 1) * pitch) / 2; for (let i = 0; i < n; i++) g.fillRect(0, Y(st + i * pitch + bar / 2), W, bar * ppm); }
+    else if (kind === 'double_yellow') { g.fillRect(0, 0, 0.1 * ppm, H); g.fillRect(W - 0.1 * ppm, 0, 0.1 * ppm, H); }
+    else if (kind === 'nose_hatch') { // solid outline + 45-degree hatch, 0.3 m bars at 3 m (FDOT Index 711)
+      const lw = 0.15 * ppm; g.lineWidth = lw; g.strokeStyle = yellow; g.strokeRect(lw / 2, lw / 2, W - lw, H - lw);
+      g.save(); g.beginPath(); g.rect(0, 0, W, H); g.clip(); g.lineWidth = 0.3 * ppm;
+      for (let d = -W; d < H + W; d += 3 * ppm) { g.beginPath(); g.moveTo(0, d); g.lineTo(W, d - W); g.stroke(); } g.restore();
+    }
+    // wear: punch holes / thin the paint with noise (aggregate showing through)
+    const img = g.getImageData(0, 0, W, H), d = img.data;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const i = (y * W + x) * 4; if (!d[i + 3]) continue;
+      const n = fbm2(x / W, y / H, 4, 4, 4, 811), gr = hash2(x, y, 812);
+      const hole = smooth(0.62, 0.74, n) * 0.6 + (gr > 0.94 ? 0.55 : 0);
+      d[i + 3] = d[i + 3] * clamp01(1 - hole) * (0.9 + 0.1 * gr);
+      const k = 0.94 + gr * 0.08; d[i] *= k; d[i + 1] *= k; d[i + 2] *= k;
+    }
+    g.putImageData(img, 0, 0);
+    const t = new THREE.CanvasTexture(cv);
+    t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = ANISO; t.minFilter = THREE.LinearMipmapLinearFilter; t.generateMipmaps = true; t.needsUpdate = true;
+    return { map: t, w, h };
+  });
+}

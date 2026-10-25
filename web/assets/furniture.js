@@ -6,6 +6,7 @@
 // to a plain PBR colour so geometry (used for ray-cast checks) is identical in both environments.
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { foliageMaterial, foliageClusterGeometry } from './textures.js';
 
 // ---------------------------------------------------------------- caches & helpers
 const GEO = new Map(), MAT = new Map(), TEX = new Map();
@@ -806,36 +807,27 @@ export function tree(opts = {}) {
     segs.forEach((g, i) => { const d = g.b.clone().sub(g.a); const L = d.length(); q.setFromUnitVectors(UP, d.normalize()); s.set(g.r, L * 1.04, g.r); m4.compose(g.a, q, s); im.setMatrixAt(i, m4); });
     im.castShadow = im.receiveShadow = true; im.name = 'wood'; root.add(im);
   }
-  // foliage blobs (instanced, per-clump colour variation)
-  const palette = { oak: [0.24, 0.34, 0.09, 0.16], pine: [0.22, 0.3, 0.1, 0.16], shrub: [0.25, 0.38, 0.11, 0.18] }[kind];
+  // foliage: alpha-clipped leaf-card clusters (alphaTest 0.5, alpha-tested shadows) + a small opaque dark core per
+  // clump so dense crowns don't show sky through the middle. Instanced; 3 cluster variants per species.
   if (clumps.length) {
+    const fk = kind === 'pine' ? 'pine' : kind === 'shrub' ? 'shrub' : 'oak';
+    const spec = { oak: { cards: 16, flat: 0.72, size: 0.8 }, pine: { cards: 12, flat: 0.5, size: 0.95 }, shrub: { cards: 12, flat: 0.8, size: 0.75 } }[fk];
     const groups = [0, 1, 2].map(v => clumps.filter((_, i) => i % 3 === v));
+    const core = new THREE.InstancedMesh(memo(GEO, 'treeCore', () => new THREE.IcosahedronGeometry(0.6, 1)), std('treeCore', { color: 0x26301b, roughness: 1 }), clumps.length);
+    const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(); let ci = 0;
     groups.forEach((cl, v) => {
       if (!cl.length) return;
-      const im = new THREE.InstancedMesh(blobGeo(v), std('foliage', { color: 0xffffff, roughness: 0.88 }), cl.length);
-      const m4 = new THREE.Matrix4(), q = new THREE.Quaternion();
+      const im = new THREE.InstancedMesh(memo(GEO, `fcluster:${fk}:${v}`, () => foliageClusterGeometry({ ...spec, seed: 11 + v * 5 + fk.length })), foliageMaterial(fk), cl.length);
       cl.forEach((c, i) => {
         q.setFromAxisAngle(UP, R() * 6.28);
-        m4.compose(c.p, q, V(c.s, c.s * (c.flat ?? 0.72), c.s)); im.setMatrixAt(i, m4);
-        col.setHSL(palette[0] + (R() - 0.5) * 0.04, palette[1] + (R() - 0.5) * 0.1, palette[2] + R() * (palette[3] - palette[2]) * 0.6); im.setColorAt(i, col);
+        const sc = V(c.s * 1.15, c.s * 1.15 * (c.flat ?? 0.72) / spec.flat, c.s * 1.15);
+        m4.compose(c.p, q, sc); im.setMatrixAt(i, m4);
+        col.setRGB(0.84 + R() * 0.2, 0.88 + R() * 0.16, 0.8 + R() * 0.16); im.setColorAt(i, col);
+        m4.compose(c.p, q, sc.multiplyScalar(0.85)); core.setMatrixAt(ci++, m4);
       });
-      im.castShadow = im.receiveShadow = true; im.name = 'foliage'; root.add(im);
+      im.castShadow = im.receiveShadow = true; im.name = 'leaves'; root.add(im);
     });
-    // leaf cards break up the silhouette (browser only)
-    const tex = leafTex(kind === 'pine' ? 'pine' : 'broad');
-    if (tex) {
-      const per = kind === 'shrub' ? 22 : 18, n = clumps.length * per;
-      const im = new THREE.InstancedMesh(card(), std('leafCard:' + kind, { map: tex, alphaTest: 0.45, side: THREE.DoubleSide, roughness: 0.85 }), n);
-      const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(); let i = 0;
-      for (const c of clumps) for (let k = 0; k < per; k++) {
-        const u = R() * 2 - 1, a = R() * 6.28, rr = Math.sqrt(1 - u * u), fl = c.flat ?? 0.72;
-        const p = V(rr * Math.cos(a) * c.s * 1.02, u * c.s * fl * 1.02, rr * Math.sin(a) * c.s * 1.02).add(c.p);
-        e.set(R() * 6.28, R() * 6.28, R() * 6.28); q.setFromEuler(e); const sz = c.s * (kind === 'pine' ? 0.9 : 0.75) * (0.7 + R() * 0.6);
-        m4.compose(p, q, V(sz, sz, sz)); im.setMatrixAt(i, m4);
-        col.setHSL(palette[0] + (R() - 0.5) * 0.05, palette[1] + 0.05, 0.26 + R() * 0.18); im.setColorAt(i++, col);
-      }
-      im.castShadow = true; im.receiveShadow = true; im.name = 'leaves'; root.add(im);
-    }
+    core.castShadow = core.receiveShadow = true; core.name = 'foliage_core'; root.add(core);
   }
   if (kind === 'palm') {
     const top = V(...root.userData.crown);

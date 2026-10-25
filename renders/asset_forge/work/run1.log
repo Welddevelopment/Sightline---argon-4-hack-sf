@@ -1,1 +1,7 @@
 19:58:23 reference notes: 15582 chars
+20:00:15 [argon] signal_mast r0: 111.4s finish=STOP chars=31739 out=12299 think=undefined
+20:00:15 [forge] signal_mast r0: code 30100 chars valid=true 
+20:00:54 [argon] semitrailer_box r0: 150.4s finish=STOP chars=42851 out=16583 think=undefined
+20:00:54 [forge] semitrailer_box r0: code 41088 chars valid=false forbidden import/require/fetch/eval; import failed: Invalid or unexpected token
+20:01:16 [argon] truck_tractor r0: 172.8s finish=STOP chars=47417 out=19400 think=undefined
+20:01:16 [forge] truck_tractor r0: code 45819 chars valid=true 
