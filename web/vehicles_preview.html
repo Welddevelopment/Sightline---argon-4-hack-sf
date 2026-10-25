@@ -115,6 +115,12 @@ const dir = new THREE.Vector3(...(views[view] || views.threequarter)).normalize(
 camera.position.copy(target).addScaledVector(dir, dist * (focus ? 1 : 0.9));
 if (q.get('cam')) camera.position.set(...q.get('cam').split(',').map(Number));
 if (q.get('target')) target.set(...q.get('target').split(',').map(Number));
+if (view === 'driver' && focusIdx >= 0) {     // driver eye point, looking ahead past the wheel + A-pillar
+  const v = placed[focusIdx]; v.updateMatrixWorld(true);
+  const e = new THREE.Vector3(...(v.userData.driverEye || [-0.35, 1.2, 0])).applyMatrix4(v.matrixWorld);
+  camera.position.copy(e); camera.near = 0.02; camera.fov = parseFloat(q.get('fov') || 60); camera.updateProjectionMatrix();
+  target.copy(e).add(new THREE.Vector3(0.25, -0.12, -3).applyQuaternion(v.quaternion));
+}
 camera.lookAt(target);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.copy(target); controls.update();

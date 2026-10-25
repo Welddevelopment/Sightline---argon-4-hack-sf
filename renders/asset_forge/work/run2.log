@@ -14,3 +14,4 @@
 20:17:00 [forge] grass_material r0: resumed valid=true
 20:17:01 [forge] road_surface_material r0: resumed valid=true
 20:17:01 [render] batch r0.0: 7 stills (waiting for render lock, attempt 1)
+20:27:04 [render] batch r0.0: 7 stills (waiting for render lock, attempt 2)

@@ -1,0 +1,53 @@
+/* web/demo-flow.css — step bar + demo card (web/demo-flow.js). Functional baseline only; a design pass restyles it.
+   Semantic hooks: .stepbar .stepbar-row .steps-list .step .step-active .step-done .step-locked .step-n .step-label
+   .replay-badge .replay-note .replay-head .replay-lines .replay-line .demo-card .step-focus */
+
+/* viewer (body is a 54px/1fr grid): give the bar its own row */
+body.has-stepbar { grid-template-rows: 54px auto minmax(0, 1fr); }
+html.clean .stepbar { display: none; }
+html.clean body.has-stepbar { grid-template-rows: none; }
+
+.stepbar { background: var(--panel, #10151c); border-bottom: 1px solid var(--line, #222b38); padding: 6px 16px; min-width: 0; font: 12px var(--sans, system-ui, sans-serif); }
+.stepbar-row { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.stepbar .steps-list { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; flex: 1 1 auto; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.stepbar .steps-list::-webkit-scrollbar { display: none; }
+
+/* .step is also used by cases.css (run progress chips) — reset it inside the bar */
+.stepbar .step { display: block; padding: 0; border: 0; border-radius: 0; font: inherit; color: var(--muted, #8794a7); flex: none; }
+.stepbar .step::before { content: none; }
+.stepbar .step > a, .stepbar .step > span { display: flex; align-items: center; gap: 6px; padding: 5px 10px 5px 6px; border-radius: 4px; border: 1px solid transparent; color: inherit; text-decoration: none; white-space: nowrap; }
+.stepbar .step > a:hover { border-color: var(--line, #222b38); color: var(--text, #dfe5ee); }
+.stepbar .step-n { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; border: 1px solid currentColor; font: 600 10px var(--sans, system-ui, sans-serif); }
+.stepbar .step-done { color: var(--text, #dfe5ee); }
+.stepbar .step-done .step-n { background: var(--green, #3ddc84); border-color: var(--green, #3ddc84); color: #0b0e13; }
+.stepbar .step-active { color: var(--accent, #e2b052); }
+.stepbar .step-active > span { border-color: rgba(226, 176, 82, .5); background: rgba(226, 176, 82, .08); }
+.stepbar .step-active .step-n { background: var(--accent, #e2b052); border-color: var(--accent, #e2b052); color: #17130a; }
+.stepbar .step-locked { opacity: .45; }
+
+.stepbar .replay-badge { flex: none; font: 600 10px var(--sans, system-ui, sans-serif); letter-spacing: .06em; text-transform: uppercase; color: #9cc4ff; border: 1px solid rgba(156, 196, 255, .45); background: rgba(156, 196, 255, .08); border-radius: 3px; padding: 4px 7px; white-space: nowrap; }
+
+.replay-note { margin-top: 6px; color: var(--muted, #8794a7); font-size: 12px; line-height: 1.45; }
+.replay-note[hidden] { display: none; }
+.replay-note .replay-head { color: #9cc4ff; font-weight: 600; margin-bottom: 2px; }
+.replay-note .replay-lines { margin: 0; padding: 0 0 0 18px; font: 11px/1.5 var(--mono, monospace); color: var(--text, #dfe5ee); max-height: 132px; overflow-y: auto; }
+.replay-note .replay-lines li:last-child { color: #9cc4ff; }
+.replay-note .replay-line { font-size: 12px; }
+.replay-note .mono { font-family: var(--mono, monospace); }
+
+/* control the current step points at (viewer step 6/7, case page step 4) */
+.step-focus { outline: 2px solid var(--accent, #e2b052); outline-offset: 3px; border-radius: 4px; transition: outline-color .3s; }
+
+/* cases page: demo card */
+.demo-card { border: 1px solid rgba(156, 196, 255, .45); background: rgba(156, 196, 255, .06); border-radius: 6px; padding: 12px; margin: 0 0 12px; }
+.demo-card-kicker { font: 600 10px var(--sans, system-ui, sans-serif); letter-spacing: .08em; text-transform: uppercase; color: #9cc4ff; }
+.demo-card-title { font-weight: 600; color: var(--text, #dfe5ee); margin: 3px 0 4px; }
+.demo-card-sub { color: var(--muted, #8794a7); font-size: 12px; line-height: 1.4; }
+.demo-card-sub .mono { font-family: var(--mono, monospace); }
+.demo-card-actions { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.demo-card-err { color: var(--red, #ff5a5a); }
+
+@media (max-width: 900px) {
+  .stepbar .step-label { display: none; }
+  .stepbar .step-active .step-label { display: inline; }
+}

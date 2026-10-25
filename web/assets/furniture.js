@@ -828,7 +828,7 @@ export function tree(opts = {}) {
   // clump so dense crowns don't show sky through the middle. Instanced; 3 cluster variants per species.
   if (clumps.length) {
     const fk = kind === 'pine' ? 'pine' : kind === 'shrub' ? 'shrub' : 'oak';
-    const spec = { oak: { cards: 16, flat: 0.72, size: 0.8 }, pine: { cards: 12, flat: 0.5, size: 0.95 }, shrub: { cards: 12, flat: 0.8, size: 0.75 } }[fk];
+    const spec = { oak: { cards: 30, flat: 0.72, size: 0.75, hollow: 0.2 }, pine: { cards: 22, flat: 0.5, size: 0.85, hollow: 0.15 }, shrub: { cards: 22, flat: 0.8, size: 0.7, hollow: 0.1 } }[fk];
     const groups = [0, 1, 2].map(v => clumps.filter((_, i) => i % 3 === v));
     const core = new THREE.InstancedMesh(memo(GEO, 'treeCore', () => new THREE.IcosahedronGeometry(0.6, 1)), std('treeCore', { color: 0x26301b, roughness: 1 }), clumps.length);
     const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(); let ci = 0;
@@ -840,7 +840,7 @@ export function tree(opts = {}) {
         const sc = V(c.s * 1.15, c.s * 1.15 * (c.flat ?? 0.72) / spec.flat, c.s * 1.15);
         m4.compose(c.p, q, sc); im.setMatrixAt(i, m4);
         col.setRGB(0.84 + R() * 0.2, 0.88 + R() * 0.16, 0.8 + R() * 0.16); im.setColorAt(i, col);
-        m4.compose(c.p, q, sc.multiplyScalar(0.85)); core.setMatrixAt(ci++, m4);
+        m4.compose(c.p, q, sc.multiplyScalar(0.55)); core.setMatrixAt(ci++, m4);
       });
       im.castShadow = im.receiveShadow = true; im.name = 'leaves'; root.add(im);
     });

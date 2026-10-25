@@ -470,9 +470,9 @@ async function cmdCritique() {
   const recs = await Promise.all(regs.map((R) => forgeOne(R, round, async () => {
     const code = fs.readFileSync(path.join(OUT_DIR, `${R.id}.js`), 'utf8');
     const v = prevVal.regions?.[R.id] || {};
-    const views = REGION_VIEWS[R.id];
+    const views = (REGION_VIEWS[R.id] || []).filter((x) => fs.existsSync(path.join(prevDir, `${x}.png`)));
     const parts = [textPart(await buildPrompt(R, `# REVIEW ROUND ${round}: your module below was rendered (headless Chromium, SwiftShader WebGL, 16:36 sun, environment sky).
-The first two attached images are the aerial (see above); the renders follow: ${views.map((x, i) => `image ${i + 3} = view '${x}' (${VIEW_DESC[x]})`).join('; ')}. Other regions (written by other copies of you) are also visible.
+The first two attached images are the aerial (see above); ${views.length ? `the renders follow: ${views.map((x, i) => `image ${i + 3} = view '${x}' (${VIEW_DESC[x]})`).join('; ')}. Other regions (written by other copies of you) are also visible.` : 'no renders are available for this round: review your module against the AERIAL (positions of forest edges, buildings, roads, driveways, fields) and against your brief, and correct it.'}
 Node validation of your module: ${JSON.stringify({ tris: v.tris, budget: R.tris, bbox: v.bbox, warnings: v.warnings, buildMs: v.buildMs })}.
 
 Task: act as a senior forensic-animation art director. Compare what YOUR region contributes in these stills with a
