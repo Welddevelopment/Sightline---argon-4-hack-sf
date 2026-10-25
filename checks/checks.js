@@ -76,6 +76,7 @@ export function castRay(world, eyeArr, targetId, t, opts = {}) {
   for (const [id, o] of Object.entries(world.objects)) {
     if (o.occludes !== true || !o.node) continue;
     if (id === targetId) continue;
+    if (opts.exclude && opts.exclude.includes(id)) continue;   // the observer's own vehicle (see observerVehicles)
     if (targetNode && (isDescendant(o.node, targetNode) || isDescendant(targetNode, o.node))) continue;
     owners.push([id, o.node]);
     roots.push(o.node);
@@ -94,9 +95,24 @@ export function castRay(world, eyeArr, targetId, t, opts = {}) {
   return out;
 }
 
+// Objects the witness is INSIDE (their own vehicle) never block their view: ids named by the witness
+// (vehicle / vehicleId / inVehicle) plus any vehicle whose world bounding box (+0.3 m) contains the nominal eye at t.
+// Call with the world already prepared at t.
+export function observerVehicles(world, w) {
+  const ids = new Set([w.vehicle, w.vehicleId, w.inVehicle].filter((x) => typeof x === 'string' && world.objects?.[x]));
+  const eye = new THREE.Vector3(...witnessEye(w));
+  for (const [id, o] of Object.entries(world.objects || {})) {
+    if (!o?.node || o.occludes !== true || !(id.startsWith('veh_') || o.kind === 'vehicle')) continue;
+    const box = new THREE.Box3().setFromObject(o.node);
+    if (!box.isEmpty() && box.expandByScalar(0.3).containsPoint(eye)) ids.add(id);
+  }
+  return [...ids];
+}
+
 export function sightline(world, witnessId, targetId, t) {
   const w = findWitness(world, witnessId);
-  return castRay(world, witnessEye(w), targetId, t);
+  prep(world, t);
+  return castRay(world, witnessEye(w), targetId, t, { prepared: true, exclude: observerVehicles(world, w) });
 }
 
 export function skidSpeed(lengthM, mu = 0.7) {

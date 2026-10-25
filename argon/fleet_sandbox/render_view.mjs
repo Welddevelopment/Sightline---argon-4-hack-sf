@@ -1,6 +1,6 @@
 // render_view.mjs — self-contained software renderer + independent verdicts for ONE viewpoint.
 // Runs inside a Gemini managed-agent sandbox (no GPU, no browser): pure Node + `three` (math/scene graph only).
-//   node render_view.mjs --world world.js --view overhead|<witnessId> --out out/<view> [--fps 5] [--w 480] [--h 270] [--t 6.5]
+//   node render_view.mjs [--repo /workspace/repo] --world world.js --view overhead|<witnessId> --out out/<view> [--fps 5] [--w 480] [--h 270] [--t 6.5]
 // Writes: out/<view>/frames/f0000.png..., out/<view>/still.png, out/<view>/verdict.json
 // Camera conventions match web/viewer.js (witness: eye at eyeHeight looking at lookAt, 60° (75° if close); overhead: ortho, north up).
 import fs from 'node:fs';
@@ -23,10 +23,11 @@ if (typeof globalThis.document === 'undefined') {
   globalThis.document = { createElement: () => ({ width: 64, height: 64, getContext: () => ctx, style: {} }) };
 }
 
-const THREE = await import('three');
-const { default: createWorld } = await import(pathToFileURL(WORLD).href);
-const world = createWorld(THREE);
-const checks = await import(pathToFileURL(path.resolve(path.dirname(new URL(import.meta.url).pathname), 'checks.js')).href);
+// --repo <dir>: use that checkout's checks/ + asset loader (WORLD CONTRACT v2 worlds need createWorld(THREE, assets)).
+const REPO = path.resolve(arg('repo', path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..')));
+const { THREE, instantiateWorld } = await import(pathToFileURL(path.join(REPO, 'checks', 'load_world.js')).href);
+const world = await instantiateWorld(await import(pathToFileURL(WORLD).href));
+const checks = await import(pathToFileURL(path.join(REPO, 'checks', 'checks.js')).href);
 fs.mkdirSync(path.join(OUT, 'frames'), { recursive: true });
 
 // ---------- lighting (same table as the viewer) ----------

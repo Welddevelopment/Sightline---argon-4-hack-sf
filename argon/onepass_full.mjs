@@ -236,35 +236,58 @@ async function runStage(stage) {
   if (stage === 'render') {
     const wf = (args.find((a) => a.startsWith('--world=')) || '').split('=')[1];
     const world = await loadWorldFile(wf);
-    const views = ['overhead', ...(world.witnesses || []).map((w) => w.id)];
+    const vArg = (args.find((a) => a.startsWith('--views=')) || '').split('=')[1];
+    const views = vArg ? vArg.split(',') : ['overhead', ...(world.witnesses || []).map((w) => w.id)];
+    const size = (args.find((a) => a.startsWith('--size=')) || '').split('=')[1];
+    if (size) { const [w, h] = size.split('x'); process.env.RENDER_STILL_W = w; process.env.RENDER_STILL_H = h; }
     const { renderViews } = await import('../render/record.js');
-    const outDir = path.join(CASE, 'renders', path.basename(wf, '.js'));
+    const sub = (args.find((a) => a.startsWith('--sub=')) || '').split('=')[1];
+    const outDir = path.join(CASE, 'renders', path.basename(wf, '.js'), ...(sub ? [sub] : []));
     const r = await renderViews({ world: '/' + path.relative(ROOT, path.resolve(ROOT, wf)), views, outDir, stillOnly: true, page: `/?case=${caseId}` });
     log('rendered', (r.stills || r.pngs || []).map((f) => path.relative(ROOT, f)).join(' '));
     return;
   }
 
   if (stage === 'critique') {
+    // ONE Argon critique round (same prompt + evidence as argon/critique.js) plus: the deposition frame with the on-screen
+    // pen mark (extracted from the evidence video) and an explicit instruction to verify every witness position/time.
     process.env.SIGHTLINE_MODE = 'live';
-    const { critique } = await import('./critique.js');
+    const C = await import('./client.js');
+    const K = await import('./case.js');
+    const { lightingAudit, formatLightingAudit } = await import('./solar.js');
+    const { normalizePatch } = await import('./critique.js');
     const { writeWorldVersion } = await import('./world_io.js');
     const { callProvenance } = await import('./provenance.js');
-    const vN = latestVersion(WD);
+    const vN = Number((args.find((a) => a.startsWith('--round=')) || '').split('=')[1]) || latestVersion(WD);
     const worldFile = path.join(WD, `world_v${vN}.js`);
+    const worldSource = rd(worldFile);
     const world = await loadWorldFile(worldFile);
     const checks = runAll(world);
-    const rdir = path.join(CASE, 'renders', `world_v${vN}`);
-    const files = fs.existsSync(rdir) ? fs.readdirSync(rdir).filter((f) => f.endsWith('.png')).map((f) => path.join(rdir, f)) : [];
+    let lighting = null; try { lighting = await lightingAudit({ caseId, world, evidence: K.evidenceSummary(caseId) }); } catch (e) { lighting = { notes: ['lighting audit failed: ' + e.message] }; }
+    const prompt = C.fill(C.readPrompt('critique'), { ROUND: String(vN), NEXT_ROUND: String(vN + 1), CONTRACT: C.loadWorldContract(), CASE_ID: caseId,
+      INVENTORY: JSON.stringify(K.evidenceSummary(caseId)), CASE_TEXT: K.loadCaseText(caseId), CHECKS: JSON.stringify(checks, null, 2), WORLD: worldSource, LIGHTING: formatLightingAudit(lighting) });
+    const VERIFY = `POSITION AUDIT (do this before anything else): this world was written in ONE pass from the whole case. For EVERY witness, re-derive the position and observationTime from the strongest evidence and compare with the world: an on-screen mark a deponent makes on an exhibit in a video controls over words; measure it on the exhibit with the exhibit's scale bar and its marked reference point (e.g. the AOI / point of impact), convert to world metres in the world's frame, and state the measured value. observationTime must match the claim's wording (e.g. "right up until it hit" = the last second before impact). A still frame from the evidence video at Depo Witness B 1:54:34 showing her pen mark on Exhibit 4 is attached (extracted from deposition_witness_B.mp4; it IS evidence). If any witness is more than 1 m from its evidenced position, or a time/claim mapping is wrong, return the corrected COMPLETE module as \`patch\` (keep all scenery and visual detail; change only what the evidence requires; cite it). The independent checks above already exclude a witness's own vehicle from the ray-cast. Do not move anything to reach a desired result: build what the evidence shows.`;
+    const parts = [C.textPart(prompt), C.textPart(VERIFY), ...(await K.evidenceMediaParts(caseId))];
+    const frame = path.join(OUT, 'depoB_6874.png');
+    parts.push(C.textPart('EVIDENCE FRAME — Depo Witness B 1:54:34 (frame extracted from cases/demo-full/evidence/deposition_witness_B.mp4): Exhibit 4 with the witness\'s pen mark, as shown on screen.'));
+    parts.push(C.imagePart(frame));
+    const rdir = path.join(CASE, 'renders', `world_v${vN}`, 'critique_in');
+    const files = fs.existsSync(rdir) ? fs.readdirSync(rdir).filter((f) => f.endsWith('.png')).sort().map((f) => path.join(rdir, f)) : [];
+    for (const f of files) { parts.push(C.textPart(`RENDER STILL of the current world — view "${path.basename(f, '.png')}" (${path.relative(ROOT, f)}); _t<sec> = event-clock time:`)); parts.push(C.imagePart(f)); }
+    parts.push(C.textPart('Answer with the JSON object only.'));
     const t0 = Date.now();
-    const c = await critique({ caseId, round: vN, worldFile, checks, world, renders: files.length ? { files } : null });
+    const res = await C.callArgon({ name: `critique_round${vN}`, model: MODEL, parts, json: true, maxOutputTokens: 65536, cacheDir: path.join(CASE, 'cache') });
     const critSec = Math.round((Date.now() - t0) / 1000);
-    log('critique', c.verdict, '|', c.summary.slice(0, 300), '| patch', !!c.patch, '|', critSec + 's');
+    const data = res.data || {};
+    const c = { verdict: data.verdict || 'consistent', summary: data.summary || '', findings: data.findings || [], patch: normalizePatch(data.patch),
+      call: { name: `critique_round${vN}`, model: res.model || MODEL, mode: res.mode, cacheDir: path.join(CASE, 'cache'), maxOutputTokens: 65536, promptFile: 'critique' } };
+    log('critique', c.verdict, '|', String(c.summary).slice(0, 400), '| patch', !!c.patch, '|', critSec + 's');
     let finalFile = worldFile, finalChecks = checks, patch = null;
     if (c.patch) {
       const w = await writeWorldVersion(vN + 1, c.patch, WD, callProvenance({ caseId, call: c.call, parentWorld: '/' + path.relative(ROOT, worldFile) }));
       const v = await validateWorldFile(w.file, { caseId });
       patch = { world: w.url, problems: w.problems, valid: v.ok, errors: v.errors.slice(0, 8) };
-      log('patched →', w.url, 'valid', v.ok, w.problems.slice(0, 3).join('; '));
+      log('patched →', w.url, 'valid', v.ok, v.errors.slice(0, 4).join(' | '));
       if (v.ok && !w.problems.some((p) => p.startsWith('module failed'))) { finalFile = w.file; finalChecks = runAll(await loadWorldFile(w.file)); }
     }
     const rel = (f) => '/' + path.relative(ROOT, f).split(path.sep).join('/');
@@ -272,7 +295,8 @@ async function runStage(stage) {
       loopLog: [{ round: 1, world: rel(worldFile), generator: 'argon/onepass_full.mjs (one-pass long decode)', checks, critique: { verdict: c.verdict, summary: c.summary, findings: c.findings, patched: !!c.patch }, findings: c.findings,
         renders: { videos: [], stills: files.map(rel) }, patch, finishedAt: new Date().toISOString() }] };
     fs.writeFileSync(path.join(CASE, 'cache', 'state.json'), JSON.stringify(st, null, 2));
-    meta.critique = { round: vN, verdict: c.verdict, summary: c.summary, findings: c.findings.length, patched: !!c.patch, patch, seconds: critSec, finalWorld: rel(finalFile) };
+    const cm = (() => { try { return JSON.parse(rd(path.join(CASE, 'cache', `critique_round${vN}.meta.json`))); } catch { return null; } })();
+    meta.critique = { round: vN, verdict: c.verdict, summary: c.summary, findings: c.findings.length, patched: !!c.patch, patch, seconds: critSec, usage: cm?.usage || null, finalWorld: rel(finalFile) };
     meta.finalChecks = sightSummary(finalChecks);
     fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2));
     log('state.json →', rel(finalFile), '|', sightSummary(finalChecks).join(' ; '));

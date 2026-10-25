@@ -1,0 +1,202 @@
+{
+  "world": "/cases/demo-f82052/worlds/world_v1.js",
+  "version": 1,
+  "createdAt": "2026-10-25T19:55:41.245Z",
+  "mode": "live",
+  "model": "gemini-4-argon",
+  "promptFile": "argon/prompts/generate_world_repair.md",
+  "promptVersion": "ab1aff085977",
+  "inputs": [
+    {
+      "file": "text/docket_crash_summary.txt",
+      "sha256": "5d549fc00b7d7d4d5d8345bd94331fe6d8e15349d927877c206641a4f2f8a11d",
+      "bytes": 2433
+    },
+    {
+      "file": "text/docket_driver_assistance_factual.txt",
+      "sha256": "48532d2d35300245bce785c8ce90d1ac7ec094d23950c5543fca91b2707b3367",
+      "bytes": 27944
+    },
+    {
+      "file": "text/docket_har1702.txt",
+      "sha256": "cad4efb23f6bbbc9f419168770358c67735ffb1efc955c60e8f7a33cf73ef0c1",
+      "bytes": 163253
+    },
+    {
+      "file": "text/docket_highway_att1_fl_crash_report.txt",
+      "sha256": "054260bd9fd6cfc88835ec5ba00e3b5475de87cd41250cfa8e44eeb3af7c908c",
+      "bytes": 12013
+    },
+    {
+      "file": "text/docket_highway_att2_traffic_inventory.txt",
+      "sha256": "57893b2b89941b1a17a9b91b4c2ff1250a51ba7cf80d06d35d0ea855980268f4",
+      "bytes": 1533
+    },
+    {
+      "file": "text/docket_highway_att5_spot_speed.txt",
+      "sha256": "8618cef8ff1c43606450daa64ebeb60ca487a2eba609d185b3b69c827258ffae",
+      "bytes": 2723
+    },
+    {
+      "file": "text/docket_highway_factual.txt",
+      "sha256": "576b22cb985d1ca61d380e141c064023049f28d5b4efcfca77ae0e3c559e51b6",
+      "bytes": 21684
+    },
+    {
+      "file": "text/docket_hp_att11_fhp_motor_carrier_inspection.txt",
+      "sha256": "b5d7c0a86acf74deff336cf0631edf1be93300c4cdddb96a7e4371952c80a82b",
+      "bytes": 5224
+    },
+    {
+      "file": "text/docket_hp_att4_witness_interview.txt",
+      "sha256": "7e0cc4e3059dd172b6fdabc331c9a0398927dcca8d5dc62fe412c82be502a86b",
+      "bytes": 37894
+    },
+    {
+      "file": "text/docket_hp_supplemental_errata.txt",
+      "sha256": "ff948b24931f1b39204bf9404b0c4b06d8df07d2f34f4a543d69a063f8233dcb",
+      "bytes": 1467
+    },
+    {
+      "file": "text/docket_motor_carrier_factual.txt",
+      "sha256": "a1b5c1c071eb3c16ee960799ed628fd2d83bb50363924872fb8d3084afc17f70",
+      "bytes": 18623
+    },
+    {
+      "file": "text/docket_preliminary_report.txt",
+      "sha256": "40374499edd94e7699e737283ef16b736d9f5aae44d655780c0ce8cad36d4962",
+      "bytes": 4171
+    },
+    {
+      "file": "text/docket_tech_recon_factual.txt",
+      "sha256": "3a942b310a84777675f8d6c3b21da5aec76e500a159fe539c2a80ce889afb024",
+      "bytes": 38007
+    },
+    {
+      "file": "text/docket_vehicle_att3_fhp_inspection.txt",
+      "sha256": "6bba69740d264b0dfc31208a914717680ad3091b6c6d62b0bd23cb5055dbfa55",
+      "bytes": 10027
+    },
+    {
+      "file": "text/docket_vehicle_dynamics_study.txt",
+      "sha256": "5e46779193c36b40b6326c58890cf2b00e48d032345d84e550b70ebf9df544a0",
+      "bytes": 25677
+    },
+    {
+      "file": "text/docket_vehicle_factual.txt",
+      "sha256": "02a00c7379722725fa27f50dc837a7057fd78fdf69458745a3dbe183c1fb2d82",
+      "bytes": 22931
+    },
+    {
+      "file": "text/docket_vehicle_photographs.txt",
+      "sha256": "865b93ad97bdd7bc1f28a953bdfebf2b41426549efa55f5ceecb6d935d4eab0d",
+      "bytes": 2871
+    },
+    {
+      "file": "evidence/facts.md",
+      "sha256": "16a2ac328322655c10775315a2666ebef5eb8a76ddab222b6e7e8c98fcf7cfad",
+      "bytes": 6883
+    },
+    {
+      "file": "evidence/police_report.md",
+      "sha256": "e0abbf6814d1206cc2246b864465e56c89bf71e001e5ef95b462d7bf866a2a8b",
+      "bytes": 6546
+    },
+    {
+      "file": "evidence/witness_A.md",
+      "sha256": "57b80e791b7642498bbfb3756d46ecf878beeb5cee317c2e04313c0fc04e5c8c",
+      "bytes": 1729
+    },
+    {
+      "file": "evidence/witness_C.md",
+      "sha256": "14873e9544ba08b9b7e61a3b3fb368ca313b76ec2ff98bc434cd73ee8cd8656e",
+      "bytes": 1507
+    },
+    {
+      "file": "evidence/deposition_witness_B.mp4",
+      "sha256": "5c9dc19f396dd9760532a422edd7cfa98b2406fc9cf690f2d0625b23b3241b29",
+      "bytes": 19910361
+    },
+    {
+      "file": "evidence/deposition_witness_D.mp4",
+      "sha256": "9f26ce5d5e88ad0a08c1c38e40e5e0b5ef38f023959e320625e15ec25d196f6b",
+      "bytes": 7313799
+    },
+    {
+      "file": "evidence/docket/photos/photo01_prelim_p1_us27a_approach_view.jpg",
+      "sha256": "1ac318ae5eb17a8839e6604c68dd46866c4c4143078e6c0de61ba2bca7c75870",
+      "bytes": 117808
+    },
+    {
+      "file": "evidence/docket/photos/photo02_prelim_p2_semitrailer_side_view.jpg",
+      "sha256": "bf9c4be6717fd2e31ef2a4fad06368665d4b7b684122cca21a471d30beeb1ab5",
+      "bytes": 125252
+    },
+    {
+      "file": "evidence/docket/photos/photo03_highway_p4_crash_location_map.jpg",
+      "sha256": "cb34275ff66b55f4b4ce535d3e71a3e1fccb31871b8510bb5c72992e48c7c4c4",
+      "bytes": 286784
+    },
+    {
+      "file": "evidence/docket/photos/photo04_highway_p7_intersection_aerial.jpg",
+      "sha256": "78d3b54a2744c5c4770cd27aa76ce7ec62e2851168cbaab4f4773af9e0b4f2c7",
+      "bytes": 87435
+    },
+    {
+      "file": "evidence/docket/photos/photo05_highway_p11_approach_view_a.jpg",
+      "sha256": "c62a2881c4bcf1c92427cf93012294d25b2f22e5d368017203d82bf15c8a4dac",
+      "bytes": 229533
+    },
+    {
+      "file": "evidence/docket/photos/photo06_highway_p11_approach_view_b.jpg",
+      "sha256": "210c36b3e102e2f8602e8fcb01d7d193ad0e1174937c5fbb118f173d6780d764",
+      "bytes": 214000
+    },
+    {
+      "file": "evidence/docket/photos/photo07_highway_p12_left_turn_lane_view.jpg",
+      "sha256": "c739ac5e2082a53fa50c1937660f58d03947a94bac168c5e6e0968185c4cbb32",
+      "bytes": 283339
+    },
+    {
+      "file": "evidence/docket/photos/photo08_techrecon_p5_scene_approach_view.jpg",
+      "sha256": "64fc73dc5472d287e539dd057aa729680fb737310d0995a5e73ae9a8ada243f7",
+      "bytes": 193709
+    },
+    {
+      "file": "evidence/docket/photos/photo09_techrecon_p7_scene_diagram_intersection.jpg",
+      "sha256": "2952cfaf5e0f1c3358d7f86a22883375a4ddf21b783e84ac95745bc9af388a21",
+      "bytes": 21335
+    },
+    {
+      "file": "evidence/docket/photos/photo10_techrecon_p11_semitrailer_dimension_diagram.jpg",
+      "sha256": "6f9bd690ec90f81890d9bb7a001251aa13921b72a20ce6cdec69cb7360edc430",
+      "bytes": 126753
+    },
+    {
+      "file": "evidence/docket/photos/photo11_techrecon_p11_semitrailer_right_side_contact.jpg",
+      "sha256": "20398e1196f44ada33ccd1b8eae31258910d2b423767380564d75136e9908c6f",
+      "bytes": 87329
+    },
+    {
+      "file": "evidence/docket/photos/photo12_dynamics_p7_overhead_trajectory.jpg",
+      "sha256": "0530a9a9444f47d3e98840bb62c6a68a19dd7b9f38fa547a9ea3fad371fd6271",
+      "bytes": 58426
+    },
+    {
+      "file": "evidence/exhibit4_intersection_map.png",
+      "sha256": "e44f99efb5dd48300e638c39b92ad9a70c2642c31da7f66dd30b9248bf251aaa",
+      "bytes": 54576
+    }
+  ],
+  "outputSha256": "840f468586fcc095ab2daff36d9a4a3bcae9df064db0196e8003097017efc627",
+  "usage": {
+    "promptTokens": 6893,
+    "outputTokens": 6336,
+    "thoughtsTokens": 1267
+  },
+  "seconds": 62.8,
+  "finishReason": "STOP",
+  "thinkingBudget": 8192,
+  "maxOutputTokens": 32768,
+  "parentWorld": null
+}

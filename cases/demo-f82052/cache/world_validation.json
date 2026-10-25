@@ -1,0 +1,506 @@
+[
+  {
+    "caseId": "demo-f82052",
+    "at": "2026-10-25T19:49:54.395Z",
+    "world": "/cases/demo-f82052/worlds/world_v1.js",
+    "contract": "v2",
+    "outcome": "argon_repaired",
+    "totalSeconds": 215.3,
+    "attempts": [
+      {
+        "name": "generate_world",
+        "mode": "live",
+        "model": "gemini-4-argon",
+        "seconds": 157.5,
+        "finishReason": "STOP",
+        "promptTokens": 847869,
+        "outputTokens": 7120,
+        "thoughtsTokens": null,
+        "validation": {
+          "ok": false,
+          "errors": [
+            "sig_pole_utility: traffic signal (kind 'signal') needs state(t)"
+          ],
+          "warnings": [],
+          "stats": {
+            "lines": 185,
+            "chars": 15834,
+            "geometryCalls": 0,
+            "objects": 22,
+            "witnesses": 4,
+            "facts": 17,
+            "duration": 26.1,
+            "moving": 4,
+            "assetCalls": 24,
+            "assetMethods": [
+              "environment",
+              "groundPlane",
+              "road",
+              "intersection",
+              "median",
+              "building",
+              "shelter",
+              "sign",
+              "pole",
+              "impactMarker",
+              "vehicle",
+              "pedestrian"
+            ],
+            "vehicleTypes": [
+              "sedan",
+              "truck_tractor",
+              "semitrailer",
+              "pickup",
+              "pickup"
+            ],
+            "sun": {
+              "azimuthDeg": 265,
+              "elevationDeg": 45.1
+            },
+            "citations": {
+              "inferred": 4,
+              "unlabeled": 0
+            },
+            "plausibility": [
+              {
+                "subject": "veh_A",
+                "pass": true,
+                "maxAccelG": 0,
+                "maxSpeedMph": 74
+              },
+              {
+                "subject": "veh_T_tractor",
+                "pass": true,
+                "maxAccelG": 0.23,
+                "maxSpeedMph": 16.6
+              },
+              {
+                "subject": "veh_T_trailer",
+                "pass": true,
+                "maxAccelG": 0.25,
+                "maxSpeedMph": 16
+              },
+              {
+                "subject": "veh_wit_A",
+                "pass": true,
+                "maxAccelG": 0.59,
+                "maxSpeedMph": 60
+              }
+            ],
+            "assetFallbacks": {}
+          }
+        }
+      },
+      {
+        "name": "generate_world_repair",
+        "mode": "live",
+        "model": "gemini-4-argon",
+        "seconds": 52.6,
+        "finishReason": "STOP",
+        "promptTokens": 7580,
+        "outputTokens": 7122,
+        "thoughtsTokens": null,
+        "validation": {
+          "ok": true,
+          "errors": [],
+          "warnings": [],
+          "stats": {
+            "lines": 185,
+            "chars": 15836,
+            "geometryCalls": 0,
+            "objects": 22,
+            "witnesses": 4,
+            "facts": 17,
+            "duration": 26.1,
+            "moving": 4,
+            "assetCalls": 24,
+            "assetMethods": [
+              "environment",
+              "groundPlane",
+              "road",
+              "intersection",
+              "median",
+              "building",
+              "shelter",
+              "sign",
+              "pole",
+              "impactMarker",
+              "vehicle",
+              "pedestrian"
+            ],
+            "vehicleTypes": [
+              "sedan",
+              "truck_tractor",
+              "semitrailer",
+              "pickup",
+              "pickup"
+            ],
+            "sun": {
+              "azimuthDeg": 265,
+              "elevationDeg": 45.1
+            },
+            "citations": {
+              "inferred": 4,
+              "unlabeled": 0
+            },
+            "plausibility": [
+              {
+                "subject": "veh_A",
+                "pass": true,
+                "maxAccelG": 0,
+                "maxSpeedMph": 74
+              },
+              {
+                "subject": "veh_T_tractor",
+                "pass": true,
+                "maxAccelG": 0.23,
+                "maxSpeedMph": 16.6
+              },
+              {
+                "subject": "veh_T_trailer",
+                "pass": true,
+                "maxAccelG": 0.25,
+                "maxSpeedMph": 16
+              },
+              {
+                "subject": "veh_wit_A",
+                "pass": true,
+                "maxAccelG": 0.59,
+                "maxSpeedMph": 60
+              }
+            ],
+            "assetFallbacks": {}
+          }
+        }
+      }
+    ],
+    "final": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "stats": {
+        "lines": 185,
+        "chars": 15836,
+        "geometryCalls": 0,
+        "objects": 22,
+        "witnesses": 4,
+        "facts": 17,
+        "duration": 26.1,
+        "moving": 4,
+        "assetCalls": 24,
+        "assetMethods": [
+          "environment",
+          "groundPlane",
+          "road",
+          "intersection",
+          "median",
+          "building",
+          "shelter",
+          "sign",
+          "pole",
+          "impactMarker",
+          "vehicle",
+          "pedestrian"
+        ],
+        "vehicleTypes": [
+          "sedan",
+          "truck_tractor",
+          "semitrailer",
+          "pickup",
+          "pickup"
+        ],
+        "sun": {
+          "azimuthDeg": 265,
+          "elevationDeg": 45.1
+        },
+        "citations": {
+          "inferred": 4,
+          "unlabeled": 0
+        },
+        "plausibility": [
+          {
+            "subject": "veh_A",
+            "pass": true,
+            "maxAccelG": 0,
+            "maxSpeedMph": 74
+          },
+          {
+            "subject": "veh_T_tractor",
+            "pass": true,
+            "maxAccelG": 0.23,
+            "maxSpeedMph": 16.6
+          },
+          {
+            "subject": "veh_T_trailer",
+            "pass": true,
+            "maxAccelG": 0.25,
+            "maxSpeedMph": 16
+          },
+          {
+            "subject": "veh_wit_A",
+            "pass": true,
+            "maxAccelG": 0.59,
+            "maxSpeedMph": 60
+          }
+        ],
+        "assetFallbacks": {}
+      }
+    },
+    "problems": []
+  },
+  {
+    "caseId": "demo-f82052",
+    "at": "2026-10-25T19:55:42.179Z",
+    "world": "/cases/demo-f82052/worlds/world_v1.js",
+    "contract": "v2",
+    "outcome": "argon_repaired",
+    "totalSeconds": 214.2,
+    "attempts": [
+      {
+        "name": "generate_world",
+        "mode": "live",
+        "model": "gemini-4-argon",
+        "seconds": 146.8,
+        "finishReason": "STOP",
+        "promptTokens": 849454,
+        "outputTokens": 6366,
+        "thoughtsTokens": null,
+        "validation": {
+          "ok": false,
+          "errors": [
+            "implausible motion of veh_witA: acceleration 1.05 g at t=20.85 s exceeds 1 g outside the impact window (over the limit at 4 samples between t=20.75 and t=20.90 s) — keyframes must give continuous speed (≤0.8 g before impact; ease/constant-acceleration segments; no teleports)"
+          ],
+          "warnings": [],
+          "stats": {
+            "lines": 199,
+            "chars": 14462,
+            "geometryCalls": 0,
+            "objects": 28,
+            "witnesses": 4,
+            "facts": 17,
+            "duration": 25,
+            "moving": 4,
+            "assetCalls": 30,
+            "assetMethods": [
+              "environment",
+              "groundPlane",
+              "road",
+              "median",
+              "intersection",
+              "building",
+              "shelter",
+              "sign",
+              "pole",
+              "tree",
+              "impactMarker",
+              "skidMark",
+              "vehicle",
+              "pedestrian"
+            ],
+            "vehicleTypes": [
+              "sedan",
+              "truck_tractor",
+              "semitrailer",
+              "pickup",
+              "pickup"
+            ],
+            "sun": {
+              "azimuthDeg": 265,
+              "elevationDeg": 45.2
+            },
+            "citations": {
+              "inferred": 9,
+              "unlabeled": 0
+            },
+            "plausibility": [
+              {
+                "subject": "veh_A",
+                "pass": true,
+                "maxAccelG": 0,
+                "maxSpeedMph": 76.8
+              },
+              {
+                "subject": "veh_T_tractor",
+                "pass": true,
+                "maxAccelG": 0.22,
+                "maxSpeedMph": 13.9
+              },
+              {
+                "subject": "veh_T_trailer",
+                "pass": true,
+                "maxAccelG": 0.23,
+                "maxSpeedMph": 13.4
+              },
+              {
+                "subject": "veh_witA",
+                "pass": false,
+                "maxAccelG": 1.05,
+                "maxSpeedMph": 60
+              }
+            ],
+            "assetFallbacks": {}
+          }
+        }
+      },
+      {
+        "name": "generate_world_repair",
+        "mode": "live",
+        "model": "gemini-4-argon",
+        "seconds": 62.8,
+        "finishReason": "STOP",
+        "promptTokens": 6893,
+        "outputTokens": 6336,
+        "thoughtsTokens": 1267,
+        "validation": {
+          "ok": true,
+          "errors": [],
+          "warnings": [],
+          "stats": {
+            "lines": 198,
+            "chars": 14425,
+            "geometryCalls": 0,
+            "objects": 28,
+            "witnesses": 4,
+            "facts": 17,
+            "duration": 25,
+            "moving": 4,
+            "assetCalls": 30,
+            "assetMethods": [
+              "environment",
+              "groundPlane",
+              "road",
+              "median",
+              "intersection",
+              "building",
+              "shelter",
+              "sign",
+              "pole",
+              "tree",
+              "impactMarker",
+              "skidMark",
+              "vehicle",
+              "pedestrian"
+            ],
+            "vehicleTypes": [
+              "sedan",
+              "truck_tractor",
+              "semitrailer",
+              "pickup",
+              "pickup"
+            ],
+            "sun": {
+              "azimuthDeg": 265,
+              "elevationDeg": 45.2
+            },
+            "citations": {
+              "inferred": 9,
+              "unlabeled": 0
+            },
+            "plausibility": [
+              {
+                "subject": "veh_A",
+                "pass": true,
+                "maxAccelG": 0,
+                "maxSpeedMph": 76.8
+              },
+              {
+                "subject": "veh_T_tractor",
+                "pass": true,
+                "maxAccelG": 0.22,
+                "maxSpeedMph": 13.9
+              },
+              {
+                "subject": "veh_T_trailer",
+                "pass": true,
+                "maxAccelG": 0.23,
+                "maxSpeedMph": 13.4
+              },
+              {
+                "subject": "veh_witA",
+                "pass": true,
+                "maxAccelG": 0.37,
+                "maxSpeedMph": 60
+              }
+            ],
+            "assetFallbacks": {}
+          }
+        }
+      }
+    ],
+    "final": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "stats": {
+        "lines": 198,
+        "chars": 14425,
+        "geometryCalls": 0,
+        "objects": 28,
+        "witnesses": 4,
+        "facts": 17,
+        "duration": 25,
+        "moving": 4,
+        "assetCalls": 30,
+        "assetMethods": [
+          "environment",
+          "groundPlane",
+          "road",
+          "median",
+          "intersection",
+          "building",
+          "shelter",
+          "sign",
+          "pole",
+          "tree",
+          "impactMarker",
+          "skidMark",
+          "vehicle",
+          "pedestrian"
+        ],
+        "vehicleTypes": [
+          "sedan",
+          "truck_tractor",
+          "semitrailer",
+          "pickup",
+          "pickup"
+        ],
+        "sun": {
+          "azimuthDeg": 265,
+          "elevationDeg": 45.2
+        },
+        "citations": {
+          "inferred": 9,
+          "unlabeled": 0
+        },
+        "plausibility": [
+          {
+            "subject": "veh_A",
+            "pass": true,
+            "maxAccelG": 0,
+            "maxSpeedMph": 76.8
+          },
+          {
+            "subject": "veh_T_tractor",
+            "pass": true,
+            "maxAccelG": 0.22,
+            "maxSpeedMph": 13.9
+          },
+          {
+            "subject": "veh_T_trailer",
+            "pass": true,
+            "maxAccelG": 0.23,
+            "maxSpeedMph": 13.4
+          },
+          {
+            "subject": "veh_witA",
+            "pass": true,
+            "maxAccelG": 0.37,
+            "maxSpeedMph": 60
+          }
+        ],
+        "assetFallbacks": {}
+      }
+    },
+    "problems": []
+  }
+]
