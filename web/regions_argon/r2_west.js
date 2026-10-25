@@ -1,30 +1,43 @@
-// r2_west — US-27A west approach (x in [-900, -45]), vertical crest at x=-345, EB/WB lanes, auxiliary turn lanes, markings, signage, and clear sightline corridor
+// DEFECTS (round 1):
+// 1. Missing Westbound Left-Turn Lane & Paved Median Crossover at x ~ -450 visible in the USGS NAIP aerial (Image 1 shows a full median crossover at x in [-462, -438] serving side roads north/south, and a WB left-turn lane tapering from x=-290 to x=-325 and extending to x=-438 along z in [-29.26, -25.60], plus an EB left-turn lane west of x=-462) -> fix: build the WB left-turn lane (x in [-438, -290]), the x=-450 paved median crossover (x in [-462, -438], z in [-29.26, -5.49]), the EB left-turn lane for that crossover (x in [-610, -462]), and their corresponding channelizing lines, yellow median-side edge lines, and turn-arrow decals.
+// 2. Missing Roadside Aprons / Side-Road Flare Stubs within the ROW (z in [-44, 10]) visible in the aerial: (a) SW corner commercial driveway/apron flare starting at x=-48..45 on the EB south shoulder (Image 2 shows the western edge of the SW corner commercial driveway mouth starting at x=-48), (b) unpaved/shell-rock driveway crossing the south ditch at x=-152 (Image 1 & 2), (c) dirt track crossing at x=-262 (Image 1), and (d) paved north/south side-road mouths at the x=-450 intersection -> fix: add profiled asphalt/limerock apron connections and ditch-crossing culvert pipes within z in [-44, 10] at these exact aerial coordinates.
+// 3. EB Left-Turn Lane Arrow & ONLY Placement vs. Aerial (Image 2 clearly shows 4 white left-turn arrows spaced along the EB left-turn lane at roughly x=-162, -136, -110, -84, plus right-turn arrows in the EB right-turn lane) -> fix: align the EB turn-lane arrows and ONLY legends with the aerial markings while fulfilling the brief's arrow/ONLY requirements, and ensure crisp high-contrast vector-like retroreflective decals with proper headless geometry fallback so arrows/ONLY are visible even when ctx.makeCanvas returns null.
+// 4. Headless Fallback for Turn Arrows & ONLY Legends: when ctx.makeCanvas returns null in headless Node validation, `buildRoadDecalPatch` fell back to a solid white rectangle (`matPaintWhite`) instead of actual arrow/letter geometry -> fix: build crisp procedural vector polygon meshes for the left/right turn arrows and 'ONLY' letters draped on `ctx.roadY(x)` so they look razor-sharp in both WebGL and headless validation.
+// 5. Pavement & Verge Edge Grounding on Ditch Slopes: outer limerock verges used `ctx.roadY(x)` instead of blending toward `ctx.groundY(x, z)`, which can leave a slight lip where the shoulder meets the ditch slope -> fix: drape the outer verge vertices directly onto `ctx.groundY(x, z)` and subdivide the crest x in [-420, -270] every 3.5 m for ultra-smooth sightline occlusion over the vertical curve.
+// 6. Culvert at x=-520 Elevation & Orientation: the concrete culvert headwalls at x=-520 used a single `swaleY` rather than sampling `ctx.groundY(x, z)` per element along the 2.15% grade -> fix: sample `ctx.groundY(x, z)` at each headwall end and tilt the barrel along the longitudinal road grade.
+
+// r2_west — US-27A west approach (x in [-900, -45]), vertical crest at x=-345, EB/WB lanes, auxiliary turn lanes, x=-450 aerial crossover, markings, signage, and clear sightline corridor
 export default function region(THREE, assets, ctx) {
   const root = new THREE.Group();
   root.name = 'region_r2_west';
-  root.userData.citation = 'NTSB/HAR-17/02 p.3, p.22-23, p.29-30 (US-27A west approach, crest 345 m W, 2.15% downgrade, auxiliary turn lanes, no sight obstructions)';
+  root.userData.citation = 'NTSB/HAR-17/02 p.3, p.22-23, p.29-30; USGS NAIP aerial (US-27A west approach, crest 345 m W, 2.15% downgrade, auxiliary turn lanes, no sight obstructions)';
 
   const L = ctx.layout;
   const CITE = L.cite;
   const X_MIN = -900;
   const X_MAX = -45;
 
-  // --- Shared X station array with <= 5m spacing near the crest (-450 to -240) and <= 6m elsewhere ---
+  // --- Shared X station generator with 3.5 m spacing across the crest (-430 to -260) and <= 5.5 m elsewhere ---
   function buildStations(x0, x1) {
     const xs = [];
     let x = x0;
     while (x < x1 - 1e-6) {
       xs.push(x);
-      const step = (x >= -460 && x <= -230) ? 4.0 : 5.5;
+      const step = (x >= -430 && x <= -260) ? 3.5 : 5.0;
       x = Math.min(x1, x + step);
     }
     xs.push(x1);
     return xs;
   }
 
-  // --- Helper: Build profiled strip mesh following ctx.roadY(x) ---
+  function roadSlope(x) {
+    return (ctx.roadY(x + 0.5) - ctx.roadY(x - 0.5));
+  }
+
+  // --- Helper: Build profiled strip mesh following ctx.roadY(x) or ctx.groundY(x, z) ---
   function buildProfiledStrip({
-    x0, x1, z0Fn, z1Fn, zSub = 1, yOffset = 0, material, uvScaleX = 1, uvScaleZ = 1, vertexColorFn = null, name = 'strip', citation = ''
+    x0, x1, z0Fn, z1Fn, zSub = 1, yOffset = 0, useGroundY = false, edgeGroundBlend = false,
+    material, uvScaleX = 1, uvScaleZ = 1, name = 'strip', citation = ''
   }) {
     const xs = buildStations(x0, x1);
     const nx = xs.length;
@@ -32,17 +45,15 @@ export default function region(THREE, assets, ctx) {
     const positions = new Float32Array(nx * nz * 3);
     const normals = new Float32Array(nx * nz * 3);
     const uvs = new Float32Array(nx * nz * 2);
-    const colors = vertexColorFn ? new Float32Array(nx * nz * 3) : null;
     const indices = [];
 
     let pIdx = 0;
     let uvIdx = 0;
-    let cIdx = 0;
 
     for (let i = 0; i < nx; i++) {
       const x = xs[i];
-      const y = ctx.roadY(x) + yOffset;
-      const dy = (ctx.roadY(x + 0.5) - ctx.roadY(x - 0.5));
+      const rY = ctx.roadY(x);
+      const dy = roadSlope(x);
       const len = Math.hypot(1.0, dy);
       const nxVal = -dy / len;
       const nyVal = 1.0 / len;
@@ -53,6 +64,14 @@ export default function region(THREE, assets, ctx) {
       for (let j = 0; j < nz; j++) {
         const frac = j / zSub;
         const z = zStart + (zEnd - zStart) * frac;
+        let y = rY + yOffset;
+        if (useGroundY) {
+          y = ctx.groundY(x, z) + yOffset;
+        } else if (edgeGroundBlend) {
+          // Inner edge (j=0) at roadY, outer edge (j=zSub) hugs groundY
+          const gY = ctx.groundY(x, z);
+          y = (1 - frac) * (rY + yOffset) + frac * (gY - 0.005);
+        }
 
         positions[pIdx] = x;
         positions[pIdx + 1] = y;
@@ -66,14 +85,6 @@ export default function region(THREE, assets, ctx) {
         uvs[uvIdx] = x * uvScaleX;
         uvs[uvIdx + 1] = z * uvScaleZ;
         uvIdx += 2;
-
-        if (colors) {
-          const col = vertexColorFn(x, z, frac);
-          colors[cIdx] = col[0];
-          colors[cIdx + 1] = col[1];
-          colors[cIdx + 2] = col[2];
-          cIdx += 3;
-        }
       }
     }
 
@@ -92,9 +103,6 @@ export default function region(THREE, assets, ctx) {
     geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geom.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
     geom.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
-    if (colors) {
-      geom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    }
     geom.setIndex(indices);
 
     const mesh = new THREE.Mesh(geom, material);
@@ -116,8 +124,8 @@ export default function region(THREE, assets, ctx) {
     const halfW = width * 0.5;
     let vCount = 0;
 
-    let kStart = Math.floor(x0 / cycle);
-    let kEnd = Math.ceil(x1 / cycle);
+    const kStart = Math.floor(x0 / cycle);
+    const kEnd = Math.ceil(x1 / cycle);
 
     for (let k = kStart; k <= kEnd; k++) {
       const d0 = Math.max(x0, k * cycle);
@@ -129,9 +137,11 @@ export default function region(THREE, assets, ctx) {
       for (let i = 0; i < xs.length; i++) {
         const x = xs[i];
         const y = ctx.roadY(x) + yOffset;
+        const dy = roadSlope(x);
+        const len = Math.hypot(1.0, dy);
         positions.push(x, y, zCenter - halfW);
         positions.push(x, y, zCenter + halfW);
-        normals.push(0, 1, 0, 0, 1, 0);
+        normals.push(-dy / len, 1.0 / len, 0, -dy / len, 1.0 / len, 0);
         uvs.push(x, 0, x, 1);
       }
       indices.push(vCount + 0, vCount + 1, vCount + 2);
@@ -154,18 +164,34 @@ export default function region(THREE, assets, ctx) {
     return mesh;
   }
 
-  // --- Helper: Piecewise linear interpolation for turn-lane tapers ---
+  // --- Piecewise linear geometry functions for EB & WB auxiliary turn lanes and crossovers ---
+  // Main intersection EB left-turn lane: taper [-220, -187.45], full width [-187.45, -45] at z = -9.15
+  // Secondary aerial crossover at x in [-462, -438]: EB left-turn lane taper [-610, -575], full width [-575, -462] at z = -9.15
   function ebLeftInnerZ(x) {
-    if (x <= -220) return -5.49;
-    if (x >= -187.45) return -9.15;
-    const t = (x - (-220)) / (-187.45 - (-220));
-    return -5.49 + t * (-9.15 - (-5.49));
+    // Primary EB left-turn lane approaching NE 140th Ct
+    if (x >= -220) {
+      if (x <= -187.45) {
+        const t = (x - (-220)) / (-187.45 - (-220));
+        return -5.49 + t * (-9.15 - (-5.49));
+      }
+      return -9.15;
+    }
+    // Secondary EB left-turn lane approaching the x=-450 crossover (visible in USGS NAIP aerial Image 1)
+    if (x >= -610 && x <= -462) {
+      if (x <= -575) {
+        const t = (x - (-610)) / (-575 - (-610));
+        return -5.49 + t * (-9.15 - (-5.49));
+      }
+      return -9.15;
+    }
+    return -5.49;
   }
 
   function ebLeftShoulderOuterZ(x) {
     return ebLeftInnerZ(x) - 0.61;
   }
 
+  // EB right-turn lane into NE 140th Ct: taper [-200, -170], full width [-170, -45] at z = 5.49
   function ebRightOuterZ(x) {
     if (x <= -200) return 1.83;
     if (x >= -170) return 5.49;
@@ -177,19 +203,37 @@ export default function region(THREE, assets, ctx) {
     return ebRightOuterZ(x) + 1.52;
   }
 
+  // WB left-turn lane approaching the x=-450 crossover (visible in USGS NAIP aerial Image 1):
+  // Full width x in [-438, -325] at z = -25.60, tapering back to -29.26 by x = -290
+  function wbLeftInnerZ(x) {
+    if (x >= -438 && x <= -290) {
+      if (x >= -325) {
+        const t = (-290 - x) / (-290 - (-325));
+        return -29.26 + t * (-25.60 - (-29.26));
+      }
+      return -25.60;
+    }
+    return -29.26;
+  }
+
+  function wbLeftShoulderOuterZ(x) {
+    return wbLeftInnerZ(x) + 0.61;
+  }
+
   // =========================================================================
-  // 1. PAVEMENT & SHOULDERS GROUP
+  // 1. PAVEMENT, AUXILIARY TURN LANES, SHOULDERS & AERIAL CROSSOVER
   // =========================================================================
   const pavementGroup = new THREE.Group();
   pavementGroup.name = 'pavement_and_shoulders';
-  pavementGroup.userData.citation = `${CITE.lanes}; ${CITE.turnLanes}; ${CITE.profile}`;
+  pavementGroup.userData.citation = `${CITE.lanes}; ${CITE.turnLanes}; ${CITE.profile}; USGS NAIP aerial (measured)`;
 
   const matMainAsphalt = ctx.surface('asphalt', { color: 0x3a3c3f, roughness: 0.82 });
   const matTurnAsphalt = ctx.surface('asphalt', { color: 0x3d3f42, roughness: 0.84 });
   const matShoulderAsphalt = ctx.surface('asphalt', { color: 0x45474b, roughness: 0.87 });
-  const matSubbaseGravel = ctx.surface('gravel', { color: 0x7c766b, roughness: 0.92 });
+  const matCrossoverAsphalt = ctx.surface('asphalt', { color: 0x3f4145, roughness: 0.85 });
+  const matSubbaseGravel = ctx.surface('gravel', { color: 0x857f74, roughness: 0.92 });
 
-  // EB Mainline (2 x 3.66m lanes: z in [-5.49, 1.83])
+  // 1a) EB Mainline (2 x 3.66 m lanes: z in [-5.49, 1.83])
   pavementGroup.add(buildProfiledStrip({
     x0: X_MIN, x1: X_MAX,
     z0Fn: -5.49, z1Fn: 1.83,
@@ -199,7 +243,7 @@ export default function region(THREE, assets, ctx) {
     citation: CITE.lanes
   }));
 
-  // WB Mainline (2 x 3.66m lanes: z in [-36.58, -29.26])
+  // 1b) WB Mainline (2 x 3.66 m lanes: z in [-36.58, -29.26])
   pavementGroup.add(buildProfiledStrip({
     x0: X_MIN, x1: X_MAX,
     z0Fn: -36.58, z1Fn: -29.26,
@@ -209,18 +253,18 @@ export default function region(THREE, assets, ctx) {
     citation: CITE.lanes
   }));
 
-  // EB Left-Turn Lane (x in [-220, -45], tapering from -5.49 to -9.15 by x=-187.45)
+  // 1c) Primary EB Left-Turn Lane (x in [-220, -45], tapering from -5.49 to -9.15 by x=-187.45)
   pavementGroup.add(buildProfiledStrip({
     x0: -220, x1: X_MAX,
     z0Fn: (x) => ebLeftInnerZ(x),
     z1Fn: -5.49,
     zSub: 2, yOffset: 0.0,
     material: matTurnAsphalt,
-    name: 'road_eb_left_turn_lane',
+    name: 'road_eb_left_turn_lane_east',
     citation: CITE.turnLanes
   }));
 
-  // EB Right-Turn Lane (x in [-200, -45], tapering from 1.83 to 5.49 by x=-170)
+  // 1d) Primary EB Right-Turn Lane (x in [-200, -45], tapering from 1.83 to 5.49 by x=-170)
   pavementGroup.add(buildProfiledStrip({
     x0: -200, x1: X_MAX,
     z0Fn: 1.83,
@@ -231,18 +275,59 @@ export default function region(THREE, assets, ctx) {
     citation: CITE.turnLanes
   }));
 
-  // EB Left (Inside) Paved Shoulder (0.61 m wide, tracks outside EB left-turn lane)
+  // 1e) Secondary Aerial Crossover at x in [-462, -438] (visible in Image 1 at x=-450)
   pavementGroup.add(buildProfiledStrip({
-    x0: X_MIN, x1: X_MAX,
+    x0: -462, x1: -438,
+    z0Fn: -29.26, z1Fn: -5.49,
+    zSub: 6, yOffset: -0.002,
+    material: matCrossoverAsphalt,
+    name: 'road_west_median_crossover_x450',
+    citation: 'USGS NAIP aerial (measured: secondary paved median crossover at x in [-462, -438])'
+  }));
+
+  // 1f) WB Left-Turn Lane into the x=-450 Crossover (x in [-438, -290], taper [-325, -290])
+  pavementGroup.add(buildProfiledStrip({
+    x0: -438, x1: -290,
+    z0Fn: -29.26,
+    z1Fn: (x) => wbLeftInnerZ(x),
+    zSub: 2, yOffset: 0.0,
+    material: matTurnAsphalt,
+    name: 'road_wb_left_turn_lane_x450',
+    citation: 'USGS NAIP aerial (measured: WB left-turn lane x in [-438, -290] into x=-450 crossover)'
+  }));
+
+  // 1g) EB Left-Turn Lane into the x=-450 Crossover (x in [-610, -462], taper [-610, -575])
+  pavementGroup.add(buildProfiledStrip({
+    x0: -610, x1: -462,
+    z0Fn: (x) => ebLeftInnerZ(x),
+    z1Fn: -5.49,
+    zSub: 2, yOffset: 0.0,
+    material: matTurnAsphalt,
+    name: 'road_eb_left_turn_lane_x450',
+    citation: 'USGS NAIP aerial (measured: EB left-turn lane x in [-610, -462] into x=-450 crossover)'
+  }));
+
+  // 1h) EB Inside (Left) Paved Shoulder (0.61 m wide, split around the x=-450 crossover)
+  pavementGroup.add(buildProfiledStrip({
+    x0: X_MIN, x1: -462,
     z0Fn: (x) => ebLeftShoulderOuterZ(x),
     z1Fn: (x) => ebLeftInnerZ(x),
     zSub: 1, yOffset: 0.0,
     material: matShoulderAsphalt,
-    name: 'shoulder_eb_inside',
+    name: 'shoulder_eb_inside_west',
+    citation: CITE.lanes
+  }));
+  pavementGroup.add(buildProfiledStrip({
+    x0: -438, x1: X_MAX,
+    z0Fn: (x) => ebLeftShoulderOuterZ(x),
+    z1Fn: (x) => ebLeftInnerZ(x),
+    zSub: 1, yOffset: 0.0,
+    material: matShoulderAsphalt,
+    name: 'shoulder_eb_inside_east',
     citation: CITE.lanes
   }));
 
-  // EB Right (Outside) Paved Shoulder (1.52 m wide, shifts outside EB right-turn lane)
+  // 1i) EB Outside (Right) Paved Shoulder (1.52 m wide, shifts outside EB right-turn lane)
   pavementGroup.add(buildProfiledStrip({
     x0: X_MIN, x1: X_MAX,
     z0Fn: (x) => ebRightOuterZ(x),
@@ -253,7 +338,7 @@ export default function region(THREE, assets, ctx) {
     citation: CITE.lanes
   }));
 
-  // WB Right (North/Outside) Paved Shoulder (z in [-38.10, -36.58])
+  // 1j) WB Outside (Right/North) Paved Shoulder (z in [-38.10, -36.58])
   pavementGroup.add(buildProfiledStrip({
     x0: X_MIN, x1: X_MAX,
     z0Fn: -38.10, z1Fn: -36.58,
@@ -263,33 +348,120 @@ export default function region(THREE, assets, ctx) {
     citation: CITE.lanes
   }));
 
-  // WB Left (South/Inside) Paved Shoulder (z in [-29.26, -28.65])
+  // 1k) WB Inside (Left/South) Paved Shoulder (0.61 m wide, split around the x=-450 crossover)
   pavementGroup.add(buildProfiledStrip({
-    x0: X_MIN, x1: X_MAX,
+    x0: X_MIN, x1: -462,
     z0Fn: -29.26, z1Fn: -28.65,
     zSub: 1, yOffset: 0.0,
     material: matShoulderAsphalt,
-    name: 'shoulder_wb_inside',
+    name: 'shoulder_wb_inside_west',
+    citation: CITE.lanes
+  }));
+  pavementGroup.add(buildProfiledStrip({
+    x0: -438, x1: X_MAX,
+    z0Fn: (x) => wbLeftInnerZ(x),
+    z1Fn: (x) => wbLeftShoulderOuterZ(x),
+    zSub: 1, yOffset: 0.0,
+    material: matShoulderAsphalt,
+    name: 'shoulder_wb_inside_east',
     citation: CITE.lanes
   }));
 
-  // Compacted limerock/gravel shoulder verge (0.45 m transition strip so asphalt edge never floats)
-  const vergePairs = [
-    { name: 'verge_eb_south', z0: (x) => ebRightShoulderOuterZ(x), z1: (x) => ebRightShoulderOuterZ(x) + 0.45 },
-    { name: 'verge_eb_north', z0: (x) => ebLeftShoulderOuterZ(x) - 0.35, z1: (x) => ebLeftShoulderOuterZ(x) },
-    { name: 'verge_wb_north', z0: -38.55, z1: -38.10 },
-    { name: 'verge_wb_south', z0: -28.65, z1: -28.30 }
-  ];
-  for (const vp of vergePairs) {
-    pavementGroup.add(buildProfiledStrip({
-      x0: X_MIN, x1: X_MAX,
-      z0Fn: vp.z0, z1Fn: vp.z1,
-      zSub: 1, yOffset: -0.008,
-      material: matSubbaseGravel,
-      name: vp.name,
-      citation: 'inferred: typical FDOT limerock shoulder edge grading'
-    }));
-  }
+  // 1l) Compacted limerock/gravel shoulder verges blending smoothly from roadY to groundY
+  pavementGroup.add(buildProfiledStrip({
+    x0: X_MIN, x1: X_MAX,
+    z0Fn: (x) => ebRightShoulderOuterZ(x),
+    z1Fn: (x) => ebRightShoulderOuterZ(x) + 0.50,
+    zSub: 1, yOffset: -0.004, edgeGroundBlend: true,
+    material: matSubbaseGravel,
+    name: 'verge_eb_south',
+    citation: 'inferred: typical FDOT limerock shoulder edge grading'
+  }));
+  pavementGroup.add(buildProfiledStrip({
+    x0: X_MIN, x1: -462,
+    z0Fn: (x) => ebLeftShoulderOuterZ(x),
+    z1Fn: (x) => ebLeftShoulderOuterZ(x) - 0.40,
+    zSub: 1, yOffset: -0.004, edgeGroundBlend: true,
+    material: matSubbaseGravel,
+    name: 'verge_eb_north_west',
+    citation: 'inferred: typical FDOT limerock shoulder edge grading'
+  }));
+  pavementGroup.add(buildProfiledStrip({
+    x0: -438, x1: X_MAX,
+    z0Fn: (x) => ebLeftShoulderOuterZ(x),
+    z1Fn: (x) => ebLeftShoulderOuterZ(x) - 0.40,
+    zSub: 1, yOffset: -0.004, edgeGroundBlend: true,
+    material: matSubbaseGravel,
+    name: 'verge_eb_north_east',
+    citation: 'inferred: typical FDOT limerock shoulder edge grading'
+  }));
+  pavementGroup.add(buildProfiledStrip({
+    x0: X_MIN, x1: X_MAX,
+    z0Fn: -38.10, z1Fn: -38.60,
+    zSub: 1, yOffset: -0.004, edgeGroundBlend: true,
+    material: matSubbaseGravel,
+    name: 'verge_wb_north',
+    citation: 'inferred: typical FDOT limerock shoulder edge grading'
+  }));
+  pavementGroup.add(buildProfiledStrip({
+    x0: -438, x1: X_MAX,
+    z0Fn: (x) => wbLeftShoulderOuterZ(x),
+    z1Fn: (x) => wbLeftShoulderOuterZ(x) + 0.40,
+    zSub: 1, yOffset: -0.004, edgeGroundBlend: true,
+    material: matSubbaseGravel,
+    name: 'verge_wb_south_east',
+    citation: 'inferred: typical FDOT limerock shoulder edge grading'
+  }));
+
+  // 1m) Roadside Driveway & Side-Road Apron Stubs within z in [-44, 10] from USGS NAIP Aerial
+  // (1) Western lip of the SW corner commercial driveway mouth (x in [-50, -45], z in [7.0, 10.0], visible in Image 2)
+  pavementGroup.add(buildProfiledStrip({
+    x0: -50, x1: X_MAX,
+    z0Fn: 7.01,
+    z1Fn: (x) => 7.01 + ((x - (-50)) / 5.0) * 2.99,
+    zSub: 2, yOffset: 0.004, useGroundY: true,
+    material: matCrossoverAsphalt,
+    name: 'apron_sw_commercial_west_flare',
+    citation: 'USGS NAIP aerial (measured: western flare of SW corner commercial driveway at x=-50..-45)'
+  }));
+
+  // (2) Unpaved shell-rock driveway crossing south ditch at x = -152 (visible in Image 1 & 2 at x ~ -152, z in [6.5, 10.0])
+  pavementGroup.add(buildProfiledStrip({
+    x0: -156, x1: -148,
+    z0Fn: 6.8, z1Fn: 10.0,
+    zSub: 2, yOffset: 0.015, useGroundY: true,
+    material: matSubbaseGravel,
+    name: 'apron_south_driveway_x152',
+    citation: 'USGS NAIP aerial (measured: shell-rock driveway apron on south shoulder at x=-152)'
+  }));
+
+  // (3) Unpaved forest access track crossing south ditch at x = -262 (visible in Image 1 at x ~ -262, z in [3.35, 10.0])
+  pavementGroup.add(buildProfiledStrip({
+    x0: -266, x1: -258,
+    z0Fn: 3.35, z1Fn: 10.0,
+    zSub: 2, yOffset: 0.015, useGroundY: true,
+    material: matSubbaseGravel,
+    name: 'apron_south_track_x262',
+    citation: 'USGS NAIP aerial (measured: unpaved track apron on south shoulder at x=-262)'
+  }));
+
+  // (4) North & South paved side-road mouths at the x = -450 intersection (visible in Image 1)
+  pavementGroup.add(buildProfiledStrip({
+    x0: -460, x1: -440,
+    z0Fn: -44.0, z1Fn: -38.10,
+    zSub: 2, yOffset: 0.012, useGroundY: true,
+    material: matCrossoverAsphalt,
+    name: 'apron_north_side_road_x450',
+    citation: 'USGS NAIP aerial (measured: north local road mouth at x=-450)'
+  }));
+  pavementGroup.add(buildProfiledStrip({
+    x0: -460, x1: -440,
+    z0Fn: 3.35, z1Fn: 10.0,
+    zSub: 2, yOffset: 0.012, useGroundY: true,
+    material: matCrossoverAsphalt,
+    name: 'apron_south_side_road_x450',
+    citation: 'USGS NAIP aerial (measured: south local road mouth at x=-450)'
+  }));
 
   root.add(pavementGroup);
 
@@ -298,9 +470,8 @@ export default function region(THREE, assets, ctx) {
   // =========================================================================
   const surfaceDetailGroup = new THREE.Group();
   surfaceDetailGroup.name = 'surface_wear_and_rumble_strips';
-  surfaceDetailGroup.userData.citation = 'inferred: typical FDOT rural divided highway wheel-path wear, rumble strips, and crack sealing';
+  surfaceDetailGroup.userData.citation = 'inferred: typical FDOT rural divided highway wheel-path wear, 0.6 m milled rumble strips, and crack sealing';
 
-  // Wheel-path darkening & oil strip canvas texture
   function makeWearMaterial() {
     const c = ctx.makeCanvas(128, 256);
     if (c) {
@@ -308,12 +479,11 @@ export default function region(THREE, assets, ctx) {
       g.clearRect(0, 0, 128, 256);
       for (let x = 0; x < 128; x++) {
         const u = x / 128;
-        // Two wheel tracks at u=0.26 and u=0.74, plus subtle center oil drip at u=0.50
-        const w1 = Math.exp(-Math.pow((u - 0.26) / 0.11, 2)) * 0.34;
-        const w2 = Math.exp(-Math.pow((u - 0.74) / 0.11, 2)) * 0.34;
-        const oil = Math.exp(-Math.pow((u - 0.50) / 0.05, 2)) * 0.22;
-        const alpha = Math.min(0.45, w1 + w2 + oil);
-        g.fillStyle = `rgba(18, 19, 22, ${alpha.toFixed(3)})`;
+        const w1 = Math.exp(-Math.pow((u - 0.26) / 0.11, 2)) * 0.36;
+        const w2 = Math.exp(-Math.pow((u - 0.74) / 0.11, 2)) * 0.36;
+        const oil = Math.exp(-Math.pow((u - 0.50) / 0.05, 2)) * 0.24;
+        const alpha = Math.min(0.46, w1 + w2 + oil);
+        g.fillStyle = `rgba(16, 18, 20, ${alpha.toFixed(3)})`;
         g.fillRect(x, 0, 1, 256);
       }
       const tex = new THREE.CanvasTexture(c);
@@ -362,12 +532,12 @@ export default function region(THREE, assets, ctx) {
       name: lb.name,
       citation: 'inferred: wheel-path aggregate polishing and oil staining'
     });
-    // Override V coordinate to span [0, 1] across lane width
     const uvAttr = strip.geometry.getAttribute('uv');
+    const posAttr = strip.geometry.getAttribute('position');
     for (let i = 0; i < uvAttr.count; i++) {
-      const z = strip.geometry.getAttribute('position').getZ(i);
+      const z = posAttr.getZ(i);
       const u = (z - lb.z0) / (lb.z1 - lb.z0);
-      const x = strip.geometry.getAttribute('position').getX(i);
+      const x = posAttr.getX(i);
       uvAttr.setXY(i, u, x * 0.1);
     }
     surfaceDetailGroup.add(strip);
@@ -381,9 +551,9 @@ export default function region(THREE, assets, ctx) {
       g.fillStyle = '#383a3d';
       g.fillRect(0, 0, 64, 128);
       for (let y = 0; y < 128; y += 16) {
-        g.fillStyle = '#202225';
+        g.fillStyle = '#1e2023';
         g.fillRect(6, y + 2, 52, 7);
-        g.fillStyle = '#4c4f53';
+        g.fillStyle = '#4e5155';
         g.fillRect(6, y + 9, 52, 3);
       }
       const tex = new THREE.CanvasTexture(c);
@@ -411,46 +581,31 @@ export default function region(THREE, assets, ctx) {
 
   const matRumble = makeRumbleMaterial();
 
-  // EB South Outer Shoulder Rumble Strip (x in [-900, -205], before right-turn lane taper)
-  const rumbleEBSouth = buildProfiledStrip({
-    x0: X_MIN, x1: -205,
-    z0Fn: 2.00, z1Fn: 2.60,
-    zSub: 1, yOffset: 0.005,
-    material: matRumble,
-    name: 'rumble_strip_eb_south',
-    citation: 'inferred: FDOT standard 0.6 m milled shoulder rumble strip'
-  });
-  // Map UVs so ribs repeat along X
-  {
-    const uvAttr = rumbleEBSouth.geometry.getAttribute('uv');
-    const posAttr = rumbleEBSouth.geometry.getAttribute('position');
+  function addRumbleStrip(x0, x1, z0, z1, name) {
+    const strip = buildProfiledStrip({
+      x0, x1, z0Fn: z0, z1Fn: z1,
+      zSub: 1, yOffset: 0.005,
+      material: matRumble,
+      name,
+      citation: 'inferred: FDOT standard 0.6 m milled shoulder rumble strip'
+    });
+    const uvAttr = strip.geometry.getAttribute('uv');
+    const posAttr = strip.geometry.getAttribute('position');
     for (let i = 0; i < uvAttr.count; i++) {
       const x = posAttr.getX(i);
       const z = posAttr.getZ(i);
-      uvAttr.setXY(i, (z - 2.00) / 0.60, x * 0.8);
+      uvAttr.setXY(i, (z - z0) / (z1 - z0), x * 0.85);
     }
+    surfaceDetailGroup.add(strip);
   }
-  surfaceDetailGroup.add(rumbleEBSouth);
 
-  // WB North Outer Shoulder Rumble Strip (x in [-900, -45])
-  const rumbleWBNorth = buildProfiledStrip({
-    x0: X_MIN, x1: X_MAX,
-    z0Fn: -37.35, z1Fn: -36.75,
-    zSub: 1, yOffset: 0.005,
-    material: matRumble,
-    name: 'rumble_strip_wb_north',
-    citation: 'inferred: FDOT standard 0.6 m milled shoulder rumble strip'
-  });
-  {
-    const uvAttr = rumbleWBNorth.geometry.getAttribute('uv');
-    const posAttr = rumbleWBNorth.geometry.getAttribute('position');
-    for (let i = 0; i < uvAttr.count; i++) {
-      const x = posAttr.getX(i);
-      const z = posAttr.getZ(i);
-      uvAttr.setXY(i, (z - (-37.35)) / 0.60, x * 0.8);
-    }
-  }
-  surfaceDetailGroup.add(rumbleWBNorth);
+  // EB South Outer Shoulder Rumble Strip (interrupted at x=-450 side road and before x=-200 right-turn taper)
+  addRumbleStrip(X_MIN, -464, 2.00, 2.60, 'rumble_strip_eb_south_west');
+  addRumbleStrip(-436, -205, 2.00, 2.60, 'rumble_strip_eb_south_east');
+
+  // WB North Outer Shoulder Rumble Strip (interrupted at x=-450 side road)
+  addRumbleStrip(X_MIN, -464, -37.35, -36.75, 'rumble_strip_wb_north_west');
+  addRumbleStrip(-436, X_MAX, -37.35, -36.75, 'rumble_strip_wb_north_east');
 
   // Occasional sealed asphalt cracks & tar patches along the approach
   const matTarCrack = new THREE.MeshStandardMaterial({
@@ -468,9 +623,9 @@ export default function region(THREE, assets, ctx) {
   const crackIndices = [];
   let crackV = 0;
 
-  for (let i = 0; i < 38; i++) {
-    const cx = X_MIN + 25 + crackRand() * (X_MAX - X_MIN - 50);
-    const isWB = crackRand() > 0.55;
+  for (let i = 0; i < 42; i++) {
+    const cx = X_MIN + 20 + crackRand() * (X_MAX - X_MIN - 40);
+    const isWB = crackRand() > 0.52;
     const baseZ = isWB ? (-36.2 + crackRand() * 6.5) : (-5.1 + crackRand() * 6.5);
     const segs = 4;
     const w = 0.045;
@@ -514,11 +669,11 @@ export default function region(THREE, assets, ctx) {
   // =========================================================================
   const markingsGroup = new THREE.Group();
   markingsGroup.name = 'pavement_markings_and_rpms';
-  markingsGroup.userData.citation = 'MUTCD 2009 Sections 3A.06, 3B.04, 3B.06, 3B.11, 3B.20; NTSB/HAR-17/02 p.3';
+  markingsGroup.userData.citation = 'MUTCD 2009 Sections 3A.06, 3B.04, 3B.06, 3B.11, 3B.20; NTSB/HAR-17/02 p.3; USGS NAIP aerial';
 
   const matPaintWhite = new THREE.MeshStandardMaterial({
     color: 0xf2f2f0,
-    roughness: 0.52,
+    roughness: 0.50,
     metalness: 0.0,
     polygonOffset: true,
     polygonOffsetFactor: -3,
@@ -527,7 +682,7 @@ export default function region(THREE, assets, ctx) {
 
   const matPaintYellow = new THREE.MeshStandardMaterial({
     color: 0xeab81c,
-    roughness: 0.52,
+    roughness: 0.50,
     metalness: 0.0,
     polygonOffset: true,
     polygonOffsetFactor: -3,
@@ -551,203 +706,263 @@ export default function region(THREE, assets, ctx) {
     citation: 'MUTCD Section 3B.04 (Broken White Lane Line, 0.15 m wide, 3.05 m dash / 9.15 m gap)'
   }));
 
-  // 2) EB solid yellow median-side edge line (tracks outside EB left-turn lane)
+  // 2) EB solid yellow median-side edge line (interrupted across the x=-450 crossover)
   markingsGroup.add(buildProfiledStrip({
-    x0: X_MIN, x1: X_MAX,
+    x0: X_MIN, x1: -462,
     z0Fn: (x) => ebLeftInnerZ(x) - 0.075,
     z1Fn: (x) => ebLeftInnerZ(x) + 0.075,
     zSub: 1, yOffset: 0.012,
     material: matPaintYellow,
-    name: 'mark_eb_yellow_left_edge',
+    name: 'mark_eb_yellow_left_edge_west',
+    citation: 'MUTCD Section 3B.06 (Left Edge Line Pavement Markings on Divided Highways, 0.15 m solid yellow)'
+  }));
+  markingsGroup.add(buildProfiledStrip({
+    x0: -438, x1: X_MAX,
+    z0Fn: (x) => ebLeftInnerZ(x) - 0.075,
+    z1Fn: (x) => ebLeftInnerZ(x) + 0.075,
+    zSub: 1, yOffset: 0.012,
+    material: matPaintYellow,
+    name: 'mark_eb_yellow_left_edge_east',
     citation: 'MUTCD Section 3B.06 (Left Edge Line Pavement Markings on Divided Highways, 0.15 m solid yellow)'
   }));
 
-  // 3) EB solid white right edge line (tracks outside EB right-turn lane)
+  // 3) EB solid white right edge line (interrupted across the x=-450 south side road mouth)
   markingsGroup.add(buildProfiledStrip({
-    x0: X_MIN, x1: X_MAX,
+    x0: X_MIN, x1: -458,
+    z0Fn: 1.83 - 0.075, z1Fn: 1.83 + 0.075,
+    zSub: 1, yOffset: 0.012,
+    material: matPaintWhite,
+    name: 'mark_eb_white_right_edge_west',
+    citation: 'MUTCD Section 3B.06 (Right Edge Line Pavement Markings, 0.15 m solid white)'
+  }));
+  markingsGroup.add(buildProfiledStrip({
+    x0: -442, x1: X_MAX,
     z0Fn: (x) => ebRightOuterZ(x) - 0.075,
     z1Fn: (x) => ebRightOuterZ(x) + 0.075,
     zSub: 1, yOffset: 0.012,
     material: matPaintWhite,
-    name: 'mark_eb_white_right_edge',
+    name: 'mark_eb_white_right_edge_east',
     citation: 'MUTCD Section 3B.06 (Right Edge Line Pavement Markings, 0.15 m solid white)'
   }));
 
-  // 4) EB Left-Turn Lane solid white channelizing line (z = -5.49, x in [-187.45, -45], 0.20 m wide)
+  // 4) EB Left-Turn Lane solid white channelizing lines (0.20 m wide)
   markingsGroup.add(buildProfiledStrip({
     x0: -187.45, x1: X_MAX,
-    z0Fn: -5.49 - 0.10,
-    z1Fn: -5.49 + 0.10,
+    z0Fn: -5.49 - 0.10, z1Fn: -5.49 + 0.10,
     zSub: 1, yOffset: 0.012,
     material: matPaintWhite,
     name: 'mark_eb_left_turn_channel_line',
     citation: 'MUTCD Section 3B.04 (Solid white turn-lane channelizing line, 0.20 m wide)'
   }));
+  markingsGroup.add(buildProfiledStrip({
+    x0: -575, x1: -462,
+    z0Fn: -5.49 - 0.10, z1Fn: -5.49 + 0.10,
+    zSub: 1, yOffset: 0.012,
+    material: matPaintWhite,
+    name: 'mark_eb_left_turn_channel_line_x450',
+    citation: 'USGS NAIP aerial; MUTCD Section 3B.04 (Solid white turn-lane channelizing line at x=-450 crossover)'
+  }));
 
   // 5) EB Right-Turn Lane solid white channelizing line (z = 1.83, x in [-170, -45], 0.20 m wide)
   markingsGroup.add(buildProfiledStrip({
     x0: -170, x1: X_MAX,
-    z0Fn: 1.83 - 0.10,
-    z1Fn: 1.83 + 0.10,
+    z0Fn: 1.83 - 0.10, z1Fn: 1.83 + 0.10,
     zSub: 1, yOffset: 0.012,
     material: matPaintWhite,
     name: 'mark_eb_right_turn_channel_line',
     citation: 'MUTCD Section 3B.04 (Solid white turn-lane channelizing line, 0.20 m wide)'
   }));
 
-  // 6) WB solid white right (north) edge line (z = -36.58)
+  // 6) WB solid white right (north) edge line (interrupted across the x=-450 north side road mouth)
   markingsGroup.add(buildProfiledStrip({
-    x0: X_MIN, x1: X_MAX,
-    z0Fn: -36.58 - 0.075,
-    z1Fn: -36.58 + 0.075,
+    x0: X_MIN, x1: -458,
+    z0Fn: -36.58 - 0.075, z1Fn: -36.58 + 0.075,
     zSub: 1, yOffset: 0.012,
     material: matPaintWhite,
-    name: 'mark_wb_white_right_edge',
+    name: 'mark_wb_white_right_edge_west',
+    citation: 'MUTCD Section 3B.06 (Right Edge Line Pavement Markings, 0.15 m solid white)'
+  }));
+  markingsGroup.add(buildProfiledStrip({
+    x0: -442, x1: X_MAX,
+    z0Fn: -36.58 - 0.075, z1Fn: -36.58 + 0.075,
+    zSub: 1, yOffset: 0.012,
+    material: matPaintWhite,
+    name: 'mark_wb_white_right_edge_east',
     citation: 'MUTCD Section 3B.06 (Right Edge Line Pavement Markings, 0.15 m solid white)'
   }));
 
-  // 7) WB solid yellow left (median-side) edge line (z = -29.26)
+  // 7) WB solid yellow left (median-side) edge line (interrupted across the x=-450 crossover, tracks WB left-turn lane)
   markingsGroup.add(buildProfiledStrip({
-    x0: X_MIN, x1: X_MAX,
-    z0Fn: -29.26 - 0.075,
-    z1Fn: -29.26 + 0.075,
+    x0: X_MIN, x1: -462,
+    z0Fn: -29.26 - 0.075, z1Fn: -29.26 + 0.075,
     zSub: 1, yOffset: 0.012,
     material: matPaintYellow,
-    name: 'mark_wb_yellow_left_edge',
+    name: 'mark_wb_yellow_left_edge_west',
+    citation: 'MUTCD Section 3B.06 (Left Edge Line Pavement Markings on Divided Highways, 0.15 m solid yellow)'
+  }));
+  markingsGroup.add(buildProfiledStrip({
+    x0: -438, x1: X_MAX,
+    z0Fn: (x) => wbLeftInnerZ(x) - 0.075,
+    z1Fn: (x) => wbLeftInnerZ(x) + 0.075,
+    zSub: 1, yOffset: 0.012,
+    material: matPaintYellow,
+    name: 'mark_wb_yellow_left_edge_east',
     citation: 'MUTCD Section 3B.06 (Left Edge Line Pavement Markings on Divided Highways, 0.15 m solid yellow)'
   }));
 
-  // 8) Turn-lane arrows & 'ONLY' legends (draped on ctx.roadY)
-  function makeTurnArrowDecal(dir) {
-    // dir: 'left' (curves toward -Z for EB traffic) or 'right' (curves toward +Z for EB traffic)
-    const c = ctx.makeCanvas(256, 256);
-    if (c) {
-      const g = c.getContext('2d');
-      g.clearRect(0, 0, 256, 256);
-      g.fillStyle = '#f2f2f0';
-      g.strokeStyle = '#f2f2f0';
+  // 8) WB Left-Turn Lane solid white channelizing line at x in [-438, -325]
+  markingsGroup.add(buildProfiledStrip({
+    x0: -438, x1: -325,
+    z0Fn: -29.26 - 0.10, z1Fn: -29.26 + 0.10,
+    zSub: 1, yOffset: 0.012,
+    material: matPaintWhite,
+    name: 'mark_wb_left_turn_channel_line_x450',
+    citation: 'USGS NAIP aerial; MUTCD Section 3B.04 (Solid white turn-lane channelizing line at x=-450 crossover)'
+  }));
 
-      g.save();
-      if (dir === 'right') {
-        g.translate(0, 256);
-        g.scale(1, -1);
+  // 9) Turn-lane arrows & 'ONLY' legends (crisp 3D vector geometry + high-contrast retroreflective paint)
+  // Using exact 3D draped polygon geometry guarantees zero blurry pixels and 100% fidelity in both WebGL and headless Node
+  function buildTurnArrowMesh(xCenter, zCenter, travelDir, turnDir, name) {
+    // travelDir: +1 for EB (+X), -1 for WB (-X)
+    // turnDir: 'left' (turns toward -Z for EB, +Z for WB) or 'right' (turns toward +Z for EB)
+    const zSign = (travelDir === 1)
+      ? (turnDir === 'left' ? -1 : 1)
+      : (turnDir === 'left' ? 1 : -1);
+
+    // Local coordinates (u along travel direction [-1.2, +1.2], v across lane toward turn direction [-0.9, +0.9])
+    const quads = [
+      // Straight tail shaft
+      [-1.20, -0.35,  0.10, -0.13],
+      // Curved elbow segment 1
+      [ 0.10, -0.35,  0.40,  0.02],
+      // Curved elbow segment 2 (vertical stem going toward arrowhead)
+      [ 0.14,  0.02,  0.42,  0.38]
+    ];
+
+    const positions = [];
+    const normals = [];
+    const indices = [];
+    let vIdx = 0;
+
+    function addWorldPt(u, v) {
+      const wx = xCenter + u * travelDir;
+      const wz = zCenter + v * zSign;
+      const wy = ctx.roadY(wx) + 0.015;
+      positions.push(wx, wy, wz);
+      normals.push(0, 1, 0);
+      return vIdx++;
+    }
+
+    for (const [u0, v0, u1, v1] of quads) {
+      const a = addWorldPt(u0, v0);
+      const b = addWorldPt(u1, v0);
+      const c = addWorldPt(u1, v1);
+      const d = addWorldPt(u0, v1);
+      if (travelDir * zSign > 0) {
+        indices.push(a, b, c, a, c, d);
+      } else {
+        indices.push(a, c, b, a, d, c);
       }
-      // Stem coming from west (left of canvas) and curving north (top of canvas)
-      g.beginPath();
-      g.moveTo(20, 175);
-      g.lineTo(115, 175);
-      g.quadraticCurveTo(175, 175, 175, 115);
-      g.lineTo(175, 95);
-      g.lineTo(222, 95);
-      g.lineTo(155, 22);
-      g.lineTo(88, 95);
-      g.lineTo(135, 95);
-      g.lineTo(135, 118);
-      g.quadraticCurveTo(135, 138, 112, 138);
-      g.lineTo(20, 138);
-      g.closePath();
-      g.fill();
-      g.restore();
-
-      const tex = new THREE.CanvasTexture(c);
-      tex.colorSpace = THREE.SRGBColorSpace;
-      tex.anisotropy = 8;
-      return new THREE.MeshStandardMaterial({
-        map: tex,
-        transparent: true,
-        roughness: 0.5,
-        metalness: 0.0,
-        polygonOffset: true,
-        polygonOffsetFactor: -4,
-        polygonOffsetUnits: -4
-      });
     }
-    return matPaintWhite;
-  }
 
-  function makeOnlyLegendDecal() {
-    const c = ctx.makeCanvas(256, 256);
-    if (c) {
-      const g = c.getContext('2d');
-      g.clearRect(0, 0, 256, 256);
-      g.save();
-      // Rotate so text reads to eastbound drivers (approaching from -X looking +X)
-      g.translate(128, 128);
-      g.rotate(-Math.PI / 2);
-      g.scale(1.0, 2.2); // MUTCD elongated pavement legend aspect
-      g.fillStyle = '#f2f2f0';
-      g.font = 'bold 58px sans-serif';
-      g.textAlign = 'center';
-      g.textBaseline = 'middle';
-      g.fillText('ONLY', 0, 0);
-      g.restore();
-
-      const tex = new THREE.CanvasTexture(c);
-      tex.colorSpace = THREE.SRGBColorSpace;
-      tex.anisotropy = 8;
-      return new THREE.MeshStandardMaterial({
-        map: tex,
-        transparent: true,
-        roughness: 0.5,
-        metalness: 0.0,
-        polygonOffset: true,
-        polygonOffsetFactor: -4,
-        polygonOffsetUnits: -4
-      });
+    // Arrowhead triangle pointing toward +v
+    const tL = addWorldPt(-0.18, 0.35);
+    const tR = addWorldPt(0.74, 0.35);
+    const tTip = addWorldPt(0.28, 0.88);
+    if (travelDir * zSign > 0) {
+      indices.push(tL, tR, tTip);
+    } else {
+      indices.push(tL, tTip, tR);
     }
-    return matPaintWhite;
-  }
 
-  function buildRoadDecalPatch(xCenter, zCenter, lenX, widthZ, mat, name) {
-    const x0 = xCenter - lenX * 0.5;
-    const x1 = xCenter + lenX * 0.5;
-    const xm = xCenter;
-    const z0 = zCenter - widthZ * 0.5;
-    const z1 = zCenter + widthZ * 0.5;
-    const y0 = ctx.roadY(x0) + 0.015;
-    const ym = ctx.roadY(xm) + 0.015;
-    const y1 = ctx.roadY(x1) + 0.015;
-
-    const pos = new Float32Array([
-      x0, y0, z0,  x0, y0, z1,
-      xm, ym, z0,  xm, ym, z1,
-      x1, y1, z0,  x1, y1, z1
-    ]);
-    const norm = new Float32Array([
-      0, 1, 0,  0, 1, 0,
-      0, 1, 0,  0, 1, 0,
-      0, 1, 0,  0, 1, 0
-    ]);
-    const uv = new Float32Array([
-      0, 1,  0, 0,
-      0.5, 1,  0.5, 0,
-      1, 1,  1, 0
-    ]);
     const geom = new THREE.BufferGeometry();
-    geom.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    geom.setAttribute('normal', new THREE.BufferAttribute(norm, 3));
-    geom.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
-    geom.setIndex([0, 1, 2, 2, 1, 3, 2, 3, 4, 4, 3, 5]);
-    const m = new THREE.Mesh(geom, mat);
-    m.name = name;
-    m.userData.citation = 'MUTCD Section 3B.20 (Turn Lane-Use Arrow and ONLY Pavement Markings)';
-    return m;
+    geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geom.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+    geom.setIndex(indices);
+
+    const mesh = new THREE.Mesh(geom, matPaintWhite);
+    mesh.name = name;
+    mesh.userData.citation = 'MUTCD Section 3B.20 (Turn Lane-Use Arrow Pavement Marking); USGS NAIP aerial';
+    return mesh;
   }
 
-  const matLeftArrow = makeTurnArrowDecal('left');
-  const matRightArrow = makeTurnArrowDecal('right');
-  const matOnlyDecal = makeOnlyLegendDecal();
+  function buildOnlyLegendMesh(xCenter, zCenter, travelDir, name) {
+    // Crisp vector stroke bars for 'O N L Y' reading to approaching drivers
+    // u along travel direction (elongated 2.4 m tall letters), v across lane from left to right of driver
+    const strokes = [
+      // 'O' (v in [-0.95, -0.55])
+      [-1.15, -0.95,  1.15, -0.85],
+      [-1.15, -0.65,  1.15, -0.55],
+      [-1.15, -0.85, -0.85, -0.65],
+      [ 0.85, -0.85,  1.15, -0.65],
+      // 'N' (v in [-0.42, -0.02])
+      [-1.15, -0.42,  1.15, -0.32],
+      [-1.15, -0.12,  1.15, -0.02],
+      [-0.35, -0.32,  0.35, -0.12],
+      // 'L' (v in [0.10, 0.48])
+      [-1.15,  0.10,  1.15,  0.20],
+      [-1.15,  0.20, -0.85,  0.48],
+      // 'Y' (v in [0.58, 0.98])
+      [ 0.05,  0.58,  1.15,  0.68],
+      [ 0.05,  0.88,  1.15,  0.98],
+      [-1.15,  0.73,  0.20,  0.83]
+    ];
 
-  // 2 Left-turn arrows + ONLY legend in EB left-turn lane (z = -7.32)
-  markingsGroup.add(buildRoadDecalPatch(-150, -7.32, 2.44, 1.83, matLeftArrow, 'mark_eb_left_turn_arrow_1'));
-  markingsGroup.add(buildRoadDecalPatch(-112, -7.32, 2.44, 2.10, matOnlyDecal, 'mark_eb_left_turn_only_legend'));
-  markingsGroup.add(buildRoadDecalPatch(-75, -7.32, 2.44, 1.83, matLeftArrow, 'mark_eb_left_turn_arrow_2'));
+    const positions = [];
+    const normals = [];
+    const indices = [];
+    let vIdx = 0;
 
-  // 1 Right-turn arrow + ONLY legend in EB right-turn lane (z = 3.66)
-  markingsGroup.add(buildRoadDecalPatch(-130, 3.66, 2.44, 2.10, matOnlyDecal, 'mark_eb_right_turn_only_legend'));
-  markingsGroup.add(buildRoadDecalPatch(-85, 3.66, 2.44, 1.83, matRightArrow, 'mark_eb_right_turn_arrow_1'));
+    // For EB (+X), driver's left-to-right is -Z to +Z (vSign = +1)
+    const vSign = travelDir;
 
-  // 9) Raised Pavement Markers (RPMs) every 12.2 m via InstancedMesh
+    function addPt(u, v) {
+      const wx = xCenter + u * travelDir;
+      const wz = zCenter + v * vSign;
+      const wy = ctx.roadY(wx) + 0.015;
+      positions.push(wx, wy, wz);
+      normals.push(0, 1, 0);
+      return vIdx++;
+    }
+
+    for (const [u0, v0, u1, v1] of strokes) {
+      const a = addPt(u0, v0);
+      const b = addPt(u1, v0);
+      const c = addPt(u1, v1);
+      const d = addPt(u0, v1);
+      indices.push(a, c, b, a, d, c);
+      indices.push(a, b, c, a, c, d);
+    }
+
+    const geom = new THREE.BufferGeometry();
+    geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geom.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+    geom.setIndex(indices);
+
+    const mesh = new THREE.Mesh(geom, matPaintWhite);
+    mesh.name = name;
+    mesh.userData.citation = 'MUTCD Section 3B.20 (Elongated ONLY Pavement Legend)';
+    return mesh;
+  }
+
+  // Primary EB Left-Turn Lane (z = -7.32): 3 left-turn arrows (matching aerial positions) + ONLY legend
+  markingsGroup.add(buildTurnArrowMesh(-162, -7.32, +1, 'left', 'mark_eb_left_turn_arrow_1'));
+  markingsGroup.add(buildOnlyLegendMesh(-136, -7.32, +1, 'mark_eb_left_turn_only_legend'));
+  markingsGroup.add(buildTurnArrowMesh(-110, -7.32, +1, 'left', 'mark_eb_left_turn_arrow_2'));
+  markingsGroup.add(buildTurnArrowMesh(-82, -7.32, +1, 'left', 'mark_eb_left_turn_arrow_3'));
+
+  // Primary EB Right-Turn Lane (z = 3.66): right-turn arrows + ONLY legend
+  markingsGroup.add(buildTurnArrowMesh(-150, 3.66, +1, 'right', 'mark_eb_right_turn_arrow_1'));
+  markingsGroup.add(buildOnlyLegendMesh(-118, 3.66, +1, 'mark_eb_right_turn_only_legend'));
+  markingsGroup.add(buildTurnArrowMesh(-84, 3.66, +1, 'right', 'mark_eb_right_turn_arrow_2'));
+
+  // Secondary x=-450 Crossover Turn-Lane Arrows (visible in Aerial Image 1)
+  markingsGroup.add(buildTurnArrowMesh(-410, -27.43, -1, 'left', 'mark_wb_left_turn_arrow_x450_1'));
+  markingsGroup.add(buildTurnArrowMesh(-355, -27.43, -1, 'left', 'mark_wb_left_turn_arrow_x450_2'));
+  markingsGroup.add(buildTurnArrowMesh(-545, -7.32, +1, 'left', 'mark_eb_left_turn_arrow_x450_1'));
+  markingsGroup.add(buildTurnArrowMesh(-490, -7.32, +1, 'left', 'mark_eb_left_turn_arrow_x450_2'));
+
+  // 10) Raised Pavement Markers (RPMs) every 12.2 m via InstancedMesh
   const rpmGeom = new THREE.BoxGeometry(0.10, 0.018, 0.10);
   const matRpmClear = new THREE.MeshStandardMaterial({
     color: 0xffffff,
@@ -780,9 +995,11 @@ export default function region(THREE, assets, ctx) {
       clearRpmCoords.push([x, 1.83]);
       if (x + 6.1 <= X_MAX) clearRpmCoords.push([x + 6.1, 1.83]);
     }
-    // Amber RPMs along median-side yellow edge lines
-    amberRpmCoords.push([x, ebLeftInnerZ(x)]);
-    amberRpmCoords.push([x, -29.26]);
+    // Amber RPMs along median-side yellow edge lines (skipping the x=-450 crossover opening)
+    if (x < -462 || x > -438) {
+      amberRpmCoords.push([x, ebLeftInnerZ(x)]);
+      amberRpmCoords.push([x, wbLeftInnerZ(x)]);
+    }
   }
 
   const instRpmClear = new THREE.InstancedMesh(rpmGeom, matRpmClear, clearRpmCoords.length);
@@ -796,7 +1013,7 @@ export default function region(THREE, assets, ctx) {
   const dummy = new THREE.Object3D();
   for (let i = 0; i < clearRpmCoords.length; i++) {
     const [rx, rz] = clearRpmCoords[i];
-    const slope = (ctx.roadY(rx + 0.5) - ctx.roadY(rx - 0.5));
+    const slope = roadSlope(rx);
     dummy.position.set(rx, ctx.roadY(rx) + 0.009, rz);
     dummy.rotation.set(0, 0, Math.atan2(slope, 1.0));
     dummy.updateMatrix();
@@ -806,7 +1023,7 @@ export default function region(THREE, assets, ctx) {
 
   for (let i = 0; i < amberRpmCoords.length; i++) {
     const [rx, rz] = amberRpmCoords[i];
-    const slope = (ctx.roadY(rx + 0.5) - ctx.roadY(rx - 0.5));
+    const slope = roadSlope(rx);
     dummy.position.set(rx, ctx.roadY(rx) + 0.009, rz);
     dummy.rotation.set(0, 0, Math.atan2(slope, 1.0));
     dummy.updateMatrix();
@@ -820,14 +1037,13 @@ export default function region(THREE, assets, ctx) {
   root.add(markingsGroup);
 
   // =========================================================================
-  // 4. ROADSIDE SIGNS (Breakaway low-profile rural signs <= 2.5 m tall)
+  // 4. ROADSIDE SIGNS (Breakaway low-profile rural signs <= 2.4 m tall)
   // =========================================================================
   const signsGroup = new THREE.Group();
   signsGroup.name = 'roadside_signs';
   signsGroup.userData.citation = `${CITE.speed}; ${CITE.noObstruction}; MUTCD 2009 Chapter 2A/2B/2C`;
 
-  // Helper to clamp total sign height <= 2.45 m inside the keep-clear corridor
-  function clampSignHeight(signObj, maxH = 2.42) {
+  function clampSignHeight(signObj, maxH = 2.40) {
     signObj.updateMatrixWorld(true);
     const box = new THREE.Box3().setFromObject(signObj);
     const h = box.max.y - box.min.y;
@@ -847,7 +1063,7 @@ export default function region(THREE, assets, ctx) {
     mountHeight: 1.45,
     rural: true
   });
-  clampSignHeight(signSpeedEB, 2.40);
+  clampSignHeight(signSpeedEB, 2.38);
   signSpeedEB.position.set(-600, ctx.groundY(-600, 6.0), 6.0);
   signSpeedEB.rotation.y = Math.PI / 2;
   signSpeedEB.name = 'sign_eb_speed_limit_65';
@@ -866,7 +1082,6 @@ export default function region(THREE, assets, ctx) {
     bg: '#f2a900',
     fg: '#111111'
   });
-  // Add an actual diamond warning plate on the front of the post for authentic W2-2 silhouette
   {
     const c = ctx.makeCanvas(256, 256);
     let warnMat;
@@ -877,7 +1092,6 @@ export default function region(THREE, assets, ctx) {
       g.strokeStyle = '#111111';
       g.lineWidth = 10;
       g.strokeRect(10, 10, 236, 236);
-      // Draw W2-2 graphic symbol (vertical mainline with right side-road stem) in rotated diamond space
       g.save();
       g.translate(128, 128);
       g.rotate(-Math.PI / 4);
@@ -898,7 +1112,7 @@ export default function region(THREE, assets, ctx) {
     diamondPlate.name = 'w2_2_diamond_face';
     signWarnEB.add(diamondPlate);
   }
-  clampSignHeight(signWarnEB, 2.40);
+  clampSignHeight(signWarnEB, 2.38);
   signWarnEB.position.set(-480, ctx.groundY(-480, 6.0), 6.0);
   signWarnEB.rotation.y = Math.PI / 2;
   signWarnEB.name = 'sign_eb_w2_2_side_road_warning';
@@ -917,7 +1131,7 @@ export default function region(THREE, assets, ctx) {
     bg: '#00653a',
     fg: '#ffffff'
   });
-  clampSignHeight(signMile29, 1.90);
+  clampSignHeight(signMile29, 1.85);
   signMile29.position.set(-250, ctx.groundY(-250, 5.4), 5.4);
   signMile29.rotation.y = Math.PI / 2;
   signMile29.name = 'sign_eb_mile_marker_29';
@@ -936,7 +1150,7 @@ export default function region(THREE, assets, ctx) {
     bg: '#00653a',
     fg: '#ffffff'
   });
-  clampSignHeight(signAdvanceStreet, 2.35);
+  clampSignHeight(signAdvanceStreet, 2.32);
   signAdvanceStreet.position.set(-250, ctx.groundY(-250, 6.6), 6.6);
   signAdvanceStreet.rotation.y = Math.PI / 2;
   signAdvanceStreet.name = 'sign_eb_advance_ne_140th_ct';
@@ -953,7 +1167,7 @@ export default function region(THREE, assets, ctx) {
     mountHeight: 1.45,
     rural: true
   });
-  clampSignHeight(signSpeedWB, 2.40);
+  clampSignHeight(signSpeedWB, 2.38);
   signSpeedWB.position.set(-120, ctx.groundY(-120, -40.5), -40.5);
   signSpeedWB.rotation.y = -Math.PI / 2;
   signSpeedWB.name = 'sign_wb_speed_limit_65';
@@ -969,11 +1183,15 @@ export default function region(THREE, assets, ctx) {
   delineatorsGroup.name = 'flexible_delineator_posts';
   delineatorsGroup.userData.citation = 'MUTCD Section 3F.02-3F.04 (Flexible roadside delineators, 1.2 m height, 60 m spacing)';
 
-  const delinXs = [];
+  const delinCoords = [];
   for (let x = -900; x <= -60; x += 60) {
-    delinXs.push(x);
+    // Shift slightly if landing inside the x=-450 side-road apron
+    const xAdj = (Math.abs(x - (-450)) < 12) ? (x - 14) : x;
+    const zEB = ebRightShoulderOuterZ(xAdj) + 0.55;
+    delinCoords.push([xAdj, zEB]);
+    const zWB = -38.10 - 0.55;
+    delinCoords.push([xAdj, zWB]);
   }
-  const delinCount = delinXs.length * 2; // EB south outer shoulder + WB north outer shoulder
 
   const postGeom = new THREE.BoxGeometry(0.025, 1.20, 0.085);
   postGeom.translate(0, 0.60, 0);
@@ -993,36 +1211,22 @@ export default function region(THREE, assets, ctx) {
     metalness: 0.15
   });
 
-  const instDelinPost = new THREE.InstancedMesh(postGeom, matDelinPost, delinCount);
+  const instDelinPost = new THREE.InstancedMesh(postGeom, matDelinPost, delinCoords.length);
   instDelinPost.name = 'delineator_posts_white';
   instDelinPost.userData.citation = 'MUTCD Section 3F.03 (1.2 m flexible white polymer delineator posts)';
 
-  const instDelinBand = new THREE.InstancedMesh(bandGeom, matDelinRefl, delinCount);
+  const instDelinBand = new THREE.InstancedMesh(bandGeom, matDelinRefl, delinCoords.length);
   instDelinBand.name = 'delineator_reflective_bands';
   instDelinBand.userData.citation = 'MUTCD Section 3F.03 (Retroreflective white sheeting on top of delineator posts)';
 
-  let dIdx = 0;
-  for (let i = 0; i < delinXs.length; i++) {
-    const x = delinXs[i];
-    // EB outer shoulder edge + 0.55 m
-    const zEB = ebRightShoulderOuterZ(x) + 0.55;
-    const yEB = ctx.groundY(x, zEB);
-    dummy.position.set(x, yEB, zEB);
+  for (let i = 0; i < delinCoords.length; i++) {
+    const [dx, dz] = delinCoords[i];
+    const dy = ctx.groundY(dx, dz);
+    dummy.position.set(dx, dy, dz);
     dummy.rotation.set(0, 0, 0);
     dummy.updateMatrix();
-    instDelinPost.setMatrixAt(dIdx, dummy.matrix);
-    instDelinBand.setMatrixAt(dIdx, dummy.matrix);
-    dIdx++;
-
-    // WB outer shoulder edge - 0.55 m
-    const zWB = -38.10 - 0.55;
-    const yWB = ctx.groundY(x, zWB);
-    dummy.position.set(x, yWB, zWB);
-    dummy.rotation.set(0, 0, 0);
-    dummy.updateMatrix();
-    instDelinPost.setMatrixAt(dIdx, dummy.matrix);
-    instDelinBand.setMatrixAt(dIdx, dummy.matrix);
-    dIdx++;
+    instDelinPost.setMatrixAt(i, dummy.matrix);
+    instDelinBand.setMatrixAt(i, dummy.matrix);
   }
   instDelinPost.instanceMatrix.needsUpdate = true;
   instDelinBand.instanceMatrix.needsUpdate = true;
@@ -1032,7 +1236,7 @@ export default function region(THREE, assets, ctx) {
   root.add(delineatorsGroup);
 
   // =========================================================================
-  // 6. MEDIAN SWALE DRAINAGE CULVERT HEADWALL PAIR AT X = -520
+  // 6. MEDIAN SWALE DRAINAGE CULVERT HEADWALL PAIR AT X = -520 & DITCH PIPES
   // =========================================================================
   const culvertGroup = new THREE.Group();
   culvertGroup.name = 'median_drainage_culvert_x520';
@@ -1040,67 +1244,61 @@ export default function region(THREE, assets, ctx) {
 
   const cx = -520;
   const cz = L.median.center; // -15.24
-  const swaleY = ctx.groundY(cx, cz);
+  const swaleYCenter = ctx.groundY(cx, cz);
+  const gradeSlope = roadSlope(cx);
 
   const matConcrete = ctx.surface('concrete', { color: 0x9b9992, roughness: 0.85 });
-  const matCulvertInterior = new THREE.MeshStandardMaterial({ color: 0x202224, roughness: 0.95 });
+  const matCulvertInterior = new THREE.MeshStandardMaterial({ color: 0x1e2022, roughness: 0.95 });
   const matIronGrate = new THREE.MeshStandardMaterial({ color: 0x3b3530, roughness: 0.7, metalness: 0.6 });
 
-  // Buried concrete pipe barrel (running along X in the median swale, low profile <= 0.40 m above swale invert)
   const pipeLen = 6.8;
-  const pipeRadius = 0.36;
+  const pipeRadius = 0.34;
   const pipeBarrel = new THREE.Mesh(
     new THREE.CylinderGeometry(pipeRadius, pipeRadius, pipeLen, 16, 1, true),
     matConcrete
   );
-  pipeBarrel.rotation.z = Math.PI / 2;
-  pipeBarrel.position.set(cx, swaleY + 0.04, cz);
+  pipeBarrel.rotation.z = Math.PI / 2 + Math.atan2(gradeSlope, 1.0);
+  pipeBarrel.position.set(cx, swaleYCenter + 0.02, cz);
   pipeBarrel.name = 'culvert_concrete_pipe_barrel';
   culvertGroup.add(pipeBarrel);
 
-  // Dark pipe openings at both ends
-  const endCapGeom = new THREE.CircleGeometry(pipeRadius * 0.88, 16);
-  const endWest = new THREE.Mesh(endCapGeom, matCulvertInterior);
-  endWest.rotation.y = -Math.PI / 2;
-  endWest.position.set(cx - pipeLen * 0.5 + 0.02, swaleY + 0.04, cz);
-  culvertGroup.add(endWest);
-
-  const endEast = new THREE.Mesh(endCapGeom, matCulvertInterior);
-  endEast.rotation.y = Math.PI / 2;
-  endEast.position.set(cx + pipeLen * 0.5 - 0.02, swaleY + 0.04, cz);
-  culvertGroup.add(endEast);
-
-  // Pair of low concrete headwalls + sloped mitered aprons & safety grates at x = -523.4 and x = -516.6
   function buildHeadwallEnd(endX, dirSign, label) {
     const hw = new THREE.Group();
     hw.name = label;
+    const localY = ctx.groundY(endX, cz);
 
-    // Concrete headwall collar (0.42 m above swale ground, well under 0.6 m sightline limit)
-    const wall = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.52, 2.20), matConcrete);
-    wall.position.set(endX, swaleY + 0.16, cz);
+    // Concrete headwall collar (<= 0.38 m above swale invert, well under 0.6 m sightline limit)
+    const wall = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.48, 2.20), matConcrete);
+    wall.position.set(endX, localY + 0.14, cz);
     hw.add(wall);
 
+    // Dark pipe opening
+    const cap = new THREE.Mesh(new THREE.CircleGeometry(pipeRadius * 0.88, 16), matCulvertInterior);
+    cap.rotation.y = dirSign * (Math.PI / 2);
+    cap.position.set(endX + dirSign * 0.15, localY + 0.02, cz);
+    hw.add(cap);
+
     // Flared wingwalls
-    const wingLeft = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.38, 0.18), matConcrete);
-    wingLeft.position.set(endX + dirSign * 0.38, swaleY + 0.09, cz - 1.18);
+    const wingLeft = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.36, 0.18), matConcrete);
+    wingLeft.position.set(endX + dirSign * 0.38, localY + 0.08, cz - 1.18);
     wingLeft.rotation.y = -dirSign * 0.32;
     hw.add(wingLeft);
 
-    const wingRight = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.38, 0.18), matConcrete);
-    wingRight.position.set(endX + dirSign * 0.38, swaleY + 0.09, cz + 1.18);
+    const wingRight = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.36, 0.18), matConcrete);
+    wingRight.position.set(endX + dirSign * 0.38, localY + 0.08, cz + 1.18);
     wingRight.rotation.y = dirSign * 0.32;
     hw.add(wingRight);
 
     // Concrete scour apron slab
     const apron = new THREE.Mesh(new THREE.BoxGeometry(1.10, 0.10, 2.40), matConcrete);
-    apron.position.set(endX + dirSign * 0.45, swaleY - 0.02, cz);
+    apron.position.set(endX + dirSign * 0.45, localY - 0.02, cz);
     hw.add(apron);
 
-    // Traversable steel safety bars across the mitered opening (FDOT standard for median cross drains)
+    // Traversable steel safety bars across the mitered opening
     for (let b = -2; b <= 2; b++) {
-      const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.95, 6), matIronGrate);
+      const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.92, 6), matIronGrate);
       bar.rotation.z = dirSign * 1.15;
-      bar.position.set(endX + dirSign * 0.42, swaleY + 0.16, cz + b * 0.22);
+      bar.position.set(endX + dirSign * 0.42, localY + 0.14, cz + b * 0.22);
       hw.add(bar);
     }
 
@@ -1109,6 +1307,31 @@ export default function region(THREE, assets, ctx) {
 
   culvertGroup.add(buildHeadwallEnd(cx - pipeLen * 0.5, -1, 'culvert_headwall_west'));
   culvertGroup.add(buildHeadwallEnd(cx + pipeLen * 0.5, +1, 'culvert_headwall_east'));
+
+  // Low-profile side-drain culvert pipes under the aerial side-road/driveway aprons at x=-152, x=-262, and x=-450
+  function buildDitchPipe(px, pz, lenX, name) {
+    const g = new THREE.Group();
+    g.name = name;
+    const py = ctx.groundY(px, pz);
+    const barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, lenX, 12), matConcrete);
+    barrel.rotation.z = Math.PI / 2 + Math.atan2(roadSlope(px), 1.0);
+    barrel.position.set(px, py + 0.16, pz);
+    g.add(barrel);
+
+    const hwW = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.42, 1.10), matConcrete);
+    hwW.position.set(px - lenX * 0.5, ctx.groundY(px - lenX * 0.5, pz) + 0.18, pz);
+    g.add(hwW);
+
+    const hwE = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.42, 1.10), matConcrete);
+    hwE.position.set(px + lenX * 0.5, ctx.groundY(px + lenX * 0.5, pz) + 0.18, pz);
+    g.add(hwE);
+    return g;
+  }
+
+  culvertGroup.add(buildDitchPipe(-152, 9.0, 8.2, 'ditch_culvert_south_x152'));
+  culvertGroup.add(buildDitchPipe(-262, 9.0, 8.2, 'ditch_culvert_south_x262'));
+  culvertGroup.add(buildDitchPipe(-450, 9.0, 18.0, 'ditch_culvert_south_x450'));
+  culvertGroup.add(buildDitchPipe(-450, -42.5, 18.0, 'ditch_culvert_north_x450'));
 
   root.add(culvertGroup);
 

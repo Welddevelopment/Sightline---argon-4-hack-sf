@@ -1,0 +1,181 @@
+{
+  "caseId": "demo-4ee683",
+  "status": "ready",
+  "step": "done",
+  "message": "Reconstruction complete (replayed from the recorded live run).",
+  "mode": "replay",
+  "pid": 10657,
+  "startedAt": "2026-10-25T20:29:50.111Z",
+  "buildingAt": "2026-10-25T20:29:50.111Z",
+  "finishedAt": "2026-10-25T20:30:12.251Z",
+  "error": null,
+  "resumable": false,
+  "events": [
+    {
+      "at": "2026-10-25T20:29:50.111Z",
+      "type": "start",
+      "message": "Replaying the recorded run of cases/demo (no Argon calls)"
+    },
+    {
+      "at": "2026-10-25T20:29:50.114Z",
+      "type": "progress",
+      "step": "evidence",
+      "round": 1,
+      "message": "Case file: 6 document(s), 1 video(s), 1 image(s) — already attached",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:29:51.375Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "Argon is reading every document and watching every video to write the world module…",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:29:52.310Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "World module written: /cases/demo-4ee683/worlds/world_v1.js",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:29:53.245Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "live timing for world generation not recorded in the cache · replayed",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:29:54.179Z",
+      "type": "progress",
+      "step": "render",
+      "round": 1,
+      "message": "Rendering /cases/demo-4ee683/worlds/world_v1.js from overhead + witness viewpoints…",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:29:54.811Z",
+      "type": "progress",
+      "step": "render",
+      "round": 1,
+      "message": "Rendered 0 videos, 0 stills",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:29:55.443Z",
+      "type": "progress",
+      "step": "checks",
+      "round": 1,
+      "message": "Independent checks: 8/8 pass",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:29:56.719Z",
+      "type": "progress",
+      "step": "critique",
+      "round": 1,
+      "message": "Argon is watching the witness-view renders against the evidence videos and documents…",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:29:57.658Z",
+      "type": "progress",
+      "step": "critique",
+      "round": 1,
+      "message": "world_patched: World v1 tests Witness B's claim at t=8.5s, while the car is still well up the approach. She testified she watched the car \"right up until the moment it hit\" (Depo 27:46). Re-timed to the moment she describes, the turning truck stands between her marked position and the car from about t=9.1s to impact. The world is patched and her claim must be re-tested.",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:29:58.619Z",
+      "type": "progress",
+      "step": "critique",
+      "round": 1,
+      "message": "live timing for critique round 1 not recorded in the cache · replayed",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:29:59.555Z",
+      "type": "progress",
+      "step": "patch",
+      "round": 1,
+      "message": "Argon patched the world → /cases/demo-4ee683/worlds/world_v2.js",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:30:00.817Z",
+      "type": "progress",
+      "step": "render",
+      "round": 2,
+      "message": "Rendering /cases/demo-4ee683/worlds/world_v2.js from overhead + witness viewpoints…",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:30:01.451Z",
+      "type": "progress",
+      "step": "render",
+      "round": 2,
+      "message": "Rendered 0 videos, 0 stills",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:30:02.087Z",
+      "type": "progress",
+      "step": "checks",
+      "round": 2,
+      "message": "Independent checks: 7/8 pass — wit_B: blocked by veh_T_trailer",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:30:03.350Z",
+      "type": "progress",
+      "step": "critique",
+      "round": 2,
+      "message": "Argon is watching the witness-view renders against the evidence videos and documents…",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:30:04.287Z",
+      "type": "progress",
+      "step": "critique",
+      "round": 2,
+      "message": "contradiction_found: With Witness B at her Exhibit 4 mark and her claim tested at the moment she describes, the world matches the evidence. Her testimony that she watched the car \"the whole way in\" with \"nothing in the way\" is contradicted: the truck-tractor and then the refrigerated van semitrailer of Vehicle T block her line of sight for about the last 1.3 s before impact. No further patch is needed; the contradiction is in the testimony.",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:30:05.223Z",
+      "type": "progress",
+      "step": "critique",
+      "round": 2,
+      "message": "live timing for critique round 2 not recorded in the cache · replayed",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T20:30:06.163Z",
+      "type": "progress",
+      "step": "checks",
+      "round": "confirmed",
+      "message": "Reviewer moved Witness B 8.2 m on the review screen → re-running the independent checks on the recorded world with the confirmed positions (local, live)…"
+    },
+    {
+      "at": "2026-10-25T20:30:12.248Z",
+      "type": "progress",
+      "step": "checks",
+      "message": "Sightline wit_B: VISIBLE from the confirmed position (recorded run: BLOCKED by veh_T_trailer)"
+    },
+    {
+      "at": "2026-10-25T20:30:12.249Z",
+      "type": "progress",
+      "step": "checks",
+      "message": "Independent checks (live, 1779 ms): 8/8 pass · Argon findings are from the recorded run"
+    },
+    {
+      "at": "2026-10-25T20:30:12.251Z",
+      "type": "done",
+      "message": "Reconstruction complete (replayed from the recorded live run)."
+    }
+  ],
+  "round": "confirmed"
+}

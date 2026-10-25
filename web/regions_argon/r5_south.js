@@ -1,8 +1,15 @@
-// r5_south — South roadside (z in [3.35, 500]): NE 140th Ct (z>=16), retail store + apron, bench shelter, utility pole line + wires, wire fences, residence & south vegetation.
+// r5_south — South roadside (z in [3.35, 500]): NE 140th Ct (z>=16), retail store + apron, SW corner commercial building + canopy + island, dirt road at z~130, utility pole line + wires, wire fences, residence & aerial-matched south vegetation.
+// DEFECTS (round 1):
+// 1. Missing SW-corner commercial building, canopy, paved/shell lot, and landscaped island (`layout.aerial.swCorner`: island x [-24,-2] z [3,12], canopy x [-22,-10] z [22,30], building x [-24,-6] z [37,52]) visible in USGS NAIP aerial -> fix: build the SW corner commercial building, canopy on columns with pumps, shell/paved circulation apron, and low-curbed landscaped island (<0.4m high to preserve sightline).
+// 2. South-west ROW fence (`fence_row_south_far_west`) stopped at x = -702 instead of spanning `layout.rowFence.south.x[0]` = [-1000, -8] at z = 14.5 -> fix: build the west ROW fence along z = 14.5 from x = -1000 to -36 (stopping cleanly at the SW commercial lot entrance) and east ROW fence from x = 310 to 800.
+// 3. Missing east-west dirt/limerock road at z ~ 130 and houses positioned from the USGS NAIP aerial (with skew correction `x_model = x_aerial - 0.33*z`), plus the western building at x ~ -425, z ~ 60 and cleared sandy patches SW (x -500..-300, z 100..300) -> fix: add the z = 130 rural dirt road, aerial-measured houses & driveways, SW commercial/barn structure at (-425, 60), and sandy clearings SW.
+// 4. Forest edge west of NE 140th Ct was pushed back to z > 62 instead of matching the USGS NAIP aerial (which shows dense slash pine/oak forest starting at z ~ 18..25 west of x = -40, while keeping z <= 40 for x in [-700, 0] clear of objects > 0.6 m per keep-clear instructions, and dense forest from z = 41 southward; plus the tree hammock SE of the store around x [12, 55], z [26, 65] and scattered oaks in `openFieldSE` x [60, 260], z [10, 95]) -> fix: place dense instanced pines/oaks starting at z = 41 for x in [-700, -35] (and z = 18 for x < -700), low palmetto/brush (< 0.55 m) at z in [16, 40], the SE hammock behind the store (x 15..55, z 27..68), and scattered oaks in the SE open field.
+// 5. Fence wire strands had no sag between posts -> fix: add realistic mid-span sag to the 4 wire strands and barbed/woven detail.
+
 export default function region(THREE, assets, ctx) {
   const root = new THREE.Group();
   root.name = 'region_r5_south';
-  root.userData.citation = 'NTSB/HAR-17/02 p.1, p.3, p.23, p.29-30 (south roadside, NE 140th Ct, retail store, utility pole, wire fences, residence)';
+  root.userData.citation = 'NTSB/HAR-17/02 p.1, p.3, p.23, p.29-30 & USGS NAIP aerial (south roadside, NE 140th Ct, SE store, SW corner building, utility poles, wire fences, residence, forest)';
 
   const L = ctx.layout;
   const CITE = L.cite || {};
@@ -16,6 +23,8 @@ export default function region(THREE, assets, ctx) {
   const matDriveway = ctx.surface('gravel', { color: 0xc2bdb2, roughness: 0.88, polygonOffset: true });
   const matConcrete = ctx.surface('concrete', { color: 0x9c9a94, roughness: 0.85, polygonOffset: true });
   const matDirtEdge = ctx.surface('dirt', { color: 0x8a7f6d, roughness: 0.92, polygonOffset: true });
+  const matSandClear = ctx.surface('dirt', { color: 0xb8ab93, roughness: 0.94, polygonOffset: true });
+  const matIslandGrass = ctx.surface('grass', { color: 0x5d7042, roughness: 0.92, polygonOffset: true });
 
   const matWoodPost = new THREE.MeshStandardMaterial({ color: 0x5a4632, roughness: 0.88, metalness: 0.0 });
   const matSteelGalv = new THREE.MeshStandardMaterial({ color: 0x8c9094, roughness: 0.45, metalness: 0.75 });
@@ -46,19 +55,40 @@ export default function region(THREE, assets, ctx) {
     return ctx.groundY(x, z);
   }
 
-  // Check if a point is clear of sight corridors, Witness B, Vehicle A rest, and NE 140th Ct
-  function isClearForProp(x, z, extraRadius = 0) {
+  // Distance from point (x, z) to a 2D polyline
+  function distToPolyline(x, z, poly) {
+    let minD = Infinity;
+    for (let i = 0; i < poly.length - 1; i++) {
+      const [x1, z1] = poly[i];
+      const [x2, z2] = poly[i + 1];
+      const dx = x2 - x1, dz = z2 - z1;
+      const len2 = dx * dx + dz * dz;
+      let t = len2 > 0 ? ((x - x1) * dx + (z - z1) * dz) / len2 : 0;
+      t = Math.max(0, Math.min(1, t));
+      const px = x1 + t * dx, pz = z1 + t * dz;
+      const d = Math.hypot(x - px, z - pz);
+      if (d < minD) minD = d;
+    }
+    return minD;
+  }
+
+  // Check if a point is clear of sight corridors, Witness B, Vehicle A path & rest, and NE 140th Ct
+  function isClearForTallProp(x, z, extraRadius = 0) {
     if (ctx.blocked(x, z)) return false;
-    // West sight corridor strict keep-clear (x in [-700, 0], z <= 42)
-    if (x >= -700 && x <= 4 && z <= 42) return false;
-    // Witness B standing point (7.5, 6.5) radius 2.2 m
-    const dxB = x - 7.5, dzB = z - 6.5;
-    if (dxB * dxB + dzB * dzB < (2.2 + extraRadius) * (2.2 + extraRadius)) return false;
+    // West sight corridor strict keep-clear (x in [-700, 0], z <= 40.5)
+    if (x >= -700 && x <= 4.5 && z <= 40.5) return false;
+    // South shoulder clear zone east of intersection (z < 12)
+    if (z < 12.0) return false;
+    // Witness B standing point (7.5, 6.5) radius 2.5 m
+    if (Math.hypot(x - 7.5, z - 6.5) < 2.5 + extraRadius) return false;
     // Car rest point (276.6, 23.9) radius 4.5 m
-    const dxR = x - 276.6, dzR = z - 23.9;
-    if (dxR * dxR + dzR * dzR < (4.5 + extraRadius) * (4.5 + extraRadius)) return false;
-    // NE 140th Ct roadway + shoulders x in [-5.5, 5.5], z in [3.35, 235]
-    if (Math.abs(x) < 5.5 + extraRadius && z >= 3.35 && z <= 235) return false;
+    if (Math.hypot(x - 276.6, z - 23.9) < 4.5 + extraRadius) return false;
+    // Car post-impact path polyline
+    if (L.carPostImpactPath && distToPolyline(x, z, L.carPostImpactPath) < 3.5 + extraRadius) return false;
+    // Truck path polyline
+    if (L.truckPath && distToPolyline(x, z, L.truckPath) < 5.0 + extraRadius) return false;
+    // NE 140th Ct roadway + shoulders x in [-6.5, 6.5], z in [3.35, 240]
+    if (Math.abs(x) < 6.5 + extraRadius && z >= 3.35 && z <= 240) return false;
     return true;
   }
 
@@ -154,7 +184,7 @@ export default function region(THREE, assets, ctx) {
   }
 
   // ---------------------------------------------------------------------------
-  // 1. NE 140th Court (z = 16 to 230, x in [-3.05, 3.05]) + grass/dirt shoulders
+  // 1. NE 140th Court (z = 16 to 230, x in [-3.05, 3.05]) + East-West Dirt Road at z ~ 130
   // ---------------------------------------------------------------------------
   {
     const ne140Group = new THREE.Group();
@@ -201,6 +231,12 @@ export default function region(THREE, assets, ctx) {
       ne140Group.add(wearStrip);
     }
 
+    // East-West unpaved limerock/dirt road at z ~ 130 (visible on USGS NAIP aerial from x = 3.05 to x = 420)
+    const dirtRoad130 = buildConformingPatch(3.05, 420.0, 127.5, 132.5, 52, 2, 0.010, matDriveway, 0.25);
+    dirtRoad130.name = 'dirt_road_z130_east';
+    dirtRoad130.userData.citation = 'USGS NAIP aerial (measured: unpaved E-W local road branching east from NE 140th Ct at z ~ 130 m)';
+    ne140Group.add(dirtRoad130);
+
     // Street name sign at SE corner outside Witness B sightline (at x=5.4, z=16.2)
     try {
       const stSign = assets.sign({
@@ -225,7 +261,97 @@ export default function region(THREE, assets, ctx) {
   }
 
   // ---------------------------------------------------------------------------
-  // 2. Retail Store Apron, Parking Stalls, Wheel Stops & Parked Vehicle
+  // 2. SW Corner Commercial Building, Canopy, Lot & Landscaped Island (`layout.aerial.swCorner`)
+  // ---------------------------------------------------------------------------
+  {
+    const swGroup = new THREE.Group();
+    swGroup.name = 'sw_corner_commercial';
+    swGroup.userData.citation = 'USGS NAIP aerial (measured: layout.aerial.swCorner small commercial building x=[-24,-6] z=[37,52], canopy x=[-22,-10] z=[22,30], landscaped island x=[-24,-2] z=[3,12])';
+
+    // Paved/limerock circulation lot around the SW commercial building & canopy (x in [-35, -3.1], z in [3.35, 56])
+    const swLotNorth = buildConformingPatch(-35.0, -3.1, 3.35, 22.0, 8, 5, 0.007, matGravelApron, 0.22);
+    swLotNorth.name = 'sw_corner_lot_north';
+    swLotNorth.userData.citation = swGroup.userData.citation;
+    swGroup.add(swLotNorth);
+
+    const swLotSouth = buildConformingPatch(-35.0, -3.1, 22.0, 56.0, 8, 8, 0.007, matGravelApron, 0.22);
+    swLotSouth.name = 'sw_corner_lot_south';
+    swLotSouth.userData.citation = swGroup.userData.citation;
+    swGroup.add(swLotSouth);
+
+    // Landscaped corner island at x in [-24, -4], z in [4.2, 11.8] — strictly <= 0.25 m high so sightlines are 100% unobstructed
+    const islGrass = buildConformingPatch(-23.5, -4.5, 4.5, 11.5, 5, 2, 0.025, matIslandGrass, 0.35);
+    islGrass.name = 'sw_corner_island_turf';
+    islGrass.userData.citation = 'USGS NAIP aerial (measured: landscaped corner island SW of side road mouth, kept flush <=0.25m for sightline)';
+    swGroup.add(islGrass);
+
+    // Low concrete curb border around the island (height 0.14 m)
+    const curbSegments = [
+      [-14.0, 4.4, 19.2, 0.14, 0.22],
+      [-14.0, 11.6, 19.2, 0.14, 0.22],
+      [-23.6, 8.0, 0.22, 0.14, 7.2],
+      [-4.4, 8.0, 0.22, 0.14, 7.2]
+    ];
+    for (let i = 0; i < curbSegments.length; i++) {
+      const [cx, cz, cw, ch, cd] = curbSegments[i];
+      const curb = new THREE.Mesh(new THREE.BoxGeometry(cw, ch, cd), matConcrete);
+      curb.position.set(cx, gY(cx, cz) + ch * 0.5, cz);
+      curb.receiveShadow = true;
+      swGroup.add(curb);
+    }
+
+    // Note: layout.aerial.swCorner.canopy is at x in [-22, -10], z in [22, 30] and building at x in [-24, -6], z in [37, 52].
+    // Because the West sight corridor rule states "west sight corridor x [-700, 0], z <= 40 (nothing > 0.6 m there)",
+    // we place the low concrete pump island apron at z in [22, 30] (height 0.18 m <= 0.6 m) and position the tall building
+    // & canopy structure at z >= 40.5 so nothing taller than 0.6 m sits at z <= 40!
+    const pumpIslandPad = new THREE.Mesh(new THREE.BoxGeometry(12.0, 0.16, 8.0), matConcrete);
+    pumpIslandPad.position.set(-16.0, gY(-16.0, 26.0) + 0.08, 26.0);
+    pumpIslandPad.receiveShadow = true;
+    pumpIslandPad.name = 'sw_corner_pump_apron_pad';
+    pumpIslandPad.userData.citation = 'USGS NAIP aerial (measured: SW corner pad at x=[-22,-10], z=[22,30])';
+    swGroup.add(pumpIslandPad);
+
+    // SW Corner Commercial Building at x in [-24, -6] (center -15, width 18), z in [41.0, 53.0] (center 47.0, depth 12, strictly z > 40)
+    const swBldX = -15.0, swBldZ = 47.0, swBldW = 18.0, swBldD = 12.0, swBldH = 4.2;
+    const swFnd = buildFoundationSlab(swBldX, swBldZ, swBldW, swBldD, 0.75, 0.16);
+    swFnd.mesh.name = 'sw_building_foundation';
+    swFnd.mesh.userData.citation = swGroup.userData.citation;
+    swGroup.add(swFnd.mesh);
+
+    const swBld = assets.building({
+      id: 'sw_corner_commercial_bld',
+      w: swBldW,
+      d: swBldD,
+      h: swBldH,
+      kind: 'store',
+      style: 'commercial'
+    });
+    swBld.position.set(swBldX, swFnd.topY, swBldZ);
+    swBld.rotation.y = 0;
+    swBld.name = 'sw_corner_building_shell';
+    swBld.userData.citation = swGroup.userData.citation;
+    swGroup.add(swBld);
+
+    // Attached forecourt canopy just in front of the SW building at z in [40.2, 43.2] (strictly z > 40)
+    const swCanopy = new THREE.Mesh(new THREE.BoxGeometry(12.0, 0.45, 3.0), matWhiteMetal);
+    swCanopy.position.set(-16.0, swFnd.topY + 3.6, 41.6);
+    swCanopy.castShadow = true;
+    swCanopy.name = 'sw_corner_canopy_fascia';
+    swCanopy.userData.citation = swGroup.userData.citation;
+    swGroup.add(swCanopy);
+
+    for (const cx of [-21.2, -16.0, -10.8]) {
+      const col = new THREE.Mesh(new THREE.BoxGeometry(0.24, 3.5, 0.24), matSteelGalv);
+      col.position.set(cx, swFnd.topY + 1.75, 40.4);
+      col.castShadow = true;
+      swGroup.add(col);
+    }
+
+    root.add(swGroup);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 3. Retail Store Apron, Parking Stalls, Wheel Stops & Parked Vehicle (SE Corner)
   // ---------------------------------------------------------------------------
   {
     const apronGroup = new THREE.Group();
@@ -271,15 +397,14 @@ export default function region(THREE, assets, ctx) {
       }
     }
 
-    // Parked vehicle in east stall at x = 23.2, z = 9.0 (well clear of Witness B at (7.5, 6.5) and car path)
-    // Using 1 library parkedVehicle (~68k tris) keeps region well under the 300k triangle budget
-    const pvx = 21.8, pvz = 9.0;
+    // Parked vehicle in east stall at x = 24.6, z = 9.0 (well clear of Witness B at (7.5, 6.5) and car path)
+    const pvx = 24.6, pvz = 9.0;
     if (!ctx.blocked(pvx, pvz)) {
       const veh = assets.parkedVehicle('pickup', { id: 'store_parked_pickup', color: 0x3b526b });
       veh.position.set(pvx, gY(pvx, pvz), pvz);
       veh.rotation.y = Math.PI + 0.03; // nose-in toward store (south, +Z)
       veh.name = 'store_parked_pickup';
-      veh.userData.citation = 'inferred: parked customer vehicle in retail store lot (east stall x=21.8, clear of sightlines)';
+      veh.userData.citation = 'inferred: parked customer vehicle in retail store lot (east stall x=24.6, clear of sightlines)';
       apronGroup.add(veh);
     }
 
@@ -287,7 +412,7 @@ export default function region(THREE, assets, ctx) {
   }
 
   // ---------------------------------------------------------------------------
-  // 3. Open Bench Shelter at (8.0, 7.9)
+  // 4. Open Bench Shelter at (8.0, 7.9)
   // ---------------------------------------------------------------------------
   {
     const shelterGroup = new THREE.Group();
@@ -312,8 +437,8 @@ export default function region(THREE, assets, ctx) {
     sh.userData.citation = shelterGroup.userData.citation;
     shelterGroup.add(sh);
 
-    // Trash receptacle on east side of shelter (x = 10.25, z = 8.2), away from Witness B (7.5, 6.5)
-    const tx = 10.25, tz = 8.2;
+    // Trash receptacle on east side of shelter (x = 10.35, z = 8.2), away from Witness B (7.5, 6.5)
+    const tx = 10.35, tz = 8.2;
     const ty = gY(tx, tz);
     const trash = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.25, 0.78, 10), matDarkMetal);
     trash.position.set(tx, ty + 0.39, tz);
@@ -327,7 +452,7 @@ export default function region(THREE, assets, ctx) {
   }
 
   // ---------------------------------------------------------------------------
-  // 4. Retail Store (SE Corner: center (18, 19), 18 x 12 x 4.5 m, faces North)
+  // 5. Retail Store (SE Corner: center (18, 19), 18 x 12 x 4.5 m, faces North)
   //    + Optional Fuel Island East of Store (x ~ 35.5, z ~ 16.5)
   // ---------------------------------------------------------------------------
   {
@@ -512,12 +637,12 @@ export default function region(THREE, assets, ctx) {
     dmpLid.position.set(dmpX, dmpY + 1.6, dmpZ);
     storeGroup.add(dmpLid);
 
-    // Optional Fuel Island East of Store (x ~ 35.5, z ~ 16.5) — well clear of carPostImpactPath
+    // Optional Fuel Island East of Store (x ~ 35.5, z ~ 18.0) — well clear of carPostImpactPath (which is at z ~ 2.6 at x = 35.5)
     const fuelGroup = new THREE.Group();
     fuelGroup.name = 'store_fuel_island';
     fuelGroup.userData.citation = 'inferred: scene dressing, not in NTSB record (rural store fuel canopy east of store, clear of car path)';
 
-    const fcx = 35.5, fcz = 16.5;
+    const fcx = 35.5, fcz = 18.0;
     const fcy = gY(fcx, fcz);
 
     const island = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.18, 7.6), matConcrete);
@@ -567,7 +692,7 @@ export default function region(THREE, assets, ctx) {
   }
 
   // ---------------------------------------------------------------------------
-  // 5. Utility Pole Line along z = 18.5 (x = -1000 to 800, spacing 75 m,
+  // 6. Utility Pole Line along z = 18.5 (x = -1000 to 800, spacing 75 m,
   //    anchorX = 239.3 — the pole Vehicle A struck) + Sagging Catenary Wires
   // ---------------------------------------------------------------------------
   {
@@ -585,6 +710,7 @@ export default function region(THREE, assets, ctx) {
     const kMax = Math.floor((800 - anchorX) / spacing);
     for (let k = kMin; k <= kMax; k++) {
       const px = +(anchorX + k * spacing).toFixed(2);
+      // Skip any pole inside the side road (|x| < 6) or store footprint/apron (x in [4, 34])
       if (Math.abs(px) < 6.0) continue;
       if (px >= 4.0 && px <= 34.0) continue;
       poleXs.push(px);
@@ -603,7 +729,7 @@ export default function region(THREE, assets, ctx) {
         insulators: 3
       });
       poleObj.position.set(px, py, poleZ);
-      poleObj.rotation.y = Math.PI * 0.5;
+      poleObj.rotation.y = Math.PI * 0.5; // crossarm perpendicular to pole line (along Z)
       poleObj.name = isStruckPole ? 'occ_pole' : `utility_pole_${i}`;
       poleObj.userData.citation = isStruckPole
         ? 'NTSB/HAR-17/02 p.1; facts.txt F24, F26 (wooden utility pole at (239.3, 18.5) struck and broken by Vehicle A)'
@@ -697,8 +823,8 @@ export default function region(THREE, assets, ctx) {
   }
 
   // ---------------------------------------------------------------------------
-  // 6. Wire Fences (NTSB p.1: two wire fences struck by Vehicle A post-impact,
-  //    plus south ROW fence segments outside the car trajectory)
+  // 7. Wire Fences (NTSB p.1: two wire fences struck by Vehicle A post-impact,
+  //    plus south ROW fence segments at x in [-1000, -36] and [310, 800])
   // ---------------------------------------------------------------------------
   {
     const fencesGroup = new THREE.Group();
@@ -717,13 +843,14 @@ export default function region(THREE, assets, ctx) {
       const numBays = Math.max(1, Math.round(totalLen / span));
 
       // Low-poly open-ended geometries to keep InstancedMesh triangle count compact
-      const woodPostGeom = new THREE.CylinderGeometry(0.065, 0.072, 1.35, 5, 1, true);
-      const tPostGeom = new THREE.BoxGeometry(0.035, 1.32, 0.035);
+      const woodPostGeom = new THREE.CylinderGeometry(0.065, 0.072, 1.30, 5, 1, true);
+      const tPostGeom = new THREE.BoxGeometry(0.035, 1.28, 0.035);
       const wireSegGeom = new THREE.CylinderGeometry(0.008, 0.008, 1.0, 3, 1, true);
 
       const woodInst = new THREE.InstancedMesh(woodPostGeom, matWoodPost, numBays + 1);
       const tPostInst = new THREE.InstancedMesh(tPostGeom, matTPost, numBays);
-      const wireInst = new THREE.InstancedMesh(wireSegGeom, matSteelGalv, numBays * 4);
+      // 2 half-span segments per strand per bay so wires sag realistically toward the central T-post
+      const wireInst = new THREE.InstancedMesh(wireSegGeom, matSteelGalv, numBays * 4 * 2);
 
       woodInst.castShadow = true;
       tPostInst.castShadow = true;
@@ -732,6 +859,7 @@ export default function region(THREE, assets, ctx) {
       const upVec = new THREE.Vector3(0, 1, 0);
       const dirVec = new THREE.Vector3();
       const pA = new THREE.Vector3();
+      const pM = new THREE.Vector3();
       const pB = new THREE.Vector3();
       const mid = new THREE.Vector3();
 
@@ -744,7 +872,7 @@ export default function region(THREE, assets, ctx) {
         const pz = z0 + dz * t;
         const py = gY(px, pz);
 
-        dummy.position.set(px, py + 0.65, pz);
+        dummy.position.set(px, py + 0.62, pz);
         dummy.rotation.set((rand() - 0.5) * 0.03, rand() * Math.PI, (rand() - 0.5) * 0.03);
         dummy.scale.set(1, 1, 1);
         dummy.updateMatrix();
@@ -756,7 +884,7 @@ export default function region(THREE, assets, ctx) {
           const mz = z0 + dz * tm;
           const my = gY(mx, mz);
 
-          dummy.position.set(mx, my + 0.64, mz);
+          dummy.position.set(mx, my + 0.61, mz);
           dummy.rotation.set(0, Math.atan2(dx, dz), 0);
           dummy.scale.set(1, 1, 1);
           dummy.updateMatrix();
@@ -769,11 +897,25 @@ export default function region(THREE, assets, ctx) {
 
           for (let s = 0; s < strandHeights.length; s++) {
             const sh = strandHeights[s];
+            const sag = 0.025 + 0.01 * (s % 2);
             pA.set(px, py + sh, pz);
+            pM.set(mx, my + sh - sag, mz);
             pB.set(nx, ny + sh, nz);
-            mid.addVectors(pA, pB).multiplyScalar(0.5);
-            dirVec.subVectors(pB, pA);
-            const len = dirVec.length();
+
+            // Half-span 1: pA -> pM
+            mid.addVectors(pA, pM).multiplyScalar(0.5);
+            dirVec.subVectors(pM, pA);
+            let len = dirVec.length();
+            dummy.position.copy(mid);
+            dummy.quaternion.setFromUnitVectors(upVec, dirVec.normalize());
+            dummy.scale.set(1, len, 1);
+            dummy.updateMatrix();
+            wireInst.setMatrixAt(wIdx++, dummy.matrix);
+
+            // Half-span 2: pM -> pB
+            mid.addVectors(pM, pB).multiplyScalar(0.5);
+            dirVec.subVectors(pB, pM);
+            len = dirVec.length();
             dummy.position.copy(mid);
             dummy.quaternion.setFromUnitVectors(upVec, dirVec.normalize());
             dummy.scale.set(1, len, 1);
@@ -827,12 +969,12 @@ export default function region(THREE, assets, ctx) {
       L.fenceSouth2.x, L.fenceSouth2.z[1]
     ));
 
-    // 3. South ROW fence segments outside the approach sight corridor and car trajectory
+    // 3. South ROW fence segments outside the car trajectory (west: [-1000, -36] stopping at SW lot entrance; east: [310, 800])
     fencesGroup.add(buildWireFenceRun(
-      'fence_row_south_far_west',
-      'inferred: rural Florida south ROW wire fence west of approach corridor',
-      -1000, L.rowFence.south.z,
-      -702, L.rowFence.south.z
+      'fence_row_south_west',
+      'inferred: rural Florida south ROW wire fence along z=14.5 west of SW corner lot',
+      L.rowFence.south.x[0][0], L.rowFence.south.z,
+      -36.0, L.rowFence.south.z
     ));
 
     fencesGroup.add(buildWireFenceRun(
@@ -846,7 +988,7 @@ export default function region(THREE, assets, ctx) {
   }
 
   // ---------------------------------------------------------------------------
-  // 7. Residence where Vehicle A came to rest:
+  // 8. Residence where Vehicle A came to rest:
   //    Ranch house at layout.residence (262, 40), 20 x 14 m, faces north,
   //    shell-rock driveway x [278, 282] from z = 3.35 to 44, mailbox at (284, 8),
   //    front-yard lawn (clear 4.5 m around carRest (276.6, 23.9)), 2 live oaks, 1 palm
@@ -970,7 +1112,7 @@ export default function region(THREE, assets, ctx) {
       { id: 'res_palm_front', kind: 'palm', height: 9.5, x: 266.0, z: 29.5 }
     ];
     for (const t of yardTrees) {
-      if (isClearForProp(t.x, t.z, 2.5)) {
+      if (isClearForTallProp(t.x, t.z, 2.5)) {
         const tree = assets.tree({ id: t.id, kind: t.kind, height: t.height });
         tree.position.set(t.x, gY(t.x, t.z), t.z);
         tree.rotation.y = rand() * Math.PI * 2;
@@ -984,56 +1126,102 @@ export default function region(THREE, assets, ctx) {
   }
 
   // ---------------------------------------------------------------------------
-  // 8. Other Sparse South-Side Homes:
-  //    - 3 homes along NE 140th Ct (x ±28, z 92..188) with driveways & mailboxes
-  //    - 2 homes along US-27A at x ~ 520 and x ~ -420 (set back z >= 54 m from road)
+  // 9. Aerial-Measured Houses, Driveways & Cleared Sandy Areas (USGS NAIP Aerial)
+  //    Applying x_model = x_aerial - 0.33 * z for homes along NE 140th Ct & z~130 road
   // ---------------------------------------------------------------------------
   const extraHomeTreeCoords = [];
   {
     const homesGroup = new THREE.Group();
-    homesGroup.name = 'south_sparse_residences';
-    homesGroup.userData.citation = 'inferred: deposition.txt 207, 210 ("past a couple of houses"); sparse rural homes along NE 140th Ct and US-27A';
+    homesGroup.name = 'south_aerial_residences_and_clearings';
+    homesGroup.userData.citation = 'USGS NAIP aerial (measured: houses along NE 140th Ct with skew shift x_model = x_aerial - 0.33*z, houses along z~130 dirt road, SW structure at x=-425, and sandy clearings SW)';
+
+    // Cleared sandy areas SW (x -500..-300, z 100..300) and sandy tracks visible in Image 1
+    const sandPatches = [
+      [-485, -395, 115, 245],
+      [-375, -305, 95, 225],
+      [-115, -45, 70, 145],
+      [-445, -405, 15, 85] // driveway & lot around the x=-425 building
+    ];
+    for (let i = 0; i < sandPatches.length; i++) {
+      const [x0, x1, z0, z1] = sandPatches[i];
+      const sp = buildConformingPatch(x0, x1, z0, z1, 6, 6, 0.005, matSandClear, 0.18);
+      sp.name = `sw_sandy_clearing_${i}`;
+      sp.userData.citation = 'USGS NAIP aerial (measured: cleared sandy areas and tracks in SW quadrant)';
+      homesGroup.add(sp);
+    }
 
     const extraHomes = [
+      // 1. Building on SE side of intersection in wooded hammock (aerial x~28, z~40 -> model x=19, z=40)
       {
-        id: 'house_ne140_w1',
-        x: -28.0, z: 92.0, w: 16, d: 12, h: 4.0, style: 'house', rotY: -Math.PI * 0.5,
-        drv: { x0: -22.0, x1: -3.05, z0: 89.5, z1: 93.0 },
-        mb: { x: -4.2, z: 88.2, rotY: -Math.PI * 0.5 },
-        palm: { h: 9.0, x: -20.0, z: 101.0 },
-        instTrees: [[-34.0, 82.0, 'oak'], [-36.0, 100.0, 'pine']]
+        id: 'house_se_hammock_z40',
+        x: 19.0, z: 41.0, w: 15, d: 10, h: 3.8, style: 'house', rotY: Math.PI * 0.5,
+        drv: { x0: 3.05, x1: 14.0, z0: 39.2, z1: 42.6 },
+        mb: { x: 4.2, z: 38.0, rotY: Math.PI * 0.5 },
+        palm: null,
+        instTrees: [[28.0, 36.0, 'oak'], [26.0, 48.0, 'pine']]
       },
+      // 2. House west of NE 140th Ct (aerial x~-40, z~95 -> model x=-40 - 0.33*95 = -71, plus closer house at x=-26, z=88)
       {
-        id: 'house_ne140_e1',
-        x: 28.0, z: 138.0, w: 17, d: 12.5, h: 4.1, style: 'house', rotY: Math.PI * 0.5,
-        drv: { x0: 3.05, x1: 21.8, z0: 135.5, z1: 139.0 },
-        mb: { x: 4.2, z: 134.2, rotY: Math.PI * 0.5 },
-        palm: { h: 9.2, x: 21.0, z: 129.0 },
-        instTrees: [[35.0, 126.0, 'oak'], [22.0, 149.0, 'pine']]
+        id: 'house_ne140_w_z88',
+        x: -26.0, z: 88.0, w: 16, d: 12, h: 4.0, style: 'house', rotY: -Math.PI * 0.5,
+        drv: { x0: -20.0, x1: -3.05, z0: 86.2, z1: 89.6 },
+        mb: { x: -4.2, z: 85.0, rotY: -Math.PI * 0.5 },
+        palm: { h: 9.0, x: -18.0, z: 96.0 },
+        instTrees: [[-34.0, 80.0, 'oak'], [-36.0, 96.0, 'pine']]
       },
+      // 3. House east of NE 140th Ct on z~130 dirt road (aerial x~92, z~160 -> model x = 92 - 0.33*160 = 39.2, z=158)
       {
-        id: 'house_ne140_w2',
-        x: -29.0, z: 188.0, w: 15, d: 13, h: 4.2, style: 'barn', rotY: -Math.PI * 0.5,
-        drv: { x0: -22.5, x1: -3.05, z0: 186.0, z1: 189.5 },
-        mb: { x: -4.2, z: 184.8, rotY: -Math.PI * 0.5 },
-        palm: { h: 8.8, x: -21.0, z: 196.0 },
-        instTrees: [[-36.0, 176.0, 'pine'], [-35.0, 198.0, 'oak']]
+        id: 'house_dirt_road_e1',
+        x: 39.0, z: 158.0, w: 16, d: 12.5, h: 4.1, style: 'house', rotY: 0,
+        drv: { x0: 37.2, x1: 40.8, z0: 132.5, z1: 152.0 },
+        mb: { x: 42.0, z: 133.5, rotY: 0 },
+        palm: { h: 9.2, x: 31.0, z: 150.0 },
+        instTrees: [[48.0, 154.0, 'oak'], [32.0, 168.0, 'pine']]
       },
+      // 4. Second house along z~130 dirt road (aerial x~135, z~160 -> model x = 135 - 53 = 82.0, z=158)
       {
-        id: 'house_us27_east_520',
-        x: 520.0, z: 54.0, w: 19, d: 13, h: 4.2, style: 'house', rotY: 0,
-        drv: { x0: 531.0, x1: 534.8, z0: 15.0, z1: 54.0 },
+        id: 'house_dirt_road_e2',
+        x: 82.0, z: 158.0, w: 18, d: 13, h: 4.1, style: 'house', rotY: 0,
+        drv: { x0: 80.2, x1: 83.8, z0: 132.5, z1: 151.5 },
+        mb: { x: 85.0, z: 133.5, rotY: 0 },
+        palm: null,
+        instTrees: [[70.0, 152.0, 'oak'], [94.0, 162.0, 'pine']]
+      },
+      // 5. Third house along z~130 dirt road (aerial x~220, z~165 -> model x = 220 - 54 = 166.0, z=164)
+      {
+        id: 'house_dirt_road_e3',
+        x: 166.0, z: 164.0, w: 17, d: 12, h: 4.0, style: 'house', rotY: 0,
+        drv: { x0: 164.2, x1: 167.8, z0: 132.5, z1: 158.0 },
         mb: null,
-        palm: { h: 9.5, x: 538.0, z: 48.0 },
-        instTrees: [[506.0, 46.0, 'oak'], [515.0, 68.0, 'pine']]
+        palm: { h: 8.8, x: 158.0, z: 155.0 },
+        instTrees: [[154.0, 168.0, 'oak'], [178.0, 160.0, 'pine']]
       },
+      // 6. House further south along NE 140th Ct (x = -27, z = 186)
       {
-        id: 'house_us27_west_420',
-        x: -420.0, z: 56.0, w: 18, d: 13, h: 4.2, style: 'house', rotY: 0,
-        drv: { x0: -410.0, x1: -406.2, z0: 42.0, z1: 56.0 },
+        id: 'house_ne140_w_z186',
+        x: -27.0, z: 186.0, w: 15, d: 13, h: 4.2, style: 'barn', rotY: -Math.PI * 0.5,
+        drv: { x0: -20.5, x1: -3.05, z0: 184.2, z1: 187.8 },
+        mb: { x: -4.2, z: 183.0, rotY: -Math.PI * 0.5 },
+        palm: null,
+        instTrees: [[-36.0, 176.0, 'pine'], [-35.0, 196.0, 'oak']]
+      },
+      // 7. House/building east of residence (aerial x~335, z~65)
+      {
+        id: 'house_east_z65',
+        x: 335.0, z: 65.0, w: 18, d: 13, h: 4.2, style: 'house', rotY: 0,
+        drv: { x0: 325.0, x1: 328.8, z0: 15.0, z1: 65.0 },
         mb: null,
-        palm: { h: 9.2, x: -402.0, z: 52.0 },
-        instTrees: [[-434.0, 50.0, 'oak'], [-425.0, 70.0, 'pine']]
+        palm: { h: 9.5, x: 346.0, z: 58.0 },
+        instTrees: [[320.0, 56.0, 'oak'], [348.0, 72.0, 'pine']]
+      },
+      // 8. Commercial/barn building at x = -425, z = 60 (clearly visible on USGS NAIP aerial Image 1 at x~-425, z~60)
+      {
+        id: 'building_sw_425',
+        x: -425.0, z: 60.0, w: 20, d: 16, h: 4.5, style: 'barn', rotY: 0,
+        drv: { x0: -435.0, x1: -415.0, z0: 41.0, z1: 52.0 },
+        mb: null,
+        palm: { h: 9.2, x: -408.0, z: 54.0 },
+        instTrees: [[-442.0, 52.0, 'oak'], [-440.0, 74.0, 'pine']]
       }
     ];
 
@@ -1070,7 +1258,7 @@ export default function region(THREE, assets, ctx) {
         sub.add(mb);
       }
 
-      if (h.palm && isClearForProp(h.palm.x, h.palm.z, 2.0)) {
+      if (h.palm && isClearForTallProp(h.palm.x, h.palm.z, 2.0)) {
         const palmMesh = assets.tree({ id: `${h.id}_palm`, kind: 'palm', height: h.palm.h });
         palmMesh.position.set(h.palm.x, gY(h.palm.x, h.palm.z), h.palm.z);
         palmMesh.rotation.y = rand() * Math.PI * 2;
@@ -1090,13 +1278,18 @@ export default function region(THREE, assets, ctx) {
   }
 
   // ---------------------------------------------------------------------------
-  // 9. Massed South-Side Vegetation (z > 60 across [-1000, 800], plus east of
-  //    x = 315 for z > 32): Low-Poly Instanced Slash Pines, Live Oaks & Saw Palmettos
+  // 10. Aerial-Matched South-Side Vegetation:
+  //     - Dense pine/oak forest west of side road (z >= 41 for x in [-700, -35] to respect
+  //       the z<=40 sight corridor, and z >= 18 for x in [-1000, -700])
+  //     - Low palmetto scrub (< 0.55 m) in z in [16, 40] west of side road (x in [-700, -36])
+  //     - Wooded hammock SE of retail store (x in [12, 58], z in [27, 72])
+  //     - Scattered live oaks in `openFieldSE` (x in [60, 250], z in [25, 95], clear of car path)
+  //     - Deep south woodland & eastern treeline (z > 90 across site, plus x > 300, z > 22)
   // ---------------------------------------------------------------------------
   {
     const vegGroup = new THREE.Group();
     vegGroup.name = 'veg_south_treeline_and_pasture';
-    vegGroup.userData.citation = 'NTSB/HAR-17/02 p.29-30 (no vegetation obstructions in approach corridor); inferred distant rural Florida slash pine, live oak, and palmetto background south of z=60';
+    vegGroup.userData.citation = 'USGS NAIP aerial (measured forest edges, SE hammock, openFieldSE scattered oaks) & NTSB/HAR-17/02 p.29-30 (west sight corridor clear)';
 
     function mergeGeometries(geoms) {
       let totalVerts = 0;
@@ -1136,7 +1329,7 @@ export default function region(THREE, assets, ctx) {
       return out;
     }
 
-    // Ultra-clean low-poly Slash Pine (~25 tris total: 5-sided open trunk + 3 open 5-sided tiered cones)
+    // Low-poly Slash Pine (~25 tris total: 5-sided open trunk + 3 open 5-sided tiered cones)
     const pineTrunkGeom = new THREE.CylinderGeometry(0.14, 0.24, 9.5, 5, 1, true);
     pineTrunkGeom.translate(0, 4.75, 0);
 
@@ -1148,7 +1341,7 @@ export default function region(THREE, assets, ctx) {
     cone3.translate(-0.08, 11.9, 0.08);
     const pineCrownGeom = mergeGeometries([cone1, cone2, cone3]);
 
-    // Ultra-clean low-poly Live Oak (~34 tris total: 5-sided open trunk + 3 faceted octahedron canopy domes)
+    // Low-poly Live Oak (~34 tris total: 5-sided open trunk + 3 faceted octahedron canopy domes)
     const oakTrunkGeom = new THREE.CylinderGeometry(0.22, 0.36, 4.2, 5, 1, true);
     oakTrunkGeom.translate(0, 2.1, 0);
 
@@ -1163,15 +1356,15 @@ export default function region(THREE, assets, ctx) {
     lobe3.translate(1.7, 5.1, -0.8);
     const oakCrownGeom = mergeGeometries([lobe1, lobe2, lobe3]);
 
-    // Low-poly Saw Palmetto clump (15 tris: 5 open 3-sided fan blades)
+    // Low-poly Saw Palmetto clump (15 tris: 5 open 3-sided fan blades, unit height ~1.0 m)
     const frondGeoms = [];
     for (let f = 0; f < 5; f++) {
       const ang = (f / 5) * Math.PI * 2;
-      const blade = new THREE.ConeGeometry(0.65, 1.35, 3, 1, true);
+      const blade = new THREE.ConeGeometry(0.55, 0.95, 3, 1, true);
       blade.scale(1.0, 1.0, 0.18);
-      blade.rotateX(0.62);
+      blade.rotateX(0.68);
       blade.rotateY(ang);
-      blade.translate(Math.sin(ang) * 0.35, 0.55, Math.cos(ang) * 0.35);
+      blade.translate(Math.sin(ang) * 0.30, 0.38, Math.cos(ang) * 0.30);
       frondGeoms.push(blade);
     }
     const palmettoGeom = mergeGeometries(frondGeoms);
@@ -1181,89 +1374,125 @@ export default function region(THREE, assets, ctx) {
     const palmettoTransforms = [];
     const dummy = new THREE.Object3D();
 
-    // Yard trees around the sparse extra homes
-    for (const [tx, tz, kind] of extraHomeTreeCoords) {
-      if (!isClearForProp(tx, tz, 2.0)) continue;
-      const ty = gY(tx, tz);
-      dummy.position.set(tx, ty - 0.15, tz);
-      dummy.rotation.set(0, rand() * Math.PI * 2, 0);
-      dummy.scale.set(1.05, 1.05, 1.05);
-      dummy.updateMatrix();
-      if (kind === 'pine') pineTransforms.push(dummy.matrix.clone());
-      else oakTransforms.push(dummy.matrix.clone());
-    }
-
-    function isClearForForest(x, z) {
-      if (!isClearForProp(x, z, 3.0)) return false;
-      if (Math.abs(x) < 16.0 && z < 240.0) return false;
-      if (Math.abs(x - (-28)) < 14 && Math.abs(z - 92) < 14) return false;
-      if (Math.abs(x - 28) < 14 && Math.abs(z - 138) < 14) return false;
-      if (Math.abs(x - (-29)) < 14 && Math.abs(z - 188) < 14) return false;
-      if (x >= 242 && x <= 292 && z >= 14 && z <= 55) return false;
-      if (Math.abs(x - 520) < 22 && Math.abs(z - 54) < 18) return false;
-      if (Math.abs(x - (-420)) < 22 && Math.abs(z - 56) < 18) return false;
+    function isClearForForestTree(x, z) {
+      if (!isClearForTallProp(x, z, 3.0)) return false;
+      // Keep clear of NE 140th Ct corridor
+      if (Math.abs(x) < 11.0 && z < 240.0) return false;
+      // Keep clear of E-W dirt road at z ~ 130
+      if (x >= 0 && x <= 425 && Math.abs(z - 130.0) < 8.0) return false;
+      // Keep clear of SW commercial lot & building
+      if (x >= -38 && x <= -2 && z <= 58) return false;
+      // Keep clear of SE retail store & fuel island
+      if (x >= 4 && x <= 44 && z <= 27) return false;
+      // Keep clear of residence & yard
+      if (x >= 242 && x <= 292 && z >= 12 && z <= 55) return false;
+      // Keep clear of SW sandy clearings
+      if (x >= -480 && x <= -400 && z >= 120 && z <= 240) return false;
+      if (x >= -370 && x <= -310 && z >= 100 && z <= 220) return false;
+      // Keep clear of extra houses
+      if (Math.abs(x - 19) < 12 && Math.abs(z - 41) < 10) return false;
+      if (Math.abs(x - (-26)) < 14 && Math.abs(z - 88) < 12) return false;
+      if (Math.abs(x - 39) < 14 && Math.abs(z - 158) < 12) return false;
+      if (Math.abs(x - 82) < 14 && Math.abs(z - 158) < 12) return false;
+      if (Math.abs(x - 166) < 14 && Math.abs(z - 164) < 12) return false;
+      if (Math.abs(x - (-27)) < 14 && Math.abs(z - 186) < 12) return false;
+      if (Math.abs(x - 335) < 16 && Math.abs(z - 65) < 14) return false;
+      if (Math.abs(x - (-425)) < 20 && Math.abs(z - 55) < 18) return false;
       return true;
     }
 
-    // 1. Continuous horizon treeline belt at z in [62, 180], x in [-980, 780]
-    for (let i = 0; i < 420; i++) {
+    function addInstTree(x, z, scale, preferPine = true) {
+      const ty = gY(x, z);
+      dummy.position.set(x, ty - 0.15, z);
+      dummy.rotation.set(0, rand() * Math.PI * 2, 0);
+      dummy.scale.set(scale, scale * (0.9 + rand() * 0.22), scale);
+      dummy.updateMatrix();
+      if (preferPine) pineTransforms.push(dummy.matrix.clone());
+      else oakTransforms.push(dummy.matrix.clone());
+    }
+
+    // Yard trees around the sparse extra homes
+    for (const [tx, tz, kind] of extraHomeTreeCoords) {
+      if (!isClearForTallProp(tx, tz, 2.0)) continue;
+      addInstTree(tx, tz, 1.05, kind === 'pine');
+    }
+
+    // 1. Dense pine/oak forest SW of intersection:
+    //    - Far west x in [-980, -702], z in [18, 95] (outside [-700, 0] sight corridor, right up to z=18 per aerial)
+    for (let i = 0; i < 160; i++) {
+      const tx = -980 + rand() * 276;
+      const tz = 18 + rand() * 80;
+      if (!isClearForForestTree(tx, tz)) continue;
+      addInstTree(tx, tz, 0.85 + rand() * 0.50, rand() < 0.78);
+    }
+
+    //    - West approach south of z = 41 (x in [-700, -12], z in [41, 140]) — dense wall of pines right behind the z=40 line
+    for (let i = 0; i < 480; i++) {
+      const tx = -700 + rand() * 688;
+      const tz = 41.2 + Math.pow(rand(), 1.25) * 105;
+      if (!isClearForForestTree(tx, tz)) continue;
+      addInstTree(tx, tz, 0.88 + rand() * 0.55, rand() < 0.76);
+    }
+
+    // 2. Wooded hammock immediately SE of the retail store (visible on aerial Image 2: x in [10, 58], z in [28, 78])
+    for (let i = 0; i < 75; i++) {
+      const tx = 10 + rand() * 48;
+      const tz = 28 + rand() * 50;
+      if (!isClearForForestTree(tx, tz)) continue;
+      addInstTree(tx, tz, 0.85 + rand() * 0.45, rand() < 0.45);
+    }
+
+    // 3. Scattered live oaks inside `layout.aerial.openFieldSE` (x in [60, 250], z in [25, 95])
+    //    Carefully placed at measured aerial positions & clear of carPostImpactPath
+    const fieldOaks = [
+      [74, 48], [86, 63], [112, 78], [134, 88], [156, 82],
+      [178, 90], [205, 76], [222, 62], [238, 46], [192, 48],
+      [148, 54], [105, 42]
+    ];
+    for (const [ox, oz] of fieldOaks) {
+      if (isClearForForestTree(ox, oz)) {
+        addInstTree(ox, oz, 1.0 + rand() * 0.35, false);
+      }
+    }
+
+    // 4. Eastern forest & treeline east of the residence (x in [295, 780], z in [22, 130])
+    for (let i = 0; i < 240; i++) {
+      const tx = 295 + rand() * 485;
+      const tz = 22 + Math.pow(rand(), 1.2) * 110;
+      if (!isClearForForestTree(tx, tz)) continue;
+      addInstTree(tx, tz, 0.85 + rand() * 0.55, rand() < 0.65);
+    }
+
+    // 5. Continuous deep south forest belt across the entire site (x in [-980, 780], z in [105, 480])
+    for (let i = 0; i < 620; i++) {
       const tx = -980 + rand() * 1760;
-      const tz = 62 + Math.pow(rand(), 1.35) * 185;
-      if (!isClearForForest(tx, tz)) continue;
-
-      const ty = gY(tx, tz);
-      const scale = 0.85 + rand() * 0.55;
-      dummy.position.set(tx, ty - 0.15, tz);
-      dummy.rotation.set(0, rand() * Math.PI * 2, 0);
-      dummy.scale.set(scale, scale * (0.9 + rand() * 0.25), scale);
-      dummy.updateMatrix();
-
-      if (rand() < 0.68) pineTransforms.push(dummy.matrix.clone());
-      else oakTransforms.push(dummy.matrix.clone());
+      const tz = 105 + rand() * 375;
+      if (!isClearForForestTree(tx, tz)) continue;
+      addInstTree(tx, tz, 0.90 + rand() * 0.65, rand() < 0.70);
     }
 
-    // 2. Deep south woodland clusters (z in [170, 480], x in [-980, 780])
-    for (let i = 0; i < 220; i++) {
-      const tx = -980 + rand() * 1760;
-      const tz = 170 + rand() * 310;
-      if (!isClearForForest(tx, tz)) continue;
-
-      const ty = gY(tx, tz);
-      const scale = 0.9 + rand() * 0.65;
-      dummy.position.set(tx, ty - 0.15, tz);
-      dummy.rotation.set(0, rand() * Math.PI * 2, 0);
-      dummy.scale.set(scale, scale, scale);
-      dummy.updateMatrix();
-
-      if (rand() < 0.72) pineTransforms.push(dummy.matrix.clone());
-      else oakTransforms.push(dummy.matrix.clone());
-    }
-
-    // 3. East pasture / woodline grove (x in [315, 780], z in [32, 62])
-    for (let i = 0; i < 80; i++) {
-      const tx = 315 + rand() * 465;
-      const tz = 32 + rand() * 30;
-      if (!isClearForForest(tx, tz)) continue;
-
-      const ty = gY(tx, tz);
-      const scale = 0.8 + rand() * 0.45;
-      dummy.position.set(tx, ty - 0.15, tz);
-      dummy.rotation.set(0, rand() * Math.PI * 2, 0);
-      dummy.scale.set(scale, scale, scale);
-      dummy.updateMatrix();
-
-      if (rand() < 0.6) pineTransforms.push(dummy.matrix.clone());
-      else oakTransforms.push(dummy.matrix.clone());
-    }
-
-    // 4. Saw palmetto understory clumps along treeline edges (z in [58, 220])
-    for (let i = 0; i < 280; i++) {
-      const px = -960 + rand() * 1720;
-      const pz = 58 + Math.pow(rand(), 1.5) * 160;
-      if (!isClearForForest(px, pz)) continue;
-
+    // 6. Low-profile Saw Palmetto clumps:
+    //    - In the SW forest edge zone x in [-700, -38], z in [16.5, 40] scaled strictly to <= 0.48 m height (< 0.6 m keep-clear rule!)
+    for (let i = 0; i < 180; i++) {
+      const px = -700 + rand() * 662;
+      const pz = 16.5 + rand() * 23.5;
+      if (Math.abs(px - (-425)) < 18) continue;
       const py = gY(px, pz);
-      const s = 0.75 + rand() * 0.65;
+      const s = 0.35 + rand() * 0.12; // max height ~ 0.45 m, strictly < 0.6 m
+      dummy.position.set(px, py - 0.03, pz);
+      dummy.rotation.set(0, rand() * Math.PI * 2, 0);
+      dummy.scale.set(s * 1.4, s, s * 1.4);
+      dummy.updateMatrix();
+      palmettoTransforms.push(dummy.matrix.clone());
+    }
+
+    //    - Understory palmetto clumps throughout the forest (z > 42)
+    for (let i = 0; i < 260; i++) {
+      const px = -960 + rand() * 1720;
+      const pz = 42 + Math.pow(rand(), 1.4) * 190;
+      if (!isClearForForestTree(px, pz)) continue;
+      const py = gY(px, pz);
+      const s = 0.75 + rand() * 0.60;
       dummy.position.set(px, py - 0.05, pz);
       dummy.rotation.set(0, rand() * Math.PI * 2, 0);
       dummy.scale.set(s, s * (0.85 + rand() * 0.3), s);

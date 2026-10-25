@@ -1073,7 +1073,7 @@ export function treeline(opts = {}) {
         if (rnd() < pineRatio) {             // slash pine: tall bare trunk, small irregular crown on top
           const H = h * 1.35;
           trunks.push({ x, z, y: y0, h: H, r: 0.2 });
-          for (let k = 0; k < 3; k++) { const cr = 1.6 + rnd() * 1.4; crowns.push({ k: 'pine', x: x + (rnd() - 0.5) * 2.5, z: z + (rnd() - 0.5) * 2.5, y: y0 + H - 1.2 - k * 1.4 - rnd(), sx: cr * 1.3, sy: cr * 0.7, sz: cr * 1.3, c: C(0.24 + rnd() * 0.05, 0.28 + rnd() * 0.05, 0.16) }); }
+          const nk = 3 + Math.floor(rnd() * 3); for (let k = 0; k < nk; k++) { const cr = 1.3 + rnd() * 1.3; crowns.push({ k: 'pine', x: x + (rnd() - 0.5) * 3.2, z: z + (rnd() - 0.5) * 3.2, y: y0 + H - 1.0 - k * 1.25 - rnd() * 0.8, sx: cr * 1.25, sy: cr * 0.75, sz: cr * 1.25, c: C(0.24 + rnd() * 0.05, 0.28 + rnd() * 0.05, 0.16) }); }
         } else {                              // live oak / laurel oak mass: broad, low, overlapping crowns
           const w = h * (0.7 + rnd() * 0.4);
           trunks.push({ x, z, y: y0, h: h * 0.35, r: 0.32 });
@@ -1082,7 +1082,7 @@ export function treeline(opts = {}) {
             c: C(0.22 + rnd() * 0.07, 0.27 + rnd() * 0.07, 0.15 + rnd() * 0.04) });
         }
         // understory (palmetto, wax myrtle, young oaks) hides trunk gaps
-        if (row === 0 || rnd() < 0.4) for (let k = 0; k < 2; k++) { const sw = 2 + rnd() * 3; crowns.push({ k: 'shrub', x: x + (rnd() - 0.5) * spacing, z: z + (rnd() - 0.5) * spacing, y: y0 + sw * 0.35, sx: sw, sy: sw * (0.45 + rnd() * 0.3), sz: sw, c: C(0.25 + rnd() * 0.06, 0.29 + rnd() * 0.06, 0.16 + rnd() * 0.04) }); }
+        if (row === 0 && rnd() < (opts.understory ?? 0.6)) for (let k = 0; k < 2; k++) { const sw = 1.2 + rnd() * 1.6; crowns.push({ k: 'shrub', x: x + (rnd() - 0.5) * spacing, z: z + (rnd() - 0.5) * spacing, y: y0 + sw * 0.35, sx: sw, sy: sw * (0.45 + rnd() * 0.3), sz: sw, c: C(0.25 + rnd() * 0.06, 0.29 + rnd() * 0.06, 0.16 + rnd() * 0.04) }); }
       }
     }
   }
@@ -1100,7 +1100,7 @@ export function treeline(opts = {}) {
     list.forEach((c, i) => {
       o.position.set(c.x, c.y, c.z); o.scale.set(c.sx, c.sy, c.sz); o.rotation.set(0, i * 2.39, 0); o.updateMatrix(); cmK.setMatrixAt(i, o.matrix);
       o.scale.multiplyScalar(0.6); o.updateMatrix(); core.setMatrixAt(i, o.matrix);
-      cmK.setColorAt(i, col.setRGB(0.86 + (c.c[0] - 0.24) * 3, 0.9 + (c.c[1] - 0.29) * 3, 0.82 + (c.c[2] - 0.16) * 3));
+      const tint = kind === 'pine' ? [0.74, 0.76, 0.66] : kind === 'oak' ? [0.7, 0.74, 0.62] : [0.8, 0.82, 0.7]; cmK.setColorAt(i, col.setRGB(tint[0] + (c.c[0] - 0.24) * 3, tint[1] + (c.c[1] - 0.29) * 3, tint[2] + (c.c[2] - 0.16) * 3));
     });
     cmK.castShadow = true; cmK.receiveShadow = true; cmK.name = 'treeline_leaves_' + kind; cmK.computeBoundingSphere();
     core.castShadow = true; core.receiveShadow = true; core.name = 'treeline_core_' + kind; core.computeBoundingSphere();

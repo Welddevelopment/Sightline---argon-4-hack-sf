@@ -366,12 +366,17 @@ function buildCarTemplate(THREE, type) {
   {
     const beltMid = f.top((g.u0 + g.cTop) / 2);
     const rows = type === 'sedan' || type === 'suv' ? 2 : 1;
+    // dash front must stay behind the windshield: first u where the glass clears the dash top
+    let uClear = g.u0; const dashTop = cfg.eye.y - 0.32 + 0.07;
+    while (uClear < cfg.eye.u - 0.5 && f.ghTop(uClear) < dashTop) uClear += 0.01;
+    const dashU = Math.max(uClear + 0.31, cfg.eye.u - 0.95);
+    const uD = dashU - 0.3, beltD = f.top(uD);
+    const dashW = 2 * (f.sideX(uD, beltD - 0.03) - 0.018) * (1 - g.tumble * Math.max(0, Math.min(1, (dashTop - beltD) / 0.45))) - 0.12;
     const inter = makeInterior(THREE, { eye: [cfg.eye.x, cfg.eye.y, z(cfg.eye.u)], width: 2 * (f.sideX((g.aTop + g.cTop) / 2, beltMid) - 0.08),
-      floorY: beltMid - 0.45, dashZ: z(Math.max(g.u0 + 0.12, cfg.eye.u - 0.95)), rearZ: z(Math.min(g.cTop, g.u1 - 0.15)), rows, swDrop: 0.31,
+      floorY: beltMid - 0.45, dashZ: z(dashU), rearZ: z(Math.min(g.cTop, g.u1 - 0.15)), rows, swDrop: 0.31, dashW,
       mirrorY: f.ghTop(g.aTop) - 0.08, mirrorZ: z(g.aTop + 0.08) });
     root.add(inter);
   }
-  if (type === 'van') addMesh(roundedBox(THREE, cfg.bodyW - 0.2, 0.8, 0.04, 0.01), M.interior, 'bulkhead', [0, f.top(2.4) + 0.4, z(2.45)]);
 
   const ghY = (u, x) => {
     const yb0 = f.top(u), yt = Math.max(f.ghTop(u), yb0 + 0.004), sink = 0.12, ybb = yb0 - sink;

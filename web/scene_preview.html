@@ -79,6 +79,9 @@ const zN = zC - outer, zS = zC + outer;                 // outer pavement edges 
 scene.add(K.treeline({ id: 'forest_nw', points: [[-900, zN - 70], [-400, zN - 60], [-125, zN - 55]], depth: 70, spacing: 7, seed: 3, height: 15, pineRatio: 0.8 }));
 scene.add(K.treeline({ id: 'forest_ne', points: [[-20, zN - 75], [300, zN - 60], [900, zN - 62]], depth: 70, spacing: 7, seed: 4, height: 15, pineRatio: 0.75 }));
 scene.add(K.treeline({ id: 'forest_sw', points: [[-900, zS + 45], [-400, zS + 40], [-40, zS + 75]], depth: 60, spacing: 7, seed: 5, height: 14, pineRatio: 0.65 }));
+scene.add(K.treeline({ id: 'forest_n_store', points: [[-130, zN - 125], [-15, zN - 125]], depth: 70, spacing: 7, seed: 11, height: 15, pineRatio: 0.8 }));
+scene.add(K.treeline({ id: 'forest_n_back', points: [[-900, zN - 230], [900, zN - 230]], depth: 150, spacing: 11, seed: 12, height: 16, pineRatio: 0.8, understory: 0 }));
+scene.add(K.treeline({ id: 'forest_s_back', points: [[-900, zS + 230], [900, zS + 250]], depth: 150, spacing: 11, seed: 13, height: 15, pineRatio: 0.7, understory: 0 }));
 scene.add(K.treeline({ id: 'forest_se_far', points: [[230, zS + 40], [500, zS + 60], [900, zS + 55]], depth: 60, spacing: 7, seed: 8, height: 14, pineRatio: 0.7 }));
 
 // furniture (other agents' library; stubs if absent)

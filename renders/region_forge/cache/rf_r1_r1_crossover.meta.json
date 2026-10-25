@@ -1,0 +1,29 @@
+{
+  "name": "rf_r1_r1_crossover",
+  "model": "gemini-4-argon",
+  "hash": "355d1947726a205e",
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 43589,
+    "candidatesTokenCount": 28844,
+    "totalTokenCount": 72433,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 41407
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 2182
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 28844
+      }
+    ]
+  },
+  "seconds": 208.8,
+  "at": "2026-10-25T20:32:34.835Z"
+}

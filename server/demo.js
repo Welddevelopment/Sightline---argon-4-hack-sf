@@ -359,7 +359,7 @@ export function mountDemo(app, ctx = {}) {
     const state = { ...recorded, caseId: id, replay: { of: m.replayOf, recordedAt: info.recordedAt || m.recordedAt || null, recordedMode: info.recordedMode || null, replayedAt: new Date().toISOString() } };
     const { confirmed, moved } = movedWitnesses(id);
     if (moved.length) {
-      emit(id, { type: 'progress', step: 'checks', round: 'confirmed', message: `Reviewer moved ${moved.map((w) => `${w.name} ${w.movedBy} m`).join(', ')} on the review screen → re-running the independent checks on the recorded world with the confirmed positions (local, live)…` });
+      emit(id, { type: 'progress', step: 'checks', message: `Reviewer moved ${moved.map((w) => `${w.name} ${w.movedBy} m`).join(', ')} on the review screen → re-running the independent checks on the recorded world with the confirmed positions (local, live)…` });
       const r = await recheckWithConfirmed(id, recorded.world, moved);
       state.world = r.world;
       state.checks = r.checks;
@@ -379,7 +379,7 @@ export function mountDemo(app, ctx = {}) {
     }
     writeJson(dir(id, 'cache', 'state.json'), state);
     const mm = manifest(id); mm.status = 'done'; delete mm.error; writeJson(dir(id, 'case.json'), mm);
-    emit(id, { type: 'done', message: 'Reconstruction complete (replayed from the recorded live run).', state });
+    emit(id, { type: 'done', message: `Reconstruction complete (replayed from the recorded ${state.replay.recordedMode === 'live' ? 'live ' : ''}run of ${m.replayOf}).`, state });
   }
 
   function startRunReplay(id) {

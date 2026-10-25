@@ -1,0 +1,29 @@
+{
+  "name": "rf_r1_r5_south",
+  "model": "gemini-4-argon",
+  "hash": "bade2cbfd9ad6bf8",
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 42034,
+    "candidatesTokenCount": 27523,
+    "totalTokenCount": 69557,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 39852
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 2182
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 27523
+      }
+    ]
+  },
+  "seconds": 233.4,
+  "at": "2026-10-25T20:32:59.407Z"
+}

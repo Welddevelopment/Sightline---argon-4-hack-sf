@@ -839,7 +839,7 @@ export function tree(opts = {}) {
         q.setFromAxisAngle(UP, R() * 6.28);
         const sc = V(c.s * 1.15, c.s * 1.15 * (c.flat ?? 0.72) / spec.flat, c.s * 1.15);
         m4.compose(c.p, q, sc); im.setMatrixAt(i, m4);
-        col.setRGB(0.84 + R() * 0.2, 0.88 + R() * 0.16, 0.8 + R() * 0.16); im.setColorAt(i, col);
+        col.setRGB(0.72 + R() * 0.16, 0.76 + R() * 0.14, 0.66 + R() * 0.14); im.setColorAt(i, col);
         m4.compose(c.p, q, sc.multiplyScalar(0.55)); core.setMatrixAt(ci++, m4);
       });
       im.castShadow = im.receiveShadow = true; im.name = 'leaves'; root.add(im);
