@@ -1,1 +1,6 @@
-queued 13:13:51
+queued 13:18:28
+lock acquired 13:29:30
+(node:10728) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[loop] r1 evidence: Case live2: 6 text file(s), 1 video(s), 1 image(s)
+[loop] r1 render: Rendering /cases/live2/worlds/world_v1.js from overhead + 3 witness viewpoints…

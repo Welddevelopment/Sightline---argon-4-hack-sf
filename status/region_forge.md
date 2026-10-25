@@ -11,3 +11,6 @@
 - 13:02 gen round 0: 1 parallel gemini-4-argon calls (thinking 6000, maxOutputTokens 32768); scene_spec present
 - 13:03 r5_south round 0: OK in 403s; tokens prompt 56889 / out 45484 / think 1067; tris 179751, 56556 B, warn: none
 - 13:05 r4_north round 0: OK in 218s; tokens prompt 15751 / out 20992 / think 0; tris 170621, 52750 B, warn: none
+- 13:15 round 0 done: 6/6 regions valid (r4 needed a fresh call, r5 one repair); 710k tris total. Lead's USGS NAIP aerial added: rotated to world frame + 50 m / 10 m grids at renders/region_forge/aerial/*.jpg, sent as 2 image parts in EVERY call (gen/repair/critique) with a conflict rule (case-keyed layout wins; land cover/forest/buildings/driveways from aerial). Layout additions: ctx.layout.aerial (north leg road, north store+lot, SW corner building/island, forest edges, SE field); west sight corridor narrowed to z [-50, 12] (aerial shows forest from z~15 south).
+- render lock heavily contended (600 s waits timing out); round 1 = aerial-grounded review (no stills yet), round 2 = still-based critique.
+- 13:29 critique round 1: 6 parallel review+rewrite calls using stills from renders/region_forge/round0

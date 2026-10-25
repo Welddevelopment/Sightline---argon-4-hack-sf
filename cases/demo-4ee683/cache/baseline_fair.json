@@ -1,0 +1,961 @@
+{
+  "caseId": "demo-4ee683",
+  "at": "2026-10-25T19:27:20.082Z",
+  "task": "For each witness, determine where they were and whether their claimed observations are physically possible given the evidence; cite timestamps and pages.",
+  "config": {
+    "maxOutputTokens": 16384,
+    "thinkingBudget": 8192,
+    "responseMimeType": "application/json",
+    "prompt": "argon/prompts/baseline_fair.md",
+    "note": "Every single-call model got byte-identical parts (same prompt, same case text, same Files-API video URIs, same images); see inputs.digest."
+  },
+  "inputs": {
+    "digest": "5e2fbff1dab5c8af",
+    "evidence": {
+      "caseId": "demo-4ee683",
+      "text": [
+        "text/deposition.txt",
+        "text/deposition_transcript.txt",
+        "text/facts.txt",
+        "text/police_report.txt",
+        "text/witness_A.txt",
+        "text/witness_C.txt"
+      ],
+      "videos": [
+        "evidence/deposition.mp4"
+      ],
+      "images": [
+        "evidence/map.png"
+      ],
+      "nativeDocs": []
+    },
+    "parts": [
+      {
+        "text": "<69826 chars> You are analyzing the evidence in a litigation case. You know nothing about this case except the evidence attached to th…"
+      },
+      {
+        "text": "<250 chars> EVIDENCE VIDEO: evidence/deposition.mp4 — cite moments as \"<file name> MM:SS\" (for a deposition: \"Depo MM:SS\"). Watch th…"
+      },
+      {
+        "file": "video/mp4"
+      },
+      {
+        "text": "EVIDENCE IMAGE: evidence/map.png"
+      },
+      {
+        "inline": "image/png"
+      },
+      {
+        "text": "Output the single JSON object now."
+      }
+    ]
+  },
+  "single": {
+    "gemini-3.8-flash": {
+      "seconds": 63.9,
+      "finishReason": "STOP",
+      "usage": {
+        "promptTokenCount": 147039,
+        "candidatesTokenCount": 2622,
+        "totalTokenCount": 153541,
+        "promptTokensDetails": [
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1092
+          },
+          {
+            "modality": "TEXT",
+            "tokenCount": 27015
+          },
+          {
+            "modality": "VIDEO",
+            "tokenCount": 118932
+          }
+        ],
+        "thoughtsTokenCount": 3880,
+        "serviceTier": "standard"
+      },
+      "parseError": null,
+      "score": {
+        "witnessFound": true,
+        "position": "Pedestrian standing outside the retail store on the southeast corner of US-27A and NE 140th Court, on the eastbound paved shoulder near the bench shelter.",
+        "positionCitations": [
+          "Depo 09:05",
+          "Depo 27:05",
+          "Depo 27:25",
+          "text/police_report.txt p.1",
+          "evidence/map.png"
+        ],
+        "mark": false,
+        "markCited": true,
+        "markAnywhere": false,
+        "claim": true,
+        "blocked": true,
+        "claimVerdicts": [
+          {
+            "claim": "Saw Vehicle T waiting or creeping in the westbound left-turn lane and slowly making a left turn across the eastbound lanes toward NE 140th Court.",
+            "citation": "Depo 12:34",
+            "physicallyPossible": "yes"
+          },
+          {
+            "claim": "Saw Vehicle A come over the crest of the hill eastbound in the outside lane and proceed down the grade toward the intersection without slowing.",
+            "citation": "Depo 15:00",
+            "physicallyPossible": "yes"
+          },
+          {
+            "claim": "Had an unobstructed view of the front of Vehicle A in the final second before impact and watched it directly until the moment it struck the trailer.",
+            "citation": "Depo 27:46",
+            "physicallyPossible": "no"
+          },
+          {
+            "claim": "Saw Vehicle A emerge from under the trailer, continue east off the road into grass and fences, strike a pole, and come to rest down the road, while Vehicle T co",
+            "citation": "Depo 19:44",
+            "physicallyPossible": "yes"
+          }
+        ]
+      },
+      "answer": {
+        "summary": "Three independent witnesses observed aspects of the collision between eastbound Vehicle A and the turning tractor-semitrailer (Vehicle T) at US-27A and NE 140th Court. Witness A (driving westbound approximately 0.25 miles behind Vehicle T) and Witness C (stopped westbound just west of the crossover) provided accounts that are fully consistent with roadway geometry, vehicle kinematics, and sightlines. In contrast, while Witness B's general observations regarding vehicle movements before and after the collision are physically possible, her claim of having an unobstructed line of sight to the front of Vehicle A in the final second before impact is physically impossible. Because Vehicle T turned south across the eastbound lanes and Vehicle A struck the trailer's west-facing right side, the solid refrigerated semitrailer completely blocked the view of the approaching car from Witness B's vantage point on the southeast corner.",
+        "witnesses": [
+          {
+            "name": "Witness A",
+            "position": "Driving westbound on US-27A in the outside (right) lane, approximately 0.25 miles east of (behind) Vehicle T, traveling at about 60 mph.",
+            "positionCitations": [
+              "text/witness_A.txt p.1",
+              "text/police_report.txt p.1",
+              "text/facts.txt p.1"
+            ],
+            "claims": [
+              {
+                "claim": "Observed Vehicle T in the westbound left-turn lane at NE 140th Court, either stopped or rolling very slowly.",
+                "citation": "text/witness_A.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "Vehicle T was in the 550-foot westbound left-turn lane preparing to turn across the median crossover, directly in Witness A's forward travel path.",
+                "citations": [
+                  "text/witness_A.txt p.1",
+                  "text/police_report.txt p.1",
+                  "text/facts.txt p.1"
+                ]
+              },
+              {
+                "claim": "Saw a dark car crest the vertical grade west of the intersection heading eastbound before Vehicle T began its turn.",
+                "citation": "text/witness_A.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "The vertical crest is located 1,132 feet west of the intersection with an unobstructed view down the grade for opposing traffic prior to the truck crossing the lanes.",
+                "citations": [
+                  "text/witness_A.txt p.1",
+                  "text/police_report.txt p.3",
+                  "text/facts.txt p.1"
+                ]
+              },
+              {
+                "claim": "Once the semitrailer entered the eastbound travel lanes, it obstructed the view of the eastbound car, preventing sight of the actual impact.",
+                "citation": "text/witness_A.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "Vehicle T's 71-foot combination with a tall refrigerated semitrailer turned south across both eastbound lanes, creating a physical barrier between westbound traffic and the approaching eastbound car.",
+                "citations": [
+                  "text/witness_A.txt p.1",
+                  "text/police_report.txt p.1",
+                  "text/facts.txt p.1"
+                ]
+              },
+              {
+                "claim": "Heard a loud bang, saw the car emerge from under the trailer with its roof sheared off, proceed eastbound off the south roadside, and heard it strike an object downstream.",
+                "citation": "text/witness_A.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "Physical evidence confirms Vehicle A passed beneath the trailer, lost its roof structure, traveled 910 feet east off the south roadside, and broke a utility pole.",
+                "citations": [
+                  "text/witness_A.txt p.1",
+                  "text/police_report.txt p.2",
+                  "text/facts.txt p.1"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Witness B",
+            "position": "Pedestrian standing outside the retail store on the southeast corner of US-27A and NE 140th Court, on the eastbound paved shoulder near the bench shelter.",
+            "positionCitations": [
+              "Depo 09:05",
+              "Depo 27:05",
+              "Depo 27:25",
+              "text/police_report.txt p.1",
+              "evidence/map.png"
+            ],
+            "claims": [
+              {
+                "claim": "Saw Vehicle T waiting or creeping in the westbound left-turn lane and slowly making a left turn across the eastbound lanes toward NE 140th Court.",
+                "citation": "Depo 12:34",
+                "physicallyPossible": "yes",
+                "reasoning": "Witness B was positioned facing northwest toward the intersection and had an unobstructed view across the eastbound lanes and median crossover toward the westbound turn lane.",
+                "citations": [
+                  "Depo 12:34",
+                  "Depo 13:56",
+                  "evidence/map.png",
+                  "text/facts.txt p.1"
+                ]
+              },
+              {
+                "claim": "Saw Vehicle A come over the crest of the hill eastbound in the outside lane and proceed down the grade toward the intersection without slowing.",
+                "citation": "Depo 15:00",
+                "physicallyPossible": "yes",
+                "reasoning": "The vertical crest is 1,132 feet west of the intersection and clearly visible looking west along the eastbound lanes. Recorded vehicle data confirms Vehicle A maintained 74 mph without braking.",
+                "citations": [
+                  "Depo 15:00",
+                  "Depo 16:15",
+                  "Depo 17:40",
+                  "text/police_report.txt p.3",
+                  "text/facts.txt p.1"
+                ]
+              },
+              {
+                "claim": "Had an unobstructed view of the front of Vehicle A in the final second before impact and watched it directly until the moment it struck the trailer.",
+                "citation": "Depo 27:46",
+                "physicallyPossible": "no",
+                "reasoning": "Vehicle T was turned southbound onto NE 140th Court, stretching its 71-foot combination and solid refrigerated semitrailer across both eastbound lanes. Vehicle A was approaching from the west and struck the trailer's right (west-facing) side. Witness B was standing on the southeast corner, east of the trailer and looking at the trailer's left (east-facing) side. The solid trailer body was directly between Witness B and Vehicle A during the final second before impact, creating an absolute visual occlusion.",
+                "citations": [
+                  "Depo 24:09",
+                  "Depo 27:05",
+                  "Depo 28:17",
+                  "Depo 28:40",
+                  "text/police_report.txt p.1",
+                  "text/police_report.txt p.2",
+                  "text/facts.txt p.1",
+                  "evidence/map.png"
+                ]
+              },
+              {
+                "claim": "Saw Vehicle A emerge from under the trailer, continue east off the road into grass and fences, strike a pole, and come to rest down the road, while Vehicle T completed its turn and parked south on NE 140th Court.",
+                "citation": "Depo 19:44",
+                "physicallyPossible": "yes",
+                "reasoning": "Once Vehicle A passed under the trailer to the east side, it was in direct line of sight of Witness B, traveling 910 feet down the south roadside to its point of rest.",
+                "citations": [
+                  "Depo 19:44",
+                  "Depo 20:07",
+                  "Depo 20:57",
+                  "Depo 26:38",
+                  "text/police_report.txt p.2",
+                  "text/facts.txt p.1"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Witness C",
+            "position": "Stopped in a pickup truck in the westbound inside lane of US-27A, approximately 18 meters west of the NE 140th Court crossover.",
+            "positionCitations": [
+              "text/witness_C.txt p.1",
+              "text/police_report.txt p.1"
+            ],
+            "claims": [
+              {
+                "claim": "Observed the tractor-trailer in the westbound left-turn lane just ahead and to his left at the crossover with its refrigeration unit running.",
+                "citation": "text/witness_C.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "Witness C was stopped immediately adjacent to the median crossover just west of the westbound left-turn slot, providing a direct, close view of the truck.",
+                "citations": [
+                  "text/witness_C.txt p.1",
+                  "evidence/map.png",
+                  "text/police_report.txt p.1"
+                ]
+              },
+              {
+                "claim": "Watched Vehicle T pull out slowly and swing across the eastbound lanes toward NE 140th Court.",
+                "citation": "text/witness_C.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "Vehicle T was executing its turn directly across Witness C's forward-left field of view.",
+                "citations": [
+                  "text/witness_C.txt p.1",
+                  "evidence/map.png",
+                  "text/facts.txt p.1"
+                ]
+              },
+              {
+                "claim": "Heard a loud crunch without prior tire noise or horn, then saw the car emerge from the far side of the trailer heading east off the roadway toward residential properties.",
+                "citation": "text/witness_C.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "Witness C was looking at the truck, not the opposing lanes, and when Vehicle A emerged from underneath the trailer onto the south roadside east of the intersection, it entered Witness C's line of sight.",
+                "citations": [
+                  "text/witness_C.txt p.1",
+                  "text/police_report.txt p.2",
+                  "text/facts.txt p.1"
+                ]
+              },
+              {
+                "claim": "Saw Vehicle T continue rolling through its turn and come to a stop on NE 140th Court south of the retail store.",
+                "citation": "text/witness_C.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "Vehicle T completed the turn into NE 140th Court and came to rest south of the commercial building, consistent with physical measurements.",
+                "citations": [
+                  "text/witness_C.txt p.1",
+                  "text/police_report.txt p.2",
+                  "text/facts.txt p.1"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "gemini-4-argon": {
+      "seconds": 45.4,
+      "finishReason": "STOP",
+      "usage": {
+        "promptTokenCount": 159450,
+        "candidatesTokenCount": 3145,
+        "totalTokenCount": 163031,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 30416
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1092
+          },
+          {
+            "modality": "VIDEO",
+            "tokenCount": 127942
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 3145
+          }
+        ],
+        "thoughtsTokenCount": 436
+      },
+      "parseError": null,
+      "score": {
+        "witnessFound": true,
+        "position": "Standing on the southeast corner of the intersection of US-27A and NE 140th Court, south of the eastbound shoulder and east of NE 140th Court, in front of the retail store and just west of the bench shelter.",
+        "positionCitations": [
+          "Depo 07:47",
+          "Depo 09:04",
+          "Depo 27:04",
+          "text/deposition.txt p.1",
+          "text/police_report.txt p.1",
+          "evidence/map.png"
+        ],
+        "mark": false,
+        "markCited": true,
+        "markAnywhere": false,
+        "claim": true,
+        "blocked": true,
+        "claimVerdicts": [
+          {
+            "claim": "There was a big truck on the other side of the highway, the north side. It was in the turn lane, the one in the middle where you turn left to cross over... The ",
+            "citation": "Depo 12:32",
+            "physicallyPossible": "yes"
+          },
+          {
+            "claim": "I was looking up toward the hill for my sister and a car came over the top. Eastbound, coming toward the intersection, on the side closest to me... The right la",
+            "citation": "Depo 14:57",
+            "physicallyPossible": "yes"
+          },
+          {
+            "claim": "I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way... Yes. I saw it clearly, the whole time, ",
+            "citation": "Depo 27:46",
+            "physicallyPossible": "no"
+          },
+          {
+            "claim": "It came out from under the trailer and kept going east, down the highway, and then drifted off the road to the right side... into the grass and through a fence ",
+            "citation": "Depo 19:44",
+            "physicallyPossible": "yes"
+          }
+        ]
+      },
+      "answer": {
+        "summary": "Witness A and Witness C provide accounts that are fully consistent with their positions and the physical geometry of the collision at US-27A and NE 140th Court. Witness A, approaching from the east in the westbound outside lane, could see the eastbound car crest the hill before the turn, and properly noted that the semitrailer blocked his view of the car once it pulled across the eastbound lanes. Witness C, stopped in the westbound inside lane just west of the crossover, observed the truck's slow turn and the post-impact trajectory of the car without claiming to see the obstructed pre-impact approach. By contrast, Witness B, standing on the southeast corner east of NE 140th Court near the store shelter, could see the pre-turn vehicles and post-impact aftermath, but her claim to have had a clear, unobstructed view of the front of the car during the final second right up to impact is physically impossible because the turning tractor-semitrailer was directly between her position and the approaching car.",
+        "witnesses": [
+          {
+            "name": "Witness A",
+            "position": "Driving westbound on US-27A in the outside (right) lane at about 60 mph, approximately a quarter mile (0.25 mi) east of (behind) the tractor-trailer.",
+            "positionCitations": [
+              "text/witness_A.txt p.1",
+              "text/facts.txt p.1",
+              "text/police_report.txt p.1"
+            ],
+            "claims": [
+              {
+                "claim": "There was a tractor-trailer with a white reefer trailer ahead of me, maybe a quarter mile up. It got over into the left-turn lane at 140th Court. I couldn't tell if he was completely stopped or just rolling real slow.",
+                "citation": "text/witness_A.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "US-27A has a straight horizontal alignment for several miles in clear daylight with no obstructions, allowing a westbound driver 0.25 miles back to see the tractor-trailer in the 550-ft westbound left-turn lane.",
+                "citations": [
+                  "text/facts.txt p.1",
+                  "text/police_report.txt p.1",
+                  "text/police_report.txt p.2",
+                  "evidence/map.png"
+                ]
+              },
+              {
+                "claim": "Looking down the road ahead of me, I saw a dark car come over the hill on the other side, eastbound, coming toward the intersection. That was before the truck started to turn.",
+                "citation": "text/witness_A.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "The highway alignment is straight and the vertical crest is 1,132 ft west of the intersection with no vegetation or fixed sight restrictions, and the sun was high in the sky behind the eastbound car (not causing glare).",
+                "citations": [
+                  "text/facts.txt p.1",
+                  "text/police_report.txt p.3",
+                  "evidence/map.png"
+                ]
+              },
+              {
+                "claim": "Once the trailer was out across the eastbound lanes, it blocked my view of the car. I didn't see the car hit the trailer.",
+                "citation": "text/witness_A.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "As the 71 ft 7 in tractor-semitrailer (with a trailer box up to 4.11 m tall) turned left across the eastbound lanes, it was positioned between Witness A to the east and the approaching eastbound sedan (1.445 m tall) to the west, occluding Witness A's line of sight to the car and the impact.",
+                "citations": [
+                  "text/facts.txt p.1",
+                  "text/police_report.txt p.1",
+                  "evidence/map.png"
+                ]
+              },
+              {
+                "claim": "I heard it, a loud bang, and then I saw the car come out from under the back side of the trailer, still going, with the top torn off. It went off the road to the south and down the shoulder. I heard it hit something farther down.",
+                "citation": "text/witness_A.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "The car underran the semitrailer (which sheared off its roof), emerged on the east side of the trailer toward Witness A, exited the south roadside at a shallow angle, and traveled about 910 ft east while striking fences and breaking a utility pole.",
+                "citations": [
+                  "text/facts.txt p.1",
+                  "text/police_report.txt p.1",
+                  "text/police_report.txt p.2",
+                  "text/police_report.txt p.3"
+                ]
+              },
+              {
+                "claim": "I never heard any brakes or a horn.",
+                "citation": "text/witness_A.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "Vehicle A's recorded data shows no brake application before or during the collision, and no pre-impact tire marks were found on the roadway.",
+                "citations": [
+                  "text/facts.txt p.1",
+                  "text/police_report.txt p.2",
+                  "text/police_report.txt p.3"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Witness B",
+            "position": "Standing on the southeast corner of the intersection of US-27A and NE 140th Court, south of the eastbound shoulder and east of NE 140th Court, in front of the retail store and just west of the bench shelter.",
+            "positionCitations": [
+              "Depo 07:47",
+              "Depo 09:04",
+              "Depo 27:04",
+              "text/deposition.txt p.1",
+              "text/police_report.txt p.1",
+              "evidence/map.png"
+            ],
+            "claims": [
+              {
+                "claim": "There was a big truck on the other side of the highway, the north side. It was in the turn lane, the one in the middle where you turn left to cross over... The trailer was white, a box trailer. It had one of those refrigeration units on the front of the trailer, I could hear it humming.",
+                "citation": "Depo 12:32",
+                "physicallyPossible": "yes",
+                "reasoning": "From the southeast corner in front of the retail store, Witness B had an unobstructed view across the eastbound lanes and 60-ft grass median to the westbound left-turn lane.",
+                "citations": [
+                  "Depo 13:12",
+                  "text/facts.txt p.1",
+                  "text/police_report.txt p.1",
+                  "evidence/map.png"
+                ]
+              },
+              {
+                "claim": "I was looking up toward the hill for my sister and a car came over the top. Eastbound, coming toward the intersection, on the side closest to me... The right lane. The outside lane, closest to my side, closest to the store... I think the truck was still in the turn lane when the car came over the hill.",
+                "citation": "Depo 14:57",
+                "physicallyPossible": "yes",
+                "reasoning": "Before the truck entered the eastbound lanes, there were no obstructions between the southeast corner and the vertical crest 1,132 ft to the west, giving Witness B a clear view of the car cresting the hill in the outside eastbound lane with the sun high and not in her eyes.",
+                "citations": [
+                  "Depo 10:01",
+                  "Depo 15:27",
+                  "Depo 16:14",
+                  "text/facts.txt p.1",
+                  "text/police_report.txt p.3",
+                  "evidence/map.png"
+                ]
+              },
+              {
+                "claim": "I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way... Yes. I saw it clearly, the whole time, right up until it went under the trailer.",
+                "citation": "Depo 27:46",
+                "physicallyPossible": "no",
+                "reasoning": "At and just before impact, the 71 ft 7 in tractor-semitrailer was stretched across both eastbound lanes onto NE 140th Court, with the tractor cab entering NE 140th Court and the point of impact on the right side of the trailer (45 ft 5 in behind the tractor front) in the center of the eastbound outside lane on the NE 140th Court centerline. Because Witness B was standing east of NE 140th Court and south of the eastbound lanes while the car approached from the west, the turning tractor and 4.11-m-tall semitrailer box were directly between Witness B and the car in the final second before impact, physically blocking her line of sight to the car and the impact point on the far (west/right) side of the trailer.",
+                "citations": [
+                  "Depo 24:09",
+                  "Depo 27:05",
+                  "Depo 28:00",
+                  "Depo 28:17",
+                  "text/facts.txt p.1",
+                  "text/police_report.txt p.2",
+                  "text/police_report.txt p.3",
+                  "evidence/map.png"
+                ]
+              },
+              {
+                "claim": "It came out from under the trailer and kept going east, down the highway, and then drifted off the road to the right side... into the grass and through a fence and I heard it hit something... What did the truck do after the impact? It kept going too, slow. It finished the turn and pulled down 140th Court and stopped. Past the store, down the side road a little way.",
+                "citation": "Depo 19:44",
+                "physicallyPossible": "yes",
+                "reasoning": "Once the car passed underneath the trailer and emerged on the east side, it traveled past Witness B's position on the southeast corner before leaving the south roadside and striking fences and a utility pole, while the truck completed its turn south onto NE 140th Court directly past the store where Witness B was standing.",
+                "citations": [
+                  "Depo 20:07",
+                  "Depo 20:57",
+                  "Depo 26:38",
+                  "text/facts.txt p.1",
+                  "text/police_report.txt p.2",
+                  "evidence/map.png"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Witness C",
+            "position": "Stopped in a pickup truck in the westbound inside lane of US-27A, just west of the NE 140th Court median crossover (about 18 m west of the side road).",
+            "positionCitations": [
+              "text/witness_C.txt p.1",
+              "text/police_report.txt p.1"
+            ],
+            "claims": [
+              {
+                "claim": "A big rig with a white refrigerated trailer was sitting in the westbound left-turn lane just ahead of me and to my left, at the crossover. I could hear the reefer unit running. The truck started across. It was barely creeping when it pulled out, slower than a walk at first, then picking up a little as it swung across the eastbound lanes toward 140th.",
+                "citation": "text/witness_C.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "From 18 m west of the side road in the westbound inside lane, Witness C was immediately adjacent to the westbound left-turn lane and crossover, with a direct view of the tractor-trailer initiating its left turn across the median and eastbound lanes.",
+                "citations": [
+                  "text/witness_C.txt p.1",
+                  "text/facts.txt p.1",
+                  "text/police_report.txt p.2",
+                  "evidence/map.png"
+                ]
+              },
+              {
+                "claim": "I never heard brakes, tires or a horn before the bang. It was one loud crunch, and then I saw the car come out the far side heading east and leave the road toward the houses. The truck kept rolling through the turn and stopped down on 140th Court past the store.",
+                "citation": "text/witness_C.txt p.1",
+                "physicallyPossible": "yes",
+                "reasoning": "Vehicle A did not brake prior to impact, and from the westbound inside lane just west of the crossover, Witness C had an open line of sight across the median to the east side of the intersection to see the car emerge from under the trailer heading east off the south roadside and the truck come to rest on NE 140th Court south of the store.",
+                "citations": [
+                  "text/facts.txt p.1",
+                  "text/police_report.txt p.2",
+                  "text/police_report.txt p.3",
+                  "evidence/map.png"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "chunked": {
+    "model": "gemini-3.8-flash",
+    "method": "chunked: 6 chunk calls (10-min video segments + ~40k-char document chunks, 6 in parallel) → 1 merge call (summaries + images)",
+    "wallSeconds": 358.5,
+    "usage": {
+      "promptTokenCount": 156440,
+      "candidatesTokenCount": 10978,
+      "thoughtsTokenCount": 17853,
+      "totalTokenCount": 185271
+    },
+    "merge": {
+      "seconds": 41,
+      "finishReason": "STOP",
+      "usage": {
+        "promptTokenCount": 10225,
+        "candidatesTokenCount": 2394,
+        "totalTokenCount": 15470,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 9133
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 1092
+          }
+        ],
+        "thoughtsTokenCount": 2851,
+        "serviceTier": "standard"
+      },
+      "parseError": null
+    },
+    "answer": {
+      "summary": "Three witnesses observed aspects of the May 7, 2016 collision between Vehicle A and Vehicle T at the intersection of US-27A and NE 140th Court. Witness A and Witness C were westbound motorists whose positions and sightlines are completely consistent with physical evidence and roadway geometry. Witness B, positioned on the southeast corner of the intersection, had a clear line of sight to the vehicles prior to the turn, but her claim of having an unobstructed view of the front of Vehicle A right up until impact is physically impossible because the opaque semitrailer was positioned directly between her vantage point and the car's western approach.",
+      "witnesses": [
+        {
+          "name": "Witness A",
+          "position": "Traveling westbound in the outside right lane of US-27A, approximately 0.25 miles behind Vehicle T at roughly 60 mph.",
+          "positionCitations": [
+            "text/facts.txt p.1",
+            "text/witness_A.txt p.1"
+          ],
+          "claims": [
+            {
+              "claim": "Observed Vehicle T ahead enter the westbound left-turn lane at NE 140th Court.",
+              "citation": "text/witness_A.txt p.1",
+              "physicallyPossible": "yes",
+              "reasoning": "Witness A was following behind Vehicle T on a straight, flat roadway with clear daylight conditions and no intervening visual obstructions.",
+              "citations": [
+                "text/facts.txt p.1",
+                "text/witness_A.txt p.1"
+              ]
+            },
+            {
+              "claim": "Observed a dark eastbound car crest the vertical rise before Vehicle T initiated its turn.",
+              "citation": "text/witness_A.txt p.1",
+              "physicallyPossible": "yes",
+              "reasoning": "The crest of the vertical grade was located 1,132 feet west of the intersection, providing up to 10.4 seconds of mutual sight distance to oncoming traffic prior to the semitrailer blocking the roadway.",
+              "citations": [
+                "text/facts.txt p.1",
+                "text/police_report.txt p.3",
+                "text/witness_A.txt p.1"
+              ]
+            },
+            {
+              "claim": "Once the semitrailer pulled across the eastbound lanes, it completely blocked his view of the car, preventing him from seeing the impact.",
+              "citation": "text/witness_A.txt p.1",
+              "physicallyPossible": "yes",
+              "reasoning": "Vehicle T was a 71-foot-7-inch combination vehicle with a solid refrigerated box trailer standing over 13 feet tall, which completely obstructed the view of eastbound lanes for a westbound driver once turned across the roadway.",
+              "citations": [
+                "text/facts.txt p.1",
+                "text/witness_A.txt p.1"
+              ]
+            },
+            {
+              "claim": "Heard a loud bang, then saw the roofless car emerge from beneath the trailer, travel off the south shoulder, and heard a second impact down the road.",
+              "citation": "text/witness_A.txt p.1",
+              "physicallyPossible": "yes",
+              "reasoning": "Physical evidence confirms Vehicle A passed completely under the trailer, had its roof sheared off, continued 910 feet east off the south roadside, and struck a utility pole.",
+              "citations": [
+                "text/facts.txt p.1",
+                "text/police_report.txt p.1",
+                "text/police_report.txt p.2",
+                "text/witness_A.txt p.1"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Witness B",
+          "position": "Standing near the covered wooden bench shelter outside the retail convenience store at the southeast corner of US-27A and NE 140th Court.",
+          "positionCitations": [
+            "Depo 07:48",
+            "Depo 09:05",
+            "Depo 27:05",
+            "text/deposition_transcript.txt p.1",
+            "evidence/map.png"
+          ],
+          "claims": [
+            {
+              "claim": "Observed Vehicle T stopped or creeping forward very slowly in the median left-turn lane with its front refrigeration unit humming, before initiating a slow left turn across the eastbound lanes at walking speed.",
+              "citation": "Depo 13:13",
+              "physicallyPossible": "yes",
+              "reasoning": "Witness B was situated on the south side of the highway with an open view across the intersection toward the median crossover and turn lane, within audible range of the running reefer unit.",
+              "citations": [
+                "Depo 12:33",
+                "Depo 14:23",
+                "text/facts.txt p.1",
+                "text/deposition_transcript.txt p.1",
+                "evidence/map.png"
+              ]
+            },
+            {
+              "claim": "Observed Vehicle A crest the hill traveling eastbound in the outside lane moving quickly and maintaining a straight course without decelerating or braking.",
+              "citation": "Depo 15:28",
+              "physicallyPossible": "yes",
+              "reasoning": "The vertical crest was 1,132 feet to the west with an unobstructed line of sight looking west from the southeast corner; telemetry confirmed Vehicle A was on cruise control at 74 mph with no braking prior to impact.",
+              "citations": [
+                "Depo 16:15",
+                "Depo 17:40",
+                "text/facts.txt p.1",
+                "text/police_report.txt p.3",
+                "evidence/map.png"
+              ]
+            },
+            {
+              "claim": "In the final second before impact, had an unobstructed line of sight and clearly watched the front of the car right up until it went beneath the trailer.",
+              "citation": "Depo 27:47",
+              "physicallyPossible": "no",
+              "reasoning": "Vehicle T was turning south into NE 140th Court, placing the 13.5-foot-high, opaque white semitrailer across both eastbound lanes. Vehicle A struck the west (right) side of the trailer. Because Witness B was positioned on the east side of NE 140th Court, the body of the semitrailer was directly between Witness B and the oncoming sedan's front end, physically occluding her line of sight to the front of the car in the final second before impact.",
+              "citations": [
+                "Depo 24:09",
+                "Depo 27:05",
+                "text/facts.txt p.1",
+                "text/police_report.txt p.1",
+                "text/police_report.txt p.3",
+                "evidence/map.png"
+              ]
+            },
+            {
+              "claim": "Observed Vehicle A pass under the trailer with a bang and tearing sound, drift off the right shoulder, breach a fence, hit a pole, and come to rest hundreds of feet away in a yard.",
+              "citation": "Depo 19:12",
+              "physicallyPossible": "yes",
+              "reasoning": "Vehicle A emerged from the east side of the trailer directly into Witness B's field of view, traveling 910 feet east-southeast through roadside fences and into a residential yard.",
+              "citations": [
+                "Depo 20:07",
+                "text/facts.txt p.1",
+                "text/police_report.txt p.1",
+                "text/police_report.txt p.2"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Witness C",
+          "position": "Stopped inside a pickup truck in the westbound inside lane of US-27A, approximately 18 meters west of the crossover, waiting to execute a U-turn.",
+          "positionCitations": [
+            "text/police_report.txt p.1",
+            "text/witness_C.txt p.1"
+          ],
+          "claims": [
+            {
+              "claim": "Heard the reefer unit running on the white trailer sitting ahead and to his left in the turn lane, and saw the truck pull out slower than a walk at first, swinging across the eastbound lanes.",
+              "citation": "text/witness_C.txt p.1",
+              "physicallyPossible": "yes",
+              "reasoning": "Witness C was positioned roughly 18 meters (approx. 59 feet) from the crossover, placing him adjacent to the turn lane with direct auditory and visual proximity to Vehicle T.",
+              "citations": [
+                "text/facts.txt p.1",
+                "text/witness_C.txt p.1"
+              ]
+            },
+            {
+              "claim": "Was watching the truck and did not observe oncoming eastbound traffic prior to the crash.",
+              "citation": "text/witness_C.txt p.1",
+              "physicallyPossible": "yes",
+              "reasoning": "Witness C was focused on Vehicle T directly ahead of him to time his planned U-turn, which is consistent with driver attention patterns.",
+              "citations": [
+                "text/witness_C.txt p.1"
+              ]
+            },
+            {
+              "claim": "Heard no brakes, tires, or horn; heard one loud crunch, then saw the car exit the far side of the trailer heading east and run off the road toward residences while the truck finished its turn onto NE 140th Court.",
+              "citation": "text/witness_C.txt p.1",
+              "physicallyPossible": "yes",
+              "reasoning": "Corroborated by absence of pre-impact skid marks, vehicle telemetry showing cruise control at 74 mph without braking, and the documented post-impact trajectory of Vehicle A and final resting spot of Vehicle T.",
+              "citations": [
+                "text/facts.txt p.1",
+                "text/police_report.txt p.2",
+                "text/police_report.txt p.3",
+                "text/witness_C.txt p.1"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "chunks": [
+      {
+        "label": "A part 1 (0:00–10:00)",
+        "kind": "video",
+        "seconds": 23.1,
+        "usage": {
+          "promptTokenCount": 39757,
+          "candidatesTokenCount": 988,
+          "totalTokenCount": 41962,
+          "promptTokensDetails": [
+            {
+              "modality": "VIDEO",
+              "tokenCount": 39600
+            },
+            {
+              "modality": "TEXT",
+              "tokenCount": 157
+            }
+          ],
+          "thoughtsTokenCount": 1217,
+          "serviceTier": "standard"
+        },
+        "text": "Here is a summary of the factual assertions and on-screen elements from this video segment:\n\n### Visual / On-Screen Elements\n* **Depo 00:00–10:00**: The screen displays a simulated remote deposition interface with speaker cards and text captions for \"Attorney (Examining Counsel),\" \"Opposing counsel,\" and \"Witness B (Deponent (fictional witness)).\" A permanent title bar at the top reads: *\"Car into turning tractor-semitrailer at an uncontrolled median crossover, US-27A near Williston, Florida (2016-05-07).\"* No photographic exhibits, diagrams, or live video feeds are displayed during this segment.\n\n---\n\n### Witness Factual Assertions & Procedural Background\n* **Depo 00:06–00:48**: Examining counsel states the deposition concerns a wrongful death action arising from a collision on U.S. Highway 27A at Northeast 140th Court in Levy County, Florida, on May 7, 2016, involving Vehicle A and Vehicle T.\n* **Depo 01:21**: Witness B confirms she has never been deposed before and has only served on jury duty once.\n* **Depo 03:11**: Witness confirms no medications, illnesses, or impairments prevent her from giving truthful testimony.\n* **Depo 03:23–04:24**: In preparation, Witness B met with defense counsel for approximately one hour the prior week, reviewed her initial statement given to the deputy, and viewed intersection photographs and an overhead road map/drawing.\n* **Depo 04:33–04:58**: Witness B is 43 years old and has lived for nearly 11 years outside Williston, approximately 6 to 7 miles toward Bronson from the subject intersection.\n* **Depo 05:06–05:30**: Witness B works as a home health aide (employed by the same agency for approximately 9 years), assisting elderly clients at their homes.\n* **Depo 05:37–06:01**: Witness B drives daily throughout the county for work; in May 2016, she had numerous clients along US-27A and was thoroughly familiar with that stretch of roadway.\n* **Depo 06:09–06:47**: Witness B is nearsighted and wears contact lenses for distance; she was wearing them on the afternoon of May 7, 2016, had an eye exam in January 2016, and has no hearing problems.\n* **Depo 06:58–07:04**: Witness B recalls the crash occurred on a Saturday (May 7, 2016), a day she had off from work.\n* **Depo 07:14–07:37**: Prior to the crash, Witness B's vehicle was in an auto shop for transmission work. Her sister drove her to run errands, dropping her off at a store while the sister went down the road to drop something off at a friend's house.\n* **Depo 07:48–08:00**: Witness B identifies the store as a convenience/feed and supply store located directly at the intersection on the south side of US-27A, where Northeast 140th Court connects.\n* **Depo 08:10–08:21**: Witness B was dropped off a little after 4:00 p.m. (estimated around 4:10 p.m.), noting her sister complained about missing the start of a ballgame.\n* **Depo 08:28–08:56**: Witness B remained inside the store for 15 to 20 minutes purchasing dog food, drinks, and a bag of ice (which later melted on the bench).\n* **Depo 09:05–09:20**: After shopping, Witness B waited outside with her bags on a covered wooden bench (configured like a bus stop shelter) in front of the store.\n* **Depo 09:25–09:48**: Environmental conditions: The weather was hot, sunny, and clear with no rain; the road surface was completely dry.\n* **Depo 09:50–10:00**: Witness B is questioned regarding the position of the sun; opposing counsel objects to form, and counsel instructs the witness to answer as the segment concludes."
+      },
+      {
+        "label": "A part 2 (10:00–20:00)",
+        "kind": "video",
+        "seconds": 35.1,
+        "usage": {
+          "promptTokenCount": 39759,
+          "candidatesTokenCount": 1527,
+          "totalTokenCount": 44140,
+          "promptTokensDetails": [
+            {
+              "modality": "VIDEO",
+              "tokenCount": 39600
+            },
+            {
+              "modality": "TEXT",
+              "tokenCount": 159
+            }
+          ],
+          "thoughtsTokenCount": 2854,
+          "serviceTier": "standard"
+        },
+        "text": "Here is the factual summary of the deposition segment, with timestamps adjusted to the full video's clock (**Depo 10:00–20:00**):\n\n### Visuals / On-Screen Display\n* **Depo 10:00–20:00**: No physical exhibits, documents, diagrams, or markings are introduced or shown on screen. The display consists exclusively of standard virtual deposition speaker tiles (\"Attorney / Examining Counsel,\" \"Witness B / Deponent,\" and \"Opposing counsel\") with closed captioning.\n\n---\n\n### Witness Testimony & Factual Assertions\n\n* **Depo 10:02–10:18**: **Lighting / Environmental Conditions** — Witness states the sun was high in the afternoon sky toward the west, did not shine into their eyes, and they were sheltered under an overhead roof.\n* **Depo 10:23–10:27**: **Witness Sunglasses** — Witness states they were not wearing sunglasses; their sunglasses were inside their sister's car.\n* **Depo 10:35–10:51**: **Witness Location & Activity** — Witness was waiting on a bench outside, texted their sister briefly to ask where she was, put the phone away, and watched the road for her arrival.\n* **Depo 10:59–11:03**: **Duration Outside** — Witness estimates having been outside roughly 5 to 10 minutes prior to the collision.\n* **Depo 11:10–11:20**: **Direction of Observation** — Witness's sister was expected to arrive from the west (the Bronson direction), so the witness was looking west toward a rise/hill in the highway.\n* **Depo 11:25–11:46**: **Roadway Topography (The Hill/Rise)** — Witness describes an uphill rise looking west on US-27A from the south side; vehicles appear over the crest and cannot be seen until they crest the rise and descend toward the intersection.\n* **Depo 12:00–12:09**: **Distance to Crest** — Witness estimates the crest of the rise is roughly a quarter-mile or a few hundred yards from the intersection, noting uncertainty with distance estimates.\n* **Depo 12:17–12:27**: **Traffic Conditions** — Traffic was light and quiet for a Saturday afternoon, with only occasional vehicles.\n* **Depo 12:33–13:08**: **Tractor-Trailer Position & Heading** — Witness observed a tractor-trailer on the north side of the highway traveling westbound toward Bronson, positioned in the median left-turn lane waiting to turn left across eastbound lanes onto 140th.\n* **Depo 13:13–13:31**: **Tractor-Trailer Description** — Witness describes a standard tractor-trailer with a darker cab and a white box trailer equipped with an operating, audible refrigeration unit humming on the front.\n* **Depo 13:38–13:51**: **Initial Movement of Truck** — When first observed, the truck was either stopped or creeping forward very slowly in the turn lane.\n* **Depo 13:57–14:11**: **Truck's Turn Path** — The truck initiated a slow left turn out of the turn lane across the median area and entered the eastbound lanes toward 140th.\n* **Depo 14:23–14:33**: **Truck Speed** — Witness estimates the truck turned at roughly walking speed or slightly faster than walking speed.\n* **Depo 14:39–14:44**: **Truck Turn Signal** — Witness did not notice whether the truck had a turn signal illuminated.\n* **Depo 14:58–15:19**: **Appearance of Sedan** — Witness observed an eastbound car crest the rise traveling toward the intersection on the south side (closest to the witness); witness initially wondered if it was their sister before realizing it was not her minivan.\n* **Depo 15:28–15:41**: **Sequence of Movements** — Witness recalls the truck was still in the turn lane when the car crested the hill, and the truck began crossing shortly thereafter.\n* **Depo 15:46–15:56**: **Sedan Description** — Described as a low, sleek, darker-colored sedan (make/model unknown to witness at the time).\n* **Depo 16:02–16:09**: **Headlights** — Witness states the car's headlights were not on, noting it was the middle of the afternoon.\n* **Depo 16:15–16:23**: **Sedan Lane Position** — The car was traveling in the eastbound right/outside lane (closest to the convenience store and the witness).\n* **Depo 16:31–16:36**: **Sedan Lane Changes** — The car maintained a straight path in the outside lane and did not change lanes descending the rise.\n* **Depo 16:51–17:17**: **Sedan Speed** — Witness could not state a numerical speed, but noted the car was moving quickly (\"moving along pretty good\"), based on how rapidly it traversed from the top of the rise to the intersection.\n* **Depo 17:25–17:33**: **Truck Position Prior to Impact** — By the time the sedan neared the intersection, the truck/trailer was stretched entirely across the roadway, blocking the car's travel lane.\n* **Depo 17:40–17:52**: **Braking / Deceleration** — Witness did not see the car brake or slow down at any point prior to impact (though noting they could not see the rear of the vehicle).\n* **Depo 17:59–18:14**: **Auditory Observations Pre-Impact** — Witness heard no tire squealing and no horn sounded by either the car or the truck.\n* **Depo 18:15–18:32**: **Recess** — Deposition goes off the record for a short five-minute break.\n* **Depo 18:33–18:56**: **Resumption** — Proceedings resume on the record under oath; witness confirms they did not discuss testimony during the break.\n* **Depo 19:12–19:36**: **Impact Mechanics** — The trailer was stretched across the eastbound travel lanes; the sedan drove directly into the side and underneath the trailer with a simultaneous bang and tearing noise, emerging out the other side.\n* **Depo 19:44–20:00**: **Post-Impact Vehicle Path** — After passing under the trailer, the car continued eastbound down the highway and drifted off the right shoulder on the south side of the road."
+      },
+      {
+        "label": "A part 3 (20:00–30:00)",
+        "kind": "video",
+        "seconds": 39.4,
+        "usage": {
+          "promptTokenCount": 39759,
+          "candidatesTokenCount": 1371,
+          "totalTokenCount": 45071,
+          "promptTokensDetails": [
+            {
+              "modality": "VIDEO",
+              "tokenCount": 39600
+            },
+            {
+              "modality": "TEXT",
+              "tokenCount": 159
+            }
+          ],
+          "thoughtsTokenCount": 3941,
+          "serviceTier": "standard"
+        },
+        "text": "Here is the chronological summary of witness assertions and on-screen exhibits for the deposition segment, referenced to the full-video clock (**Depo MM:SS**):\n\n### Witness Assertions & On-Screen Exhibits\n\n* **Depo 20:07 – 20:27**: Witness B states that after emerging from under the trailer, the car did not slow down much, traveled a long distance off the road into the grass, went through a fence, struck a pole (which she learned later), and came to rest in someone's yard.\n* **Depo 20:40 – 20:51**: Witness B states the car traveled far past a couple of houses; she heard people estimate the distance as hundreds of feet and believes that estimate because the car \"just kept going.\"\n* **Depo 20:57 – 21:09**: Witness B asserts that after the collision, the tractor-trailer continued moving slowly, completed its turn onto NE 140th Court, and came to a stop past the retail store a little ways down the side road.\n* **Depo 21:14 – 21:35**: Witness B states her immediate actions post-impact: she stood up, believes she dropped her bag, froze momentarily, and began walking toward the road unsure of what to do. A man then exited the store already on the phone with 911.\n* **Depo 21:41 – 21:53**: Witness B states she did not approach the car because it was too far away; others ran down toward it while she remained shaking near the store.\n* **Depo 22:00 – 22:05**: Witness B confirms she did not speak to anyone from the truck.\n* **Depo 22:12 – 22:38**: Witness B states a sheriff's deputy took her information and questioned her at the scene. She later provided a written statement a few days post-incident after receiving a follow-up call.\n* **Depo 22:44 – 22:59**: Witness B states her sister returned while she was still by the store, could not drive through due to arriving emergency vehicles, parked across the street, walked over, and accompanied her while speaking with the deputy.\n* **Depo 23:06 – 23:27**: Witness B confirms discussing the collision with her sister multiple times, but asserts her sister saw nothing because she was down the road and did not affect her recollection.\n* **Depo 23:34 – 23:58**: Witness B states she saw coverage on local news but avoided reading too much; she once saw a television image of the car and turned it off, denying having viewed reconstructions or video.\n* **Depo 24:09 – 24:24**: Witness B testifies that when the car reached the intersection, the tractor cab had reached the other side entering NE 140th Court, while the trailer remained stretched across both eastbound lanes of US-27A.\n* **Depo 24:33 – 24:44**: Witness B states that from her vantage point, she could only see parts of the road on the north side of the truck (under and around the trailer).\n* **Depo 24:53 – 25:00**: Witness B states she had an unobstructed view up the hill and could see the car most of the way as it descended.\n* **Depo 25:08 – 25:20**: Witness B asserts that in the moments right before impact, she watched the car the entire time because she knew a collision was imminent.\n* **Depo 25:21 – 25:57**: **Exhibit 4** is introduced and identified as a schematic top-down diagram of the intersection of US-27A and NE 140th Court, oriented with North at the top and a scale bar at the bottom.\n* **Depo 26:15 – 26:27**: Witness B identifies the building structure at the lower-right corner of the intersection diagram as the retail store where she was located.\n* **Depo 26:38 – 26:47**: **On-Screen Exhibit 4 / Drawing**: Exhibit 4 appears on screen. Using a red pen, Witness B places a mark on NE 140th Court south of the retail store to designate where the tractor-trailer came to a final stop.\n* **Depo 27:05 – 27:13**: **On-Screen Exhibit 4 / Drawing**: Witness B marks a red circled \"X\" on the eastbound shoulder/corner east of NE 140th Court in front of the store/bench shelter to show where she was standing at the time of impact.\n* **Depo 27:25 – 27:36**: Witness B states she was standing at the time of the collision, having stood up upon seeing the truck pull across because she anticipated a crash.\n* **Depo 27:47 – 28:27**: Witness B asserts that in the final second before impact, she had an unobstructed line of sight and clearly watched the front of the car right up until it went beneath the trailer.\n* **Depo 28:39 – 28:50**: Witness B reiterates that the trailer was across the roadway as the car approached it and maintains certainty about what she observed.\n* **Depo 29:01 – 29:27**: Witness B admits she does not recall if she told the on-scene deputy that she watched the car \"all the way in\" and acknowledges that specific detail is likely omitted from her initial written statement (which primarily noted the truck turning and the car failing to stop).\n* **Depo 29:46 – 29:50**: On cross-examination, Witness B asserts that from what she could see, the car never slowed down after coming over the hill before striking the truck.\n* **Depo 29:54 – 29:59**: Examination concludes, and counsel places on the record that the deposition ends at 10:16 a.m."
+      },
+      {
+        "label": "A part 4 (30:00–30:01)",
+        "kind": "video",
+        "seconds": 6.4,
+        "usage": {
+          "promptTokenCount": 291,
+          "candidatesTokenCount": 122,
+          "totalTokenCount": 646,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 159
+            },
+            {
+              "modality": "VIDEO",
+              "tokenCount": 132
+            }
+          ],
+          "thoughtsTokenCount": 233,
+          "serviceTier": "standard"
+        },
+        "text": "Here is a summary of the events and statements from this deposition segment:\n\n* **Depo 30:00–30:01**: Examining Counsel states on the record: \"The time is 10:16 a.m. This concludes the deposition.\"\n* **Depo 30:00–30:01**: The screen displays a video conference interface showing the generic avatar card for \"Attorney / Examining Counsel\" indicated as \"SPEAKING,\" with subtitles displaying counsel's concluding remarks. No exhibits, witness testimony, or visual evidence are presented."
+      },
+      {
+        "label": "documents chunk 1/2",
+        "kind": "doc",
+        "seconds": 31,
+        "usage": {
+          "promptTokenCount": 15131,
+          "candidatesTokenCount": 1308,
+          "totalTokenCount": 18417,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 15131
+            }
+          ],
+          "thoughtsTokenCount": 1978,
+          "serviceTier": "standard"
+        },
+        "text": "Here is a concise summary of all factual assertions from the deposition chunk for the litigation team:\n\n### Deposition Details & Incident Background\n* **Date & Time of Deposition:** May 14, 9:42 a.m. to 10:16 a.m., with a brief 5-minute break around the 40-minute mark (text/deposition.txt p.1).\n* **Incident Details:** Wrongful death collision occurring on Saturday, May 7, 2016, on U.S. Highway 27A at Northeast 140th Court in Levy County, Florida, involving Vehicle A (decedent sedan) and Vehicle T (tractor-trailer) (text/deposition.txt p.1).\n\n### Witness Background & Pre-Deposition Preparation (Witness B)\n* **Demographics & Experience:** 43-year-old home health aide; lives 6 to 7 miles from the intersection toward Bronson; lived in the area ~11 years; has worked the same job ~9 years driving daily on US-27A (text/deposition.txt p.1).\n* **Sensory Faculties:** Nearsighted; was wearing corrective distance contact lenses (regular annual checkup that prior January); no hearing impairment (text/deposition.txt p.1).\n* **Preparation:** Met with defense counsel for ~1 hour the week prior, reviewed her written statement to the sheriff's deputy, and reviewed intersection photographs and a top-down diagram map (text/deposition.txt p.1).\n\n### Scene, Environmental & Traffic Conditions\n* **Location:** Convenience/feed/supply store located on the south side of US-27A at the intersection with NE 140th Court (text/deposition.txt p.1).\n* **Topography:** Facing west from the south side, US-27A rises over a hill/crest roughly a quarter-mile or less (a few hundred yards) west of the intersection; traffic beyond the crest is obscured from view (text/deposition.txt p.1).\n* **Weather & Lighting:** Clear, sunny, hot day; roadway was dry; sun was high in the western sky (not blinding Witness B under the shelter); Witness B was not wearing sunglasses (text/deposition.txt p.1).\n* **Traffic:** Very light/quiet (text/deposition.txt p.1).\n\n### Timeline Prior to Impact\n* **~4:10 p.m.:** Witness B’s sister dropped her at the convenience store while the sister ran an errand heading west toward Bronson (text/deposition.txt p.1).\n* **~4:10–4:30 p.m.:** Witness B spent 15–20 minutes inside buying dog food, drinks, and a bag of ice (text/deposition.txt p.1).\n* **~5–10 minutes before collision:** Witness B sat outside under a roofed bench/shelter facing west toward the hill, briefly texted her sister, and watched westbound traffic for her sister's minivan (text/deposition.txt p.1).\n\n### Tractor-Trailer (Vehicle T) Movements & Observations\n* **Description:** Dark-colored tractor with a white box trailer equipped with an active, humming refrigeration unit (text/deposition.txt p.1).\n* **Initial Position:** Traveling westbound on US-27A, stopped or creeping in the center/median left-turn lane waiting to turn left (south) onto NE 140th Court (text/deposition.txt p.1).\n* **Turn Movement:** Commenced a slow left turn across the median and eastbound lanes at walking speed or slightly faster; Witness B did not notice whether turn signals were active and heard no horn (text/deposition.txt p.1).\n* **Position at Impact:** Tractor had cleared the eastbound lanes onto NE 140th Court; trailer was stretched fully across both eastbound travel lanes (text/deposition.txt p.1).\n* **Post-Impact Movement:** Continued slowly, completed the turn south down NE 140th Court past the store, and pulled over (marked by witness on Exhibit 4) (text/deposition.txt p.1).\n\n### Vehicle A (Sedan) Movements & Observations\n* **Description:** Low, sleek, dark-colored sedan (text/deposition.txt p.1).\n* **Trajectory & Lane:** Appeared over the crest of the hill traveling eastbound in the right-hand/outside lane (closest to the store); maintained a straight path in that lane without changing lanes (text/deposition.txt p.1).\n* **Lighting:** Headlights were off (text/deposition.txt p.1).\n* **Speed & Deceleration:** Witness estimated it came down the hill \"quick\" and was \"moving along pretty good\"; observed no deceleration; observed no brake lights (viewing from the front); heard no tire screeching, horn, or braking sounds prior to impact (text/deposition.txt p.1).\n\n### Point of Impact & Aftermath\n* **Impact:** Sedan collided directly into and passed underneath the side of the trailer across the eastbound lanes; witness heard a simultaneous loud bang and tearing sound (text/deposition.txt p.1).\n* **Vehicle A Trajectory Post-Collision:** Emerged from beneath the trailer, continued traveling east without noticeable deceleration, drifted right off the roadway into grass, breached a fence, struck a utility pole, and came to rest hundreds of feet away in a residential yard past several houses (text/deposition.txt p.1).\n* **Witness Actions & Statements:**\n  * Witness B stood up by the corner shelter prior to impact because she anticipated a crash (marked on Exhibit 4); testified she had an unobstructed view of Vehicle A up to the point of impact (text/deposition.txt p.1).\n  * Remained near the store; a bystander called 911; she did not approach the car or truck driver; gave a brief verbal statement to responding deputies and provided a written statement a few days later mentioning the turning truck and non-stopping car (text/deposition.txt p.1)."
+      },
+      {
+        "label": "documents chunk 2/2",
+        "kind": "doc",
+        "seconds": 58.8,
+        "usage": {
+          "promptTokenCount": 11518,
+          "candidatesTokenCount": 3268,
+          "totalTokenCount": 19565,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 11518
+            }
+          ],
+          "thoughtsTokenCount": 4779,
+          "serviceTier": "standard"
+        },
+        "text": "Here is a concise summary of all factual assertions, measurements, times, vehicle dynamics, and witness statements from the provided case documents.\n\n### Incident Overview, Time, & Environmental Conditions\n* **Date & Time:** Saturday, May 7, 2016, at approximately 4:36 p.m. EDT; Vehicle A’s onboard data logged the collision at 4:36:12.7 p.m. (`text/facts.txt p.1`; `text/police_report.txt p.1`).\n* **Location:** US Highway 27A at Northeast 140th Court, near mile marker 29, in unincorporated Levy County, Florida (~5 miles west of Williston) (`text/facts.txt p.1`; `text/police_report.txt p.1`; `text/deposition_transcript.txt p.1`).\n* **Weather & Lighting:** Daylight, clear skies, hot, dry asphalt roadway; no precipitation (`text/facts.txt p.1`; `text/police_report.txt p.1`; `text/witness_C.txt p.1`; `text/deposition_transcript.txt p.1`).\n* **Sun Position:** High in the sky toward the west, situated behind eastbound traffic; sun glare was not an impairment for eastbound drivers or witnesses (`text/facts.txt p.1`; `text/police_report.txt p.1, p.3`; `text/witness_A.txt p.1`; `text/deposition_transcript.txt p.1`).\n\n---\n\n### Roadway Geometry & Traffic Control\n* **US-27A Configuration:** Four-lane divided rural highway; two 12-foot through lanes in each direction; 2-foot paved left shoulder; 5-foot paved right shoulder (`text/facts.txt p.1`; `text/police_report.txt p.1, p.3`).\n* **Median & Turn Lanes:** Grassy/earthen median approximately 60 feet wide; median crossover is 130 feet long; left-turn and right-turn lanes are approximately 550 feet long; combined width of left-turn lane, median, and shoulders is 78 feet (`text/facts.txt p.1`; `text/police_report.txt p.1, p.3`).\n* **Horizontal & Vertical Alignment:** Straight horizontal alignment for several miles in both directions (`text/facts.txt p.1`; `text/police_report.txt p.1`). A vertical crest is located approximately 1,132 feet (345 m) west of the intersection center; the eastbound approach descends at a ~2.15% grade for ~1,459 feet before leveling out ~327 feet east of the intersection (`text/facts.txt p.1`; `text/police_report.txt p.1, p.3`).\n* **NE 140th Court & Surrounding Features:** Local paved road running due south, intersecting US-27A at a 109° skew angle (`text/facts.txt p.1`; `text/police_report.txt p.1`). A retail business (convenience/feed store) sits on the southeast corner of the intersection (`text/facts.txt p.1`; `text/police_report.txt p.1`; `text/deposition_transcript.txt p.1`).\n* **Speed Limits & Control:** Posted speed limit is 65 mph; roadway design speed is 70 mph; 85th-percentile speed was 69 mph (August 2016 study) (`text/facts.txt p.1`; `text/police_report.txt p.1`). Unsignalized intersection (met 0 of 5 signal warrants); traffic control is limited to a stop sign on the NE 140th Court approach (`text/facts.txt p.1`; `text/police_report.txt p.1`).\n\n---\n\n### Vehicle Specifications, Dimensions, & Systems\n* **Vehicle A (Car):** 2015 four-door passenger sedan, darker color (`text/facts.txt p.1`; `text/police_report.txt p.1`; `text/deposition_transcript.txt p.1`). \n  * Trailing edge of hood is ~3 feet high; headrests were at least 3.5 inches higher than the trailer's bottom edge (`text/facts.txt p.1`). Modeling dimensions: 4.97 m long × 1.96 m wide × 1.445 m tall (`text/facts.txt p.1`).\n  * Headlights were off at impact (`text/facts.txt p.1`; `text/police_report.txt p.3`; `text/deposition_transcript.txt p.1`).\n  * Airbags deployed approximately 8.4 seconds after trailer impact upon striking a utility pole (`text/facts.txt p.1`; `text/police_report.txt p.3`).\n  * Driver was the sole occupant and died at the scene (`text/police_report.txt p.1, p.2`).\n* **Vehicle T (Truck-Tractor & Semitrailer):** 2014 truck-tractor pulling a 2003 refrigerated box semitrailer; total combination length of 71 feet 7 inches (`text/facts.txt p.1`; `text/police_report.txt p.1`).\n  * Semitrailer had a white box with an operating front refrigeration unit and a darker tractor (`text/facts.txt p.1`; `text/deposition_transcript.txt p.1`; `text/witness_A.txt p.1`; `text/witness_C.txt p.1`). Modeling dimensions: tractor 6.6 m long × 4.0 m tall; trailer 2.59 m wide with the box floor 1.2 m to 4.11 m above ground (`text/facts.txt p.1`).\n  * Driver was uninjured (`text/police_report.txt p.1`).\n\n---\n\n### Vehicle Speeds, Maneuvers, & Sightlines\n* **Vehicle A Speed & Action:** Traveled eastbound in the right (outside) lane; cruise control was engaged at 74 mph at 4:34:21 p.m. and maintained 74 mph through impact (`text/facts.txt p.1`; `text/police_report.txt p.1, p.3`). No braking, steering avoidance, slowing, or lane change occurred prior to or during the collision (`text/facts.txt p.1`; `text/police_report.txt p.2, p.3`; `text/deposition_transcript.txt p.1`).\n* **Vehicle T Maneuver:** Traveled westbound, entered the westbound left-turn lane, stopped or moved at a crawl, and initiated a left turn across both eastbound lanes toward NE 140th Court at walking speed (modeled: 3.0 m/s rising to ~6.1 m/s at a 12 m turn radius) (`text/facts.txt p.1`; `text/police_report.txt p.1, p.2`; `text/witness_C.txt p.1`; `text/deposition_transcript.txt p.1`).\n* **Sight Distances:** \n  * The vertical crest (1,132 feet west) was the sole sightline restriction; there were no vegetative or physical sight obstructions (`text/facts.txt p.1`; `text/police_report.txt p.3`).\n  * At 74 mph, each driver had up to 10.4 seconds of mutual sight distance (`text/facts.txt p.1`; `text/police_report.txt p.3`).\n  * AASHTO minimum sight distance for a left-turning combination vehicle is 781 feet (at 65 mph) or 842 feet (at 70 mph); NTSB determined available sight distance was sufficient for either driver to avoid the collision (`text/facts.txt p.1`).\n\n---\n\n### Collision Dynamics, Damage, & Physical Evidence\n* **Point of Impact (POI):** South side of the intersection within the eastbound outside (right) travel lane along the NE 140th Court centerline (`text/facts.txt p.1`; `text/police_report.txt p.1, p.2, p.3`).\n* **Impact Point on Trailer:** Centered on the trailer’s right side, approximately 45 feet 5 inches (13.84 m) behind the front of the tractor (`text/facts.txt p.1`; `text/police_report.txt p.1, p.3`).\n* **Pre-Impact Evidence:** Zero pre-impact braking or tire marks on the roadway from either vehicle (`text/facts.txt p.1`; `text/police_report.txt p.2, p.3`).\n* **Vehicle A Impact Damage & Trajectory:** \n  * Passed completely under the semitrailer; lower trailer edge sheared off the roof structure and separated the A-pillars; hood scraped by trailer side-marker lamp (`text/facts.txt p.1`; `text/police_report.txt p.1, p.2`).\n  * Continued eastbound under the trailer, departed the south roadside at a shallow angle, traversed a drainage culvert, penetrated two wire fences, struck and snapped a wooden utility pole, rotated counterclockwise, and came to rest perpendicular to US-27A in a residential front yard (`text/facts.txt p.1`; `text/police_report.txt p.1, p.2, p.3`; `text/deposition_transcript.txt p.1`).\n  * Total distance traveled post-impact to final rest: ~910 feet (277 m) (`text/facts.txt p.1`; `text/police_report.txt p.1, p.3`).\n* **Vehicle T Damage & Final Rest:** Tractor sustained no damage; semitrailer sustained right-side and underside damage (`text/police_report.txt p.1`). Vehicle T completed its turn and came to rest on NE 140th Court, south of the retail store (`text/facts.txt p.1`; `text/police_report.txt p.1, p.2, p.3`; `text/deposition_transcript.txt p.1`).\n\n---\n\n### Witness Statements & Observations\n\n#### Witness A (Westbound Motorist)\n* **Location:** Traveling westbound in the outside right lane, ~0.25 miles behind Vehicle T at ~60 mph (`text/facts.txt p.1`; `text/witness_A.txt p.1`).\n* **Observations:** \n  * Saw Vehicle T ahead enter the westbound left-turn lane at 140th Court (unable to tell if stopped or creeping) (`text/witness_A.txt p.1`).\n  * Observed a dark eastbound car crest the hill before the truck initiated its turn (`text/facts.txt p.1`; `text/witness_A.txt p.1`).\n  * Once the semitrailer pulled across the eastbound lanes, it completely blocked his view of the car; did not see impact (`text/facts.txt p.1`; `text/witness_A.txt p.1`).\n  * Heard a loud bang, then saw the roofless car emerge from beneath the trailer, travel off the south shoulder, and heard a second impact down the road (`text/witness_A.txt p.1`).\n  * Heard no horn or braking; sun was high and behind him; pulled over on the westbound shoulder and called 911 (`text/witness_A.txt p.1`).\n\n#### Witness B (Pedestrian at Southeast Corner)\n* **Location & Background:** 43-year-old home health aide; wearing distance contact lenses; dropped off by sister ~4:10 p.m. at the retail store on the SE corner; waited on a covered outdoor bench for 5–10 minutes facing west toward the hill (`text/deposition_transcript.txt p.1`).\n* **Observations:**\n  * Observed Vehicle T stopped or creeping in the westbound left-turn lane with the trailer refrigeration unit humming (`text/deposition_transcript.txt p.1`).\n  * Saw a dark, sleek sedan crest the hill eastbound in the outside right lane; stated the truck began turning across the eastbound lanes after the car crested (`text/deposition_transcript.txt p.1`).\n  * Estimated the top of the hill was less than a quarter-mile / a few hundred yards away (`text/deposition_transcript.txt p.1`).\n  * Noted the truck crossed at walking speed (or slightly faster); does not recall turn signals (`text/deposition_transcript.txt p.1`).\n  * Testified the car maintained a straight path, did not slow down, showed no brake lights, and produced no tire squeal or horn sound (`text/deposition_transcript.txt p.1`).\n  * Heard no truck horn (`text/deposition_transcript.txt p.1`).\n  * Saw the truck cab cross into NE 140th Court with the trailer spanning both eastbound lanes; witnessed the car travel directly beneath the trailer with a \"bang and a tearing sound,\" emerge out the other side, drift off the right roadside, crash through a fence, hit a pole, and stop in a yard hundreds of feet away (`text/deposition_transcript.txt p.1`).\n  * Testified she stood up prior to impact and maintained an unobstructed view of the front of the car right up until it went under the trailer (`text/deposition_transcript.txt p.1`).\n\n#### Witness C (Stopped Westbound Motorist)\n* **Location:** Stopped in a pickup truck in the westbound inside lane of US-27A, ~18 meters west of the crossover, waiting to make a U-turn (`text/police_report.txt p.1`; `text/witness_C.txt p.1`).\n* **Observations:**\n  * Heard the reefer unit running on the white trailer sitting ahead and to his left in the turn lane (`text/witness_C.txt p.1`).\n  * Observed the truck pull out \"slower than a walk at first,\" accelerating slightly as it swung across the eastbound lanes (`text/witness_C.txt p.1`).\n  * Was watching the truck and did not observe oncoming eastbound traffic (`text/witness_C.txt p.1`).\n  * Heard no brakes, tires, or horn; heard one loud crunch, then saw the car exit the far side of the trailer heading east and run off the road toward residences (`text/witness_C.txt p.1`).\n  * Observed the truck complete its turn and stop on NE 140th Court past the store (`text/witness_C.txt p.1`)."
+      }
+    ],
+    "score": {
+      "witnessFound": true,
+      "position": "Standing near the covered wooden bench shelter outside the retail convenience store at the southeast corner of US-27A and NE 140th Court.",
+      "positionCitations": [
+        "Depo 07:48",
+        "Depo 09:05",
+        "Depo 27:05",
+        "text/deposition_transcript.txt p.1",
+        "evidence/map.png"
+      ],
+      "mark": false,
+      "markCited": true,
+      "markAnywhere": false,
+      "claim": true,
+      "blocked": true,
+      "claimVerdicts": [
+        {
+          "claim": "Observed Vehicle T stopped or creeping forward very slowly in the median left-turn lane with its front refrigeration unit humming, before initiating a slow left",
+          "citation": "Depo 13:13",
+          "physicallyPossible": "yes"
+        },
+        {
+          "claim": "Observed Vehicle A crest the hill traveling eastbound in the outside lane moving quickly and maintaining a straight course without decelerating or braking.",
+          "citation": "Depo 15:28",
+          "physicallyPossible": "yes"
+        },
+        {
+          "claim": "In the final second before impact, had an unobstructed line of sight and clearly watched the front of the car right up until it went beneath the trailer.",
+          "citation": "Depo 27:47",
+          "physicallyPossible": "no"
+        },
+        {
+          "claim": "Observed Vehicle A pass under the trailer with a bang and tearing sound, drift off the right shoulder, breach a fence, hit a pole, and come to rest hundreds of ",
+          "citation": "Depo 19:12",
+          "physicallyPossible": "yes"
+        }
+      ]
+    },
+    "chunkSummaryReportsMark": true
+  },
+  "wallSeconds": 386.1,
+  "textOnlyControl": {
+    "file": "cases/demo-4ee683/cache/baseline_fair_textonly.json",
+    "method": "Flash single call, same prompt + full case text (incl. full deposition transcript/SRT) + map.png, NO video",
+    "seconds": 50.9,
+    "promptTokens": 28060,
+    "score": {
+      "witnessFound": true,
+      "position": "Standing near the covered bench shelter outside the retail store on the southeast corner of US-27A and NE 140th Court.",
+      "positionCitations": [
+        "Depo 09:04",
+        "Depo 27:04",
+        "Depo 27:14",
+        "text/police_report.txt p.1",
+        "evidence/map.png"
+      ],
+      "mark": false,
+      "markCited": true,
+      "markAnywhere": false,
+      "claim": true,
+      "blocked": true,
+      "claimVerdicts": [
+        {
+          "claim": "Observed the tractor-trailer waiting or creeping in the westbound left-turn lane and start turning slowly across the median and eastbound lanes toward NE 140th ",
+          "citation": "Depo 12:32",
+          "physicallyPossible": "yes"
+        },
+        {
+          "claim": "Observed the car crest the hill to the west traveling eastbound in the outside lane at high speed without changing lanes or braking.",
+          "citation": "Depo 14:57",
+          "physicallyPossible": "yes"
+        },
+        {
+          "claim": "Maintained a completely clear, unobstructed view of the front of the car during the final second before impact and watched it hit the trailer directly.",
+          "citation": "Depo 27:46",
+          "physicallyPossible": "no"
+        },
+        {
+          "claim": "Saw the car emerge from underneath the trailer and continue east off the southern edge of the highway through a fence and into a pole.",
+          "citation": "Depo 19:11",
+          "physicallyPossible": "yes"
+        }
+      ]
+    }
+  }
+}

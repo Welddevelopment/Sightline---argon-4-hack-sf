@@ -1,41 +1,51 @@
 {
-  "interactionId": "v1_ChdXbURlYXBDeUJjU2V1TVlQLWRYR2tRYxIXV21EZWFwQ3lCY1NldU1ZUC1kWEdrUWM",
+  "interactionId": "v1_ChdaMkxlYXJhMk5ORFQwX2dQbkl1d3lRcxIXWjJMZWFyYTJOTkRUMF9nUG5JdXd5UXM",
   "model": "gemini-4-argon",
   "caseId": "demo",
   "maxOutputTokens": 160000,
   "thinkingLevel": "low",
-  "promptChars": 146994,
+  "promptChars": 151332,
   "video": "https://generativelanguage.googleapis.com/v1beta/files/yh4xrqu35tfm",
   "kinematicsFrom": "cases/demo/worlds/world_v2.js",
-  "startedAt": "2026-10-25T20:02:33.090Z",
+  "startedAt": "2026-10-25T20:11:18.943Z",
   "status": "completed",
-  "finishReason": "completed (natural stop; 45,010 of 160,000 max_output_tokens used)",
+  "finishReason": "completed",
   "usage": {
-    "total_tokens": 227038,
-    "total_input_tokens": 182028,
+    "total_tokens": 246782,
+    "total_input_tokens": 183703,
     "input_tokens_by_modality": [
       {
         "modality": "text",
-        "tokens": 54086
+        "tokens": 55761
       },
       {
         "modality": "video",
         "tokens": 127942
       }
     ],
-    "total_cached_tokens": 0,
-    "total_output_tokens": 45010,
+    "total_cached_tokens": 32768,
+    "cached_tokens_by_modality": [
+      {
+        "modality": "text",
+        "tokens": 9947
+      },
+      {
+        "modality": "video",
+        "tokens": 22821
+      }
+    ],
+    "total_output_tokens": 63079,
     "output_tokens_by_modality": [
       {
         "modality": "text",
-        "tokens": 45010
+        "tokens": 63079
       }
     ],
     "total_tool_use_tokens": 0,
     "total_thought_tokens": 0
   },
-  "wallSec": 468,
-  "outputChars": 108254,
-  "outputLines": 3460,
-  "finishedAt": "2026-10-25T20:10:20.737Z"
+  "wallSec": 593,
+  "outputChars": 155021,
+  "outputLines": 4266,
+  "finishedAt": "2026-10-25T20:21:11.979Z"
 }

@@ -345,6 +345,7 @@ app.post('/api/loop', async (req, res) => {
 });
 
 // ---- INGEST slice: multi-case API (cases/<id>/...). Legacy /api/state|witness|loop above keep serving the demo case. ----
+await import('./demo.js').then((m) => m.mountDemo(app, { ROOT, MODE, tryImport, getThree, errMsg })).catch((e) => console.warn('[sightline] demo flow not mounted:', errMsg(e))); // DEMO FLOW: replay-mode cases; must stay BEFORE mountCases/mountReview (route order)
 mountCases(app, {
   ROOT, MODE, tryImport, getThree, errMsg, findRenderUrl,
   legacyState: buildState,

@@ -1,7 +1,7 @@
 {
   "world": "/cases/demo/worlds/world_v2.js",
   "version": 2,
-  "createdAt": "2026-10-25T20:07:02.462Z",
+  "createdAt": "2026-10-25T20:27:07.285Z",
   "mode": "mock",
   "model": "gemini-4-argon",
   "promptFile": "argon/prompts/critique.md",
@@ -48,7 +48,7 @@
       "bytes": 54576
     }
   ],
-  "outputSha256": "53e7197065c27bf24574299b052fe81f4dd2a62f88d7d5a1881a8e457b32034c",
+  "outputSha256": "8b35feada438d539535dece3dad1161eeb490e1eae348d7c97b4c7d9cc02bc38",
   "usage": {
     "promptTokens": null,
     "outputTokens": null,

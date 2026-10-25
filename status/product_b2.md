@@ -14,4 +14,5 @@ Page: `/review.html?case=<id>` — codes against SPEC.md "## REVIEW & CONFIRM (1
 
 Map scale: uses `case.json.map` when present; otherwise, if the case's exhibit image has the same file name as `case/case.json.map.file` (demo: map.png, identical Exhibit 4), it borrows that block (10 px/m, origin [600,450]) and the note says "scale: exhibit manifest". So the demo shows Exhibit 4 under the markers. Adding a `map` block to cases/<id>/case.json still takes precedence.
 Moving a witness draws a dashed ghost at the extracted position with "extracted · N m" and the witness row shows "moved N m from extracted x, z" (the Witness B ~5.5 m correction is visible at a glance).
+Labels on the plan avoid each other (witness tags reserved first, object/edge labels slide to a free slot). "Enlarge" widens the side column for the plan (remembered locally).
 Tested PORT=5195 mock on demo with Playwright; confirm/run/stream stubbed in the test so the shared demo state (confirmed_facts.json, jobs) was not touched.

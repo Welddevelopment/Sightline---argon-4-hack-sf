@@ -21,14 +21,16 @@ export const VEHICLE_TYPES = Object.keys(VEHICLE_DIMS);
 export const ASSET_METHODS = ['vehicle', 'parkedVehicle', 'pedestrian', 'road', 'median', 'intersection', 'crosswalk', 'curb',
   'sidewalk', 'signal', 'sign', 'pole', 'streetlight', 'shelter', 'building', 'tree', 'environment', 'skidMark', 'impactMarker', 'groundPlane'];
 // Optional extras (not in the SPEC v2 catalog; Argon worlds may use them, validator allows them): scenery + terrain.
-export const EXTRA_METHODS = ['treeline', 'fence', 'terrain', 'beginWorld'];
+export const EXTRA_METHODS = ['treeline', 'fence', 'terrain', 'landscape', 'beginWorld'];
 export const SIGN_KINDS = ['stop', 'yield', 'speed_limit', 'street_name', 'generic'];
 export const BUILDING_KINDS = ['store', 'house', 'generic'];
 export const GROUND_KINDS = ['grass', 'pasture', 'asphalt', 'dirt'];
 export const MARKINGS = ['center_dashed', 'center_double', 'none'];
 
 // 'argon' = web/assets_argon/index.js (Argon-authored winners); when present it is tried FIRST for every type it exports.
-const MODULE_NAMES = ['argon', 'vehicles', 'vehicles_heavy', 'vehicles_small', 'vehicle_parts', 'scene', 'textures', 'furniture', 'environment'];
+const MODULE_NAMES = ['argon', 'vehicles', 'vehicles_heavy', 'vehicles_small', 'vehicle_parts', 'scene', 'textures', 'furniture', 'environment', 'landscape'];
+// landscape is NOT used for SPEC factory delegation (its treeline() is a distance ring); it is exposed as assets.landscape.*
+const NO_DELEGATE = new Set(['landscape']);
 const MODULE_PATH = (n) => (n === 'argon' ? './assets_argon/index.js' : `./assets/${n}.js`);
 
 /** Import every web/assets/<name>.js (and web/assets_argon/index.js) that exists. Returns { name: module }. Never throws. */
@@ -78,7 +80,7 @@ export function createAssets(THREE, opts = {}) {
   const bump = (m, k) => { (stats[m] ||= { delegated: 0, fallback: 0, box: 0, errors: [] })[k]++; };
   const note = (m, e) => { const s = (stats[m] ||= { delegated: 0, fallback: 0, box: 0, errors: [] }); if (s.errors.length < 5) s.errors.push(String(e && e.message || e)); };
 
-  const modOrder = [...MODULE_NAMES.filter((k) => modules[k]), ...Object.keys(modules).filter((k) => !k.startsWith('_') && modules[k] && !MODULE_NAMES.includes(k))];
+  const modOrder = [...MODULE_NAMES.filter((k) => modules[k] && !NO_DELEGATE.has(k)), ...Object.keys(modules).filter((k) => !k.startsWith('_') && modules[k] && !MODULE_NAMES.includes(k))];
   function candidates(method, arg0) {
     const names = namesFor(method, arg0);
     const fns = [];
@@ -422,6 +424,11 @@ export function createAssets(THREE, opts = {}) {
       height: (x, z) => { try { const y = modules.scene?.terrainHeight?.(x, z); return Number.isFinite(y) ? y : 0; } catch { return 0; } },
       roadHeight: (x, z) => { try { const y = modules.scene?.roadHeight?.(x, z); return Number.isFinite(y) ? y : 0; } catch { return 0; } },
     },
+    /** web/assets/landscape.js (photographic ground, grass, horizon treeline ring, clouds). Each returns an Object3D or null. */
+    landscape: Object.fromEntries(['pastureGround', 'grassBlades', 'treeline', 'forest', 'skyClouds', 'fenceLine', 'ditch', 'aerialSite'].map((n) => [n, (o = {}) => {
+      const f = modules.landscape?.[n]; if (typeof f !== 'function') return null;
+      try { const r = f(THREE, { headless, ...o }); if (r?.isObject3D && n === 'pastureGround') { r.userData.assetType = 'groundPlane'; r.name = o.id || 'ground'; } return r || null; } catch (e) { note('landscape.' + n, e); return null; }
+    }])),
     /** Loaders call this before every createWorld: clears terrain registered by a previously loaded world. */
     beginWorld() { api.terrain.reset(); try { modules.scene?.setTerrainOptions?.({ undulation: 0.45, seed: 7 }); } catch {} },
     environment(o = {}) {

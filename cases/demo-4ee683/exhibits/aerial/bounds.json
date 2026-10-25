@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "image": "aerial.jpg",
+  "widthPx": 3333,
+  "heightPx": 2000,
+  "frame": "world metres, Y up, +X = east, -Z = north (image top = north), origin = world origin (initial point of impact)",
+  "origin": {
+    "lat": 29.4105889,
+    "lon": -82.5397747,
+    "note": "World origin = initial point of impact: centre of EB outside lane of US-27A at the NE 140th Court centreline, measured on this NAIP image (the brief's approx. site point 29.4106, -82.5393 is ~46 m east of it)."
+  },
+  "boundsMeters": {
+    "minX": -500.404,
+    "maxX": 500.404,
+    "minZ": -298.71,
+    "maxZ": 298.719
+  },
+  "metersPerPixel": 0.3003,
+  "boundsLatLon": {
+    "north": 29.413283807540118,
+    "south": 29.40789391625314,
+    "west": -82.54493078003941,
+    "east": -82.53461862363426
+  },
+  "calibration": {
+    "rotationDeg": 18.83,
+    "offsetX": -0.469,
+    "offsetZ": 0.011,
+    "note": "world = rotY(rotationDeg) * local + offset. The world models US-27A as due east-west; the real eastbound bearing measured on this image is 108.83 deg, so the photo is turned 18.83 deg CCW to lay the real highway on the model highway. NE 140th Ct then shows its real ~109 deg skew (the model straightens it to 90)."
+  },
+  "attribution": "USGS The National Map",
+  "license": "Public domain (USDA FSA NAIP / USGS).",
+  "terms": "https://www.usgs.gov/faqs/what-are-terms-uselicensing-map-services-and-data-national-map",
+  "source": {
+    "id": "naip_export",
+    "label": "USDA NAIP via USGS The National Map (ImageServer exportImage)",
+    "bbox3857": [
+      -9188859.662,
+      3427664.936,
+      -9187711.718,
+      3428353.702
+    ],
+    "requestUrl": "https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer/exportImage?bbox=-9188859.662,3427664.936,-9187711.718,3428353.702&bboxSR=3857&imageSR=3857&size=3333,2000&format=jpgpng&interpolation=RSP_BilinearInterpolation&f=image"
+  },
+  "createdAt": "2026-10-25T20:02:48.243Z",
+  "alignment": {
+    "method": "scratch measure.py: asphalt mask, robust line fits on the EB outside paved edge (296 samples, rms 0.86 px), WB outside edge, and the NE 140th Ct centreline (109 samples); EB lane centre = outside paved edge - 3.5 m (fog line 1.7 m + half lane 1.8 m, from paint detection)",
+    "eb_bearing_deg": 108.83,
+    "wb_bearing_deg": 108.83,
+    "side_road_bearing_from_north_deg": 0.24,
+    "paved_edge_to_edge_m": 41.8,
+    "paved_edge_to_edge_model_m": 41.45,
+    "impact_px": [
+      1667.99,
+      1000.47
+    ],
+    "residual_local_m": [
+      0.447,
+      0.141
+    ],
+    "measuredAt": "2026-10-25"
+  },
+  "imageryCredit": "USGS The National Map: USGSNAIPImagery (USDA Farm Service Agency NAIP), public domain"
+}

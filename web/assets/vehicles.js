@@ -10,7 +10,7 @@
 // userData {assetType:'vehicle', vehicleType, dims, driverEye, setLights(on), wheels, roll(dist)},
 // child meshes headlight_L/R, taillight_L/R. No brand marks; plates are blank.
 import {
-  surfacePatch, getMaterials, makeWheel, loft, curve, roundedBox, cachedGeo, makeLamp, attachLightAPI, finalizeVehicle, smoothstep, makeInterior,
+  surfacePatch, getMaterials, makeWheel, loft, curve, roundedBox, cachedGeo, makeLamp, attachLightAPI, finalizeVehicle, smoothstep, makeInterior, crispX,
 } from './vehicle_parts.js';
 import * as GV from './gltf_vehicle.js';
 
@@ -52,35 +52,37 @@ const CARS = {
   sedan: {
     L: 4.9, W: 1.9, H: 1.45, bodyW: 1.82,
     wheel: { r: 0.335, w: 0.235, rim: 'alloy' }, axles: [0.96, 3.81],
-    top: [[0, 0.58], [0.025, 0.66], [0.07, 0.72], [0.16, 0.765], [0.45, 0.81], [0.95, 0.86], [1.45, 0.92], [1.74, 0.955], [2.6, 0.975],
+    top: [[0, 0.6], [0.012, 0.685], [0.03, 0.725], [0.07, 0.75], [0.18, 0.768], [0.45, 0.795], [0.95, 0.84], [1.45, 0.9], [1.74, 0.94], [2.6, 0.97],
       [3.6, 0.995], [3.96, 1.0], [4.4, 0.995], [4.7, 0.985], [4.8, 0.97], [4.845, 0.945], [4.872, 0.89], [4.89, 0.8], [4.9, 0.66]],
     bot: [[0, 0.33], [0.06, 0.255], [0.25, 0.2], [0.5, 0.19], [4.4, 0.19], [4.7, 0.24], [4.86, 0.3], [4.9, 0.36]],
-    hw: [[0, 0.74], [0.02, 0.8], [0.08, 0.86], [0.25, 0.895], [0.6, 0.908], [1.2, 0.91], [3.9, 0.91], [4.5, 0.905], [4.75, 0.89], [4.86, 0.86], [4.9, 0.8]],
+    hw: [[0, 0.79], [0.02, 0.835], [0.08, 0.87], [0.25, 0.895], [0.6, 0.908], [1.2, 0.91], [3.9, 0.91], [4.5, 0.905], [4.75, 0.89], [4.86, 0.87], [4.9, 0.84]],
     nTop: 6, nBot: 5, tumble: 0.07, flare: 0.07,
+    crisp: { drop: 0.095, tuck: 0.045, shoulder: 0.075, crown: 0.012, r: [0.05, 0.14, 0.014, 0.04, 0.22] },
     gh: { u0: 1.70, u1: 3.98, top: [[1.70, 0.94], [1.85, 1.03], [2.1, 1.19], [2.35, 1.32], [2.58, 1.405], [2.8, 1.44], [3.1, 1.45], [3.35, 1.43], [3.55, 1.35], [3.78, 1.18], [3.98, 1.0]],
       aTop: 2.62, cTop: 3.38, b: [2.93, 3.03], nTop: 3.0, tumble: 0.2, cPillarPaint: true, quarter: [3.42, 3.62] },
-    seams: [{ u: 1.86, y0: 0.3, y1: 0.99 }, { u: 2.98, y0: 0.27, y1: 0.99 }, { u: 3.9, y0: 0.4, y1: 0.99 }, { u: 0.17, top: true }, { u: 4.02, top: true }],
+    seams: [{ u: 1.86, y0: 0.3, y1: 0.99 }, { u: 2.98, y0: 0.27, y1: 0.99 }, { u: 3.9, y0: 0.4, y1: 0.99 }, { u: 0.11, top: true }, { u: 4.02, top: true }],
     eye: { u: 2.85, y: 1.16, x: -0.36 },
-    head: { y: 0.68, patch: { u: [0.012, 0.36], t0: [0.2, 0.66], t1: [1.02, 1.0] } },
-    tail: { y: 0.86, patch: { u: [4.62, 4.897], t0: [0.42, 0.1], t1: [0.78, 1.22] } },
-    grille: { y: 0.5, w: 0.8, h: 0.13, intake: { y: 0.37, w: 1.0, h: 0.08 } },
+    head: { y: 0.665, x: 0.555, w: 0.46, h: 0.095, d: 0.12, yaw: 0.34, drl: true },
+    tail: { y: 0.86, patch: { u: [4.66, 4.897], t0: [0.5, 0.35], t1: [0.92, 1.12] } },
+    grille: { y: 0.53, w: 0.86, h: 0.15, intake: { y: 0.37, w: 1.05, h: 0.08 } },
     plateF: 0.44, plateR: 0.63,
     mirror: { u: 1.98, y: 1.03 },
   },
   suv: {
     L: 4.8, W: 1.95, H: 1.75, bodyW: 1.84,
     wheel: { r: 0.37, w: 0.245, rim: 'alloy' }, axles: [0.93, 3.78],
-    top: [[0, 0.66], [0.03, 0.76], [0.08, 0.84], [0.18, 0.9], [0.5, 0.95], [1.0, 1.02], [1.45, 1.08], [1.62, 1.1], [3.0, 1.12], [4.5, 1.13],
+    top: [[0, 0.7], [0.015, 0.8], [0.04, 0.86], [0.1, 0.895], [0.25, 0.92], [0.5, 0.95], [1.0, 1.02], [1.45, 1.08], [1.62, 1.1], [3.0, 1.12], [4.5, 1.13],
       [4.68, 1.12], [4.75, 1.08], [4.785, 1.0], [4.8, 0.9]],
     bot: [[0, 0.44], [0.08, 0.35], [0.3, 0.28], [0.5, 0.27], [4.3, 0.27], [4.55, 0.33], [4.75, 0.42], [4.8, 0.48]],
     hw: [[0, 0.72], [0.025, 0.8], [0.08, 0.86], [0.22, 0.9], [0.6, 0.915], [4.3, 0.92], [4.6, 0.905], [4.74, 0.87], [4.8, 0.8]],
     nTop: 7, nBot: 5, tumble: 0.06, flare: 0.05,
+    crisp: { drop: 0.1, tuck: 0.04, shoulder: 0.06, crown: 0.012, r: [0.05, 0.12, 0.016, 0.045, 0.22] },
     gh: { u0: 1.58, u1: 4.74, top: [[1.58, 1.09], [1.75, 1.2], [2.0, 1.4], [2.25, 1.57], [2.5, 1.675], [2.8, 1.71], [3.6, 1.715], [4.3, 1.705], [4.5, 1.68], [4.62, 1.58], [4.7, 1.36], [4.74, 1.12]],
       aTop: 2.55, cTop: 4.48, b: [2.86, 2.97], c: [3.86, 3.96], dPaint: 4.25, nTop: 3.4, tumble: 0.16 },
     seams: [{ u: 1.75, y0: 0.42, y1: 1.12 }, { u: 2.91, y0: 0.4, y1: 1.12 }, { u: 3.88, y0: 0.6, y1: 1.12 }, { u: 0.2, top: true }],
     cladding: true, roofRails: true,
     eye: { u: 2.75, y: 1.42, x: -0.37 },
-    head: { y: 0.84, patch: { u: [0.015, 0.34], t0: [0.22, 0.62], t1: [1.0, 0.98] } },
+    head: { y: 0.835, x: 0.6, w: 0.48, h: 0.11, d: 0.12, yaw: 0.3, drl: true },
     tail: { y: 1.0, patch: { u: [4.56, 4.797], t0: [0.35, 0.05], t1: [0.85, 1.1] } },
     grille: { y: 0.68, w: 0.95, h: 0.24, intake: { y: 0.47, w: 1.15, h: 0.11 } },
     plateF: 0.53, plateR: 0.78,
@@ -93,12 +95,13 @@ const CARS = {
     bot: [[0, 0.5], [0.12, 0.44], [0.35, 0.42], [0.6, 0.43], [3.12, 0.43]],
     hw: [[0, 0.82], [0.03, 0.885], [0.1, 0.915], [0.3, 0.935], [3.12, 0.94]],
     nTop: 8, nBot: 6, tumble: 0.04, flare: 0.03,
+    crisp: { drop: 0.13, tuck: 0.03, shoulder: 0.045, crown: 0.01, r: [0.04, 0.08, 0.016, 0.035, 0.2] },
     gh: { u0: 1.6, u1: 3.1, top: [[1.6, 1.24], [1.78, 1.38], [2.05, 1.6], [2.3, 1.77], [2.55, 1.865], [2.8, 1.9], [3.0, 1.895], [3.06, 1.85], [3.1, 1.6]],
       aTop: 2.5, cTop: 3.03, b: [2.42, 2.52], nTop: 4.0, tumble: 0.12, flatBack: true },
     seams: [{ u: 1.7, y0: 0.48, y1: 1.24 }, { u: 2.47, y0: 0.45, y1: 1.24 }, { u: 3.06, y0: 0.5, y1: 1.24 }],
     bed: { u0: 3.16, u1: 5.9, rail: 1.31, floor: 0.82 },
     eye: { u: 2.72, y: 1.56, x: -0.4 },
-    head: { u: 0.02, y: 0.93, x: 0.71, w: 0.30, h: 0.17, d: 0.12, yaw: 0.25 },
+    head: { u: 0.02, y: 0.93, x: 0.7, w: 0.32, h: 0.17, d: 0.12, yaw: 0.25, drl: true },
     tail: { u: 5.87, y: 1.08, x: 0.89, w: 0.1, h: 0.36, d: 0.1, yaw: 0 },
     grille: { y: 0.86, w: 1.12, h: 0.36, intake: { y: 0.52, w: 0.9, h: 0.1 } },
     plateF: 0.58, plateR: 0.56,
@@ -111,11 +114,12 @@ const CARS = {
     bot: [[0, 0.42], [0.1, 0.34], [0.3, 0.29], [5.0, 0.3], [5.22, 0.35], [5.3, 0.4]],
     hw: [[0, 0.76], [0.03, 0.84], [0.1, 0.895], [0.3, 0.93], [0.8, 0.94], [5.15, 0.94], [5.26, 0.925], [5.3, 0.88]],
     nTop: 7, nBot: 6, tumble: 0.04, flare: 0.03,
+    crisp: { drop: 0.11, tuck: 0.035, shoulder: 0.05, crown: 0.01, r: [0.05, 0.1, 0.016, 0.04, 0.2] },
     gh: { u0: 0.8, u1: 5.3, top: [[0.8, 1.11], [0.95, 1.28], [1.15, 1.52], [1.35, 1.75], [1.55, 1.9], [1.8, 1.97], [2.1, 2.0], [5.18, 2.0], [5.27, 1.98], [5.3, 1.94]],
       aTop: 1.55, cTop: 5.3, b: [1.9, 2.0], nTop: 5.0, tumble: 0.07, flatBack: true, van: true },
     seams: [{ u: 0.96, y0: 0.62, y1: 1.12 }, { u: 1.95, y0: 0.36, y1: 1.12 }, { u: 3.18, y0: 0.36, y1: 1.12 }, { u: 5.28, y0: 0.4, y1: 1.12 }],
     eye: { u: 1.98, y: 1.58, x: -0.45 },
-    head: { y: 0.86, patch: { u: [0.02, 0.3], t0: [0.05, 0.5], t1: [0.98, 0.92] } },
+    head: { y: 0.87, x: 0.6, w: 0.44, h: 0.12, d: 0.12, yaw: 0.3, drl: true },
     tail: { y: 0.9, patch: { u: [5.22, 5.297], t0: [-0.55, -0.6], t1: [0.5, 0.5] } },
     grille: { y: 0.72, w: 0.95, h: 0.22, intake: { y: 0.47, w: 1.1, h: 0.1 } },
     plateF: 0.5, plateR: 0.55,
@@ -124,6 +128,13 @@ const CARS = {
 };
 
 // ------------------------------------------------------------------ geometry builders
+// crisp section parameters along the body: the shoulder crease sits a fixed distance below the local top
+// (beltline in the cabin, fender top over the hood), so it reads as one continuous character line.
+function crispAt(cfg, u, yb, yt) {
+  const c = cfg.crisp, h = Math.max(0.05, yt - yb);
+  const drop = typeof c.drop === 'function' ? c.drop(u) : c.drop;
+  return { crease: Math.max(0.35, Math.min(0.93, 1 - drop / h)), tuck: c.tuck, shoulder: c.shoulder, crown: c.crown, r: c.r };
+}
 function prep(cfg) {
   if (cfg._f) return cfg._f;
   if (!cfg.type) cfg.type = Object.keys(CARS).find(k => CARS[k] === cfg) || 'car';
@@ -138,16 +149,22 @@ function prep(cfg) {
   f.section = (u) => {
     const yt = f.top(u);
     const yb = Math.min(f.bot(u), yt - 0.03);
-    return { yb, yt, hw: f.hw(u), nTop: cfg.nTop, nBot: cfg.nBot, tumble: cfg.tumble, flare: cfg.flare };
+    return { yb, yt, hw: f.hw(u), nTop: cfg.nTop, nBot: cfg.nBot, tumble: cfg.tumble, flare: cfg.flare, crisp: cfg.crisp ? crispAt(cfg, u, yb, yt) : undefined };
   };
   // x of the body surface at height y (same formula as loft)
   f.sideX = (u, y) => {
     const s = f.section(u), yc = (s.yb + s.yt) / 2, hh = (s.yt - s.yb) / 2;
+    if (s.crisp) return crispX(s, Math.max(s.yb + 1e-3, Math.min(s.yt - 1e-3, y)));
     const v = Math.max(-1, Math.min(1, (y - yc) / hh));
     const n = v >= 0 ? s.nTop : s.nBot;
     const st = Math.sign(v) * Math.pow(Math.abs(v), n / 2), ct = Math.sqrt(Math.max(0, 1 - st * st));
     const fy = (y - s.yb) / (2 * hh);
     return s.hw * Math.pow(ct, 2 / n) * (1 - s.tumble * fy * fy - s.flare * (1 - fy) * (1 - fy));
+  };
+  // u where the front surface passes through (x, y)
+  f.surfU = (x, y) => {
+    for (let u = 0; u < cfg.L * 0.3; u += 0.002) { const sc = f.section(u); if (y >= sc.yb && y <= sc.yt && f.sideX(u, y) >= Math.abs(x)) return u; }
+    return 0;
   };
   // u on the front (or rear) nose surface for a given height
   f.noseU = (y, rear = false) => {
@@ -283,7 +300,17 @@ function placeLamp(THREE, cfg, f, spec, kind, sideSign, rear) {
     mesh.name = name; mesh.userData.lampKind = kind;
     return mesh;
   }
-  const lamp = makeLamp(THREE, { name, kind, w: spec.w, h: spec.h, d: spec.d, r: Math.min(spec.w, spec.h) * 0.35 });
+  const lamp = makeLamp(THREE, { name, kind, w: spec.w, h: spec.h, d: spec.d, r: Math.min(spec.w, spec.h) * (spec.drl ? 0.22 : 0.35) });
+  if (spec.drl) {
+    // inner projector + LED strip so the lamp reads as an integrated unit, not a blob
+    const M = getMaterials(THREE);
+    const strip = new THREE.Mesh(roundedBox(THREE, spec.w * 0.78, 0.014, 0.02, 0.006), M.lightRev); strip.name = 'drl';
+    strip.position.set(0, -spec.h * 0.28, -spec.d / 2 - 0.003); lamp.add(strip);
+    const proj = new THREE.Mesh(roundedBox(THREE, 0.075, spec.h * 0.55, 0.02, 0.02), M.chrome); proj.name = 'projector';
+    proj.position.set(-sideSign * spec.w * 0.22, spec.h * 0.08, -spec.d / 2 - 0.002); lamp.add(proj);
+    const bez = new THREE.Mesh(roundedBox(THREE, spec.w + 0.025, spec.h + 0.02, spec.d * 0.8, Math.min(spec.w, spec.h) * 0.2), M.trimGloss); bez.name = 'lamp_bezel';
+    bez.position.set(0, 0, 0.012); lamp.add(bez);
+  }
   const y = spec.y, u = f.noseU(y, rear);
   // outward surface normal in the (z,y) plane from the profile slope
   const du = 0.006, t = (f.top(Math.min(u + du, L)) - f.top(Math.max(u - du, 0))) / (2 * du);
@@ -292,6 +319,15 @@ function placeLamp(THREE, cfg, f, spec, kind, sideSign, rear) {
   lamp.rotation.order = 'YXZ';
   lamp.rotation.x = a;
   lamp.rotation.y = rear ? Math.PI + sideSign * spec.yaw : -sideSign * spec.yaw;
+  if (spec.drl && !rear) {
+    // sit the lamp on the actual nose surface: follow its plan curvature, face ~1.5 cm proud
+    const half = spec.w * 0.45;
+    const uc = f.surfU(spec.x, y), uo = f.surfU(spec.x + half, y), ui = f.surfU(spec.x - half, y);
+    const yaw = Math.atan2(uo - ui, 2 * half);
+    lamp.rotation.y = -sideSign * yaw;
+    lamp.position.set(sideSign * spec.x, y, Math.max(uc, (uo + ui) / 2) - L / 2 + spec.d / 2 - 0.015);
+    return lamp;
+  }
   const ny = Math.sin(a), nz = (rear ? 1 : -1) * Math.cos(a);
   const inset = spec.d / 2 - 0.012;
   lamp.position.set(sideSign * spec.x, y - ny * inset, u - L / 2 - nz * inset);
@@ -531,11 +567,14 @@ export function createCar(THREE, type, opts = {}) {
 
 // ------------------------------------------------------------------ GLB model choice (mirrors web/models/manifest.json)
 // source:'glb' swaps a fitted GLB into the procedural placeholder when it loads (browser only; Node keeps procedural).
+// Side-by-side review (status/veh_cars.md): the procedural crisp-section bodies won for all four types (real glazed
+// greenhouse + interior for driver-seat views; the munim GLBs are closed shells with glass decals and no cabin).
+// The munim GLBs stay available as an opt-in: createVehicle(THREE, 'sedan', { source: 'glb' }) or { model: 'munim/x.glb' }.
 export const MODEL_CHOICE = {
-  sedan: { source: 'procedural' },
-  suv: { source: 'procedural' },
-  pickup: { source: 'procedural' },
-  van: { source: 'procedural' },
+  sedan: { source: 'procedural', url: 'munim/car-sedan.glb' },
+  suv: { source: 'procedural', url: 'munim/car-suv.glb' },
+  pickup: { source: 'procedural', url: 'munim/car-pickup.glb' },
+  van: { source: 'procedural', url: 'munim/car-minivan.glb' },
 };
 const MODEL_BASE = new URL('../models/', import.meta.url).href;
 function modelSpec(type, opts) {

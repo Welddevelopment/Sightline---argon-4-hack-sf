@@ -1,0 +1,10 @@
+{
+  "name": "New Witness",
+  "position": [18, 0, 9.5],
+  "eyeHeight": 1.6,
+  "lookAt": "veh_A",
+  "observationTime": 10.0,
+  "claim": "Standing in front of the store about 20 meters from the stop sign, the truck was blocking nothing.",
+  "confidence": "medium",
+  "assumptions": "Placed in front of bld_store (north face at z=10.95) at [18, 0, 9.5]; the stop sign is not modeled, so the 20 m distance is approximated as 20 m east of the NE 140th Ct / US-27A intersection. Observation time is set to 10.0 s (just before impact at 10.43 s) to test whether the truck blocked the view of the approaching car."
+}

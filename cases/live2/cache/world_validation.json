@@ -1,0 +1,217 @@
+[
+  {
+    "caseId": "live2",
+    "at": "2026-10-25T20:17:58.856Z",
+    "world": "/cases/live2/worlds/world_v1.js",
+    "contract": "v2",
+    "outcome": "argon",
+    "totalSeconds": 62.6,
+    "attempts": [
+      {
+        "name": "generate_world",
+        "mode": "live",
+        "model": "gemini-4-argon",
+        "seconds": 53.9,
+        "finishReason": "STOP",
+        "promptTokens": 163928,
+        "outputTokens": 5248,
+        "thoughtsTokens": null,
+        "validation": {
+          "ok": true,
+          "errors": [],
+          "warnings": [],
+          "stats": {
+            "lines": 181,
+            "chars": 12226,
+            "geometryCalls": 0,
+            "objects": 16,
+            "witnesses": 3,
+            "facts": 12,
+            "duration": 25,
+            "moving": 4,
+            "assetCalls": 18,
+            "assetMethods": [
+              "environment",
+              "groundPlane",
+              "road",
+              "building",
+              "shelter",
+              "sign",
+              "pole",
+              "impactMarker",
+              "vehicle",
+              "pedestrian"
+            ],
+            "vehicleTypes": [
+              "sedan",
+              "truck_tractor",
+              "semitrailer",
+              "sedan",
+              "pickup"
+            ],
+            "sun": {
+              "azimuthDeg": 265,
+              "elevationDeg": 45.1
+            },
+            "citations": {
+              "inferred": 6,
+              "unlabeled": 0
+            },
+            "approach": [
+              {
+                "id": "veh_A",
+                "type": "sedan",
+                "startDistM": 345.4,
+                "impactSpeedMps": 33.1,
+                "frontStartToImpactM": 345.4
+              },
+              {
+                "id": "veh_T_tractor",
+                "type": "truck_tractor",
+                "startDistM": 31,
+                "impactSpeedMps": 5.8
+              },
+              {
+                "id": "veh_T_trailer",
+                "type": "semitrailer",
+                "startDistM": 29.1,
+                "impactSpeedMps": 5.5
+              },
+              {
+                "id": "veh_witA",
+                "type": "sedan",
+                "startDistM": 279.7,
+                "impactSpeedMps": 26.8
+              }
+            ],
+            "plausibility": [
+              {
+                "subject": "veh_A",
+                "pass": true,
+                "maxAccelG": 0,
+                "maxSpeedMph": 74.1
+              },
+              {
+                "subject": "veh_T_tractor",
+                "pass": true,
+                "maxAccelG": 0.31,
+                "maxSpeedMph": 14.6
+              },
+              {
+                "subject": "veh_T_trailer",
+                "pass": true,
+                "maxAccelG": 0.2,
+                "maxSpeedMph": 12.4
+              },
+              {
+                "subject": "veh_witA",
+                "pass": true,
+                "maxAccelG": 0.57,
+                "maxSpeedMph": 60.1
+              }
+            ],
+            "assetFallbacks": {}
+          }
+        }
+      }
+    ],
+    "final": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "stats": {
+        "lines": 181,
+        "chars": 12226,
+        "geometryCalls": 0,
+        "objects": 16,
+        "witnesses": 3,
+        "facts": 12,
+        "duration": 25,
+        "moving": 4,
+        "assetCalls": 18,
+        "assetMethods": [
+          "environment",
+          "groundPlane",
+          "road",
+          "building",
+          "shelter",
+          "sign",
+          "pole",
+          "impactMarker",
+          "vehicle",
+          "pedestrian"
+        ],
+        "vehicleTypes": [
+          "sedan",
+          "truck_tractor",
+          "semitrailer",
+          "sedan",
+          "pickup"
+        ],
+        "sun": {
+          "azimuthDeg": 265,
+          "elevationDeg": 45.1
+        },
+        "citations": {
+          "inferred": 6,
+          "unlabeled": 0
+        },
+        "approach": [
+          {
+            "id": "veh_A",
+            "type": "sedan",
+            "startDistM": 345.4,
+            "impactSpeedMps": 33.1,
+            "frontStartToImpactM": 345.4
+          },
+          {
+            "id": "veh_T_tractor",
+            "type": "truck_tractor",
+            "startDistM": 31,
+            "impactSpeedMps": 5.8
+          },
+          {
+            "id": "veh_T_trailer",
+            "type": "semitrailer",
+            "startDistM": 29.1,
+            "impactSpeedMps": 5.5
+          },
+          {
+            "id": "veh_witA",
+            "type": "sedan",
+            "startDistM": 279.7,
+            "impactSpeedMps": 26.8
+          }
+        ],
+        "plausibility": [
+          {
+            "subject": "veh_A",
+            "pass": true,
+            "maxAccelG": 0,
+            "maxSpeedMph": 74.1
+          },
+          {
+            "subject": "veh_T_tractor",
+            "pass": true,
+            "maxAccelG": 0.31,
+            "maxSpeedMph": 14.6
+          },
+          {
+            "subject": "veh_T_trailer",
+            "pass": true,
+            "maxAccelG": 0.2,
+            "maxSpeedMph": 12.4
+          },
+          {
+            "subject": "veh_witA",
+            "pass": true,
+            "maxAccelG": 0.57,
+            "maxSpeedMph": 60.1
+          }
+        ],
+        "assetFallbacks": {}
+      }
+    },
+    "problems": []
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "name": "Nearby Witness",
+  "position": [8, 0, 7.8],
+  "eyeHeight": 1.6,
+  "lookAt": "veh_A",
+  "observationTime": 10.0,
+  "claim": "I was nearby and saw everything, and the car never slowed down.",
+  "confidence": "low",
+  "assumptions": "The statement gives only 'nearby' with no specific landmark or side of the road, so the witness is placed as a standing pedestrian (1.6 m eye height) at the covered bench shelter near the SE corner [8, 0, 7.8]; observationTime is set to t=10.0 s just before impact to test their claim of seeing the car not slowing down."
+}

@@ -1,0 +1,2630 @@
+You are Argon, writing the COMPLETE 3D reconstruction world for a crash case as ONE self-contained JavaScript ES module, in a single pass. This module is the entire world: every vehicle model, every road surface and marking, every curb, median, guardrail, signal, sign, pole and wire, fence, tree, building, the terrain and the sky are written by you, in code, here. There is NO asset library and NO external file. Nothing is loaded from the network.
+
+OUTPUT: ONLY the JavaScript module source. No prose before or after, no markdown fences, no explanations outside code comments. Write at studio fidelity. Target ~120,000 tokens of code. Do not summarize, do not abbreviate, do not write "// ... similar for others", do not stop early. Every function you reference must be fully implemented.
+
+==================================================================
+1. MODULE CONTRACT (v1 — must follow exactly)
+==================================================================
+`export default function createWorld(THREE) { ... return world; }`
+- No `import`, no `require`, no `fetch`, no `eval`, no `new Function`, no `XMLHttpRequest`, no network, no `window`/`document` assumptions EXCEPT: canvas textures. For canvas textures use a guarded helper:
+  `const mkCanvas = (w,h) => (typeof OffscreenCanvas !== 'undefined') ? new OffscreenCanvas(w,h) : (typeof document !== 'undefined' ? Object.assign(document.createElement('canvas'), {width:w, height:h}) : null);`
+  and if it returns null (Node, used by the checks) fall back to plain colored materials (no texture). The module MUST run in Node (no DOM) without throwing — the independent checks import it in Node with the real `three` package.
+- Units meters. Y up, ground y = 0 at the impact point. +X = east, -Z = north. Time t in seconds, 0..duration.
+- Return object:
+```
+{
+  meta: { caseId, title, timeOfDay: "16:36", lighting: "day", source, impactT, date: "2016-05-07", utcOffset: "-04:00", lat: 29.4106, lon: -82.5393, sun: { azimuthDeg: 265.0, elevationDeg: 45.1 } },
+  root: THREE.Group,                  // everything visual lives under here
+  duration,                           // seconds
+  setTime(t),                         // deterministic; moves every dynamic object; ends with root.updateMatrixWorld(true)
+  objects: { [id]: { node, kind, label, citation, occludes, state?(t) } },
+  witnesses: [ { id, name, position:[x,0,z], eyeHeight, lookAt, observationTime, claim, citation } ],
+  facts: [ { id, text, value, unit, citation, kind } ],
+  skids: [ ]                          // optional; the car left NO pre-impact tire marks, so keep [] unless evidence says otherwise
+}
+```
+- id prefixes: veh_ (vehicles), occ_ (occluders: shelter, trees, hill/crest, poles), sig_ (signals/signs), road_ (road surfaces, medians, curbs, markings), mark_ (impact point, post-impact path), bld_ (buildings). Every objects entry and every witness has a non-empty `citation` string. `node.name = id` for every objects entry.
+- `occludes: true` ONLY for things that physically block a line of sight (vehicles, buildings, terrain crest, tree canopies/trunks, solid walls, poles). Road surfaces, markings, wires, open-sided shelter (if open), signs' thin faces -> occludes:false unless they truly block.
+- Dynamic objects get position/rotation set ONLY inside setTime. Static objects are placed once at build time.
+- Vehicle node convention: the node's origin is the ground-level center of its footprint; its local -Z is the vehicle front; heading uses `node.rotation.set(0, -headingDeg*PI/180, 0)` where headingDeg is a compass heading (0 = north, 90 = east). This is the convention of the keyframes below.
+- Mesh budget: you may build thousands of meshes, but MERGE or INSTANCE repetitive geometry (InstancedMesh for leaf cards, grass tufts, fence pickets, lane-marking dashes, raised pavement markers, lug nuts are fine as small meshes). Keep total draw calls reasonable (< ~3000). Share materials and geometries via small caches.
+- Materials: MeshStandardMaterial / MeshPhysicalMaterial (PBR: color, roughness, metalness, clearcoat for car paint, transmission or opacity for glass, emissive for lamps). castShadow / receiveShadow on meshes.
+- Lighting and sky are part of the world: add under root a Group named 'world_env' containing a DirectionalLight sun placed from the computed sun direction (azimuth 265.0 deg = just south of due west, elevation 45.1 deg; direction vector toward the sun = (sin(az)*cos(el), sin(el), -cos(az)*cos(el)) in this frame), intensity ~2.6, shadow map 4096 with a shadow camera covering roughly x -120..120, z -90..90 around the impact area, bias tuned; a HemisphereLight (sky blue / warm grass bounce, ~0.6); and a large sky dome (inverted sphere radius ~1800 with a vertex-color or ShaderMaterial gradient: deep blue zenith -> pale hazy horizon, brighter toward the sun azimuth, fog: false, depthWrite false). Set `root.userData.env = { fog: { color, near, far }, background: hexColor, exposure: 1.0, selfLit: true }` so a host can mirror it.
+
+==================================================================
+2. THE CASE (evidence)
+==================================================================
+SPEC world contract (original v1 text):
+## THE WORLD CONTRACT (world modules must follow exactly)
+A world module is an ES module: `export default function createWorld(THREE) { ... return world; }`
+It must NOT import anything; THREE is passed in. Units: meters. Y is up, ground at y=0. +X = east, -Z = north (so north is "up" in the overhead view). Time t in seconds from 0 to `duration`.
+
+`world` object:
+```js
+{
+  meta: { caseId, title, timeOfDay: "06:45", lighting: "dawn|day|night", source: "NTSB HWY.. facts + fictional witnesses" },
+  root: THREE.Group,                 // everything visual lives under here
+  duration: 12,                      // seconds of the event timeline
+  setTime(t) {},                     // moves every dynamic object to its state at time t (deterministic)
+  objects: {                         // every meaningful object, keyed by id
+    // id prefixes: veh_ (vehicles), occ_ (occluders: bus, shelter, trees, hill, building), sig_ (signals/signs),
+    //              road_ (road surfaces), mark_ (skid marks, impact point), bld_ (buildings)
+    "veh_A": { node: THREE.Object3D, kind: "vehicle", label: "Pickup truck (Vehicle A)", citation: "Police report p.2", occludes: true },
+    "occ_shelter": { node, kind: "occluder", label, citation, occludes: true },
+    "sig_north": { node, kind: "signal", label, citation, occludes: false, state(t) { return "red"|"yellow"|"green"|"off"; } }
+  },
+  witnesses: [
+    { id: "wit_B", name: "Witness B (fictional)", position: [x, y, z], eyeHeight: 1.6, lookAt: "sig_north" | [x,y,z],
+      observationTime: 6.5, claim: "I saw the light was red", citation: "Deposition 27:14" }
+  ],
+  facts: [ { id: "f1", text: "Skid marks 31 m before impact", value: 31, unit: "m", citation: "Police report p.3", kind: "skid|speed|time|distance|position" } ],
+  skids: [ { vehicle: "veh_A", length: 31, mu: 0.7, citation: "..." } ]   // optional, for the speed check
+}
+```
+Rules: every object and witness has a `citation` string. Dynamic objects get position/rotation set ONLY inside setTime. Keep geometry simple (Box/Plane/Cylinder). Name every Object3D with its id (`node.name = id`).
+
+
+
+case.json:
+{
+  "caseId": "demo",
+  "title": "Car into turning tractor-semitrailer at an uncontrolled median crossover, US-27A near Williston, Florida (2016)",
+  "createdAt": "2026-10-25T18:08:32.681Z",
+  "files": [
+    {
+      "name": "deposition.mp4",
+      "type": "video",
+      "size": 4244843,
+      "durationSec": 1801.8
+    },
+    {
+      "name": "deposition.srt",
+      "type": "text",
+      "size": 1763,
+      "textPath": "text/deposition.txt"
+    },
+    {
+      "name": "facts.md",
+      "type": "text",
+      "size": 6883,
+      "textPath": "text/facts.txt"
+    },
+    {
+      "name": "map.png",
+      "type": "image",
+      "size": 54576
+    },
+    {
+      "name": "police_report.md",
+      "type": "text",
+      "size": 6532,
+      "textPath": "text/police_report.txt"
+    },
+    {
+      "name": "witness_A.md",
+      "type": "text",
+      "size": 1729,
+      "textPath": "text/witness_A.txt"
+    },
+    {
+      "name": "witness_C.md",
+      "type": "text",
+      "size": 1507,
+      "textPath": "text/witness_C.txt"
+    },
+    {
+      "name": "deposition_transcript.txt",
+      "type": "text",
+      "size": 20708,
+      "textPath": "text/deposition_transcript.txt"
+    }
+  ],
+  "status": "done"
+}
+
+----- facts.txt -----
+# Case Facts: NTSB HWY16FH018 (US-27A, Williston, Florida, May 7, 2016)
+
+**Source:** National Transportation Safety Board, Highway Accident Report (car and tractor-semitrailer collision near Williston, Florida, May 7, 2016), **NTSB/HAR-17/02** (PB2017-102600), adopted September 12, 2017. Accident ID **HWY16FH018**.
+- Report PDF: https://www.ntsb.gov/investigations/AccidentReports/Reports/HAR1702.pdf
+- Investigation page: https://www.ntsb.gov/investigations/Pages/HWY16FH018.aspx
+
+These are the real physical facts only. No real names are used. "Vehicle A" is the car and "Vehicle T" is the tractor-semitrailer. Witnesses A, B and C in this case file are **fictional** and appear only in the separate statements and deposition. Items marked *[modeling assumption]* are not NTSB findings. They are values we chose to build the 3D scene.
+
+## Time, weather, lighting
+| # | Fact | Citation |
+|---|---|---|
+| F1 | Saturday, May 7, 2016, about 4:36 p.m. EDT. The car's data recorded the collision at 4:36:12.7 p.m. | HAR-17/02 p.1, p.15 |
+| F2 | Clear weather, dry road, daylight. | HAR-17/02 p.5 |
+| F3 | The sun was high in the sky, behind the eastbound car. Sun glare was not a factor for the witness. | HAR-17/02 p.5; p.2, p.30 |
+| F4 | The car's headlights were off at impact. | HAR-17/02 p.15 |
+
+## Road geometry
+| # | Fact | Citation |
+|---|---|---|
+| F5 | US-27A near mile marker 29, Levy County, about 5 miles west of Williston, FL. | HAR-17/02 p.1, p.3 |
+| F6 | Four-lane divided rural highway with two 12-ft through lanes in each direction. Left shoulder about 2 ft, right shoulder about 5 ft. | HAR-17/02 p.3, p.22 |
+| F7 | Grassy/earthen median about 60 ft wide. | HAR-17/02 p.3, p.22 |
+| F8 | Left- and right-turn lanes about 550 ft long in each direction. Median crossover about 130 ft long. Left-turn lane, median and shoulders total 78 ft. | HAR-17/02 p.3, p.29 |
+| F9 | Straight horizontal alignment for several miles in both directions. | HAR-17/02 p.3, p.23 |
+| F10 | **Vertical crest about 1,132 ft (345 m) west of the intersection center.** The eastbound approach descends at about 2.15% for about 1,459 ft and levels about 327 ft east of the intersection. | HAR-17/02 p.22–23 |
+| F11 | NE 140th Court is a local paved road. It runs due south and meets US-27A at a 109° angle. The intersection is unsignalized and met none of the five signal warrants. | HAR-17/02 p.1, p.3, p.23 |
+| F12 | A retail business stands on an intersection corner. The truck stopped south of it on NE 140th Court. | HAR-17/02 p.1 |
+| F13 | Posted speed limit 65 mph. Design speed 70 mph. 85th-percentile speed 69 mph (August 2016 study). | HAR-17/02 p.1, p.23 |
+
+## Vehicles
+| # | Fact | Citation |
+|---|---|---|
+| F14 | Vehicle A: 2015 four-door passenger sedan. The trailing edge of the hood is about 3 ft high. The seat headrests sat at least 3.5 in above the trailer's bottom edge. | HAR-17/02 p.1, p.5–6 |
+| F15 | Vehicle T: 2014 truck-tractor pulling a 2003 refrigerated van semitrailer. Combination length 71 ft 7 in. | HAR-17/02 p.1, p.6 |
+| F16 | Impact on the trailer was centered about 45 ft 5 in (13.84 m) behind the front of the tractor. | HAR-17/02 p.6 fn.6 |
+
+## Motion and speeds
+| # | Fact | Citation |
+|---|---|---|
+| F17 | Vehicle A was traveling east. Its cruise control was set to 74 mph at 4:34:21, and it was going 74 mph just before impact. | HAR-17/02 p.2, p.15 |
+| F18 | The car's recorded data shows no brake application before or during the collision. | HAR-17/02 p.15 |
+| F19 | Vehicle T was turning left from the westbound left-turn lane, across both eastbound lanes, onto NE 140th Court. NTSB does not report the truck's speed or how long the crossing took. | HAR-17/02 p.1, p.21 |
+| F20 | The real eyewitness (a westbound driver) could not tell whether the truck was stopped or moving very slowly in the turn lane. | HAR-17/02 p.1–2 |
+
+## Impact and post-impact
+| # | Fact | Citation |
+|---|---|---|
+| F21 | The impact happened within the intersection, in the right (outside) eastbound lane. The initial point of impact was on the south side of the intersection. | HAR-17/02 p.3, p.5 |
+| F22 | **No pre-collision roadway marks** from either vehicle. | HAR-17/02 p.5 |
+| F23 | The car struck the right side of the semitrailer and passed underneath it, which sheared off the roof. It then left the right roadside at a shallow angle. | HAR-17/02 p.1 |
+| F24 | The car went through a drainage culvert and two wire fences, then struck and broke a utility pole, rotating counterclockwise. | HAR-17/02 p.1 |
+| F25 | The car traveled about 910 ft (277 m) after striking the trailer. It came to rest perpendicular to the highway in a residential front yard. | HAR-17/02 p.1, p.3 |
+| F26 | The airbags deployed at the pole strike, about 8.4 s after the first impact. | HAR-17/02 p.5 |
+
+## Sight distance
+| # | Fact | Citation |
+|---|---|---|
+| F27 | The vertical crest west of the intersection limited line of sight between the opposing vehicles. It was the only sight restriction noted. No vegetation or other obstructions were reported. | HAR-17/02 p.29–30 |
+| F28 | The truck driver's sight distance was 1,132 ft. At 74 mph, each driver could have seen the other for up to **10.4 s**. | HAR-17/02 p.29 |
+| F29 | The AASHTO minimum for left-turning combination vehicles is 781 ft (65 mph) or 842 ft (70 mph). NTSB found the sight distance sufficient for either driver to avoid the crash. | HAR-17/02 p.29–30 |
+| F30 | The real witness, a westbound driver about 0.25 mi behind the truck at about 60 mph, saw the car crest the grade before the truck began its turn. **After the truck entered the eastbound lanes, the semitrailer blocked his view of the car.** He heard the crash and saw the car come out from under the trailer. | HAR-17/02 p.1–2, p.29–30 |
+
+## Modeling assumptions used in case.json (not NTSB findings)
+- The origin is the initial impact point: center of the eastbound outside lane, on the NE 140th Court centerline. The 109° skew is straightened to 90°.
+- Event clock t=0 is the car at the crest. Impact is at t=10.43 s (345 m at 74 mph = 33.08 m/s, consistent with F28).
+- Truck turn kinematics: 3.0 m/s rising to about 6.1 m/s at impact, with a 12 m turn radius. NTSB gives no truck speed (F19).
+- Trailer 2.59 m wide, box 1.2–4.11 m above ground. These are standard reefer dimensions. Tractor 6.6 m long, 4.0 m tall.
+- Car 4.97 × 1.96 × 1.445 m (typical full-size sedan).
+- The retail building sits on the SE corner. Its footprint and height, the 6.1 m side-road width and the pole location are assumed. NTSB does not give them.
+- The bench shelter in front of the store is fictional scene dressing.
+
+## Scope note
+This case file covers vehicle positions, motion and visibility only. It makes no claims about any real person's conduct, attention or condition. Fictional witnesses describe only what they could see and hear.
+
+
+----- police_report.txt -----
+# TRAFFIC CRASH REPORT: LONG FORM (RECONSTRUCTED FOR SIGHTLINE)
+
+> **Notice:** This report is a simulated document in the format of a state long-form crash report. Its physical facts come from NTSB Highway Accident Report NTSB/HAR-17/02 (HWY16FH018), https://www.ntsb.gov/investigations/AccidentReports/Reports/HAR1702.pdf. All personal names, report numbers and officer identifiers have been removed or replaced. The independent witnesses listed (A, B, C) are **fictional**.
+
+---
+
+## PAGE 1: CRASH SUMMARY
+
+| Field | Entry |
+|---|---|
+| Report no. | [REDACTED]-2016-0507-01 |
+| Investigating agency | [State Highway Patrol, Troop REDACTED] |
+| Date / day | 05/07/2016, Saturday |
+| Time of crash | 16:36 hrs (vehicle data: 16:36:12.7) |
+| County / city | Levy County, outside city limits (about 5 mi W of Williston) |
+| Location | US-27A at NE 140th Court, near mile marker 29 |
+| Crash type | Angle. Vehicle 1 (eastbound) struck the right side of Vehicle 2's semitrailer while Vehicle 2 turned left across its path. |
+| Fatalities / injuries | 1 fatal (Driver, Vehicle 1). Vehicle 2 driver uninjured. |
+| Light condition | Daylight |
+| Weather | Clear |
+| Road surface | Dry, asphalt |
+| Traffic control | None at the intersection (stop sign on the NE 140th Ct approach only). Not signalized. |
+| Posted speed | 65 mph, US-27A |
+| Road character | Straight. Grade on the EB approach descends about 2.15% from a crest about 1,132 ft west. |
+| Road type | Four-lane divided rural highway. Grass median about 60 ft wide with a median crossover at NE 140th Ct. |
+
+### Vehicles
+| Unit | Description | Direction / maneuver | Damage |
+|---|---|---|---|
+| V1 ("Vehicle A") | Passenger car, 4-door sedan (2015 model year) | Eastbound in the right (outside) lane, going straight | Roof sheared off. A-pillars separated. Hood scraped by trailer side-marker lamp. Left front damaged by pole strike. Disabling. |
+| V2 ("Vehicle T") | Truck-tractor with a refrigerated van semitrailer. Combination about 71 ft 7 in. | Westbound in the left-turn lane, turning left across the EB lanes onto NE 140th Ct | Tractor undamaged. Semitrailer right side and underside damaged about 45 ft 5 in behind the tractor front. |
+
+### Persons (names withheld)
+- **Driver, V1:** sole occupant. Fatally injured at the scene.
+- **Driver, V2:** uninjured.
+- **Witness A (fictional):** westbound motorist behind V2. Written statement attached.
+- **Witness B (fictional):** pedestrian waiting at the retail store on the SE corner. Brief oral statement at the scene. Written statement taken later.
+- **Witness C (fictional):** westbound motorist stopped in the WB inside lane west of the crossover. Written statement attached.
+
+---
+
+## PAGE 2: NARRATIVE
+
+V1 was traveling east on US-27A in the outside (right) lane, coming down the grade from the crest west of NE 140th Ct. V2 had been traveling west on US-27A and was in the westbound left-turn lane at the NE 140th Ct median crossover. Witnesses described V2 as stopped or moving very slowly in the turn lane.
+
+V2 began a left turn through the crossover and across both eastbound lanes toward NE 140th Ct. V1 did not brake, steer away or slow before impact. The front of V1 struck the right side of the semitrailer at about the trailer's mid-length, in the outside eastbound lane on the south side of the intersection. V1 passed beneath the trailer, and the trailer's lower edge sheared off V1's roof structure.
+
+V1 continued east and left the roadway to the right (south) at a shallow angle. It crossed a drainage culvert, went through two wire fences and struck a wooden utility pole, breaking it. V1 rotated counterclockwise and came to rest about 910 ft east of the point of impact, perpendicular to the highway in the front yard of a residence near a driveway.
+
+V2 continued through its turn and came to a stop on NE 140th Ct, south of the retail business on the corner.
+
+No pre-impact tire marks were found on the roadway for either vehicle. The driver of V1 was pronounced deceased at the scene.
+
+### Contributing circumstances
+Not determined in this report. Causation is outside the scope of the Sightline case file. See NTSB/HAR-17/02.
+
+---
+
+## PAGE 3: SCENE MEASUREMENTS AND EVIDENCE
+
+### Reference point
+RP = the initial point of impact (POI), in the center of the EB outside lane on the NE 140th Ct centerline. Measurements follow the US-27A alignment: east (+) and west (−), south (+) and north (−).
+
+| Item | Measurement | Notes |
+|---|---|---|
+| EB travel lanes | 2 × 12 ft | Right shoulder about 5 ft paved. Left shoulder about 2 ft. |
+| Median | about 60 ft, grass | Crossover about 130 ft long |
+| WB left-turn lane | about 550 ft long | Left-turn lane, median and shoulders total about 78 ft |
+| Vertical crest | about 1,132 ft W of the intersection center | EB descends about 2.15%. Grade levels about 327 ft E. |
+| Pre-impact tire marks | **None** (V1 or V2) | Roadway examined at POI and on the EB approach |
+| Impact location on V2 | about 45 ft 5 in rearward of the tractor front | Trailer right side |
+| Post-impact travel, V1 | about 910 ft | POI to final rest |
+| Utility pole | struck and broken by V1 | South roadside, east of the intersection |
+| Final rest, V1 | perpendicular to US-27A, residential front yard | South side |
+| Final rest, V2 | on NE 140th Ct | South of the retail store |
+
+### Vehicle data (from the NTSB download)
+- V1 cruise control set at 16:34:21 to **74 mph**. Speed just before impact: **74 mph**.
+- No brake application before or during the collision.
+- Airbags deployed about 8.4 s after the first impact (pole strike).
+- Headlights off.
+
+### Sight distance
+- The only sight restriction on the EB approach is the vertical crest, about 1,132 ft west.
+- At 74 mph, V1 and V2 were potentially visible to each other for up to **about 10.4 s** before impact.
+- No vegetation or other fixed obstructions on the approach. Sun high and behind EB traffic. No glare noted.
+
+### Scene diagram
+See **Exhibit 4** (`exhibits/map.png`), a schematic top-down diagram. North is up. Scale bar in meters.
+
+### Statements
+- Witness A (fictional), written, attached as `witness_A.md`.
+- Witness C (fictional), written, attached as `witness_C.md`.
+- Witness B (fictional) gave a brief oral statement at the scene: *"The truck pulled across real slow and the car never slowed down. It went right under it."* She later gave sworn testimony by videotaped deposition (see `deposition_script.json`).
+
+Report prepared by: [Trooper, ID REDACTED]. Reviewed: [Supervisor, ID REDACTED].
+
+
+----- witness_A.txt -----
+# WITNESS STATEMENT: Witness A
+
+> **FICTIONAL WITNESS.** This statement was written for the Sightline demonstration. It is modeled on the account of the real westbound eyewitness summarized in NTSB/HAR-17/02, pp. 1–2 and 29–30. It is not a real person's statement.
+
+**Statement given to:** [State Highway Patrol, Trooper REDACTED]
+**Date:** 05/07/2016, about 17:20 hrs, at the scene
+**Witness location during the event:** driving westbound on US-27A in the outside (right) lane, about a quarter mile behind (east of) the tractor-trailer, at about 60 mph
+
+---
+
+I was heading west on 27A toward Bronson, doing about 60. There was a tractor-trailer with a white reefer trailer ahead of me, maybe a quarter mile up. It got over into the left-turn lane at 140th Court. I couldn't tell if he was completely stopped or just rolling real slow.
+
+There was nobody else around. Looking down the road ahead of me, I saw a dark car come over the hill on the other side, eastbound, coming toward the intersection. That was before the truck started to turn.
+
+Then the truck started across. Once the trailer was out across the eastbound lanes, it blocked my view of the car. I didn't see the car hit the trailer. I heard it, a loud bang, and then I saw the car come out from under the back side of the trailer, still going, with the top torn off. It went off the road to the south and down the shoulder. I heard it hit something farther down.
+
+I never heard any brakes or a horn. The sun wasn't in my eyes. It was behind me and up high. Nothing was blocking my view up the road except the hill itself until the truck pulled across.
+
+I pulled over on the westbound shoulder past the crossover and called 911.
+
+*Signed: Witness A (fictional)*
+
+
+----- witness_C.txt -----
+# WITNESS STATEMENT: Witness C
+
+> **FICTIONAL WITNESS.** This statement was written for the Sightline demonstration. It is not a real person's statement. It is consistent with the physical facts in NTSB/HAR-17/02.
+
+**Statement given to:** [State Highway Patrol, Trooper REDACTED]
+**Date:** 05/09/2016, by phone, then written
+**Witness location during the event:** stopped in my pickup in the westbound inside lane of US-27A, just west of the 140th Court crossover. I was waiting to make a U-turn through the next crossover. Marked position about 18 m west of the side road, in the westbound lanes.
+
+---
+
+I had pulled up and stopped because I was looking for the turnaround and wasn't sure I'd passed it. A big rig with a white refrigerated trailer was sitting in the westbound left-turn lane just ahead of me and to my left, at the crossover. I could hear the reefer unit running.
+
+The truck started across. It was barely creeping when it pulled out, slower than a walk at first, then picking up a little as it swung across the eastbound lanes toward 140th. I was watching the truck, not the other side of the road, because I figured I'd go once it cleared.
+
+I never heard brakes, tires or a horn before the bang. It was one loud crunch, and then I saw the car come out the far side heading east and leave the road toward the houses. The truck kept rolling through the turn and stopped down on 140th Court past the store.
+
+It was a clear, sunny afternoon. The road was dry.
+
+*Signed: Witness C (fictional)*
+
+
+----- deposition_transcript.txt -----
+[00:00] ATTORNEY: We are on the record. This is the videotaped deposition of Witness B, taken in connection with the wrongful death action arising from the collision on U.S. Highway 27A at Northeast 140th Court in Levy County, Florida, on May 7, 2016. Today's date is the fourteenth. The time is 9:42 a.m. Counsel, please state your appearances for the record.
+[00:24] ATTORNEY: I represent the estate of the driver of Vehicle A, and I'll be conducting the examination this morning.
+[00:33] OPPOSING COUNSEL: Appearing on behalf of the defendant motor carrier and the driver of Vehicle T. We'll reserve all objections except as to form until the time of trial, and the witness will read and sign.
+[00:49] ATTORNEY: Agreed. The witness has been sworn by the court reporter off camera. Good morning.
+[00:57] WITNESS B: Good morning.
+[01:00] ATTORNEY: You understand you're under oath, the same oath you would take in a courtroom in front of a judge and a jury?
+[01:11] WITNESS B: Yes, I understand.
+[01:14] ATTORNEY: Have you ever given a deposition before?
+[01:19] WITNESS B: No. Never. I've been on jury duty once but that's it.
+[01:26] ATTORNEY: Then let me go over a few ground rules. They make the record cleaner and they make this go faster. The court reporter is taking down everything we say, and the camera is recording you. So I'll ask that you answer out loud. Nods and shrugs don't come through on the transcript. Okay?
+[01:49] WITNESS B: Okay.
+[01:52] ATTORNEY: Try to let me finish my question before you start your answer, even if you know where I'm going. And I'll try to let you finish your answer before I start the next question. If we talk over each other, the reporter can't get either of us. Fair?
+[02:13] WITNESS B: That's fair.
+[02:16] ATTORNEY: If you don't understand a question, tell me and I'll rephrase it. If you answer, I'm going to assume you understood it. Is that all right?
+[02:29] WITNESS B: Yes.
+[02:31] ATTORNEY: From time to time the other attorney may object. Unless one of us tells you not to answer, you can go ahead and answer after the objection. If you need a break at any time, just say so. The only thing I ask is that you not take a break while a question is pending. Do you understand?
+[02:57] WITNESS B: I understand.
+[03:00] ATTORNEY: Is there any reason, any medication or illness or anything else, that would keep you from giving full and truthful testimony today?
+[03:11] WITNESS B: No. I'm a little nervous but that's it.
+[03:16] ATTORNEY: That's completely normal. Did you do anything to prepare for today?
+[03:23] WITNESS B: I met with the lawyer, with him, for about an hour last week. And I read over the statement I gave to the deputy back then.
+[03:36] OPPOSING COUNSEL: Just so the record is clear, she's referring to me, and I'll instruct the witness not to reveal the substance of any conversations with counsel.
+[03:48] ATTORNEY: Understood. I'm not asking what was said. Other than the statement to the deputy, did you look at any documents, photographs, videos, anything like that?
+[04:00] WITNESS B: They showed me some pictures of the intersection. Just the road. And a map.
+[04:09] ATTORNEY: Do you remember if it was the same map we'll be using today?
+[04:16] WITNESS B: I think so. It looked like a drawing, from the top, with the roads.
+[04:24] ATTORNEY: Okay. We'll get to that. Let's start with a little background. How old are you?
+[04:32] WITNESS B: I'm forty-three.
+[04:35] ATTORNEY: And where do you live? I don't need a street address, just the general area.
+[04:43] WITNESS B: I live outside Williston, maybe six or seven miles from that intersection. Toward Bronson.
+[04:52] ATTORNEY: How long have you lived in that area?
+[04:57] WITNESS B: Going on eleven years.
+[05:01] ATTORNEY: What do you do for work?
+[05:05] WITNESS B: I'm a home health aide. I go to people's houses, mostly older folks, and help them with bathing, medications, getting around. That kind of thing.
+[05:18] ATTORNEY: Were you working in that job in May of 2016?
+[05:25] WITNESS B: Yes, same agency. I've been there about nine years now.
+[05:31] ATTORNEY: Do you drive as part of your job?
+[05:36] WITNESS B: Every day. I drive all over the county. Back then I had a lot of clients out along 27A, so I was on that road constantly.
+[05:50] ATTORNEY: So you're familiar with that stretch of highway.
+[05:55] WITNESS B: Very familiar. I could drive it with my eyes closed. Not that I would.
+[06:03] ATTORNEY: Do you wear glasses or contact lenses?
+[06:08] WITNESS B: Contacts. For distance. I'm nearsighted.
+[06:13] ATTORNEY: Were you wearing your contacts on the afternoon of May 7th, 2016?
+[06:20] WITNESS B: Yes. I put them in every morning. I don't go anywhere without them.
+[06:27] ATTORNEY: When was your last eye exam before the accident?
+[06:33] WITNESS B: That January, I think. I get them checked every year because of the driving.
+[06:41] ATTORNEY: Any problems with your hearing?
+[06:45] WITNESS B: No.
+[06:48] ATTORNEY: All right. Let's talk about May 7th, 2016. Do you remember what day of the week that was?
+[06:57] WITNESS B: It was a Saturday. I remember because I wasn't working, I had the day off, which is rare.
+[07:07] ATTORNEY: What were you doing that afternoon, before the collision?
+[07:13] WITNESS B: My car was in the shop, the transmission, so my sister was driving me around to run errands. She dropped me at the store on the corner there to pick up a few things while she went down the road to drop off something at a friend's house. She was going to come back and get me.
+[07:40] ATTORNEY: When you say the store on the corner, which store do you mean?
+[07:47] WITNESS B: The little store right there at the intersection, on the south side of the highway, where 140th Court goes off. It's like a convenience store, feed and supplies, a little bit of everything.
+[08:03] ATTORNEY: Approximately what time did your sister drop you off?
+[08:09] WITNESS B: A little after four. Maybe ten after four. I know it was after four because she was complaining about missing the start of a ball game.
+[08:23] ATTORNEY: How long were you inside the store?
+[08:28] WITNESS B: Not long. Fifteen, twenty minutes. I bought some things and then I went outside to wait for her.
+[08:38] ATTORNEY: What did you buy, if you remember?
+[08:42] WITNESS B: Dog food, a bag of ice, a couple of drinks. I remember the ice because by the end of everything it had all melted in the bag. I just left it sitting there.
+[08:59] ATTORNEY: When you went outside, where did you go?
+[09:04] WITNESS B: I went out front to wait. There's a little bench out there with a roof over it, kind of like a bus stop. I sat there for a while with my bags.
+[09:20] ATTORNEY: What was the weather like?
+[09:24] WITNESS B: Hot. Sunny. It was a clear day. No rain at all. I remember I was glad there was a roof over the bench.
+[09:36] ATTORNEY: Was the road wet or dry, as far as you could tell?
+[09:43] WITNESS B: Dry. It hadn't rained in a while, I don't think.
+[09:50] ATTORNEY: Where was the sun, if you recall?
+[09:55] OPPOSING COUNSEL: Object to form.
+[09:58] ATTORNEY: You can answer.
+[10:01] WITNESS B: Up high. It was still afternoon. It was over toward the west, you know, but still pretty high. It wasn't in my eyes, if that's what you're asking. I had the roof over me.
+[10:18] ATTORNEY: Did you have sunglasses on?
+[10:22] WITNESS B: No. They were in my sister's car.
+[10:28] ATTORNEY: While you were sitting on the bench, what were you doing?
+[10:34] WITNESS B: Just waiting. I had my phone out for a bit, I was texting my sister asking where she was. Then I put it away and I was just watching the road, watching for her car.
+[10:51] ATTORNEY: Do you remember roughly how long you were outside before the collision happened?
+[10:59] WITNESS B: Maybe five, ten minutes. Not long.
+[11:04] ATTORNEY: Which direction would your sister have been coming from?
+[11:09] WITNESS B: From the west. From the Bronson side. So I was looking that way, up toward the hill, watching for her.
+[11:20] ATTORNEY: Tell me about the hill.
+[11:24] WITNESS B: If you're on the south side looking west, the highway goes up a rise. It's not a big hill, it's Florida, but it's enough that cars just kind of appear over the top of it. You can't see past it. Then they come down toward the intersection.
+[11:47] ATTORNEY: About how far away is the top of that rise from the intersection, if you know?
+[11:55] OPPOSING COUNSEL: Object to form. Calls for speculation.
+[12:00] WITNESS B: I don't know exactly. A quarter mile? Less? A few hundred yards. I'm not good with distances.
+[12:09] ATTORNEY: That's fine. Tell me about the traffic that afternoon. Was it busy?
+[12:16] WITNESS B: No. It was pretty quiet. Saturday afternoon out there, there's not a lot going on. A car every so often.
+[12:27] ATTORNEY: At some point did you notice a tractor-trailer?
+[12:32] WITNESS B: Yes. There was a big truck on the other side of the highway, the north side. It was in the turn lane, the one in the middle where you turn left to cross over.
+[12:49] ATTORNEY: Which direction had that truck been traveling?
+[12:54] WITNESS B: It was going west. It was on the westbound side, heading toward Bronson, and it was waiting in the left turn lane to come across to 140th.
+[13:08] ATTORNEY: Can you describe the truck?
+[13:12] WITNESS B: A regular big rig. The trailer was white, a box trailer. It had one of those refrigeration units on the front of the trailer, I could hear it humming. The cab was darker. I don't remember the exact color.
+[13:31] ATTORNEY: When you first noticed the truck, was it moving or stopped?
+[13:38] WITNESS B: Honestly, I couldn't tell you for sure. It was either stopped or barely moving. It was just kind of sitting there in the turn lane, creeping.
+[13:51] ATTORNEY: Did you watch the truck make its turn?
+[13:56] WITNESS B: Yes. It started to come across, real slow. It came out of the turn lane, across the median part, and started across the eastbound lanes, toward our side, toward 140th.
+[14:12] ATTORNEY: When you say slow, can you give me any idea of the speed?
+[14:19] OPPOSING COUNSEL: Object to form.
+[14:22] WITNESS B: Walking speed? A little faster than walking, maybe. It was a big truck making a tight turn. They go slow.
+[14:33] ATTORNEY: Did the truck have its turn signal on?
+[14:38] WITNESS B: I don't remember. I didn't notice either way.
+[14:44] ATTORNEY: Okay. At some point did you notice another vehicle?
+[14:50] WITNESS B: Yes. The car.
+[14:53] ATTORNEY: Tell me what you saw.
+[14:57] WITNESS B: I was looking up toward the hill for my sister and a car came over the top. Eastbound, coming toward the intersection, on the side closest to me. And I remember thinking, at first, is that her? But it wasn't her car. Hers is a minivan.
+[15:19] ATTORNEY: Was the truck already moving when you first saw the car come over the rise?
+[15:27] WITNESS B: Let me think. I think the truck was still in the turn lane when the car came over the hill. It started across after. Not long after.
+[15:41] ATTORNEY: Can you describe the car?
+[15:45] WITNESS B: A sedan. Lower, sleek. Darker color. I didn't know what kind it was at the time. I found out later.
+[15:56] ATTORNEY: Did the car have its headlights on?
+[16:01] WITNESS B: No. It was the middle of the afternoon. I don't think anybody had headlights on.
+[16:10] ATTORNEY: Which lane was the car in?
+[16:14] WITNESS B: The right lane. The outside lane, closest to my side, closest to the store.
+[16:23] ATTORNEY: Did the car change lanes at any point as it came down the hill?
+[16:30] WITNESS B: No. It stayed right in that lane. Just straight.
+[16:36] ATTORNEY: Could you tell how fast the car was going?
+[16:42] OPPOSING COUNSEL: Object to form. Foundation.
+[16:46] ATTORNEY: You can answer if you're able.
+[16:50] WITNESS B: It was moving along pretty good. I couldn't give you a number. I'm not good with speeds any more than distances.
+[17:02] ATTORNEY: What gave you that impression?
+[17:06] WITNESS B: Just how quick it came down the hill. One second it was at the top and then it was right there.
+[17:17] ATTORNEY: Where was the truck by the time the car got near the intersection?
+[17:24] WITNESS B: The truck was across the road by then. Across the lane the car was in.
+[17:33] ATTORNEY: Did you see the car's brake lights come on at any point?
+[17:40] WITNESS B: No. I couldn't see the back of it anyway, it was coming toward me. But it never slowed down that I could see.
+[17:52] ATTORNEY: Did you hear any braking? Tires squealing, anything like that?
+[17:58] WITNESS B: No. Nothing. No tires, no horn. There was nothing until the crash.
+[18:05] ATTORNEY: Did you hear the truck's horn?
+[18:10] WITNESS B: No. I don't remember any horn.
+[18:15] ATTORNEY: We've been going about forty minutes on my watch. Let's take a short break. Five minutes.
+[18:23] OPPOSING COUNSEL: That's fine.
+[18:26] ATTORNEY: We're going off the record.
+[18:33] ATTORNEY: We're back on the record. You understand you're still under oath?
+[18:39] WITNESS B: Yes.
+[18:42] ATTORNEY: Did you speak with anyone about the substance of your testimony during the break?
+[18:50] WITNESS B: No. I went to the restroom and got some water.
+[18:56] ATTORNEY: Before the break we were talking about the car coming down the hill. I want to talk about the collision itself. Tell me what you saw and heard when the collision happened.
+[19:11] WITNESS B: The truck was across the eastbound lanes, the trailer was stretched across the road, and the car went right into the side of it. Right under it. There was this terrible noise, like a bang and a tearing sound at the same time. And then the car just kept going out the other side.
+[19:37] ATTORNEY: When you say it kept going, which direction did the car go?
+[19:44] WITNESS B: East. It came out from under the trailer and kept going east, down the highway, and then drifted off the road to the right side. Off my side of the road.
+[19:59] ATTORNEY: Did it slow down at all after it came out from under the trailer?
+[20:07] WITNESS B: Not much. It went a long way. It went off the road into the grass and through a fence and I heard it hit something. I found out later it hit a pole. Then it ended up way down there in somebody's yard.
+[20:28] ATTORNEY: How far down the road did the car go before it stopped, if you know?
+[20:36] OPPOSING COUNSEL: Object to form.
+[20:39] WITNESS B: Far. Down past a couple of houses. I've heard people say it was hundreds of feet. I believe that. It just kept going.
+[20:51] ATTORNEY: What did the truck do after the impact?
+[20:57] WITNESS B: It kept going too, slow. It finished the turn and pulled down 140th Court and stopped. Past the store, down the side road a little way.
+[21:10] ATTORNEY: What did you do?
+[21:14] WITNESS B: I stood up. I think I dropped my bag. I just stood there for a second. Then I started walking toward the road but I didn't know what to do. A man came out of the store and he was on the phone with 911 already.
+[21:36] ATTORNEY: Did you go to the car?
+[21:40] WITNESS B: No. It was too far down. Some other people ran down there. I stayed by the store. I was shaking. I'm not ashamed to say it.
+[21:54] ATTORNEY: Did you speak with the driver of the truck?
+[21:59] WITNESS B: No. I didn't talk to anybody from the truck.
+[22:05] ATTORNEY: Did you speak with law enforcement at the scene?
+[22:11] WITNESS B: Yes. A deputy came and took my information and asked me what I saw. Later on, I wrote out a statement. That's the one I looked at.
+[22:25] ATTORNEY: About how long after the crash did you give that statement?
+[22:31] WITNESS B: The written one was a few days later. They called me.
+[22:38] ATTORNEY: When your sister came back, where were you?
+[22:44] WITNESS B: Still by the store. She couldn't get through because of all the emergency vehicles, so she parked across and walked over. She stayed with me while I talked to the deputy.
+[22:59] ATTORNEY: Have you discussed what you saw with your sister?
+[23:05] WITNESS B: Of course. Many times. She was upset for me.
+[23:11] ATTORNEY: Has anything your sister said affected your memory of what you saw?
+[23:18] OPPOSING COUNSEL: Object to form.
+[23:21] WITNESS B: No. She didn't see anything. She was down the road.
+[23:28] ATTORNEY: Have you read any news articles about the crash?
+[23:34] WITNESS B: Some. It was on the local news for a while. I tried not to read too much.
+[23:43] ATTORNEY: Have you watched any videos or reconstructions about it?
+[23:49] WITNESS B: No. I saw something on TV once, a picture of the car, and I turned it off.
+[23:58] ATTORNEY: I want to go back to the moments right before impact. Where was the trailer when the car reached the intersection?
+[24:09] WITNESS B: It was across both eastbound lanes. The cab had already made it to the other side, onto 140th, kind of, and the trailer was stretched across the road behind it.
+[24:24] ATTORNEY: From where you were, could you see the road on the far side of the truck?
+[24:33] WITNESS B: The far side. You mean the north side? Parts of it. Under the trailer, a little, and around it. It's a big trailer.
+[24:45] ATTORNEY: Could you see the car the whole time as it came down the hill?
+[24:52] WITNESS B: Most of the way, yes. I had a good view up the hill.
+[25:00] ATTORNEY: Do you remember what you were looking at, specifically, right before the impact?
+[25:07] WITNESS B: The car. I was watching the car the whole time, because I knew it was going to hit. I couldn't take my eyes off it.
+[25:20] ATTORNEY: Let's mark an exhibit. I'm handing you what's been marked as Exhibit 4. Do you recognize it?
+[25:29] WITNESS B: Yes. That's the map I saw before. The drawing of the intersection.
+[25:37] ATTORNEY: For the record, Exhibit 4 is a schematic top-down diagram of the intersection of U.S. 27A and Northeast 140th Court. North is toward the top of the page. There's a scale bar at the bottom. Do you see the highway running left to right across the page?
+[25:58] WITNESS B: Yes.
+[26:00] ATTORNEY: And do you see the side road, 140th Court, going down from the highway toward the bottom of the page?
+[26:10] WITNESS B: Yes, I see it.
+[26:14] ATTORNEY: And the building at the lower right of the intersection, is that the store you were at?
+[26:23] WITNESS B: That's the store. Yes.
+[26:27] ATTORNEY: Using this red pen, could you please put a small mark where the truck came to a stop after the collision?
+[26:38] WITNESS B: It was down here. Down 140th, past the store. About here.
+[26:48] ATTORNEY: Let the record reflect the witness has made a mark on NE 140th Court, south of the store. Thank you. Now, I'd like you to show us where you were standing at the moment of the collision.
+[27:04] WITNESS B: I was over by the corner, near the shelter.
+[27:14] ATTORNEY: Let the record reflect the witness has placed a mark on Exhibit 4. Were you sitting or standing at that moment?
+[27:24] WITNESS B: Standing. I'd stood up when I saw the truck pulling across. I stood up because I could tell something was going to happen.
+[27:36] ATTORNEY: From that spot, in the last second or so before the car hit the trailer, what did you see?
+[27:46] WITNESS B: I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.
+[28:00] ATTORNEY: You're telling us you could see the car itself, the front of it, in that last second before impact.
+[28:09] OPPOSING COUNSEL: Objection. Asked and answered.
+[28:13] ATTORNEY: You can answer.
+[28:17] WITNESS B: Yes. I saw it clearly, the whole time, right up until it went under the trailer. I'll never forget it.
+[28:27] ATTORNEY: Where was the truck's trailer at that moment, relative to you and the car?
+[28:35] OPPOSING COUNSEL: Object to form.
+[28:38] WITNESS B: It was across the road. The car was coming at it. I could see the car. I'm sure of what I saw.
+[28:50] ATTORNEY: Did you tell the deputy at the scene that you watched the car all the way in to the impact?
+[29:00] WITNESS B: I don't remember if I said it that way that day. I was very upset. I know I've said it since.
+[29:11] ATTORNEY: Is it in your written statement?
+[29:16] WITNESS B: I don't think it's in there, no. I wrote down the main things. The truck turning and the car not stopping.
+[29:27] ATTORNEY: All right. Thank you. I'll pass the witness.
+[29:33] OPPOSING COUNSEL: I have just a couple of questions. Ma'am, the car you saw come over the hill, did it ever slow down before it reached the truck?
+[29:45] WITNESS B: No, sir. Not that I could see.
+[29:50] OPPOSING COUNSEL: Nothing further.
+[29:53] ATTORNEY: Nothing further from me. We'll go off the record. The time is 10:16 a.m. This concludes the deposition.
+
+
+==================================================================
+3. SCENE SPEC (Argon-extracted inventory; 42 cited elements — build ALL of them, with these positions, dimensions and citations)
+==================================================================
+{
+  "frame": {
+    "units": "meters",
+    "upAxis": "+Y",
+    "groundElevationAtOrigin": 0,
+    "eastAxis": "+X",
+    "northAxis": "-Z",
+    "southAxis": "+Z",
+    "originDescription": "Initial point of impact (POI): center of the eastbound outside (right) lane of US-27A on the centerline of NE 140th Court (109-degree skew simplified to 90 degrees per modeling assumptions).",
+    "headingConvention": "Compass degrees: 0 = North (-Z), 90 = East (+X), 180 = South (+Z), 270 = West (-X)",
+    "citation": "facts.txt Modeling assumptions; police_report.txt p.3 Reference point; world_v2.js lines 5-6"
+  },
+  "sources": [
+    {
+      "id": "facts",
+      "file": "text/facts.txt",
+      "what": "Case summary of physical facts extracted from NTSB Highway Accident Report NTSB/HAR-17/02 (HWY16FH018) and explicit modeling assumptions."
+    },
+    {
+      "id": "police_report",
+      "file": "text/police_report.txt",
+      "what": "Reconstructed state long-form crash report summarizing crash narrative, vehicle specs, scene measurements, and witness list."
+    },
+    {
+      "id": "deposition",
+      "file": "text/deposition.txt",
+      "what": "Time-coded SRT transcript of the videotaped deposition of fictional Witness B."
+    },
+    {
+      "id": "deposition_transcript",
+      "file": "text/deposition_transcript.txt",
+      "what": "Text transcript of Witness B deposition with minute:second timestamps."
+    },
+    {
+      "id": "witness_A",
+      "file": "text/witness_A.txt",
+      "what": "Written statement of fictional Witness A (westbound driver ~0.25 mi behind truck, modeled on real eyewitness in NTSB/HAR-17/02)."
+    },
+    {
+      "id": "witness_C",
+      "file": "text/witness_C.txt",
+      "what": "Written statement of fictional Witness C (westbound pickup driver stopped in WB inside lane 18 m west of crossover)."
+    },
+    {
+      "id": "map",
+      "file": "evidence/map.png",
+      "what": "Exhibit 4 schematic top-down diagram of US-27A and NE 140th Court intersection with scale bar."
+    },
+    {
+      "id": "world_v2",
+      "file": "worlds/world_v2.js",
+      "what": "Prior Argon reference world module (Contract v2) containing coordinates, vehicle keyframes, and witness positions."
+    }
+  ],
+  "lighting": {
+    "date": "2016-05-07",
+    "time": "16:36:12.7",
+    "utcOffset": "-04:00",
+    "timeZone": "EDT",
+    "lat": 29.41,
+    "lon": -82.54,
+    "weather": "clear",
+    "roadSurfaceCondition": "dry",
+    "lightingCondition": "day",
+    "sunAzimuthDeg": 265,
+    "sunElevationDeg": 45.1,
+    "skyDescription": "Clear afternoon sky, bright daylight, no precipitation or haze.",
+    "shadowsDescription": "Sharp, distinct solar shadows cast toward azimuth ~85 deg (east-northeast), shadow length ratio ~1.0 (cot(45.1 deg)). Sun is high and nearly directly behind eastbound traffic; no sun glare for eastbound or southbound observers (Witness B under shelter roof).",
+    "citation": "facts.txt F1, F2, F3; police_report.txt p.1; deposition.txt 98-107; COMPUTED LIGHTING block"
+  },
+  "crossSection": [
+    {
+      "from": -38.1,
+      "to": -36.58,
+      "axis": "z",
+      "band": "Westbound outside (north) paved shoulder (5 ft / 1.52 m)",
+      "surface": "Weathered asphalt shoulder",
+      "citation": "facts.txt F6; police_report.txt p.3; world_v2.js line 20"
+    },
+    {
+      "from": -36.58,
+      "to": -32.92,
+      "axis": "z",
+      "band": "Westbound outside (right) travel lane (12 ft / 3.66 m)",
+      "surface": "Dry asphalt travel lane",
+      "citation": "facts.txt F6; world_v2.js line 20"
+    },
+    {
+      "from": -32.92,
+      "to": -29.26,
+      "axis": "z",
+      "band": "Westbound inside (left) travel lane (12 ft / 3.66 m)",
+      "surface": "Dry asphalt travel lane",
+      "citation": "facts.txt F6; world_v2.js line 20"
+    },
+    {
+      "from": -29.26,
+      "to": -25.6,
+      "axis": "z",
+      "band": "Westbound left-turn lane (12 ft / 3.66 m, east of crossover x = -19.8 to +167.6 m) / WB inside shoulder (2 ft / 0.61 m) & northern median strip west of crossover",
+      "surface": "Asphalt in turn lane; paved shoulder / grass west of crossover",
+      "citation": "facts.txt F6, F8; police_report.txt p.3; world_v2.js line 21"
+    },
+    {
+      "from": -25.6,
+      "to": -6.1,
+      "axis": "z",
+      "band": "Divided highway median (~60 ft / 18.29 m grass median plus inside 2 ft / 0.61 m shoulders; total 78 ft / 23.77 m between main roadbeds; paved at crossover x = -19.8 to +19.8 m)",
+      "surface": "Bahia grass and sandy soil (paved asphalt within 39.6 m crossover)",
+      "citation": "facts.txt F6, F7, F8; police_report.txt p.3; world_v2.js lines 22-24"
+    },
+    {
+      "from": -6.1,
+      "to": -5.49,
+      "axis": "z",
+      "band": "Eastbound inside (left) paved shoulder (2 ft / 0.61 m)",
+      "surface": "Weathered asphalt shoulder",
+      "citation": "facts.txt F6; police_report.txt p.3"
+    },
+    {
+      "from": -5.49,
+      "to": -1.83,
+      "axis": "z",
+      "band": "Eastbound inside (left) travel lane (12 ft / 3.66 m; or EB left-turn lane taper west of crossover)",
+      "surface": "Dry asphalt travel lane",
+      "citation": "facts.txt F6, F8; world_v2.js line 19"
+    },
+    {
+      "from": -1.83,
+      "to": 1.83,
+      "axis": "z",
+      "band": "Eastbound outside (right) travel lane (12 ft / 3.66 m; centered at z = 0.0, contains POI)",
+      "surface": "Dry asphalt travel lane",
+      "citation": "facts.txt F6, F21; police_report.txt p.3; world_v2.js line 19"
+    },
+    {
+      "from": 1.83,
+      "to": 3.35,
+      "axis": "z",
+      "band": "Eastbound outside (south) paved shoulder (5 ft / 1.52 m; interrupted by NE 140th Ct apron around x = -3.05 to +3.05 m)",
+      "surface": "Weathered asphalt shoulder",
+      "citation": "facts.txt F6; police_report.txt p.3"
+    },
+    {
+      "from": 3.35,
+      "to": 12,
+      "axis": "z",
+      "band": "South roadside clear zone, grass verge, and shallow drainage swale",
+      "surface": "Unpaved grass / sandy soil",
+      "citation": "facts.txt F24; evidence/map.png; inferred: typical rural Florida highway roadside section"
+    }
+  ],
+  "profile": {
+    "axis": "x",
+    "points": [
+      {
+        "station": -440,
+        "elevation": 5.5,
+        "note": "West approach west of the vertical crest (vehicles here are below line of sight from intersection; modeled in world_v2.js via terrain proxy occ_crest at x = -377 m).",
+        "citation": "inferred: facts.txt F10, F27; deposition.txt 120-122; world_v2.js line 28"
+      },
+      {
+        "station": -345,
+        "elevation": 7.42,
+        "note": "Vertical crest of US-27A (1,132 ft / 345 m west of intersection center). Start of 2.15% eastbound downgrade.",
+        "citation": "facts.txt F10, F27; police_report.txt p.1, p.3"
+      },
+      {
+        "station": 0,
+        "elevation": 0,
+        "note": "Intersection center / Reference Point (POI). Elevation defined as y = 0.0 m; continuous 2.15% downgrade from x = -345 m to x = +99.7 m.",
+        "citation": "facts.txt F10, Modeling assumptions; police_report.txt p.3; world_v2.js lines 5-6"
+      },
+      {
+        "station": 99.7,
+        "elevation": -2.14,
+        "note": "End of 1,459 ft (444.7 m) 2.15% eastbound descent; roadway levels out ~327 ft (99.7 m) east of the intersection.",
+        "citation": "facts.txt F10; police_report.txt p.3"
+      },
+      {
+        "station": 400,
+        "elevation": -2.14,
+        "note": "Level eastbound roadway continuing east past Vehicle A final rest (x = 276.6 m).",
+        "citation": "facts.txt F9, F10"
+      }
+    ]
+  },
+  "elements": [
+    {
+      "id": "ground_base",
+      "category": "ground",
+      "label": "Surrounding rural grass and sandy soil ground plane",
+      "position": [
+        -50,
+        0,
+        0
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 820,
+        "width": 820,
+        "height": 0.01
+      },
+      "material": "Base color #6b7c4e, roughness 0.92, metalness 0.0; rural Florida Bahia grass with patches of sandy soil",
+      "occludes": false,
+      "citation": "world_v2.js lines 15-16; evidence/map.png",
+      "confidence": 1,
+      "note": "Matches world_v2.js groundPlane placement."
+    },
+    {
+      "id": "road_eb",
+      "category": "lane",
+      "label": "US-27A Eastbound travel lanes (two 12-ft / 3.66 m lanes: inside lane z = -5.49 to -1.83 m, outside lane z = -1.83 to +1.83 m)",
+      "position": [
+        -50,
+        0,
+        -1.83
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 7.32,
+        "height": 0.02
+      },
+      "material": "Base color #3a3c3f, roughness 0.82, metalness 0.0; dry weathered hot-mix asphalt with slight aggregate wear in wheel tracks",
+      "occludes": false,
+      "citation": "facts.txt F6, F9; police_report.txt p.1, p.3; world_v2.js line 19",
+      "confidence": 1,
+      "note": "Centered at z = -1.83 m so the outside lane (width 3.66 m) is centered at z = 0.0 m (POI)."
+    },
+    {
+      "id": "shoulder_eb_south",
+      "category": "shoulder",
+      "label": "US-27A Eastbound outside (right/south) paved shoulder (5 ft / 1.52 m wide)",
+      "position": [
+        -50,
+        0,
+        2.59
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 1.52,
+        "height": 0.02
+      },
+      "material": "Base color #434548, roughness 0.86, metalness 0.0; weathered asphalt shoulder with light sand/gravel dusting",
+      "occludes": false,
+      "citation": "facts.txt F6; police_report.txt p.3",
+      "confidence": 0.95,
+      "note": "Interrupted between x = -6 m and x = +6 m by the paved apron of NE 140th Court."
+    },
+    {
+      "id": "shoulder_eb_north",
+      "category": "shoulder",
+      "label": "US-27A Eastbound inside (left/north) paved shoulder (2 ft / 0.61 m wide)",
+      "position": [
+        -50,
+        0,
+        -5.795
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 0.61,
+        "height": 0.02
+      },
+      "material": "Base color #434548, roughness 0.86, metalness 0.0; weathered asphalt shoulder",
+      "occludes": false,
+      "citation": "facts.txt F6; police_report.txt p.3",
+      "confidence": 0.95,
+      "note": "Interrupted at the median crossover (x = -19.8 to +19.8 m)."
+    },
+    {
+      "id": "road_wb",
+      "category": "lane",
+      "label": "US-27A Westbound travel lanes (two 12-ft / 3.66 m lanes: inside lane z = -32.92 to -29.26 m, outside lane z = -36.58 to -32.92 m)",
+      "position": [
+        -50,
+        0,
+        -32.92
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 7.32,
+        "height": 0.02
+      },
+      "material": "Base color #3a3c3f, roughness 0.82, metalness 0.0; dry weathered hot-mix asphalt",
+      "occludes": false,
+      "citation": "facts.txt F6, F9; police_report.txt p.3; world_v2.js line 20",
+      "confidence": 1
+    },
+    {
+      "id": "shoulder_wb_north",
+      "category": "shoulder",
+      "label": "US-27A Westbound outside (right/north) paved shoulder (5 ft / 1.52 m wide)",
+      "position": [
+        -50,
+        0,
+        -37.34
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 1.52,
+        "height": 0.02
+      },
+      "material": "Base color #434548, roughness 0.86, metalness 0.0; weathered asphalt shoulder",
+      "occludes": false,
+      "citation": "facts.txt F6; police_report.txt p.3",
+      "confidence": 0.95
+    },
+    {
+      "id": "shoulder_wb_south",
+      "category": "shoulder",
+      "label": "US-27A Westbound inside (left/south) paved shoulder (2 ft / 0.61 m wide, west of crossover)",
+      "position": [
+        -229.9,
+        0,
+        -28.955
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 420.2,
+        "width": 0.61,
+        "height": 0.02
+      },
+      "material": "Base color #434548, roughness 0.86, metalness 0.0; weathered asphalt shoulder",
+      "occludes": false,
+      "citation": "facts.txt F6; police_report.txt p.3",
+      "confidence": 0.9
+    },
+    {
+      "id": "road_wb_turn",
+      "category": "lane",
+      "label": "US-27A Westbound left-turn lane (550 ft / 167.6 m storage + taper, 12 ft / 3.66 m wide)",
+      "position": [
+        73.9,
+        0,
+        -27.43
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 187.4,
+        "width": 3.66,
+        "height": 0.02
+      },
+      "material": "Base color #3d3f42, roughness 0.84, metalness 0.0; dry asphalt turn lane",
+      "occludes": false,
+      "citation": "facts.txt F8; police_report.txt p.3; evidence/map.png; world_v2.js line 21",
+      "confidence": 1,
+      "note": "Vehicle T waited/crept here before turning left through the crossover."
+    },
+    {
+      "id": "road_eb_turn",
+      "category": "lane",
+      "label": "US-27A Eastbound Auxiliary Turn Lanes (550 ft / 167.6 m left- and right-turn lanes mentioned in NTSB report)",
+      "position": [
+        -103.6,
+        0,
+        3.66
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 167.6,
+        "width": 3.66,
+        "height": 0.02
+      },
+      "material": "Base color #3d3f42, roughness 0.84, metalness 0.0; dry asphalt auxiliary turn lane",
+      "occludes": false,
+      "citation": "facts.txt F8",
+      "confidence": 0.75,
+      "note": "facts.txt F8 states left- and right-turn lanes about 550 ft long in each direction; omitted from simplified Exhibit 4 (map.png) and world_v2.js."
+    },
+    {
+      "id": "road_median_w",
+      "category": "median",
+      "label": "Grassy/earthen median west of the crossover (~60 ft / 18.28 m grass width; total median opening between main roadbeds 23.77 m)",
+      "position": [
+        -229.9,
+        0,
+        -15.24
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 420.2,
+        "width": 18.28,
+        "height": 0.05
+      },
+      "material": "Base color #748854, roughness 0.92, metalness 0.0; mowed highway median grass over sandy earth",
+      "occludes": false,
+      "citation": "facts.txt F7, F8; police_report.txt p.1, p.3; evidence/map.png; world_v2.js line 22",
+      "confidence": 1
+    },
+    {
+      "id": "road_median_e",
+      "category": "median",
+      "label": "Grassy/earthen median east of the crossover (~60 ft / 18.28 m grass width)",
+      "position": [
+        179.9,
+        0,
+        -15.24
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 320.2,
+        "width": 18.28,
+        "height": 0.05
+      },
+      "material": "Base color #748854, roughness 0.92, metalness 0.0; mowed highway median grass over sandy earth",
+      "occludes": false,
+      "citation": "facts.txt F7, F8; police_report.txt p.1, p.3; evidence/map.png; world_v2.js line 23",
+      "confidence": 1
+    },
+    {
+      "id": "road_crossover",
+      "category": "crossover",
+      "label": "Uncontrolled paved median crossover at NE 140th Court (130 ft / 39.6 m long along highway, spanning median width)",
+      "position": [
+        0,
+        0,
+        -15.24
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 23.77,
+        "width": 39.6,
+        "height": 0.02
+      },
+      "material": "Base color #3e4043, roughness 0.85, metalness 0.0; dry asphalt crossover pavement",
+      "occludes": false,
+      "citation": "facts.txt F8; police_report.txt p.1, p.3; evidence/map.png; world_v2.js line 24",
+      "confidence": 1,
+      "note": "In world_v2.js, constructed as two adjacent 19.8 m square intersection tiles (road_crossover_w at x = -9.9 m and road_crossover_e at x = +9.9 m)."
+    },
+    {
+      "id": "road_ne140",
+      "category": "side_road",
+      "label": "NE 140th Court local paved road (runs south from US-27A; 109-deg actual skew simplified to 90-deg in reference world)",
+      "position": [
+        0,
+        0,
+        76.7
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 146.6,
+        "width": 6.1,
+        "height": 0.02
+      },
+      "material": "Base color #45474a, roughness 0.86, metalness 0.0; local two-lane rural asphalt road without centerline markings",
+      "occludes": false,
+      "citation": "facts.txt F11, Modeling assumptions; evidence/map.png; world_v2.js line 25",
+      "confidence": 0.95,
+      "note": "Width 6.1 m (2 x 3.05 m lanes) per modeling assumptions in facts.txt and world_v2.js."
+    },
+    {
+      "id": "occ_crest",
+      "category": "terrain",
+      "label": "Vertical crest of US-27A at 1,132 ft (345 m) west of intersection (2.15% descent toward intersection; modeled in flat world_v2.js as a 7.4 m high occluder block at x = -377 m)",
+      "position": [
+        -377,
+        0,
+        -15
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 80,
+        "width": 60,
+        "height": 7.4
+      },
+      "material": "Terrain mesh following profile (road asphalt #3a3c3f and grass #6b7c4e), or transparent/matching horizon proxy in flat-ground sightline solver",
+      "occludes": true,
+      "citation": "facts.txt F10, F27, F28; deposition.txt 120-126; world_v2.js line 28",
+      "confidence": 1,
+      "note": "The vertical crest at x = -345 m is the sole sightline restriction on the eastbound approach. If building a true 3D graded terrain mesh per the profile block, this proxy box is replaced by the graded roadbed cresting at x = -345 m (y = +7.42 m) and descending west of -345 m."
+    },
+    {
+      "id": "mark_eb_lane_line",
+      "category": "marking",
+      "label": "US-27A Eastbound broken white lane line separating EB inside and outside lanes",
+      "position": [
+        -50,
+        0.025,
+        -1.83
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          -440,
+          -1.83
+        ],
+        [
+          340,
+          -1.83
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; retroreflective white alkyd/thermoplastic traffic paint with glass beads; pattern: 3.05 m (10 ft) segment, 9.14 m (30 ft) gap",
+      "mutcd": "MUTCD Section 3A.05, 3A.06, 3B.04 (Broken White Lane Line, 6 in / 0.15 m wide, 10 ft stripe / 30 ft skip)",
+      "occludes": false,
+      "citation": "evidence/map.png; world_v2.js line 19; standard: MUTCD 2009 Section 3A.06 & 3B.04; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_wb_lane_line",
+      "category": "marking",
+      "label": "US-27A Westbound broken white lane line separating WB inside and outside lanes",
+      "position": [
+        -50,
+        0.025,
+        -32.92
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          -440,
+          -32.92
+        ],
+        [
+          340,
+          -32.92
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; retroreflective white traffic paint; pattern: 3.05 m (10 ft) segment, 9.14 m (30 ft) gap",
+      "mutcd": "MUTCD Section 3A.05, 3A.06, 3B.04 (Broken White Lane Line, 6 in / 0.15 m wide, 10 ft stripe / 30 ft skip)",
+      "occludes": false,
+      "citation": "evidence/map.png; world_v2.js line 20; standard: MUTCD 2009 Section 3A.06 & 3B.04; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_eb_right_edge_w",
+      "category": "marking",
+      "label": "US-27A Eastbound solid white right edge line (west of NE 140th Ct)",
+      "position": [
+        -221.5,
+        0.025,
+        1.83
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 437,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          -440,
+          1.83
+        ],
+        [
+          -3.05,
+          1.83
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; solid retroreflective white traffic paint",
+      "mutcd": "MUTCD Section 3B.06 (Right Edge Line Pavement Markings, solid white, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; world_v2.js line 19; standard: MUTCD 2009 Section 3B.06; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_eb_right_edge_e",
+      "category": "marking",
+      "label": "US-27A Eastbound solid white right edge line (east of NE 140th Ct)",
+      "position": [
+        171.5,
+        0.025,
+        1.83
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 337,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          3.05,
+          1.83
+        ],
+        [
+          340,
+          1.83
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; solid retroreflective white traffic paint",
+      "mutcd": "MUTCD Section 3B.06 (Right Edge Line Pavement Markings, solid white, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; world_v2.js line 19; standard: MUTCD 2009 Section 3B.06; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_eb_left_edge_w",
+      "category": "marking",
+      "label": "US-27A Eastbound solid yellow median-side left edge line (west of crossover)",
+      "position": [
+        -229.9,
+        0.025,
+        -5.49
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 420.2,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          -440,
+          -5.49
+        ],
+        [
+          -19.8,
+          -5.49
+        ]
+      ],
+      "material": "Base color #eab81c, roughness 0.55, metalness 0.0; solid retroreflective highway yellow traffic paint",
+      "mutcd": "MUTCD Section 3B.06 (Left Edge Line Pavement Markings on Divided Highways, solid yellow, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; standard: MUTCD 2009 Section 3B.06; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_eb_left_edge_e",
+      "category": "marking",
+      "label": "US-27A Eastbound solid yellow median-side left edge line (east of crossover)",
+      "position": [
+        179.9,
+        0.025,
+        -5.49
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 320.2,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          19.8,
+          -5.49
+        ],
+        [
+          340,
+          -5.49
+        ]
+      ],
+      "material": "Base color #eab81c, roughness 0.55, metalness 0.0; solid retroreflective highway yellow traffic paint",
+      "mutcd": "MUTCD Section 3B.06 (Left Edge Line Pavement Markings on Divided Highways, solid yellow, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; standard: MUTCD 2009 Section 3B.06; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_wb_right_edge",
+      "category": "marking",
+      "label": "US-27A Westbound solid white right (north) edge line",
+      "position": [
+        -50,
+        0.025,
+        -36.58
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          -440,
+          -36.58
+        ],
+        [
+          340,
+          -36.58
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; solid retroreflective white traffic paint",
+      "mutcd": "MUTCD Section 3B.06 (Right Edge Line Pavement Markings, solid white, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; world_v2.js line 20; standard: MUTCD 2009 Section 3B.06; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_wb_turn_channel_line",
+      "category": "marking",
+      "label": "US-27A Westbound solid white lane line separating WB inside lane from WB left-turn lane",
+      "position": [
+        73.9,
+        0.025,
+        -29.26
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 187.4,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          -19.8,
+          -29.26
+        ],
+        [
+          167.6,
+          -29.26
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; solid retroreflective white traffic paint",
+      "mutcd": "MUTCD Section 3B.04 (White Lane Line Marking for Turn Lane, solid white, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; world_v2.js line 21; standard: MUTCD 2009 Section 3B.04; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_wb_left_edge_e",
+      "category": "marking",
+      "label": "US-27A Westbound solid yellow median-side edge line along WB left-turn lane (east of crossover)",
+      "position": [
+        179.9,
+        0.025,
+        -25.6
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 320.2,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          19.8,
+          -25.6
+        ],
+        [
+          340,
+          -25.6
+        ]
+      ],
+      "material": "Base color #eab81c, roughness 0.55, metalness 0.0; solid retroreflective highway yellow traffic paint",
+      "mutcd": "MUTCD Section 3B.06 (Left Edge Line Pavement Markings on Divided Highways, solid yellow, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; standard: MUTCD 2009 Section 3B.06; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_wb_left_edge_w",
+      "category": "marking",
+      "label": "US-27A Westbound solid yellow median-side edge line (west of crossover)",
+      "position": [
+        -229.9,
+        0.025,
+        -25.6
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 420.2,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          -440,
+          -25.6
+        ],
+        [
+          -19.8,
+          -25.6
+        ]
+      ],
+      "material": "Base color #eab81c, roughness 0.55, metalness 0.0; solid retroreflective highway yellow traffic paint",
+      "mutcd": "MUTCD Section 3B.06 (Left Edge Line Pavement Markings on Divided Highways, solid yellow, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; standard: MUTCD 2009 Section 3B.06; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_wb_turn_arrows",
+      "category": "marking",
+      "label": "Westbound left-turn lane pavement arrows (3 left-turn arrows spaced along the 167.6 m turn lane)",
+      "position": [
+        40,
+        0.025,
+        -27.43
+      ],
+      "headingDeg": 270,
+      "dimensions": {
+        "length": 2.44,
+        "width": 1.83,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          25,
+          -27.43
+        ],
+        [
+          65,
+          -27.43
+        ],
+        [
+          115,
+          -27.43
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; retroreflective white thermoplastic arrow markings",
+      "mutcd": "MUTCD Section 3B.20, Figure 3B-24 (Left-Turn Lane-Use Arrow Pavement Marking)",
+      "occludes": false,
+      "citation": "standard: MUTCD 2009 Section 3B.20; inferred placement",
+      "confidence": 0.7
+    },
+    {
+      "id": "mark_ne140_stop_line",
+      "category": "marking",
+      "label": "Stop line on northbound NE 140th Court approach to US-27A",
+      "position": [
+        1.52,
+        0.025,
+        5.5
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 3.05,
+        "width": 0.4,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          0,
+          5.5
+        ],
+        [
+          3.05,
+          5.5
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; solid white thermoplastic stop bar",
+      "mutcd": "MUTCD Section 3B.16 (Stop Line, 16 in / 0.40 m solid white)",
+      "occludes": false,
+      "citation": "police_report.txt p.1 (stop sign on NE 140th Ct approach); standard: MUTCD 2009 Section 3B.16; inferred placement",
+      "confidence": 0.75
+    },
+    {
+      "id": "sign_stop_ne140",
+      "category": "sign",
+      "label": "STOP sign on northbound NE 140th Court approach to US-27A",
+      "position": [
+        4.2,
+        0,
+        6
+      ],
+      "headingDeg": 180,
+      "dimensions": {
+        "length": 0.08,
+        "width": 0.76,
+        "height": 2.9
+      },
+      "material": "Octagonal aluminum sign face #c41e3a retroreflective red with #ffffff border and 'STOP' legend, roughness 0.35, metalness 0.2; mounted on galvanized steel U-channel post (#8c9094, roughness 0.5, metalness 0.8), bottom of sign 2.13 m (7 ft) above ground",
+      "mutcd": "MUTCD R1-1 (STOP Sign, 30 x 30 in / 0.76 x 0.76 m, Section 2B.05; mounting height 7 ft / 2.13 m per Section 2A.18)",
+      "occludes": false,
+      "citation": "police_report.txt p.1 (Traffic control: stop sign on the NE 140th Ct approach only); standard: MUTCD 2009 R1-1, Section 2A.18 & 2B.05; inferred placement",
+      "confidence": 0.85,
+      "note": "Faces south (heading 180 deg) toward northbound traffic on NE 140th Ct. Narrow post (0.08 m) does not occlude Witness B's sightline to the west."
+    },
+    {
+      "id": "sign_speed_eb",
+      "category": "sign",
+      "label": "SPEED LIMIT 65 sign on US-27A Eastbound roadside",
+      "position": [
+        -180,
+        0,
+        5.2
+      ],
+      "headingDeg": 270,
+      "dimensions": {
+        "length": 0.08,
+        "width": 0.91,
+        "height": 3.05
+      },
+      "material": "White retroreflective sign panel #f5f5f5 with black legend 'SPEED LIMIT 65' (#151515), roughness 0.35, metalness 0.2; mounted on U-channel post, bottom height 2.13 m (7 ft)",
+      "mutcd": "MUTCD R2-1 (Speed Limit Sign, 36 x 48 in / 0.91 x 1.22 m for multi-lane expressway/highway, Section 2B.13)",
+      "occludes": false,
+      "citation": "facts.txt F13; police_report.txt p.1 (Posted speed: 65 mph, US-27A); standard: MUTCD 2009 R2-1, Section 2B.13; inferred placement",
+      "confidence": 0.75,
+      "note": "Faces west (heading 270 deg) toward eastbound traffic."
+    },
+    {
+      "id": "bld_store",
+      "category": "building",
+      "label": "Retail store (convenience store, feed and supplies) on SE corner of US-27A and NE 140th Court",
+      "position": [
+        18,
+        0,
+        19
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 12,
+        "width": 18,
+        "height": 4.5
+      },
+      "material": "Tan/beige painted stucco/CMU facade (#b89772), dark brown trim (#5c4028), low-slope metal commercial roof (#7a7d80), aluminum-framed glass entrance door and storefront windows facing north toward US-27A and west toward NE 140th Ct; roughness 0.78, metalness 0.1",
+      "occludes": true,
+      "citation": "facts.txt F12, Modeling assumptions; deposition.txt 81-83, 265-267; evidence/map.png; world_v2.js line 29",
+      "confidence": 1,
+      "note": "Footprint 18 m (east-west, x = 9 to 27 m) by 12 m (north-south, z = 13 to 25 m), height 4.5 m per world_v2.js and Exhibit 4."
+    },
+    {
+      "id": "occ_shelter",
+      "category": "canopy",
+      "label": "Open-sided covered bench shelter in front of the retail store",
+      "position": [
+        8,
+        0,
+        7.9
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 3,
+        "width": 1.8,
+        "height": 2.4
+      },
+      "material": "Open-sided steel post structure (four 0.10 m square posts, painted dark gray #3a3d40, roughness 0.5, metalness 0.7) supporting a corrugated metal gable/shed roof (#8a8d91, bottom clearance 2.1 m) over a wooden/metal slat bench (#6e5239)",
+      "occludes": false,
+      "citation": "facts.txt Modeling assumptions; deposition.txt 95-96, 107, 274; evidence/map.png; world_v2.js line 30",
+      "confidence": 1,
+      "note": "Fictional scene dressing referenced in Witness B deposition. Roof is supported on thin 0.1 m posts with open sides, so it does not occlude a 1.6 m standing eye line."
+    },
+    {
+      "id": "store_parking_apron",
+      "category": "driveway",
+      "label": "Gravel/paved parking and pull-off area in front of retail store connecting to US-27A and NE 140th Ct",
+      "position": [
+        16,
+        0.01,
+        9
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 24,
+        "width": 9,
+        "height": 0.01
+      },
+      "material": "Compacted limerock gravel and weathered asphalt apron (#b8b3a8), roughness 0.90, metalness 0.0",
+      "occludes": false,
+      "citation": "inferred: deposition.txt 77-83, 95; evidence/map.png; typical rural store frontage",
+      "confidence": 0.8
+    },
+    {
+      "id": "drainage_culvert_se",
+      "category": "drainage",
+      "label": "Roadside drainage ditch and concrete pipe culvert under driveway/side-road east of intersection (crossed by Vehicle A post-impact)",
+      "position": [
+        85,
+        -0.4,
+        9.5
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 8,
+        "width": 2.5,
+        "height": 0.6
+      },
+      "material": "Precast concrete culvert pipe and mitered end section (#9c9a94, roughness 0.85, metalness 0.0) set in a grassy roadside swale",
+      "occludes": false,
+      "citation": "facts.txt F24; police_report.txt p.2 (crossed a drainage culvert); inferred placement along Vehicle A post-impact trajectory",
+      "confidence": 0.75,
+      "note": "Recessed below road level; does not affect any sightline."
+    },
+    {
+      "id": "fence_wire_south_1",
+      "category": "fence",
+      "label": "Rural wire pasture/property fence #1 on south side of US-27A (struck by Vehicle A post-impact)",
+      "position": [
+        155,
+        0,
+        14.5
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 140,
+        "width": 0.1,
+        "height": 1.2
+      },
+      "polyline": [
+        [
+          85,
+          14.5
+        ],
+        [
+          225,
+          14.5
+        ]
+      ],
+      "material": "4-strand galvanized barbed/woven wire (#8c9094, roughness 0.5, metalness 0.8) on pressure-treated wooden fence posts (#5a4632, 0.12 m diameter, spaced every 3.66 m)",
+      "occludes": false,
+      "citation": "facts.txt F24; police_report.txt p.2; deposition.txt 206 (went through two wire fences); inferred placement along Vehicle A post-impact path",
+      "confidence": 0.75,
+      "note": "Open wire fence far east of the intersection; cannot occlude pre-impact sightlines."
+    },
+    {
+      "id": "fence_wire_south_2",
+      "category": "fence",
+      "label": "Cross-property wire fence #2 near residential yard on south side of US-27A (struck by Vehicle A post-impact)",
+      "position": [
+        225,
+        0,
+        22
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 18,
+        "width": 0.1,
+        "height": 1.2
+      },
+      "polyline": [
+        [
+          225,
+          13
+        ],
+        [
+          225,
+          31
+        ]
+      ],
+      "material": "4-strand galvanized wire (#8c9094) on wooden posts (#5a4632)",
+      "occludes": false,
+      "citation": "facts.txt F24; police_report.txt p.2 (went through two wire fences); inferred placement along Vehicle A post-impact path",
+      "confidence": 0.75
+    },
+    {
+      "id": "occ_pole",
+      "category": "pole",
+      "label": "Wooden utility pole struck and broken by Vehicle A (~8.4 s after initial impact)",
+      "position": [
+        239.3,
+        0,
+        18.5
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 0.35,
+        "width": 0.35,
+        "height": 10
+      },
+      "material": "Creosote/CCA-treated southern yellow pine utility pole (#4a3b2c, roughness 0.85, metalness 0.0) with wooden crossarm at 9.2 m height and ceramic insulators",
+      "occludes": true,
+      "citation": "facts.txt F24, F26, Modeling assumptions; police_report.txt p.2, p.3; deposition.txt 206-207; world_v2.js line 31",
+      "confidence": 0.9,
+      "note": "Position [239.3, 0, 18.5] matches world_v2.js and corresponds to Vehicle A's keyframe at t = 18.83 s (8.4 s after t = 10.43 s impact)."
+    },
+    {
+      "id": "utility_poles_south_line",
+      "category": "pole",
+      "label": "Series of wooden utility poles along south right-of-way of US-27A (spaced ~75 m apart)",
+      "position": [
+        164.3,
+        0,
+        18.5
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 450,
+        "width": 0.35,
+        "height": 10
+      },
+      "polyline": [
+        [
+          -135.7,
+          18.5
+        ],
+        [
+          -60.7,
+          18.5
+        ],
+        [
+          14.3,
+          18.5
+        ],
+        [
+          89.3,
+          18.5
+        ],
+        [
+          164.3,
+          18.5
+        ],
+        [
+          239.3,
+          18.5
+        ],
+        [
+          314.3,
+          18.5
+        ]
+      ],
+      "material": "Treated wooden utility poles (#4a3b2c, roughness 0.85, metalness 0.0, 0.30 m diameter, 10 m tall) with overhead aluminum distribution wires (#707478) strung between crossarms at y = 9.0 to 9.5 m",
+      "occludes": false,
+      "citation": "inferred: facts.txt F24 (struck utility pole); typical rural utility line spacing aligned with occ_pole at z = 18.5 m",
+      "confidence": 0.65,
+      "note": "Set back at z = 18.5 m (12 m south of Witness B at z = 6.5 m), so completely behind Witness B and out of all pre-impact lines of sight."
+    },
+    {
+      "id": "residential_driveway_east",
+      "category": "driveway",
+      "label": "Residential driveway near Vehicle A final rest",
+      "position": [
+        280,
+        0.01,
+        14
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 22,
+        "width": 4,
+        "height": 0.02
+      },
+      "material": "Unpaved limerock/concrete residential driveway (#c2bdb2, roughness 0.85, metalness 0.0)",
+      "occludes": false,
+      "citation": "police_report.txt p.2 (in the front yard of a residence near a driveway); inferred placement near mark_rest_A",
+      "confidence": 0.75
+    },
+    {
+      "id": "residential_houses_south",
+      "category": "building",
+      "label": "Rural single-family residences set back on south side of US-27A east of the store",
+      "position": [
+        275,
+        0,
+        38
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 14,
+        "width": 20,
+        "height": 4.2
+      },
+      "material": "Light siding / brick ranch-style rural home (#d8d2c5), asphalt shingle gable roof (#4a4845), roughness 0.8, metalness 0.0",
+      "occludes": false,
+      "citation": "facts.txt F25; police_report.txt p.2, p.3; deposition.txt 207, 210 (past a couple of houses... in somebody's yard); inferred footprint set far back from highway",
+      "confidence": 0.7,
+      "note": "Set far east (x ~ 200-285 m) and south (z ~ 38 m); does not affect any sightline."
+    },
+    {
+      "id": "veg_distant_treeline",
+      "category": "vegetation",
+      "label": "Distant rural Florida pine and live oak treeline well outside the highway clear zone",
+      "position": [
+        -50,
+        0,
+        -65
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 15,
+        "height": 14
+      },
+      "material": "Slash pine and live oak foliage (#3b5323, roughness 0.9, metalness 0.0) and bark (#4d3b2c)",
+      "occludes": false,
+      "citation": "facts.txt F27 (No vegetation or other obstructions were reported on the approach); inferred distant background treeline outside sight corridors",
+      "confidence": 0.7,
+      "note": "Placed at z = -65 m (north of WB highway) and z > +45 m (south of houses) so the highway approach and median are completely clear of vegetation per facts.txt F27."
+    },
+    {
+      "id": "mark_impact",
+      "category": "mark",
+      "label": "Initial point of impact (POI) marker in center of EB outside lane on NE 140th Ct centerline",
+      "position": [
+        0,
+        0.03,
+        0
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 1,
+        "width": 1,
+        "height": 0.01
+      },
+      "material": "Forensic reference marker (#d92b2b, roughness 0.5, metalness 0.0)",
+      "occludes": false,
+      "citation": "facts.txt F21; police_report.txt p.3; evidence/map.png; world_v2.js line 34",
+      "confidence": 1
+    },
+    {
+      "id": "mark_rest_A",
+      "category": "mark",
+      "label": "Final rest position marker of Vehicle A (~910 ft / 276.6 m east of POI in residential front yard)",
+      "position": [
+        276.6,
+        0.03,
+        23.9
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 1,
+        "width": 1,
+        "height": 0.01
+      },
+      "material": "Forensic reference marker (#d92b2b, roughness 0.5, metalness 0.0)",
+      "occludes": false,
+      "citation": "facts.txt F25; police_report.txt p.2, p.3; world_v2.js line 35",
+      "confidence": 1
+    },
+    {
+      "id": "mark_path_A",
+      "category": "mark",
+      "label": "Post-impact trajectory / furrow path of Vehicle A from POI to final rest (NO pre-impact tire marks exist)",
+      "position": [
+        138.3,
+        0.02,
+        12
+      ],
+      "headingDeg": 94.5,
+      "dimensions": {
+        "length": 277.6,
+        "width": 0.3,
+        "height": 0.01
+      },
+      "polyline": [
+        [
+          -0.17,
+          -0.01
+        ],
+        [
+          8.03,
+          0.47
+        ],
+        [
+          24.21,
+          1.68
+        ],
+        [
+          47.99,
+          3.46
+        ],
+        [
+          78.76,
+          5.88
+        ],
+        [
+          108.45,
+          8.22
+        ],
+        [
+          137.07,
+          10.47
+        ],
+        [
+          164.62,
+          12.64
+        ],
+        [
+          191.11,
+          14.73
+        ],
+        [
+          216.52,
+          16.73
+        ],
+        [
+          234.87,
+          18.17
+        ],
+        [
+          240.75,
+          18.86
+        ],
+        [
+          251.22,
+          20.32
+        ],
+        [
+          259.93,
+          21.59
+        ],
+        [
+          266.85,
+          22.62
+        ],
+        [
+          271.97,
+          23.37
+        ],
+        [
+          275.24,
+          23.81
+        ],
+        [
+          276.56,
+          23.94
+        ]
+      ],
+      "material": "Post-impact tire scrub on pavement transitioning to disturbed turf/soil furrows (#3b3228, roughness 0.9, metalness 0.0)",
+      "occludes": false,
+      "citation": "facts.txt F22, F23, F24, F25; police_report.txt p.2, p.3; world_v2.js lines 36-39",
+      "confidence": 1,
+      "note": "Strictly post-impact only (t > 10.43 s). NTSB explicitly found zero pre-collision tire marks from either vehicle (facts.txt F22)."
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "veh_A",
+      "role": "Striking eastbound passenger vehicle (Vehicle A / V1)",
+      "type": "Generic 2015 four-door full-size passenger sedan (no brand or model names)",
+      "dimensions": {
+        "length": 4.97,
+        "width": 1.96,
+        "height": 1.445,
+        "wheelbase": 2.96,
+        "frontOverhang": 0.98,
+        "rearOverhang": 1.03,
+        "hoodTrailingEdgeHeight": 0.914,
+        "groundClearance": 0.15,
+        "seatHeadrestTopHeight": 1.29
+      },
+      "axlePositionsFromFront": [
+        0.98,
+        3.94
+      ],
+      "color": "#1d2c44",
+      "materials": "Dark navy/charcoal metallic automotive clearcoat body (#1d2c44, roughness 0.25, metalness 0.6), tinted safety glass windshield and side windows (#1a2226, transmission 0.7), black rubber tires (#1c1c1c, roughness 0.85), alloy wheels (#c0c4c8, metalness 0.8)",
+      "lights": "Headlights OFF; daytime running lights/brake lights OFF prior to and during impact (no brake application recorded).",
+      "markings": "None (standard passenger vehicle)",
+      "motionSummary": "Traveling eastbound (heading 90 deg) in the outside (right) lane (z = 0.0 m) on cruise control at a constant 74 mph (33.08 m/s). Crests hill at t = 0.0 s (x = -345 m), strikes right side of semitrailer at t = 10.43 s at origin (x = 0, z = 0) with no braking or steering input, underrides trailer (shearing off roof and A-pillars above hood height), exits roadside at shallow angle (~94.5 deg), crosses culvert and two wire fences, strikes utility pole at t = 18.83 s (x = 239.3, z = 18.5), rotates counterclockwise to final rest at x = 276.56 m, z = 23.94 m (heading 0 deg).",
+      "positions": {
+        "atCrest_t0": {
+          "position": [
+            -347.52,
+            0,
+            0
+          ],
+          "headingDeg": 90
+        },
+        "atImpact_t10_43": {
+          "position": [
+            -2.48,
+            0,
+            0
+          ],
+          "headingDeg": 90
+        },
+        "atFinalRest_t22": {
+          "position": [
+            276.56,
+            0,
+            23.94
+          ],
+          "headingDeg": 0
+        }
+      },
+      "citation": "facts.txt F4, F14, F17, F18, F21-F26, Modeling assumptions; police_report.txt p.1-3; deposition.txt 163-166, 181-185; world_v2.js lines 36, 42",
+      "confidence": 1
+    },
+    {
+      "id": "veh_T_tractor",
+      "role": "Turning combination vehicle power unit (Vehicle T / V2 tractor)",
+      "type": "Generic 2014 3-axle conventional commercial truck-tractor",
+      "dimensions": {
+        "length": 6.6,
+        "width": 2.44,
+        "height": 4,
+        "wheelbase": 5,
+        "groundClearance": 0.28,
+        "fifthWheelHeight": 1.2
+      },
+      "axlePositionsFromFront": [
+        0.95,
+        5.25,
+        6.55
+      ],
+      "color": "#e8e8e8",
+      "materials": "Painted commercial cab body (#e8e8e8 in world_v2.js; described by Witness B as darker than the white trailer), chrome grille and vertical exhaust stacks (#d8dcdf, roughness 0.15, metalness 0.9), black frame rails and tires (#1c1c1c, roughness 0.85)",
+      "lights": "Standard amber roof/side marker lamps; turn signal status not recalled by witnesses.",
+      "markings": "Standard commercial tractor side reflectors",
+      "motionSummary": "Initially creeping westward in the WB left-turn lane (t = 0.0 s at x = 14.79 m, z = -27.42 m, heading -90.1 deg), turns left (southward) through the median crossover at ~3.0 to 6.1 m/s along a ~12 m radius onto NE 140th Court. At impact (t = 10.43 s), tractor has already cleared the eastbound lanes onto NE 140th Ct (center at x = 0.0 m, z = 10.54 m, heading 180 deg). Stops south of the retail store at x = 0.0 m, z = 44.69 m (heading 180 deg).",
+      "positions": {
+        "atStart_t0": {
+          "position": [
+            14.79,
+            0,
+            -27.42
+          ],
+          "headingDeg": 269.9
+        },
+        "atImpact_t10_43": {
+          "position": [
+            0,
+            0,
+            10.54
+          ],
+          "headingDeg": 180
+        },
+        "atFinalRest_t22": {
+          "position": [
+            0,
+            0,
+            44.69
+          ],
+          "headingDeg": 180
+        }
+      },
+      "citation": "facts.txt F15, F16, F19, Modeling assumptions; police_report.txt p.1-3; deposition.txt 138-152, 213-214; world_v2.js lines 43, 47",
+      "confidence": 1,
+      "note": "Combined tractor + semitrailer overall length is 71 ft 7 in (21.82 m)."
+    },
+    {
+      "id": "veh_T_trailer",
+      "role": "Struck semitrailer of turning combination vehicle (Vehicle T / V2 semitrailer)",
+      "type": "Generic 2003 53-ft refrigerated van semitrailer (reefer) with front-mounted refrigeration unit",
+      "dimensions": {
+        "length": 16.15,
+        "width": 2.59,
+        "height": 4.11,
+        "boxBottomUnderrideHeight": 1.2,
+        "boxHeight": 2.91,
+        "kingpinOffsetFromFront": 0.91
+      },
+      "axlePositionsFromFront": [
+        12.5,
+        13.72
+      ],
+      "color": "#f2f2ee",
+      "materials": "White painted aluminum/fiberglass refrigerated box panels (#f2f2ee, roughness 0.4, metalness 0.2), front nose-mount refrigeration unit housing (#d8d8d4) with grille, galvanized steel landing gear and rear tandem bogie (#5a5d60)",
+      "lights": "Amber front/mid side-marker lamps along bottom rail (V1 hood was scraped by the trailer side-marker lamp per police_report.txt p.1), red rear marker/tail lamps.",
+      "markings": "FMVSS 108 (49 CFR 571.108) retroreflective conspicuity tape: alternating red (#c41e3a) and white (#f5f5f5) 50 mm (2 in) wide strip along the bottom side rail (at y = 1.22 m) covering at least 50% of trailer length, plus white upper rear corner inverted-L strips and full-width rear lower horizontal bar and underride guard bar.",
+      "motionSummary": "Pulled by veh_T_tractor from WB left-turn lane across the median crossover and eastbound lanes. At impact (t = 10.43 s), the trailer is aligned north-south (heading 180 deg) centered at x = 0.0 m, z = -0.05 m, stretching completely across both eastbound lanes. Impact occurs on the right (west) side of the trailer at z = 0.0 m, 45 ft 5 in (13.84 m) behind the front of the tractor (~8.2 m behind the trailer nose). The 1.20 m bottom clearance allows the nose of Vehicle A (hood height 0.914 m) to pass underneath while shearing off the car's greenhouse/roof (top at 1.445 m). Continues south to rest at x = 0.0 m, z = 34.24 m (heading 180 deg).",
+      "positions": {
+        "atStart_t0": {
+          "position": [
+            25.23,
+            0,
+            -27.43
+          ],
+          "headingDeg": 270
+        },
+        "atImpact_t10_43": {
+          "position": [
+            0,
+            0,
+            -0.05
+          ],
+          "headingDeg": 180
+        },
+        "atFinalRest_t22": {
+          "position": [
+            0,
+            0,
+            34.24
+          ],
+          "headingDeg": 180
+        }
+      },
+      "citation": "facts.txt F14, F15, F16, F23, Modeling assumptions; police_report.txt p.1-3; deposition.txt 138-140, 197-200, 245-249; world_v2.js lines 44, 48; standard: FMVSS 108 conspicuity markings",
+      "confidence": 1
+    },
+    {
+      "id": "veh_wit_A",
+      "role": "Fictional Witness A's westbound passenger vehicle (non-involved observer vehicle)",
+      "type": "Generic passenger vehicle",
+      "dimensions": {
+        "length": 4.8,
+        "width": 1.85,
+        "height": 1.48,
+        "wheelbase": 2.8,
+        "groundClearance": 0.16
+      },
+      "axlePositionsFromFront": [
+        0.95,
+        3.75
+      ],
+      "color": "#7a8288",
+      "materials": "Neutral silver/gray automotive paint (#7a8288, roughness 0.3, metalness 0.5)",
+      "lights": "Headlights off (daylight)",
+      "markings": "None",
+      "motionSummary": "Traveling westbound in the WB outside (right) lane (z = -34.75 m, heading 270 deg) at ~60 mph (26.8 m/s), about 0.25 mi (~400 m) behind Vehicle T. Placed at [357.2, 0, -34.75] at t = 2.0 s in world_v2.js; later pulls over onto WB shoulder west of the crossover to call 911.",
+      "positions": {
+        "atObservation_t2": {
+          "position": [
+            357.2,
+            0,
+            -34.75
+          ],
+          "headingDeg": 270
+        }
+      },
+      "citation": "facts.txt F30; witness_A.txt; world_v2.js lines 72-84",
+      "confidence": 0.95
+    },
+    {
+      "id": "veh_wit_C",
+      "role": "Fictional Witness C's stopped pickup truck (non-involved observer vehicle)",
+      "type": "Generic full-size pickup truck",
+      "dimensions": {
+        "length": 5.8,
+        "width": 2.02,
+        "height": 1.92,
+        "wheelbase": 3.68,
+        "groundClearance": 0.22
+      },
+      "axlePositionsFromFront": [
+        0.98,
+        4.66
+      ],
+      "color": "#586068",
+      "materials": "Charcoal gray automotive paint (#586068, roughness 0.35, metalness 0.5)",
+      "lights": "Headlights off (daylight)",
+      "markings": "None",
+      "motionSummary": "Stopped in the westbound inside lane just west of the crossover (x = -18.0 m, z = -40.5 m in world_v2.js; WB inside lane center is z = -31.09 m), facing west (heading 270 deg), waiting for Vehicle T to clear.",
+      "positions": {
+        "atObservation_t5": {
+          "position": [
+            -18,
+            0,
+            -40.5
+          ],
+          "headingDeg": 270
+        }
+      },
+      "citation": "witness_C.txt; world_v2.js lines 99-111",
+      "confidence": 0.9,
+      "note": "Position [-18, 0, -40.5] preserved from world_v2.js per frame instructions; witness_C.txt states stopped in the WB inside lane (~18 m west of side road)."
+    }
+  ],
+  "witnesses": [
+    {
+      "id": "wit_A",
+      "name": "Witness A (fictional, modeled on real NTSB westbound eyewitness)",
+      "position": [
+        357.2,
+        0,
+        -34.75
+      ],
+      "eyeHeight": 1.5,
+      "posture": "Seated driver in a moving westbound passenger vehicle (veh_wit_A) in the WB outside lane at ~60 mph",
+      "facingDeg": 265,
+      "lookAt": "veh_A",
+      "observationTime": 2,
+      "observed": "Saw Vehicle A crest the hill on the eastbound side before Vehicle T began its left turn. Once Vehicle T pulled out across the eastbound lanes, the semitrailer blocked his view of Vehicle A. Heard the crash bang and saw Vehicle A emerge from beneath the rear/side of the trailer with its roof torn off and run off the south roadside.",
+      "citation": "facts.txt F20, F30; police_report.txt p.1, p.3; witness_A.txt; world_v2.js lines 72-84"
+    },
+    {
+      "id": "wit_B",
+      "name": "Witness B (fictional pedestrian at SE corner store)",
+      "position": [
+        7.5,
+        0,
+        6.5
+      ],
+      "eyeHeight": 1.6,
+      "posture": "Standing pedestrian on the SE corner near the open-sided bench shelter in front of the retail store (had been seated on the bench waiting for her sister, then stood up when the truck began pulling across)",
+      "facingDeg": 278,
+      "lookAt": "veh_A",
+      "observationTime": 9.9,
+      "observed": "Testified that she saw Vehicle T creeping in the WB left-turn lane and turning slowly across the median and EB lanes, and saw Vehicle A come over the west crest in the EB outside lane without headlights, braking, or slowing. Claimed at deposition (27:46, 28:17) that from her standing spot at [7.5, 0, 6.5] she had an unobstructed view of the front of Vehicle A all the way in until impact (note: at t = 9.9 s to 10.43 s, the 16.15 m long semitrailer positioned along x = 0 between z = -8.1 m and +8.0 m physically lies directly between Witness B at x = +7.5, z = +6.5 and Vehicle A approaching from x < 0 along z = 0).",
+      "citation": "deposition.txt 95-96, 156-185, 268-292; police_report.txt p.1, p.3; world_v2.js lines 1, 85-97"
+    },
+    {
+      "id": "wit_C",
+      "name": "Witness C (fictional stopped westbound driver)",
+      "position": [
+        -18,
+        0,
+        -40.5
+      ],
+      "eyeHeight": 1.6,
+      "posture": "Seated driver in a stopped pickup truck (veh_wit_C) west of the crossover",
+      "facingDeg": 68,
+      "lookAt": "veh_T_tractor",
+      "observationTime": 5,
+      "observed": "Watched Vehicle T sitting/creeping in the WB left-turn lane with its reefer running, then pulling slowly across the median and eastbound lanes toward NE 140th Ct. Was watching the truck rather than eastbound traffic; heard no brakes, tires, or horn before the crash bang, then saw Vehicle A exit the far side and leave the road toward the houses while the truck finished its turn and stopped south of the store.",
+      "citation": "police_report.txt p.1, p.3; witness_C.txt; world_v2.js lines 99-111"
+    }
+  ],
+  "risks": [
+    {
+      "id": "risk_trailer_occlusion_wit_B",
+      "elementIds": [
+        "veh_T_trailer",
+        "wit_B"
+      ],
+      "description": "Between roughly t = 8.5 s and impact at t = 10.43 s, Vehicle T's semitrailer (box bottom at y = 1.20 m, top at y = 4.11 m, spanning x = 0 from z = -8.1 m to +8.0 m at impact) sits directly between Witness B on the SE corner (x = +7.5 m, z = +6.5 m, eye height 1.6 m) and Vehicle A approaching from the west (x < 0, z = 0.0 m, height 1.445 m). Small changes in Witness B's lateral/longitudinal position or the truck's crossing timing directly govern when the trailer box blocks her line of sight to the front of Vehicle A."
+    },
+    {
+      "id": "risk_crest_geometry_vs_proxy",
+      "elementIds": [
+        "occ_crest",
+        "road_eb"
+      ],
+      "description": "In world_v2.js, the road is modeled flat (y = 0) with a 7.4 m tall block (occ_crest at x = -377 m) acting as a terrain proxy for the vertical crest at x = -345 m. In a graded 3D mesh, the 2.15% slope and vertical curve radius at x = -345 m determine the exact second when a 1.445 m tall car becomes visible to a 1.5–2.4 m observer eye height at the intersection."
+    },
+    {
+      "id": "risk_shelter_posts_and_roof",
+      "elementIds": [
+        "occ_shelter",
+        "sign_stop_ne140"
+      ],
+      "description": "Witness B stood near the open-sided bench shelter (x = 8.0, z = 7.9). If the shelter were modeled with solid side panels, a low roof eave below 1.6 m, or thick corner columns instead of open 0.1 m posts, or if the NE 140th Ct stop sign were placed directly on her sightline vector, it would artificially occlude her view of the eastbound approach."
+    },
+    {
+      "id": "risk_roadside_clutter_south_west",
+      "elementIds": [
+        "veg_distant_treeline",
+        "utility_poles_south_line"
+      ],
+      "description": "NTSB explicitly reported that the vertical crest was the ONLY sight restriction on the eastbound approach and that no vegetation or other fixed obstructions existed (facts.txt F27). Adding any inferred trees, bushes, commercial signage, or poles within the median (z = -25.6 to -5.5 m) or along the south shoulder west of x = +10 m (z = +1.8 to +10 m) would falsely obstruct sightlines for Vehicle T, Witness A, or Witness B."
+    }
+  ],
+  "openQuestions": [
+    "Exact vertical curve length (K-value / parabolic crest length) at the x = -345 m crest and at the x = +99.7 m sag from FDOT as-built highway plans.",
+    "Exact surveyed footprint, setback, and roof geometry of the corner retail building and any parking lot fixtures from 2016 aerial orthophotography or terrestrial laser scan.",
+    "Exact distance east of the intersection and lateral offset of the struck wooden utility pole, concrete culvert, and two wire fences from the NTSB scene diagram / FHP scale reconstruction.",
+    "Exact geometry and taper lengths of the eastbound left- and right-turn lanes at the crossover (noted in facts.txt F8 as 550 ft long, but omitted from the simplified schematic Exhibit 4).",
+    "Whether the 109-degree intersection skew of NE 140th Court (simplified to 90 degrees in Exhibit 4 and world_v2.js) materially shifts the semitrailer's heading angle as it crosses the eastbound lanes."
+  ],
+  "_provenance": {
+    "step": "B",
+    "prompt": "argon/prompts/scene_spec.md",
+    "world": "cases/demo/worlds/world_v2.js",
+    "model": "gemini-4-argon",
+    "mode": "mock",
+    "cacheName": "plan_scene_spec",
+    "cachePath": "cases/demo/cache/plan_scene_spec.json",
+    "name": "plan_scene_spec",
+    "hash": "f556ebd5f1f93726",
+    "finishReason": "STOP",
+    "usage": {
+      "promptTokenCount": 38609,
+      "candidatesTokenCount": 19429,
+      "totalTokenCount": 58038,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 37517
+        },
+        {
+          "modality": "IMAGE",
+          "tokenCount": 1092
+        }
+      ],
+      "candidatesTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 19429
+        }
+      ]
+    },
+    "seconds": 183.7,
+    "at": "2026-10-25T19:52:51.481Z"
+  }
+}
+
+==================================================================
+4. TIMELINE AND KINEMATICS — KEEP IDENTICAL
+==================================================================
+The current accepted world (v2, which used a now-removed asset library) is below. You MUST keep, verbatim, its keyframe arrays (KA for the car, KT for the truck-tractor, KR for the semitrailer), the sample()/place() interpolation semantics, T_IMPACT, duration, the three witnesses (ids, positions, eye heights, lookAt, observationTime, claims, citations), the facts list, and the ids veh_A, veh_T_tractor, veh_T_trailer, occ_crest, bld_store, occ_shelter, occ_pole, mark_impact, mark_rest_A, mark_path_A. Vehicle dimensions must match: sedan 4.9 L x 1.9 W x 1.45 H; truck-tractor 6.5 x 2.5 x 3.6 (conventional hood); refrigerated van semitrailer 16.2 x 2.6 x 4.1 (origin at footprint center, NOT at the kingpin). The independent checks must still produce: Witness B (eye 1.6 m at [7.5, 6.5]) BLOCKED from the car at t = 9.9 s by the crossing tractor-semitrailer; Witness A and Witness C clear at their observation times. Continuous speeds, no teleports; pre-impact accelerations <= 0.8 g. IMPORTANT for the sightline: the checks cast a ray from the witness eye to the center of the car's bounding box and test intersection with meshes of `occludes:true` objects. So the semitrailer must present continuous solid geometry along its whole length between about 0.5 m and 4.1 m above ground on both sides: closed van box (floor ~1.25 m to roof 4.1 m), PLUS full-length aerodynamic side skirts (0.45 m .. 1.3 m) on both sides between the landing gear and the rear tandem, the tandem axle group, landing gear, rear impact guard. Do not leave a see-through gap under the trailer side.
+Object names inside a vehicle must make the car's bounding box sensible (no giant invisible helper meshes).
+
+// ===== cases/demo/worlds/world_v2.js =====
+// Round 2 patch (Argon): wit_B.observationTime 8.5 -> 9.9 s. Her claim covers the car "right up until the moment it hit" (Depo 27:46, 28:17); position kept at her Exhibit 4 mark (Depo 27:04). Truck crossing per NTSB/HAR-17/02 p.1, p.21.
+// Sightline reference world: Car into turning tractor-semitrailer at an uncontrolled median crossover, US-27A near Williston, Florida (2016)
+// GENERATED by worlds/build_reference_world.mjs from case/case.json. WORLD CONTRACT v2: places library assets only (createWorld(THREE, assets)).
+// Physical facts from NTSB Highway Accident Report NTSB/HAR-17/02 (accident ID HWY16FH018). Witnesses A, B and C are FICTIONAL. No real names or brand names are used. Fictional testimony describes only vehicle movements and visibility, never any real person's conduct or state. Values marked 'assumed' or 'derived' are modeling choices, not NTSB findings.
+// Frame: meters, Y up, +X east (direction of Vehicle A), -Z north. Origin = initial point of impact (center of EB outside lane at NE 140th Ct).
+// Terrain: vertical crest 345 m west (NTSB/HAR-17/02 p.22-23), 2.15% down-grade toward the crossover. Modeling simplification: the
+// grade levels out 40 m west of the crossover (crest 5.05 m above the crossover instead of ~7.4 m) so the witness/impact
+// area is level (y=0) for the ray-cast checks. Tree lines, fences and the utility-pole line are illustrative scenery (not occluders, not from the record).
+// Lighting: sun/sky/fog from the library's solar model for 2016-05-07T16:36:12-04:00 at 29.4106, -82.5393 (NTSB/HAR-17/02 p.1, p.5: 4:36 p.m. EDT, clear).
+export default function createWorld(THREE, assets) {
+  const root = new THREE.Group();
+  root.name = 'world_root';
+  const objects = {};
+  const D2R = Math.PI / 180;
+  const T = assets.terrain || { reset() {}, hillCrest() {}, height: () => 0, roadHeight: () => 0 };
+  T.reset();
+  const gy = (x, z) => T.height(x, z);
+  // place a library asset: ground-level origin at (x, z), compass heading in degrees (rotation.y = -heading)
+  const add = (id, node, kind, label, citation, occludes, x = 0, z = 0, headingDeg = 0, extra = {}) => {
+    node.name = id; node.position.set(x, gy(x, z), z); node.rotation.y = -headingDeg * D2R; root.add(node);
+    return (objects[id] = { node, kind, label, citation, occludes, ...extra });
+  };
+  const reg = (id, node, kind, label, citation, occludes = false) => { node.name = id; root.add(node); return (objects[id] = { node, kind, label, citation, occludes }); };
+  const scenery = (node) => { node.userData.scenery = true; root.add(node); return node; };
+
+  // ---------- light: the library's physically based sun / sky / fog for the case's date, time and place ----------
+  root.add(assets.environment({ date: "2016-05-07T16:36:12-04:00", lat: 29.4106, lon: -82.5393, weather: 'clear' }));
+
+  // ---------- terrain: vertical crest west of the crossover (roads drape onto it) ----------
+  T.hillCrest({ at: [-345, -17.37], heading: -Math.PI / 2, gradeUp: 0.02, lengthUp: 400, gradeDown: 0.0215, lengthDown: 235, curve: 140 });
+
+  // ---------- roadway: US-27A four-lane divided (3.66 m lanes), 39.6 m crossover, WB left-turn lane, NE 140th Ct ----------
+  reg('road_us27a', assets.road({ id: 'road_us27a', lanes: 4, laneWidth: 3.66, divided: true, medianWidth: 23.77, length: 1700, markings: 'standard',
+    shoulderWidth: 1.52, leftShoulderWidth: 0.61, position: [100, -17.37], heading: -Math.PI / 2,
+    openings: [{ at: -100, width: 39.6, radius: 6 }],
+    turnLanes: [{ carriageway: 'reverse', stopAt: -80.2, length: 152.6, taper: 15 }],
+    sideRoads: [{ at: -100, side: 'right', width: 6.1, radius: 9 }] }),
+    'road', 'US-27A: 4-lane divided highway, 3.66 m lanes, 18.3 m grass median, 39.6 m crossover, WB left-turn lane (65 mph)', 'NTSB/HAR-17/02 p.22-23', false);
+  const outer = objects.road_us27a.node.userData.edges?.outer ?? 20.73;
+  const sideStart = -17.37 + outer;
+  reg('road_ne140', assets.road({ id: 'road_ne140', lanes: 2, laneWidth: 3.05, shoulderWidth: 0, markings: 'center_double', edgeLines: false, length: 260,
+    position: [0, sideStart + 130], heading: 0, rpms: false, roadside: { ditchDepth: 0.35 } }),
+    'road', 'NE 140th Court (runs south; 109 deg skew simplified)', "inferred: NTSB/HAR-17/02 p.1, p.22; width assumed", false);
+
+  // ---------- ground + illustrative scenery (pasture, hammock tree lines, fences, pole line) ----------
+  root.add(assets.groundPlane({ id: 'ground', size: 4000, kind: 'pasture' }));
+  scenery(assets.treeline({ id: 'scn_trees_n', points: [[-900, -170], [-400, -190], [0, -160], [500, -185], [900, -175]], depth: 22, spacing: 8, seed: 3 }));
+  scenery(assets.treeline({ id: 'scn_trees_s', points: [[-900, 150], [-300, 170], [60, 95], [400, 140], [900, 160]], depth: 26, spacing: 8, seed: 5, pineRatio: 0.45 }));
+  scenery(assets.treeline({ id: 'scn_trees_s2', points: [[-260, 60], [-180, 64]], depth: 10, spacing: 7, seed: 9, height: 11 }));
+  for (const [id, z, segs] of [['scn_fence_n', -53.37, [[-800, 800]]], ['scn_fence_s', 12.5, [[-800, -14], [40, 800]]]])
+    for (const [a, b] of segs) { const pts = []; for (let x = a; x <= b; x += 50) pts.push([x, z]); if (pts[pts.length - 1][0] < b) pts.push([b, z]); scenery(assets.fence({ id: id + '_' + a, points: pts })); }
+  for (const x of [-680.7,-634.7,-588.7,-542.7,-496.7,-450.7,-404.7,-358.7,-312.7,-266.7,-220.7,-174.7,-128.7,-82.7,-36.7,55.3,101.3,147.3,193.3,285.3,331.3,377.3,423.3,469.3,515.3,561.3,607.3,653.3,699.3,745.3]) { const p = scenery(assets.pole({ id: 'scn_pole_' + x, height: 10.7 })); p.position.set(x, gy(x, 18.5), 18.5); }
+  for (const [x, z, h, k] of [[34, 30, 10, 'oak'], [-22, 26, 12, 'oak'], [-40, 40, 18, 'pine'], [60, -64, 9, 'oak'], [-120, 52, 17, 'pine'], [140, 48, 10, 'oak'], [-70, -70, 11, 'oak']]) {
+    const tr = scenery(assets.tree({ id: 'scn_tree_' + x, kind: k, height: h })); tr.position.set(x, gy(x, z), z); tr.rotation.y = x;
+  }
+
+  // ---------- evidence objects / occluders ----------
+  // invisible 60 x 40 m footprint just beyond the crest: the hill itself is the terrain; this only carries the label + extent
+  const crest = assets.building({ id: 'occ_crest', w: 60, d: 40, h: 0.2, kind: 'generic' });
+  crest.visible = false;
+  crest.position.set(-375, 5.05, -17.37);
+  reg('occ_crest', crest, 'terrain', 'Vertical crest of US-27A, 345 m west (sight restriction; rendered as terrain)', "NTSB/HAR-17/02 p.22 (crest 1,132 ft W, 2.15% descent), p.29 (only sight restriction)", false);
+  add('bld_store', assets.building({ id: 'bld_store', w: 18, d: 12, h: 4.5, kind: 'store' }), 'building', "Retail business on the SE corner (fictionalized footprint)", "inferred: NTSB/HAR-17/02 p.1 ('retail business on the intersection corner'); corner, footprint and height assumed", true, 18, 19);
+  add('occ_shelter', assets.shelter({ id: 'occ_shelter', open: true }), 'occluder', "Open-sided covered bench shelter in front of the store (fictional, does not block)", "Fictional scene dressing referenced in Witness B deposition (~27:04). Roof only on 0.1 m posts, so it does not block a 1.6 m eye line.", false, 8, 7.9);
+  add('occ_pole', assets.pole({ id: 'occ_pole', height: 10.7 }), 'occluder', 'Utility pole broken by Vehicle A (position derived)', "inferred: NTSB/HAR-17/02 p.1; derived: NTSB gives no pole location; placed on the post-impact path", true, 239.3, 18.5);
+
+  // ---------- marks ----------
+  add('mark_impact', assets.impactMarker({ id: 'mark_impact', position: [0, 0] }), 'mark', 'Initial point of impact (EB outside lane at NE 140th Ct)', 'NTSB/HAR-17/02 p.1, p.5', false, 0, 0);
+  add('mark_rest_A', assets.impactMarker({ id: 'mark_rest_A', position: [276.6, 23.9] }), 'mark', 'Final rest of Vehicle A (~910 ft past impact)', "inferred: NTSB/HAR-17/02 p.1; position approximate", false, 276.6, 23.9);
+  const KA = [[0,-350.02,0,90],[0.25,-341.69,0,90],[0.5,-333.36,0,90],[0.75,-325.03,0,90],[1,-316.7,0,90],[1.25,-308.37,0,90],[1.5,-300.04,0,90],[1.75,-291.71,0,90],[2,-283.38,0,90],[2.25,-275.05,0,90],[2.5,-266.72,0,90],[2.75,-258.39,0,90],[3,-250.06,0,90],[3.25,-241.73,0,90],[3.5,-233.4,0,90],[3.75,-225.07,0,90],[4,-216.74,0,90],[4.25,-208.41,0,90],[4.5,-200.08,0,90],[4.75,-191.74,0,90],[5,-183.41,0,90],[5.25,-175.08,0,90],[5.5,-166.75,0,90],[5.75,-158.42,0,90],[6,-150.09,0,90],[6.25,-141.76,0,90],[6.5,-133.43,0,90],[6.75,-125.1,0,90],[7,-116.77,0,90],[7.25,-108.44,0,90],[7.5,-100.11,0,90],[7.75,-91.78,0,90],[8,-83.45,0,90],[8.25,-75.12,0,90],[8.5,-66.79,0,90],[8.75,-58.46,0,90],[9,-50.13,0,90],[9.25,-41.8,0,90],[9.5,-33.47,0,90],[9.75,-25.14,0,90],[10,-16.81,0,90],[10.25,-8.48,0,90],[10.43,-2.49,-0.01,90.144],[10.5,-0.17,-0.01,90.2],[10.75,8.03,0.47,91],[11,16.15,1.08,91.7],[11.25,24.21,1.68,92.5],[11.5,32.21,2.28,93.2],[11.75,40.13,2.87,94],[12,47.99,3.46,94.5],[12.25,55.78,4.08,94.5],[12.5,63.51,4.68,94.5],[12.75,71.17,5.29,94.5],[13,78.76,5.88,94.5],[13.25,86.28,6.48,94.5],[13.5,93.74,7.06,94.5],[13.75,101.13,7.64,94.5],[14,108.45,8.22,94.5],[14.25,115.7,8.79,94.5],[14.5,122.89,9.36,94.5],[14.75,130.02,9.92,94.5],[15,137.07,10.47,94.5],[15.25,144.06,11.02,94.5],[15.5,150.98,11.57,94.5],[15.75,157.84,12.11,94.5],[16,164.62,12.64,94.5],[16.25,171.34,13.17,94.5],[16.5,178,13.69,94.5],[16.75,184.59,14.21,94.5],[17,191.11,14.73,94.5],[17.25,197.56,15.23,94.5],[17.5,203.94,15.74,94.5],[17.75,210.26,16.23,94.5],[18,216.52,16.73,94.5],[18.25,222.7,17.21,94.5],[18.5,228.82,17.69,94.5],[18.75,234.87,18.17,94.5],[19,240.75,18.86,89.3],[19.25,246.21,19.61,81.7],[19.5,251.22,20.32,74.1],[19.75,255.8,20.99,66.5],[20,259.93,21.59,58.9],[20.25,263.62,22.14,51.3],[20.5,266.85,22.62,43.7],[20.75,269.64,23.03,36.1],[21,271.97,23.37,28.5],[21.25,273.84,23.63,20.9],[21.5,275.24,23.81,13.3],[21.75,276.17,23.91,5.7],[22,276.56,23.94,0],[22.25,276.56,23.94,0]];
+  const pathPts = KA.filter((k) => k[0] > 10.43).map((k) => [k[1], k[2]]);
+  const pathMark = assets.skidMark({ id: 'mark_path_A', points: pathPts, width: 0.3 });
+  reg('mark_path_A', pathMark, 'mark', 'Post-impact path of Vehicle A (no pre-impact tire marks)', 'NTSB/HAR-17/02 p.1, p.5', false);
+
+  // ---------- vehicles (library assets; front = local -Z) ----------
+  const A = add('veh_A', assets.vehicle('sedan', { id: 'veh_A', color: '#1d2c44' }), 'vehicle', "Passenger sedan (Vehicle A), eastbound", "inferred: NTSB/HAR-17/02 p.1 (910 ft post-impact), p.2 & p.15 (74 mph, no braking, headlights off), p.5 (no pre-impact marks); dims: typical full-size sedan, assumed", true).node;
+  const TT = add('veh_T_tractor', assets.vehicle('truck_tractor', { id: 'veh_T_tractor', color: '#e8e8e8' }), 'vehicle', "Truck-tractor (Vehicle T)", "NTSB/HAR-17/02 p.1 (left turn from WB turn lane onto NE 140th Ct; stopped south of retail business), p.1-2 (witness could not tell if stopped or moving very slowly)", true).node;
+  const TR = add('veh_T_trailer', assets.vehicle('semitrailer', { id: 'veh_T_trailer', color: '#f2f2ee' }), 'vehicle', "Refrigerated van semitrailer (Vehicle T)", "NTSB/HAR-17/02 p.6 (71 ft 7 in overall; impact 45 ft 5 in behind tractor front)", true).node;
+
+  // ---------- motion: linear interpolation of case.json keyframes [t, x, z, heading_deg] ----------
+  const KT = [[0,14.79,-27.42,-90.1],[0.25,14.03,-27.4,-90.6],[0.5,13.26,-27.34,-91.5],[0.75,12.47,-27.26,-92.9],[1,11.67,-27.15,-94.8],[1.25,10.86,-27.01,-97.3],[1.5,10.04,-26.84,-100.3],[1.75,9.22,-26.64,-104],[2,8.39,-26.4,-108.2],[2.25,7.57,-26.1,-112.5],[2.5,6.76,-25.72,-117],[2.75,5.97,-25.28,-121.5],[3,5.19,-24.76,-126.1],[3.25,4.45,-24.17,-130.8],[3.5,3.75,-23.51,-135.6],[3.75,3.09,-22.78,-140.5],[4,2.49,-21.98,-145.4],[4.25,1.95,-21.12,-150.5],[4.5,1.48,-20.19,-155.6],[4.75,1.09,-19.21,-160.9],[5,0.78,-18.18,-166.2],[5.25,0.52,-17.11,-170.8],[5.5,0.31,-16,-174.5],[5.75,0.15,-14.85,-177.3],[6,0.05,-13.67,-179.1],[6.25,0,-12.46,-180],[6.5,0,-11.23,180],[6.75,0,-9.98,180],[7,0,-8.72,180],[7.25,0,-7.43,180],[7.5,0,-6.13,180],[7.75,0,-4.81,180],[8,0,-3.47,180],[8.25,0,-2.11,180],[8.5,0,-0.73,180],[8.75,0,0.67,180],[9,0,2.08,180],[9.25,0,3.52,180],[9.5,0,4.97,180],[9.75,0,6.44,180],[10,0,7.93,180],[10.25,0,9.44,180],[10.5,0,10.97,180],[10.75,0,12.47,180],[11,0,13.94,180],[11.25,0,15.38,180],[11.5,0,16.78,180],[11.75,0,18.15,180],[12,0,19.48,180],[12.25,0,20.78,180],[12.5,0,22.05,180],[12.75,0,23.28,180],[13,0,24.48,180],[13.25,0,25.64,180],[13.5,0,26.76,180],[13.75,0,27.86,180],[14,0,28.92,180],[14.25,0,29.94,180],[14.5,0,30.93,180],[14.75,0,31.89,180],[15,0,32.81,180],[15.25,0,33.69,180],[15.5,0,34.55,180],[15.75,0,35.36,180],[16,0,36.15,180],[16.25,0,36.9,180],[16.5,0,37.61,180],[16.75,0,38.29,180],[17,0,38.94,180],[17.25,0,39.55,180],[17.5,0,40.13,180],[17.75,0,40.67,180],[18,0,41.18,180],[18.25,0,41.65,180],[18.5,0,42.09,180],[18.75,0,42.5,180],[19,0,42.87,180],[19.25,0,43.2,180],[19.5,0,43.51,180],[19.75,0,43.78,180],[20,0,44.01,180],[20.25,0,44.21,180],[20.5,0,44.37,180],[20.75,0,44.5,180],[21,0,44.6,180],[21.25,0,44.66,180],[21.5,0,44.69,180],[21.75,0,44.69,180],[22,0,44.69,180],[22.25,0,44.69,180]];
+  const KR = [[0,25.23,-27.43,-90],[0.25,24.47,-27.43,-90],[0.5,23.7,-27.43,-90],[0.75,22.9,-27.43,-90],[1,22.08,-27.43,-90],[1.25,21.25,-27.43,-90],[1.5,20.4,-27.43,-90],[1.75,19.52,-27.42,-90],[2,18.63,-27.39,-90.3],[2.25,17.73,-27.32,-90.8],[2.5,16.82,-27.21,-91.6],[2.75,15.89,-27.06,-92.6],[3,14.96,-26.88,-94],[3.25,14.03,-26.65,-95.6],[3.5,13.11,-26.39,-97.5],[3.75,12.19,-26.08,-99.8],[4,11.28,-25.74,-102.5],[4.25,10.38,-25.35,-105.6],[4.5,9.51,-24.93,-109],[4.75,8.66,-24.47,-112.9],[5,7.85,-23.98,-117.2],[5.25,7.06,-23.45,-122],[5.5,6.32,-22.9,-127.3],[5.75,5.62,-22.31,-132.9],[6,4.97,-21.64,-138.5],[6.25,4.37,-20.9,-144.3],[6.5,3.79,-20.09,-149.7],[6.75,3.22,-19.21,-154.8],[7,2.68,-18.26,-159.5],[7.25,2.16,-17.23,-163.8],[7.5,1.69,-16.13,-167.5],[7.75,1.25,-14.97,-170.9],[8,0.87,-13.75,-173.7],[8.25,0.55,-12.47,-176],[8.5,0.3,-11.14,-177.9],[8.75,0.12,-9.77,-179.1],[9,0.02,-8.36,-179.8],[9.25,0,-6.93,180],[9.5,0,-5.48,180],[9.75,0,-4,180],[10,0,-2.51,180],[10.25,0,-1,180],[10.5,0,0.52,180],[10.75,0,2.03,180],[11,0,3.5,180],[11.25,0,4.94,180],[11.5,0,6.34,180],[11.75,0,7.71,180],[12,0,9.04,180],[12.25,0,10.34,180],[12.5,0,11.6,180],[12.75,0,12.83,180],[13,0,14.03,180],[13.25,0,15.19,180],[13.5,0,16.32,180],[13.75,0,17.41,180],[14,0,18.47,180],[14.25,0,19.49,180],[14.5,0,20.48,180],[14.75,0,21.44,180],[15,0,22.36,180],[15.25,0,23.25,180],[15.5,0,24.1,180],[15.75,0,24.92,180],[16,0,25.7,180],[16.25,0,26.45,180],[16.5,0,27.17,180],[16.75,0,27.85,180],[17,0,28.49,180],[17.25,0,29.1,180],[17.5,0,29.68,180],[17.75,0,30.22,180],[18,0,30.73,180],[18.25,0,31.21,180],[18.5,0,31.65,180],[18.75,0,32.05,180],[19,0,32.42,180],[19.25,0,32.76,180],[19.5,0,33.06,180],[19.75,0,33.33,180],[20,0,33.56,180],[20.25,0,33.76,180],[20.5,0,33.93,180],[20.75,0,34.06,180],[21,0,34.15,180],[21.25,0,34.22,180],[21.5,0,34.24,180],[21.75,0,34.24,180],[22,0,34.24,180],[22.25,0,34.24,180]];
+  function sample(K, t) {
+    if (t <= K[0][0]) return K[0];
+    const last = K[K.length - 1];
+    if (t >= last[0]) return last;
+    let i = 0;
+    while (K[i + 1][0] < t) i++;
+    const a = K[i], b = K[i + 1], u = (t - a[0]) / (b[0] - a[0]);
+    let dh = b[3] - a[3];
+    if (dh > 180) dh -= 360;
+    if (dh < -180) dh += 360;
+    return [t, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u, a[3] + dh * u];
+  }
+  function place(node, K, t) {
+    const s = sample(K, t);
+    const h = s[3] * D2R, fx = Math.sin(h), fz = -Math.cos(h);           // compass heading -> forward (x east, -z north)
+    const y = T.roadHeight(s[1], s[2]);
+    const pitch = Math.atan((T.roadHeight(s[1] + fx * 2, s[2] + fz * 2) - T.roadHeight(s[1] - fx * 2, s[2] - fz * 2)) / 4);
+    node.position.set(s[1], y, s[2]);
+    node.rotation.set(pitch, -h, 0, 'YXZ');
+  }
+
+  const T_IMPACT = 10.43;
+  const duration = 22.4;
+  function setTime(t) {
+    t = Math.min(Math.max(t, 0), duration);
+    place(A, KA, t);
+    place(TT, KT, t);
+    place(TR, KR, t);
+    root.updateMatrixWorld(true);
+  }
+
+  // ---------- witnesses (FICTIONAL) ----------
+  const witnesses = [
+    {
+      "id": "wit_A",
+      "name": "Witness A (fictional)",
+      "position": [
+        357.2,
+        0,
+        -34.75
+      ],
+      "eyeHeight": 1.5,
+      "lookAt": "veh_A",
+      "observationTime": 2,
+      "claim": "Saw the car come over the hill and approach before the truck began its turn; once the truck pulled across, the trailer blocked my view of the car.",
+      "citation": "Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account"
+    },
+    {
+      "id": "wit_B",
+      "name": "Witness B (fictional)",
+      "position": [
+        7.5,
+        0,
+        6.5
+      ],
+      "eyeHeight": 1.6,
+      "lookAt": "veh_A",
+      "observationTime": 9.9,
+      "claim": "I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.",
+      "citation": "Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter'"
+    },
+    {
+      "id": "wit_C",
+      "name": "Witness C (fictional)",
+      "position": [
+        -18,
+        0,
+        -40.5
+      ],
+      "eyeHeight": 1.6,
+      "lookAt": "veh_T_tractor",
+      "observationTime": 5,
+      "claim": "The truck was barely creeping when it started across; I never heard brakes before the bang.",
+      "citation": "Witness C statement (fictional); consistent with NTSB/HAR-17/02 p.1-2 and p.5"
+    }
+  ];
+
+  const facts = [
+    {
+      "id": "f_impact_t",
+      "text": "Impact at t=10.43 s on the event clock (car crests the hill at t=0)",
+      "value": 10.43,
+      "unit": "s",
+      "citation": "inferred: NTSB/HAR-17/02 p.22, p.29 (derived from 74 mph over 345 m)",
+      "kind": "time"
+    },
+    {
+      "id": "f_speed",
+      "text": "Car speed just before impact 74 mph (cruise set 4:34:21)",
+      "value": 74,
+      "unit": "mph",
+      "citation": "NTSB/HAR-17/02 p.2, p.15",
+      "kind": "speed"
+    },
+    {
+      "id": "f_limit",
+      "text": "Posted limit 65 mph",
+      "value": 65,
+      "unit": "mph",
+      "citation": "NTSB/HAR-17/02 p.23",
+      "kind": "speed"
+    },
+    {
+      "id": "f_crest",
+      "text": "Vertical crest 1,132 ft (345 m) west of intersection",
+      "value": 345,
+      "unit": "m",
+      "citation": "NTSB/HAR-17/02 p.22",
+      "kind": "distance"
+    },
+    {
+      "id": "f_sight",
+      "text": "Up to 10.4 s mutual sight time at 74 mph",
+      "value": 10.4,
+      "unit": "s",
+      "citation": "NTSB/HAR-17/02 p.29",
+      "kind": "time"
+    },
+    {
+      "id": "f_nomarks",
+      "text": "No pre-collision tire marks from either vehicle; no braking",
+      "value": 0,
+      "unit": "m",
+      "citation": "NTSB/HAR-17/02 p.5, p.15",
+      "kind": "skid"
+    },
+    {
+      "id": "f_post",
+      "text": "Car traveled ~910 ft after striking the trailer",
+      "value": 277.4,
+      "unit": "m",
+      "citation": "NTSB/HAR-17/02 p.1",
+      "kind": "distance"
+    },
+    {
+      "id": "f_imp_off",
+      "text": "Impact centered 45 ft 5 in behind tractor front",
+      "value": 13.84,
+      "unit": "m",
+      "citation": "NTSB/HAR-17/02 p.6 fn.6",
+      "kind": "position"
+    },
+    {
+      "id": "f_time",
+      "text": "Impact at 4:36:12.7 p.m. EDT, daylight, clear, dry",
+      "value": 16.6,
+      "unit": "h",
+      "citation": "NTSB/HAR-17/02 p.1, p.5, p.15",
+      "kind": "time"
+    }
+  ];
+  const skids = []; // NTSB found NO pre-collision roadway marks from either vehicle (p.5). A speed check should use the recorded 74 mph (p.2, p.15), not skids.
+
+  const world = {
+    meta: { caseId: "HWY16FH018", title: "Car into turning tractor-semitrailer at an uncontrolled median crossover, US-27A near Williston, Florida (2016)", timeOfDay: "16:36", lighting: "day", impactT: T_IMPACT,
+      date: "2016-05-07", dateTime: "2016-05-07T16:36:12-04:00", weather: 'clear', timeZone: "America/New_York", utcOffset: "-04:00", lat: 29.4106, lon: -82.5393,
+      source: 'NTSB/HAR-17/02 (HWY16FH018) physical facts + fictional witnesses', contract: 'v2' },
+    root, duration, setTime, objects, witnesses, facts, skids,
+  };
+  setTime(0);
+  return world;
+}
+
+
+==================================================================
+5. VISUAL STANDARD (review of forensic-studio reference animations vs our previous renders — close these gaps)
+==================================================================
+Here is a detailed breakdown of the forensic visual standards in your reference videos, followed by a direct, prioritized critique of your current Three.js implementation and actionable steps to bridge the gap.
+
+---
+
+### 1. Visual Standard Analysis of Reference Videos
+
+#### **Video 1: Traditional Forensic Studio (ESI) — Night-Time Semi Collision**
+This video represents the classic, admissibility-focused forensic standard (likely 3ds Max/V-Ray or similar). It prioritizes geometric clarity, lighting accuracy (especially for night visibility claims), and zero visual distraction.
+
+*   **Vehicle Model Fidelity:**
+    *   **Poly Detail:** Medium-high CAD/turbosquid-level meshes. The Volvo semi (`00:25–00:33`) has distinct grille slats, hood mirrors, windshield wipers, cab steps, fuel tanks, and 5th-wheel assembly. The trailer (`01:36`) has rear barn doors, vertical locking bars, mudflaps, and DOT reflective conspicuity tape (red/white alternating strips along the bottom rail and rear bumper). The Honda Civic (`01:27`) has recognizable trim, side mirrors, license plate recess, and distinct taillight housings.
+    *   **Materials & Glass:** Clean, slightly glossy automotive paint (non-PBR legacy shaders, low environment reflection so it doesn't distract). Glass (`00:26`) is dark-tinted and mostly opaque to hide the lack of a detailed driver model, with a subtle specular highlight.
+    *   **Wheels:** 3D rims with distinct lug nuts and recessed hubcaps (`00:26`), dark matte rubber tires.
+    *   **Lights:** Crucial for the night sequence (`01:09–01:19`). Emissive point/spot lights with star/glare post-processing filters on traffic signals, streetlamps, and taillights. The trailer has amber/red side marker lights (`01:18`).
+*   **Road & Scene:**
+    *   **Ground/Markings:** Flat, matte grey asphalt with crisp, high-contrast vector-like painted lane markings, directional arrows, and crosswalks (`00:07–00:24`). Raised concrete medians with yellow painted noses and metal W-beam guardrails/impact attenuators (`00:25`).
+    *   **Buildings & Props:** Low-poly commercial buildings mapped with real-world photographic facade textures ("Joyce Leslie", "KFC", "Kohl's" at `00:10`, `01:10`, `01:35`). Signal mast arms (`00:25`, `01:45`) are fully modeled with yellow signal heads, backplates, and street name signs ("Tices Ln").
+*   **Lighting:**
+    *   **Daylight (`00:07–01:02`, `01:27–02:12`):** Diffuse, overcast/ambient lighting. Soft contact shadows directly underneath vehicles (`00:27`), no harsh directional sun shadows that could confuse lane positions.
+    *   **Night (`01:09–01:19`):** Pitch-black sky and unlit ground. The *only* illumination comes from streetlamp pools, commercial signage (KFC sign glowing at `01:10`), traffic signals, and the sedan's volumetric headlight cones casting light onto the asphalt (`01:14`).
+*   **Camera Work:**
+    *   **Satellite Match (`00:00–00:07`):** Starts with a real Google Earth aerial photo, zooms in, and cross-dissolves (`00:05–00:07`) into a perfectly registered 3D orthographic/high-angle perspective view.
+    *   **360° Scene Orbit (`00:08–00:26`):** Smooth, constant-speed orbit around the intersection, then pushes in to frame the semi at the stop bar.
+    *   **Top-Down Tracking (`00:35–01:02`):** High-altitude bird's-eye view showing the entire approach of both vehicles simultaneously.
+    *   **Driver/Chase Cam (`01:09–01:19`, `01:27–01:37`):** Locked behind the sedan, following it into the underride impact, freezing right at contact (`01:19`, `01:37`).
+    *   **Witness View (`01:45–02:12`):** Stationary eye-level camera from a corner island, panning smoothly to track the collision through to post-impact rest.
+*   **Overlays & Timing:**
+    *   Full-screen black title cards (`01:04` "Night Time View", `01:21` "Rear View", `01:40` "Witness View") with simple white sans-serif text. Subtle watermark in bottom-right (`ESI`).
+    *   Pacing is deliberate: 3-second static holds before and after motion; real-time playback during the crash sequence.
+*   **Why a Jury Trusts It:** The `00:05` aerial photo dissolve proves the road geometry isn't made up. The photographic store facades ground it in a real place. The side-by-side comparison of Night vs. Day rear views (`01:09` vs `01:27`) directly answers the legal question of conspicuity without looking "gamey."
+
+---
+
+#### **Video 2: Modern Real-Time Standard (Ziva / Unreal Engine)**
+This video represents the modern, data-driven litigation standard. It uses physically-based rendering (PBR) and real-time game engine tech, paired with analytical HUD overlays.
+
+*   **Vehicle Model Fidelity:**
+    *   **Poly Detail:** High-poly, modern asset-store quality. The box truck (`00:29–00:33`) has a detailed Isuzu-style cab, mirrors,amber turn signals, corrugated roll-up rear door, chassis frame rails, and leaf springs. The vehicles have realistic proportions and panel gaps.
+    *   **Materials & Glass:** Full PBR materials. Clear coat car paint with realistic Fresnel reflections of the sky and surroundings (`00:30`). Physically accurate transparent windshield glass with interior dashboard, steering wheel, A-pillars, side mirrors (with working reflection at `00:24`), and rearview mirror (`00:24–00:29`).
+*   **Road & Scene:**
+    *   **Asphalt & Markings:** High-resolution PBR asphalt with subtle aggregate normal mapping, dark oil/tire wear strips in the wheel paths (`00:18–00:22`), concrete curbs, and ligeramente worn crosswalk/stop bar paint.
+    *   **Environment:** 3D procedural trees with alpha-card foliage that casts complex leaf shadows (`00:20`, `00:30`). Detailed traffic signal poles, pedestrian crossing lights, and utility poles.
+*   **Lighting:**
+    *   **Daylight:** Physically based sky/atmosphere with a bright directional sun casting crisp, dark, angled shadows (`00:18–00:33`) and ambient occlusion (AO) grounding every tire and building corner.
+*   **Camera Work:**
+    *   **Plan-View Diagram Match (`00:00–00:02`):** Split-screen comparing the 2D black-and-white police report diagram directly to the top-down 3D render.
+    *   **Top-Down Sightline View (`00:18–00:23`):** Locked orthographic/telephoto overhead camera.
+    *   **First-Person Driver's Seat (`00:24–00:29`):** Positioned inside the cab at exact driver eye-point, looking past the steering wheel and A-pillar.
+    *   **Witness Corner (`00:30–00:33`):** Eye-height static camera on the sidewalk.
+    *   **Split-Screen Counterfactual (`00:38–00:45`):** Synchronized side-by-side comparison ("52 mph EDR Download" vs. "38 mph Their Driver").
+*   **Overlays & Callouts (Crucial Differentiator):**
+    *   **Dynamic Sightline Ray (`00:18–00:23`, `00:38–00:45`):** A 3D line drawn between Unit 1's driver eye and Unit 2. It colors **red** when occluded by the box truck and snaps to **green** the exact millisecond Line-of-Sight (LOS) clears (`00:20`, `1.07s` before impact).
+    *   **Telemetry HUD (Top-Left):** Clean dark semi-transparent boxes with monospace/sans-serif typography showing live countdown (`IMPACT IN 4.07 s`), live speed (`UNIT 2 52 mph`), and state triggers (`UNIT 2 NOW VISIBLE` at `00:27`; `NO CONTACT: UNIT 2 STOPS 24.5 FT SHORT` at `00:45`).
+    *   **Lower-Third Narrative Cards:** (`00:24` "FROM THE DRIVER'S SEAT / Could they have seen it? / Visible 1.2s before impact. A normal reaction takes 1.5s.")
+*   **Why a Jury Trusts It:** It links every frame to hard evidence (Police Diagram at `00:01`, EDR data at `00:38`). The red/green sightline ray turns a subjective argument ("I couldn't see him") into an objective geometric proof.
+
+---
+
+### 2. Ranked Gap List: Your Three.js Renders vs. The Standard
+
+To be blunt: **Image 1** (truck lineup) and **Image 3** (rural road) look like promising technical prototypes, **Image 2** (sedan) looks like a melted clay toy, and **Image 4** (demo world) looks like a 1995 flight simulator debug view. Putting Image 2 or Image 4 in front of a jury will hurt credibility because opposing counsel will argue the simulation is crude and cartoon-like.
+
+Here are your biggest visual gaps, ranked by impact on credibility, with exact Three.js fixes:
+
+#### **Gap #1: The Demo World Environment & Lighting (Image 4)**
+*   **The Problem:** Unlit/flat-shaded brown boxes for buildings, neon green/brown flat planes for grass, zero ambient occlusion, pitch-black unlit shadow sides (`Witness B eye 06:45` and `12:00`), and blocky untextured intersections.
+*   **The Three.js Fix:**
+    1.  **Kill flat Lambert/Basic materials:** Use `THREE.MeshStandardMaterial` across the entire scene.
+    2.  **Add an Environment Map (IBL):** A scene without `scene.environment` has pitch-black shadows on metallic/glossy surfaces and dead ambient light. Use `THREE.PMREMGenerator` with a neutral daylight HDRI (or `RoomEnvironment` / procedural sky texture) and set `scene.environment = envMap` with `envMapIntensity = 0.5–0.8`.
+    3.  **Fix Shadow Darkness:** Combine your `DirectionalLight` (sun) with a `THREE.HemisphereLight(0xddeeff, 0x333322, 0.6)` so shadowed building faces aren't pure black voids.
+    4.  **Post-Processing Ambient Occlusion:** Add `N8AOPass` (from `n8ao`, very fast in Three.js) or `SAOPass`/`SSAOPass`. Contact shadows where wheels meet asphalt and buildings meet ground instantly remove the "floating object" look.
+
+#### **Gap #2: Procedural Passenger Vehicle Geometry (Image 2 - Sedan)**
+*   **The Problem:** Extruded/lathed procedural geometry works for boxy trailers (Image 1), but it **fails completely** for modern curved passenger cars. The sedan in Image 2 has pinched, blobby hood creases, weird pill-shaped headlights, floating lollipop side mirrors, and flat gray plastic shading. It looks uncanny.
+*   **The Three.js Fix:**
+    1.  **Stop procedurally generating passenger car bodies:** Buy or download 5–8 clean, mid-poly (15k–30k triangles) `.glb` vehicle archetypes (sedan, compact SUV, full-size pickup, minivan, crossover, coupe). Scale their bounding boxes `(L × W × H)` and wheelbases dynamically in code to match catalog specs if needed, or scale the mesh nodes (`chassis`, `wheel_FL`, etc.).
+    2.  **Use `THREE.MeshPhysicalMaterial` for Car Paint:**
+        ```js
+        const carPaint = new THREE.MeshPhysicalMaterial({
+          color: 0xc0c4c8,
+          metalness: 0.4,
+          roughness: 0.25,
+          clearcoat: 1.0,
+          clearcoatRoughness: 0.05
+        });
+        ```
+    3.  **Glass Material:** Use `MeshPhysicalMaterial` with `transmission: 0.7, opacity: 1, transparent: true, roughness: 0.05, ior: 1.5, color: 0x111820` and put a simple dark low-poly interior tub (seats + steering wheel + A-pillars) inside so you can do driver-seat views like Video 2 (`00:24`).
+
+#### **Gap #3: Intersection & Road Surface Markings (Image 4 vs. Video 1 & 2)**
+*   **The Problem:** While Image 3 has a decent rural road texture, the intersection in Image 4 is just dark gray overlapping rectangles with basic dashed lines. There are no stop bars, crosswalks, turn arrows, curb radii, or traffic signal mast arms.
+*   **The Three.js Fix:**
+    1.  **Procedural Canvas/SVG Road Decals:** Generate high-res (2048×2048 or 4096×4096) `HTMLCanvasElement` textures for intersection markings (stop bars, continental crosswalks, double-yellow centerlines, turn arrows) and apply them via `THREE.CanvasTexture` with `anisotropy = renderer.capabilities.getMaxAnisotropy()`.
+    2.  **Add Wear/Detail Map:** Overlay a tileable asphalt normal map + roughness map so the sun catches the road surface grain (like Image 3, brought into the intersection).
+    3.  **3D Street Furniture Library:** Build or import modular `.glb` assets for standard MUTCD traffic signal mast arms, street signs, concrete curbs, and guardrails (like Video 1 `00:25` and Video 2 `00:22`).
+
+#### **Gap #4: Missing Forensic HUD, Sightlines, and Telemetry Overlays**
+*   **The Problem:** Your debug labels in Image 1 (`semitrailer · box van 16.2 x 2.6 x 4.1`) and Image 4 (`Witness B eye 12:00 EDT`) look like developer diagnostics, not courtroom demonstratives.
+*   **The Three.js Fix:**
+    1.  **Line-of-Sight (LOS) Raycaster:** Implement a live `THREE.Raycaster` from Driver 1's eye position to Driver 2's vehicle centroid/front corner. Render it in 3D using `Line2` (`three/examples/jsm/lines/Line2.js`) for thick, anti-aliased lines (3–4px wide) that turn `#ff3b30` (red) when blocked by an occluder mesh and `#30d158` (green) when clear (Video 2 `00:20`).
+    2.  **Courtroom HUD Layer:** Build a clean HTML/CSS overlay pinned to the top-left (like Video 2) showing `TIME TO IMPACT: -X.XX s`, vehicle speeds, and visibility state triggers. Use `tabular-nums` (`font-variant-numeric: tabular-nums`) so numbers don't jitter during countdowns.
+
+#### **Gap #5: Vegetation & Buildings (Image 3 & Image 4)**
+*   **The Problem:** The trees in Image 3 are low-poly green icospheres/blobs on brown cylinders ("broccoli trees"). The buildings in Image 4 are untextured brown monopoly houses.
+*   **The Three.js Fix:**
+    1.  **Trees:** Replace geometric sphere trees with 2–3 variations of alpha-clipped leaf-card tree meshes (`alphaTest: 0.5`, `castShadow: true`) instantiated via `THREE.InstancedMesh`.
+    2.  **Buildings & Ground Context:** Fetch satellite imagery (Mapbox / Google Tiles / USGS orthoimagery) and drape it onto the ground plane around the procedurally generated road (like Video 1 `00:36`). For buildings, use simple clean architectural massing (white/grey stucco or brick textures with subtle window grid normal/roughness maps, like Video 2 `00:18`).
+
+---
+
+### 3. What You Have That Is Already At or Near the Standard
+
+You actually have several strong foundational pieces that you should **keep and build upon**:
+
+1.  **The Semi-Tractor & Trailer Lineup (Image 1):**
+    *   **Why it works:** This is by far your strongest asset. The dimensional accuracy, corrugated vertical trailer ribs, DOT red/white conspicuity tape along the lower rail, dual tandem axles with detailed rims/hubs, landing gear, and red tractor cab with chrome exhaust stacks/fuel tanks are **very close to Video 1's standard** (`00:26`).
+    *   **Minor tweak to finish it:** Add a subtle environment map reflection to the red cab paint and chrome stacks, and add a soft shadow plane (`ShadowMaterial` or AO) on the ground grid beneath the tires.
+2.  **The Rural Road Surface & Shoulder Transition (Image 3):**
+    *   **Why it works:** The asphalt aggregate texture, longitudinal tar/crack streaks, tire wear paths, crisp white fog line, yellow centerline, and soft gravel-to-grass shoulder blend look convincing at eye level. If you pair that exact road shader with better trees and vehicles, it will hold up well.
+3.  **The Ephemeris / Sky & Sun Angle System (Image 4, bottom row):**
+    *   **Why it works:** Having accurate solar azimuth/elevation (`sun az 70.2 el 0.1`, `113000 lx`) with a physically based atmospheric sky gradient (`Preetham` or `Hosek-Wilkie` sky shader) is a massive forensic selling point for sun-glare and twilight visibility cases. The sky dome itself in the bottom row of Image 4 looks good—you just need the world geometry beneath it to match that quality via PBR materials and IBL.
+4.  **Dimensional Bounding Envelopes (Image 1, blue `sedan envelope` box):**
+    *   **Why it works:** Showing a wireframe/translucent dimensional envelope under the trailer in an underride analysis (like Video 1) is great for engineering clarity—just use it *alongside* a high-quality vehicle mesh (or faded over it), rather than using the melted clay sedan from Image 2.
+
+==================================================================
+6. WHAT TO BUILD — at studio fidelity, all procedural, all in this one module
+==================================================================
+Organize the module as many well-named helper functions inside createWorld (or at module top level above it — no imports), e.g. materials library, canvas texture painters, geometry helpers (extruded profiles, lathe, tubes), then builders, then placement, then kinematics, witnesses, facts, return.
+
+A. Vehicles (each a THREE.Group, origin footprint center, front = local -Z):
+   - veh_A passenger sedan, dark blue metallic (#1d2c44) clearcoat paint: shaped body from extruded/lofted side profile (hood, A/B/C pillars, roof, trunk deck), wheel arches cut or flared, panel lines (thin dark inset strips on doors, hood, trunk), door handles, side mirrors, glass greenhouse (tinted, slightly transmissive), windshield wipers, visible interior (seats, dashboard, steering wheel, headrests), front fascia with grille, LED headlamp clusters (meshes named headlight_L/headlight_R, emissive off: headlights were off), taillamps (taillight_L/R), license plates, five-spoke alloy rims with 5 lug nuts each, tires with sidewall, brake discs/calipers visible behind spokes. userData.dims, userData.driverEye.
+   - veh_T_tractor conventional-hood truck-tractor, white: long hood with grille and chrome bumper, fenders, sleeper-less day cab with windshield, side windows, mirrors on arms, exhaust stacks, air intakes, fuel tanks (cylindrical, polished), steps, fifth-wheel plate, 3 axles (steer + tandem drive) with dual rear wheels, mud flaps, marker lights, headlights_L/R.
+   - veh_T_trailer refrigerated van semitrailer, white: box with corrugated/riveted side panel texture (canvas), front reefer unit, rear swing doors with hinges and lock rods, side skirts, landing gear, tandem axle (dual wheels) slid rearward, DOT conspicuity tape (red/white alternating on lower sides and rear), rear impact guard, marker lights, kingpin.
+B. Roadway (exact geometry from scene spec): US-27A four-lane divided, 2 x 3.66 m lanes each direction, eastbound lanes centered as in v2 (EB lane centerlines at z = 0 and z = -3.66), westbound at z = -31.09 and z = -34.75 (match v2), 18.29 m grass median, paved shoulders, westbound left-turn lane, the 39.6 m uncontrolled median crossover, NE 140th Court running south from the EB edge. Asphalt with canvas-painted texture (aggregate noise, tire-track darkening, subtle patching/cracks), slight crown. MUTCD markings as crisp geometry or texture: 6-in solid white edge lines (right), solid yellow edge lines (left, median side), 10-ft white skip lines with 30-ft gaps between same-direction lanes, turn-lane white solid line + left-turn arrows, crossover edges, stop bar on NE 140th Ct, raised pavement markers (amber/white). Concrete curb and gutter where the spec says, grass shoulders elsewhere, gravel/sod edge transitions.
+C. Roadside: utility poles with crossarms, insulators and sagging wires (catenary tubes) along the south side; occ_pole (the pole Vehicle A broke) at its v2 position; speed limit 65 sign (MUTCD R2-1, canvas painted) and any signs in the spec; reflective delineator posts; mailbox/fence lines (wood post + wire or board fence) along properties; guardrail only where the spec places it.
+D. Feed store / retail business (bld_store) on the SE corner per spec: block/metal building with storefront glass, awning, signage (fictionalized, no real brand), gravel/asphalt lot, wheel stops, a few parked props if the spec has them; the open-sided bench shelter (occ_shelter) in front with posts, roof, bench — keep it open (occludes as in v2/spec).
+E. Vegetation: live oaks / pines as trunk + branch tubes + leaf-card clusters via InstancedMesh with canvas-painted alpha leaf textures (alphaTest), tree lines in the distance on both sides, shrubs, grass with color variation (canvas noise texture on ground, plus instanced grass tuft cards near the road). Tree occluder entries for any tree the spec lists.
+F. Terrain: large ground (~1600 m) with gentle undulation away from the road (keep y = 0 under all roads, witness positions and the vehicle paths), and the vertical crest of US-27A ~345 m west of the impact (occ_crest): model the road profile rising to the west (2.15% grade) as a terrain/road hump whose crest at x ≈ -345 hides the road beyond — the road surface west of x ≈ -200 may rise smoothly; ensure the car keyframes (y = 0) are not buried (the car is placed at y = 0 by setTime; keep the road surface at or below y = 0.02 wherever the car is during 0..duration — i.e. let the crest mass sit off the paved centerline or just beyond the car's start point x = -347.5, so sightlines from Witness A over that distance still behave as in v2). occ_crest occludes:true.
+G. Sky, sun, atmosphere: as in section 1; distance haze.
+H. Marks: mark_impact (small subtle ground decal + thin vertical marker), mark_rest_A, mark_path_A (post-impact path from the KA points after T_IMPACT, thin dark scuff ribbon), all occludes:false.
+
+Every element: cite the scene-spec citation strings (or v2 citation strings) in its objects entry. Fictional dressing must say "fictional" or "assumed" in its citation.
+
+
+==================================================================
+7. HARD RULES AND LENGTH BUDGET
+==================================================================
+- EVERY key of `objects` MUST start with one of: veh_ occ_ sig_ road_ mark_ bld_ (no other prefixes: shoulders are road_, the ground is road_ground or occ_terrain, signs are sig_). Objects with kind 'signal' MUST have state(t) returning 'red'|'yellow'|'green'|'off' (a stop or speed sign uses kind 'sign', not 'signal', and needs no state). Minor dressing (individual trees, fence panels, wires, grass) does NOT need an objects entry — put it under root in named groups.
+- This is a long-form generation. A previous attempt stopped at ~45,000 tokens: that is far too short and too coarse. Spend the budget on fidelity, approximately:
+  sedan ~16k tokens (lofted body cross-sections along the length, separate door/hood/trunk panels with gaps, greenhouse, full interior, lamps with reflector+lens, rims, tires, brakes, underbody); truck-tractor ~16k; semitrailer ~12k; road surfaces, shoulders, crossover, turn lane, NE 140th Ct with canvas asphalt texture painter and all MUTCD markings ~14k; curbs, delineators, RPMs, signs (canvas-painted faces), poles, crossarms, insulators, catenary wires ~10k; feed store + lot + shelter + props ~12k; vegetation system (bark/leaf texture painters, branching trees, instanced leaf cards, shrubs, grass tufts, distant tree lines) ~14k; terrain + crest + fences ~8k; sky dome shader, sun, lights, haze ~5k; kinematics, witnesses, facts, objects registry ~10k.
+  Total ~120k tokens. Keep writing detailed, non-repetitive code until every section has received its budget. Do not end the module before then.
+- Measured history: attempt 1 ended at 45k tokens (3,460 lines), attempt 2 at 63k tokens (4,265 lines). Both were judged too coarse. This attempt must be at least 9,000 lines of real code. Concretely: one dedicated builder function per scene-spec element (all 42), each with its own geometry and materials; the sedan, tractor and trailer builders at least 900 lines EACH (separate sub-builders for body shell cross-sections, each door, hood, trunk/tailgate, bumpers, grille, each lamp assembly, mirrors, glass, interior seats/dash/steering, wheel+tire+rim+lugs+brake, suspension/axles/underbody, chassis rails, fuel tanks, reefer unit, doors, hinges, skirts, landing gear, conspicuity tape); every canvas texture painter (asphalt, concrete, grass, bark, leaves, sign faces, storefront, trailer panels, sky) written out in full with multiple passes of procedural noise. Write it all.
+
+Begin the module now. First line: a comment header. Write the whole thing.

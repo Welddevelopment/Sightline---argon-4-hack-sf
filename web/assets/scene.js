@@ -1090,7 +1090,7 @@ export function treeline(opts = {}) {
   // InstancedMesh per species; a dark inner core (shrunk, opaque) stops the sky showing through dense masses.
   const tm = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.7, 1, 1, 6), new THREE.MeshStandardMaterial({ color: 0x4a3f33, roughness: 1 }), trunks.length);
   const o = new THREE.Object3D(), col = new THREE.Color();
-  const SPEC = { oak: { cards: 14, flat: 0.7, size: 0.85 }, pine: { cards: 12, flat: 0.55, size: 0.9 }, shrub: { cards: 10, flat: 0.75, size: 0.8 } };
+  const SPEC = { oak: { cards: 24, flat: 0.7, size: 0.8, hollow: 0.2 }, pine: { cards: 22, flat: 0.6, size: 0.85, hollow: 0.15 }, shrub: { cards: 16, flat: 0.75, size: 0.75, hollow: 0.1 } };
   const coreMat = mat('treeCore', () => new THREE.MeshStandardMaterial({ color: 0x27331c, roughness: 1 }));
   const coreGeo = new THREE.IcosahedronGeometry(0.62, 1);
   for (const kind of Object.keys(SPEC)) {
@@ -1099,7 +1099,7 @@ export function treeline(opts = {}) {
     const core = new THREE.InstancedMesh(coreGeo, coreMat, list.length);
     list.forEach((c, i) => {
       o.position.set(c.x, c.y, c.z); o.scale.set(c.sx, c.sy, c.sz); o.rotation.set(0, i * 2.39, 0); o.updateMatrix(); cmK.setMatrixAt(i, o.matrix);
-      o.scale.multiplyScalar(0.92); o.updateMatrix(); core.setMatrixAt(i, o.matrix);
+      o.scale.multiplyScalar(0.6); o.updateMatrix(); core.setMatrixAt(i, o.matrix);
       cmK.setColorAt(i, col.setRGB(0.86 + (c.c[0] - 0.24) * 3, 0.9 + (c.c[1] - 0.29) * 3, 0.82 + (c.c[2] - 0.16) * 3));
     });
     cmK.castShadow = true; cmK.receiveShadow = true; cmK.name = 'treeline_leaves_' + kind; cmK.computeBoundingSphere();

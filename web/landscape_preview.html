@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Landscape Preview</title>
+<script type="importmap">
+{ "imports": {
+  "three": "/node_modules/three/build/three.module.js",
+  "three/addons/": "/node_modules/three/examples/jsm/"
+} }
+</script>
+<style>
+  html, body { margin: 0; background: #111; color: #ddd; font: 12px/1.3 system-ui, sans-serif; }
+  canvas { display: block; }
+  #lab { position: absolute; left: 8px; top: 8px; padding: 4px 6px; background: rgba(0,0,0,.55); color: #fff; font: 11px/1.35 ui-monospace, monospace; white-space: pre; }
+</style>
+</head>
+<body>
+<div id="lab"></div>
+<script type="module">
+// Landscape preview: demo world (US-27A near Williston FL, 2016-05-07 16:36 EDT) with web/assets/landscape.js swapped in
+// for the ground plane / tree lines, wired the way the assets.js facade should wire it.
+// Query: ?view=eye|eyeW|oblique|chase|over  &w=960&h=540  &t=9.9  &land=0 (baseline: library ground)  &rq=off
+import * as THREE from 'three';
+import { loadAssets } from '/web/assets.js';
+import { applyRenderQuality } from '/web/render_quality.js';
+import * as L from '/web/assets/landscape.js';
+
+const q = new URLSearchParams(location.search);
+const W = +(q.get('w') || 960), H = +(q.get('h') || 540), view = q.get('view') || 'eye', tEvent = +(q.get('t') || 9.9);
+const useLand = q.get('land') !== '0';
+const lab = document.getElementById('lab');
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H);
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+
+const assets = await loadAssets(THREE);
+assets.beginWorld?.();
+const T = assets.terrain;
+const caseBase = '/cases/demo/exhibits/aerial/';
+const bounds = await (await fetch(caseBase + 'bounds.json')).json();
+const site = useLand ? L.aerialSite(THREE, { url: caseBase + bounds.image, boundsMeters: bounds.boundsMeters, calibration: bounds.calibration }) : null;
+let ring = null, forestG = null, grass = null;
+if (useLand) {
+  // ---- the wiring the facade should do (see status/landscape.md) ----
+  assets.groundPlane = (o = {}) => L.pastureGround(THREE, { size: o.size ?? 4000, terrainHeight: T.height, roadHeight: T.roadHeight, roads: 'auto', site, id: o.id || 'ground' });
+  assets.treeline = () => new THREE.Group();          // aerial forest + ring replace the procedural belts
+}
+const { default: createWorld } = await import('/cases/demo/worlds/world_v2.js');
+const world = createWorld(THREE, assets);
+scene.add(world.root);
+world.root.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+let envG = null; world.root.traverse((o) => { if (o.userData?.isEnvironment) envG = envG || o; });
+const envApi = envG?.userData?.envApi;
+if (envApi) { scene.fog = envApi.fog; if (!envApi.sky) scene.background = envApi.background; }
+const info = envApi?.info || { sunAzimuth: 265, sunElevation: 45 };
+
+const cams = {
+  eye: { p: [-140, 1.6, 7.2], at: [60, 1.2, -6] },            // standing on the EB shoulder, looking east down US-27A
+  eyeW: { p: [40, 1.6, 7.5], at: [-300, 3.5, -2] },          // looking west up the grade toward the crest
+  oblique: { p: [95, 38, 80], at: [-25, 0, -18] },
+  chase: { p: null },
+  over: { p: [0, 260, 40], at: [0, 0, -15] },
+};
+world.setTime(tEvent);
+const camera = new THREE.PerspectiveCamera(view === 'over' ? 50 : 60, W / H, 0.1, 2000);
+if (view === 'chase') {
+  const n = world.objects.veh_A.node, p = n.position;
+  camera.position.set(p.x - 11, p.y + 3.4, p.z + 0.4); camera.lookAt(p.x + 30, p.y + 1, p.z - 6);
+} else { const c = cams[view] || cams.eye; camera.position.set(...c.p); camera.lookAt(...c.at); }
+
+if (useLand) {
+  forestG = L.forest(THREE, { site, terrainHeight: T.height, roads: 'auto', avoid: 'auto' });
+  ring = L.treeline(THREE, { distance: [260, 1150], center: [0, -17], terrainHeight: T.height, roads: 'auto', exclude: site });
+  const focus = [[camera.position.x, camera.position.z], [world.witnesses[1].position[0], world.witnesses[1].position[2]]];
+  grass = L.grassBlades(THREE, { focus, radius: 42, density: 14, terrainHeight: T.height, roadHeight: T.roadHeight, roads: 'auto' });
+  const clouds = L.skyClouds(THREE, { coverage: +(q.get('cov') || 0.12), sunAzimuth: info.sunAzimuth, sunElevation: info.sunElevation, horizonColor: envApi?.fog?.color });
+  scene.add(forestG, ring, grass, clouds);
+  if (envApi?.fog) L.setLandscapeHaze(THREE, new THREE.Color(0.80, 0.85, 0.90), 6500);
+}
+
+scene.updateMatrixWorld(true);                               // triggers 'auto' road discovery
+await Promise.race([Promise.all([site?.ready, forestG?.userData.ready, ring?.userData.ready].filter(Boolean)), new Promise((r) => setTimeout(r, 30000))]);
+const rq = applyRenderQuality(renderer, scene, { quality: 'interactive', lighting: 'day', world });
+await rq.ready;
+envApi?.update?.(camera);
+const t0 = performance.now();
+(rq.render || ((c) => renderer.render(scene, c)))(camera);
+renderer.getContext().finish();
+lab.textContent = `${view}  t=${tEvent}  sun az ${info.sunAzimuth} el ${info.sunElevation}  land=${useLand ? 'landscape.js' : 'library'}` +
+  (useLand ? `  trees ${forestG.userData.count ?? 0} ring ${ring.userData.count ?? 0} grass ${grass.userData.count ?? 0}${site.error ? ' ERR ' + site.error : ''}` : '') +
+  `  ${(performance.now() - t0).toFixed(0)} ms`;
+window.__ready = true;
+</script>
+</body>
+</html>

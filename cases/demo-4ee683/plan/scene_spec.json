@@ -1,0 +1,1662 @@
+{
+  "frame": {
+    "units": "meters",
+    "upAxis": "+Y",
+    "groundElevationAtOrigin": 0,
+    "eastAxis": "+X",
+    "northAxis": "-Z",
+    "southAxis": "+Z",
+    "originDescription": "Initial point of impact (POI): center of the eastbound outside (right) lane of US-27A on the centerline of NE 140th Court (109-degree skew simplified to 90 degrees per modeling assumptions).",
+    "headingConvention": "Compass degrees: 0 = North (-Z), 90 = East (+X), 180 = South (+Z), 270 = West (-X)",
+    "citation": "facts.txt Modeling assumptions; police_report.txt p.3 Reference point; world_v2.js lines 5-6"
+  },
+  "sources": [
+    {
+      "id": "facts",
+      "file": "text/facts.txt",
+      "what": "Case summary of physical facts extracted from NTSB Highway Accident Report NTSB/HAR-17/02 (HWY16FH018) and explicit modeling assumptions."
+    },
+    {
+      "id": "police_report",
+      "file": "text/police_report.txt",
+      "what": "Reconstructed state long-form crash report summarizing crash narrative, vehicle specs, scene measurements, and witness list."
+    },
+    {
+      "id": "deposition",
+      "file": "text/deposition.txt",
+      "what": "Time-coded SRT transcript of the videotaped deposition of fictional Witness B."
+    },
+    {
+      "id": "deposition_transcript",
+      "file": "text/deposition_transcript.txt",
+      "what": "Text transcript of Witness B deposition with minute:second timestamps."
+    },
+    {
+      "id": "witness_A",
+      "file": "text/witness_A.txt",
+      "what": "Written statement of fictional Witness A (westbound driver ~0.25 mi behind truck, modeled on real eyewitness in NTSB/HAR-17/02)."
+    },
+    {
+      "id": "witness_C",
+      "file": "text/witness_C.txt",
+      "what": "Written statement of fictional Witness C (westbound pickup driver stopped in WB inside lane 18 m west of crossover)."
+    },
+    {
+      "id": "map",
+      "file": "evidence/map.png",
+      "what": "Exhibit 4 schematic top-down diagram of US-27A and NE 140th Court intersection with scale bar."
+    },
+    {
+      "id": "world_v2",
+      "file": "worlds/world_v2.js",
+      "what": "Prior Argon reference world module (Contract v2) containing coordinates, vehicle keyframes, and witness positions."
+    }
+  ],
+  "lighting": {
+    "date": "2016-05-07",
+    "time": "16:36:12.7",
+    "utcOffset": "-04:00",
+    "timeZone": "EDT",
+    "lat": 29.41,
+    "lon": -82.54,
+    "weather": "clear",
+    "roadSurfaceCondition": "dry",
+    "lightingCondition": "day",
+    "sunAzimuthDeg": 265,
+    "sunElevationDeg": 45.1,
+    "skyDescription": "Clear afternoon sky, bright daylight, no precipitation or haze.",
+    "shadowsDescription": "Sharp, distinct solar shadows cast toward azimuth ~85 deg (east-northeast), shadow length ratio ~1.0 (cot(45.1 deg)). Sun is high and nearly directly behind eastbound traffic; no sun glare for eastbound or southbound observers (Witness B under shelter roof).",
+    "citation": "facts.txt F1, F2, F3; police_report.txt p.1; deposition.txt 98-107; COMPUTED LIGHTING block"
+  },
+  "crossSection": [
+    {
+      "from": -38.1,
+      "to": -36.58,
+      "axis": "z",
+      "band": "Westbound outside (north) paved shoulder (5 ft / 1.52 m)",
+      "surface": "Weathered asphalt shoulder",
+      "citation": "facts.txt F6; police_report.txt p.3; world_v2.js line 20"
+    },
+    {
+      "from": -36.58,
+      "to": -32.92,
+      "axis": "z",
+      "band": "Westbound outside (right) travel lane (12 ft / 3.66 m)",
+      "surface": "Dry asphalt travel lane",
+      "citation": "facts.txt F6; world_v2.js line 20"
+    },
+    {
+      "from": -32.92,
+      "to": -29.26,
+      "axis": "z",
+      "band": "Westbound inside (left) travel lane (12 ft / 3.66 m)",
+      "surface": "Dry asphalt travel lane",
+      "citation": "facts.txt F6; world_v2.js line 20"
+    },
+    {
+      "from": -29.26,
+      "to": -25.6,
+      "axis": "z",
+      "band": "Westbound left-turn lane (12 ft / 3.66 m, east of crossover x = -19.8 to +167.6 m) / WB inside shoulder (2 ft / 0.61 m) & northern median strip west of crossover",
+      "surface": "Asphalt in turn lane; paved shoulder / grass west of crossover",
+      "citation": "facts.txt F6, F8; police_report.txt p.3; world_v2.js line 21"
+    },
+    {
+      "from": -25.6,
+      "to": -6.1,
+      "axis": "z",
+      "band": "Divided highway median (~60 ft / 18.29 m grass median plus inside 2 ft / 0.61 m shoulders; total 78 ft / 23.77 m between main roadbeds; paved at crossover x = -19.8 to +19.8 m)",
+      "surface": "Bahia grass and sandy soil (paved asphalt within 39.6 m crossover)",
+      "citation": "facts.txt F6, F7, F8; police_report.txt p.3; world_v2.js lines 22-24"
+    },
+    {
+      "from": -6.1,
+      "to": -5.49,
+      "axis": "z",
+      "band": "Eastbound inside (left) paved shoulder (2 ft / 0.61 m)",
+      "surface": "Weathered asphalt shoulder",
+      "citation": "facts.txt F6; police_report.txt p.3"
+    },
+    {
+      "from": -5.49,
+      "to": -1.83,
+      "axis": "z",
+      "band": "Eastbound inside (left) travel lane (12 ft / 3.66 m; or EB left-turn lane taper west of crossover)",
+      "surface": "Dry asphalt travel lane",
+      "citation": "facts.txt F6, F8; world_v2.js line 19"
+    },
+    {
+      "from": -1.83,
+      "to": 1.83,
+      "axis": "z",
+      "band": "Eastbound outside (right) travel lane (12 ft / 3.66 m; centered at z = 0.0, contains POI)",
+      "surface": "Dry asphalt travel lane",
+      "citation": "facts.txt F6, F21; police_report.txt p.3; world_v2.js line 19"
+    },
+    {
+      "from": 1.83,
+      "to": 3.35,
+      "axis": "z",
+      "band": "Eastbound outside (south) paved shoulder (5 ft / 1.52 m; interrupted by NE 140th Ct apron around x = -3.05 to +3.05 m)",
+      "surface": "Weathered asphalt shoulder",
+      "citation": "facts.txt F6; police_report.txt p.3"
+    },
+    {
+      "from": 3.35,
+      "to": 12,
+      "axis": "z",
+      "band": "South roadside clear zone, grass verge, and shallow drainage swale",
+      "surface": "Unpaved grass / sandy soil",
+      "citation": "facts.txt F24; evidence/map.png; inferred: typical rural Florida highway roadside section"
+    }
+  ],
+  "profile": {
+    "axis": "x",
+    "points": [
+      {
+        "station": -440,
+        "elevation": 5.5,
+        "note": "West approach west of the vertical crest (vehicles here are below line of sight from intersection; modeled in world_v2.js via terrain proxy occ_crest at x = -377 m).",
+        "citation": "inferred: facts.txt F10, F27; deposition.txt 120-122; world_v2.js line 28"
+      },
+      {
+        "station": -345,
+        "elevation": 7.42,
+        "note": "Vertical crest of US-27A (1,132 ft / 345 m west of intersection center). Start of 2.15% eastbound downgrade.",
+        "citation": "facts.txt F10, F27; police_report.txt p.1, p.3"
+      },
+      {
+        "station": 0,
+        "elevation": 0,
+        "note": "Intersection center / Reference Point (POI). Elevation defined as y = 0.0 m; continuous 2.15% downgrade from x = -345 m to x = +99.7 m.",
+        "citation": "facts.txt F10, Modeling assumptions; police_report.txt p.3; world_v2.js lines 5-6"
+      },
+      {
+        "station": 99.7,
+        "elevation": -2.14,
+        "note": "End of 1,459 ft (444.7 m) 2.15% eastbound descent; roadway levels out ~327 ft (99.7 m) east of the intersection.",
+        "citation": "facts.txt F10; police_report.txt p.3"
+      },
+      {
+        "station": 400,
+        "elevation": -2.14,
+        "note": "Level eastbound roadway continuing east past Vehicle A final rest (x = 276.6 m).",
+        "citation": "facts.txt F9, F10"
+      }
+    ]
+  },
+  "elements": [
+    {
+      "id": "ground_base",
+      "category": "ground",
+      "label": "Surrounding rural grass and sandy soil ground plane",
+      "position": [
+        -50,
+        0,
+        0
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 820,
+        "width": 820,
+        "height": 0.01
+      },
+      "material": "Base color #6b7c4e, roughness 0.92, metalness 0.0; rural Florida Bahia grass with patches of sandy soil",
+      "occludes": false,
+      "citation": "world_v2.js lines 15-16; evidence/map.png",
+      "confidence": 1,
+      "note": "Matches world_v2.js groundPlane placement."
+    },
+    {
+      "id": "road_eb",
+      "category": "lane",
+      "label": "US-27A Eastbound travel lanes (two 12-ft / 3.66 m lanes: inside lane z = -5.49 to -1.83 m, outside lane z = -1.83 to +1.83 m)",
+      "position": [
+        -50,
+        0,
+        -1.83
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 7.32,
+        "height": 0.02
+      },
+      "material": "Base color #3a3c3f, roughness 0.82, metalness 0.0; dry weathered hot-mix asphalt with slight aggregate wear in wheel tracks",
+      "occludes": false,
+      "citation": "facts.txt F6, F9; police_report.txt p.1, p.3; world_v2.js line 19",
+      "confidence": 1,
+      "note": "Centered at z = -1.83 m so the outside lane (width 3.66 m) is centered at z = 0.0 m (POI)."
+    },
+    {
+      "id": "shoulder_eb_south",
+      "category": "shoulder",
+      "label": "US-27A Eastbound outside (right/south) paved shoulder (5 ft / 1.52 m wide)",
+      "position": [
+        -50,
+        0,
+        2.59
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 1.52,
+        "height": 0.02
+      },
+      "material": "Base color #434548, roughness 0.86, metalness 0.0; weathered asphalt shoulder with light sand/gravel dusting",
+      "occludes": false,
+      "citation": "facts.txt F6; police_report.txt p.3",
+      "confidence": 0.95,
+      "note": "Interrupted between x = -6 m and x = +6 m by the paved apron of NE 140th Court."
+    },
+    {
+      "id": "shoulder_eb_north",
+      "category": "shoulder",
+      "label": "US-27A Eastbound inside (left/north) paved shoulder (2 ft / 0.61 m wide)",
+      "position": [
+        -50,
+        0,
+        -5.795
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 0.61,
+        "height": 0.02
+      },
+      "material": "Base color #434548, roughness 0.86, metalness 0.0; weathered asphalt shoulder",
+      "occludes": false,
+      "citation": "facts.txt F6; police_report.txt p.3",
+      "confidence": 0.95,
+      "note": "Interrupted at the median crossover (x = -19.8 to +19.8 m)."
+    },
+    {
+      "id": "road_wb",
+      "category": "lane",
+      "label": "US-27A Westbound travel lanes (two 12-ft / 3.66 m lanes: inside lane z = -32.92 to -29.26 m, outside lane z = -36.58 to -32.92 m)",
+      "position": [
+        -50,
+        0,
+        -32.92
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 7.32,
+        "height": 0.02
+      },
+      "material": "Base color #3a3c3f, roughness 0.82, metalness 0.0; dry weathered hot-mix asphalt",
+      "occludes": false,
+      "citation": "facts.txt F6, F9; police_report.txt p.3; world_v2.js line 20",
+      "confidence": 1
+    },
+    {
+      "id": "shoulder_wb_north",
+      "category": "shoulder",
+      "label": "US-27A Westbound outside (right/north) paved shoulder (5 ft / 1.52 m wide)",
+      "position": [
+        -50,
+        0,
+        -37.34
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 1.52,
+        "height": 0.02
+      },
+      "material": "Base color #434548, roughness 0.86, metalness 0.0; weathered asphalt shoulder",
+      "occludes": false,
+      "citation": "facts.txt F6; police_report.txt p.3",
+      "confidence": 0.95
+    },
+    {
+      "id": "shoulder_wb_south",
+      "category": "shoulder",
+      "label": "US-27A Westbound inside (left/south) paved shoulder (2 ft / 0.61 m wide, west of crossover)",
+      "position": [
+        -229.9,
+        0,
+        -28.955
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 420.2,
+        "width": 0.61,
+        "height": 0.02
+      },
+      "material": "Base color #434548, roughness 0.86, metalness 0.0; weathered asphalt shoulder",
+      "occludes": false,
+      "citation": "facts.txt F6; police_report.txt p.3",
+      "confidence": 0.9
+    },
+    {
+      "id": "road_wb_turn",
+      "category": "lane",
+      "label": "US-27A Westbound left-turn lane (550 ft / 167.6 m storage + taper, 12 ft / 3.66 m wide)",
+      "position": [
+        73.9,
+        0,
+        -27.43
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 187.4,
+        "width": 3.66,
+        "height": 0.02
+      },
+      "material": "Base color #3d3f42, roughness 0.84, metalness 0.0; dry asphalt turn lane",
+      "occludes": false,
+      "citation": "facts.txt F8; police_report.txt p.3; evidence/map.png; world_v2.js line 21",
+      "confidence": 1,
+      "note": "Vehicle T waited/crept here before turning left through the crossover."
+    },
+    {
+      "id": "road_eb_turn",
+      "category": "lane",
+      "label": "US-27A Eastbound Auxiliary Turn Lanes (550 ft / 167.6 m left- and right-turn lanes mentioned in NTSB report)",
+      "position": [
+        -103.6,
+        0,
+        3.66
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 167.6,
+        "width": 3.66,
+        "height": 0.02
+      },
+      "material": "Base color #3d3f42, roughness 0.84, metalness 0.0; dry asphalt auxiliary turn lane",
+      "occludes": false,
+      "citation": "facts.txt F8",
+      "confidence": 0.75,
+      "note": "facts.txt F8 states left- and right-turn lanes about 550 ft long in each direction; omitted from simplified Exhibit 4 (map.png) and world_v2.js."
+    },
+    {
+      "id": "road_median_w",
+      "category": "median",
+      "label": "Grassy/earthen median west of the crossover (~60 ft / 18.28 m grass width; total median opening between main roadbeds 23.77 m)",
+      "position": [
+        -229.9,
+        0,
+        -15.24
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 420.2,
+        "width": 18.28,
+        "height": 0.05
+      },
+      "material": "Base color #748854, roughness 0.92, metalness 0.0; mowed highway median grass over sandy earth",
+      "occludes": false,
+      "citation": "facts.txt F7, F8; police_report.txt p.1, p.3; evidence/map.png; world_v2.js line 22",
+      "confidence": 1
+    },
+    {
+      "id": "road_median_e",
+      "category": "median",
+      "label": "Grassy/earthen median east of the crossover (~60 ft / 18.28 m grass width)",
+      "position": [
+        179.9,
+        0,
+        -15.24
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 320.2,
+        "width": 18.28,
+        "height": 0.05
+      },
+      "material": "Base color #748854, roughness 0.92, metalness 0.0; mowed highway median grass over sandy earth",
+      "occludes": false,
+      "citation": "facts.txt F7, F8; police_report.txt p.1, p.3; evidence/map.png; world_v2.js line 23",
+      "confidence": 1
+    },
+    {
+      "id": "road_crossover",
+      "category": "crossover",
+      "label": "Uncontrolled paved median crossover at NE 140th Court (130 ft / 39.6 m long along highway, spanning median width)",
+      "position": [
+        0,
+        0,
+        -15.24
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 23.77,
+        "width": 39.6,
+        "height": 0.02
+      },
+      "material": "Base color #3e4043, roughness 0.85, metalness 0.0; dry asphalt crossover pavement",
+      "occludes": false,
+      "citation": "facts.txt F8; police_report.txt p.1, p.3; evidence/map.png; world_v2.js line 24",
+      "confidence": 1,
+      "note": "In world_v2.js, constructed as two adjacent 19.8 m square intersection tiles (road_crossover_w at x = -9.9 m and road_crossover_e at x = +9.9 m)."
+    },
+    {
+      "id": "road_ne140",
+      "category": "side_road",
+      "label": "NE 140th Court local paved road (runs south from US-27A; 109-deg actual skew simplified to 90-deg in reference world)",
+      "position": [
+        0,
+        0,
+        76.7
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 146.6,
+        "width": 6.1,
+        "height": 0.02
+      },
+      "material": "Base color #45474a, roughness 0.86, metalness 0.0; local two-lane rural asphalt road without centerline markings",
+      "occludes": false,
+      "citation": "facts.txt F11, Modeling assumptions; evidence/map.png; world_v2.js line 25",
+      "confidence": 0.95,
+      "note": "Width 6.1 m (2 x 3.05 m lanes) per modeling assumptions in facts.txt and world_v2.js."
+    },
+    {
+      "id": "occ_crest",
+      "category": "terrain",
+      "label": "Vertical crest of US-27A at 1,132 ft (345 m) west of intersection (2.15% descent toward intersection; modeled in flat world_v2.js as a 7.4 m high occluder block at x = -377 m)",
+      "position": [
+        -377,
+        0,
+        -15
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 80,
+        "width": 60,
+        "height": 7.4
+      },
+      "material": "Terrain mesh following profile (road asphalt #3a3c3f and grass #6b7c4e), or transparent/matching horizon proxy in flat-ground sightline solver",
+      "occludes": true,
+      "citation": "facts.txt F10, F27, F28; deposition.txt 120-126; world_v2.js line 28",
+      "confidence": 1,
+      "note": "The vertical crest at x = -345 m is the sole sightline restriction on the eastbound approach. If building a true 3D graded terrain mesh per the profile block, this proxy box is replaced by the graded roadbed cresting at x = -345 m (y = +7.42 m) and descending west of -345 m."
+    },
+    {
+      "id": "mark_eb_lane_line",
+      "category": "marking",
+      "label": "US-27A Eastbound broken white lane line separating EB inside and outside lanes",
+      "position": [
+        -50,
+        0.025,
+        -1.83
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          -440,
+          -1.83
+        ],
+        [
+          340,
+          -1.83
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; retroreflective white alkyd/thermoplastic traffic paint with glass beads; pattern: 3.05 m (10 ft) segment, 9.14 m (30 ft) gap",
+      "mutcd": "MUTCD Section 3A.05, 3A.06, 3B.04 (Broken White Lane Line, 6 in / 0.15 m wide, 10 ft stripe / 30 ft skip)",
+      "occludes": false,
+      "citation": "evidence/map.png; world_v2.js line 19; standard: MUTCD 2009 Section 3A.06 & 3B.04; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_wb_lane_line",
+      "category": "marking",
+      "label": "US-27A Westbound broken white lane line separating WB inside and outside lanes",
+      "position": [
+        -50,
+        0.025,
+        -32.92
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          -440,
+          -32.92
+        ],
+        [
+          340,
+          -32.92
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; retroreflective white traffic paint; pattern: 3.05 m (10 ft) segment, 9.14 m (30 ft) gap",
+      "mutcd": "MUTCD Section 3A.05, 3A.06, 3B.04 (Broken White Lane Line, 6 in / 0.15 m wide, 10 ft stripe / 30 ft skip)",
+      "occludes": false,
+      "citation": "evidence/map.png; world_v2.js line 20; standard: MUTCD 2009 Section 3A.06 & 3B.04; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_eb_right_edge_w",
+      "category": "marking",
+      "label": "US-27A Eastbound solid white right edge line (west of NE 140th Ct)",
+      "position": [
+        -221.5,
+        0.025,
+        1.83
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 437,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          -440,
+          1.83
+        ],
+        [
+          -3.05,
+          1.83
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; solid retroreflective white traffic paint",
+      "mutcd": "MUTCD Section 3B.06 (Right Edge Line Pavement Markings, solid white, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; world_v2.js line 19; standard: MUTCD 2009 Section 3B.06; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_eb_right_edge_e",
+      "category": "marking",
+      "label": "US-27A Eastbound solid white right edge line (east of NE 140th Ct)",
+      "position": [
+        171.5,
+        0.025,
+        1.83
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 337,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          3.05,
+          1.83
+        ],
+        [
+          340,
+          1.83
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; solid retroreflective white traffic paint",
+      "mutcd": "MUTCD Section 3B.06 (Right Edge Line Pavement Markings, solid white, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; world_v2.js line 19; standard: MUTCD 2009 Section 3B.06; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_eb_left_edge_w",
+      "category": "marking",
+      "label": "US-27A Eastbound solid yellow median-side left edge line (west of crossover)",
+      "position": [
+        -229.9,
+        0.025,
+        -5.49
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 420.2,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          -440,
+          -5.49
+        ],
+        [
+          -19.8,
+          -5.49
+        ]
+      ],
+      "material": "Base color #eab81c, roughness 0.55, metalness 0.0; solid retroreflective highway yellow traffic paint",
+      "mutcd": "MUTCD Section 3B.06 (Left Edge Line Pavement Markings on Divided Highways, solid yellow, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; standard: MUTCD 2009 Section 3B.06; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_eb_left_edge_e",
+      "category": "marking",
+      "label": "US-27A Eastbound solid yellow median-side left edge line (east of crossover)",
+      "position": [
+        179.9,
+        0.025,
+        -5.49
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 320.2,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          19.8,
+          -5.49
+        ],
+        [
+          340,
+          -5.49
+        ]
+      ],
+      "material": "Base color #eab81c, roughness 0.55, metalness 0.0; solid retroreflective highway yellow traffic paint",
+      "mutcd": "MUTCD Section 3B.06 (Left Edge Line Pavement Markings on Divided Highways, solid yellow, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; standard: MUTCD 2009 Section 3B.06; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_wb_right_edge",
+      "category": "marking",
+      "label": "US-27A Westbound solid white right (north) edge line",
+      "position": [
+        -50,
+        0.025,
+        -36.58
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          -440,
+          -36.58
+        ],
+        [
+          340,
+          -36.58
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; solid retroreflective white traffic paint",
+      "mutcd": "MUTCD Section 3B.06 (Right Edge Line Pavement Markings, solid white, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; world_v2.js line 20; standard: MUTCD 2009 Section 3B.06; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_wb_turn_channel_line",
+      "category": "marking",
+      "label": "US-27A Westbound solid white lane line separating WB inside lane from WB left-turn lane",
+      "position": [
+        73.9,
+        0.025,
+        -29.26
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 187.4,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          -19.8,
+          -29.26
+        ],
+        [
+          167.6,
+          -29.26
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; solid retroreflective white traffic paint",
+      "mutcd": "MUTCD Section 3B.04 (White Lane Line Marking for Turn Lane, solid white, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; world_v2.js line 21; standard: MUTCD 2009 Section 3B.04; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_wb_left_edge_e",
+      "category": "marking",
+      "label": "US-27A Westbound solid yellow median-side edge line along WB left-turn lane (east of crossover)",
+      "position": [
+        179.9,
+        0.025,
+        -25.6
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 320.2,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          19.8,
+          -25.6
+        ],
+        [
+          340,
+          -25.6
+        ]
+      ],
+      "material": "Base color #eab81c, roughness 0.55, metalness 0.0; solid retroreflective highway yellow traffic paint",
+      "mutcd": "MUTCD Section 3B.06 (Left Edge Line Pavement Markings on Divided Highways, solid yellow, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; standard: MUTCD 2009 Section 3B.06; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_wb_left_edge_w",
+      "category": "marking",
+      "label": "US-27A Westbound solid yellow median-side edge line (west of crossover)",
+      "position": [
+        -229.9,
+        0.025,
+        -25.6
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 420.2,
+        "width": 0.15,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          -440,
+          -25.6
+        ],
+        [
+          -19.8,
+          -25.6
+        ]
+      ],
+      "material": "Base color #eab81c, roughness 0.55, metalness 0.0; solid retroreflective highway yellow traffic paint",
+      "mutcd": "MUTCD Section 3B.06 (Left Edge Line Pavement Markings on Divided Highways, solid yellow, 6 in / 0.15 m wide)",
+      "occludes": false,
+      "citation": "evidence/map.png; standard: MUTCD 2009 Section 3B.06; inferred placement",
+      "confidence": 0.95
+    },
+    {
+      "id": "mark_wb_turn_arrows",
+      "category": "marking",
+      "label": "Westbound left-turn lane pavement arrows (3 left-turn arrows spaced along the 167.6 m turn lane)",
+      "position": [
+        40,
+        0.025,
+        -27.43
+      ],
+      "headingDeg": 270,
+      "dimensions": {
+        "length": 2.44,
+        "width": 1.83,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          25,
+          -27.43
+        ],
+        [
+          65,
+          -27.43
+        ],
+        [
+          115,
+          -27.43
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; retroreflective white thermoplastic arrow markings",
+      "mutcd": "MUTCD Section 3B.20, Figure 3B-24 (Left-Turn Lane-Use Arrow Pavement Marking)",
+      "occludes": false,
+      "citation": "standard: MUTCD 2009 Section 3B.20; inferred placement",
+      "confidence": 0.7
+    },
+    {
+      "id": "mark_ne140_stop_line",
+      "category": "marking",
+      "label": "Stop line on northbound NE 140th Court approach to US-27A",
+      "position": [
+        1.52,
+        0.025,
+        5.5
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 3.05,
+        "width": 0.4,
+        "height": 0.002
+      },
+      "polyline": [
+        [
+          0,
+          5.5
+        ],
+        [
+          3.05,
+          5.5
+        ]
+      ],
+      "material": "Base color #f0f0f0, roughness 0.55, metalness 0.0; solid white thermoplastic stop bar",
+      "mutcd": "MUTCD Section 3B.16 (Stop Line, 16 in / 0.40 m solid white)",
+      "occludes": false,
+      "citation": "police_report.txt p.1 (stop sign on NE 140th Ct approach); standard: MUTCD 2009 Section 3B.16; inferred placement",
+      "confidence": 0.75
+    },
+    {
+      "id": "sign_stop_ne140",
+      "category": "sign",
+      "label": "STOP sign on northbound NE 140th Court approach to US-27A",
+      "position": [
+        4.2,
+        0,
+        6
+      ],
+      "headingDeg": 180,
+      "dimensions": {
+        "length": 0.08,
+        "width": 0.76,
+        "height": 2.9
+      },
+      "material": "Octagonal aluminum sign face #c41e3a retroreflective red with #ffffff border and 'STOP' legend, roughness 0.35, metalness 0.2; mounted on galvanized steel U-channel post (#8c9094, roughness 0.5, metalness 0.8), bottom of sign 2.13 m (7 ft) above ground",
+      "mutcd": "MUTCD R1-1 (STOP Sign, 30 x 30 in / 0.76 x 0.76 m, Section 2B.05; mounting height 7 ft / 2.13 m per Section 2A.18)",
+      "occludes": false,
+      "citation": "police_report.txt p.1 (Traffic control: stop sign on the NE 140th Ct approach only); standard: MUTCD 2009 R1-1, Section 2A.18 & 2B.05; inferred placement",
+      "confidence": 0.85,
+      "note": "Faces south (heading 180 deg) toward northbound traffic on NE 140th Ct. Narrow post (0.08 m) does not occlude Witness B's sightline to the west."
+    },
+    {
+      "id": "sign_speed_eb",
+      "category": "sign",
+      "label": "SPEED LIMIT 65 sign on US-27A Eastbound roadside",
+      "position": [
+        -180,
+        0,
+        5.2
+      ],
+      "headingDeg": 270,
+      "dimensions": {
+        "length": 0.08,
+        "width": 0.91,
+        "height": 3.05
+      },
+      "material": "White retroreflective sign panel #f5f5f5 with black legend 'SPEED LIMIT 65' (#151515), roughness 0.35, metalness 0.2; mounted on U-channel post, bottom height 2.13 m (7 ft)",
+      "mutcd": "MUTCD R2-1 (Speed Limit Sign, 36 x 48 in / 0.91 x 1.22 m for multi-lane expressway/highway, Section 2B.13)",
+      "occludes": false,
+      "citation": "facts.txt F13; police_report.txt p.1 (Posted speed: 65 mph, US-27A); standard: MUTCD 2009 R2-1, Section 2B.13; inferred placement",
+      "confidence": 0.75,
+      "note": "Faces west (heading 270 deg) toward eastbound traffic."
+    },
+    {
+      "id": "bld_store",
+      "category": "building",
+      "label": "Retail store (convenience store, feed and supplies) on SE corner of US-27A and NE 140th Court",
+      "position": [
+        18,
+        0,
+        19
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 12,
+        "width": 18,
+        "height": 4.5
+      },
+      "material": "Tan/beige painted stucco/CMU facade (#b89772), dark brown trim (#5c4028), low-slope metal commercial roof (#7a7d80), aluminum-framed glass entrance door and storefront windows facing north toward US-27A and west toward NE 140th Ct; roughness 0.78, metalness 0.1",
+      "occludes": true,
+      "citation": "facts.txt F12, Modeling assumptions; deposition.txt 81-83, 265-267; evidence/map.png; world_v2.js line 29",
+      "confidence": 1,
+      "note": "Footprint 18 m (east-west, x = 9 to 27 m) by 12 m (north-south, z = 13 to 25 m), height 4.5 m per world_v2.js and Exhibit 4."
+    },
+    {
+      "id": "occ_shelter",
+      "category": "canopy",
+      "label": "Open-sided covered bench shelter in front of the retail store",
+      "position": [
+        8,
+        0,
+        7.9
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 3,
+        "width": 1.8,
+        "height": 2.4
+      },
+      "material": "Open-sided steel post structure (four 0.10 m square posts, painted dark gray #3a3d40, roughness 0.5, metalness 0.7) supporting a corrugated metal gable/shed roof (#8a8d91, bottom clearance 2.1 m) over a wooden/metal slat bench (#6e5239)",
+      "occludes": false,
+      "citation": "facts.txt Modeling assumptions; deposition.txt 95-96, 107, 274; evidence/map.png; world_v2.js line 30",
+      "confidence": 1,
+      "note": "Fictional scene dressing referenced in Witness B deposition. Roof is supported on thin 0.1 m posts with open sides, so it does not occlude a 1.6 m standing eye line."
+    },
+    {
+      "id": "store_parking_apron",
+      "category": "driveway",
+      "label": "Gravel/paved parking and pull-off area in front of retail store connecting to US-27A and NE 140th Ct",
+      "position": [
+        16,
+        0.01,
+        9
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 24,
+        "width": 9,
+        "height": 0.01
+      },
+      "material": "Compacted limerock gravel and weathered asphalt apron (#b8b3a8), roughness 0.90, metalness 0.0",
+      "occludes": false,
+      "citation": "inferred: deposition.txt 77-83, 95; evidence/map.png; typical rural store frontage",
+      "confidence": 0.8
+    },
+    {
+      "id": "drainage_culvert_se",
+      "category": "drainage",
+      "label": "Roadside drainage ditch and concrete pipe culvert under driveway/side-road east of intersection (crossed by Vehicle A post-impact)",
+      "position": [
+        85,
+        -0.4,
+        9.5
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 8,
+        "width": 2.5,
+        "height": 0.6
+      },
+      "material": "Precast concrete culvert pipe and mitered end section (#9c9a94, roughness 0.85, metalness 0.0) set in a grassy roadside swale",
+      "occludes": false,
+      "citation": "facts.txt F24; police_report.txt p.2 (crossed a drainage culvert); inferred placement along Vehicle A post-impact trajectory",
+      "confidence": 0.75,
+      "note": "Recessed below road level; does not affect any sightline."
+    },
+    {
+      "id": "fence_wire_south_1",
+      "category": "fence",
+      "label": "Rural wire pasture/property fence #1 on south side of US-27A (struck by Vehicle A post-impact)",
+      "position": [
+        155,
+        0,
+        14.5
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 140,
+        "width": 0.1,
+        "height": 1.2
+      },
+      "polyline": [
+        [
+          85,
+          14.5
+        ],
+        [
+          225,
+          14.5
+        ]
+      ],
+      "material": "4-strand galvanized barbed/woven wire (#8c9094, roughness 0.5, metalness 0.8) on pressure-treated wooden fence posts (#5a4632, 0.12 m diameter, spaced every 3.66 m)",
+      "occludes": false,
+      "citation": "facts.txt F24; police_report.txt p.2; deposition.txt 206 (went through two wire fences); inferred placement along Vehicle A post-impact path",
+      "confidence": 0.75,
+      "note": "Open wire fence far east of the intersection; cannot occlude pre-impact sightlines."
+    },
+    {
+      "id": "fence_wire_south_2",
+      "category": "fence",
+      "label": "Cross-property wire fence #2 near residential yard on south side of US-27A (struck by Vehicle A post-impact)",
+      "position": [
+        225,
+        0,
+        22
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 18,
+        "width": 0.1,
+        "height": 1.2
+      },
+      "polyline": [
+        [
+          225,
+          13
+        ],
+        [
+          225,
+          31
+        ]
+      ],
+      "material": "4-strand galvanized wire (#8c9094) on wooden posts (#5a4632)",
+      "occludes": false,
+      "citation": "facts.txt F24; police_report.txt p.2 (went through two wire fences); inferred placement along Vehicle A post-impact path",
+      "confidence": 0.75
+    },
+    {
+      "id": "occ_pole",
+      "category": "pole",
+      "label": "Wooden utility pole struck and broken by Vehicle A (~8.4 s after initial impact)",
+      "position": [
+        239.3,
+        0,
+        18.5
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 0.35,
+        "width": 0.35,
+        "height": 10
+      },
+      "material": "Creosote/CCA-treated southern yellow pine utility pole (#4a3b2c, roughness 0.85, metalness 0.0) with wooden crossarm at 9.2 m height and ceramic insulators",
+      "occludes": true,
+      "citation": "facts.txt F24, F26, Modeling assumptions; police_report.txt p.2, p.3; deposition.txt 206-207; world_v2.js line 31",
+      "confidence": 0.9,
+      "note": "Position [239.3, 0, 18.5] matches world_v2.js and corresponds to Vehicle A's keyframe at t = 18.83 s (8.4 s after t = 10.43 s impact)."
+    },
+    {
+      "id": "utility_poles_south_line",
+      "category": "pole",
+      "label": "Series of wooden utility poles along south right-of-way of US-27A (spaced ~75 m apart)",
+      "position": [
+        164.3,
+        0,
+        18.5
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 450,
+        "width": 0.35,
+        "height": 10
+      },
+      "polyline": [
+        [
+          -135.7,
+          18.5
+        ],
+        [
+          -60.7,
+          18.5
+        ],
+        [
+          14.3,
+          18.5
+        ],
+        [
+          89.3,
+          18.5
+        ],
+        [
+          164.3,
+          18.5
+        ],
+        [
+          239.3,
+          18.5
+        ],
+        [
+          314.3,
+          18.5
+        ]
+      ],
+      "material": "Treated wooden utility poles (#4a3b2c, roughness 0.85, metalness 0.0, 0.30 m diameter, 10 m tall) with overhead aluminum distribution wires (#707478) strung between crossarms at y = 9.0 to 9.5 m",
+      "occludes": false,
+      "citation": "inferred: facts.txt F24 (struck utility pole); typical rural utility line spacing aligned with occ_pole at z = 18.5 m",
+      "confidence": 0.65,
+      "note": "Set back at z = 18.5 m (12 m south of Witness B at z = 6.5 m), so completely behind Witness B and out of all pre-impact lines of sight."
+    },
+    {
+      "id": "residential_driveway_east",
+      "category": "driveway",
+      "label": "Residential driveway near Vehicle A final rest",
+      "position": [
+        280,
+        0.01,
+        14
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 22,
+        "width": 4,
+        "height": 0.02
+      },
+      "material": "Unpaved limerock/concrete residential driveway (#c2bdb2, roughness 0.85, metalness 0.0)",
+      "occludes": false,
+      "citation": "police_report.txt p.2 (in the front yard of a residence near a driveway); inferred placement near mark_rest_A",
+      "confidence": 0.75
+    },
+    {
+      "id": "residential_houses_south",
+      "category": "building",
+      "label": "Rural single-family residences set back on south side of US-27A east of the store",
+      "position": [
+        275,
+        0,
+        38
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 14,
+        "width": 20,
+        "height": 4.2
+      },
+      "material": "Light siding / brick ranch-style rural home (#d8d2c5), asphalt shingle gable roof (#4a4845), roughness 0.8, metalness 0.0",
+      "occludes": false,
+      "citation": "facts.txt F25; police_report.txt p.2, p.3; deposition.txt 207, 210 (past a couple of houses... in somebody's yard); inferred footprint set far back from highway",
+      "confidence": 0.7,
+      "note": "Set far east (x ~ 200-285 m) and south (z ~ 38 m); does not affect any sightline."
+    },
+    {
+      "id": "veg_distant_treeline",
+      "category": "vegetation",
+      "label": "Distant rural Florida pine and live oak treeline well outside the highway clear zone",
+      "position": [
+        -50,
+        0,
+        -65
+      ],
+      "headingDeg": 90,
+      "dimensions": {
+        "length": 780,
+        "width": 15,
+        "height": 14
+      },
+      "material": "Slash pine and live oak foliage (#3b5323, roughness 0.9, metalness 0.0) and bark (#4d3b2c)",
+      "occludes": false,
+      "citation": "facts.txt F27 (No vegetation or other obstructions were reported on the approach); inferred distant background treeline outside sight corridors",
+      "confidence": 0.7,
+      "note": "Placed at z = -65 m (north of WB highway) and z > +45 m (south of houses) so the highway approach and median are completely clear of vegetation per facts.txt F27."
+    },
+    {
+      "id": "mark_impact",
+      "category": "mark",
+      "label": "Initial point of impact (POI) marker in center of EB outside lane on NE 140th Ct centerline",
+      "position": [
+        0,
+        0.03,
+        0
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 1,
+        "width": 1,
+        "height": 0.01
+      },
+      "material": "Forensic reference marker (#d92b2b, roughness 0.5, metalness 0.0)",
+      "occludes": false,
+      "citation": "facts.txt F21; police_report.txt p.3; evidence/map.png; world_v2.js line 34",
+      "confidence": 1
+    },
+    {
+      "id": "mark_rest_A",
+      "category": "mark",
+      "label": "Final rest position marker of Vehicle A (~910 ft / 276.6 m east of POI in residential front yard)",
+      "position": [
+        276.6,
+        0.03,
+        23.9
+      ],
+      "headingDeg": 0,
+      "dimensions": {
+        "length": 1,
+        "width": 1,
+        "height": 0.01
+      },
+      "material": "Forensic reference marker (#d92b2b, roughness 0.5, metalness 0.0)",
+      "occludes": false,
+      "citation": "facts.txt F25; police_report.txt p.2, p.3; world_v2.js line 35",
+      "confidence": 1
+    },
+    {
+      "id": "mark_path_A",
+      "category": "mark",
+      "label": "Post-impact trajectory / furrow path of Vehicle A from POI to final rest (NO pre-impact tire marks exist)",
+      "position": [
+        138.3,
+        0.02,
+        12
+      ],
+      "headingDeg": 94.5,
+      "dimensions": {
+        "length": 277.6,
+        "width": 0.3,
+        "height": 0.01
+      },
+      "polyline": [
+        [
+          -0.17,
+          -0.01
+        ],
+        [
+          8.03,
+          0.47
+        ],
+        [
+          24.21,
+          1.68
+        ],
+        [
+          47.99,
+          3.46
+        ],
+        [
+          78.76,
+          5.88
+        ],
+        [
+          108.45,
+          8.22
+        ],
+        [
+          137.07,
+          10.47
+        ],
+        [
+          164.62,
+          12.64
+        ],
+        [
+          191.11,
+          14.73
+        ],
+        [
+          216.52,
+          16.73
+        ],
+        [
+          234.87,
+          18.17
+        ],
+        [
+          240.75,
+          18.86
+        ],
+        [
+          251.22,
+          20.32
+        ],
+        [
+          259.93,
+          21.59
+        ],
+        [
+          266.85,
+          22.62
+        ],
+        [
+          271.97,
+          23.37
+        ],
+        [
+          275.24,
+          23.81
+        ],
+        [
+          276.56,
+          23.94
+        ]
+      ],
+      "material": "Post-impact tire scrub on pavement transitioning to disturbed turf/soil furrows (#3b3228, roughness 0.9, metalness 0.0)",
+      "occludes": false,
+      "citation": "facts.txt F22, F23, F24, F25; police_report.txt p.2, p.3; world_v2.js lines 36-39",
+      "confidence": 1,
+      "note": "Strictly post-impact only (t > 10.43 s). NTSB explicitly found zero pre-collision tire marks from either vehicle (facts.txt F22)."
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "veh_A",
+      "role": "Striking eastbound passenger vehicle (Vehicle A / V1)",
+      "type": "Generic 2015 four-door full-size passenger sedan (no brand or model names)",
+      "dimensions": {
+        "length": 4.97,
+        "width": 1.96,
+        "height": 1.445,
+        "wheelbase": 2.96,
+        "frontOverhang": 0.98,
+        "rearOverhang": 1.03,
+        "hoodTrailingEdgeHeight": 0.914,
+        "groundClearance": 0.15,
+        "seatHeadrestTopHeight": 1.29
+      },
+      "axlePositionsFromFront": [
+        0.98,
+        3.94
+      ],
+      "color": "#1d2c44",
+      "materials": "Dark navy/charcoal metallic automotive clearcoat body (#1d2c44, roughness 0.25, metalness 0.6), tinted safety glass windshield and side windows (#1a2226, transmission 0.7), black rubber tires (#1c1c1c, roughness 0.85), alloy wheels (#c0c4c8, metalness 0.8)",
+      "lights": "Headlights OFF; daytime running lights/brake lights OFF prior to and during impact (no brake application recorded).",
+      "markings": "None (standard passenger vehicle)",
+      "motionSummary": "Traveling eastbound (heading 90 deg) in the outside (right) lane (z = 0.0 m) on cruise control at a constant 74 mph (33.08 m/s). Crests hill at t = 0.0 s (x = -345 m), strikes right side of semitrailer at t = 10.43 s at origin (x = 0, z = 0) with no braking or steering input, underrides trailer (shearing off roof and A-pillars above hood height), exits roadside at shallow angle (~94.5 deg), crosses culvert and two wire fences, strikes utility pole at t = 18.83 s (x = 239.3, z = 18.5), rotates counterclockwise to final rest at x = 276.56 m, z = 23.94 m (heading 0 deg).",
+      "positions": {
+        "atCrest_t0": {
+          "position": [
+            -347.52,
+            0,
+            0
+          ],
+          "headingDeg": 90
+        },
+        "atImpact_t10_43": {
+          "position": [
+            -2.48,
+            0,
+            0
+          ],
+          "headingDeg": 90
+        },
+        "atFinalRest_t22": {
+          "position": [
+            276.56,
+            0,
+            23.94
+          ],
+          "headingDeg": 0
+        }
+      },
+      "citation": "facts.txt F4, F14, F17, F18, F21-F26, Modeling assumptions; police_report.txt p.1-3; deposition.txt 163-166, 181-185; world_v2.js lines 36, 42",
+      "confidence": 1
+    },
+    {
+      "id": "veh_T_tractor",
+      "role": "Turning combination vehicle power unit (Vehicle T / V2 tractor)",
+      "type": "Generic 2014 3-axle conventional commercial truck-tractor",
+      "dimensions": {
+        "length": 6.6,
+        "width": 2.44,
+        "height": 4,
+        "wheelbase": 5,
+        "groundClearance": 0.28,
+        "fifthWheelHeight": 1.2
+      },
+      "axlePositionsFromFront": [
+        0.95,
+        5.25,
+        6.55
+      ],
+      "color": "#e8e8e8",
+      "materials": "Painted commercial cab body (#e8e8e8 in world_v2.js; described by Witness B as darker than the white trailer), chrome grille and vertical exhaust stacks (#d8dcdf, roughness 0.15, metalness 0.9), black frame rails and tires (#1c1c1c, roughness 0.85)",
+      "lights": "Standard amber roof/side marker lamps; turn signal status not recalled by witnesses.",
+      "markings": "Standard commercial tractor side reflectors",
+      "motionSummary": "Initially creeping westward in the WB left-turn lane (t = 0.0 s at x = 14.79 m, z = -27.42 m, heading -90.1 deg), turns left (southward) through the median crossover at ~3.0 to 6.1 m/s along a ~12 m radius onto NE 140th Court. At impact (t = 10.43 s), tractor has already cleared the eastbound lanes onto NE 140th Ct (center at x = 0.0 m, z = 10.54 m, heading 180 deg). Stops south of the retail store at x = 0.0 m, z = 44.69 m (heading 180 deg).",
+      "positions": {
+        "atStart_t0": {
+          "position": [
+            14.79,
+            0,
+            -27.42
+          ],
+          "headingDeg": 269.9
+        },
+        "atImpact_t10_43": {
+          "position": [
+            0,
+            0,
+            10.54
+          ],
+          "headingDeg": 180
+        },
+        "atFinalRest_t22": {
+          "position": [
+            0,
+            0,
+            44.69
+          ],
+          "headingDeg": 180
+        }
+      },
+      "citation": "facts.txt F15, F16, F19, Modeling assumptions; police_report.txt p.1-3; deposition.txt 138-152, 213-214; world_v2.js lines 43, 47",
+      "confidence": 1,
+      "note": "Combined tractor + semitrailer overall length is 71 ft 7 in (21.82 m)."
+    },
+    {
+      "id": "veh_T_trailer",
+      "role": "Struck semitrailer of turning combination vehicle (Vehicle T / V2 semitrailer)",
+      "type": "Generic 2003 53-ft refrigerated van semitrailer (reefer) with front-mounted refrigeration unit",
+      "dimensions": {
+        "length": 16.15,
+        "width": 2.59,
+        "height": 4.11,
+        "boxBottomUnderrideHeight": 1.2,
+        "boxHeight": 2.91,
+        "kingpinOffsetFromFront": 0.91
+      },
+      "axlePositionsFromFront": [
+        12.5,
+        13.72
+      ],
+      "color": "#f2f2ee",
+      "materials": "White painted aluminum/fiberglass refrigerated box panels (#f2f2ee, roughness 0.4, metalness 0.2), front nose-mount refrigeration unit housing (#d8d8d4) with grille, galvanized steel landing gear and rear tandem bogie (#5a5d60)",
+      "lights": "Amber front/mid side-marker lamps along bottom rail (V1 hood was scraped by the trailer side-marker lamp per police_report.txt p.1), red rear marker/tail lamps.",
+      "markings": "FMVSS 108 (49 CFR 571.108) retroreflective conspicuity tape: alternating red (#c41e3a) and white (#f5f5f5) 50 mm (2 in) wide strip along the bottom side rail (at y = 1.22 m) covering at least 50% of trailer length, plus white upper rear corner inverted-L strips and full-width rear lower horizontal bar and underride guard bar.",
+      "motionSummary": "Pulled by veh_T_tractor from WB left-turn lane across the median crossover and eastbound lanes. At impact (t = 10.43 s), the trailer is aligned north-south (heading 180 deg) centered at x = 0.0 m, z = -0.05 m, stretching completely across both eastbound lanes. Impact occurs on the right (west) side of the trailer at z = 0.0 m, 45 ft 5 in (13.84 m) behind the front of the tractor (~8.2 m behind the trailer nose). The 1.20 m bottom clearance allows the nose of Vehicle A (hood height 0.914 m) to pass underneath while shearing off the car's greenhouse/roof (top at 1.445 m). Continues south to rest at x = 0.0 m, z = 34.24 m (heading 180 deg).",
+      "positions": {
+        "atStart_t0": {
+          "position": [
+            25.23,
+            0,
+            -27.43
+          ],
+          "headingDeg": 270
+        },
+        "atImpact_t10_43": {
+          "position": [
+            0,
+            0,
+            -0.05
+          ],
+          "headingDeg": 180
+        },
+        "atFinalRest_t22": {
+          "position": [
+            0,
+            0,
+            34.24
+          ],
+          "headingDeg": 180
+        }
+      },
+      "citation": "facts.txt F14, F15, F16, F23, Modeling assumptions; police_report.txt p.1-3; deposition.txt 138-140, 197-200, 245-249; world_v2.js lines 44, 48; standard: FMVSS 108 conspicuity markings",
+      "confidence": 1
+    },
+    {
+      "id": "veh_wit_A",
+      "role": "Fictional Witness A's westbound passenger vehicle (non-involved observer vehicle)",
+      "type": "Generic passenger vehicle",
+      "dimensions": {
+        "length": 4.8,
+        "width": 1.85,
+        "height": 1.48,
+        "wheelbase": 2.8,
+        "groundClearance": 0.16
+      },
+      "axlePositionsFromFront": [
+        0.95,
+        3.75
+      ],
+      "color": "#7a8288",
+      "materials": "Neutral silver/gray automotive paint (#7a8288, roughness 0.3, metalness 0.5)",
+      "lights": "Headlights off (daylight)",
+      "markings": "None",
+      "motionSummary": "Traveling westbound in the WB outside (right) lane (z = -34.75 m, heading 270 deg) at ~60 mph (26.8 m/s), about 0.25 mi (~400 m) behind Vehicle T. Placed at [357.2, 0, -34.75] at t = 2.0 s in world_v2.js; later pulls over onto WB shoulder west of the crossover to call 911.",
+      "positions": {
+        "atObservation_t2": {
+          "position": [
+            357.2,
+            0,
+            -34.75
+          ],
+          "headingDeg": 270
+        }
+      },
+      "citation": "facts.txt F30; witness_A.txt; world_v2.js lines 72-84",
+      "confidence": 0.95
+    },
+    {
+      "id": "veh_wit_C",
+      "role": "Fictional Witness C's stopped pickup truck (non-involved observer vehicle)",
+      "type": "Generic full-size pickup truck",
+      "dimensions": {
+        "length": 5.8,
+        "width": 2.02,
+        "height": 1.92,
+        "wheelbase": 3.68,
+        "groundClearance": 0.22
+      },
+      "axlePositionsFromFront": [
+        0.98,
+        4.66
+      ],
+      "color": "#586068",
+      "materials": "Charcoal gray automotive paint (#586068, roughness 0.35, metalness 0.5)",
+      "lights": "Headlights off (daylight)",
+      "markings": "None",
+      "motionSummary": "Stopped in the westbound inside lane just west of the crossover (x = -18.0 m, z = -40.5 m in world_v2.js; WB inside lane center is z = -31.09 m), facing west (heading 270 deg), waiting for Vehicle T to clear.",
+      "positions": {
+        "atObservation_t5": {
+          "position": [
+            -18,
+            0,
+            -40.5
+          ],
+          "headingDeg": 270
+        }
+      },
+      "citation": "witness_C.txt; world_v2.js lines 99-111",
+      "confidence": 0.9,
+      "note": "Position [-18, 0, -40.5] preserved from world_v2.js per frame instructions; witness_C.txt states stopped in the WB inside lane (~18 m west of side road)."
+    }
+  ],
+  "witnesses": [
+    {
+      "id": "wit_A",
+      "name": "Witness A (fictional, modeled on real NTSB westbound eyewitness)",
+      "position": [
+        357.2,
+        0,
+        -34.75
+      ],
+      "eyeHeight": 1.5,
+      "posture": "Seated driver in a moving westbound passenger vehicle (veh_wit_A) in the WB outside lane at ~60 mph",
+      "facingDeg": 265,
+      "lookAt": "veh_A",
+      "observationTime": 2,
+      "observed": "Saw Vehicle A crest the hill on the eastbound side before Vehicle T began its left turn. Once Vehicle T pulled out across the eastbound lanes, the semitrailer blocked his view of Vehicle A. Heard the crash bang and saw Vehicle A emerge from beneath the rear/side of the trailer with its roof torn off and run off the south roadside.",
+      "citation": "facts.txt F20, F30; police_report.txt p.1, p.3; witness_A.txt; world_v2.js lines 72-84"
+    },
+    {
+      "id": "wit_B",
+      "name": "Witness B (fictional pedestrian at SE corner store)",
+      "position": [
+        7.5,
+        0,
+        6.5
+      ],
+      "eyeHeight": 1.6,
+      "posture": "Standing pedestrian on the SE corner near the open-sided bench shelter in front of the retail store (had been seated on the bench waiting for her sister, then stood up when the truck began pulling across)",
+      "facingDeg": 278,
+      "lookAt": "veh_A",
+      "observationTime": 9.9,
+      "observed": "Testified that she saw Vehicle T creeping in the WB left-turn lane and turning slowly across the median and EB lanes, and saw Vehicle A come over the west crest in the EB outside lane without headlights, braking, or slowing. Claimed at deposition (27:46, 28:17) that from her standing spot at [7.5, 0, 6.5] she had an unobstructed view of the front of Vehicle A all the way in until impact (note: at t = 9.9 s to 10.43 s, the 16.15 m long semitrailer positioned along x = 0 between z = -8.1 m and +8.0 m physically lies directly between Witness B at x = +7.5, z = +6.5 and Vehicle A approaching from x < 0 along z = 0).",
+      "citation": "deposition.txt 95-96, 156-185, 268-292; police_report.txt p.1, p.3; world_v2.js lines 1, 85-97"
+    },
+    {
+      "id": "wit_C",
+      "name": "Witness C (fictional stopped westbound driver)",
+      "position": [
+        -18,
+        0,
+        -40.5
+      ],
+      "eyeHeight": 1.6,
+      "posture": "Seated driver in a stopped pickup truck (veh_wit_C) west of the crossover",
+      "facingDeg": 68,
+      "lookAt": "veh_T_tractor",
+      "observationTime": 5,
+      "observed": "Watched Vehicle T sitting/creeping in the WB left-turn lane with its reefer running, then pulling slowly across the median and eastbound lanes toward NE 140th Ct. Was watching the truck rather than eastbound traffic; heard no brakes, tires, or horn before the crash bang, then saw Vehicle A exit the far side and leave the road toward the houses while the truck finished its turn and stopped south of the store.",
+      "citation": "police_report.txt p.1, p.3; witness_C.txt; world_v2.js lines 99-111"
+    }
+  ],
+  "risks": [
+    {
+      "id": "risk_trailer_occlusion_wit_B",
+      "elementIds": [
+        "veh_T_trailer",
+        "wit_B"
+      ],
+      "description": "Between roughly t = 8.5 s and impact at t = 10.43 s, Vehicle T's semitrailer (box bottom at y = 1.20 m, top at y = 4.11 m, spanning x = 0 from z = -8.1 m to +8.0 m at impact) sits directly between Witness B on the SE corner (x = +7.5 m, z = +6.5 m, eye height 1.6 m) and Vehicle A approaching from the west (x < 0, z = 0.0 m, height 1.445 m). Small changes in Witness B's lateral/longitudinal position or the truck's crossing timing directly govern when the trailer box blocks her line of sight to the front of Vehicle A."
+    },
+    {
+      "id": "risk_crest_geometry_vs_proxy",
+      "elementIds": [
+        "occ_crest",
+        "road_eb"
+      ],
+      "description": "In world_v2.js, the road is modeled flat (y = 0) with a 7.4 m tall block (occ_crest at x = -377 m) acting as a terrain proxy for the vertical crest at x = -345 m. In a graded 3D mesh, the 2.15% slope and vertical curve radius at x = -345 m determine the exact second when a 1.445 m tall car becomes visible to a 1.5–2.4 m observer eye height at the intersection."
+    },
+    {
+      "id": "risk_shelter_posts_and_roof",
+      "elementIds": [
+        "occ_shelter",
+        "sign_stop_ne140"
+      ],
+      "description": "Witness B stood near the open-sided bench shelter (x = 8.0, z = 7.9). If the shelter were modeled with solid side panels, a low roof eave below 1.6 m, or thick corner columns instead of open 0.1 m posts, or if the NE 140th Ct stop sign were placed directly on her sightline vector, it would artificially occlude her view of the eastbound approach."
+    },
+    {
+      "id": "risk_roadside_clutter_south_west",
+      "elementIds": [
+        "veg_distant_treeline",
+        "utility_poles_south_line"
+      ],
+      "description": "NTSB explicitly reported that the vertical crest was the ONLY sight restriction on the eastbound approach and that no vegetation or other fixed obstructions existed (facts.txt F27). Adding any inferred trees, bushes, commercial signage, or poles within the median (z = -25.6 to -5.5 m) or along the south shoulder west of x = +10 m (z = +1.8 to +10 m) would falsely obstruct sightlines for Vehicle T, Witness A, or Witness B."
+    }
+  ],
+  "openQuestions": [
+    "Exact vertical curve length (K-value / parabolic crest length) at the x = -345 m crest and at the x = +99.7 m sag from FDOT as-built highway plans.",
+    "Exact surveyed footprint, setback, and roof geometry of the corner retail building and any parking lot fixtures from 2016 aerial orthophotography or terrestrial laser scan.",
+    "Exact distance east of the intersection and lateral offset of the struck wooden utility pole, concrete culvert, and two wire fences from the NTSB scene diagram / FHP scale reconstruction.",
+    "Exact geometry and taper lengths of the eastbound left- and right-turn lanes at the crossover (noted in facts.txt F8 as 550 ft long, but omitted from the simplified schematic Exhibit 4).",
+    "Whether the 109-degree intersection skew of NE 140th Court (simplified to 90 degrees in Exhibit 4 and world_v2.js) materially shifts the semitrailer's heading angle as it crosses the eastbound lanes."
+  ],
+  "_provenance": {
+    "step": "B",
+    "prompt": "argon/prompts/scene_spec.md",
+    "world": "cases/demo-4ee683/worlds/world_v2.js",
+    "model": "gemini-4-argon",
+    "mode": "mock",
+    "cacheName": "plan_scene_spec",
+    "cachePath": "cases/demo-4ee683/cache/plan_scene_spec.json",
+    "name": "plan_scene_spec",
+    "hash": "f556ebd5f1f93726",
+    "finishReason": "STOP",
+    "usage": {
+      "promptTokenCount": 38609,
+      "candidatesTokenCount": 19429,
+      "totalTokenCount": 58038,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 37517
+        },
+        {
+          "modality": "IMAGE",
+          "tokenCount": 1092
+        }
+      ],
+      "candidatesTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 19429
+        }
+      ]
+    },
+    "seconds": 183.7,
+    "at": "2026-10-25T19:52:51.481Z"
+  }
+}
