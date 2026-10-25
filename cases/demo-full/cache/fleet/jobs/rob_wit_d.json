@@ -1,0 +1,113 @@
+{
+  "id": "rob_wit_d",
+  "type": "robustness",
+  "witness": "wit_witness_D",
+  "why": "Investigate the partial robustness (23/25 blocked) to see where inside the store a sightline opens up.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_Chd6STdlYXQyVEZJS3B4ZElQXzY2WXFRRRIXekk3ZWF0MlRGSUtweGRJUF82NllxUUU",
+  "dispatchedAtMs": 3751,
+  "createMs": 332912,
+  "status": "completed",
+  "environmentId": "591864f10180a9774d6998d69d970451",
+  "usage": {
+    "total": 20295,
+    "input": 18847,
+    "cached": 9970
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"rob_wit_d\",\"ok\":true,\"ms\":4104}",
+    "interpretation": "Witness wit_witness_D had a predominantly obstructed line of sight to veh_car_a due to the retail store building, resulting in a verdict of partial visibility."
+  },
+  "result": {
+    "task": {
+      "id": "rob_wit_d",
+      "type": "robustness",
+      "witness": "wit_witness_D",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_car_a",
+      "tObs": 10.43,
+      "standard": {
+        "radiusM": 2,
+        "samples": 25,
+        "blocked": 23,
+        "clear": 2,
+        "eyeJitterM": 0.1,
+        "verdict": "partial",
+        "blockers": {
+          "bld_retail_store": 23
+        }
+      },
+      "rings": [
+        {
+          "radiusM": 0.5,
+          "samples": 25,
+          "blocked": 25,
+          "blockers": {
+            "bld_retail_store": 25
+          }
+        },
+        {
+          "radiusM": 1,
+          "samples": 25,
+          "blocked": 25,
+          "blockers": {
+            "bld_retail_store": 25
+          }
+        },
+        {
+          "radiusM": 2,
+          "samples": 25,
+          "blocked": 23,
+          "blockers": {
+            "bld_retail_store": 23
+          }
+        },
+        {
+          "radiusM": 3,
+          "samples": 25,
+          "blocked": 21,
+          "blockers": {
+            "bld_retail_store": 21
+          }
+        },
+        {
+          "radiusM": 5,
+          "samples": 25,
+          "blocked": 18,
+          "blockers": {
+            "bld_retail_store": 18
+          }
+        },
+        {
+          "radiusM": 8,
+          "samples": 25,
+          "blocked": 16,
+          "blockers": {
+            "bld_retail_store": 16
+          }
+        }
+      ]
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 4104,
+      "worldSha": "549d69915f59",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 385345,
+  "doneAtMs": 389096
+}
