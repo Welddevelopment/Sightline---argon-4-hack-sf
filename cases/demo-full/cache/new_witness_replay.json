@@ -1,0 +1,24 @@
+{
+  "37b907b6a2685118": {
+    "statement": "I was parked in the store lot facing the highway, about ten yards from the road. I saw the black car come over the hill from the west and it never slowed down before it went under the trailer.",
+    "witness": {
+      "name": "Witness E (Parked Driver in Store Lot)",
+      "position": [
+        20.1,
+        0,
+        9.1
+      ],
+      "eyeHeight": 1.2,
+      "lookAt": "veh_car_a",
+      "observationTime": 10.43,
+      "claim": "Parked in the store lot about ten yards from the highway, saw the black car come over the hill from the west and go under the trailer without slowing down.",
+      "confidence": "medium",
+      "assumptions": "Placed in the parking lot north of the retail store (X = 20.1 m, aligned with bld_retail_store center) and 10 yards (9.14 m) south of the eastbound outside lane center (Z = 0 m), giving Z = 9.1 m (just north of the store front wall at Z = 9.5 m). Set eyeHeight to 1.2 m for a seated car driver and observationTime to 10.43 s (moment of impact when the car went under the trailer).",
+      "citation": "Live statement",
+      "model": "gemini-4-argon"
+    },
+    "model": "gemini-4-argon",
+    "seconds": 5.518,
+    "at": "2026-10-25T23:24:46.713Z"
+  }
+}

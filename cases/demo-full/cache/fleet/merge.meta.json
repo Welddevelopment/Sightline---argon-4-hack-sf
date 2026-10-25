@@ -1,0 +1,25 @@
+{
+  "name": "merge",
+  "model": "gemini-4-argon",
+  "hash": "6f5ff25e72224a3f",
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 9129,
+    "candidatesTokenCount": 1668,
+    "totalTokenCount": 10797,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 9129
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 1668
+      }
+    ]
+  },
+  "seconds": 19.9,
+  "at": "2026-10-25T23:23:42.167Z"
+}

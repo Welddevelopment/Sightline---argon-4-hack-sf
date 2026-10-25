@@ -1,0 +1,117 @@
+{
+  "id": "wt_wit_b",
+  "type": "whatif_time",
+  "witness": "wit_witness_B",
+  "why": "Check whether Witness B had a clear sightline to Car A at any time within 2 seconds of t=9.9s.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_ChdJWV9lYW92bkZwN0V4ZElQNUtMbzRRNBIXSVlfZWFvdm5GcDdFeGRJUDVLTG80UTQ",
+  "dispatchedAtMs": 2251,
+  "createMs": 419699,
+  "status": "completed",
+  "environmentId": "f740caaed69b00da5f4a8287ae7512d8",
+  "usage": {
+    "total": 20127,
+    "input": 18939,
+    "cached": 9970
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"wt_wit_b\",\"ok\":true,\"ms\":5158}",
+    "interpretation": "Witness B was unable to see Car A throughout the entire observation window because their line of sight was blocked by the bench shelter."
+  },
+  "result": {
+    "task": {
+      "id": "wt_wit_b",
+      "type": "whatif_time",
+      "witness": "wit_witness_B",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_car_a",
+      "tObs": 9.9,
+      "sweep": [
+        {
+          "dt": -2,
+          "t": 7.9,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 95.06
+        },
+        {
+          "dt": -1.5,
+          "t": 8.4,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 78.61
+        },
+        {
+          "dt": -1,
+          "t": 8.9,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 62.22
+        },
+        {
+          "dt": -0.5,
+          "t": 9.4,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 45.92
+        },
+        {
+          "dt": 0,
+          "t": 9.9,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 29.88
+        },
+        {
+          "dt": 0.5,
+          "t": 10.4,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 14.98
+        },
+        {
+          "dt": 1,
+          "t": 10.9,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 10.05
+        },
+        {
+          "dt": 1.5,
+          "t": 11.4,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 22.72
+        },
+        {
+          "dt": 2,
+          "t": 11.9,
+          "visible": false,
+          "blockedBy": "occ_bench_shelter",
+          "distance": 38.14
+        }
+      ]
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 5158,
+      "worldSha": "549d69915f59",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 489749,
+  "doneAtMs": 492000
+}

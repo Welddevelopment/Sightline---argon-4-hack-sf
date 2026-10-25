@@ -1,0 +1,64 @@
+{
+  "id": "prt_drivers",
+  "type": "prt",
+  "why": "Confirm the perception-reaction time available to the colliding drivers over the hill crest.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_ChZJSV9lYXBYSkhmM0Z4ZElQLXRDU1VREhZJSV9lYXBYSkhmM0Z4ZElQLXRDU1VR",
+  "dispatchedAtMs": 251,
+  "createMs": 420556,
+  "status": "completed",
+  "environmentId": "ffe668ea52942a4931c49394e31ac13c",
+  "usage": {
+    "total": 19679,
+    "input": 18537,
+    "cached": 8909
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"prt_drivers\",\"ok\":true,\"ms\":7805}",
+    "interpretation": "The driver of Vehicle A had 10.43 seconds of continuous line of sight to the semitrailer before impact, providing sufficient perception-reaction time."
+  },
+  "result": {
+    "task": {
+      "id": "prt_drivers",
+      "type": "prt",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "impact": {
+        "t": 10.43,
+        "source": "meta.impactT"
+      },
+      "prt": [
+        {
+          "observerId": "veh_car_a",
+          "targetId": "veh_semitrailer",
+          "availableS": 10.43,
+          "verdict": "sufficient",
+          "firstVisibleT": 0,
+          "impactT": 10.43,
+          "blockedBy": null,
+          "detail": "The driver of Vehicle A: 2015 4-door passenger sedan had a continuous line of sight to Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Vehicle T (Semitrailer): 2003 53-ft white refrigerated van semitrailer came within 3 m of the centerline of this driver's remaining path 1.73 s before impact. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation."
+        }
+      ]
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 7805,
+      "worldSha": "549d69915f59",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 491549,
+  "doneAtMs": 491800
+}

@@ -1,0 +1,65 @@
+{
+  "id": "gaze_wit_b",
+  "type": "gaze",
+  "witness": "wit_witness_B",
+  "why": "Evaluate Witness B's peripheral 29.5-degree gaze angle toward Car A and alternate marks.",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_ChdIb19lYXEtdkU5emV5dE1QcnZDOHVBURIXSG9fZWFxLXZFOXpleXRNUHJ2Qzh1QVE",
+  "dispatchedAtMs": 2002,
+  "createMs": 416627,
+  "status": "completed",
+  "environmentId": "cf7929d447780cdda8338dc7fa03e680",
+  "usage": {
+    "total": 19911,
+    "input": 18451,
+    "cached": 8914
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"gaze_wit_b\",\"ok\":true,\"ms\":6283}",
+    "interpretation": "Witness B had car A within their direct field of view at t=9.9s with an off-axis gaze angle of 29.5 degrees."
+  },
+  "result": {
+    "task": {
+      "id": "gaze_wit_b",
+      "type": "gaze",
+      "witness": "wit_witness_B",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_car_a",
+      "tObs": 9.9,
+      "gaze": {
+        "offAxisDeg": 29.5,
+        "assumed": true,
+        "cameraFovDeg": 60,
+        "peripheral": false,
+        "source": "mark_poi"
+      },
+      "altGazeDegByMark": {
+        "mark_poi": 29.53,
+        "mark_poi_tire_impressions": 29.56,
+        "mark_car_rest": 164.9,
+        "mark_truck_rest": 86.36
+      }
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 6283,
+      "worldSha": "549d69915f59",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 486597,
+  "doneAtMs": 488599
+}
