@@ -53,8 +53,11 @@ function newestRender(d, witnessId) {
   if (!fs.existsSync(d.renders)) return null;
   const vers = fs.readdirSync(d.renders).map((n) => [n, Number((n.match(/^world_v(\d+)$/) || [])[1])]).filter(([, v]) => v).sort((a, b) => b[1] - a[1]);
   for (const [n, v] of vers) {
-    const p = path.join(d.renders, n, `wit_${witnessId}.png`);
-    if (fs.existsSync(p)) return { png: p, version: v };
+    const dir = path.join(d.renders, n);
+    const exact = path.join(dir, `wit_${witnessId}.png`);
+    if (fs.existsSync(exact)) return { png: exact, version: v };
+    const still = fs.readdirSync(dir).find((f) => new RegExp(`^wit_${witnessId}_t[\\dp]+\\.png$`).test(f));  // stills: wit_B_t9p8.png
+    if (still) return { png: path.join(dir, still), version: v };
   }
   return null;
 }
@@ -155,5 +158,9 @@ function argonFromPipeline(d, truth) {
   if (c) { out.concluded_blocked = c.pass === false; out.blocked_by = c.blockedBy ?? null; out.check_detail = c.detail; }
   const f = st?.findings || null;
   if (f) out.critique_verdict = f.verdict || f.status || null;
+  const cr = readJSON(path.join(d.cache, 'critique_round1.json'));
+  if (cr) { out.critique_verdict = cr.verdict ?? out.critique_verdict ?? null; out.critique_summary = cr.findings?.[0]?.summary ?? cr.summary ?? null; }
+  const crm = readJSON(path.join(d.cache, 'critique_round1.meta.json'));
+  if (crm?.seconds != null) out.critique_s = crm.seconds;
   return out;
 }
