@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sightline — Review and confirm</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/review.css">
+</head>
+<body>
+<header id="top">
+  <div class="brand">
+    <span class="logo" aria-hidden="true"></span>
+    <div>
+      <div class="case-title">Sightline</div>
+      <div class="case-sub" id="caseSub">Review and confirm</div>
+    </div>
+  </div>
+  <span class="sim-badge" id="modeBadge">CONNECTING…</span>
+  <nav><a href="/cases.html" class="btn ghost sm" id="casesLink">Cases</a><a href="/" class="btn ghost sm" id="viewerLink">Viewer</a></nav>
+</header>
+
+<div class="rv-wrap">
+  <main class="rv-main" id="main">
+    <div class="crumb" id="crumb"><a href="/cases.html">Cases</a></div>
+    <ol class="rv-steps" aria-label="Progress">
+      <li class="done">Upload evidence</li>
+      <li class="done" id="stepExtract">Extract</li>
+      <li class="active">Review and confirm</li>
+      <li>Reconstruct</li>
+    </ol>
+    <h1 id="title">Review what Argon extracted</h1>
+    <p class="lede">Every input below was read from the evidence by the model. Check each one against its source, correct or reject it, then sign off. Only confirmed inputs are used to build the 3D reconstruction.</p>
+    <div class="rv-meta" id="meta"></div>
+    <div id="body"><div class="empty">Loading extraction…</div></div>
+  </main>
+
+  <aside class="rv-side" id="side">
+    <section class="rv-card" id="mapCard">
+      <div class="rv-card-h"><h3>Scene plan</h3><span class="muted small" id="mapNote"></span></div>
+      <div class="map-wrap"><canvas id="map" width="420" height="320" aria-label="Top-down scene plan; drag witness markers to correct their positions"></canvas><div class="map-read" id="mapRead"></div></div>
+      <div class="map-legend"><span><i class="lg wit"></i>Witness (drag to move)</span><span><i class="lg obj"></i>Scene object</span><span><i class="lg ref"></i>Reference point</span></div>
+    </section>
+
+    <section class="rv-card" id="srcCard" hidden>
+      <div class="rv-card-h"><h3>Source</h3><span class="src-cite mono" id="srcCite"></span><button class="x" id="srcClose" aria-label="Close source">×</button></div>
+      <div id="srcBody"></div>
+    </section>
+
+    <section class="rv-card confirm" id="confirmCard">
+      <div class="rv-card-h"><h3>Sign-off</h3></div>
+      <div class="tally" id="tally"></div>
+      <label class="f" for="confirmedBy">Reviewed by</label>
+      <input type="text" id="confirmedBy" placeholder="Your name" autocomplete="name">
+      <div class="confirm-actions">
+        <button class="btn primary" id="confirmBtn" disabled>Confirm and build</button>
+        <a class="skip" id="skipLink" href="/cases.html">Skip review</a>
+      </div>
+      <p class="small muted cnote" id="confirmNote">Confirmed inputs are saved with your name and passed to the model as authoritative facts.</p>
+      <div id="runOut"></div>
+    </section>
+  </aside>
+</div>
+
+<script type="module" src="/review.js"></script>
+</body>
+</html>

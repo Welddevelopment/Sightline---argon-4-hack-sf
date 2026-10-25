@@ -9,6 +9,7 @@ import crypto from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import multer from 'multer';
+import { mountJobs } from './jobs.js';
 
 export const TYPE_BY_EXT = {
   '.pdf': 'pdf', '.txt': 'text', '.md': 'text', '.markdown': 'text', '.docx': 'text', '.rtf': 'text', '.csv': 'text', '.json': 'text', '.srt': 'text', '.vtt': 'text',
@@ -113,6 +114,7 @@ export async function ingestFile(store, caseId, name) {
 export function mountCases(app, h) {
   // h: { ROOT, MODE, tryImport, getThree, errMsg, legacyState(), legacyWitnesses }
   const store = createCaseStore(h.ROOT);
+  const jobs = mountJobs(app, store, h); // background job registry: GET /api/jobs, /api/cases/:id/job
   fs.mkdirSync(store.CASES, { recursive: true });
   const tmpDir = path.join(store.CASES, '.upload-tmp');
   fs.mkdirSync(tmpDir, { recursive: true });
@@ -201,7 +203,7 @@ export function mountCases(app, h) {
     const cases = store.list().map((m) => {
       const s = caseState(m.caseId);
       return { caseId: m.caseId, title: m.title, createdAt: m.createdAt, status: getRun(m.caseId).running ? 'running' : m.status,
-        fileCount: (m.files || []).length, hasWorld: !!(s && s.world) || (m.caseId === 'demo' && !!h.legacyHasWorld?.()) };
+        job: jobs.get(m.caseId), fileCount: (m.files || []).length, hasWorld: !!(s && s.world) || (m.caseId === 'demo' && !!h.legacyHasWorld?.()) };
     });
     res.json(cases);
   });
@@ -330,6 +332,7 @@ export function mountCases(app, h) {
     run.running = true; run.events.length = 0;
     m.status = 'running'; store.saveManifest(m);
     const mode = (req.body && req.body.mode) || h.MODE;
+    jobs.create(id, { mode }); run.clients.add(jobs.sink(id)); // persisted background job; survives SSE disconnects
     emit(id, { type: 'start', mode, caseId: id });
     res.status(202).json({ started: true, caseId: id, mode, stream: `/api/cases/${id}/stream` });
 
@@ -339,6 +342,7 @@ export function mountCases(app, h) {
       const prevStateRaw = fs.existsSync(stateFile) ? fs.readFileSync(stateFile, 'utf8') : null;
       const restoreState = () => { try { if (prevStateRaw != null) fs.writeFileSync(stateFile, prevStateRaw); else fs.rmSync(stateFile, { force: true }); } catch { /* ignore */ } };
       try {
+        await jobs.acquire(id, (msg) => emit(id, { type: 'progress', step: 'queued', message: msg })); // global live-job limit
         const files = m.files || [];
         const texts = files.filter((f) => f.textPath), vids = files.filter((f) => f.type === 'video'), imgs = files.filter((f) => f.type === 'image');
         emit(id, { type: 'progress', step: 'extract', message: `Extracted text from ${texts.length} document(s); ${vids.length} video(s) and ${imgs.length} image(s) queued for Argon.` });
@@ -371,7 +375,7 @@ export function mountCases(app, h) {
         restoreState();
         m.status = 'error'; m.error = h.errMsg(e); store.saveManifest(m);
         emit(id, { type: 'error', message: h.errMsg(e) });
-      } finally { run.running = false; }
+      } finally { run.running = false; jobs.release(id); }
     })();
   });
 

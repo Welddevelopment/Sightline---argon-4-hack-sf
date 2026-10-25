@@ -89,7 +89,7 @@
     const total = v.total ?? v.items.length, matched = v.matched ?? v.items.filter((i) => i.pass).length;
     const ok = matched === total;
     const rows = v.items.map((i) => `<tr class="${i.pass ? 'pass' : 'fail'}">
-      <td>${esc(i.label || i.id)}${i.note ? `<div class="mth-path">${esc(i.note)}</div>` : ''}</td><td class="num">${withUnit(i.expected, i.unit)}</td><td class="num">${i.actual == null ? '<span class="mth-na">not reached</span>' : withUnit(i.actual, i.unit)}</td>
+      <td>${esc(i.label || i.id)}${i.note ? `<div class="mth-vnote">${esc(i.note)}</div>` : ''}</td><td class="num">${withUnit(i.expected, i.unit)}</td><td class="num">${i.actual == null ? '<span class="mth-na">not reached</span>' : withUnit(i.actual, i.unit)}</td>
       <td class="num">${fmtTol(i.tolerance, i.unit)}</td>
       <td class="res">${i.pass ? 'PASS' : 'FAIL'}</td><td class="cit">${esc(i.citation || '')}</td></tr>`).join('');
     return `<div class="mth-valid ${ok ? 'ok' : 'partial'}">
@@ -122,7 +122,7 @@
     const rows = provEntries.map(([w, p]) => {
       const u = p.usage || {};
       return `<tr><td><b>v${esc(worldVer(w, p))}</b><div class="mth-path">${esc(base(w))}${p.parentWorld ? ' ← ' + esc(base(p.parentWorld)) : ''}</div></td>
-        <td>${p.model ? esc(p.model) : `<span class="mth-na">${p.mode === 'seeded' ? 'seeded fixture' : '—'}</span>`}<div class="mth-path">${esc(p.mode || '')}${p.finishReason ? ' · ' + esc(p.finishReason) : ''}</div></td>
+        <td>${p.model ? esc(p.model) : `<span class="mth-na">${'no model call'}</span>`}<div class="mth-path">${esc(p.mode || '')}${p.finishReason ? ' · ' + esc(p.finishReason) : ''}</div></td>
         <td>${esc(base(p.promptFile) || '—')}<div class="mth-path">${p.promptVersion ? 'sha256 ' + hash(p.promptVersion, 12) : ''}</div></td>
         <td>${fmtTime(p.createdAt)}</td>
         <td class="num">${p.thinkingBudget == null ? '—' : fmtInt(p.thinkingBudget)}</td>
@@ -299,7 +299,10 @@
     const findings = document.getElementById('findings');
     if (!findings || document.getElementById('mthLaunch')) return;
     const bar = makeBar(false); bar.id = 'mthLaunch';
-    findings.insertAdjacentElement('afterend', bar);
+    // Prefer the top of the findings panel so the validation summary is visible without scrolling.
+    const head = findings.parentElement && findings.parentElement.querySelector(':scope > h2');
+    if (head) { bar.classList.add('top'); head.insertAdjacentElement('afterend', bar); }
+    else findings.insertAdjacentElement('afterend', bar);
     load().then(updateSummary, () => { const s = bar.querySelector('.mth-sum'); s.textContent = ''; });
   }
   function mountCases() {

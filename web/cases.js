@@ -170,8 +170,8 @@ async function refreshList() {
     li.querySelector('[data-meta]').innerHTML =
       [meta.date ? `<b>${esc(meta.date)}</b>` : '', meta.location ? esc(meta.location) : ''].filter(Boolean).join(' · ') +
       (meta.source ? `<div class="cs">${esc(meta.source)}</div>` : '') +
-      (lr ? `<div class="cs">Last run ${esc(lr)}</div>` : '');
-    li.querySelector('[data-counts]').textContent = evidenceCounts(c.files).slice(0, 3).join(' · ');
+      (lr ? `<div class="cs lr">Last run ${esc(lr)}</div>` : '');
+    li.querySelector('[data-counts]').textContent = evidenceCounts(c.files).filter((p) => !/document/.test(p)).join(' · ');
     li.querySelector('[data-verdict]').innerHTML = `<span class="tag ${v.cls}">${esc(v.label)}</span>`;
   }));
 }
@@ -294,7 +294,6 @@ async function selectCase(id) {
   const runParts = [];
   if (hasWorld && finds.length) runParts.push(`<span><b>${n('contradiction')}</b> contradiction${n('contradiction') === 1 ? '' : 's'} · ${n('consistent')} consistent${n('unverifiable') ? ` · ${n('unverifiable')} unverifiable` : ''}</span>`);
   if (val && val.total) runParts.push(`<span>Validated <b>${val.matched} of ${val.total}</b> facts against ${esc(val.source || 'published investigation')}</span>`);
-  if (lr) runParts.push(`<span>Last run ${esc(lr)}${rounds ? ` · ${plural(rounds, 'round')}` : ''}</span>`);
 
   $('#content').innerHTML = `
     <div class="crumb"><a href="/cases.html">Cases</a> / <span class="mono">${esc(c.caseId)}</span></div>
@@ -306,6 +305,7 @@ async function selectCase(id) {
       <div><dt>Opened</dt><dd>${esc(fmtWhen(c.createdAt) || '—')}</dd></div>
     </dl>
     <div class="runline"><span class="tag ${v.cls}" id="verdictTag">${esc(v.label)}</span>${runParts.map((p) => '<span class="sep"></span>' + p).join('')}</div>
+    ${lr ? `<div class="lastrun">Last run ${esc(lr)}${rounds ? ` · ${plural(rounds, 'round')}` : ''}</div>` : ''}
     <div class="actions">
       <button class="btn primary" id="runBtn">${hasWorld ? 'Re-run reconstruction' : 'Run reconstruction'}</button>
       ${hasWorld ? `<a class="btn" href="/?case=${encodeURIComponent(id)}">Open in viewer</a>` : ''}

@@ -1,0 +1,1 @@
+UI-A (methodology) — done. GET /api/cases/:id returns provenance/validation/kinematicLabel (server/cases.js credibility()); web/methodology.js+css render a forensic Methodology sheet (launcher at top of #right in viewer, button in cases.html actions, ?methodology=1 opens it, window.slMethodology.open()). Tested on :5192 demo + live1; no console errors.

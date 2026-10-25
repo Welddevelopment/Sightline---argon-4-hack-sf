@@ -1,42 +1,36 @@
-You convert a typed witness statement into a witness entry inside an existing 3D crash reconstruction, so the tool can render the witness's eye view and ray-cast their sight line.
+You place a NEW witness, from a statement typed live, into an existing 3D crash reconstruction. An independent ray-cast will then test whether this person could have seen what they claim, so put them exactly where their words put them, even if that means they could not have seen it.
 
 # World frame
-Meters. Origin as described in the world header below. +X = east, -Z = north (north is "up" on the overhead map), +Y = up, ground y = 0. Time t = seconds on the event timeline, 0..{{DURATION}}.
+Meters. +X = east, -Z = north (north is "up" on the overhead map), +Y = up, ground y = 0. Time t = seconds on the event timeline, 0..{{DURATION}}.
 
-# World header (from the module)
+# World header
 {{HEADER}}
 
-# Objects in the world (id | kind | label | center [x,y,z] | size [w,h,d] | occludes)
+# Objects (id | kind | label | center [x,y,z] at t=0 | size [w,h,d] | occludes)
 {{OBJECTS}}
+
+# Moving objects: ground center [x,z] at time t
+{{TIMELINE}}
 
 # Existing witnesses
 {{WITNESSES}}
 
-# Facts / timeline
+# Facts
 {{FACTS}}
 
-# Statement (typed live by the user)
+# Statement (typed live)
 """
 {{STATEMENT}}
 """
 
-# Instructions
-- Resolve place words to coordinates using the objects above (corners, named streets, landmarks, "in front of", "across from", distances like "10 m south of the stop bar"). Put a pedestrian on a walkable area, not in a travel lane, unless the statement says otherwise.
-- Eye height: pedestrian 1.6 m unless stated; sedan driver ~1.2 m; truck/bus driver ~2.0-2.4 m.
-- `lookAt`: the object id of what they say they saw (a signal head controlling the traffic they describe, a vehicle). Use [x,y,z] only if no object fits.
-- `observationTime`: the moment on the timeline matching what they describe (a signal change, a vehicle entering the intersection, the impact), using the facts above.
-- `claim`: one short sentence, close to their words.
-- If the statement is too vague to place them, choose the most literal reading, set "confidence": "low", and explain in "assumptions".
-
-Return JSON only:
-{
-  "name": "<name from the statement, or 'Live witness'>",
-  "position": [x, 0, z],
-  "eyeHeight": 1.6,
-  "lookAt": "<object id>",
-  "observationTime": 0,
-  "claim": "...",
-  "citation": "Live statement",
-  "confidence": "high | medium | low",
-  "assumptions": "<how the place words and time were resolved>"
-}
+# Rules
+- Resolve place words with the objects above: roads and their lanes, sides of the highway (north side = more negative z than the road's north edge), corners, buildings, crossovers, "in front of", "across from". Convert distances: 1 yard = 0.9144 m, 1 ft = 0.3048 m. "N yards from X" along a road = N along that road's axis from X's center.
+- A landmark the statement names but the world lacks (e.g. a gas station): place them where the statement's other words put them (side of the road, facing what), say the landmark is not modeled, and lower confidence.
+- Pedestrians stand on a walkable area outside travel lanes, never inside a building or other occluding object. Drivers sit in the lane matching their direction of travel.
+- Eye height: pedestrian 1.6 m; car driver 1.2 m; pickup/SUV 1.5-1.8 m; truck/bus driver 2.0-2.4 m.
+- A moving observer's position is only valid at one moment. If the statement ties where they were to a moment ("when the truck started its turn"), set observationTime to that moment (use the moving-object table) and position to where they were then.
+- Otherwise observationTime = the moment their claim is about (impact, a vehicle entering the intersection), from the table and facts.
+- lookAt: the object id of what they say they saw (usually a vehicle). Use [x,y,z] only if no object fits.
+- claim: one short sentence, close to their words. Never put double-quote characters inside string values; use single quotes.
+- Vague statement: take the most literal reading, confidence "low", and say why in assumptions.
+- assumptions: one or two sentences: which words mapped to which coordinates, and why that time.

@@ -140,3 +140,39 @@ Validation (argon/validate_world.js): syntax check, isolated dynamic import, con
 
 ### UI conventions
 - objects/values whose citation contains "inferred" render in the INFERRED colour (amber dashed) with an "inferred" tag; cited ones normal.
+
+## REVIEW & CONFIRM (12:10) — owner B1 (argon/extract.js, server/review.js). UI (B2) codes against these exact shapes.
+Pipeline: ingest → **extraction (Argon)** → human review/confirm → generate_world → render → checks → critique.
+Skip path: if `cases/<id>/confirmed_facts.json` does not exist, generate_world is unchanged. If it exists, generate_world adds it to the prompt as "AUTHORITATIVE CONFIRMED FACTS (human-reviewed)".
+
+### Extraction object (cases/<id>/cache/extraction.json)
+```json
+{
+  "caseId": "live1", "createdAt": "ISO", "mode": "live|mock|live-cached",
+  "scene": { "date": "2016-05-07", "time": "16:40", "location": "US-27A at NE 140th Ct, near Williston, FL",
+             "lat": 29.41, "lon": -82.54, "weather": "clear", "lighting": "day", "citation": "police_report.md p.1" },
+  "facts": [ { "id": "f1", "label": "Car speed before impact", "value": 74, "unit": "mph",
+               "citation": "facts.md p.2", "source": { "file": "facts.md", "page": 2, "timestamp": null },
+               "cited": true, "confidence": 0.9 } ],
+  "vehicles": [ { "id": "veh_car", "type": "sedan", "description": "2015 Tesla Model S, eastbound", "citation": "police_report.md p.1" } ],
+  "objects":  [ { "id": "obj_shelter", "kind": "occluder|sign|shelter|signal|building|tree|vegetation|parked_vehicle|other",
+                  "position": [x, z] , "citation": "Depo 12:30" } ],
+  "witnesses": [ { "id": "wit_B", "name": "Witness B", "markedPosition": [x, z], "positionCitation": "Depo 27:04",
+                   "eyeHeight": 1.6, "observationTime": "16:40:12 or seconds-before-impact as string",
+                   "claim": "Saw the truck turning ...", "claimCitation": "Depo 27:14" } ],
+  "notes": "free text from Argon (optional)"
+}
+```
+- Citations: video moments `"Depo MM:SS"`; documents `"<file> p.N"`; inferred values have `cited:false` and citation containing `"inferred"` (render amber dashed per UI conventions).
+- `source`: `{ file, page: number|null, timestamp: "MM:SS"|null }` (exactly one of page/timestamp normally set).
+- `confidence`: 0..1. `position`/`markedPosition`: scene meters [x, z] (+X east, -Z north, origin = the scene's primary reference point, usually the conflict/impact point) or `null` if unknown.
+- `objects[].position` may be null.
+
+### Endpoints (mounted via `mountReview(app, ctx)` in server/review.js)
+- `GET /api/cases/:id/extraction` →
+  `{ caseId, status: "none"|"running"|"ready"|"error", extraction: <Extraction>|null, meta: { mode, model, seconds, usage: {promptTokens, outputTokens, thoughtsTokens}, finishedAt }|null, confirmed: <Confirmed>|null, error: string|null }`
+- `POST /api/cases/:id/extraction/run` body `{ mode?: "mock"|"live" }` → same shape as GET. Mock (default when server is in mock mode) serves the cached extraction immediately (`status:"ready"`). Live returns `status:"running"` immediately; poll GET every ~2 s until `ready`/`error`.
+- `POST /api/cases/:id/confirm` body `{ facts: [...], witnesses: [...], scene: {...}, vehicles?: [...], objects?: [...], confirmedBy: "name" }` (same item shapes as the extraction; the UI sends the edited/accepted items, dropping rejected ones; an edited item may carry `"edited": true`) →
+  `{ ok: true, confirmed: <Confirmed> }`, where Confirmed (= cases/<id>/confirmed_facts.json) is
+  `{ caseId, confirmedAt: "ISO", confirmedBy, extractionCreatedAt, scene, facts, vehicles, objects, witnesses }`.
+  Body `{ clear: true }` deletes confirmed_facts.json (back to the skip path) → `{ ok: true, confirmed: null }`.

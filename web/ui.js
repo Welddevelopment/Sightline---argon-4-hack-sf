@@ -203,6 +203,19 @@ function renderCameras() {
   }
   markActiveCamera();
 }
+// time a witness's claim is tested at: the sightline check's t, else the witness's observationTime
+function witnessTime(id) {
+  const c = ((state && state.checks) || []).find((x) => x && x.check === 'sightline' && x.subject === id && x.t != null);
+  if (c && Number.isFinite(Number(c.t))) return Number(c.t);
+  const w = sl.world && (sl.world.witnesses || []).find((x) => x.id === id);
+  return w && w.observationTime != null && Number.isFinite(Number(w.observationTime)) ? Number(w.observationTime) : null;
+}
+// selecting a witness camera jumps to that witness's observation time (scrubbing stays free afterwards)
+function selectCamera(id) {
+  sl.setCamera(id);
+  const t = witnessTime(id);
+  if (t != null) { pause(); sl.setTime(t); }
+}
 function markActiveCamera() {
   for (const b of $('cams').children) b.classList.toggle('active', b.dataset.cam === sl.camera);
 }
@@ -441,10 +454,11 @@ function focusFinding(f, el) {
   if (w) {
     pause();
     sl.setCamera(w.id);
-    if (w.observationTime != null) sl.setTime(w.observationTime);
+    const wt = witnessTime(w.id);
+    if (wt != null) sl.setTime(wt);
     const r = sl.sightline(w.id);
     if (r && !r.visible && r.blockedBy && !hi.includes(r.blockedBy)) hi.push(r.blockedBy);
-    toast(shortWit(w) + ' @ t=' + (w.observationTime != null ? w.observationTime : sl.time).toFixed(1) + ' s — ' + (r ? (r.visible ? 'had line of sight to target' : 'line of sight blocked by ' + labelOf(r.blockedBy)) : ''));
+    toast(shortWit(w) + ' @ t=' + sl.time.toFixed(1) + ' s — ' + (r ? (r.visible ? 'had line of sight to target' : 'line of sight blocked by ' + labelOf(r.blockedBy)) : ''));
   } else {
     const veh = hi.find((id) => sl.world.objects[id].kind === 'vehicle');
     sl.setCamera(veh && f.camera === 'chase' ? 'chase_' + veh : 'overhead');
@@ -714,6 +728,7 @@ async function loadState(allowWorldSwap) {
     try {
       await sl.loadWorld(state.world);
       afterWorld();
+      applyUrlView();
       renderFindings();
     } catch (e) { console.warn('Could not load state world', e); }
   }
@@ -757,8 +772,17 @@ sl.events && sl.events.addEventListener('loaded', () => { try { afterWorld(); } 
   initCasePicker();
   if (CASE) { try { caseInfo = await fetchJson(CASE_API); afterWorld(); } catch (_) {} }
   loadDocs();
-  loadState(true);
+  await loadState(true);
+  // ?cam=<witness> without ?t= opens at that witness's observation time
+  if (!params.has('t') && params.get('cam') && witnessTime(sl.camera) != null && sl.camera === params.get('cam')) sl.setTime(witnessTime(sl.camera));
 })();
+
+// re-apply ?cam= / ?t= after a world (re)load resets the camera and clock
+function applyUrlView() {
+  const cam = params.get('cam');
+  if (cam && sl.camera !== cam) sl.setCamera(cam);
+  if (params.has('t')) { const t = parseFloat(params.get('t')); if (Number.isFinite(t)) sl.setTime(t); }
+}
 
 // ---------- case picker ----------
 async function initCasePicker() {
