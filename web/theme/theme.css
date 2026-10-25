@@ -154,6 +154,26 @@ html .files .sz { font-size: 12px; }
 html .files .rm { font-size: 16px; }
 html .step { font-size: 12px; }
 html #log .st { text-transform: none; font-size: 12px; letter-spacing: normal; }
+/* from compare.css */
+html .cmp-summary { font-size: 12px; }
+html .pane-h { font-size: 13px; }
+html .pane-k { font-size: 12px; letter-spacing: normal; }
+html .live { font-size: 12px; }
+html .reticle span { font-size: 12px; }
+html .olabel { font-size: 12px; }
+html .legend { font-size: 12px; }
+html .cmp-cite { font-size: 12px; }
+html .cmp-tag { font-size: 12px; letter-spacing: normal; text-transform: none; }
+html .tick span { font-size: 12px; }
+html .tlabel { font-size: 12px; }
+html .wi-k { font-size: 12px; letter-spacing: normal; text-transform: none; }
+html .wi-out { font-size: 13px; }
+html .wi-out .srv { font-size: 12px; }
+/* from demo-flow.css */
+html .stepbar .step-n { font-size: 12px; }
+html .stepbar .replay-badge { font-size: 12px; letter-spacing: normal; text-transform: none; }
+html .replay-note .replay-lines { font-size: 12px; }
+html .demo-card-kicker { font-size: 12px; letter-spacing: normal; text-transform: none; }
 /* from exports.js (injected) */
 html .sl-export-err { font-size: 12px; }
 html .sl-more > summary .caret { font-size: 12px; }
@@ -198,17 +218,33 @@ html .mth-foot { font-size: 12px; }
 html .slo-t { letter-spacing: normal; }
 html .slo-clock.approx { font-size: 12px; }
 html .slo-imp { letter-spacing: normal; }
+html .slo-vrow { font-size: 12px; letter-spacing: normal; }
+html .slo-vrow em { font-size: 12px; }
+html .slo-vrow.inferred span::after { font-size: 12px; letter-spacing: normal; text-transform: none; }
 html .slo-sig { font-size: 12px; }
+html .slo-state b { font-size: 12px; letter-spacing: normal; }
+html .slo-state span { font-size: 12px; }
+html .slo-card { font-size: 13px; }
+html .slo-card-k { font-size: 12px; letter-spacing: normal; }
+html .slo-pill { font-size: 12px; letter-spacing: normal; }
+html .slo-card-claim { font-size: 14px; }
+html .slo-card-claim .citation { font-size: 12px; }
+html .slo-card-n { font-size: 12px; }
+html .slo-card .tag-inferred, html .slo-veh .tag-inferred { font-size: 12px; letter-spacing: normal; text-transform: none; }
 html .slo-veh { font-size: 12px; }
-html .slo-veh em { font-size: 12px; }
+html .slo-veh b { font-size: 12px; }
 html .slo-sight { font-size: 12px; }
 html .slo-sight span { font-size: 12px; }
 html .slo-mark { font-size: 12px; }
 html .slo-mark span { font-size: 12px; }
+html .slo-gap text { font-size: 12px; }
 html .slo-gaplbl { font-size: 12px; }
 html .slo-road b { font-size: 12px; letter-spacing: normal; text-transform: none; }
 html .slo-road span { font-size: 12px; }
 html .slo-toggle { font-size: 12px; }
+html .slo-toggle span { letter-spacing: normal; text-transform: none; font-size: 12px; }
+html .slo-card-s { font-size: 12px; }
+html .slo-card-s b { font-size: 12px; letter-spacing: normal; }
 /* from report.css */
 html .screenbar .notice { letter-spacing: normal; }
 html .screenbar .notice.sim { letter-spacing: normal; font-size: 12px; }
@@ -282,7 +318,6 @@ html .case-sub { font-size: 12px; }
 html .sim-badge { font-size: 12px; letter-spacing: normal; }
 html .sl-hud { font-size: 12px; }
 html .sl-hud-badge { letter-spacing: normal; font-size: 12px; }
-html .tick span { font-size: 12px; }
 html .btn.small { font-size: 12px; }
 html .doclist .df { font-size: 12px; }
 html .pill { font-size: 12px; letter-spacing: normal; text-transform: none; }
