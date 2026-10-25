@@ -161,6 +161,11 @@ export function applyRenderQuality(renderer, scene, opts = {}) {
     msaaSamples: (gl.getContextAttributes && gl.getContextAttributes().antialias) ? (gl.getParameter(gl.SAMPLES) || 0) : 0,
     ready: Promise.resolve(), fitShadow: () => {} };
   if (!scene) return handle;
+  if (typeof location !== 'undefined' && /[?&]rqdebug=1/.test(location.search) && !renderer.__rqdbg) {
+    renderer.__rqdbg = true; const orig = renderer.render.bind(renderer);
+    renderer.render = (s, c) => { const t = performance.now(); orig(s, c); renderer.getContext().finish(); console.log('rq render ms', (performance.now() - t).toFixed(0), 'calls', renderer.info.render.calls, 'tris', renderer.info.render.triangles, 'progs', renderer.info.programs && renderer.info.programs.length); };
+    console.log('rq apply at', performance.now().toFixed(0));
+  }
 
   // ---- light rig: one shadow-casting sun, environment fill instead of stacked hemispheres ----
   const managedSun = opts.sun || null;

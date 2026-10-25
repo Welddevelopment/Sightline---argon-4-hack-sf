@@ -191,7 +191,7 @@ function buildFigure(T, o = {}) {
   // arms (L = -X, figure faces -Z)
   for (const [S, s] of [['L', -1], ['R', 1]]) {
     const sh = j['shoulder' + S] = G('shoulder' + S, j.spine, s * FIG.shoulderX, FIG.shoulderY - FIG.spineY, 0.004);
-    const delt = mesh(T, ellipsoidGeo(T, 0.034, 0.036, 0.034), top, 'deltoid'); delt.position.set(s * 0.004, -0.008, 0); sh.add(delt);
+    const delt = mesh(T, ellipsoidGeo(T, 0.031, 0.034, 0.032), top, 'deltoid'); delt.position.set(-s * 0.002, -0.012, 0); sh.add(delt);
     sh.add(mesh(T, limbGeo(T, 0.03, 0.0225, FIG.upperArm, 0.002, 0.4), top, 'upperArm' + S));
     const el = j['elbow' + S] = G('elbow' + S, sh, 0, -FIG.upperArm, 0);
     el.add(mesh(T, limbGeo(T, 0.0235, 0.0165, FIG.foreArm, 0.003, 0.25), skin, 'foreArm' + S));

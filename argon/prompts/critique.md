@@ -15,10 +15,21 @@ Be precise, neutral and evidentiary. Never go beyond the record.
 A. Fidelity of the world to the evidence: is every witness where the most precise evidence puts them (a mark/point on an exhibit in a video beats a vague phrase; convert with the exhibit's scale)? Are obstructions, signals, lanes and vehicles where the documents/photos put them, with the right sizes? Do the timeline, signal phasing and skid physics match the record? Is anything evidenced missing from the world, or present without evidence?
 B. Given a faithful world, is each witness's claim physically possible? If the faithful world blocks what they claim to have seen at the time they claim, that is a CONTRADICTION in the testimony: report it with status "contradiction". Do not hide it by moving objects.
 C. What the record cannot decide → "unverifiable".
+D. Lighting & visibility (see the next section). Opposing counsel attacks crash animations on lighting first (a court rejected one that showed a pedestrian unlit when the real video showed him lit), so this audit is mandatory every round.
+
+# Lighting & visibility audit (mandatory)
+Compare the lighting in OUR RENDERS against what the EVIDENCE says the scene looked like at the moment of the event. The LIGHTING AUDIT FACTS block (computed by a separate program, NOAA solar algorithm) gives: the case date/time/place and where each value came from (`scene.sources`; an "approx. geocode" or "assumed" offset is an inference, say so), the EXPECTED sun azimuth/elevation and shadow bearing, the sun the renders ACTUALLY use (`render.sun`, its basis, and the azimuth/elevation error), artificial lights present in the world, a glare test per witness and per moving driver, and whether real scene photos/footage appear to exist (`realFootage`). Check, and report what you find:
+1. Time of day and sun: does the render's light (sky brightness, sun height, warm/low vs high/white light, day/dusk/night) match the expected sun elevation for the record's date and time? Does the sun in the renders come from the expected azimuth? Do shadows in the overhead and witness renders fall along the expected `shadowBearingDeg` (shadows point away from the sun)? A render sun more than ~10 deg off in azimuth or elevation, or a world whose lighting is a preset rather than computed from the record, is a world error: patch it (e.g. set the authored sun DirectionalLight position from the expected azimuth/elevation: x = R·cos(el)·sin(az), y = R·sin(el), z = -R·cos(el)·cos(az); meta.lighting must agree with the expected daylight class) and cite the record's date/time source.
+2. Weather and visibility: does the record (police report, facts, testimony) give weather, road surface, haze/fog/rain, visibility distance? Do the renders match (clear sky vs overcast, wet road, fog distance)?
+3. Artificial light: streetlights, signal lamps, building lights, vehicle headlights/taillights/brake lights. Are those the evidence mentions present and in the right on/off state at the event time? At dusk/night: are people/vehicles that the evidence shows as lit or visible shown lit and visible in the renders, and vice versa? Never let the render make something darker or brighter than the evidence shows.
+4. Sun glare: use the glare test (`glare.witnesses`, `glare.drivers`; rule in `rule`). Report every witness or driver with `glareRisk: true` as a lighting finding (glare can make a claimed observation implausible, or explain a driver's failure to see). If no one is at risk, include one finding with status "consistent" giving the sun position and the smallest sun-to-sight-line angle.
+5. Real footage/photos: if the evidence contains real photos or video of the scene (dashcam, bodycam, surveillance, scene photos), compare their lighting frame against our render at the same moment (sun side, shadow direction and length, brightness, which lights are on) and cite the frame ("<file> MM:SS" or the photo) next to the render. If there is NO real footage or photo of the scene (depositions, transcripts and diagrams do not count), say so explicitly in a lighting finding ("No real scene footage exists to compare lighting against; compared against the documentary record and computed sun position only").
+Lighting findings use `"type": "lighting"` and carry the `lighting` numbers object (see output shape); cite both the record (e.g. the date/time page) and the render ("Render", "<view>.png") or "Lighting audit" (`{"source": "Lighting audit", "citation": "expected sun az 265.0 / el 45.1 vs render az 250.3 / el 48.8"}`). Fill the top-level `lightingAudit` summary every round.
 
 # Citation rules (strict)
 - Each finding gets at least two evidence items when possible: a documentary/video source AND the render or check that shows it.
 - Formats: `{"source": "<file name>", "citation": "p.3"}`; video: `{"source": "<video file name>", "citation": "Depo 01:24"}` (MM:SS as seen in the video; a range "01:16-01:36" for an extended act like marking an exhibit); image: `{"source": "<image file>", "citation": "<what/where in the image>"}`; render: `{"source": "Render", "citation": "<view>.png @ t=6.5s"}`; check: `{"source": "Independent check", "citation": "sightline <witness>→<target>: blocked by <id>"}`.
+- Lighting audit facts: `{"source": "Lighting audit", "citation": "<the numbers you rely on>"}`.
 - Never cite a page or timecode you did not actually see. If approximate, write "approx.".
 
 # Patching rules
@@ -40,9 +51,19 @@ C. What the record cannot decide → "unverifiable".
       "detail": "<what you saw in the renders/videos/documents and why it matters>",
       "evidence": [ { "source": "...", "citation": "..." } ],
       "involves": ["<witness/object ids from the world>"],
-      "status": "contradiction | consistent | unverifiable"
+      "status": "contradiction | consistent | unverifiable",
+      "type": "position | obstruction | timing | physics | testimony | lighting | other",
+      "lighting": "<ONLY for type lighting, else omit: { \"expectedSunAzimuthDeg\": n, \"expectedSunElevationDeg\": n, \"renderSunAzimuthDeg\": n, \"renderSunElevationDeg\": n, \"sunAngleFromLineOfSightDeg\": n|null, \"glareRisk\": true|false|null, \"realFootage\": true|false } copied from the audit facts>"
     }
   ],
+  "lightingAudit": {
+    "expectedSun": { "azimuthDeg": 0, "elevationDeg": 0, "source": "<date/time/place citation>" },
+    "renderSun": { "azimuthDeg": 0, "elevationDeg": 0, "matches": true },
+    "weatherMatches": "yes | no | unverifiable",
+    "artificialLightsMatch": "yes | no | unverifiable | not applicable (daylight)",
+    "glare": [ { "id": "<witness or vehicle id>", "sunAngleFromLineOfSightDeg": 0, "glareRisk": false } ],
+    "realFootageCompared": "<file(s) compared, or \"none: no real scene footage exists\">"
+  },
   "patch": "<full new world module JS as a string, or null>"
 }
 
@@ -60,6 +81,9 @@ Evidence inventory: {{INVENTORY}}
 ```json
 {{CHECKS}}
 ```
+
+# LIGHTING AUDIT FACTS (round {{ROUND}}; computed, not evidence: cite as "Lighting audit")
+{{LIGHTING}}
 
 # CURRENT WORLD MODULE (round {{ROUND}})
 ```js

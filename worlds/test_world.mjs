@@ -14,7 +14,18 @@ ok(!/^\s*import\s/m.test(src), 'module must not import anything');
 
 const mod = await import(pathToFileURL(file).href);
 ok(typeof mod.default === 'function', 'default export is a function');
-const world = mod.default(THREE);
+// WORLD CONTRACT v2: createWorld(THREE, assets) with the shared asset library (v1 worlds ignore assets).
+const { nodeAssets } = await import(pathToFileURL(path.join(here, '../checks/load_world.js')).href);
+const isV2 = /createWorld\s*\(\s*THREE\s*,\s*assets/.test(src);
+const world = mod.default(THREE, await nodeAssets());
+if (isV2) {
+  ok(!/new\s+THREE\.\w+Geometry/.test(src), 'v2: module builds no geometry itself (places library assets only)');
+  for (const [id, o] of Object.entries(world.objects || {})) if (id.startsWith('veh_')) ok(o.node.userData?.assetType, `v2: ${id} is a library asset`);
+  const v = await import(pathToFileURL(path.join(here, '../argon/validate_world.js')).href);
+  const r = await v.validateWorldFile(file);
+  for (const e of r.errors) ok(false, 'validator: ' + e);
+  console.log(`validator: ${r.ok ? 'VALID' : 'INVALID'} (${r.warnings.length} warning(s)) ${JSON.stringify(r.stats.assetFallbacks || {})}`);
+}
 
 ok(world.meta && world.meta.caseId && world.meta.title && world.meta.timeOfDay && world.meta.lighting && world.meta.source, 'meta fields');
 ok(['dawn', 'day', 'night', 'dusk'].includes(world.meta.lighting), 'meta.lighting value');
@@ -22,7 +33,7 @@ ok(world.root && world.root.isGroup, 'root is a THREE.Group');
 ok(typeof world.duration === 'number' && world.duration > 0, 'duration > 0');
 ok(typeof world.setTime === 'function', 'setTime function');
 
-const PREFIX = /^(veh|occ|sig|road|mark|bld)_/;
+const PREFIX = /^(veh|occ|sig|road|mark|bld|ped)_/;
 for (const [id, o] of Object.entries(world.objects || {})) {
   ok(PREFIX.test(id), `id prefix ${id}`);
   ok(o.node && o.node.isObject3D, `${id} node is Object3D`);

@@ -1,11 +1,11 @@
 {
   "world": "/cases/demo/worlds/world_v2.js",
   "version": 2,
-  "createdAt": "2026-10-25T18:33:22.185Z",
-  "mode": "seeded",
-  "model": null,
+  "createdAt": "2026-10-25T19:23:22.095Z",
+  "mode": "mock",
+  "model": "gemini-4-argon",
   "promptFile": "argon/prompts/critique.md",
-  "promptVersion": "296ce8a4b279",
+  "promptVersion": "fe363a569e50",
   "inputs": [
     {
       "file": "text/deposition.txt",
@@ -48,7 +48,7 @@
       "bytes": 54576
     }
   ],
-  "outputSha256": "e30832d972c4fbe96426a40e2231dfe31daa907eb49f781c44077681c74bfeee",
+  "outputSha256": "d5924474a55a15a1b2ae29c1a5a99bd6a61f2cb8b900a6c69018a754ab2427d7",
   "usage": {
     "promptTokens": null,
     "outputTokens": null,
@@ -58,5 +58,5 @@
   "finishReason": null,
   "thinkingBudget": null,
   "maxOutputTokens": null,
-  "parentWorld": "/home/claude/sightline/cases/demo/worlds/world_v1.js"
+  "parentWorld": "/cases/demo/worlds/world_v1.js"
 }

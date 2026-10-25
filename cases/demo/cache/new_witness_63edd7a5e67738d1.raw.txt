@@ -1,0 +1,10 @@
+{
+  "name": "Westbound Driver",
+  "position": [91.44, 0, -32.7],
+  "eyeHeight": 1.2,
+  "lookAt": "veh_A",
+  "observationTime": 2,
+  "claim": "I was driving west about 100 yards from the crossover when the truck started its turn and could see the eastbound car coming the entire time.",
+  "confidence": "medium",
+  "assumptions": "Placed in the westbound travel lanes (z = -32.7) at x = 91.44 m (100 yards east of the crossover at x = 0, approaching from the east). Set observationTime to t = 2.0 s, when the truck-tractor begins turning south from its westbound left-turn lane."
+}

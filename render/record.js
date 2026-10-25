@@ -119,7 +119,7 @@ export async function renderViews({ world, worldUrl: worldUrlOpt, views = 'all',
       const u = viewUrl(base, pagePath, { world: worldUrl, cam: hasExtra ? 'overhead' : cam, t, quality, clean: clean ? 1 : null });
       await page.goto(u, { waitUntil: 'load' });
       try {
-        await page.waitForFunction(() => window.sl && window.sl.ready, null, { timeout: 30000 });
+        await page.waitForFunction(() => window.sl && window.sl.ready, null, { timeout: 180000 });
         await page.evaluate(() => window.sl.ready);
       } catch (e) { throw new Error(`viewer not ready for ${u}: ${e.message}\n${errs.join('\n')}`); }
       await waitAssets(page);
@@ -144,7 +144,7 @@ export async function renderViews({ world, worldUrl: worldUrlOpt, views = 'all',
           window.sl.setTime(tt); window.sl.renderFrame(); return tt;
         }, { t: t != null ? +t : null, view });
         const png = path.join(outDir, `${view}_t${String(ts).replace('.', 'p')}${extraWitnesses.length ? '_' + Date.now() : ''}.png`);
-        await page.screenshot({ path: png });
+        await page.screenshot({ path: png, timeout: 180000 });
         result.stills.push(png);
         await page.close();
       }
@@ -169,7 +169,7 @@ export async function renderViews({ world, worldUrl: worldUrlOpt, views = 'all',
       const tc0 = Date.now();
       for (let i = 0; i < n; i++) {
         await page.evaluate(t => { window.sl.setTime(t); window.sl.renderFrame(); }, Math.min(i / fps, info.duration));
-        await page.screenshot({ path: path.join(framesDir, `f${pad(i + 1)}.png`) });
+        await page.screenshot({ path: path.join(framesDir, `f${pad(i + 1)}.png`), timeout: 180000 });
       }
       (result.secPerFrame || (result.secPerFrame = {}))[view] = +((Date.now() - tc0) / 1000 / n).toFixed(3);
       const mp4 = path.join(outDir, `${view}.mp4`);
@@ -180,7 +180,7 @@ export async function renderViews({ world, worldUrl: worldUrlOpt, views = 'all',
         if (SW !== W || SH !== H) { await page.setViewportSize({ width: SW, height: SH }); await wait(50); }
         await page.evaluate(t => { window.sl.setTime(t); window.sl.renderFrame(); }, ts);
         const png = path.join(outDir, `${view}.png`);
-        await page.screenshot({ path: png });
+        await page.screenshot({ path: png, timeout: 180000 });
         result.stills.push(png);
       }
       fs.rmSync(framesDir, { recursive: true, force: true });

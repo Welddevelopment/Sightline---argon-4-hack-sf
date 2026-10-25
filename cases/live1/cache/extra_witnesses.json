@@ -11,34 +11,53 @@
     "observationTime": 9.8,
     "claim": "I watched the car the whole time until it hit the truck from the gas station on the north side of the highway.",
     "confidence": "low",
-    "assumptions": "The gas station is not modeled in the scene, so the witness is placed north of the westbound lanes (z = -40 m, past the road edge at z = -35.1 m) aligned with the intersection (x = 0 m). Observation time is set to t = 9.8 s, just prior to the moment of impact.",
+    "assumptions": "The gas station is not modeled in the scene, so the witness is placed north of the westbound lanes (z = -40 m, past the road edge at z = -35.1 m) aligned with the intersection (x = 0 m). Observation time is set to t = 9.8 s, just prior to the moment of impact. [replayed cached Argon answer from 2026-10-25T19:13:58.487Z; live call failed: timeout after 18000 ms | timeout after 12000 ms]",
     "citation": "Live statement",
-    "source": "argon-live",
-    "latencyMs": 5859,
     "model": "gemini-4-argon",
-    "modelSeconds": 4.979,
-    "attempt": 1,
+    "source": "argon-replay",
+    "latencyMs": 31575,
     "id": "wit_live_1"
   },
   {
-    "name": "Witness (westbound driver 100 yds from crossover at t=2.0s)",
+    "name": "Witness (westbound driver, 100 yd east of crossover at t=2s, looking at veh_A, eye 1.2m [car])",
     "position": [
       91.44,
       0,
-      -29.8
+      -29.9
     ],
     "eyeHeight": 1.2,
     "lookAt": "veh_A",
     "observationTime": 2,
     "claim": "I was driving west, about 100 yards from the crossover, when the truck started its turn, and I could see the eastbound car coming the entire time.",
     "confidence": "medium",
-    "assumptions": "Placed 100 yards (91.44 m) east of the crossover center (x=0) in the westbound travel lanes (z=-29.8 m, between WB inside at -28.0 m and outside at -31.7 m) with standard car driver eye height (1.2 m). Observation time set to t=2.0 s, when veh_T_tractor begins turning south from z=-23.8 m in the left-turn lane.",
+    "assumptions": "Placed in the US-27A westbound lanes (z = -29.9 m, between the inside lane at -28.04 m and outside lane at -31.7 m) 100 yards (91.44 m) east of the crossover center (x = 0 m). Set observationTime to t = 2.0 s, when the truck tractor begins turning south from z = -23.8 m in the moving-object table.",
     "citation": "Live statement",
     "source": "argon-live",
-    "latencyMs": 6455,
+    "latencyMs": 6839,
     "model": "gemini-4-argon",
-    "modelSeconds": 6.31,
+    "modelSeconds": 6.409,
     "attempt": 1,
     "id": "wit_live_2"
+  },
+  {
+    "name": "Witness (nearby pedestrian at intersection at t=9.8s, looking at veh_A, eye 1.6m [standing])",
+    "position": [
+      6,
+      0,
+      6
+    ],
+    "eyeHeight": 1.6,
+    "lookAt": "veh_A",
+    "observationTime": 9.8,
+    "claim": "I was nearby and I saw everything. The car never slowed down.",
+    "confidence": "low",
+    "assumptions": "The statement only says 'nearby' with no specific landmark or vehicle, so the witness is placed as a standing pedestrian on the southeast corner near the stop sign and retail store at [6.0, 0, 6.0] with low confidence. Observation time is set to 9.8s (just before impact) because they claim to have seen everything including the car's approach up to impact.",
+    "citation": "Live statement",
+    "source": "argon-live",
+    "latencyMs": 5264,
+    "model": "gemini-4-argon",
+    "modelSeconds": 5.176,
+    "attempt": 1,
+    "id": "wit_live_3"
   }
 ]

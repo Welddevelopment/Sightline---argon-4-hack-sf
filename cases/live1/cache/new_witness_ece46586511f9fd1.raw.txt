@@ -1,10 +1,10 @@
 {
-  "name": "New Witness",
-  "position": [6.0, 0.0, 6.0],
+  "name": "Witness (nearby pedestrian at intersection at t=9.8s, looking at veh_A, eye 1.6m [standing])",
+  "position": [6.0, 0, 6.0],
   "eyeHeight": 1.6,
   "lookAt": "veh_A",
-  "observationTime": 10.0,
-  "claim": "I was nearby and I saw everything, and the car never slowed down.",
+  "observationTime": 9.8,
+  "claim": "I was nearby and I saw everything. The car never slowed down.",
   "confidence": "low",
-  "assumptions": "The statement 'nearby' is extremely vague and gives no specific landmark or vehicle, so the witness is placed as a standing pedestrian on the walkable southeast corner near the stop sign and retail store at [6.0, 0.0, 6.0]. The observation time is set to 10.0s, just before impact, to correspond with watching the car ('veh_A') approach without slowing down."
+  "assumptions": "The statement only says 'nearby' with no specific landmark or vehicle, so the witness is placed as a standing pedestrian on the southeast corner near the stop sign and retail store at [6.0, 0, 6.0] with low confidence. Observation time is set to 9.8s (just before impact) because they claim to have seen everything including the car's approach up to impact."
 }

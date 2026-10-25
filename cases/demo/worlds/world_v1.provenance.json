@@ -1,11 +1,11 @@
 {
   "world": "/cases/demo/worlds/world_v1.js",
   "version": 1,
-  "createdAt": "2026-10-25T18:30:45.701Z",
-  "mode": "seeded",
-  "model": null,
-  "promptFile": "argon/prompts/generate_world.md",
-  "promptVersion": "6a0cf43c20f8",
+  "createdAt": "2026-10-25T19:21:40.101Z",
+  "mode": "mock",
+  "model": "gemini-4-argon",
+  "promptFile": "argon/prompts/generate_world_v2.md",
+  "promptVersion": "93c75e220362",
   "inputs": [
     {
       "file": "text/deposition.txt",
@@ -48,7 +48,7 @@
       "bytes": 54576
     }
   ],
-  "outputSha256": "66bae4ec6c481e05c505c9a89405084a169f6488a4c6df9deb29bac4bd76cd55",
+  "outputSha256": "ef838b81682f05582a5203894c2c5d4f7f7e8667f1b88f4246c59d35179d081a",
   "usage": {
     "promptTokens": null,
     "outputTokens": null,

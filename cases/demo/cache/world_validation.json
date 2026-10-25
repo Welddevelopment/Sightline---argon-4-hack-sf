@@ -1,0 +1,141 @@
+[
+  {
+    "caseId": "demo",
+    "at": "2026-10-25T19:21:58.933Z",
+    "world": "/cases/demo/worlds/world_v1.js",
+    "contract": "v2",
+    "outcome": "argon",
+    "totalSeconds": 38,
+    "attempts": [
+      {
+        "name": "generate_world",
+        "mode": "mock",
+        "model": "gemini-4-argon",
+        "seconds": null,
+        "finishReason": null,
+        "promptTokens": null,
+        "outputTokens": null,
+        "thoughtsTokens": null,
+        "validation": {
+          "ok": true,
+          "errors": [],
+          "warnings": [],
+          "stats": {
+            "lines": 215,
+            "chars": 17588,
+            "geometryCalls": 0,
+            "objects": 18,
+            "witnesses": 3,
+            "facts": 9,
+            "duration": 22.4,
+            "moving": 3,
+            "assetCalls": 20,
+            "assetMethods": [
+              "environment",
+              "groundPlane",
+              "road",
+              "median",
+              "intersection",
+              "building",
+              "shelter",
+              "pole",
+              "impactMarker",
+              "skidMark",
+              "vehicle"
+            ],
+            "vehicleTypes": [
+              "sedan",
+              "truck_tractor",
+              "semitrailer"
+            ],
+            "citations": {
+              "inferred": 7,
+              "unlabeled": 0
+            },
+            "plausibility": [
+              {
+                "subject": "veh_A",
+                "pass": true,
+                "maxAccelG": 0.02,
+                "maxSpeedMph": 74.1
+              },
+              {
+                "subject": "veh_T_tractor",
+                "pass": true,
+                "maxAccelG": 0.2,
+                "maxSpeedMph": 13.7
+              },
+              {
+                "subject": "veh_T_trailer",
+                "pass": true,
+                "maxAccelG": 0.19,
+                "maxSpeedMph": 13.6
+              }
+            ],
+            "assetFallbacks": {}
+          }
+        }
+      }
+    ],
+    "final": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "stats": {
+        "lines": 215,
+        "chars": 17588,
+        "geometryCalls": 0,
+        "objects": 18,
+        "witnesses": 3,
+        "facts": 9,
+        "duration": 22.4,
+        "moving": 3,
+        "assetCalls": 20,
+        "assetMethods": [
+          "environment",
+          "groundPlane",
+          "road",
+          "median",
+          "intersection",
+          "building",
+          "shelter",
+          "pole",
+          "impactMarker",
+          "skidMark",
+          "vehicle"
+        ],
+        "vehicleTypes": [
+          "sedan",
+          "truck_tractor",
+          "semitrailer"
+        ],
+        "citations": {
+          "inferred": 7,
+          "unlabeled": 0
+        },
+        "plausibility": [
+          {
+            "subject": "veh_A",
+            "pass": true,
+            "maxAccelG": 0.02,
+            "maxSpeedMph": 74.1
+          },
+          {
+            "subject": "veh_T_tractor",
+            "pass": true,
+            "maxAccelG": 0.2,
+            "maxSpeedMph": 13.7
+          },
+          {
+            "subject": "veh_T_trailer",
+            "pass": true,
+            "maxAccelG": 0.19,
+            "maxSpeedMph": 13.6
+          }
+        ],
+        "assetFallbacks": {}
+      }
+    },
+    "problems": []
+  }
+]

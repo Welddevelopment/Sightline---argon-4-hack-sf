@@ -1,24 +1,31 @@
 {
   "name": "new_witness_63edd7a5e67738d1",
   "model": "gemini-4-argon",
-  "seconds": 6.31,
+  "seconds": 6.409,
   "finishReason": "STOP",
   "usage": {
     "promptTokenCount": 4631,
-    "candidatesTokenCount": 260,
-    "totalTokenCount": 4891,
+    "candidatesTokenCount": 236,
+    "totalTokenCount": 4867,
+    "cachedContentTokenCount": 2577,
     "promptTokensDetails": [
       {
         "modality": "TEXT",
         "tokenCount": 4631
       }
     ],
+    "cacheTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2577
+      }
+    ],
     "candidatesTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 260
+        "tokenCount": 236
       }
     ]
   },
-  "at": "2026-10-25T19:15:07.763Z"
+  "at": "2026-10-25T19:23:07.641Z"
 }

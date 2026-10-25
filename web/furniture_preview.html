@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Furniture Lineup</title>
+<style>
+  :root { --bg: #c9d3da; --fg: #1d2328; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1a1f24; --fg: #e4e8eb; } }
+  :root[data-theme="dark"] { --bg: #1a1f24; --fg: #e4e8eb; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); overflow: hidden; font: 13px system-ui, sans-serif; }
+  canvas { display: block; }
+  #hud { position: fixed; left: 12px; top: 10px; background: rgba(0,0,0,.45); color: #fff; padding: 6px 10px; border-radius: 6px; }
+  #hud a { color: #cfe6ff; margin-right: 8px; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "/node_modules/three/build/three.module.js",
+  "three/addons/": "/node_modules/three/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="hud">Furniture lineup (1 m grid) ·
+  <a href="?view=overview">overview</a><a href="?view=signs">signs</a><a href="?view=signals">signals</a><a href="?view=trees">trees</a><a href="?view=buildings">buildings</a><a href="?view=street">street</a><a href="?view=night">night</a></div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import * as F from './assets/furniture.js';
+
+const q = new URLSearchParams(location.search);
+const view = q.get('view') || 'overview';
+const night = view === 'night';
+if (q.get('clean')) document.getElementById('hud').style.display = 'none';
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(2, devicePixelRatio));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = night ? 0.9 : 1.0;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(night ? 0x0b1018 : 0xbfd0dc);
+scene.fog = new THREE.Fog(scene.background, 120, 320);
+const pm = new THREE.PMREMGenerator(renderer);
+scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = night ? 0.05 : 0.55;
+
+const sun = new THREE.DirectionalLight(0xfff1e0, night ? 0.05 : 2.6);
+sun.position.set(-40, 60, -25); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -70, right: 70, top: 50, bottom: -50, near: 1, far: 200 });
+sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.03;
+scene.add(sun, new THREE.HemisphereLight(0xd8e6f2, 0x5c5a50, night ? 0.04 : 0.7));
+
+// ground: asphalt band + grass, 1 m grid (10 m major)
+const grassMat = new THREE.MeshStandardMaterial({ color: 0x6f7d55, roughness: 1 });
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), grassMat); ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+const asph = new THREE.Mesh(new THREE.PlaneGeometry(160, 11), new THREE.MeshStandardMaterial({ color: 0x3b3d3f, roughness: 0.95 }));
+asph.rotation.x = -Math.PI / 2; asph.position.set(10, 0.005, -6); asph.receiveShadow = true; scene.add(asph);
+for (const z of [-6]) { const l = new THREE.Mesh(new THREE.PlaneGeometry(160, 0.12), new THREE.MeshStandardMaterial({ color: 0xe8c43a, roughness: 0.6 })); l.rotation.x = -Math.PI / 2; l.position.set(10, 0.008, z); scene.add(l); }
+const grid = new THREE.GridHelper(200, 200, 0x222222, 0x222222); grid.material.transparent = true; grid.material.opacity = 0.16; grid.position.y = 0.012; scene.add(grid);
+const grid10 = new THREE.GridHelper(200, 20, 0x000000, 0x000000); grid10.material.transparent = true; grid10.material.opacity = 0.35; grid10.position.y = 0.014; scene.add(grid10);
+
+function label(text, x, z) {
+  const c = document.createElement('canvas'); c.width = 512; c.height = 64; const g = c.getContext('2d');
+  g.fillStyle = 'rgba(15,18,22,.75)'; g.fillRect(0, 0, 512, 64); g.fillStyle = '#fff'; g.font = '600 30px system-ui, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(text, 256, 33);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 0.3), new THREE.MeshBasicMaterial({ map: t, transparent: true }));
+  m.rotation.x = -Math.PI / 2; m.position.set(x, 0.02, z); scene.add(m);
+}
+const items = [];
+function put(obj, x, z, ry = 0, txt) { obj.position.set(x, 0, z); obj.rotation.y = ry; scene.add(obj); items.push(obj); if (txt) label(txt, x, z + 1.6); return obj; }
+
+// Row A (z=0, faces -Z toward the road at z=-6): signs at 1.6 m spacing
+const signKinds = [['stop', { streetName: 'NE 140TH CT', streetName2: 'US 27 ALT' }], ['yield'], ['speed_limit', { speed: 55 }], ['intersection'], ['side_road_right'], ['signal_ahead'], ['stop_ahead'], ['curve_right'], ['route_shield', { text: '27' }], ['street_name', { text: 'NE 140TH CT' }], ['generic', { text: 'NO\nOUTLET' }]];
+signKinds.forEach(([k, o], i) => put(F.sign(k, { id: 'sg_' + k, ...(o || {}) }), -2 + i * 1.9, 0, 0, k));
+// signals over the road (+X arm)
+put(F.signal({ id: 'sig_arm', heads: 2, mastArm: 9, state: 'red', streetName: 'NE 140TH CT' }), -22, 0.5, 0, 'signal mast arm (red)');
+put(F.signal({ id: 'sig_post', heads: 1, state: 'green' }), -24.5, 0.5, 0, 'post-top (green)');
+const span = put(F.signal({ id: 'sig_span', heads: 3, spanWire: true, mastArm: 13, state: 'yellow' }), -40, 0.5, 0, 'span wire (yellow)');
+// pole line + streetlight
+put(F.pole({ id: 'pole1', span: 40, transformer: true }), 26, 1.5, Math.PI / 2, 'utility pole');
+put(F.pole({ id: 'pole2' }), 26, -38.5, Math.PI / 2);
+put(F.streetlight({ id: 'sl', on: night || view === 'street' }), 32, 0.6, 0, 'streetlight');
+put(F.shelter({ id: 'shelter' }), 38, 1.2, 0, 'bus shelter');
+// trees row
+put(F.tree({ id: 'oak', kind: 'oak', height: 9, moss: true }), -6, 14, 0, 'live oak + moss 9 m');
+put(F.tree({ id: 'pine', kind: 'pine', height: 18 }), 6, 14, 0, 'slash pine 18 m');
+put(F.tree({ id: 'palm', kind: 'palm', height: 9 }), 13, 14, 0, 'sabal palm 9 m');
+put(F.tree({ id: 'shrub', kind: 'shrub', height: 1.2 }), 18, 13, 0, 'shrub 1.2 m');
+put(F.tree({ id: 'oak2', kind: 'oak', height: 7 }), -16, 14, 0, 'oak 7 m');
+// buildings row
+put(F.building({ id: 'house', style: 'house', w: 13, d: 9 }), -12, 34, 0, 'house');
+put(F.building({ id: 'store', style: 'commercial', w: 18, d: 14 }), 6, 36, 0, 'commercial');
+put(F.building({ id: 'gas', style: 'gas_station', w: 24, d: 28 }), 32, 42, 0, 'gas station');
+put(F.building({ id: 'barn', style: 'barn', w: 10, d: 16 }), -30, 38, 0, 'barn');
+put(F.fence({ id: 'fence', points: [[-50, 24], [-20, 24], [-20, 50]] }), 0, 0, 0);
+put(F.parkedVehicle(null, 'sedan', { id: 'pv', color: 0x8a1f1f }), 44, 3.5, Math.PI / 2, 'parkedVehicle (fallback)');
+
+const cam = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 600);
+const VIEWS = {
+  overview: [[-30, 38, -55], [8, 0, 18]],
+  signs: [[6, 1.6, -9], [7, 2.2, 0]],
+  signals: [[-24, 1.6, -26], [-26, 5.5, 0]],
+  trees: [[4, 4, -16], [3, 5, 14]],
+  buildings: [[0, 12, -18], [0, 3, 36]],
+  street: [[48, 1.4, -10], [20, 2.5, -3]],
+  night: [[44, 1.6, -14], [28, 3, 0]],
+};
+const [p, t] = VIEWS[view] || VIEWS.overview;
+cam.position.set(...p);
+const controls = new OrbitControls(cam, renderer.domElement); controls.target.set(...t); controls.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+let frames = 0;
+renderer.setAnimationLoop(() => {
+  span.userData.setState('flash', performance.now() / 1000);
+  span.userData.setState('yellow');
+  controls.update(); renderer.render(scene, cam);
+  if (++frames === 3) window.__ready = true;
+});
+window.__items = items;
+</script>
+</body>
+</html>

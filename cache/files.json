@@ -33,5 +33,54 @@
     "mimeType": "video/mp4",
     "expiresAt": "2026-10-27T18:55:34.287537637Z",
     "uploadedAt": "2026-10-25T18:55:37.870Z"
+  },
+  "cases/stubtest/evidence/deposition.mp4|4244843|1792956006549": {
+    "uri": "https://stub/files/x1",
+    "name": "files/x1",
+    "mimeType": "video/mp4",
+    "expiresAt": null,
+    "uploadedAt": "2026-10-25T19:20:13.009Z"
+  },
+  "cases/demo/evidence/deposition.mp4|4244843|1792952612525": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/yh4xrqu35tfm",
+    "name": "files/yh4xrqu35tfm",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T19:20:57.464518749Z",
+    "uploadedAt": "2026-10-25T19:21:21.149Z"
+  },
+  "cases/_lightlive/evidence/deposition.mp4|4244843|1792956083938": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/g233war1s8g5",
+    "name": "files/g233war1s8g5",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T19:21:34.028717069Z",
+    "uploadedAt": "2026-10-25T19:21:56.465Z"
+  },
+  "cases/_lightlive/renders/world_v1/overhead.mp4|87542|1792956083948": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/vvvaziyoi7pq",
+    "name": "files/vvvaziyoi7pq",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T19:21:57.378710803Z",
+    "uploadedAt": "2026-10-25T19:22:00.948Z"
+  },
+  "cases/_lightlive/renders/world_v1/wit_A.mp4|255804|1792956083948": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/0dmve0id6nua",
+    "name": "files/0dmve0id6nua",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T19:22:02.312361850Z",
+    "uploadedAt": "2026-10-25T19:22:05.870Z"
+  },
+  "cases/_lightlive/renders/world_v1/wit_B.mp4|269018|1792956083948": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/5jqmstu5zscz",
+    "name": "files/5jqmstu5zscz",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T19:22:06.779463040Z",
+    "uploadedAt": "2026-10-25T19:22:10.687Z"
+  },
+  "cases/_lightlive/renders/world_v1/wit_C.mp4|134149|1792956083949": {
+    "uri": "https://generativelanguage.googleapis.com/v1beta/files/al0ohsqxeyw9",
+    "name": "files/al0ohsqxeyw9",
+    "mimeType": "video/mp4",
+    "expiresAt": "2026-10-27T19:22:11.513458925Z",
+    "uploadedAt": "2026-10-25T19:22:15.148Z"
   }
 }

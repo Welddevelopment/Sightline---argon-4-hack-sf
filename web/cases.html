@@ -18,7 +18,7 @@
     </div>
   </div>
   <span class="sim-badge" id="modeBadge" title="">CONNECTING…</span>
-  <nav><a href="/" class="btn ghost sm">Viewer</a></nav>
+  <nav><a href="/review.html" class="btn ghost sm" id="reviewLink" title="Step 3: review and confirm what Argon extracted before building" onclick="this.href='/review.html?case='+encodeURIComponent(new URLSearchParams(location.search).get('case')||'demo')">Review inputs</a><a href="/" class="btn ghost sm">Viewer</a></nav>
 </header>
 
 <div class="wrap">
@@ -32,5 +32,6 @@
 <script type="module" src="/cases.js"></script>
 <script type="module" src="/methodology.js"></script>
 <script src="/jobs.js" defer></script>
+<script src="/argon_only.js" defer></script>
 </body>
 </html>

@@ -28,7 +28,7 @@ const q = new URLSearchParams(location.search);
 const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
 renderer.setPixelRatio(Math.min(2, devicePixelRatio));
 renderer.setSize(innerWidth, innerHeight);
-renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
 document.body.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
@@ -88,9 +88,11 @@ const views = {
 const [p, t] = views[q.get('view')] || views.three;
 cam.position.set(...p);
 const ctl = new OrbitControls(cam, renderer.domElement); ctl.target.set(...t); ctl.update();
-addEventListener('resize', () => { renderer.setSize(innerWidth, innerHeight); cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); });
-let n = 0;
-renderer.setAnimationLoop(() => { ctl.update(); renderer.render(scene, cam); if (++n === 3) window.__ready = true; });
+addEventListener('resize', () => { renderer.setSize(innerWidth, innerHeight); cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); draw(); });
+// render on demand (headless SwiftShader is slow)
+const draw = () => renderer.render(scene, cam);
+ctl.addEventListener('change', draw);
+draw(); requestAnimationFrame(() => { draw(); window.__ready = true; });
 window.__info = items.map(o => ({ name: o.name, ud: { ...o.userData, joints: undefined, rider: !!o.userData.rider } }));
 </script>
 </body>

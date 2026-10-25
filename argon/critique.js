@@ -6,6 +6,17 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { callArgon, ARGON_MODEL, readPrompt, fill, loadWorldContract, textPart, imagePart, filePart, uploadVideo, ROOT, mode } from './client.js';
 import { caseDirs, loadCaseText, evidenceMediaParts, evidenceSummary, defaultCaseId } from './case.js';
+import { lightingAudit, formatLightingAudit } from './solar.js';
+
+/** Instantiate the world for the lighting audit (file or source); null if it cannot be loaded. */
+async function loadForAudit(worldFile, worldSource) {
+  try {
+    const { loadWorldModule, instantiateWorld } = await import('../checks/load_world.js');
+    if (worldFile) return await loadWorldModule(path.resolve(ROOT, worldFile));
+    if (worldSource) return await instantiateWorld(await import('data:text/javascript;base64,' + Buffer.from(worldSource).toString('base64')));
+  } catch (e) { console.warn('[critique] lighting audit: world not loadable:', e.message); }
+  return null;
+}
 
 /** Collect render files: a renderViews() result, a list of paths, or a directory of <view>.mp4/.png. */
 export function collectRenders(renders) {
@@ -29,14 +40,18 @@ export function normalizePatch(patch) {
 }
 
 /** critique({ caseId, round, worldFile|worldSource, checks, renders }) → { round, verdict, summary, findings, patch, mode } */
-export async function critique({ caseId = defaultCaseId(), round = 1, worldFile, worldSource, checks = [], renders,
+export async function critique({ caseId = defaultCaseId(), round = 1, worldFile, worldSource, checks = [], renders, world, scene,
   maxOutputTokens = Number(process.env.ARGON_CRITIQUE_MAX_TOKENS || 65536) } = {}) {
   const d = caseDirs(caseId);
   worldSource = worldSource ?? (worldFile ? fs.readFileSync(path.resolve(ROOT, worldFile), 'utf8') : '');
+  // Lighting & visibility audit (brief step 5): expected sun from the record vs the render's sun, + glare per witness/driver.
+  let lighting = null;
+  try { lighting = await lightingAudit({ caseId, world: world ?? await loadForAudit(worldFile, worldSource), scene, evidence: evidenceSummary(caseId) }); }
+  catch (e) { lighting = { notes: [`lighting audit failed: ${e.message}`] }; }
   const prompt = fill(readPrompt('critique'), {
     ROUND: String(round), NEXT_ROUND: String(round + 1), CONTRACT: loadWorldContract(),
     CASE_ID: caseId, INVENTORY: JSON.stringify(evidenceSummary(caseId)), CASE_TEXT: loadCaseText(caseId),
-    CHECKS: JSON.stringify(checks, null, 2), WORLD: worldSource,
+    CHECKS: JSON.stringify(checks, null, 2), WORLD: worldSource, LIGHTING: formatLightingAudit(lighting),
   });
   const parts = [textPart(prompt), ...(await evidenceMediaParts(caseId))];
   for (const f of collectRenders(renders)) {
@@ -55,6 +70,7 @@ export async function critique({ caseId = defaultCaseId(), round = 1, worldFile,
   const data = res.data || {};
   const patch = normalizePatch(data.patch);
   return { round, verdict: data.verdict || (patch ? 'world_patched' : 'consistent'), summary: data.summary || '', findings: data.findings || [], patch, mode: res.mode,
+    lighting, lightingAudit: data.lightingAudit || null,
     call: { name: `critique_round${round}`, model: res.model, mode: res.mode, cacheDir: d.cache, maxOutputTokens, promptFile: 'critique' } };
 }
 

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heavy Vehicle Lineup</title>
+<style>
+  :root { --bg: #e4e7ea; --ink: #1d2328; --muted: #5d666e; --tag: rgba(255,255,255,0.9); }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 13px/1.35 "Inter", "Helvetica Neue", Arial, sans-serif; overflow: hidden; }
+  canvas { display: block; }
+  #labels { position: fixed; inset: 0; pointer-events: none; }
+  .lbl { position: absolute; transform: translate(-50%, -100%); background: var(--tag); border: 1px solid #c3c9ce; border-radius: 3px; padding: 3px 7px; white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+  .lbl b { font-weight: 600; } .lbl span { color: var(--muted); margin-left: 6px; font-variant-numeric: tabular-nums; }
+  #hud { position: fixed; left: 14px; bottom: 12px; color: var(--muted); font-size: 12px; background: var(--tag); padding: 4px 8px; border-radius: 3px; }
+</style>
+<script type="importmap">
+{ "imports": { "three": "/node_modules/three/build/three.module.js", "three/addons/": "/node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="labels"></div>
+<div id="hud">1 m grid · dimensions L × W × H (m) · ?view=lineup|side|rear|close|closebt|closebus|closesb|underride · &amp;art=0.35 · &amp;night=1</div>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { createHeavyVehicle, coupleTrailer } from './assets/vehicles_heavy.js';
+
+const q = new URLSearchParams(location.search);
+const view = q.get('view') || 'lineup';
+const art = parseFloat(q.get('art') || '0');
+const night = q.get('night') === '1';
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = night ? 0.6 : 1.0;
+document.body.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(night ? 0x0d1116 : 0xe4e7ea);
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = night ? 0.08 : 0.7;
+
+scene.add(new THREE.HemisphereLight(0xeef3f8, 0x8a8f94, night ? 0.05 : 0.9));
+const sun = new THREE.DirectionalLight(0xfff6ea, night ? 0.05 : 2.6);
+sun.position.set(-30, 45, -20);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -36, right: 36, top: 36, bottom: -36, near: 1, far: 160 });
+sun.target.position.set(-2, 0, 12); scene.add(sun.target); sun.position.set(-32, 45, -10);
+sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.02;
+scene.add(sun);
+
+// ground + 1 m grid (5 m major lines)
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshStandardMaterial({ color: night ? 0x22262a : 0xd3d7da, roughness: 0.95 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+const g1 = new THREE.GridHelper(100, 100, 0xb4babf, 0xbfc5ca); g1.position.y = 0.002; scene.add(g1);
+const g5 = new THREE.GridHelper(100, 20, 0x8f979e, 0x8f979e); g5.position.y = 0.003; scene.add(g5);
+
+const labels = [];
+function label(obj, title, extra, dy = 0.5) {
+  const d = obj.userData.dims;
+  const el = document.createElement('div'); el.className = 'lbl';
+  el.innerHTML = `<b>${title}</b><span>${extra || `${d.length} × ${d.width} × ${d.height}`}</span>`;
+  document.getElementById('labels').appendChild(el);
+  labels.push({ el, obj, y: d.height + dy });
+}
+const H = Math.PI / 2;      // heading: front toward -X (west)
+function place(obj, x, z, h = H) { obj.position.set(x, 0, z); obj.rotation.y = h; scene.add(obj); return obj; }
+
+// rows (front toward -X). z: 0 box truck + school bus · 9 tractor + 53 ft van · 18 tractor + flatbed · 27 transit bus
+const bt = place(createHeavyVehicle(THREE, 'box_truck', { id: 'veh_box', color: 0xf2f2f0 }), -14, 0);
+label(bt, 'box_truck', null);
+const sb = place(createHeavyVehicle(THREE, 'bus', { id: 'veh_sbus', variant: 'school' }), 2, 0);
+label(sb, 'bus · school', null);
+const tractor = place(createHeavyVehicle(THREE, 'truck_tractor', { id: 'veh_T_tractor', color: 0x6e1b1f }), -13, 9);
+const van = createHeavyVehicle(THREE, 'semitrailer', { id: 'veh_T_trailer', variant: 'box' }); scene.add(van);
+coupleTrailer(tractor, van, art);
+label(tractor, 'truck_tractor', null); label(van, 'semitrailer · box van', null);
+const tr2 = place(createHeavyVehicle(THREE, 'truck_tractor', { id: 'veh_T2', color: 0x1f3d6e }), -13, 18);
+const fb = createHeavyVehicle(THREE, 'semitrailer', { id: 'veh_FB', variant: 'flatbed' }); scene.add(fb); coupleTrailer(tr2, fb, 0);
+label(fb, 'semitrailer · flatbed', '16.2 × 2.6 × deck 1.52');
+const tb = place(createHeavyVehicle(THREE, 'bus', { id: 'veh_bus', variant: 'transit', color: 0xeef0ee }), -6, 27);
+label(tb, 'bus · transit', null);
+
+// sedan-height envelope beside the van: shows the open underride space (1.45 m roof vs 1.07 m crossmember flange)
+const env = new THREE.Mesh(new THREE.BoxGeometry(4.9, 1.45, 1.9), new THREE.MeshStandardMaterial({ color: 0x2b6cb0, transparent: true, opacity: 0.25, depthWrite: false }));
+const envEdges = new THREE.LineSegments(new THREE.EdgesGeometry(env.geometry), new THREE.LineBasicMaterial({ color: 0x2b6cb0 }));
+const envG = new THREE.Group(); envG.add(env, envEdges);
+envG.position.set(van.position.x - 2.0, 0.725, van.position.z - 3.4); scene.add(envG);
+const envAnchor = new THREE.Object3D(); envAnchor.position.set(envG.position.x, 0, envG.position.z); envAnchor.userData.dims = { length: 4.9, width: 1.9, height: 1.45 }; scene.add(envAnchor);
+if (view === 'side' || view === 'underride') label(envAnchor, 'sedan envelope', '1.45 m roof', 0.3);
+
+if (view === 'side' || view === 'underride') { bt.visible = false; sb.visible = false; }
+if (night) for (const o of [tractor, van, bt, tr2, fb, tb, sb]) o.userData.setLights(true, { beams: true });
+
+// cameras
+const cam = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, 0.1, 500);
+const P = {
+  lineup: [[-46, 26, -26], [-2, 0.5, 12]],
+  side: [[-2, 3.0, -30], [-2, 1.8, 9]],
+  rear: [[26, 7, -8], [4, 1.5, 6]],
+  close: [[-20.5, 3.0, 2.2], [-12.5, 1.7, 9]],
+  closebt: [[-21, 2.6, -6.5], [-14, 1.5, 0]],
+  closebus: [[-14, 3.0, 20.5], [-6, 1.6, 27]],
+  closesb: [[-8.5, 3.0, -6.5], [0, 1.6, 0]],
+  underride: [[-2.5, 1.0, 1.5], [3, 1.0, 9]],
+}[view] || [[-46, 26, -26], [-2, 0.5, 12]];
+if (view === 'side') cam.fov = 24;
+if (view === 'underride') cam.fov = 50;
+cam.updateProjectionMatrix();
+cam.position.set(...P[0]);
+const controls = new OrbitControls(cam, renderer.domElement);
+controls.target.set(...P[1]); controls.update();
+
+const v = new THREE.Vector3();
+function frame() {
+  renderer.render(scene, cam);
+  for (const l of labels) {
+    v.set(l.obj.position.x, l.y, l.obj.position.z).project(cam);
+    const vis = l.obj.visible && v.z < 1 && Math.abs(v.x) < 1.1 && Math.abs(v.y) < 1.1;
+    l.el.style.display = vis ? '' : 'none';
+    l.el.style.left = ((v.x + 1) / 2 * innerWidth) + 'px';
+    l.el.style.top = ((1 - v.y) / 2 * innerHeight) + 'px';
+  }
+}
+controls.addEventListener('change', frame);
+addEventListener('resize', () => { renderer.setSize(innerWidth, innerHeight); cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); frame(); });
+frame();
+requestAnimationFrame(() => { frame(); window.__ready = true; });
+</script>
+</body>
+</html>

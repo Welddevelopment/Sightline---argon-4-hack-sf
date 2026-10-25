@@ -55,17 +55,32 @@ function fbm2(u, v, Px, Py, oct, seed, gain = 0.5) {
   }
   return s / norm;
 }
-// periodic Worley: returns [F1, F2, cellRandom] in cell units; u,v in [0,1), P cells across
-function worley(u, v, P, seed) {
-  const x = u * P, y = v * P, xi = Math.floor(x), yi = Math.floor(y);
-  let f1 = 9, f2 = 9, id = 0;
-  for (let j = -1; j <= 1; j++) for (let i = -1; i <= 1; i++) {
-    const cx = mod(xi + i, P), cy = mod(yi + j, P);
-    const px = xi + i + hash2(cx, cy, seed), py = yi + j + hash2(cx, cy, seed + 7);
-    const d = Math.hypot(px - x, py - y);
-    if (d < f1) { f2 = f1; f1 = d; id = hash2(cx, cy, seed + 13); } else if (d < f2) f2 = d;
+// periodic Worley with cached feature-point tables: returns [F1, F2, cellRandom] in cell units; u,v in [0,1), P cells across
+const worleyTables = new Map();
+function worleyTable(P, seed) {
+  const k = P + ':' + seed;
+  if (!worleyTables.has(k)) {
+    const fx = new Float32Array(P * P), fy = new Float32Array(P * P), id = new Float32Array(P * P);
+    for (let j = 0; j < P; j++) for (let i = 0; i < P; i++) { const c = j * P + i; fx[c] = hash2(i, j, seed); fy[c] = hash2(i, j, seed + 7); id[c] = hash2(i, j, seed + 13); }
+    worleyTables.set(k, { fx, fy, id });
   }
-  return [f1, f2, id];
+  return worleyTables.get(k);
+}
+const _wout = [0, 0, 0];
+function worley(u, v, P, seed) {
+  const T = worleyTable(P, seed);
+  const x = u * P, y = v * P, xi = Math.floor(x), yi = Math.floor(y);
+  let f1 = 99, f2 = 99, id = 0;
+  for (let j = -1; j <= 1; j++) {
+    const cy = mod(yi + j, P), row = cy * P;
+    for (let i = -1; i <= 1; i++) {
+      const c = row + mod(xi + i, P);
+      const dx = xi + i + T.fx[c] - x, dy = yi + j + T.fy[c] - y, d = dx * dx + dy * dy;
+      if (d < f1) { f2 = f1; f1 = d; id = T.id[c]; } else if (d < f2) f2 = d;
+    }
+  }
+  _wout[0] = Math.sqrt(f1); _wout[1] = Math.sqrt(f2); _wout[2] = id;
+  return _wout;
 }
 const clamp01 = x => x < 0 ? 0 : x > 1 ? 1 : x;
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -130,10 +145,10 @@ function genSurface(w, h, fn) {
 const RECIPES = {
   // Aged Florida asphalt: limestone aggregate (light) in grey binder, sun-faded.
   asphalt: {
-    size: 1024, tile: 2.5, normal: 6,
+    size: 512, tile: 2.0, normal: 6,
     gen(u, v, p) {
-      const [f1, f2, id] = worley(u, v, 300, 11);         // ~8 mm coarse aggregate
-      const [g1, g2, gid] = worley(u, v, 760, 23);        // ~3 mm fines
+      const [f1, f2, id] = worley(u, v, 180, 11);         // ~11 mm coarse aggregate
+      const [g1, g2, gid] = worley(u, v, 400, 23);        // ~5 mm fines
       const edge = f2 - f1, stone = smooth(0.06, 0.28, edge);
       const fine = smooth(0.05, 0.25, g2 - g1);
       const blot = fbm(u, v, 5, 4, 3);                    // decimetre blotches
@@ -302,7 +317,7 @@ export function laneWearTextures() {
       // transverse tar snakes
       for (const c of cracks) {
         if (u < c.start || u > c.start + c.len) continue;
-        const cv = c.v + Math.sin(u * 18 + c.ph) * c.amp + (fbm2(u, v, 8, 1, 316) - 0.5) * 0.004;
+        const cv = c.v + Math.sin(u * 18 + c.ph) * c.amp + (fbm2(u, v, 8, 1, 1, 316) - 0.5) * 0.004;
         let dv = Math.abs(v - cv); dv = Math.min(dv, 1 - dv);
         const t = Math.exp(-((dv / 0.0012) ** 2));
         if (t > 0.3) { r = 22; g = 22; b = 22; a = Math.max(a, t * 0.9); ro = 0.4; }

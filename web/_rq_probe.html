@@ -1,0 +1,22 @@
+<!doctype html><html><body style="margin:0"><div id="stage" style="width:1280px;height:720px"></div>
+<script type="importmap">{ "imports": { "three": "/node_modules/three/build/three.module.js", "three/addons/": "/node_modules/three/examples/jsm/" } }</script>
+<script type="module">
+import * as THREE from 'three';
+import { applyRenderQuality } from '/web/render_quality.js';
+const log = (...a) => console.log('T', ...a);
+const r = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+document.getElementById('stage').appendChild(r.domElement); r.setSize(1280, 720);
+const s = new THREE.Scene(); s.background = new THREE.Color(0x9ec9ec);
+const sun = new THREE.DirectionalLight(0xffffff, 1.7); sun.position.set(70,130,50); s.add(sun, sun.target);
+s.add(new THREE.HemisphereLight(0xffffff, 0x888888, 1));
+const m = new THREE.Mesh(new THREE.BoxGeometry(4,2,2), new THREE.MeshStandardMaterial({ color: 0xcc2222, roughness: 0.4 })); m.position.y = 1; m.castShadow = true; s.add(m);
+const g = new THREE.Mesh(new THREE.PlaneGeometry(200,200), new THREE.MeshStandardMaterial({ color: 0x7d9a64 })); g.rotation.x = -Math.PI/2; g.receiveShadow = true; s.add(g);
+const cam = new THREE.PerspectiveCamera(60, 16/9, 0.1, 1000); cam.position.set(8,5,10); cam.lookAt(0,1,0);
+let t = performance.now();
+const q = new URLSearchParams(location.search);
+const h = applyRenderQuality(r, s, { quality: q.get('quality') || 'interactive', sun, roi: new THREE.Box3(new THREE.Vector3(-20,0,-20), new THREE.Vector3(20,3,20)), env: q.get('env') || undefined });
+log('apply', performance.now() - t); t = performance.now();
+r.render(s, cam); r.getContext().finish(); log('first render', performance.now() - t); t = performance.now();
+r.render(s, cam); r.getContext().finish(); log('second render', performance.now() - t);
+window.done = true;
+</script></body></html>

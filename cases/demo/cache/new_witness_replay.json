@@ -20,5 +20,49 @@
     "model": "gemini-4-argon",
     "seconds": 7.347,
     "at": "2026-10-25T19:12:58.337Z"
+  },
+  "865d7236e960cf40": {
+    "statement": "I was pumping gas at the station on the north side of the highway, facing the intersection. I watched the car the whole time until it hit the truck.",
+    "witness": {
+      "name": "New Witness",
+      "position": [
+        0,
+        0,
+        -45
+      ],
+      "eyeHeight": 1.6,
+      "lookAt": "veh_A",
+      "observationTime": 10.4,
+      "claim": "Watched the car the whole time until it hit the truck from the gas station on the north side of the highway.",
+      "confidence": "low",
+      "assumptions": "The gas station is not modeled in the scene, so the witness is placed as a standing pedestrian (eye height 1.6 m) on the north side of the westbound highway (north of z = -38.05 m) aligned with the intersection at x = 0. Observation time is set to 10.4 s, just at the moment of impact (10.43 s), because they claim to have watched the car until it hit the truck.",
+      "citation": "Live statement",
+      "model": "gemini-4-argon"
+    },
+    "model": "gemini-4-argon",
+    "seconds": 5.434,
+    "at": "2026-10-25T19:17:22.530Z"
+  },
+  "63edd7a5e67738d1": {
+    "statement": "I was driving west, about 100 yards from the crossover, when the truck started its turn. I could see the eastbound car coming the entire time.",
+    "witness": {
+      "name": "Westbound Driver",
+      "position": [
+        91.44,
+        0,
+        -32.7
+      ],
+      "eyeHeight": 1.2,
+      "lookAt": "veh_A",
+      "observationTime": 2,
+      "claim": "I was driving west about 100 yards from the crossover when the truck started its turn and could see the eastbound car coming the entire time.",
+      "confidence": "medium",
+      "assumptions": "Placed in the westbound travel lanes (z = -32.7) at x = 91.44 m (100 yards east of the crossover at x = 0, approaching from the east). Set observationTime to t = 2.0 s, when the truck-tractor begins turning south from its westbound left-turn lane.",
+      "citation": "Live statement",
+      "model": "gemini-4-argon"
+    },
+    "model": "gemini-4-argon",
+    "seconds": 5.294,
+    "at": "2026-10-25T19:21:41.569Z"
   }
 }

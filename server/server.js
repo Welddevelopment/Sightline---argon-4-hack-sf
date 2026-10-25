@@ -64,7 +64,7 @@ async function loadWorld(url) {
   if (worldCache.world && worldCache.url === url && worldCache.mtime === mtime) return worldCache.world;
   const THREE = await getThree();
   const mod = await import(pathToFileURL(file).href + `?t=${mtime}`);
-  const world = mod.default(THREE);
+  const world = mod.default(THREE, await (await import('../checks/load_world.js')).nodeAssets());   // v2 worlds need assets
   world.witnesses = world.witnesses || [];
   for (const w of extraWitnesses) {
     if (!world.witnesses.some((x) => x.id === w.id)) world.witnesses.push(w);
@@ -354,6 +354,7 @@ await import('./review.js').then((m) => m.mountReview(app, { ROOT, MODE, tryImpo
 await import('./clips.js').then((m) => m.mountClips(app, { ROOT, MODE, getThree, errMsg, legacyState: buildState })).catch((e) => console.warn('[sightline] clips API not mounted:', errMsg(e))); // PRODUCT-C: per-camera clip export
 await import('./report.js').then((m) => m.mountReport(app, { ROOT, MODE, getThree, errMsg })).catch((e) => console.warn('[sightline] report API not mounted:', errMsg(e))); // PRODUCT-A: PDF report export
 await import('./scene_export.js').then((m) => m.mountSceneExport(app, { ROOT, MODE, errMsg })).catch((e) => console.warn('[sightline] scene export API not mounted:', errMsg(e))); // PRODUCT-F: scene .glb/.json/.zip
+await import('./case_size.js').then((m) => m.mountCaseSize(app, { ROOT, MODE, errMsg })).catch((e) => console.warn('[sightline] case size API not mounted:', errMsg(e))); // ARGON-ONLY: case size + depo frames
 
 app.use('/api', (req, res) => res.status(404).json({ error: `no such endpoint: ${req.method} ${req.originalUrl}` }));
 

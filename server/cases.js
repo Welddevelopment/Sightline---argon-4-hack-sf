@@ -189,7 +189,7 @@ export function mountCases(app, h) {
     if (!file.startsWith(h.ROOT + path.sep) || !fs.existsSync(file)) throw new Error(`world file not found: ${worldUrl}`);
     const THREE = await h.getThree();
     const mod = await import(pathToFileURL(file).href + `?t=${fs.statSync(file).mtimeMs}`);
-    const world = mod.default(THREE);
+    const world = mod.default(THREE, await (await import('../checks/load_world.js')).nodeAssets());   // v2 worlds need assets
     world.witnesses = world.witnesses || [];
     for (const w of caseWitnesses(id)) if (!world.witnesses.some((x) => x.id === w.id)) world.witnesses.push(w);
     return world;
@@ -432,7 +432,14 @@ export function mountCases(app, h) {
     const rr = await h.tryImport('render/record.js');
     if (rr.mod && typeof rr.mod.renderViews === 'function') {
       try {
-        const out = await rr.mod.renderViews({ world: state.world, worldUrl: state.world, views: [witness.id], t: witness.observationTime ?? 0, stillOnly: true, extraWitnesses: list, outDir: store.dir(id, 'renders', 'live') });
+        // The PNG is optional (the viewer shows the witness camera live), so never let a slow headless render hold the verdict:
+        // wait at most WITNESS_RENDER_BUDGET_MS; the render keeps going and its file still lands in renders/live.
+        const job = rr.mod.renderViews({ world: state.world, worldUrl: state.world, views: [witness.id], t: witness.observationTime ?? 0, stillOnly: true, extraWitnesses: list, outDir: store.dir(id, 'renders', 'live') });
+        job.catch(() => {});
+        let budgetTimer;
+        const budget = Number(process.env.WITNESS_RENDER_BUDGET_MS || 15000);
+        const out = await Promise.race([job, new Promise((_, rej) => { budgetTimer = setTimeout(() => rej(new Error(`still rendering after ${budget} ms; returned verdict without it`)), budget); })])
+          .finally(() => clearTimeout(budgetTimer));
         // Stills land under cases/<id>/renders/live, served at /cases/<id>/... (h.findRenderUrl assumes ROOT/renders → 404).
         const png = [...(out?.stills || []), ...(out?.pngs || [])].find((s) => typeof s === 'string' && path.resolve(s).startsWith(store.dir(id) + path.sep));
         renderUrl = png ? urlFor(id, path.relative(store.dir(id), path.resolve(png)).split(path.sep).join('/')) : h.findRenderUrl(out);

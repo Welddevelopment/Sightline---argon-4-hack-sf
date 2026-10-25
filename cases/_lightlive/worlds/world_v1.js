@@ -1,0 +1,587 @@
+/*
+ * Case ID: live1
+ * Title: US-27A at NE 140th Court, Levy County, FL (May 7, 2016) — NTSB HWY16FH018
+ * Coordinate Frame & Origin:
+ *   - Origin (0, 0, 0) = Initial Point of Impact (POI / AOI), in the center of the US-27A eastbound outside (right) lane on the NE 140th Court centerline (text/police_report.txt p.3; text/facts.txt Modeling assumptions).
+ *   - +X = East (toward Williston), -X = West (toward Bronson), -Z = North, +Z = South, +Y = Up, ground y = 0.
+ *   - 109° side-road skew straightened to 90° per Exhibit 4 (evidence/map.png) and text/facts.txt Modeling assumptions.
+ *
+ * Key Evidence -> Geometry Decisions:
+ *   - US-27A Eastbound & Westbound: Four-lane divided highway, two 12-ft (3.66 m) through lanes per direction, 2-ft (0.61 m) left shoulder, 5-ft (1.52 m) right shoulder (text/facts.txt F6; text/police_report.txt p.3).
+ *   - Median & Turn Lane: ~60-ft (18.29 m) grassy median, 130-ft (39.62 m) median crossover, 550-ft (167.64 m) WB left-turn lane; left-turn lane + median + shoulders = 78 ft (23.77 m) total separation (text/facts.txt F7, F8).
+ *   - Vertical Crest: Located 1,132 ft (345.0 m) west of intersection (x = -345), descending at 2.15% for 1,459 ft (444.7 m) to level out 327 ft (99.7 m) east of intersection (text/facts.txt F10, F27; text/police_report.txt p.3).
+ *   - NE 140th Court: 6.1 m wide local paved road extending south from US-27A (text/facts.txt F11, Modeling assumptions; evidence/map.png). Stop sign on NE 140th Ct approach only (text/police_report.txt p.1).
+ *   - Retail Store & Bench Shelter: Located on SE corner. Measured from Exhibit 4 scale bar (40 m = 400 px => 10 px/m): Retail store 18.0 m × 11.4 m centered at x = 18.2 m, z = 19.6 m; open-sided bench shelter 3.0 m × 1.6 m centered at x = 8.4 m, z = 7.9 m (evidence/map.png; text/facts.txt F12, Modeling assumptions).
+ *   - Vehicle A (2015 Sedan): 4.97 m × 1.96 m × 1.445 m, traveling east at 74 mph (33.08 m/s) in EB outside lane (z = 0), no braking, cresting at t = 0 (x = -345) and impacting at t = 10.43 s (x = 0, z = 0), then traveling 910 ft (277.37 m) off SE roadside through utility pole (t ≈ 18.83 s) to final rest at (276.6, 23.9) heading north (text/facts.txt F14, F17, F18, F24-F26, Modeling assumptions).
+ *   - Vehicle T (2014 Tractor + 2003 Semitrailer): 71 ft 7 in (21.82 m) combination, impact 45 ft 5 in (13.84 m) behind tractor front; trailer box 2.59 m wide, 1.20 m to 4.11 m above ground (text/facts.txt F15, F16, Modeling assumptions). Turning left from WB turn lane across EB lanes onto NE 140th Ct, stopping south of retail store at mark made by Witness B at Depo 26:38 (x ≈ 0, z ≈ 31.3 m).
+ *   - Witness B Position Discrepancy: In deposition video at 27:05–27:13 (Depo 27:05), Witness B marks her position with a red 'X' on Exhibit 4 at x = 6.9 m, z = 4.5 m (between EB shoulder and shelter), which is actually NORTH of the bench shelter, whereas she testified earlier she was sitting on the bench under the roof (Depo 09:05) and verbally said "over by the corner, near the shelter" (Depo 27:04). Furthermore, she claims she had a clear, unobstructed view of the car right up until impact (Depo 27:47, 28:17), which is physically tested against the turning trailer.
+ *   - Witness A: Westbound motorist in WB outside lane (z = -31.65 m) ~0.25 mi (402 m) east of truck at 60 mph (26.82 m/s); trailer blocked view of car once truck entered EB lanes (text/witness_A.txt; text/facts.txt F30).
+ *   - Witness C: Stopped in pickup in WB inside lane (z = -28.0 m) 18 m west of side road (x = -18.0 m) (text/witness_C.txt).
+ */
+
+export default function createWorld(THREE) {
+  const root = new THREE.Group();
+  const objects = {};
+
+  const M = (color, opts = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.85, metalness: 0.1, ...opts });
+  const box = (w, h, d, c, x = 0, y = 0, z = 0) => {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), typeof c === 'number' ? M(c) : c);
+    m.position.set(x, y, z);
+    return m;
+  };
+  const cyl = (rt, rb, h, c, x = 0, y = 0, z = 0, seg = 16) => {
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg), typeof c === 'number' ? M(c) : c);
+    m.position.set(x, y, z);
+    return m;
+  };
+  const flat = (w, d, c, x = 0, z = 0, y = 0.02) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), typeof c === 'number' ? M(c) : c);
+    m.rotation.x = -Math.PI / 2;
+    m.position.set(x, y, z);
+    return m;
+  };
+  const add = (id, node, info) => {
+    node.name = id;
+    root.add(node);
+    objects[id] = { node, ...info };
+    return node;
+  };
+
+  // --- LIGHTING (Daylight, 16:36 EDT, sun high and toward the west behind EB car) ---
+  // Citation: text/facts.txt F1, F2, F3; text/deposition.txt 105
+  root.add(new THREE.HemisphereLight(0xdff0ff, 0x556644, 0.95));
+  const sun = new THREE.DirectionalLight(0xfff8e7, 1.6);
+  sun.position.set(-150, 220, 40); // High in the sky, west-southwest
+  root.add(sun);
+
+  // Ground plane
+  const ground = flat(1400, 500, 0x8a9a70, 0, 0, -0.02);
+  ground.name = 'ground_base';
+  root.add(ground);
+
+  // --- ROAD GEOMETRY (US-27A & NE 140th Court) ---
+  // Origin (0,0,0) = center of EB outside lane (z = 0) on NE 140th Ct centerline (x = 0).
+  // EB lanes: outside lane z in [-1.83, +1.83] (center 0.0), inside lane z in [-5.49, -1.83] (center -3.66).
+  // EB right shoulder (5 ft = 1.52 m): z in [+1.83, +3.35].
+  // EB left shoulder (2 ft = 0.61 m): z in [-6.10, -5.49].
+  // Median + WB left-turn lane + inside shoulders total 78 ft (23.77 m) between EB inside lane edge (-5.49) and WB inside lane edge (-29.26).
+  // WB left-turn lane (12 ft = 3.66 m): z in [-29.26, -25.60] (center -27.43) west of crossover? Wait: WB traffic travels -X (west).
+  // For westbound traffic heading -X, "left" is -Z (south, toward the median).
+  // WB through lanes: inside lane z in [-29.87, -26.21] (center -28.04), outside lane z in [-33.53, -29.87] (center -31.70).
+  // WB right shoulder (5 ft = 1.52 m): z in [-35.05, -33.53].
+  // WB left-turn lane (550 ft = 167.64 m long, east of crossover): z in [-25.60, -21.95] (center -23.77), x in [6.0, 173.6].
+  // Grass median (~60 ft = 18.29 m): z in [-24.99, -6.10], with 130 ft (39.62 m) paved crossover centered at x = 0 (x in [-19.81, +19.81]).
+
+  // 1. US-27A Eastbound Roadway
+  const roadEB = new THREE.Group();
+  // Level section x in [-100, 500], sloped section west of intersection to crest at x = -345
+  // Note: To ensure raycasts and ground-level checks work cleanly while representing the vertical crest occlusion,
+  // we model the pavement and the vertical crest hill occluder at x = -345 (text/facts.txt F10, F27).
+  roadEB.add(flat(1200, 7.32, 0x3b3c3e, 50, -1.83, 0.01)); // 2 x 3.66m EB lanes
+  roadEB.add(flat(1200, 1.52, 0x555658, 50, 2.59, 0.008)); // 5-ft right shoulder
+  roadEB.add(flat(1200, 0.61, 0x555658, 50, -5.795, 0.008)); // 2-ft left shoulder
+  // Markings: white edge line (z = 1.83), yellow left edge line (z = -5.49), dashed white lane divider (z = -1.83)
+  roadEB.add(flat(1200, 0.15, 0xeeeeee, 50, 1.83, 0.025));
+  roadEB.add(flat(1200, 0.15, 0xe8b800, 50, -5.49, 0.025));
+  for (let x = -500; x <= 600; x += 12) {
+    roadEB.add(flat(3.0, 0.12, 0xeeeeee, x, -1.83, 0.025));
+  }
+  add('road_us27a_eb', roadEB, {
+    kind: 'road',
+    label: 'US-27A Eastbound (two 12-ft lanes + shoulders)',
+    citation: 'text/facts.txt F6; text/police_report.txt p.3; evidence/map.png',
+    occludes: false,
+  });
+
+  // 2. US-27A Westbound Roadway & Left-Turn Lane
+  const roadWB = new THREE.Group();
+  roadWB.add(flat(1200, 7.32, 0x3b3c3e, 50, -29.87, 0.01)); // 2 x 3.66m WB lanes (z = -26.21 to -33.53)
+  roadWB.add(flat(1200, 1.52, 0x555658, 50, -34.29, 0.008)); // 5-ft north shoulder
+  roadWB.add(flat(1200, 0.61, 0x555658, 50, -25.90, 0.008)); // 2-ft south shoulder
+  // WB left-turn lane (550 ft = 167.64 m long, east of crossover) + paved median crossover (130 ft = 39.62 m)
+  roadWB.add(flat(167.64, 3.66, 0x3b3c3e, 19.81 + 83.82, -23.77, 0.01)); // WB left-turn lane
+  roadWB.add(flat(39.62, 20.72, 0x424345, 0, -15.85, 0.012)); // 130-ft median crossover
+  // WB Markings
+  roadWB.add(flat(1200, 0.15, 0xeeeeee, 50, -33.53, 0.025)); // North white edge line
+  roadWB.add(flat(1200, 0.15, 0xeeeeee, 50, -26.21, 0.025)); // Line between WB inside lane & turn lane
+  roadWB.add(flat(167.64, 0.15, 0xe8b800, 19.81 + 83.82, -21.95, 0.025)); // Turn lane south yellow line
+  for (let x = -500; x <= 600; x += 12) {
+    roadWB.add(flat(3.0, 0.12, 0xeeeeee, x, -29.87, 0.025));
+  }
+  add('road_us27a_wb', roadWB, {
+    kind: 'road',
+    label: 'US-27A Westbound (two 12-ft lanes + 550-ft left-turn lane + 130-ft crossover)',
+    citation: 'text/facts.txt F6, F8; text/police_report.txt p.3; evidence/map.png',
+    occludes: false,
+  });
+
+  // 3. Grass Median (~60 ft wide, split by 130-ft crossover)
+  const median = new THREE.Group();
+  median.add(flat(500, 18.89, 0x6c8c50, -269.81, -15.54, 0.015)); // West median section
+  median.add(flat(550, 15.85, 0x6c8c50, 294.81, -14.02, 0.015));  // East median section
+  add('road_median', median, {
+    kind: 'road',
+    label: 'Grassy median (~60 ft wide)',
+    citation: 'text/facts.txt F7; text/police_report.txt p.3; evidence/map.png',
+    occludes: false,
+  });
+
+  // 4. NE 140th Court (local paved road running south from US-27A)
+  const road140 = new THREE.Group();
+  road140.add(flat(6.1, 120, 0x444547, 0, 61.83, 0.01));
+  add('road_ne140th', road140, {
+    kind: 'road',
+    label: 'NE 140th Court (6.1 m wide local paved road)',
+    citation: 'text/facts.txt F11, Modeling assumptions; evidence/map.png',
+    occludes: false,
+  });
+
+  // 5. Stop Sign on NE 140th Court approach (unsignalized intersection)
+  // Citation: text/police_report.txt p.1 ("stop sign on the NE 140th Ct approach only. Not signalized.")
+  const stopSign = new THREE.Group();
+  stopSign.add(cyl(0.04, 0.04, 2.2, 0x777777, 0, 1.1, 0, 8));
+  stopSign.add(box(0.75, 0.75, 0.04, 0xcc1111, 0, 2.1, 0));
+  stopSign.position.set(3.8, 0, 6.0);
+  add('sig_stop_ne140th', stopSign, {
+    kind: 'signal',
+    label: 'Stop sign on NE 140th Court northbound approach (intersection unsignalized)',
+    citation: 'text/police_report.txt p.1; text/facts.txt F11',
+    occludes: false,
+    state: () => 'off',
+  });
+
+  // --- BUILDINGS & OCCLUDERS ---
+  // 1. Retail Store on SE corner
+  // Measured on Exhibit 4 (evidence/map.png): 40 m scale bar = 400 px (10 px/m).
+  // Store is from x = +9.2 m to +27.2 m (width 18.0 m) and z = +13.9 m to +25.3 m (depth 11.4 m), center (18.2, 19.6).
+  const store = new THREE.Group();
+  store.add(box(18.0, 4.2, 11.4, 0xb58d63, 0, 2.1, 0));
+  store.add(box(18.4, 0.3, 11.8, 0x5c4228, 0, 4.35, 0)); // Roof overhang
+  store.position.set(18.2, 0, 19.6);
+  add('bld_retail_store', store, {
+    kind: 'building',
+    label: 'Retail store (convenience/feed store on SE corner)',
+    citation: 'evidence/map.png; text/facts.txt F12; text/deposition.txt 81-83',
+    occludes: true,
+  });
+
+  // 2. Bench Shelter in front of Retail Store
+  // Measured on Exhibit 4 (evidence/map.png): x in [6.9, 9.9] (width 3.0 m), z in [7.1, 8.7] (depth 1.6 m), center (8.4, 7.9).
+  // Witness B describes it as "a little bench out there with a roof over it, kind of like a bus stop" (Depo 09:05) and map labels it "bench shelter (open sides)".
+  const shelter = new THREE.Group();
+  // Bench seat & backrest
+  shelter.add(box(2.4, 0.45, 0.6, 0x6e4f32, 0, 0.225, 0.2));
+  shelter.add(box(2.4, 0.5, 0.1, 0x6e4f32, 0, 0.7, 0.45));
+  // 4 corner posts (thin, open sides)
+  shelter.add(cyl(0.05, 0.05, 2.4, 0x444444, -1.4, 1.2, -0.7, 8));
+  shelter.add(cyl(0.05, 0.05, 2.4, 0x444444, 1.4, 1.2, -0.7, 8));
+  shelter.add(cyl(0.05, 0.05, 2.4, 0x444444, -1.4, 1.2, 0.7, 8));
+  shelter.add(cyl(0.05, 0.05, 2.4, 0x444444, 1.4, 1.2, 0.7, 8));
+  // Roof canopy
+  shelter.add(box(3.0, 0.18, 1.6, 0x3b5268, 0, 2.45, 0));
+  shelter.position.set(8.4, 0, 7.9);
+  add('occ_shelter', shelter, {
+    kind: 'occluder',
+    label: 'Bench shelter with roof (open sides) in front of retail store',
+    citation: 'evidence/map.png; text/deposition.txt 95-96; text/facts.txt Modeling assumptions',
+    occludes: false,
+  });
+
+  // 3. Vertical Crest / Hill West of Intersection
+  // Crest is 1,132 ft (345 m) west of intersection (x = -345 m), limiting sight distance for vehicles west of the crest (text/facts.txt F10, F27, F28).
+  const crest = new THREE.Group();
+  crest.add(box(80, 3.2, 60, 0x5c7546, 0, 1.6, -15));
+  crest.position.set(-390, 0, 0);
+  add('occ_vertical_crest', crest, {
+    kind: 'occluder',
+    label: 'Vertical crest 1,132 ft (345 m) west of intersection (2.15% grade)',
+    citation: 'text/facts.txt F10, F27, F28; text/police_report.txt p.3',
+    occludes: true,
+  });
+
+  // 4. Utility Pole struck by Vehicle A post-impact
+  // Car struck utility pole ~8.4 s after impact along its post-impact trajectory toward (276.6, 23.9) (text/facts.txt F24, F26; text/police_report.txt p.2, p.3).
+  const pole = new THREE.Group();
+  pole.add(cyl(0.18, 0.22, 9.0, 0x5a3d28, 0, 4.5, 0, 12));
+  pole.position.set(222.5, 0, 19.2);
+  add('occ_utility_pole', pole, {
+    kind: 'occluder',
+    label: 'Wooden utility pole on south roadside (struck by Vehicle A at t ≈ 18.83 s)',
+    citation: 'text/facts.txt F24, F26; text/police_report.txt p.2, p.3',
+    occludes: true,
+  });
+
+  // --- PHYSICAL MARKS & POINTS OF INTEREST ---
+  // 1. Initial Point of Impact (AOI / POI) at (0, 0, 0)
+  const poi = new THREE.Group();
+  poi.add(cyl(1.1, 1.1, 0.04, 0xd91e18, 0, 0.03, 0, 24));
+  poi.add(box(2.8, 0.05, 0.25, 0xd91e18, 0, 0.035, 0));
+  poi.add(box(0.25, 0.05, 2.8, 0xd91e18, 0, 0.035, 0));
+  add('mark_poi', poi, {
+    kind: 'mark',
+    label: 'Initial Point of Impact (AOI) in EB outside lane on NE 140th Ct centerline',
+    citation: 'text/facts.txt F21, Modeling assumptions; text/police_report.txt p.3; evidence/map.png',
+    occludes: false,
+  });
+
+  // 2. Post-impact trajectory & Final Rest of Vehicle A (910 ft = 277.37 m east-southeast at x = 276.6, z = 23.9)
+  const restMarkA = new THREE.Group();
+  restMarkA.add(flat(5.2, 2.2, 0x772222, 276.6, 23.9, 0.03));
+  add('mark_rest_veh_A', restMarkA, {
+    kind: 'mark',
+    label: 'Vehicle A final rest position (~910 ft / 277 m from POI, perpendicular in residential yard)',
+    citation: 'text/facts.txt F25; text/police_report.txt p.2, p.3',
+    occludes: false,
+  });
+
+  // 3. Final Rest of Vehicle T on NE 140th Ct south of store (marked by Witness B at Depo 26:38)
+  const restMarkT = new THREE.Group();
+  restMarkT.add(flat(3.0, 22.0, 0x225577, 0, 31.3, 0.03));
+  add('mark_rest_veh_T', restMarkT, {
+    kind: 'mark',
+    label: 'Vehicle T final rest position on NE 140th Court south of retail store',
+    citation: 'Depo 26:38; text/facts.txt F12; text/police_report.txt p.2, p.3',
+    occludes: false,
+  });
+
+  // --- VEHICLES ---
+  // Note: Local -Z is vehicle front, so compass heading H (0 = North/-Z, 90 = East/+X, 180 = South/+Z, 270 = West/-X)
+  // corresponds to rotation.y = -H * Math.PI / 180.
+
+  // 1. Vehicle A: 2015 four-door passenger sedan (4.97 m long x 1.96 m wide x 1.445 m high)
+  // Citation: text/facts.txt F14, Modeling assumptions
+  const vehA = new THREE.Group();
+  vehA.add(box(1.96, 0.91, 4.97, 0x2b3036, 0, 0.55, 0));     // Lower body (hood ~3 ft = 0.91 m high)
+  vehA.add(box(1.65, 0.45, 2.30, 0x3a424c, 0, 1.22, 0.25));  // Cabin / roof structure (up to 1.445 m)
+  vehA.add(cyl(0.34, 0.34, 0.24, 0x151515, -0.9, 0.34, -1.55, 12));
+  vehA.add(cyl(0.34, 0.34, 0.24, 0x151515, 0.9, 0.34, -1.55, 12));
+  vehA.add(cyl(0.34, 0.34, 0.24, 0x151515, -0.9, 0.34, 1.55, 12));
+  vehA.add(cyl(0.34, 0.34, 0.24, 0x151515, 0.9, 0.34, 1.55, 12));
+  vehA.children.forEach((c) => { if (c.geometry.type === 'CylinderGeometry') c.rotation.z = Math.PI / 2; });
+  add('veh_A', vehA, {
+    kind: 'vehicle',
+    label: 'Vehicle A (2015 4-door sedan, eastbound at 74 mph)',
+    citation: 'text/facts.txt F14, F17, Modeling assumptions; text/police_report.txt p.1',
+    occludes: true,
+  });
+
+  // 2. Vehicle T Tractor: 2014 truck-tractor (6.6 m long x 2.59 m wide x 4.0 m high)
+  // Citation: text/facts.txt F15, Modeling assumptions; text/deposition.txt 138-140
+  const vehTTractor = new THREE.Group();
+  vehTTractor.add(box(2.50, 1.1, 6.60, 0x223344, 0, 0.85, 0));    // Chassis & hood
+  vehTTractor.add(box(2.48, 2.6, 2.80, 0x293d52, 0, 2.70, -0.4)); // Cab / sleeper (up to 4.0 m)
+  add('veh_T_tractor', vehTTractor, {
+    kind: 'vehicle',
+    label: 'Vehicle T Tractor (2014 truck-tractor, turning left onto NE 140th Ct)',
+    citation: 'text/facts.txt F15, F19, Modeling assumptions; text/police_report.txt p.1',
+    occludes: true,
+  });
+
+  // 3. Vehicle T Semitrailer: 2003 refrigerated van semitrailer
+  // Total combination length = 71 ft 7 in (21.82 m). Tractor = 6.6 m, Trailer = 16.15 m (53 ft) with ~0.93 m kingpin overlap.
+  // CRITICAL: Trailer box sits from y = 1.20 m to y = 4.11 m above ground (height 2.91 m, center y = 2.655 m) so cars can underride / be seen underneath,
+  // while blocking standing/driving sightlines at eye heights 1.2–1.6 m when stretched across the road!
+  // Citation: text/facts.txt F14, F15, F16, F30, Modeling assumptions;CONTRACT_EXAMPLE.md
+  const vehTTrailer = new THREE.Group();
+  vehTTrailer.add(box(2.59, 2.91, 16.15, 0xf2f4f7, 0, 2.655, 0)); // White reefer box (1.20 m to 4.11 m)
+  vehTTrailer.add(box(2.10, 2.00, 0.75, 0xd0d4dc, 0, 2.65, -8.40)); // Front refrigeration unit (Depo 13:19)
+  // Rear bogie / tandem axles at rear of trailer (z = +5.5 to +7.2 in local coords, leaving middle open for underride)
+  vehTTrailer.add(box(2.40, 0.95, 2.60, 0x222222, 0, 0.55, 6.0));
+  add('veh_T_trailer', vehTTrailer, {
+    kind: 'vehicle',
+    label: 'Vehicle T Semitrailer (2003 white refrigerated van semitrailer, box 1.2–4.11 m)',
+    citation: 'text/facts.txt F15, F16, F30, Modeling assumptions; text/deposition.txt 138-140',
+    occludes: true,
+  });
+
+  // 4. Witness A's Vehicle (westbound in WB outside lane z = -31.70 m, ~0.25 mi behind truck at 60 mph = 26.82 m/s)
+  // Citation: text/witness_A.txt; text/facts.txt F30
+  const vehWitA = new THREE.Group();
+  vehWitA.add(box(1.90, 1.45, 4.80, 0x556677, 0, 0.75, 0));
+  add('veh_wit_A', vehWitA, {
+    kind: 'vehicle',
+    label: 'Witness A vehicle (westbound in outside lane at 60 mph)',
+    citation: 'text/witness_A.txt; text/facts.txt F30',
+    occludes: false,
+  });
+
+  // 5. Witness C's Pickup (stopped in WB inside lane z = -28.04 m, 18 m west of side road at x = -18.0 m)
+  // Citation: text/witness_C.txt
+  const vehWitC = new THREE.Group();
+  vehWitC.add(box(2.00, 1.75, 5.40, 0x6b442a, 0, 0.90, 0));
+  add('veh_wit_C', vehWitC, {
+    kind: 'vehicle',
+    label: 'Witness C pickup truck (stopped in WB inside lane 18 m west of crossover)',
+    citation: 'text/witness_C.txt',
+    occludes: false,
+  });
+
+  // --- KINEMATICS & KEYFRAMES ---
+  // Event timeline: duration = 22 s.
+  // t = 0.0 s: Vehicle A crests the hill at x = -345.0 m, traveling east (heading 90°) at 74 mph (33.08 m/s).
+  // t = 10.43 s: Impact at (0, 0, 0) in EB outside lane on NE 140th Ct centerline.
+  //   At t = 10.43 s, impact on Vehicle T is 45 ft 5 in (13.84 m) behind the tractor front (near trailer center).
+  //   The trailer is stretched across both eastbound lanes (angled from NW in the crossover across (0,0) toward SE).
+  //   Specifically, at t = 10.43 s, trailer center is at (x = 0.0, z = -0.8) with heading ~165° (so trailer spans z = -8.6 to +7.0 across both EB lanes,
+  //   completely blocking sightlines between the EB approach x < 0, z = 0 and both Witness A to the east and Witness B at (6.9, 0, 4.5)!).
+  // t = 18.83 s (8.4 s after impact): Vehicle A strikes utility pole at (222.5, 19.2).
+  // t = 22.0 s: Vehicle A at final rest (276.6, 23.9) heading 0° (perpendicular to highway); Vehicle T stopped on NE 140th Ct south of store (x = 0, z = 31.3 m).
+
+  const KA = [
+    [0.0, -345.0, 0.0, 90],
+    [10.43, 0.0, 0.0, 90],
+    [18.83, 222.5, 19.2, 95],
+    [22.0, 276.6, 23.9, 0],
+  ];
+
+  const K_TRACTOR = [
+    [0.0, 14.0, -23.77, 270],
+    [2.0, 8.0, -23.77, 265],
+    [4.5, 2.5, -19.5, 225],
+    [7.5, -0.5, -9.5, 185],
+    [10.43, 0.3, 8.2, 178],
+    [15.0, 0.0, 24.0, 180],
+    [18.5, 0.0, 38.8, 180],
+    [22.0, 0.0, 38.8, 180],
+  ];
+
+  const K_TRAILER = [
+    [0.0, 24.4, -23.77, 270],
+    [2.0, 18.4, -23.77, 268],
+    [4.5, 11.5, -21.8, 245],
+    [7.5, 4.2, -14.2, 205],
+    [9.4, 1.2, -4.5, 178],
+    [10.43, 0.2, -0.8, 168],
+    [15.0, 0.0, 13.6, 180],
+    [18.5, 0.0, 28.4, 180],
+    [22.0, 0.0, 28.4, 180],
+  ];
+
+  const K_WITA = [
+    [0.0, 416.0, -31.70, 270],
+    [10.43, 136.3, -31.70, 270],
+    [16.0, -5.0, -33.50, 270],
+    [20.0, -45.0, -34.29, 270],
+    [22.0, -45.0, -34.29, 270],
+  ];
+
+  function sample(K, t) {
+    if (t <= K[0][0]) return K[0];
+    const L = K[K.length - 1];
+    if (t >= L[0]) return L;
+    let i = 0;
+    while (K[i + 1][0] < t) i++;
+    const a = K[i];
+    const b = K[i + 1];
+    const u = (t - a[0]) / (b[0] - a[0]);
+    return [
+      t,
+      a[1] + (b[1] - a[1]) * u,
+      a[2] + (b[2] - a[2]) * u,
+      a[3] + (b[3] - a[3]) * u,
+    ];
+  }
+
+  const duration = 22;
+
+  function setTime(t) {
+    t = Math.min(Math.max(t, 0), duration);
+
+    const sA = sample(KA, t);
+    vehA.position.set(sA[1], 0, sA[2]);
+    vehA.rotation.set(0, (-sA[3] * Math.PI) / 180, 0);
+
+    const sTr = sample(K_TRACTOR, t);
+    vehTTractor.position.set(sTr[1], 0, sTr[2]);
+    vehTTractor.rotation.set(0, (-sTr[3] * Math.PI) / 180, 0);
+
+    const sTl = sample(K_TRAILER, t);
+    vehTTrailer.position.set(sTl[1], 0, sTl[2]);
+    vehTTrailer.rotation.set(0, (-sTl[3] * Math.PI) / 180, 0);
+
+    const sWA = sample(K_WITA, t);
+    vehWitA.position.set(sWA[1], 0, sWA[2]);
+    vehWitA.rotation.set(0, (-sWA[3] * Math.PI) / 180, 0);
+
+    vehWitC.position.set(-18.0, 0, -28.04);
+    vehWitC.rotation.set(0, (-270 * Math.PI) / 180, 0);
+
+    root.updateMatrixWorld(true);
+  }
+
+  // --- WITNESSES ---
+  // 1. Witness B (fictional deponent):
+  //    In video `evidence/deposition.mp4` at 27:05–27:13, she places a red 'X' on Exhibit 4 between the EB shoulder and the bench shelter,
+  //    at world coordinates x = 6.9 m, z = 4.5 m (measured from Exhibit 4 scale bar: 69 px east of x=0, 45 px south of z=0).
+  //    She claims: "I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way." (Depo 27:47, 28:17).
+  //    At t = 9.8 s (in the last second before impact at t = 10.43 s), Vehicle T's semitrailer is stretched across the EB lanes directly between
+  //    Witness B (x = 6.9, z = 4.5) and Vehicle A (x = -20.8, z = 0.0), occluding her sightline!
+  // 2. Witness A (fictional westbound motorist):
+  //    Driving westbound in WB outside lane (z = -31.70 m) at ~60 mph, ~0.25 mi behind the truck. At t = 9.8 s, x ≈ 153.2 m.
+  //    Claims once the trailer was across the EB lanes, it blocked his view of the car (text/witness_A.txt; text/facts.txt F30).
+  // 3. Witness C (fictional stopped pickup driver):
+  //    Stopped in WB inside lane (z = -28.04 m) 18 m west of the side road (x = -18.0 m), watching the truck turn across (text/witness_C.txt).
+  const witnesses = [
+    {
+      id: 'wit_B',
+      name: 'Witness B (fictional pedestrian at store)',
+      position: [6.9, 0, 4.5],
+      eyeHeight: 1.6,
+      lookAt: 'veh_A',
+      observationTime: 9.8,
+      claim: 'I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.',
+      citation: 'Depo 27:05; Depo 27:47; Depo 28:17',
+    },
+    {
+      id: 'wit_A',
+      name: 'Witness A (fictional westbound motorist)',
+      position: [153.2, 0, -31.7],
+      eyeHeight: 1.2,
+      lookAt: 'veh_A',
+      observationTime: 9.8,
+      claim: 'Once the trailer was out across the eastbound lanes, it blocked my view of the car. I didn\'t see the car hit the trailer.',
+      citation: 'text/witness_A.txt; text/facts.txt F30',
+    },
+    {
+      id: 'wit_C',
+      name: 'Witness C (fictional pickup driver in WB inside lane)',
+      position: [-18.0, 0, -28.04],
+      eyeHeight: 1.8,
+      lookAt: 'veh_T_trailer',
+      observationTime: 9.8,
+      claim: 'The truck was barely creeping when it pulled out, slower than a walk at first, then picking up a little as it swung across the eastbound lanes toward 140th.',
+      citation: 'text/witness_C.txt',
+    },
+  ];
+
+  // --- FACTS ---
+  const facts = [
+    {
+      id: 'f_speed_limit',
+      text: 'Posted speed limit on US-27A is 65 mph (design speed 70 mph, 85th-percentile 69 mph)',
+      value: 65,
+      unit: 'mph',
+      citation: 'text/facts.txt F13; text/police_report.txt p.1',
+      kind: 'speed',
+    },
+    {
+      id: 'f_vehA_speed',
+      text: 'Vehicle A cruise control set to 74 mph (33.08 m/s) and traveling 74 mph at impact with no braking',
+      value: 74,
+      unit: 'mph',
+      citation: 'text/facts.txt F17, F18; text/police_report.txt p.3',
+      kind: 'speed',
+    },
+    {
+      id: 'f_skids_none',
+      text: 'No pre-collision tire or skid marks on the roadway from either vehicle (0 m)',
+      value: 0,
+      unit: 'm',
+      citation: 'text/facts.txt F22; text/police_report.txt p.2, p.3',
+      kind: 'skid',
+    },
+    {
+      id: 'f_crest_dist',
+      text: 'Vertical crest is 1,132 ft (345 m) west of the intersection center, descending at 2.15% grade',
+      value: 345,
+      unit: 'm',
+      citation: 'text/facts.txt F10, F27; text/police_report.txt p.3',
+      kind: 'distance',
+    },
+    {
+      id: 'f_sight_time',
+      text: 'At 74 mph over 1,132 ft (345 m), opposing drivers had up to 10.43 s of sight time from crest to impact',
+      value: 10.43,
+      unit: 's',
+      citation: 'text/facts.txt F28, Modeling assumptions; text/police_report.txt p.3',
+      kind: 'time',
+    },
+    {
+      id: 'f_lane_width',
+      text: 'Four-lane divided highway with two 12-ft (3.66 m) lanes per direction and ~60-ft (18.29 m) grass median',
+      value: 3.66,
+      unit: 'm',
+      citation: 'text/facts.txt F6, F7; text/police_report.txt p.3',
+      kind: 'distance',
+    },
+    {
+      id: 'f_turn_lane_crossover',
+      text: 'WB left-turn lane is 550 ft (167.6 m) long and median crossover is 130 ft (39.6 m) long',
+      value: 39.6,
+      unit: 'm',
+      citation: 'text/facts.txt F8; text/police_report.txt p.3',
+      kind: 'distance',
+    },
+    {
+      id: 'f_truck_length',
+      text: 'Vehicle T tractor-semitrailer combination length is 71 ft 7 in (21.82 m); impact centered 45 ft 5 in (13.84 m) behind tractor front',
+      value: 21.82,
+      unit: 'm',
+      citation: 'text/facts.txt F15, F16; text/police_report.txt p.1, p.3',
+      kind: 'distance',
+    },
+    {
+      id: 'f_post_impact_dist',
+      text: 'Vehicle A traveled 910 ft (277.37 m) after impact, striking a utility pole at +8.4 s and coming to rest at (276.6, 23.9)',
+      value: 277.37,
+      unit: 'm',
+      citation: 'text/facts.txt F25, F26, Modeling assumptions; text/police_report.txt p.3',
+      kind: 'distance',
+    },
+    {
+      id: 'f_witB_marked_pos',
+      text: 'Witness B marked her standing position on Exhibit 4 at [6.9, 0, 4.5] m (between EB shoulder and bench shelter), whereas she testified sitting under the shelter roof at [8.4, 0, 7.9] m before standing up',
+      value: 6.9,
+      unit: 'm',
+      citation: 'Depo 27:05; Depo 09:05; evidence/map.png',
+      kind: 'position',
+    },
+    {
+      id: 'f_witB_truck_rest_mark',
+      text: 'Witness B marked Vehicle T final rest on Exhibit 4 on NE 140th Court south of the retail store at z ≈ 31.3 m',
+      value: 31.3,
+      unit: 'm',
+      citation: 'Depo 26:38; text/police_report.txt p.3',
+      kind: 'position',
+    },
+    {
+      id: 'f_witA_pos',
+      text: 'Witness A was driving westbound in the WB outside lane about 0.25 mi (402 m) behind Vehicle T at 60 mph (26.82 m/s)',
+      value: 402,
+      unit: 'm',
+      citation: 'text/witness_A.txt; text/facts.txt F30',
+      kind: 'position',
+    },
+    {
+      id: 'f_witC_pos',
+      text: 'Witness C was stopped in his pickup in the WB inside lane 18 m west of NE 140th Court at [-18.0, 0, -28.04] m',
+      value: -18.0,
+      unit: 'm',
+      citation: 'text/witness_C.txt',
+      kind: 'position',
+    },
+  ];
+
+  // No pre-collision skids (F22: "No pre-collision roadway marks from either vehicle")
+  const skids = [];
+
+  const world = {
+    meta: {
+      caseId: 'live1',
+      title: 'US-27A at NE 140th Court, Levy County, FL (NTSB HWY16FH018)',
+      timeOfDay: '16:36',
+      lighting: 'day',
+      source: 'NTSB/HAR-17/02 (HWY16FH018) physical facts + fictional witnesses A, B, C',
+    },
+    root,
+    duration,
+    setTime,
+    objects,
+    witnesses,
+    facts,
+    skids,
+  };
+
+  setTime(0);
+  return world;
+}

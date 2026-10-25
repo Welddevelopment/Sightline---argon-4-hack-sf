@@ -43,7 +43,9 @@ export async function loadAssetModules(names = MODULE_NAMES) {
 
 /** Async convenience: preload modules, then build the facade. */
 export async function loadAssets(THREE, opts = {}) {
-  return createAssets(THREE, { ...opts, modules: opts.modules || await loadAssetModules() });
+  let Sky = opts.Sky;
+  if (!Sky && typeof document !== 'undefined' && !opts.headless) { try { Sky = (await import('three/addons/objects/Sky.js')).Sky; } catch {} }
+  return createAssets(THREE, { ...opts, Sky, modules: opts.modules || await loadAssetModules() });
 }
 
 // ---------- delegation ----------
@@ -72,7 +74,7 @@ export function createAssets(THREE, opts = {}) {
   const bump = (m, k) => { (stats[m] ||= { delegated: 0, fallback: 0, box: 0, errors: [] })[k]++; };
   const note = (m, e) => { const s = (stats[m] ||= { delegated: 0, fallback: 0, box: 0, errors: [] }); if (s.errors.length < 5) s.errors.push(String(e && e.message || e)); };
 
-  const modOrder = Object.keys(modules).filter((k) => !k.startsWith('_') && modules[k]);
+  const modOrder = [...MODULE_NAMES.filter((k) => modules[k]), ...Object.keys(modules).filter((k) => !k.startsWith('_') && modules[k] && !MODULE_NAMES.includes(k))];
   function candidates(method, arg0) {
     const names = namesFor(method, arg0);
     const fns = [];

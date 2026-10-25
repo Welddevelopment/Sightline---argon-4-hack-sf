@@ -73,9 +73,14 @@ function mats(T) {
   m.redSign = S({ color: 0xb01018, metalness: 0.1, roughness: 0.35 });
   m.ledSign = S({ color: 0x1a1408, metalness: 0.2, roughness: 0.3, emissive: 0x3a2400, emissiveIntensity: 1 });
   for (const k in m) m[k].name = 'heavy_' + k;
+  if (SHARED && SHARED.getMaterials) {            // library-wide look: share glass/chrome/rubber/trim with the car models
+    const sm = SHARED.getMaterials(T);
+    m.glass = sm.glass; m.chrome = sm.chrome; m.rubber = sm.rubber; m.trim = sm.trim; m.tire = sm.rubber;
+  }
   return m;
 }
 function paint(T, hex) {
+  if (SHARED && SHARED.getMaterials) return SHARED.getMaterials(T).paint(hex);
   const c = cacheFor(T);
   const key = String(hex);
   if (!c.paint[key]) {
@@ -98,7 +103,7 @@ function toHex(color, dflt) {
 // ---------------------------------------------------------------- geometry helpers
 // Builder: accumulates transformed geometry per material key, merges once per (type, variant), cached.
 class Builder {
-  constructor(T) { this.T = T; this.b = {}; this.m4 = new T.Matrix4(); this.q = new T.Quaternion(); this.e = new T.Euler(); }
+  constructor(T) { this.T = T; this.b = {}; this.wheels = []; this.m4 = new T.Matrix4(); this.q = new T.Quaternion(); this.e = new T.Euler(); }
   add(mat, geo, pos = [0, 0, 0], rot = [0, 0, 0], scl = [1, 1, 1]) {
     const T = this.T;
     this.e.set(rot[0], rot[1], rot[2]);
@@ -124,6 +129,7 @@ class Builder {
   build() {
     const out = {};
     for (const k in this.b) out[k] = mergeGeos(this.T, this.b[k]);
+    Object.defineProperty(out, '__wheels', { value: this.wheels, enumerable: false });
     return out;
   }
 }
@@ -310,6 +316,11 @@ function handHoles(T, w, Rr, n) {
 // Adds one wheel (or a dual pair) with its centre at (x, R, z). side = sign of x (outer face direction).
 function addWheel(B, T, x, z, { R = 0.51, w = 0.28, Rr = 0.286, dual = false, rim = 'alum', gap = 0.05 } = {}) {
   const side = x < 0 ? -1 : 1;
+  if (SHARED && SHARED.makeWheel) {               // shared wheel (spins via userData.roll); dual set is centred on its origin
+    const xc = dual ? x - side * (w + 0.03) / 2 : x;
+    B.wheels.push({ x: xc, y: R, z, radius: R, width: w, dual, side: side > 0 ? 'right' : 'left' });
+    return;
+  }
   const rotY = side > 0 ? 0 : Math.PI;
   const c = cacheFor(T).geo;
   const key = `${R}|${w}|${Rr}|${rim}`;
@@ -754,37 +765,64 @@ function assemble(T, id, type, variant, geoByMat, paintHex, dims) {
     mesh.receiveShadow = true;
     body.add(mesh);
   }
+  const wheels = [];
+  for (const w of geoByMat.__wheels || []) {
+    const wh = SHARED.makeWheel(T, { radius: w.radius, width: w.width, rim: 'truck', dual: w.dual, side: w.side });
+    wh.position.set(w.x, w.y, w.z);
+    wh.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+    body.add(wh); wheels.push(wh);
+  }
+  root.userData.wheels = wheels;
+  root.userData.roll = (dist) => { for (const w of wheels) w.userData.roll && w.userData.roll(dist); };
   root.userData.assetType = type;
+  root.userData.vehicleType = type;
   root.userData.variant = variant;
   root.userData.dims = { ...dims };
   return root;
 }
 function attachLights(T, root, lamps, heads) {
   const L = lampMats(T);
-  const meshes = [];
-  for (const l of lamps) { const m = lampMesh(T, l.geo, L[l.kind], l.name, l.pos, l.rot); meshes.push([m, l.kind]); root.add(m); }
-  let on = false, brake = false, beams = null;
-  const apply = () => {
-    L.head.emissiveIntensity = on ? 3.0 : 0;
-    L.tail.emissiveIntensity = brake ? 3.2 : on ? 1.1 : 0;
-    L.amber.emissiveIntensity = on ? 1.4 : 0;
-    L.marker.emissiveIntensity = on ? 1.1 : 0;
-    if (beams) for (const b of beams) b.visible = on;
-  };
-  root.userData.setLights = (v, opts = {}) => {
-    on = !!v;
-    if (opts.beams && !beams && heads && heads.length) {
-      beams = heads.map(([x, y, z]) => {
-        const s = new T.SpotLight(0xfff2dc, 40, 60, 0.42, 0.5, 1.6);
-        s.position.set(x, y, z); s.target.position.set(x, y - 0.6, z - 20); s.castShadow = false;
-        root.add(s); root.add(s.target); return s;
-      });
+  const SM = SHARED && SHARED.attachLightAPI && SHARED.getMaterials ? SHARED.getMaterials(T) : null;
+  const tails = [];
+  for (const l of lamps) {
+    const mat = SM && l.kind === 'head' ? SM.lightHead : SM && l.kind === 'tail' ? SM.lightTail : L[l.kind];
+    const m = lampMesh(T, l.geo, mat, l.name, l.pos, l.rot);
+    m.userData.lampKind = l.kind;
+    if (l.kind === 'tail') tails.push(m);
+    root.add(m);
+  }
+  let on = false, brake = false, beams = null, base = null;
+  if (SM) {
+    // shared API swaps head/tail materials (meshes named headlight_* / taillight_*) and owns the headlamp SpotLight
+    SHARED.attachLightAPI(T, root, { spot: !!heads, spotIntensity: 22000 });
+    base = root.userData.setLights;
+  }
+  const apply = (opts = {}) => {
+    if (base) {
+      base(on, heads ? { spot: opts.beams ?? opts.spot } : { spot: false });
+      if (brake) for (const t of tails) t.material = SM.lightTailOn;
+      for (const t of tails) if (!/^taillight/.test(t.name)) t.material = brake || on ? SM.lightTailOn : SM.lightTail;  // warn/aux reds
+    } else {
+      L.head.emissiveIntensity = on ? 3.0 : 0;
+      L.tail.emissiveIntensity = brake ? 3.2 : on ? 1.1 : 0;
+      if (opts.beams && !beams && heads && heads.length) {
+        beams = heads.map(([x, y, z]) => {
+          const sp = new T.SpotLight(0xfff2dc, 22000, 90, 0.42, 0.5, 2);
+          sp.position.set(x, y, z); sp.target.position.set(x, y - 1.2, z - 30); sp.castShadow = false;
+          root.add(sp); root.add(sp.target); return sp;
+        });
+      }
+      if (beams) for (const b of beams) b.visible = on;
     }
-    apply();
+    L.amber.emissiveIntensity = on ? 1.6 : 0;
+    L.marker.emissiveIntensity = on ? 1.2 : 0;
   };
-  root.userData.setBrake = (v) => { brake = !!v; apply(); };
-  root.userData.lamps = meshes.map(([m]) => m.name);
-  apply();
+  let last = {};
+  root.userData.setLights = (v, opts = {}) => { on = !!v; last = opts || {}; root.userData.lightsOn = on; apply(last); return root; };
+  root.userData.setBrake = (v) => { brake = !!v; apply(last); return root; };
+  root.userData.lamps = lamps.map(l => l.name);
+  root.userData.lightsOn = false;
+  apply({ spot: false });
 }
 const lamp = (T, kind, name, w, h, d, pos, rot) => ({ kind, name, geo: new T.BoxGeometry(w, h, d), pos, rot });
 const roundLamp = (T, kind, name, r, d, pos, axis = 'z') => {
@@ -914,5 +952,11 @@ export function coupleTrailer(tractor, trailer, articulation = 0) {
   return { pivot: [px, pz], trailerHeading: ht };
 }
 
-export const HEAVY_PARTS_SOURCE = SHARED ? 'vehicle_parts.js (present; local wheel builder in use)' : 'local';
+// Facade (web/assets.js) looks up create<PascalType>(THREE, type, opts) per vehicle type; these route here.
+export function createTruckTractor(T, type, o) { return createHeavyVehicle(T, 'truck_tractor', typeof type === 'object' ? type : o); }
+export function createSemitrailer(T, type, o) { return createHeavyVehicle(T, 'semitrailer', typeof type === 'object' ? type : o); }
+export function createBoxTruck(T, type, o) { return createHeavyVehicle(T, 'box_truck', typeof type === 'object' ? type : o); }
+export function createBus(T, type, o) { return createHeavyVehicle(T, 'bus', typeof type === 'object' ? type : o); }
+
+export const HEAVY_PARTS_SOURCE = SHARED ? 'vehicle_parts.js' : 'local fallback';
 export default createHeavyVehicle;

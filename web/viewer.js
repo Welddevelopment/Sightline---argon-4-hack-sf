@@ -785,7 +785,9 @@ async function loadWorld(url) {
   const sep = url.includes('?') ? '&' : '?';
   const full = new URL(url, location.href).href + sep + '_=' + (++loadCount) + '_' + Date.now();
   const mod = await import(full);
-  const w = mod.default(THREE);
+  // WORLD CONTRACT v2: pass the shared asset library (v1 worlds ignore it). Missing/broken facade → undefined.
+  const assets = await (sl._assetsP ||= import('./assets.js').then((m) => m.loadAssets(THREE)).catch((e) => { console.warn('assets.js unavailable:', e); return undefined; }));
+  const w = mod.default(THREE, assets);
   if (!w || !w.root || typeof w.setTime !== 'function') throw new Error('Bad world module: ' + url);
   w.objects = w.objects || {};
   w.witnesses = w.witnesses || [];

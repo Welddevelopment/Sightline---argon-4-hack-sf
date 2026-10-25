@@ -24,29 +24,29 @@
   "63edd7a5e67738d1": {
     "statement": "I was driving west, about 100 yards from the crossover, when the truck started its turn. I could see the eastbound car coming the entire time.",
     "witness": {
-      "name": "Witness (westbound driver 100 yds from crossover at t=2.0s)",
+      "name": "Witness (westbound driver, 100 yd east of crossover at t=2s, looking at veh_A, eye 1.2m [car])",
       "position": [
         91.44,
         0,
-        -29.8
+        -29.9
       ],
       "eyeHeight": 1.2,
       "lookAt": "veh_A",
       "observationTime": 2,
       "claim": "I was driving west, about 100 yards from the crossover, when the truck started its turn, and I could see the eastbound car coming the entire time.",
       "confidence": "medium",
-      "assumptions": "Placed 100 yards (91.44 m) east of the crossover center (x=0) in the westbound travel lanes (z=-29.8 m, between WB inside at -28.0 m and outside at -31.7 m) with standard car driver eye height (1.2 m). Observation time set to t=2.0 s, when veh_T_tractor begins turning south from z=-23.8 m in the left-turn lane.",
+      "assumptions": "Placed in the US-27A westbound lanes (z = -29.9 m, between the inside lane at -28.04 m and outside lane at -31.7 m) 100 yards (91.44 m) east of the crossover center (x = 0 m). Set observationTime to t = 2.0 s, when the truck tractor begins turning south from z = -23.8 m in the moving-object table.",
       "citation": "Live statement",
       "model": "gemini-4-argon"
     },
     "model": "gemini-4-argon",
-    "seconds": 6.31,
-    "at": "2026-10-25T19:15:07.770Z"
+    "seconds": 6.409,
+    "at": "2026-10-25T19:23:07.657Z"
   },
   "ece46586511f9fd1": {
     "statement": "I was nearby and I saw everything. The car never slowed down.",
     "witness": {
-      "name": "New Witness",
+      "name": "Witness (nearby pedestrian at intersection at t=9.8s, looking at veh_A, eye 1.6m [standing])",
       "position": [
         6,
         0,
@@ -54,16 +54,16 @@
       ],
       "eyeHeight": 1.6,
       "lookAt": "veh_A",
-      "observationTime": 10,
-      "claim": "I was nearby and I saw everything, and the car never slowed down.",
+      "observationTime": 9.8,
+      "claim": "I was nearby and I saw everything. The car never slowed down.",
       "confidence": "low",
-      "assumptions": "The statement 'nearby' is extremely vague and gives no specific landmark or vehicle, so the witness is placed as a standing pedestrian on the walkable southeast corner near the stop sign and retail store at [6.0, 0.0, 6.0]. The observation time is set to 10.0s, just before impact, to correspond with watching the car ('veh_A') approach without slowing down.",
+      "assumptions": "The statement only says 'nearby' with no specific landmark or vehicle, so the witness is placed as a standing pedestrian on the southeast corner near the stop sign and retail store at [6.0, 0, 6.0] with low confidence. Observation time is set to 9.8s (just before impact) because they claim to have seen everything including the car's approach up to impact.",
       "citation": "Live statement",
       "model": "gemini-4-argon"
     },
     "model": "gemini-4-argon",
-    "seconds": 4.199,
-    "at": "2026-10-25T19:12:02.726Z"
+    "seconds": 5.176,
+    "at": "2026-10-25T19:23:29.078Z"
   },
   "8dbed99bdd177849": {
     "statement": "I was pumping gas at the station on the north side of the highway, facing the intersection.",
