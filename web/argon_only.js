@@ -177,7 +177,7 @@
     const r = fr.render, d = fr.depo;
     const rCap = r ? `${esc(r.witName)} · eye level` : '';
     const rSub = r ? `Reconstruction${r.t != null && Number.isFinite(r.t) ? ` · t = ${esc(Number(r.t).toFixed(1))} s` : ''}` : '';
-    const dCap = d ? `Deposition · ${esc(d.tc)}` : '';
+    const dCap = d ? `Deposition · <span class="mono">${esc(d.tc)}</span>` : '';
     const q = d && d.quote ? String(d.quote).replace(/^[A-Z][A-Z .'-]{1,30}:\s*/, '') : '';
     const dSub = d ? (q ? `“${esc(q)}”` :'Marks her position on the exhibit') + (d.cited && d.cited !== d.tc ? ` <em>cited ${esc(d.cited)}</em>` : '') : '';
     return `<div class="ao-frames-h">What she said she saw <span>vs</span> what her marked position sees</div>

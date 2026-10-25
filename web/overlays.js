@@ -518,25 +518,25 @@ function hudHtml(t, speeds, sight) {
   const vr = info.vehicles.filter((v) => v.primary).slice(0, 5).map((v) => {
     const mps = speeds.get(v.id) || 0;
     const mph = Math.round(mps * MPH);
-    return `<div class="slo-vrow${isInf(v.o) ? ' inferred' : ''}" title="${esc((v.o.label || v.id) + '\nSpeed: model position change over t±0.05 s' + (v.o.citation ? '\nSource: ' + v.o.citation : ''))}"><span>${esc(v.name.toUpperCase())}</span><b>${mph >= 1 ? mph : 0}</b><em>${mph >= 1 ? 'mph' : 'stopped'}</em></div>`;
+    return `<div class="slo-vrow${isInf(v.o) ? ' inferred' : ''}" title="${esc((v.o.label || v.id) + '\nSpeed: model position change over t±0.05 s' + (v.o.citation ? '\nSource: ' + v.o.citation : ''))}"><span>${esc(v.name)}</span><b>${mph >= 1 ? mph : 0}</b><em>${mph >= 1 ? 'mph' : 'stopped'}</em></div>`;
   });
   // signals
   for (const [id, o] of info.signals.slice(0, 4)) {
     let st = 'off';
     try { st = String(o.state(t) || 'off').toLowerCase(); } catch (_) {}
     if (!/^(red|yellow|amber|green|off|flashing.*)$/.test(st)) st = 'off';
-    vr.push(`<div class="slo-sig ${st.split(/\W/)[0]}" title="${esc((o.label || id) + (o.citation ? ' — ' + o.citation : ''))}"><i></i><span>${esc(shortLabel(o.label || id, 26).toUpperCase())}</span><b>${esc(st.toUpperCase())}</b></div>`);
+    vr.push(`<div class="slo-sig ${st.split(/\W/)[0]}" title="${esc((o.label || id) + (o.citation ? ' — ' + o.citation : ''))}"><i></i><span>${esc(shortLabel(o.label || id, 26))}</span><b>${esc(st.toUpperCase())}</b></div>`);
   }
   if (vr.length) boxes.push(`<div class="slo-sec slo-units">${vr.join('')}</div>`);
 
   // sight-line state trigger for the selected witness
   if (sight) {
     const { w, r } = sight;
-    const tgt = typeof w.lookAt === 'string' && world.objects[w.lookAt] ? vehName(w.lookAt, world.objects[w.lookAt]).toUpperCase() : 'TARGET';
-    const who = witName(w).toUpperCase();
+    const tgt = typeof w.lookAt === 'string' && world.objects[w.lookAt] ? vehName(w.lookAt, world.objects[w.lookAt]) : 'the target';
+    const who = witName(w);
     const since = stateSince(w, t, !!r.visible);
     const now = since != null && t - since < TRIGGER_S && since > 0.05;
-    const head = r.visible ? `${tgt} ${now ? 'NOW ' : ''}VISIBLE TO ${who}` : `${tgt} ${now ? 'NOW ' : ''}HIDDEN FROM ${who}`;
+    const head = r.visible ? `${tgt} ${now ? 'now ' : ''}visible to ${who}` : `${tgt} ${now ? 'now ' : ''}hidden from ${who}`;
     const sub = (r.visible ? 'line of sight clear' : 'behind ' + partName(r.blockedBy)) + (since == null || since <= 0.05 ? ' · whole timeline so far' : ` · since t = ${since.toFixed(1)} s`);
     boxes.push(`<div class="slo-sec slo-state ${r.visible ? 'ok status-consistent' : 'bad status-contradiction'}${now ? ' now' : ''}" data-verdict="${r.visible ? 'VISIBLE' : 'BLOCKED'}"><b>${esc(head)}</b><span>${esc(sub)}</span></div>`);
   }
@@ -559,11 +559,11 @@ function stopLine() {
 }
 function cardHtml(w, r, t, camId, cam) {
   const chk = checks.find((c) => c && c.check === 'sightline' && c.subject === w.id);
-  const who = witName(w).toUpperCase();
+  const who = witName(w);
   const cite = w.citation || (chk && chk.citation) || '';
   const lines = [];
   const verdict = r ? (r.visible ? 'CLEAR' : 'BLOCKED') : '';
-  lines.push(`<div class="slo-card-k"><span>FROM ${esc(who)}${/S$/.test(who) ? "'" : "'S"} POSITION</span>${verdict ? `<i class="slo-pill ${r.visible ? 'ok status-consistent' : 'bad status-contradiction'}">${verdict}</i>` : ''}</div>`);
+  lines.push(`<div class="slo-card-k"><span>From ${esc(who)}${/s$/i.test(who) ? "'" : "'s"} position</span>${verdict ? `<i class="slo-pill ${r.visible ? 'ok status-consistent' : 'bad status-contradiction'}">${verdict}</i>` : ''}</div>`);
   if (w.claim) {
     const cc = claimCite(cite);
     const inf = INFERRED_RE.test(cite);

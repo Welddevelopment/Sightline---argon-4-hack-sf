@@ -127,10 +127,10 @@ function makeLabel(text, opts = {}) {
   const fs = opts.fs || 24, pad = 10;
   const c = document.createElement('canvas');
   const ctx = c.getContext('2d');
-  ctx.font = `600 ${fs}px sans-serif`;
+  ctx.font = `500 ${fs}px "IBM Plex Sans", sans-serif`;
   const tw = Math.ceil(ctx.measureText(text).width);
   c.width = tw + pad * 2; c.height = fs + pad;
-  ctx.font = `600 ${fs}px sans-serif`;
+  ctx.font = `500 ${fs}px "IBM Plex Sans", sans-serif`;
   ctx.fillStyle = opts.bg || 'rgba(8,11,16,0.78)';
   ctx.fillRect(0, 0, c.width, c.height);
   ctx.strokeStyle = opts.border || 'rgba(255,255,255,0.25)';
