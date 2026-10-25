@@ -180,6 +180,31 @@ html .sl-more > summary .caret { font-size: 12px; }
 html .sl-menu h4 { font-size: 12px; letter-spacing: normal; text-transform: none; }
 html .sl-menu .sub { font-size: 12px; }
 html .sl-menu .note { font-size: 12px; }
+/* from fleet.css */
+html .fleet-title { letter-spacing: normal; }
+html .fleet-badge { font-size: 12px; }
+html .fleet-lede { font-size: 12px; }
+html .fleet-lede .mono { font-size: 12px; }
+html .fleet-grid th { font-size: 12px; letter-spacing: normal; text-transform: none; }
+html .fleet-grid th.fleet-rowhead { font-size: 12px; }
+html .fleet-num { font-size: 12px; }
+html .fleet-mark { font-size: 12px; letter-spacing: normal; }
+html .fleet-cw-label { font-size: 12px; letter-spacing: normal; text-transform: none; }
+html .fleet-cw-name { font-size: 12px; }
+html .fleet-legend { font-size: 12px; }
+html .fleet-insight-text { font-size: 12px; }
+html .fleet-kicker { font-size: 12px; letter-spacing: normal; text-transform: none; }
+html .fleet-step b { font-size: 12px; }
+html .fleet-detail { font-size: 12px; }
+html .fleet-detail-head .mono { font-size: 12px; }
+html .fleet-dline.muted { font-size: 12px; }
+html .fleet-rings span { font-size: 12px; }
+html .fleet-rings b { font-size: 12px; }
+html .fleet-checks { font-size: 12px; }
+html .fleet-meta { font-size: 12px; }
+html .fleet-more summary { font-size: 12px; }
+html .fleet-facts, html .fleet-flags { font-size: 12px; }
+html .fleet-sub { font-size: 12px; letter-spacing: normal; text-transform: none; }
 /* from jobs.js (injected) */
 html .sj-pill { font-size: 12px; letter-spacing: normal; text-transform: none; }
 html .sj-resume { font-size: 12px; }
