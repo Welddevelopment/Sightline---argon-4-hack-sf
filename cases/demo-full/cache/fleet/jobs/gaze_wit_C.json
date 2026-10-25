@@ -1,0 +1,59 @@
+{
+  "id": "gaze_wit_C",
+  "type": "gaze",
+  "witness": "wit_C",
+  "interactionId": "v1_ChdoM2JlYXRqakNhUGZ5dE1QdHV5bmlBNBIXaDNiZWF0ampDYVBmeXRNUHR1eW5pQTQ",
+  "wallMs": 157279,
+  "status": "completed",
+  "environmentId": "309576a46bc896d6435f4f455b08bbfa",
+  "usage": {
+    "total": 26813,
+    "input": 24714,
+    "cached": 13827
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"gaze_wit_C\",\"ok\":true,\"ms\":1288}",
+    "interpretation": "Witness wit_C had the trailer (veh_T_trailer) well within their central field of view at t=10.43s with an off-axis gaze angle of approximately 7 degrees."
+  },
+  "result": {
+    "task": {
+      "id": "gaze_wit_C",
+      "type": "gaze",
+      "witness": "wit_C",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_T_trailer",
+      "tObs": 10.43,
+      "gaze": {
+        "offAxisDeg": 7,
+        "assumed": true,
+        "cameraFovDeg": 60,
+        "peripheral": false,
+        "source": "mark_poi"
+      },
+      "altGazeDegByMark": {
+        "mark_poi": 7.05,
+        "mark_pole_poi": 46.6,
+        "mark_tire_impression": 7.17
+      }
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 1288,
+      "worldSha": "526ea902d593",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true
+}

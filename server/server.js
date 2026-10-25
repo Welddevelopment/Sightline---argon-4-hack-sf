@@ -358,11 +358,13 @@ await import('./scene_export.js').then((m) => m.mountSceneExport(app, { ROOT, MO
 await import('./case_size.js').then((m) => m.mountCaseSize(app, { ROOT, MODE, errMsg })).catch((e) => console.warn('[sightline] case size API not mounted:', errMsg(e))); // ARGON-ONLY: case size + depo frames
 await import('./whatif.js').then((m) => m.mountWhatIf(app, { ROOT, MODE, errMsg })).catch((e) => console.warn('[sightline] what-if API not mounted:', errMsg(e))); // COMPARE & WHAT-IF: speed re-timing + runAll
 await import('./aerial.js').then((m) => m.mountAerial(app, { ROOT, MODE, errMsg })).catch((e) => console.warn('[sightline] aerial API not mounted:', errMsg(e))); // AERIAL: georeferenced site photo + dissolve intro
+await import('./fleet_api.js').then((m) => m.mountFleet(app, { ROOT, MODE, errMsg })).catch((e) => console.warn('[sightline] fleet API not mounted:', errMsg(e))); // FLEET: Managed Agents verification fleet (cached)
 
 app.use('/api', (req, res) => res.status(404).json({ error: `no such endpoint: ${req.method} ${req.originalUrl}` }));
 
 app.use((err, req, res, next) => {
-  res.status(500).json({ error: errMsg(err) });
+  const st = Number(err && (err.status || err.statusCode));
+  res.status(st >= 400 && st < 500 ? st : 500).json({ error: errMsg(err) }); // e.g. malformed JSON body → 400, not 500
 });
 
 app.listen(PORT, () => {

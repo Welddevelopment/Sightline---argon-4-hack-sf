@@ -244,6 +244,7 @@ export async function runFleet({ caseId, tasks, max = Number(process.env.FLEET_M
     return run;
   }
   const tStart = Date.now();
+  process.env.SIGHTLINE_MODE = 'live'; // callArgon (plan/merge) must be live too
   const prev = readJSON(path.join(c.fleetDir, 'run.json'));
   if (prev) { // archive the previous run instead of deleting it
     const h = path.join(c.fleetDir, 'history', prev.at.replace(/[:.]/g, '-'));

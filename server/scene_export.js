@@ -247,6 +247,15 @@ export async function buildSceneExport(ROOT, caseId, opts = {}) {
     tracks.push(new THREE.VectorKeyframeTrack(`${node.uuid}.position`, times, local[id].pos));
     tracks.push(new THREE.QuaternionKeyframeTrack(`${node.uuid}.quaternion`, times, local[id].quat));
   }
+  // Node has no <canvas>, and GLTFExporter needs one to encode ANY texture (v2 asset materials carry metal/rough/colour maps):
+  // export untextured copies of those materials (geometry, colours and PBR factors are kept; shared asset materials untouched).
+  const untextured = (m) => {
+    if (!m || !Object.values(m).some((x) => x && x.isTexture)) return m;
+    const c = m.clone();
+    for (const k of Object.keys(c)) if (c[k] && c[k].isTexture) c[k] = null;
+    return c;
+  };
+  if (typeof document === 'undefined') scene.traverse((o) => { if (o.material) o.material = Array.isArray(o.material) ? o.material.map(untextured) : untextured(o.material); });
   const exportOpts = { binary: true, onlyVisible: true };
   let glbAb;
   const warn = console.warn; console.warn = () => {}; // GLTFExporter warns about non-serialisable userData functions
