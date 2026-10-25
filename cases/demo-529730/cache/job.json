@@ -1,0 +1,125 @@
+{
+  "caseId": "demo-529730",
+  "status": "building",
+  "step": "critique",
+  "message": "Argon is watching the witness-view renders against the evidence videos and documents…",
+  "mode": "replay",
+  "pid": 1981,
+  "startedAt": "2026-10-25T21:50:25.819Z",
+  "buildingAt": "2026-10-25T21:50:25.819Z",
+  "finishedAt": null,
+  "error": null,
+  "resumable": false,
+  "events": [
+    {
+      "at": "2026-10-25T21:50:25.820Z",
+      "type": "start",
+      "message": "Replaying the recorded run of cases/demo-full (no Argon calls)"
+    },
+    {
+      "at": "2026-10-25T21:50:25.821Z",
+      "type": "progress",
+      "step": "evidence",
+      "round": 1,
+      "message": "Case demo-529730: 21 text file(s), 2 video(s), 13 image(s)",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T21:50:27.822Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "Argon is reading every document and watching every video to write the world module…",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T21:50:28.110Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "generate_world: calling gemini-4-argon (33 parts, maxOutputTokens=32768)",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T21:50:28.397Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "generate_world: done in 146.8s, finish=STOP, chars=14471",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T21:50:28.684Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "generate_world_repair: calling gemini-4-argon (1 parts, maxOutputTokens=32768)",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T21:50:28.972Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "generate_world_repair: done in 62.8s, finish=STOP, chars=14434",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T21:50:29.259Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "World module written: /cases/demo-529730/worlds/world_v1.js (198 lines)",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T21:50:29.547Z",
+      "type": "progress",
+      "step": "generate",
+      "round": 1,
+      "message": "live run: 147 s · 856k tokens · replayed",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T21:50:29.835Z",
+      "type": "progress",
+      "step": "render",
+      "round": 1,
+      "message": "Rendering /cases/demo-529730/worlds/world_v1.js from overhead + 4 witness viewpoints…",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T21:50:30.503Z",
+      "type": "progress",
+      "step": "render",
+      "round": 1,
+      "message": "Reusing 5 existing renders in /cases/demo-529730/renders/world_v1",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T21:50:31.171Z",
+      "type": "progress",
+      "step": "render",
+      "round": 1,
+      "message": "Rendered 0 videos, 5 stills",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T21:50:31.840Z",
+      "type": "progress",
+      "step": "checks",
+      "round": 1,
+      "message": "Independent checks: 7/10 pass — wit_A: blocked by veh_witA; wit_B: blocked by veh_T_tractor; wit_D: blocked by occ_shelter",
+      "replay": true
+    },
+    {
+      "at": "2026-10-25T21:50:33.843Z",
+      "type": "progress",
+      "step": "critique",
+      "round": 1,
+      "message": "Argon is watching the witness-view renders against the evidence videos and documents…",
+      "replay": true
+    }
+  ],
+  "round": 1
+}

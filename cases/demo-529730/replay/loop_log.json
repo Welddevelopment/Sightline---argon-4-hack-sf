@@ -1,0 +1,751 @@
+[
+  {
+    "round": 1,
+    "world": "/cases/demo-529730/worlds/world_v1.js",
+    "startedAt": "2026-10-25T20:14:21.544Z",
+    "contractProblems": [],
+    "renders": {
+      "videos": [],
+      "stills": [
+        "/cases/demo-529730/renders/world_v1/overhead_t12p5.png",
+        "/cases/demo-529730/renders/world_v1/wit_A_t4p5.png",
+        "/cases/demo-529730/renders/world_v1/wit_B_t9p8.png",
+        "/cases/demo-529730/renders/world_v1/wit_C_t10p43.png",
+        "/cases/demo-529730/renders/world_v1/wit_D_t10p43.png"
+      ]
+    },
+    "checks": [
+      {
+        "check": "sightline",
+        "subject": "wit_A",
+        "pass": false,
+        "detail": "From Witness A's marked position (witness_A.md p.1; HAR-17/02 p.1–2, p.29–30) the line of sight to veh_A is blocked by veh_witA at t=4.5s (distance 466.8 m). Blocked from 7 of 25 positions within 2 m of Witness A's mark; the result depends on Witness A's exact position. Claim: \"Saw dark car come over the hill eastbound before truck turned; once trailer crossed eastbound lanes it blocked view of the car.\"",
+        "citation": "witness_A.md p.1; HAR-17/02 p.1–2, p.29–30",
+        "blockedBy": "veh_witA",
+        "target": "veh_A",
+        "t": 4.5,
+        "distance": 466.78686573666295,
+        "from": [
+          269.6,
+          1.5,
+          -31.09
+        ],
+        "to": [
+          -196.14970670871168,
+          0.7249999958276748,
+          -7.771561172376096e-16
+        ],
+        "hitPoint": [
+          269.49591687807765,
+          1.49982680736292,
+          -31.08305218186087
+        ],
+        "robustness": {
+          "radiusM": 2,
+          "samples": 25,
+          "blocked": 7,
+          "clear": 18,
+          "eyeJitterM": 0.1,
+          "verdict": "partial",
+          "blockers": {
+            "veh_witA": 7
+          }
+        },
+        "gaze": {
+          "offAxisDeg": 2.8,
+          "assumed": true,
+          "cameraFovDeg": 60,
+          "peripheral": false,
+          "source": "mark_poi"
+        }
+      },
+      {
+        "check": "sightline",
+        "subject": "wit_B",
+        "pass": false,
+        "detail": "From Witness B's marked position (Depo Witness B 41:10, 52:00, 1:54:30 (Exhibit 4 mark #2)) the line of sight to veh_A is blocked by veh_T_tractor at t=9.8s (distance 30.2 m). Blocked from 21 of 25 positions within 2 m of Witness B's mark; the result depends on Witness B's exact position. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
+        "citation": "Depo Witness B 41:10, 52:00, 1:54:30 (Exhibit 4 mark #2)",
+        "blockedBy": "veh_T_tractor",
+        "target": "veh_A",
+        "t": 9.8,
+        "distance": 30.223353764959974,
+        "from": [
+          8,
+          1.56,
+          9
+        ],
+        "to": [
+          -20.84014368540754,
+          0.7249999958276748,
+          9.992007221626409e-16
+        ],
+        "hitPoint": [
+          -0.3071365872956351,
+          1.319485973415534,
+          6.407633259348507
+        ],
+        "robustness": {
+          "radiusM": 2,
+          "samples": 25,
+          "blocked": 21,
+          "clear": 4,
+          "eyeJitterM": 0.1,
+          "verdict": "partial",
+          "blockers": {
+            "veh_T_tractor": 11,
+            "occ_shelter": 10
+          }
+        },
+        "gaze": {
+          "offAxisDeg": 31.5,
+          "assumed": true,
+          "cameraFovDeg": 60,
+          "peripheral": true,
+          "source": "mark_poi"
+        }
+      },
+      {
+        "check": "sightline",
+        "subject": "wit_C",
+        "pass": true,
+        "detail": "From Witness C's marked position (witness_C.md p.1) Witness C had line of sight to veh_T_trailer at t=10.4s (distance 32.5 m); target 7° from gaze (gaze assumed toward mark_poi). Blocked from 4 of 25 positions within 2 m of Witness C's mark; the result depends on Witness C's exact position. Claim: \"Stopped in WB inside lane ~18 m west of crossover; watched truck creep across EB lanes and saw car emerge on far side after loud crunch.\"",
+        "citation": "witness_C.md p.1",
+        "blockedBy": null,
+        "target": "veh_T_trailer",
+        "t": 10.43,
+        "distance": 32.5369918886188,
+        "from": [
+          -18,
+          1.5,
+          -27.43
+        ],
+        "to": [
+          0.4006723745995824,
+          3.9499999046325684,
+          -0.7079379951697331
+        ],
+        "hitPoint": null,
+        "robustness": {
+          "radiusM": 2,
+          "samples": 25,
+          "blocked": 4,
+          "clear": 21,
+          "eyeJitterM": 0.1,
+          "verdict": "partial",
+          "blockers": {
+            "veh_witC": 4
+          }
+        },
+        "gaze": {
+          "offAxisDeg": 7,
+          "assumed": true,
+          "cameraFovDeg": 60,
+          "peripheral": false,
+          "source": "mark_poi"
+        }
+      },
+      {
+        "check": "sightline",
+        "subject": "wit_D",
+        "pass": false,
+        "detail": "From Witness D's marked position (Depo Witness D 07:38, 08:08, 18:02, 18:42) the line of sight to veh_A is blocked by occ_shelter at t=10.4s (distance 33.3 m). Blocked from 25 of 25 positions within 2 m of Witness D's mark. Claim: \"Inside behind the register at the back of the counter; could not see the highway due to cooler and window posters, only heard the bang.\"",
+        "citation": "Depo Witness D 07:38, 08:08, 18:02, 18:42",
+        "blockedBy": "occ_shelter",
+        "target": "veh_A",
+        "t": 10.43,
+        "distance": 33.25305437109953,
+        "from": [
+          23,
+          1.6,
+          24
+        ],
+        "to": [
+          2.220446049250313e-16,
+          0.7249999958276748,
+          -1.1102230246251565e-16
+        ],
+        "hitPoint": [
+          7.638875000049984,
+          1.01560937221531,
+          7.9710000000521575
+        ],
+        "robustness": {
+          "radiusM": 2,
+          "samples": 25,
+          "blocked": 25,
+          "clear": 0,
+          "eyeJitterM": 0.1,
+          "verdict": "robust",
+          "blockers": {
+            "occ_shelter": 25
+          }
+        },
+        "gaze": {
+          "offAxisDeg": 1.2,
+          "assumed": true,
+          "cameraFovDeg": 60,
+          "peripheral": false,
+          "source": "mark_poi"
+        }
+      },
+      {
+        "check": "timing",
+        "subject": "veh_A",
+        "observerId": "veh_A",
+        "targetId": "veh_T_trailer",
+        "impactT": 10.43,
+        "availableS": 10.43,
+        "rangeS": [
+          1,
+          2.5
+        ],
+        "typicalS": 1.5,
+        "verdict": "sufficient",
+        "method": "sightline",
+        "firstVisibleT": 0,
+        "conflictT": 8.05,
+        "conflictS": 2.38,
+        "cappedAtStart": true,
+        "blockedBy": null,
+        "detail": "The driver of Vehicle A had a continuous line of sight to Vehicle T Semitrailer for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Vehicle T Semitrailer came within 3 m of the centerline of this driver's remaining path 2.38 s before impact. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
+        "impactSource": "meta.impactT",
+        "pass": true,
+        "citation": "meta.impactT",
+        "target": "veh_T_trailer",
+        "prt": {
+          "availableS": 10.43,
+          "rangeS": [
+            1,
+            2.5
+          ],
+          "typicalS": 1.5,
+          "verdict": "sufficient"
+        }
+      },
+      {
+        "check": "timing",
+        "subject": "veh_T_tractor",
+        "observerId": "veh_T_tractor",
+        "targetId": "veh_A",
+        "impactT": 10.43,
+        "availableS": 10.43,
+        "rangeS": [
+          1,
+          2.5
+        ],
+        "typicalS": 1.5,
+        "verdict": "sufficient",
+        "method": "sightline",
+        "firstVisibleT": 0,
+        "conflictT": null,
+        "conflictS": null,
+        "cappedAtStart": true,
+        "blockedBy": null,
+        "detail": "The driver of Vehicle T Tractor had a continuous line of sight to Vehicle A for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
+        "impactSource": "meta.impactT",
+        "pass": true,
+        "citation": "meta.impactT",
+        "target": "veh_A",
+        "prt": {
+          "availableS": 10.43,
+          "rangeS": [
+            1,
+            2.5
+          ],
+          "typicalS": 1.5,
+          "verdict": "sufficient"
+        }
+      },
+      {
+        "check": "plausibility",
+        "subject": "veh_A",
+        "pass": true,
+        "maxAccelG": 0,
+        "maxSpeedMph": 76.8,
+        "issues": [],
+        "detail": "Vehicle A moves plausibly: peak speed 76.8 mph, peak acceleration 0 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle A took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 1.12 g at t=19.00 s (consistent with secondary impacts during run-out; not counted).",
+        "citation": "HAR-17/02 p.1, p.5; FL Traffic Crash Report p.2 (BLK)",
+        "maxAccelT": 0.15000000000000002,
+        "maxSpeedT": 11.55,
+        "impactAccelG": 0.21,
+        "involvedInImpact": true,
+        "postImpactAccelG": 1.12,
+        "postImpactAccelT": 19,
+        "impactT": 10.43,
+        "impactSource": "meta.impactT",
+        "label": "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation."
+      },
+      {
+        "check": "plausibility",
+        "subject": "veh_T_tractor",
+        "pass": true,
+        "maxAccelG": 0.22,
+        "maxSpeedMph": 13.9,
+        "issues": [],
+        "detail": "Vehicle T Tractor moves plausibly: peak speed 13.9 mph, peak acceleration 0.22 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle T Tractor took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.12 g at t=21.85 s.",
+        "citation": "HAR-17/02 p.1; FL Traffic Crash Report p.2 (RED)",
+        "maxAccelT": 0.15000000000000002,
+        "maxSpeedT": 10.4,
+        "impactAccelG": 0.14,
+        "involvedInImpact": true,
+        "postImpactAccelG": 0.12,
+        "postImpactAccelT": 21.85,
+        "impactT": 10.43,
+        "impactSource": "meta.impactT",
+        "label": "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation."
+      },
+      {
+        "check": "plausibility",
+        "subject": "veh_T_trailer",
+        "pass": true,
+        "maxAccelG": 0.23,
+        "maxSpeedMph": 13.4,
+        "issues": [],
+        "detail": "Vehicle T Semitrailer moves plausibly: peak speed 13.4 mph, peak acceleration 0.23 g before impact, no position jumps. Impact at t=10.43 s (meta.impactT); Vehicle T Semitrailer took part in it, so accelerations within ±0.5 s of impact and during the post-impact run-out are excluded. Info: post-impact peak 0.12 g at t=21.85 s.",
+        "citation": "HAR-17/02 p.1, p.6; Tech Recon Factual p.10",
+        "maxAccelT": 0.15000000000000002,
+        "maxSpeedT": 10.4,
+        "impactAccelG": 0.13,
+        "involvedInImpact": true,
+        "postImpactAccelG": 0.12,
+        "postImpactAccelT": 21.85,
+        "impactT": 10.43,
+        "impactSource": "meta.impactT",
+        "label": "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation."
+      },
+      {
+        "check": "plausibility",
+        "subject": "veh_witA",
+        "pass": true,
+        "maxAccelG": 0.37,
+        "maxSpeedMph": 60,
+        "issues": [],
+        "detail": "Witness A Pickup moves plausibly: peak speed 60 mph, peak acceleration 0.37 g outside the impact window, no position jumps. Impact at t=10.43 s (meta.impactT); accelerations within ±0.5 s of it are excluded.",
+        "citation": "HAR-17/02 p.1–2, p.29; witness_A.md; Witness Interview p.16",
+        "maxAccelT": 17.85,
+        "maxSpeedT": 0,
+        "impactAccelG": 0.37,
+        "involvedInImpact": false,
+        "postImpactAccelG": null,
+        "postImpactAccelT": null,
+        "impactT": 10.43,
+        "impactSource": "meta.impactT",
+        "label": "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation."
+      }
+    ],
+    "critique": {
+      "verdict": "world_patched",
+      "summary": "Witness B's sworn claim that she had an unobstructed view of the approaching car right up until impact is physically contradicted by the position she marked on Exhibit 4 (mark #2 at x=8 m, z=9 m), where both the sheet-metal back panel of the bench shelter and the turning tractor-semitrailer block her line of sight. Two world modeling artifacts were also identified and patched: Witness A's pickup (`veh_witA`) was set to `occludes: true`, causing self-occlusion of his sightline from inside his own cab at t=4.5 s, and the retail store (`bld_store`) did not include the evidenced drink cooler and window posters along its north storefront that blocked Witness D's view from the register.",
+      "findings": [
+        {
+          "id": "F1",
+          "severity": "high",
+          "summary": "Witness B's testimony that she had a clear, unobstructed view of Vehicle A all the way to impact is contradicted by her own marked position on Exhibit 4.",
+          "detail": "In her deposition, Witness B repeatedly testified that she had a clear view of the eastbound car the whole way down the hill right up until the moment it hit the trailer, with nothing in the way (Depo Witness B 41:10–41:20, 52:00–52:07, 56:05–56:18). However, when asked to mark her standing position on Exhibit 4, she placed mark #2 at approximately (x=8 m, z=9 m), directly south (behind) the bench shelter in front of the store (Depo Witness B 1:54:24–1:54:50). Witness D testified that the bench shelter has a roof and a solid sheet-metal back panel (Depo Witness D 09:51–10:29). In the faithful reconstruction, from (8, 9) looking toward the approaching car and the point of impact, Witness B's sightline is obstructed both by the bench shelter's back panel and by the turning tractor-tractor (`veh_T_tractor`) crossing into NE 140th Court ahead of the impact point, blocking 21 of 25 sample points within a 2 m radius.",
+          "evidence": [
+            {
+              "source": "evidence/deposition_witness_B.mp4",
+              "citation": "Depo Witness B 41:10-41:20, 52:00-52:07, 1:54:24-1:54:50"
+            },
+            {
+              "source": "evidence/deposition_witness_D.mp4",
+              "citation": "Depo Witness D 09:51-10:29"
+            },
+            {
+              "source": "evidence/exhibit4_intersection_map.png",
+              "citation": "Bench shelter location north of retail store relative to mark #2"
+            },
+            {
+              "source": "Render",
+              "citation": "wit_B_t9p8.png @ t=9.80s"
+            },
+            {
+              "source": "Independent check",
+              "citation": "sightline wit_B→veh_A: blocked by veh_T_tractor and occ_shelter (21/25 samples blocked)"
+            }
+          ],
+          "involves": [
+            "wit_B",
+            "veh_A",
+            "veh_T_tractor",
+            "occ_shelter"
+          ],
+          "status": "contradiction",
+          "type": "testimony"
+        },
+        {
+          "id": "F2",
+          "severity": "medium",
+          "summary": "Witness A's pickup mesh (`veh_witA`) was authored with `occludes: true`, causing artificial self-occlusion of Witness A's sightline from inside his own cab at t=4.5 s.",
+          "detail": "Witness A was driving westbound at ~60 mph about a quarter mile behind the truck and saw Vehicle A crest the hill eastbound for several seconds before the turning semitrailer crossed the eastbound lanes and blocked his view (witness_A.md p.1; docket_har1702.txt p.11–12, p.29–30). In the round 1 world module, `veh_witA` had `occludes: true` and its interpolated position at t=4.5 s placed the cab roof/windshield mesh 0.1 m in front of `wit_A`'s eye point `[269.6, 1.5, -31.09]`, causing the raycast check to report `blockedBy: veh_witA`. Visual inspection of `wit_A_t4p5.png` confirms that the highway ahead and `veh_A` are in fact in open view down the roadway, and setting `occludes: false` on Witness A's own vehicle (as well as Witness C's pickup `veh_witC`) eliminates cab self-occlusion while preserving the semitrailer occlusion when `veh_T_trailer` enters the eastbound lanes.",
+          "evidence": [
+            {
+              "source": "evidence/witness_A.md",
+              "citation": "p.1"
+            },
+            {
+              "source": "text/docket_har1702.txt",
+              "citation": "p.11-12, p.29-30"
+            },
+            {
+              "source": "Render",
+              "citation": "wit_A_t4p5.png @ t=4.50s"
+            },
+            {
+              "source": "Independent check",
+              "citation": "sightline wit_A→veh_A: blocked by veh_witA at 0.1 m"
+            }
+          ],
+          "involves": [
+            "wit_A",
+            "veh_witA",
+            "veh_A",
+            "veh_T_trailer"
+          ],
+          "status": "consistent",
+          "type": "obstruction"
+        },
+        {
+          "id": "F3",
+          "severity": "low",
+          "summary": "Witness D's account that she was inside behind the counter and could not see the highway due to the drink cooler and window posters is consistent, and the storefront cooler/poster occluder has been added to the world.",
+          "detail": "Witness D testified that she was inside the store behind the register at the back of the counter stocking cigarettes when the crash occurred, and could not see the highway because a large drink cooler was pushed up against one front window and posters/signs covered the front glass (Depo Witness D 06:39–07:21, 08:08–08:41, 18:02–18:52). In round 1, the procedural `bld_store` asset had transparent front windows, so the raycast from `wit_D` passed through the storefront glass and hit `occ_shelter` outside instead of the cooler/posters. Adding `occ_store_front` along the north storefront wall faithfully represents the cooler and window posters described by Witness D.",
+          "evidence": [
+            {
+              "source": "evidence/deposition_witness_D.mp4",
+              "citation": "Depo Witness D 06:39-07:21, 08:08-08:41, 18:02-18:52"
+            },
+            {
+              "source": "Render",
+              "citation": "wit_D_t10p43.png @ t=10.43s"
+            },
+            {
+              "source": "Independent check",
+              "citation": "sightline wit_D→veh_A: blocked by occ_shelter (25/25 samples blocked)"
+            }
+          ],
+          "involves": [
+            "wit_D",
+            "bld_store",
+            "occ_shelter"
+          ],
+          "status": "consistent",
+          "type": "obstruction"
+        },
+        {
+          "id": "F4",
+          "severity": "low",
+          "summary": "Witness C's account from his stopped pickup in the westbound inside lane ~18 m west of the crossover is physically consistent with the reconstruction.",
+          "detail": "Witness C stated he was stopped in the westbound inside lane about 18 m west of the NE 140th Court crossover, watched the tractor-trailer creep out of the left-turn lane and swing across the eastbound lanes, heard a loud crunch without any prior braking or horn, and saw Vehicle A emerge from the far side of the trailer and depart the roadway toward the houses (witness_C.md p.1). Both the render (`wit_C_t10p43.png`) and the independent sightline check confirm an unobstructed view of `veh_T_trailer` and `veh_A` emerging beneath it at t=10.43 s (32.5 m distance, 7° off-axis). Setting `occludes: false` on `veh_witC` in the patch also removes minor cab-pillar self-occlusion on 4 of 25 jitter samples.",
+          "evidence": [
+            {
+              "source": "evidence/witness_C.md",
+              "citation": "p.1"
+            },
+            {
+              "source": "Render",
+              "citation": "wit_C_t10p43.png @ t=10.43s"
+            },
+            {
+              "source": "Independent check",
+              "citation": "sightline wit_C→veh_T_trailer: pass=true, distance 32.5 m"
+            }
+          ],
+          "involves": [
+            "wit_C",
+            "veh_witC",
+            "veh_T_trailer",
+            "veh_A"
+          ],
+          "status": "consistent",
+          "type": "testimony"
+        },
+        {
+          "id": "F5",
+          "severity": "low",
+          "summary": "Vehicle speeds, trajectories, sight distances (1,132 ft / 10.43 s), and the absence of pre-impact braking marks match the NTSB record and physics checks.",
+          "detail": "The reconstruction places the hill crest 345 m (1,132 ft) west of the point of impact, giving 10.43 s of sight time at Vehicle A's recorded TACC speed of 74 mph (33.08 m/s) with no pre-impact braking (docket_har1702.txt p.15, p.29; docket_tech_recon_factual.txt p.4, p.12, p.17). Vehicle T turns left from the westbound turn lane across the eastbound lanes at ~13–14 mph, matching the NTSB Vehicle Dynamics Study (docket_vehicle_dynamics_study.txt p.6–8). Post-impact, Vehicle A departs the roadway at a shallow angle, strikes the utility pole 8.4 s after initial impact (t=18.83 s), and comes to rest 277 m (910 ft) east of the POI (docket_har1702.txt p.1, p.5, p.15).",
+          "evidence": [
+            {
+              "source": "text/docket_har1702.txt",
+              "citation": "p.1, p.5, p.15, p.29"
+            },
+            {
+              "source": "text/docket_vehicle_dynamics_study.txt",
+              "citation": "p.6-8"
+            },
+            {
+              "source": "Render",
+              "citation": "overhead_t12p5.png @ t=12.50s"
+            },
+            {
+              "source": "Independent check",
+              "citation": "timing veh_A and veh_T_tractor: 10.43 s available; plausibility checks pass for all vehicles"
+            }
+          ],
+          "involves": [
+            "veh_A",
+            "veh_T_tractor",
+            "veh_T_trailer",
+            "occ_pole"
+          ],
+          "status": "consistent",
+          "type": "physics"
+        },
+        {
+          "id": "F6",
+          "severity": "low",
+          "summary": "Scene lighting, clear weather, dry road surface, sun position (azimuth 265.0°, elevation 45.1°), and lack of sun glare match the documentary record, post-crash scene photographs, and solar calculations.",
+          "detail": "The collision occurred on May 7, 2016 at 16:36:12.7 EDT near Williston, FL (29.4106°N, 82.53979°W) under clear skies, bright daylight, and dry road conditions, with Vehicle A's headlights off (docket_har1702.txt p.15, p.32 fn.40; docket_tech_recon_factual.txt p.13, p.16). The world-authored sun (`azimuthDeg: 265.0`, `elevationDeg: 45.1`, shadow bearing 85° E) exactly matches the NOAA / USNO expected solar position (0.0° error) and the NTSB Technical Reconstruction Factual Report (az 264.2°–265.6°, el 46.4°–44.2° between 4:30 and 4:40 PM; docket_tech_recon_factual.txt p.16). No witness or driver had sun glare (`glareRisk: false` for all; smallest sun-to-sightline angle is 45.1° for drivers and 45.2° for `wit_A`), consistent with Witness A's and Witness B's testimony that the sun was high and not in their eyes. Comparison with real post-crash scene photographs (`photo01_prelim_p1_us27a_approach_view.jpg`, `photo05_highway_p11_approach_view_a.jpg`, `photo08_techrecon_p5_scene_approach_view.jpg`) confirms clear daylight conditions, dry asphalt, and eastward-cast shadows consistent with the afternoon sun in the west.",
+          "evidence": [
+            {
+              "source": "text/docket_tech_recon_factual.txt",
+              "citation": "p.13, p.16"
+            },
+            {
+              "source": "evidence/docket/photos/photo08_techrecon_p5_scene_approach_view.jpg",
+              "citation": "Eastbound approach at NE 140th Ct showing bright daylight, dry pavement, and eastward shadows"
+            },
+            {
+              "source": "Lighting audit",
+              "citation": "expected sun az 265.0 / el 45.1 vs render az 265.0 / el 45.1 (0 deg error); min sun angle 45.1 deg, glareRisk=false for all witnesses and drivers"
+            },
+            {
+              "source": "Render",
+              "citation": "wit_A_t4p5.png @ t=4.50s"
+            }
+          ],
+          "involves": [
+            "wit_A",
+            "wit_B",
+            "wit_C",
+            "wit_D",
+            "veh_A",
+            "veh_T_tractor",
+            "veh_T_trailer",
+            "veh_witA"
+          ],
+          "status": "consistent",
+          "type": "lighting",
+          "lighting": {
+            "expectedSunAzimuthDeg": 265,
+            "expectedSunElevationDeg": 45.1,
+            "renderSunAzimuthDeg": 265,
+            "renderSunElevationDeg": 45.1,
+            "sunAngleFromLineOfSightDeg": 45.1,
+            "glareRisk": false,
+            "realFootage": true
+          }
+        }
+      ],
+      "patched": true
+    },
+    "findings": [
+      {
+        "id": "F1",
+        "severity": "high",
+        "summary": "Witness B's testimony that she had a clear, unobstructed view of Vehicle A all the way to impact is contradicted by her own marked position on Exhibit 4.",
+        "detail": "In her deposition, Witness B repeatedly testified that she had a clear view of the eastbound car the whole way down the hill right up until the moment it hit the trailer, with nothing in the way (Depo Witness B 41:10–41:20, 52:00–52:07, 56:05–56:18). However, when asked to mark her standing position on Exhibit 4, she placed mark #2 at approximately (x=8 m, z=9 m), directly south (behind) the bench shelter in front of the store (Depo Witness B 1:54:24–1:54:50). Witness D testified that the bench shelter has a roof and a solid sheet-metal back panel (Depo Witness D 09:51–10:29). In the faithful reconstruction, from (8, 9) looking toward the approaching car and the point of impact, Witness B's sightline is obstructed both by the bench shelter's back panel and by the turning tractor-tractor (`veh_T_tractor`) crossing into NE 140th Court ahead of the impact point, blocking 21 of 25 sample points within a 2 m radius.",
+        "evidence": [
+          {
+            "source": "evidence/deposition_witness_B.mp4",
+            "citation": "Depo Witness B 41:10-41:20, 52:00-52:07, 1:54:24-1:54:50"
+          },
+          {
+            "source": "evidence/deposition_witness_D.mp4",
+            "citation": "Depo Witness D 09:51-10:29"
+          },
+          {
+            "source": "evidence/exhibit4_intersection_map.png",
+            "citation": "Bench shelter location north of retail store relative to mark #2"
+          },
+          {
+            "source": "Render",
+            "citation": "wit_B_t9p8.png @ t=9.80s"
+          },
+          {
+            "source": "Independent check",
+            "citation": "sightline wit_B→veh_A: blocked by veh_T_tractor and occ_shelter (21/25 samples blocked)"
+          }
+        ],
+        "involves": [
+          "wit_B",
+          "veh_A",
+          "veh_T_tractor",
+          "occ_shelter"
+        ],
+        "status": "contradiction",
+        "type": "testimony"
+      },
+      {
+        "id": "F2",
+        "severity": "medium",
+        "summary": "Witness A's pickup mesh (`veh_witA`) was authored with `occludes: true`, causing artificial self-occlusion of Witness A's sightline from inside his own cab at t=4.5 s.",
+        "detail": "Witness A was driving westbound at ~60 mph about a quarter mile behind the truck and saw Vehicle A crest the hill eastbound for several seconds before the turning semitrailer crossed the eastbound lanes and blocked his view (witness_A.md p.1; docket_har1702.txt p.11–12, p.29–30). In the round 1 world module, `veh_witA` had `occludes: true` and its interpolated position at t=4.5 s placed the cab roof/windshield mesh 0.1 m in front of `wit_A`'s eye point `[269.6, 1.5, -31.09]`, causing the raycast check to report `blockedBy: veh_witA`. Visual inspection of `wit_A_t4p5.png` confirms that the highway ahead and `veh_A` are in fact in open view down the roadway, and setting `occludes: false` on Witness A's own vehicle (as well as Witness C's pickup `veh_witC`) eliminates cab self-occlusion while preserving the semitrailer occlusion when `veh_T_trailer` enters the eastbound lanes.",
+        "evidence": [
+          {
+            "source": "evidence/witness_A.md",
+            "citation": "p.1"
+          },
+          {
+            "source": "text/docket_har1702.txt",
+            "citation": "p.11-12, p.29-30"
+          },
+          {
+            "source": "Render",
+            "citation": "wit_A_t4p5.png @ t=4.50s"
+          },
+          {
+            "source": "Independent check",
+            "citation": "sightline wit_A→veh_A: blocked by veh_witA at 0.1 m"
+          }
+        ],
+        "involves": [
+          "wit_A",
+          "veh_witA",
+          "veh_A",
+          "veh_T_trailer"
+        ],
+        "status": "consistent",
+        "type": "obstruction"
+      },
+      {
+        "id": "F3",
+        "severity": "low",
+        "summary": "Witness D's account that she was inside behind the counter and could not see the highway due to the drink cooler and window posters is consistent, and the storefront cooler/poster occluder has been added to the world.",
+        "detail": "Witness D testified that she was inside the store behind the register at the back of the counter stocking cigarettes when the crash occurred, and could not see the highway because a large drink cooler was pushed up against one front window and posters/signs covered the front glass (Depo Witness D 06:39–07:21, 08:08–08:41, 18:02–18:52). In round 1, the procedural `bld_store` asset had transparent front windows, so the raycast from `wit_D` passed through the storefront glass and hit `occ_shelter` outside instead of the cooler/posters. Adding `occ_store_front` along the north storefront wall faithfully represents the cooler and window posters described by Witness D.",
+        "evidence": [
+          {
+            "source": "evidence/deposition_witness_D.mp4",
+            "citation": "Depo Witness D 06:39-07:21, 08:08-08:41, 18:02-18:52"
+          },
+          {
+            "source": "Render",
+            "citation": "wit_D_t10p43.png @ t=10.43s"
+          },
+          {
+            "source": "Independent check",
+            "citation": "sightline wit_D→veh_A: blocked by occ_shelter (25/25 samples blocked)"
+          }
+        ],
+        "involves": [
+          "wit_D",
+          "bld_store",
+          "occ_shelter"
+        ],
+        "status": "consistent",
+        "type": "obstruction"
+      },
+      {
+        "id": "F4",
+        "severity": "low",
+        "summary": "Witness C's account from his stopped pickup in the westbound inside lane ~18 m west of the crossover is physically consistent with the reconstruction.",
+        "detail": "Witness C stated he was stopped in the westbound inside lane about 18 m west of the NE 140th Court crossover, watched the tractor-trailer creep out of the left-turn lane and swing across the eastbound lanes, heard a loud crunch without any prior braking or horn, and saw Vehicle A emerge from the far side of the trailer and depart the roadway toward the houses (witness_C.md p.1). Both the render (`wit_C_t10p43.png`) and the independent sightline check confirm an unobstructed view of `veh_T_trailer` and `veh_A` emerging beneath it at t=10.43 s (32.5 m distance, 7° off-axis). Setting `occludes: false` on `veh_witC` in the patch also removes minor cab-pillar self-occlusion on 4 of 25 jitter samples.",
+        "evidence": [
+          {
+            "source": "evidence/witness_C.md",
+            "citation": "p.1"
+          },
+          {
+            "source": "Render",
+            "citation": "wit_C_t10p43.png @ t=10.43s"
+          },
+          {
+            "source": "Independent check",
+            "citation": "sightline wit_C→veh_T_trailer: pass=true, distance 32.5 m"
+          }
+        ],
+        "involves": [
+          "wit_C",
+          "veh_witC",
+          "veh_T_trailer",
+          "veh_A"
+        ],
+        "status": "consistent",
+        "type": "testimony"
+      },
+      {
+        "id": "F5",
+        "severity": "low",
+        "summary": "Vehicle speeds, trajectories, sight distances (1,132 ft / 10.43 s), and the absence of pre-impact braking marks match the NTSB record and physics checks.",
+        "detail": "The reconstruction places the hill crest 345 m (1,132 ft) west of the point of impact, giving 10.43 s of sight time at Vehicle A's recorded TACC speed of 74 mph (33.08 m/s) with no pre-impact braking (docket_har1702.txt p.15, p.29; docket_tech_recon_factual.txt p.4, p.12, p.17). Vehicle T turns left from the westbound turn lane across the eastbound lanes at ~13–14 mph, matching the NTSB Vehicle Dynamics Study (docket_vehicle_dynamics_study.txt p.6–8). Post-impact, Vehicle A departs the roadway at a shallow angle, strikes the utility pole 8.4 s after initial impact (t=18.83 s), and comes to rest 277 m (910 ft) east of the POI (docket_har1702.txt p.1, p.5, p.15).",
+        "evidence": [
+          {
+            "source": "text/docket_har1702.txt",
+            "citation": "p.1, p.5, p.15, p.29"
+          },
+          {
+            "source": "text/docket_vehicle_dynamics_study.txt",
+            "citation": "p.6-8"
+          },
+          {
+            "source": "Render",
+            "citation": "overhead_t12p5.png @ t=12.50s"
+          },
+          {
+            "source": "Independent check",
+            "citation": "timing veh_A and veh_T_tractor: 10.43 s available; plausibility checks pass for all vehicles"
+          }
+        ],
+        "involves": [
+          "veh_A",
+          "veh_T_tractor",
+          "veh_T_trailer",
+          "occ_pole"
+        ],
+        "status": "consistent",
+        "type": "physics"
+      },
+      {
+        "id": "F6",
+        "severity": "low",
+        "summary": "Scene lighting, clear weather, dry road surface, sun position (azimuth 265.0°, elevation 45.1°), and lack of sun glare match the documentary record, post-crash scene photographs, and solar calculations.",
+        "detail": "The collision occurred on May 7, 2016 at 16:36:12.7 EDT near Williston, FL (29.4106°N, 82.53979°W) under clear skies, bright daylight, and dry road conditions, with Vehicle A's headlights off (docket_har1702.txt p.15, p.32 fn.40; docket_tech_recon_factual.txt p.13, p.16). The world-authored sun (`azimuthDeg: 265.0`, `elevationDeg: 45.1`, shadow bearing 85° E) exactly matches the NOAA / USNO expected solar position (0.0° error) and the NTSB Technical Reconstruction Factual Report (az 264.2°–265.6°, el 46.4°–44.2° between 4:30 and 4:40 PM; docket_tech_recon_factual.txt p.16). No witness or driver had sun glare (`glareRisk: false` for all; smallest sun-to-sightline angle is 45.1° for drivers and 45.2° for `wit_A`), consistent with Witness A's and Witness B's testimony that the sun was high and not in their eyes. Comparison with real post-crash scene photographs (`photo01_prelim_p1_us27a_approach_view.jpg`, `photo05_highway_p11_approach_view_a.jpg`, `photo08_techrecon_p5_scene_approach_view.jpg`) confirms clear daylight conditions, dry asphalt, and eastward-cast shadows consistent with the afternoon sun in the west.",
+        "evidence": [
+          {
+            "source": "text/docket_tech_recon_factual.txt",
+            "citation": "p.13, p.16"
+          },
+          {
+            "source": "evidence/docket/photos/photo08_techrecon_p5_scene_approach_view.jpg",
+            "citation": "Eastbound approach at NE 140th Ct showing bright daylight, dry pavement, and eastward shadows"
+          },
+          {
+            "source": "Lighting audit",
+            "citation": "expected sun az 265.0 / el 45.1 vs render az 265.0 / el 45.1 (0 deg error); min sun angle 45.1 deg, glareRisk=false for all witnesses and drivers"
+          },
+          {
+            "source": "Render",
+            "citation": "wit_A_t4p5.png @ t=4.50s"
+          }
+        ],
+        "involves": [
+          "wit_A",
+          "wit_B",
+          "wit_C",
+          "wit_D",
+          "veh_A",
+          "veh_T_tractor",
+          "veh_T_trailer",
+          "veh_witA"
+        ],
+        "status": "consistent",
+        "type": "lighting",
+        "lighting": {
+          "expectedSunAzimuthDeg": 265,
+          "expectedSunElevationDeg": 45.1,
+          "renderSunAzimuthDeg": 265,
+          "renderSunElevationDeg": 45.1,
+          "sunAngleFromLineOfSightDeg": 45.1,
+          "glareRisk": false,
+          "realFootage": true
+        }
+      }
+    ],
+    "patch": {
+      "world": "/cases/demo-529730/worlds/world_v2.js",
+      "problems": []
+    },
+    "finishedAt": "2026-10-25T20:17:06.044Z"
+  }
+]

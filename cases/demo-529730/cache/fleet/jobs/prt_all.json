@@ -1,0 +1,69 @@
+{
+  "id": "prt_all",
+  "type": "prt",
+  "interactionId": "v1_Chd2bmJlYXFHS05ZRG55dE1QZzkzUGdRNBIXdm5iZWFxR0tOWURueXRNUGc5M1BnUTQ",
+  "wallMs": 186652,
+  "status": "completed",
+  "environmentId": "ffef4a5837e858b5626dda38e0de2903",
+  "usage": {
+    "total": 19734,
+    "input": 18727,
+    "cached": 9967
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"prt_all\",\"ok\":true,\"ms\":3516}",
+    "interpretation": "Both drivers had an unobstructed line of sight for 10.43 seconds prior to impact, providing sufficient perception-reaction time."
+  },
+  "result": {
+    "task": {
+      "id": "prt_all",
+      "type": "prt",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "impact": {
+        "t": 10.43,
+        "source": "meta.impactT"
+      },
+      "prt": [
+        {
+          "observerId": "veh_A",
+          "targetId": "veh_T_trailer",
+          "availableS": 10.43,
+          "verdict": "sufficient",
+          "firstVisibleT": 0,
+          "impactT": 10.43,
+          "blockedBy": null,
+          "detail": "The driver of Vehicle A had a continuous line of sight to Vehicle T Semitrailer for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Vehicle T Semitrailer came within 3 m of the centerline of this driver's remaining path 2.38 s before impact. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation."
+        },
+        {
+          "observerId": "veh_T_tractor",
+          "targetId": "veh_A",
+          "availableS": 10.43,
+          "verdict": "sufficient",
+          "firstVisibleT": 0,
+          "impactT": 10.43,
+          "blockedBy": null,
+          "detail": "The driver of Vehicle T Tractor had a continuous line of sight to Vehicle A for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation."
+        }
+      ]
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 3516,
+      "worldSha": "526ea902d593",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true
+}

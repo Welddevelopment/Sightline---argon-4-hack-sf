@@ -1,0 +1,475 @@
+SOURCE: NTSB public docket HWY16FH018 — Vehicle Factors Group Chairman's Factual Report — https://data.ntsb.gov/Docket/Document/docBLOB?ID=40453267&FileExtension=.PDF&FileName=Vehicle%20Factors%20Group%20Chairman%27s%20Factual%20Report-Master.PDF
+
+=== Vehicle Factual p.1 ===
+VEHICLE FACTORS GROUP CHAIRMAN’S
+ FACTUAL REPORT
+
+ Williston, Florida
+
+ HWY16FH018
+
+ (11 pages)
+
+=== Vehicle Factual p.2 ===
+ NATIONAL TRANSPORTATION SAFETY BOARD
+ OFFICE OF HIGHWAY SAFETY
+ WASHINGTON, D.C.
+
+ VEHICLE FACTORS GROUP CHAIRMAN’S
+ FACTUAL REPORT
+
+ CRASH INFORMATION
+
+Location: US 27-Alt, milepost 29, near Williston, Levy County, Florida
+Vehicle #1: 2015 [car manufacturer] [car model] 70D
+Operator #1: Private operator
+Vehicle #2: 2014 [truck manufacturer] [truck model] truck tractor in combination with a 2003
+ [trailer manufacturer] 3000R refrigerated semi trailer
+Operator #2: Okemah Express, LLC
+ Palm Harbor, FL
+Date: May 7, 2016
+Time: 4:36 PM EDT
+
+NTSB #: HWY16FH018
+
+ VEHICLE FACTORS GROUP
+
+Jerome F. Cantrell, Vehicle Factors Group Chairman
+NTSB, Office of Highway Safety
+490 L’Enfant Plaza S.W., Washington, DC 20594
+
+[car manufacturer] Inc. Group Member
+Matthew Schwall, Ph.D.
+Director, Field Performance Engineering
+3500 Deer Creek Road
+Palo Alto, California 94304
+
+Williston, Florida – Vehicle Factual Report Page 2 of 11
+
+=== Vehicle Factual p.3 ===
+ CRASH SUMMARY
+
+ For a summary of the crash, refer to the Crash Summary Report in the docket for this
+investigation.
+
+ DETAILS OF THE VEHICLE FACTORS INVESTIGATION
+
+ The 2015 [car manufacturer] [car model] sedan was examined by NTSB staff on July 14, 2016. All major
+mechanical systems were examined, which included the powertrain, steering, braking, and
+suspension systems. Overall collision damage, along with any damage or anomalies within major
+vehicle mechanical systems were documented. Supporting photographs, vehicle specifications,
+and available maintenance records were reviewed.
+
+ A level 1, post-accident inspection was conducted on the [truck manufacturer] truck-tractor and the
+[trailer manufacturer] semi-trailer on May 12, 2016, by the Florida Highway Patrol (FHP). This inspection did
+not uncover any violations on the truck-tractor. The damages noted for the semi-trailer were
+identified as broken lower frame rails, missing or bent frame crossmembers, inoperable
+intermediate side marker lamps, and an air leak at a proper connection.1
+
+ By the time staff arrived in Florida,2 the truck tractor and semi-trailer were no longer in
+Williston, FL. The semi-trailer was no longer owned by Okemah Express LLC, but had in fact
+been used to help purchase a newer semi-trailer. Staff was able to locate the 2003 [trailer manufacturer] semi
+trailer that had been involved in the crash and the new owner allowed staff to scan it for
+reconstruction purposes. The truck tractor along with the newer semi trailer were no longer in the
+state of Florida and they were not expected to return to Florida for an unreasonable period of time.
+
+ Vehicle #1 – 2015 [car manufacturer] [car model] 70D Sedan, Passenger Vehicle
+
+ 1.1. General information
+
+ Make/Model: 2015 [car manufacturer], 4-Door Sedan / [car model] 70D
+ VIN:3 5YJSA1S26FFXXXXXX
+ Date of Manufacture: June 2015
+ GVWR:4 5,732 lbs
+ GAWR (front axle): 2,813 lbs
+ GAWR (rear axle): 3,307 lbs
+ Dual Electric-Motors: AC Induction Motor, Liquid-Cooled, with variable
+ Frequency Drive, 329 Combined HP
+ Battery: 70 kWh
+ Transmission: Single Speed Fixed Gear
+
+1 Neither the truck tractor nor semi-trailer were mechanically inspected by NTSB staff due to their unavailability.
+2 The crash happened on May 7, 2016 and NTSB launched to the crash location on July 7, 2016.
+3 Vehicle Identification Number (VIN).
+4 Gross Vehicle Weight Rating (GVWR) is the total maximum weight that a vehicle is designed to carry when
+loaded, including the weight of the vehicle itself plus fuel, passengers, and cargo.
+
+Williston, Florida – Vehicle Factual Report Page 3 of 11
+
+=== Vehicle Factual p.4 ===
+ 1.2. Damage Description
+
+ The front of the [car manufacturer] sustained major damage to the left-front. The leading edge and top
+of the hood sustained superficial scratches and scrapes. The leading edge of the left side of the
+hood was damaged and crushed rearward. The left headlamp assembly was missing. The plastic
+bumper cover was missing and the left side of the bumper was displaced rearward. The air
+conditioning condenser fins were damaged. The left side of the air conditioning condenser was
+bent and separated from the mounting brackets. Wiring to the various sensors located in the front
+bumper and grill area were exposed, damaged and hanging down in front of the bumper. The
+windshield was broken and most of it was missing. The “A” pillars were displaced rearward and
+the roof had been torn from the top of the “A” pillars and was folded rearward to the trunk area.
+
+ The left side of the [car manufacturer] sustained substantial damage. The left-front fender was displaced
+rearward, collapsing the wheel well, trapping the left-front tire. The left-front wheel was cracked
+and the tire was deflated. The left-side rearview mirror was broken from its respective mount and
+hanging by its electrical wires. The left-side rearview mirror also housed the external cell phone
+antenna. The driver’s door sustained superficial scratches. The leading edge of the left-rear
+passenger door was dented at approximately the top hinge area and was displaced rearward, and
+was unable to close and latch. The rear windshield was shattered. There were no side windows
+left intact.5
+
+ The rear of the [car manufacturer] sustained major damage. The trunk lid was crushed. The left and
+right tail lamp assemblies, mounted in the trunk lid, were missing the clear outer lenses. The third
+brake light assembly, mounted at the top of the rear windshield, was displaced, but was still
+hanging in its respective mounting location. The right side of the trunk lid was displaced forward.
+The right side of the trunk lid was askew and lifted. The trunk was unable to be latched closed.
+The right side of the plastic bumper covering sustained scratches.
+
+ The right side of the [car manufacturer] sustained moderate damage. The front fender, front passenger
+door, and the rear quarter panel sustained scrapes and scratches. The rear passenger door was
+crushed downward and trapped closed. The top of the “B” pillar was displaced rearward into the
+rear passenger compartment. The right-side rearview mirror was slightly damaged, but still
+mounted. The rearview mirror mount sustained major abrasion damage at the base of the ‘A”
+pillar.
+
+ The condition of the interior of the [car manufacturer] at the time of the crash was unknown because the
+electronics had been removed sometime prior to this inspection. The instrument panel to the right
+of the driver and in front of the passenger, along with the center stack console, had all been
+removed. The interior contained a lap top computer stand mounted to the right-front passenger
+floor board, forward of the passenger seating position.6
+
+ The driver supplemental restraint system deployed during the sequence of the crash. The
+driver and front passenger knee bolster airbags, the driver’s front airbag, and driver’s side airbag
+deployed during the sequence of the crash. The driver and passenger seating positions were
+equipped with a Type 2 (three-point, continuous loop lap/shoulder) occupant restraint system. The
+
+5 See Vehicle Photograph #1 – Left front of [car manufacturer].
+6 See Vehicle Photograph #2 – Instrument panel of [car manufacturer].
+
+Williston, Florida – Vehicle Factual Report Page 4 of 11
+
+=== Vehicle Factual p.5 ===
+webbing for the driver’s restraint system had been cut by recovery personnel at the crash scene, to
+extricate the driver.
+
+ The webbing was trapped in the extended position and the latch plate was located locked
+in the buckle.7 The passenger’s restraint system was drawn taunt against the “B” pillar in the
+stowed position.
+
+ The seatbacks of the front passenger seats were deformed rearward. The forward portion
+of the driver’s headrest sustained multiple cuts and abrasions. Biological material was documented
+on the left side of the headrest. The left side of the seat was sliced through the outer covering.
+The left side of the passenger’s headrest was torn at the bottom, approximately at shoulder height.
+Biological material was down the left side of the driver’s seat.
+
+ The rear passenger compartment was full of debris from the crash and was not inspected.
+
+ 1.3. Vehicle Recorded Event Data
+
+ The [car manufacturer] was not equipped with an Event Data Recorder. The [car manufacturer] was equipped with
+an Air bag Control Module, however; this control module did not have an event data recorder.
+Any data that would have been recorded by the computer had been removed from the [car manufacturer]
+sometime prior to to this inspection by NTSB staff. Refer to the Recorder Group Chairman’s
+factual report for any data obtained from the vehicle manufacturer.
+
+ 1.4. Driver Controls
+
+ The driver control instrument panel and gauge display were all digital. The main instrument
+panel display screen, located in the center stack of the [car manufacturer], had been removed and was not located
+with the vehicle at the time of this inspection. 
+ A single lever, mounted to the left side of the steering wheel column, operated the wipers,
+high/low beam, and turn signals. The bottom lever, mounted to the left side of the steering wheel
+column controlled the position of the steering wheel, such as, forward and backward and up and
+down. The single lever mounted to the right side of the steering column operated the transmission
+and electronic parking brake.
+ The steering wheel had three spokes, two with operational buttons. The buttons located on the
+left spoke of the steering wheel could be used to change radio stations, control volume, and navigate
+the left side of the instrument panel. The buttons located on the right spoke of the steering wheel could
+be used to operate cell phone applications, to navigate the right side of the instrument panel, and voice
+commands.
+
+ 1.5. Tires and Wheels
+
+ According to the VIN plate, mounted on the lower portion of the “B” pillar in the driver’s
+door opening, the [car manufacturer] was specified to be equipped with P245/45R19 tires, mounted on 19x8
+rims.8 The tires were specified to be inflated to 45 psi for both axles. Table 1 includes the tire
+and wheel information documented at the time of inspection.
+
+7 See Vehicle Photograph #3 – Driver’s Seat Belt Latch Plate and Buckle.
+8 Hereafter referenced as wheel.
+
+Williston, Florida – Vehicle Factual Report Page 5 of 11
+
+=== Vehicle Factual p.6 ===
+ Tread depth measurements were taken from the outboard tire shoulder, to the inboard tire
+ shoulder, and in three separate locations within the major tread grooves of a given tire. The
+ measurements taken are documented in Table 1. All tread depths measured were within the
+ minimum tread depth regulation for passenger vehicle tires, which is 2/32 of an inch for all axles.9
+
+ Table 1. [car manufacturer] Tire Information
+Axle I Left Right
+Make GOODYEAR MICHELIN
+Model EAGLE RS-A2 PRIMARY MXM4
+DOT # M67V JE1R 1615 B9Y9 005X 2315
+Size 245/45R19 (98V) 245/45R19 (98W)
+Load Rating 1,653 lbs @ 51 psi 1,653 lbs. @ 51 psi
+Tread Plies 2 plies polyester, 2 plies steel, 1 nylon 2 plies polyester, 1 ply polyamide
+Sidewall Plies 2 plies polyester 2 plies polyester
+Pressure DEFLATED 44 psi
+Tread Depth 7/32, 6/32, 6/32, 6/32 inch 4/32, 4/32, 4/32, 4/32 inch
+Axle II Left Right
+Make MICHELIN MICHELIN
+Model PRIMARY MXM4 PRIMARY MXM4
+DOT # B9Y9 005X 2315 B9Y9 005X 2315
+Size 245/45R19 (98W) 245/45R19 (98W)
+Load Rating 1,653 lbs. @ 51 psi 1,653 lbs. @ 51 psi
+Tread Plies 2 plies polyester, 1 ply polyamide 2 plies polyester, 1 ply polyamide
+Sidewall Plies 2 plies polyester 2 plies polyester
+Pressure 44 psi 44 psi
+Tread Depth 6/32, 5/32, 5/32, 5/32 inch 6/32, 5/32, 5/32, 6/32 inch
+
+ All four tires were mounted on alloy wheels held in place with five lug nuts each. A clock
+ face reference (1:00 – 12:00) was used to describe locations on each tire and wheel. The valve
+ stem was used as the 12:00 position. Tire and wheel damage observed during the inspection is
+ described in the following bullets. The tires and wheels not listed, exhibited no damage.
+
+  Axle I Left Wheel
+  The alloy wheel sustained a circumferential crack from approximately the 11:00 to 1:00
+ positions, approximately 6-inches in chord length. The inboard side of the wheel
+ sustained a radial collapse from the 4:30 to 7:30 positions, approximately 12-inches in
+ chord length.
+
+  Axle II Left Tire
+
+  The outboard tire sidewall contained a bulge, at approximately the 11:30 position.
+
+ 9 Measured in two adjacent tread grooves at any location on the tire (49 CFR 570.9(a).
+
+ Williston, Florida – Vehicle Factual Report Page 6 of 11
+
+=== Vehicle Factual p.7 ===
+ 1.6. Steering
+
+ The [car manufacturer] was equipped with electric power-assisted rack and pinion steering gear.
+
+ All of the steering arm linkages from the steering wheel down to the rack and pinion
+steering gear remained intact and connected. It was possible to rotate the steering gear from stop-
+to-stop by turning the steering wheel. All ball joint connections remained intact and free of
+excessive wear or play.
+
+ 1.7. Suspension
+
+ Axle I of the [car manufacturer] was equipped with an independent suspension system, which consisted
+of lower control arms, air springs/telescopic dampers, a stabilizer bar, and stabilizer bar connecting
+links.
+
+ The forward, lower control arm, ball joint mounting bolt was broken at the steering
+knuckle. No other damage was noted.
+
+ Axle II of the [car manufacturer] was equipped with an independent suspension system, which consisted
+of multiple linkages, air springs/telescopic dampers, a stabilizer bar, and stabilizer bar connecting
+links. No damage was observed to axle II suspension components.
+
+ 1.8. Braking
+
+ The [car manufacturer] was equipped with a hydraulic, Anti-Lock Braking System (ABS) with
+Electronic Brake Force Distribution, Integrated Advanced Stability Control, Automatic
+Emergency Braking (AEB), and Electronic Accelerator pedal actuated regenerative braking
+system. There were disc brake assemblies on both axles. The brake calipers were fixed, with four
+pistons each.
+
+ Brake functional check for the [car manufacturer] was accomplished by applying the brake pedal and
+attempting to rotate the brake assemblies with a pry bar. When the brake master cylinder was
+actuated, all brakes assemblies locked from hand rotation, and released when the brake master
+cylinder was released. Brake measurements are recorded in Table 2.
+
+ Table 2. [car manufacturer] Brake Measurements
+ Brake
+ Axle I Axle II
+ Location
+ Left Right Left Right
+ Brake Type Disc Disc Disc Disc
+ Top: Top: Top: Top:
+ Measured
+ 13/32 inch 13/32 inch 13/32 inch 13/32 inch
+ Lining
+ Bottom: Bottom: Bottom: Bottom:
+ Thickness
+ 13/32 inch 13/32 inch 13/32 inch 13/32 inch
+ Measured
+ 1.248 1.248 1.098 1.098
+ Rotor/Drum
+ inches inches inches inches
+ Thickness
+
+Williston, Florida – Vehicle Factual Report Page 7 of 11
+
+=== Vehicle Factual p.8 ===
+ Manufacturer’s
+ Specification –
+ 1.18 inches 1.18 inches 1.02 inches 1.02 inches
+ Rotor/Drum
+ Thickness
+
+ The fluid in the brake master cylinder was at the full mark embossed on the side of the
+reservoir.
+
+ 1.9. Maintenance History
+
+ The maintenance records were obtained from [car manufacturer]. The only maintenance issues
+identified between July 2015 and May 7, 2016, were three tire issues. The first tire issue occurred
+on December 21, 2015, and involved the left-front tire. The documented problem was stated as a
+flat tire and the wheel was damaged as well. The second tire issue occurred on February 13, 2016,
+and involved the left-rear tire. It was unknown what issues were addressed with the left-rear tire.
+The third tire issue occurred on March 3, 2016, and involved the left-front tire. It was unknown
+what issues were addressed with the left-front tire at this time.10
+
+ 2015 [TRUCK MANUFACTURER] TRUCK TRACTOR AND 2003 UTILITY
+ SEMI TRAILER
+
+ 2.1. GENERAL INFORMATION
+
+ TRUCK TRACTOR:11
+ Make/Model: 2014 [truck manufacturer] [truck model]
+ VIN: 3AKJGHDV4ESXXXXXX
+ Company Unit #: 14
+ Date of Manufacture: February 2013
+ GVWR:12 52,350 lbs
+ GAWR (front axle):13 12,350 lbs
+ GAWR (middle axle): 20,000 lbs
+ GAWR (rear axle): 20,000 lbs
+ Engine: [engine manufacturer] DD13, Inline Six-Cylinder, 470 hp
+ Transmission: Allison, 6-speed, Automatic
+ Additional equipment and specifications are included in the [truck manufacturer] Combined
+ Vehicle Specs and Chassis Final Vehicle Record.14
+
+10
+ See Vehicle Attachment # 1 – [car manufacturer] Tire Pressure Information.
+11
+ The specifications for the [truck manufacturer] were taken from the [truck manufacturer] Vehicle Specs and Chassis Final Vehicle
+Record.
+12
+ Gross Vehicle Weight Rating (GVWR) is the total maximum weight that a vehicle is designed to carry when
+loaded, including the weight of the vehicle itself plus fuel, passengers, and cargo.
+13
+ Gross Axle Weight Rating (GAWR) is the maximum distributed weight that a given axle is designed to support.
+14
+ See Vehicle Attachment # 2 – [truck manufacturer] Vehicle Specs and Chassis Final Vehicle Record.
+
+Williston, Florida – Vehicle Factual Report Page 8 of 11
+
+=== Vehicle Factual p.9 ===
+ SEMITRAILER:
+ Make/Model: 2003 [trailer manufacturer], 3000R, Refrigerated Semi-Trailer
+ VIN: 1UYVS25303UXXXXXX
+ Company Unit #: 2004
+ Date of Manufacture: November 2002
+ GVWR: 65,000 lbs
+ GAWR (per axle): 19,000 lbs
+
+ 2.2. DAMAGE DESCRIPTION
+
+ The truck tractor was not available for NTSB staff to inspect and the semi-trailer had
+already been sold to a third party therefore; only a visual walk around to document the damage
+sustained by the semi-trailer was conducted by NTSB staff. A post-crash mechanical inspection
+was conducted by the FHP on May 12, 2016 and is included as Attachment 3.15
+ The FHP post-crash inspection of the truck tractor did not reveal any mechanical issues.
+The FHP post-crash inspection of the semi-trailer identified missing and broken frame
+crossmembers and inoperable intermediate marker lamps. There was also an air leak at a proper
+connection between axle IV and V.
+ On July 13, 2016, a visual walk around was conducted by NTSB staff on the semi-trailer.
+The rear of the semi-trailer sustained no collision damage.
+ The right side16 of the semi-trailer had abrasions and scuff marks along the reflective
+tape, for approximately 18 feet, above the sliding tandems. Between approximately 20 to 26 feet
+from the front of the semi-trailer, there were two broken locations in the trailer frame. The
+forward location contained some chrome trim material. The sheet metal between the broken
+frame locations contained a half-moon impression. The direction of the damage appeared to
+flow from the right side of the semi-trailer to the left side of the semi-trailer. Multiple
+crossmembers were bent and one crossmember was missing. The intermediate side marker light
+was missing.17
+ On the front of the semi-trailer was the refrigeration unit. No damaged from the crash
+was identified on the front of the semi-trailer.
+ The left side of the semi-trailer had some minor scuff marks along the first 6 feet of the
+siding. At approximately 24 feet from the front, the lower semi-trailer frame was broken and
+was protruding outward. At approximately 6 feet from the broken section, the semi-trailer frame
+was bent, also protruding outward. The intermediate side marker light was broken, but still
+attached. The intermediate side marker light mounting bracket was bent outward and upward.18
+
+15
+ See Vehicle Attachment #3 – FHP Post-Crash Inspection.
+16
+ Orientation of the trailer for right and left sides, is from the rear looking forward.
+17
+ See Vehicle Photograph #4 – The Right Side of the Semi-Trailer.
+18
+ See Vehicle Photograph #5 – The Left Side of the Semi-Trailer.
+
+Williston, Florida – Vehicle Factual Report Page 9 of 11
+
+=== Vehicle Factual p.10 ===
+ 2.3. BRAKING
+
+ The truck tractor had disc brakes on all axles. Therefore, there were no brake push-rod
+stroke measurements documented in the FHP post-crash report for the truck tractor.
+
+ The semi-trailer was manufactured with an ABS type 30/30 clamp brake chambers on both
+axles. The FHP documented the brake push-rod stroke measurements. There were no brakes out-
+of-adjustment. A visual inspection of the brake linings, airlines, and foundation brake components
+was conducted by NTSB staff. All brake linings were in excess of the minimum requirements of
+¼ inch.19 The thermoplastic emergency brake airline attached to the right side of the axle was
+worn through the outer layers to the inner or second color. This is an out-of-service condition
+according to the North American Standard Out-of-Service Criteria.20 The rubber, emergency
+brake hose, forward of the front axle, contained an improper splice (non-DOT approved fitting).
+
+ 2.4. SUSPENSION
+
+ The suspension of the semi-trailer consisted of air springs, shock absorbers, cantilever
+arms, and solid axles. No damage was identified to the semi-trailer suspension.
+
+ 2.5. MAINTENANCE HISTORY
+
+ Maintenance and inspection records for the [truck manufacturer] truck tractor and [trailer manufacturer] semi-
+trailer combination were obtained from Okemah Express LLC, via a subpoena from the NTSB to
+his lawyer.
+
+ The most recent annual inspections for the [truck manufacturer] truck tractor and [trailer manufacturer] semi-trailer
+combination, occurred in January 2016, in Clearwater, FL.
+
+ DOCKET MATERIAL
+
+ The following attachments and photographs are included in the docket for this
+investigation:
+
+LIST OF ATTACHMENTS
+
+Vehicle Attachment #1 – [car manufacturer] Tire Pressure Information - Official Use Only
+Vehicle Attachment #2 – [truck manufacturer] Vehicle Specs and Chassis Final Vehicle Record
+Vehicle Attachment #3 – FHP Post-Crash Inspection
+
+19
+ 49 CFR Part 393.47(d) states 1/4 inch minimum for air-braked non-steering axles, or 3/16 inch minimum for air-
+braked front steering axle brakes
+20
+ North American Standard Out-of-Service Criteria, Part II 1 h (1)
+
+Williston, Florida – Vehicle Factual Report Page 10 of 11
+
+=== Vehicle Factual p.11 ===
+LIST OF PHOTOGRAPHS
+
+Vehicle Photograph #1 – Left front of [car manufacturer]
+
+Vehicle Photograph #2 – Instrument panel of [car manufacturer]
+
+Vehicle Photograph #3 – Driver’s Seat Belt Latch Plate and Buckle
+
+Vehicle Photograph #4 – The Right Side of the Semi-Trailer
+
+Vehicle Photograph #5 – The Left Side of the Semi-Trailer
+
+END OF REPORT
+
+Jerome F. Cantrell
+Vehicle Factors Investigator
+
+Williston, Florida – Vehicle Factual Report Page 11 of 11

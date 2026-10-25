@@ -363,7 +363,8 @@ await import('./fleet_api.js').then((m) => m.mountFleet(app, { ROOT, MODE, errMs
 app.use('/api', (req, res) => res.status(404).json({ error: `no such endpoint: ${req.method} ${req.originalUrl}` }));
 
 app.use((err, req, res, next) => {
-  res.status(500).json({ error: errMsg(err) });
+  const st = Number(err && (err.status || err.statusCode));
+  res.status(st >= 400 && st < 500 ? st : 500).json({ error: errMsg(err) }); // e.g. malformed JSON body → 400, not 500
 });
 
 app.listen(PORT, () => {

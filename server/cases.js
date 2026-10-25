@@ -403,7 +403,7 @@ export function mountCases(app, h) {
       witness = await nw.mod.newWitness(statement, world, { caseId: id });
       if (witness && witness.witness) witness = witness.witness;
       if (!witness || typeof witness !== 'object') throw new Error('newWitness returned no witness entry');
-    } catch (e) { return res.status(500).json({ error: `newWitness failed: ${h.errMsg(e)}` }); }
+    } catch (e) { return res.status(422).json({ error: `could not place this statement: ${h.errMsg(e)}`, hint: 'name a landmark, e.g. "I was 30 m north of the store", or use Place on map' }); } // unplaceable input is not a server fault
 
     const list = caseWitnesses(id);
     if (!witness.id) witness.id = 'wit_live_' + (list.length + 1);

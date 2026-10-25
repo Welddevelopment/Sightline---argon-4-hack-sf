@@ -1,0 +1,112 @@
+{
+  "planNote": null,
+  "tasks": [
+    {
+      "id": "sl_wit_B",
+      "type": "sightline",
+      "witness": "wit_B",
+      "why": "smoke"
+    },
+    {
+      "id": "r_wit_B",
+      "type": "render",
+      "view": "wit_B",
+      "why": "smoke"
+    },
+    {
+      "id": "full_checks",
+      "type": "full_checks",
+      "why": "Independent clean-machine rerun of the whole checks suite. (added for coverage)"
+    },
+    {
+      "id": "sl_wit_A",
+      "type": "sightline",
+      "witness": "wit_A",
+      "why": "Ray-cast + timeline for wit_A. (added for coverage)"
+    },
+    {
+      "id": "rob_wit_A",
+      "type": "robustness",
+      "witness": "wit_A",
+      "why": "Position robustness for wit_A. (added for coverage)"
+    },
+    {
+      "id": "gz_wit_A",
+      "type": "gaze",
+      "witness": "wit_A",
+      "why": "Gaze angle for wit_A. (added for coverage)"
+    },
+    {
+      "id": "rob_wit_B",
+      "type": "robustness",
+      "witness": "wit_B",
+      "why": "Position robustness for wit_B. (added for coverage)"
+    },
+    {
+      "id": "gz_wit_B",
+      "type": "gaze",
+      "witness": "wit_B",
+      "why": "Gaze angle for wit_B. (added for coverage)"
+    },
+    {
+      "id": "sl_wit_C",
+      "type": "sightline",
+      "witness": "wit_C",
+      "why": "Ray-cast + timeline for wit_C. (added for coverage)"
+    },
+    {
+      "id": "rob_wit_C",
+      "type": "robustness",
+      "witness": "wit_C",
+      "why": "Position robustness for wit_C. (added for coverage)"
+    },
+    {
+      "id": "gz_wit_C",
+      "type": "gaze",
+      "witness": "wit_C",
+      "why": "Gaze angle for wit_C. (added for coverage)"
+    },
+    {
+      "id": "sl_wit_D",
+      "type": "sightline",
+      "witness": "wit_D",
+      "why": "Ray-cast + timeline for wit_D. (added for coverage)"
+    },
+    {
+      "id": "rob_wit_D",
+      "type": "robustness",
+      "witness": "wit_D",
+      "why": "Position robustness for wit_D. (added for coverage)"
+    },
+    {
+      "id": "gz_wit_D",
+      "type": "gaze",
+      "witness": "wit_D",
+      "why": "Gaze angle for wit_D. (added for coverage)"
+    },
+    {
+      "id": "r_overhead",
+      "type": "render",
+      "view": "overhead",
+      "why": "Overhead render. (added for coverage)"
+    },
+    {
+      "id": "r_wit_A",
+      "type": "render",
+      "view": "wit_A",
+      "why": "POV render for wit_A. (added for coverage)"
+    },
+    {
+      "id": "r_wit_C",
+      "type": "render",
+      "view": "wit_C",
+      "why": "POV render for wit_C. (added for coverage)"
+    },
+    {
+      "id": "r_wit_D",
+      "type": "render",
+      "view": "wit_D",
+      "why": "POV render for wit_D. (added for coverage)"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "plan",
+  "model": "gemini-4-argon",
+  "hash": "49a18e3c6e25fa1f",
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 1861,
+    "candidatesTokenCount": 1568,
+    "totalTokenCount": 3429,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 1861
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 1568
+      }
+    ]
+  },
+  "seconds": 15.6,
+  "at": "2026-10-25T21:36:22.550Z"
+}

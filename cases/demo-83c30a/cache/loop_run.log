@@ -1,0 +1,20 @@
+(node:4740) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[loop] r1 evidence: Case demo-83c30a: 21 text file(s), 2 video(s), 13 image(s)
+[loop] r1 generate: Argon is reading every document and watching every video to write the world module…
+[argon] generate_world: calling gemini-4-argon (33 parts, maxOutputTokens=32768)
+............
+[argon] generate_world: done in 146.8s, finish=STOP, chars=14471
+[generate_world] validation: 1 error(s), 0 warning(s), 199 lines / 14462 chars
+[generate_world] validator errors:
+  implausible motion of veh_witA: acceleration 1.05 g at t=20.85 s exceeds 1 g outside the impact window (over the limit at 4 samples between t=20.75 and t=20.90 s) — keyframes must give continuous speed (≤0.8 g before impact; ease/constant-acceleration segments; no teleports)
+[argon] generate_world_repair: calling gemini-4-argon (1 parts, maxOutputTokens=32768)
+............
+[argon] generate_world_repair: done in 62.8s, finish=STOP, chars=14434
+[generate_world] repair round: OK
+[loop] r1 generate: World module written: /cases/demo-83c30a/worlds/world_v1.js (198 lines)
+[loop] r1 render: Rendering /cases/demo-83c30a/worlds/world_v1.js from overhead + 4 witness viewpoints…
+[loop] r1 render: Render skipped: page.screenshot: Target page, context or browser has been closed
+[loop] r1 checks: Independent checks: 7/10 pass — wit_A: blocked by veh_witA; wit_B: blocked by veh_T_tractor; wit_D: blocked by occ_shelter
+[loop] r1 critique: Argon is watching the witness-view renders against the evidence videos and documents…
+[argon] critique_round1: calling gemini-4-argon (33 parts, maxOutputTokens=65536)

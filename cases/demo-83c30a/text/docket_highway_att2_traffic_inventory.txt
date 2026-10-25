@@ -1,0 +1,51 @@
+SOURCE: NTSB public docket HWY16FH018 — Highway Factual Report Attachment 2 - Florida Traffic Characteristics Inventory (2015) — https://data.ntsb.gov/Docket/Document/docBLOB?ID=40453260&FileExtension=.PDF&FileName=Highway%20Factual%20Report%20Attachment%202%20-%20Florida%20Traffic%20Characteristics%20Inventory%20(2015)-Master.PDF
+
+=== Traffic Characteristics Inventory p.1 ===
+>
+Not >
+
+4
+
+Highway Factors Attachment 2
+Florida Traffic Characteristics Inventory (2015)
+Williston, FL
+
+HWY16FH018
+
+(2 pages)
+
+=== Traffic Characteristics Inventory p.2 ===
+Traffic Characteristics Inventory - TCI Page 2 of 3
+
+Station Counts
+
+Update Cancel
+Station ID: 340122 County: LEVY Managing District: 02 Station Status: Active
+Count Year: 2015 Type: CALENDAR YEAR Count Year Status: Closed
+
+Location: SR 500 .2 MI. W. OF 7TH ST.(WILLISTON)
+
+AADT / Type: 8,800 -C Raw Count: 9,612
+Ascending AADT: 4,300 Raw Ascending Count: 4,671
+Descending AADT: 4,500 Raw Descending Count: 4,941
+
+Total Records: 4
+
+[Date [Dir _ [Survey Type|Survey Program|Raw Counts|Count Flag|Seasonal FCAT|Axle FCAT|Factored Counts
+1 AXLE 2- NONCONT Sis
+04/08/201 COUNT - 4,560 3400 3401 4,157
+COUNT SNEUITTENT COMPUTED
+2 - NONCONT
+1- AXLE C-
+04/08/2015} W COUNT - 4,825 3400 3401 4,399
+2 - NONCONT
+1- AXLE C-
+04/09/201 COUNT - 4,782 3400 3401 4,360
+2- NONCONT
+1- AXLE C-
+04/09/2041 w COUNT - 5,057 3400 3401 4,610
+
+Pea FLORIDA DEPARTMENT OF
+RO) TRANSPORTATION
+
+http://webapp01 .dot.state.fl.us/trafficcharacteristicsinventory/Pages/CountData/StationCounts.aspx 8/12/2016

@@ -1,0 +1,467 @@
+{
+  "caseId": "demo-529730",
+  "world": "/cases/demo-529730/worlds/world_v2.js",
+  "worldSha": "526ea902d593",
+  "at": "2026-10-25T21:42:32.619Z",
+  "agent": "antigravity-preview-09-2026",
+  "agentModel": "gemini-3.8-flash",
+  "leadModel": "gemini-4-argon",
+  "planNote": "Verify all four witnesses with core geometric and visual checks, run full suite and PRT checks, and probe contested/timing-dependent claims for Witnesses A and B with speed and time sensitivity sweeps.",
+  "timings": {
+    "totalS": 385.784,
+    "argonPlanS": 15.714,
+    "fleetWallS": 345.455,
+    "sequentialEstimateS": 5203.9,
+    "speedup": 15.1,
+    "sandboxComputeS": 115.563,
+    "argonMergeS": 24.611
+  },
+  "agents": {
+    "dispatched": 22,
+    "ok": 22,
+    "failed": [],
+    "tokens": 488655
+  },
+  "codeDrift": [],
+  "comparison": [
+    {
+      "job": "full_suite",
+      "subject": "all",
+      "metric": "pass/fail match",
+      "local": "10 local",
+      "fleet": "10/10 same",
+      "agree": true
+    },
+    {
+      "job": "sl_wit_A",
+      "subject": "wit_A",
+      "metric": "visible@tObs",
+      "local": true,
+      "fleet": true,
+      "agree": true
+    },
+    {
+      "job": "rob_wit_A",
+      "subject": "wit_A",
+      "metric": "blocked/25",
+      "local": 0,
+      "fleet": 0,
+      "agree": true
+    },
+    {
+      "job": "gaze_wit_A",
+      "subject": "wit_A",
+      "metric": "gazeDeg",
+      "local": 2.8,
+      "fleet": 2.8,
+      "agree": true
+    },
+    {
+      "job": "sl_wit_B",
+      "subject": "wit_B",
+      "metric": "visible@tObs",
+      "local": false,
+      "fleet": false,
+      "agree": true
+    },
+    {
+      "job": "rob_wit_B",
+      "subject": "wit_B",
+      "metric": "blocked/25",
+      "local": 21,
+      "fleet": 21,
+      "agree": true
+    },
+    {
+      "job": "gaze_wit_B",
+      "subject": "wit_B",
+      "metric": "gazeDeg",
+      "local": 31.5,
+      "fleet": 31.5,
+      "agree": true
+    },
+    {
+      "job": "sl_wit_C",
+      "subject": "wit_C",
+      "metric": "visible@tObs",
+      "local": true,
+      "fleet": true,
+      "agree": true
+    },
+    {
+      "job": "rob_wit_C",
+      "subject": "wit_C",
+      "metric": "blocked/25",
+      "local": 0,
+      "fleet": 0,
+      "agree": true
+    },
+    {
+      "job": "gaze_wit_C",
+      "subject": "wit_C",
+      "metric": "gazeDeg",
+      "local": 7,
+      "fleet": 7,
+      "agree": true
+    },
+    {
+      "job": "sl_wit_D",
+      "subject": "wit_D",
+      "metric": "visible@tObs",
+      "local": false,
+      "fleet": false,
+      "agree": true
+    },
+    {
+      "job": "rob_wit_D",
+      "subject": "wit_D",
+      "metric": "blocked/25",
+      "local": 25,
+      "fleet": 25,
+      "agree": true
+    },
+    {
+      "job": "gaze_wit_D",
+      "subject": "wit_D",
+      "metric": "gazeDeg",
+      "local": 1.2,
+      "fleet": 1.2,
+      "agree": true
+    },
+    {
+      "job": "r_wit_A",
+      "subject": "wit_A",
+      "metric": "raycast+pixels",
+      "local": true,
+      "fleet": "true (100% px)",
+      "agree": true
+    },
+    {
+      "job": "r_wit_B",
+      "subject": "wit_B",
+      "metric": "raycast+pixels",
+      "local": false,
+      "fleet": "false (0% px)",
+      "agree": true
+    },
+    {
+      "job": "r_wit_C",
+      "subject": "wit_C",
+      "metric": "raycast+pixels",
+      "local": true,
+      "fleet": "true (99% px)",
+      "agree": true
+    },
+    {
+      "job": "r_wit_D",
+      "subject": "wit_D",
+      "metric": "raycast+pixels",
+      "local": false,
+      "fleet": "false (0% px)",
+      "agree": true
+    }
+  ],
+  "report": {
+    "headline": "All 22 independent verification jobs completed with 0 failures and 100% agreement across all 17 machine-compared metrics against world sha 526ea902d593, confirming the obstruction of Witnesses B and D and the clear sightlines of Witnesses A, C, and both drivers.",
+    "agreements": [
+      "Job full_suite independently reproduced all 10/10 baseline timing, kinematic plausibility, and sightline checks with zero code drift between local and public repo checks.",
+      "Jobs sl_wit_A, rob_wit_A, gaze_wit_A, and r_wit_A reproduced Witness A's unobstructed view of veh_A at t=4.5s (466.79 m distance, 0/25 robustness samples blocked, 2.8° off-axis gaze, and 2,533/2,533 visible target pixels after cab filtering), confirming F2.",
+      "Jobs sl_wit_B, rob_wit_B, gaze_wit_B, and r_wit_B reproduced the blockage of Witness B's sightline to veh_A by veh_T_tractor at t=9.8s (30.22 m distance, 21/25 robustness samples blocked, 31.5° off-axis gaze, and 0/3,426 visible pixels), confirming F1.",
+      "Jobs sl_wit_C, rob_wit_C, gaze_wit_C, and r_wit_C reproduced Witness C's clear sightline to veh_T_trailer at impact t=10.43s (32.53 m distance, 0/25 robustness samples blocked, 7.0° off-axis gaze, and 4,048/4,092 or 98.9% visible pixels), confirming F4.",
+      "Jobs sl_wit_D, rob_wit_D, gaze_wit_D, and r_wit_D reproduced Witness D's complete obstruction toward veh_A at t=10.43s (33.25 m distance, 25/25 robustness samples blocked, 1.2° off-axis gaze, and 0/4,747 visible pixels), confirming F3.",
+      "Job prt_all independently confirmed F5, showing both drivers (veh_A to veh_T_trailer and veh_T_tractor to veh_A) had a continuous 10.43 s unobstructed line of sight from t=0.00s to t=10.43s, exceeding the 1.0–2.5 s perception-reaction time range."
+    ],
+    "disagreements": [
+      "Blocker ID label on Witness D (sl_wit_D vs local checks and r_wit_D): sl_wit_D reports the primary raycast blocker as bld_store at 33.25 m, whereas local checks and r_wit_D report occ_store_front (3,426/3,426 pixels blocked by occ_store_front). Job rob_wit_D shows both co-located meshes block the sightline across the 25-sample grid (22 by bld_store, 3 by occ_store_front), indicating co-planar geometry ordering between the store building and storefront occluder rather than a disagreement on visibility (0/101 steps visible).",
+      "Witness A trailer-occlusion timing (wt_wit_A vs local claim text): Witness A claimed the turning trailer eventually blocked his view of the car, and wt_wit_A tested t=2.5s to 6.5s expecting to capture the cutoff; however, veh_A remained visible across the entire 2.5–6.5s sweep (400.8 m to 532.81 m), with sl_wit_A showing visibility in 93/101 timeline steps (indicating the 8 blocked steps occur after t=6.5s).",
+      "Raw pixel self-occlusion in render jobs (r_wit_A, r_wit_C): r_wit_A and r_wit_C report rawVisibleFraction=0 due to 100% raw pixel blockage by the witnesses' own vehicle meshes (veh_witA and veh_witC), whereas the observer-filtered visibleFraction is 1.0 (100%) and 0.989 (98.9%), respectively—a known modeling artifact documented in F2."
+    ],
+    "sensitivities": [
+      "Witness A (rob_wit_A, wt_wit_A, gaze_wit_A): Highly robust; 0/25 samples blocked across all perturbation rings from 0.5 m to 8 m, central gaze at 2.8° off-axis (73.06° if looking at mark_pole_poi), and continuously visible across the entire ±2.0 s time sweep (t=2.5s to 6.5s).",
+      "Witness B position and gaze (rob_wit_B, gaze_wit_B): At t=9.8s, Witness B is completely blocked (25/25) within 0.5 m and 1.0 m perturbation rings; partial visibility only begins at a ≥2 m shift (21/25 blocked at 2 m: 11 by veh_T_tractor, 10 by occ_shelter; 19/25 at 3 m; 17/25 at 5–8 m). Furthermore, veh_A is 31.5° off-axis (peripheral) assuming gaze at mark_poi.",
+      "Witness B time and speed (wt_wit_B, ws_wit_B): Witness B's sightline is clear from t=7.8s to 9.3s, but becomes blocked right before impact at t=9.8s by veh_T_tractor and at t=10.3s–10.8s by occ_shelter (only clearing post-impact at t=11.3s). In speed sweeps (ws_wit_B), the sightline at t=9.8s remains blocked for speed multipliers k=0.7 to 1.1 (17/25 to 25/25 blocked) and only clears the center ray if veh_A approaches at least 20% faster (k=1.2 or 1.3, where 10/25 and 9/25 samples still remain blocked).",
+      "Witness C (rob_wit_C, gaze_wit_C): Highly robust; 0/25 samples blocked across all perturbation rings from 0.5 m to 8 m, with a central gaze angle of 7.0° off-axis (98.9% of trailer pixels visible at impact, with 1.1% occluded by colliding veh_A).",
+      "Witness D (rob_wit_D, sl_wit_D, gaze_wit_D): Completely invariant to perturbation; 25/25 samples are blocked across every ring from 0.5 m to 8 m and 0/101 timeline steps are visible, despite a direct 1.2° gaze alignment toward the impact point."
+    ],
+    "finding_updates": [
+      {
+        "id": "F1",
+        "effect": "strengthened",
+        "note": "Confirmed by sl_wit_B, r_wit_B (0/3,426 visible pixels), rob_wit_B (25/25 blocked within 1 m, 21/25 at 2 m), wt_wit_B (blocked from t=9.8s through impact at 10.43s by tractor and shelter), and ws_wit_B (blocked unless veh_A speed increases by ≥20%)."
+      },
+      {
+        "id": "F2",
+        "effect": "strengthened",
+        "note": "Confirmed by r_wit_A, which explicitly captures the rawBlockers veh_witA fraction=1.0 self-occlusion vs 100% (2,533/2,533 px) clear visibility once the cab mesh is excluded, alongside sl_wit_A and rob_wit_A (0/25 blocked across 0.5–8 m)."
+      },
+      {
+        "id": "F3",
+        "effect": "strengthened",
+        "note": "Confirmed by sl_wit_D (0/101 timeline steps visible), r_wit_D (0/4,747 visible pixels, 100% blocked by occ_store_front), and rob_wit_D (25/25 blocked across all rings up to 8 m by bld_store and occ_store_front)."
+      },
+      {
+        "id": "F4",
+        "effect": "strengthened",
+        "note": "Confirmed by sl_wit_C (visible at t=10.43s at 32.53 m), rob_wit_C (0/25 blocked across 0.5–8 m rings), gaze_wit_C (7.0° off-axis), and r_wit_C (4,048/4,092 pixels or 98.9% visible)."
+      },
+      {
+        "id": "F5",
+        "effect": "strengthened",
+        "note": "Confirmed by full_suite (all timing and plausibility checks pass) and prt_all (10.43 s continuous unobstructed sightline for both veh_A and veh_T_tractor drivers from t=0.00s to impact)."
+      },
+      {
+        "id": "F6",
+        "effect": "unchanged",
+        "note": "No sandbox jobs directly tested solar angles or weather documentation, though scene renders (r_overhead, r_wit_A..D) executed cleanly against the world file."
+      }
+    ],
+    "failed_jobs": []
+  },
+  "jobs": [
+    {
+      "id": "full_suite",
+      "type": "full_checks",
+      "ok": true,
+      "status": "completed",
+      "wallS": 195.366,
+      "interactionId": "v1_Chc1M2JlYXNpdUZMYUExc2dQODl1ZThBWRIXNTNiZWFzaXVGTGFBMXNnUDg5dWU4QVk",
+      "environmentId": "732ba62a40c022cf6b85a51e89c43e94",
+      "interpretation": "The reconstruction verifies that vehicle kinematics and timings are physically plausible, with clear sightlines confirmed for witnesses A and C, while the views of witnesses B and D were obstructed by a tractor and a building."
+    },
+    {
+      "id": "prt_all",
+      "type": "prt",
+      "ok": true,
+      "status": "completed",
+      "wallS": 186.652,
+      "interactionId": "v1_Chd2bmJlYXFHS05ZRG55dE1QZzkzUGdRNBIXdm5iZWFxR0tOWURueXRNUGc5M1BnUTQ",
+      "environmentId": "ffef4a5837e858b5626dda38e0de2903",
+      "interpretation": "Both drivers had an unobstructed line of sight for 10.43 seconds prior to impact, providing sufficient perception-reaction time."
+    },
+    {
+      "id": "sl_wit_A",
+      "type": "sightline",
+      "witness": "wit_A",
+      "ok": true,
+      "status": "completed",
+      "wallS": 303.806,
+      "interactionId": "v1_ChdYWGZlYXBLNUlaU0Mxc2dQX3EtdXFBNBIXWFhmZWFwSzVJWlNDMXNnUF9xLXVxQTQ",
+      "environmentId": "fb915eb338af37bc8c7a283211d9f6df",
+      "interpretation": "Witness wit_A had an unobstructed line of sight to vehicle veh_A at the 4.5-second mark across a distance of approximately 467 meters."
+    },
+    {
+      "id": "rob_wit_A",
+      "type": "robustness",
+      "witness": "wit_A",
+      "ok": true,
+      "status": "completed",
+      "wallS": 176.067,
+      "interactionId": "v1_Chd2WGJlYXFlYUs2U3V4ZElQMEppWG9RdxIXdlhiZWFxZWFLNlN1eGRJUDBKaVhvUXc",
+      "environmentId": "20b56b1087488a1e3fab51b15eba00c0",
+      "interpretation": "Witness wit_A had a completely unobstructed line of sight to vehicle veh_A with zero blocked samples across all tested perturbation radii."
+    },
+    {
+      "id": "gaze_wit_A",
+      "type": "gaze",
+      "witness": "wit_A",
+      "ok": true,
+      "status": "completed",
+      "wallS": 341.757,
+      "interactionId": "v1_ChdkWGZlYXAyQUVxYWl5dE1QZy1YcmtBNBIXZFhmZWFwMkFFcWFpeXRNUGctWHJrQTQ",
+      "environmentId": "39d8431f25fd09e8311fa0d9c0df0091",
+      "interpretation": "Witness wit_A had vehicle veh_A directly in their central field of view with a gaze angle only 2.8 degrees off-axis at observation time 4.5 seconds."
+    },
+    {
+      "id": "wt_wit_A",
+      "type": "whatif_time",
+      "witness": "wit_A",
+      "ok": true,
+      "status": "completed",
+      "wallS": 188.582,
+      "interactionId": "v1_Chd2M2JlYXQ3Qk5QYXJ5dE1QN3F6MThBWRIXdjNiZWF0N0JOUGFyeXRNUDdxejE4QVk",
+      "environmentId": "e3ce7bc600c28b27cdd6f26f7de0770b",
+      "interpretation": "Witness wit_A had a clear, unobstructed view of vehicle veh_A across the entire time sweep from 2.5 to 6.5 seconds."
+    },
+    {
+      "id": "sl_wit_B",
+      "type": "sightline",
+      "witness": "wit_B",
+      "ok": true,
+      "status": "completed",
+      "wallS": 201.279,
+      "interactionId": "v1_Chc3bmJlYXItV0NNTGh5dE1QNDQtWWlROBIXN25iZWFyLVdDTUxoeXRNUDQ0LVlpUTg",
+      "environmentId": "d39d2a51415c4c0ad46d0062cc00f927",
+      "interpretation": "At the observation time of 9.8 seconds, witness wit_B did not have a clear line of sight to veh_A because it was blocked by veh_T_tractor."
+    },
+    {
+      "id": "rob_wit_B",
+      "type": "robustness",
+      "witness": "wit_B",
+      "ok": true,
+      "status": "completed",
+      "wallS": 334.578,
+      "interactionId": "v1_ChdjbmZlYXFudE5JRG55dE1QZzkzUGdRNBIXY25mZWFxbnROSURueXRNUGc5M1BnUTQ",
+      "environmentId": "5f192b320162f49bcf36808733bd4910",
+      "interpretation": "Witness wit_B's line of sight to vehicle veh_A at time 9.8s was largely obstructed by the tractor and shelter, resulting in a partial verdict with 21 out of 25 sightlines blocked."
+    },
+    {
+      "id": "gaze_wit_B",
+      "type": "gaze",
+      "witness": "wit_B",
+      "ok": true,
+      "status": "completed",
+      "wallS": 343.453,
+      "interactionId": "v1_ChdkbmZlYXFIRE9zR0p5dE1QeG9IbHNBNBIXZG5mZWFxSERPc0dKeXRNUHhvSGxzQTQ",
+      "environmentId": "5594c03c7ba244d067e309abf60d0667",
+      "interpretation": "The result indicates that witness wit_B had vehicle veh_A in their peripheral line of sight at approximately 31.5 degrees off-axis at observation time 9.8 seconds."
+    },
+    {
+      "id": "ws_wit_B",
+      "type": "whatif_speed",
+      "witness": "wit_B",
+      "ok": true,
+      "status": "completed",
+      "wallS": 204.879,
+      "interactionId": "v1_ChY3bmJlYXNrVW5vX0swd19zejZfQURREhY3bmJlYXNrVW5vX0swd19zejZfQURR",
+      "environmentId": "699593136d8f240f9af444ab90e173be",
+      "interpretation": "Witness B could not have seen vehicle A at the baseline speed because their line of sight was blocked by the tractor, and vehicle A only becomes visible if it was traveling at least 20% faster."
+    },
+    {
+      "id": "wt_wit_B",
+      "type": "whatif_time",
+      "witness": "wit_B",
+      "ok": true,
+      "status": "completed",
+      "wallS": 292.131,
+      "interactionId": "v1_ChdWM2ZlYXRyS0hJX2h5dE1QMDVPSXNBURIXVjNmZWF0cktISV9oeXRNUDA1T0lzQVE",
+      "environmentId": "efa002559c7040139591e6d1419bb7c8",
+      "interpretation": "Witness B's line of sight to vehicle A was obstructed by veh_T_tractor at the observation time of 9.8 seconds."
+    },
+    {
+      "id": "sl_wit_C",
+      "type": "sightline",
+      "witness": "wit_C",
+      "ok": true,
+      "status": "completed",
+      "wallS": 184.909,
+      "interactionId": "v1_Chc1M2JlYXZEV0wteUcxc2dQbEl5b3NRURIXNTNiZWF2RFdMLXlHMXNnUGxJeW9zUVE",
+      "environmentId": "28909ae74576a625903221582f7b7b85",
+      "interpretation": "Witness wit_C had an unobstructed view of the target trailer at the observation time of 10.43 seconds."
+    },
+    {
+      "id": "rob_wit_C",
+      "type": "robustness",
+      "witness": "wit_C",
+      "ok": true,
+      "status": "completed",
+      "wallS": 307.911,
+      "interactionId": "v1_ChdYbmZlYXVxcU9MYjh3YlVQaGIzZmtRRRIXWG5mZWF1cXFPTGI4d2JVUGhiM2ZrUUU",
+      "environmentId": "f8366c42e26f67d629c0a4b2a3f82de6",
+      "interpretation": "Witness wit_C had an unobstructed line of sight to veh_T_trailer at t=10.43s with zero blocked samples across all tested perturbation radii."
+    },
+    {
+      "id": "gaze_wit_C",
+      "type": "gaze",
+      "witness": "wit_C",
+      "ok": true,
+      "status": "completed",
+      "wallS": 157.279,
+      "interactionId": "v1_ChdoM2JlYXRqakNhUGZ5dE1QdHV5bmlBNBIXaDNiZWF0ampDYVBmeXRNUHR1eW5pQTQ",
+      "environmentId": "309576a46bc896d6435f4f455b08bbfa",
+      "interpretation": "Witness wit_C had the trailer (veh_T_trailer) well within their central field of view at t=10.43s with an off-axis gaze angle of approximately 7 degrees."
+    },
+    {
+      "id": "sl_wit_D",
+      "type": "sightline",
+      "witness": "wit_D",
+      "ok": true,
+      "status": "completed",
+      "wallS": 264.795,
+      "interactionId": "v1_ChdKbmZlYXN5X0tZbldpTE1Qa2N5eXVBWRIXSm5mZWFzeV9LWW5XaUxNUGtjeXl1QVk",
+      "environmentId": "6926fb508462ee3254fec4df4167bc52",
+      "interpretation": "Witness wit_D could not see vehicle veh_A at any point because their sightline was completely obstructed by bld_store."
+    },
+    {
+      "id": "rob_wit_D",
+      "type": "robustness",
+      "witness": "wit_D",
+      "ok": true,
+      "status": "completed",
+      "wallS": 254.839,
+      "interactionId": "v1_ChdKbmZlYXZQLUEtdll5dE1Qbk5XVmlRNBIXSm5mZWF2UC1BLXZZeXRNUG5OV1ZpUTQ",
+      "environmentId": "f57b2a3b2690e5dbfe72c140d61ae9cb",
+      "interpretation": "Witness wit_D's line of sight to vehicle veh_A at time 10.43 was robustly blocked by the store building and store front across all sampled positions and radii."
+    },
+    {
+      "id": "gaze_wit_D",
+      "type": "gaze",
+      "witness": "wit_D",
+      "ok": true,
+      "status": "completed",
+      "wallS": 265.483,
+      "interactionId": "v1_ChdLSGZlYXNuNUdNRy14ZElQMUs2TjZBcxIXS0hmZWFzbjVHTUcteGRJUDFLNk42QXM",
+      "environmentId": "202faaa7d09c3c7406c50bfd0ca63944",
+      "interpretation": "Witness wit_D had vehicle A directly within their line of sight at 10.43 seconds with an off-axis gaze angle of 1.2 degrees."
+    },
+    {
+      "id": "r_overhead",
+      "type": "render",
+      "view": "overhead",
+      "ok": true,
+      "status": "completed",
+      "wallS": 244.403,
+      "interactionId": "v1_ChdHbmZlYXUtV0JxLTJ1TVlQLU12X3FBNBIXR25mZWF1LVdCcS0ydU1ZUC1Ndl9xQTQ",
+      "environmentId": "dc913049eb4b802be23f6057b16433f4",
+      "still": "cases/demo-529730/cache/fleet/renders/overhead.png",
+      "interpretation": "The overhead view rendered 51 frames successfully with 8 out of 10 verification checks passing."
+    },
+    {
+      "id": "r_wit_A",
+      "type": "render",
+      "view": "wit_A",
+      "ok": true,
+      "status": "completed",
+      "wallS": 194.633,
+      "interactionId": "v1_Chd1M2JlYW9PVUpiT2x5dE1QN3F1SHlBURIXdTNiZWFvT1VKYk9seXRNUDdxdUh5QVE",
+      "environmentId": "24d94c7083ddcd898c6e18553ae1476a",
+      "still": "cases/demo-529730/cache/fleet/renders/wit_A.png",
+      "interpretation": "The simulation confirms that witness A had an unobstructed line of sight to vehicle A at the 4.5-second observation mark."
+    },
+    {
+      "id": "r_wit_B",
+      "type": "render",
+      "view": "wit_B",
+      "ok": true,
+      "status": "completed",
+      "wallS": 181.594,
+      "interactionId": "v1_ChdobmJlYXBIc0YtcVJ5dE1Qbk9HUS1BWRIXaG5iZWFwSHNGLXFSeXRNUG5PR1EtQVk",
+      "environmentId": "55d5ee3f5cec868e054dbaca148364d7",
+      "still": "cases/demo-529730/cache/fleet/renders/wit_B.png",
+      "interpretation": "Witness B did not have an unobstructed view of vehicle A as claimed, because their line of sight was blocked by a tractor at the critical observation time."
+    },
+    {
+      "id": "r_wit_C",
+      "type": "render",
+      "view": "wit_C",
+      "ok": true,
+      "status": "completed",
+      "wallS": 195.871,
+      "interactionId": "v1_ChdnbmJlYXB6YUxmbVV5dE1QdGNYbTBRNBIXZ25iZWFwemFMZm1VeXRNUHRjWG0wUTQ",
+      "environmentId": "cd09c261cc6cc531dfaed5fddd821d81",
+      "still": "cases/demo-529730/cache/fleet/renders/wit_C.png",
+      "interpretation": "Witness C had a clear, unobstructed line of sight to the truck trailer at the time of the collision, corroborating their account."
+    },
+    {
+      "id": "r_wit_D",
+      "type": "render",
+      "view": "wit_D",
+      "ok": true,
+      "status": "completed",
+      "wallS": 183.633,
+      "interactionId": "v1_ChdzWGJlYXRiOEo1WE15dE1QemJ6Qm9BNBIXc1hiZWF0YjhKNVhNeXRNUHpiekJvQTQ",
+      "environmentId": "73cc187c92d78375e30cff62d25bdb1a",
+      "still": "cases/demo-529730/cache/fleet/renders/wit_D.png",
+      "interpretation": "Witness D's line of sight to the vehicle was completely blocked by the storefront at the time of observation, corroborating their statement that they could not see the highway."
+    }
+  ]
+}
