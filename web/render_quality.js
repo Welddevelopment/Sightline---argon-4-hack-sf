@@ -20,16 +20,23 @@
 //   world     the loaded world ({root, objects}) - used to find vehicles for the shadow fit.
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
+// ao: ground-truth AO (three's GTAOPass; the n8ao package needs the pmndrs 'postprocessing' import map entry) at
+// aoScale of the drawing buffer, blended subtly for contact shadows. msaa: samples of the composer's HDR target.
 const PRESETS = {
-  interactive: { maxPixelRatio: 2, supersample: 1, shadowMapSize: 2048, shadowRadius: 2.5 },
-  render: { maxPixelRatio: 2, supersample: 2, shadowMapSize: 4096, shadowRadius: 3.5 },
+  interactive: { maxPixelRatio: 2, supersample: 1, shadowMapSize: 2048, shadowRadius: 2.5, msaa: 4, aoScale: 0.5, aoSamples: 12 },
+  render: { maxPixelRatio: 2, supersample: 2, shadowMapSize: 4096, shadowRadius: 3.5, msaa: 0, aoScale: 0.5, aoSamples: 16 },
 };
 // exposure / environment / light balance per lighting kind (ACES filmic). Tuned on SwiftShader stills of the demo world.
+// hemi: [sky, ground, intensity] fill so shadow sides are never pitch black (null = keep the viewer's colours, scaled).
 const LOOK = {
-  day: { exposure: 1.0, envIntensity: 0.75, sunScale: 1.55, hemiScale: 0.18 },
-  dawn: { exposure: 1.05, envIntensity: 0.45, sunScale: 1.4, hemiScale: 0.3 },
-  night: { exposure: 1.15, envIntensity: 0.06, sunScale: 1.0, hemiScale: 0.6 },
+  day: { exposure: 1.0, envIntensity: 0.6, sunScale: 1.55, hemi: [0xddeeff, 0x333322, 0.6], ao: 0.8 },
+  dawn: { exposure: 1.05, envIntensity: 0.45, sunScale: 1.4, hemi: [0xffe2c4, 0x332e26, 0.55], ao: 0.75 },
+  night: { exposure: 1.15, envIntensity: 0.06, sunScale: 1.0, hemiScale: 0.6, ao: 0.5 },
 };
 const UNLIT = (m) => m && (m.isMeshBasicMaterial || m.isLineBasicMaterial || m.isSpriteMaterial || m.isPointsMaterial || m.isLineDashedMaterial);
 
@@ -204,10 +211,15 @@ export function applyRenderQuality(renderer, scene, opts = {}) {
     handle.keyLight = key;
   }
   for (const d of dirs) if (d !== key && d.castShadow && d !== authored) d.castShadow = false;   // a single sun shadow
+  // hemisphere fill alongside the sun: recolour the viewer's hemisphere light (or add one) to the sky/ground-bounce fill
+  let hemi = hemis.find((h) => !worldRoot || !isWithin(h, worldRoot)) || null;
+  if (!hemi && L.hemi) { hemi = new THREE.HemisphereLight(); hemi.name = 'rq_hemi_fill'; (managedSun && managedSun.parent || scene).add(hemi); hemis.push(hemi); }
   for (const h of hemis) {
     if (h.userData.rqBaseIntensity == null) h.userData.rqBaseIntensity = h.intensity;
-    h.intensity = h.userData.rqBaseIntensity * L.hemiScale;
+    if (h === hemi && L.hemi) { h.color.setHex(L.hemi[0]); h.groundColor.setHex(L.hemi[1]); h.intensity = L.hemi[2]; }
+    else h.intensity = h.userData.rqBaseIntensity * (L.hemiScale != null ? L.hemiScale : (h === hemi ? 1 : 0.15));
   }
+  handle.hemiLight = hemi;
 
   // ---- shadow fit: roi + current vehicles, refit right before each render (before the shadow pass) ----
   const roi = opts.roi ? opts.roi.clone() : null;
@@ -241,6 +253,15 @@ export function applyRenderQuality(renderer, scene, opts = {}) {
     for (const g of overlayRoots) g.traverse((o) => { if (o.material) fixOverlay(o); });
   };
 
+  // ---- ambient occlusion + MSAA: HDR composer (RenderPass -> GTAO -> OutputPass: tone map + sRGB), overlays on top ----
+  const aoOff = opts.ao === false || (typeof location !== 'undefined' && /[?&]ao=0\b/.test(location.search));
+  handle.ao = !aoOff;
+  if (!aoOff) {
+    try { handle.render = makeComposerRender(renderer, scene, P, L, overlayRoots, worldRoot); }
+    catch (e) { console.warn('render_quality: AO composer unavailable, plain render', e); handle.ao = false; }
+  }
+  if (!handle.render) handle.render = (cam) => renderer.render(scene, cam);
+
   // ---- environment (image-based fill + reflections) ----
   scene.environmentIntensity = L.envIntensity;
   const setEnv = (tex, kind) => { if (tex) { scene.environment = tex; handle.envKind = kind; } };
@@ -269,6 +290,77 @@ export function applyRenderQuality(renderer, scene, opts = {}) {
     try { setEnv(room(), 'room'); } catch (_) {}
   }
   return handle;
+}
+
+const _sz = new THREE.Vector2();
+const HIDDEN = new THREE.MeshBasicMaterial({ visible: false });
+const DEPTH_ONLY = new THREE.MeshBasicMaterial({ colorWrite: false });
+
+// Returns render(camera): world through the AO composer, then the overlays (markers, labels, sight rays, highlight /
+// x-ray boxes) straight to the canvas in exact UI colours, depth-tested against the world's depth.
+function makeComposerRender(renderer, scene, P, L, overlayRoots, worldRoot) {
+  const pr0 = renderer.getPixelRatio();
+  renderer.getSize(_sz);
+  const rt = new THREE.WebGLRenderTarget(Math.max(1, _sz.x * pr0), Math.max(1, _sz.y * pr0), { type: THREE.HalfFloatType, samples: P.msaa || 0 });
+  const composer = new EffectComposer(renderer, rt);
+  let cam0 = new THREE.PerspectiveCamera();
+  const rp = new RenderPass(scene, cam0);
+  const gtao = new GTAOPass(scene, cam0, 16, 16);
+  gtao.output = GTAOPass.OUTPUT.Default;
+  gtao.blendIntensity = L.ao;
+  gtao.updateGtaoMaterial({ radius: 1.6, distanceExponent: 1.6, thickness: 1.2, scale: 1.0, samples: P.aoSamples, distanceFallOff: 1.0, screenSpaceRadius: false });
+  gtao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, radiusExponent: 1, rings: 2, samples: 12 });
+  const gtaoSetSize = gtao.setSize.bind(gtao);
+  gtao.setSize = (w, h) => gtaoSetSize(Math.max(1, Math.round(w * P.aoScale)), Math.max(1, Math.round(h * P.aoScale)));
+  composer.addPass(rp); composer.addPass(gtao); composer.addPass(new OutputPass());
+  let lastW = -1, lastH = -1, lastPr = -1, lastCam = null;
+  const isOverlay = (o) => o.userData && o.userData.xray;
+  const hiddenNow = [];
+  return function render(camera) {
+    renderer.getSize(_sz);
+    const pr = renderer.getPixelRatio();
+    if (_sz.x !== lastW || _sz.y !== lastH || pr !== lastPr) {
+      lastW = _sz.x; lastH = _sz.y; lastPr = pr;
+      composer.setPixelRatio(pr); composer.setSize(_sz.x, _sz.y);
+    }
+    if (camera !== lastCam) {
+      rp.camera = camera; gtao.camera = camera; lastCam = camera;
+      const persp = camera.isPerspectiveCamera ? 1 : 0;
+      for (const m of [gtao.gtaoMaterial, gtao.pdMaterial, gtao.depthRenderMaterial]) {
+        if (m && m.defines && m.defines.PERSPECTIVE_CAMERA !== persp) { m.defines.PERSPECTIVE_CAMERA = persp; m.needsUpdate = true; }
+      }
+    }
+    // one shadow-map update per frame (the composer renders the scene twice: beauty + GTAO normals)
+    const sm = renderer.shadowMap, autoUp = sm.autoUpdate;
+    sm.autoUpdate = false; sm.needsUpdate = true;
+    // 1) world only
+    hiddenNow.length = 0;
+    for (const g of overlayRoots) if (g.visible) { g.visible = false; hiddenNow.push(g); }
+    const xr = [];
+    if (worldRoot) worldRoot.traverse((o) => { if (isOverlay(o) && o.visible) xr.push(o); });
+    for (const o of xr) { o.visible = false; hiddenNow.push(o); }
+    try { composer.render(); } finally { for (const o of hiddenNow) o.visible = true; }
+    // 2) overlays to the canvas: world written to depth only, overlays drawn in UI colours (toneMapped=false)
+    if (hiddenNow.length) {
+      const swapped = [];
+      scene.traverse((o) => {
+        if (!(o.isMesh || o.isLine || o.isPoints || o.isSprite) || !o.material) return;
+        let ov = false; for (let p = o; p; p = p.parent) { if (overlayRoots.includes(p) || isOverlay(p)) { ov = true; break; } }
+        if (ov) return;
+        swapped.push(o, o.material);
+        o.material = (o.isMesh && !o.isSprite) ? DEPTH_ONLY : HIDDEN;
+      });
+      const bg = scene.background, ac = renderer.autoClear, cb = scene.onBeforeRender;
+      scene.background = null; renderer.autoClear = false; scene.onBeforeRender = () => {};
+      renderer.setRenderTarget(null);
+      try { renderer.clearDepth(); renderer.render(scene, camera); }
+      finally {
+        for (let i = 0; i < swapped.length; i += 2) swapped[i].material = swapped[i + 1];
+        scene.background = bg; renderer.autoClear = ac; scene.onBeforeRender = cb;
+      }
+    }
+    sm.autoUpdate = autoUp;
+  };
 }
 
 export default applyRenderQuality;

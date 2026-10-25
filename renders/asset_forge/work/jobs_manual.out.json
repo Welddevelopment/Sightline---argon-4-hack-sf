@@ -1,0 +1,49 @@
+[
+  {
+    "out": "/home/claude/sightline/renders/asset_forge/sedan_current.png",
+    "ok": true,
+    "info": {
+      "ok": true,
+      "bbox": {
+        "length": 4.9,
+        "width": 1.89,
+        "height": 1.45,
+        "minY": 0
+      },
+      "tris": 65068
+    },
+    "errors": [],
+    "seconds": 9.143
+  },
+  {
+    "out": "/home/claude/sightline/renders/asset_forge/signal_mast_current.png",
+    "ok": true,
+    "info": {
+      "ok": true,
+      "bbox": {
+        "length": 0.84,
+        "width": 9.42,
+        "height": 7.64,
+        "minY": 0
+      },
+      "tris": 5280
+    },
+    "errors": [],
+    "seconds": 7.554
+  },
+  {
+    "out": "/home/claude/sightline/renders/asset_forge/road_surface_material_current.png",
+    "ok": true,
+    "info": {
+      "ok": true,
+      "material": {
+        "type": "MeshStandardMaterial",
+        "map": true,
+        "normalMap": true,
+        "roughnessMap": true
+      }
+    },
+    "errors": [],
+    "seconds": 8.485
+  }
+]
