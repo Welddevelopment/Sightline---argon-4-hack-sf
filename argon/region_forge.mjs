@@ -52,11 +52,14 @@ and all traffic control devices at the intersection.
   white right edge lines, yellow left edge lines — all broken at the crossover/side-road mouth exactly as in practice;
   white solid turn-lane lines; 2 left-turn arrows in each turn lane within your x range (canvas decal or extruded
   arrow shape); dotted white extension lines through the crossover for both turn movements; RPMs every 12.2 m.
+- The NORTH leg (USGS aerial): a local road mouth leaving the WB north shoulder at x ~ -38..-14 (z -38.1 to -44,
+  flared, heading NNW) — build its first 6 m of pavement; r4 builds the rest. The SW corner landscaped island
+  (layout.aerial.swCorner.island, low curb + grass, flush) is yours.
 - Optional: a street light is NOT in the record — do not add one.
 - Clear: Witness B point (7.5,6.5), the truck turn path, the car path.
 **Not yours:** the mainline beyond |x|>45 (r2/r3), the store, apron, shelter and side road beyond z=16 (r5),
 north roadside (r4), terrain/grass ground mesh (r6 lays the whole ground; you only add pavement/curbs/signs on top).` },
-  { id: 'r2_west', tris: 170000, brief: `
+  { id: 'r2_west', tris: 120000, brief: `
 **Scope:** the EB/WB mainline WEST of the intersection: x in [-900, -45], including the hill crest at x=-345 (+7.42 m)
 and the 2.15% descent toward the intersection (follow ctx.roadY exactly — this crest is THE sight restriction in the
 case, so the pavement must be smoothly draped, sub-divided every <= 6 m near the crest), both carriageways, shoulders,
@@ -73,10 +76,10 @@ the EB left-turn lane x [-187.45, -45] with its taper to -220, the EB right-turn
   For WB traffic (face +X): SPEED LIMIT 65 at x=-120 on the north side (z=-40.5).
 - Flexible white delineator posts every 60 m on both outer shoulders, low (1.2 m).
 - A concrete drainage culvert headwall pair where the median swale is crossed by nothing (just for detail) at x=-520.
-- No trees, buildings, guardrail, or anything solid > 0.6 m inside z in [-45, 40] for x in [-700, 0] (NTSB found no
+- No trees, buildings, guardrail, or anything solid > 0.6 m inside z in [-50, 12] for x in [-700, 0] (NTSB found no
   obstructions; keep the corridor clean and flush — mowed grass is r6's ground).
 **Not yours:** terrain/grass mesh (r6), trees, fences and poles beyond the ditches (r4 north, r5 south), |x| < 45 (r1).` },
-  { id: 'r3_east', tris: 170000, brief: `
+  { id: 'r3_east', tris: 120000, brief: `
 **Scope:** the EB/WB mainline EAST of the intersection: x in [45, 800], both carriageways and shoulders on the
 2.15% descent that levels at x=+100 (follow ctx.roadY), the WB left-turn lane (the truck's lane) x [45, 187.45] full
 width plus its taper to x=220, and roadside furniture inside the right-of-way z in [-44, 8].
@@ -93,23 +96,25 @@ width plus its taper to x=220, and roadside furniture inside the right-of-way z 
   x [278, 282] from z=3.35 to 8 (shell-rock, ctx.surface('gravel')) with its own pipe ends.
 - Keep the car's post-impact path clear except the culvert. Witness A stands in the WB outside lane at (357.2,-34.75).
 **Not yours:** terrain (r6), poles/fences/house south of z=8 (r5), north roadside beyond z=-44 (r4), |x|<45 (r1).` },
-  { id: 'r4_north', tris: 180000, brief: `
+  { id: 'r4_north', tris: 330000, brief: `
 **Scope:** NORTH roadside: everything north of the WB shoulder ditch, z in [-500, -44], x in [-1000, 800], plus the
 north ditch itself (built into groundY at z=-44; you add ditch details only).
 **Build (rural Florida pasture land, NTSB found nothing obstructing):**
 - North right-of-way fence at z=-50 along the whole length: woven-wire or 4-strand barbed wire on wood posts every
   3 m with steel T-posts between (use assets.fence? not exposed — write your own InstancedMesh posts + strands), gates at driveways.
-- 2 farm driveways (shell-rock) from the WB shoulder north at x=-260 and x=420 with culvert pipe ends and mailboxes.
-- A farmstead at x~-250, z~-160: single-story house (assets.building({kind:'house', w, d, h})) with carport, a
-  metal-roofed pole barn (your own geometry: corrugated roof via canvas or ridged geometry), a water tank on stand,
-  a few hero live oaks (assets.tree kind 'oak', max 4) and cabbage palms (kind 'palm').
-- A second homestead at x~430, z~-140 (house, shed, 2 oaks).
-- Pasture interior cross-fences, a few hay bales, cattle trough — low poly.
-- Massed vegetation: pine plantation blocks / hammocks beyond z < -120 (your own instanced low-poly pines and oaks,
-  <= 120 tris each, ~1200 instances max), saw palmetto clumps (instanced) near the fence line but outside z > -48.
+- FROM THE AERIAL (place by reading the gridded images): the north leg local road from z=-44 north (paved, ~6 m,
+  heading NNW, x ~ -25 at z=-44 to ~ -60 at z=-170, then beyond); the retail store north of the highway with its
+  large paved parking lot (layout.aerial.northStore: building ~26 x 20 m, flat roof, facade facing the lot/highway,
+  striped stalls, a few light poles, 2 parked vehicles max), its driveway(s) to the north leg / highway; the other
+  buildings north-east (x 150..300, z -120..-60: metal warehouse/shop buildings, a house with a pool, sheds) and
+  north-west; dirt/shell driveways (e.g. the one at x ~ 230 heading north) with culvert ends and mailboxes.
+- Dense slash-pine forest from the forest edge (~z = -60 to -75, read it off the aerial) northward: your own instanced
+  low-poly pines (tall straight trunks, high crowns; <= 80 tris each, up to ~2500 instances near the edge, sparser
+  inside), mixed oaks; a ragged realistic edge with understory palmetto (instanced). Clearings where the aerial shows them.
+- Hero trees (assets.tree, max 4) only at buildings.
 - Witness C stood at (-18, -40.5) on the WB shoulder edge — keep (-30..-5, -60..-38) free of anything tall.
 **Not yours:** pavement (r1-r3), terrain mesh (r6), the far horizon ring beyond |z|>500 or x outside [-1000,800] (r6).` },
-  { id: 'r5_south', tris: 300000, brief: `
+  { id: 'r5_south', tris: 330000, brief: `
 **Scope:** SOUTH roadside: z in [3.35, 500] (south of the EB shoulder; the south ditch at z=9 is in groundY),
 x in [-1000, 800], EXCEPT the NE 140th Ct mouth z<16 (r1). Includes NE 140th Ct from z=16 to 230, the retail store
 and its apron, the bench shelter, the utility pole line + wires, both wire fences, the residence + front yard where
@@ -140,13 +145,17 @@ the car came to rest, and south-side vegetation.
 - Residence where the car came to rest (front yard, near a driveway): ranch house at layout.residence (262, 40),
   20 x 14 m, faces north (assets.building({kind:'house'}) + porch, carport), shell-rock driveway x [278,282] from z=8
   to 44, mailbox at (284, 8), front-yard lawn (the car rests at (276.6, 23.9): keep 4 m around it clear), 2 live oaks, a palm.
-- Other south-side homes sparse: 2-3 more houses on NE 140th Ct (x ±25, z 80..200) and along US-27A at x ~ 520, -420
-  (set back >= 45 m from the road), each with a couple of trees.
-- Massed vegetation south of z > 60 (instanced low-poly pines/oaks, <= 1200 instances), palmetto clumps.
+- FROM THE AERIAL: the SW-corner small commercial building + canopy structure (layout.aerial.swCorner) with its
+  paved/shell lot; houses along NE 140th Ct and along the dirt road at z ~ 130 (read positions from image 1; apply
+  x_model = x_aerial - 0.33*z for things positioned relative to the skewed side road), the open grass field SE
+  (layout.aerial.openFieldSE) with scattered live oaks, the cleared sandy areas SW (x -500..-300, z 100..300).
+- Dense pine forest south of the highway west of the side road from the forest edge (z ~ 15-30) southward, and
+  forest/hammocks elsewhere as the aerial shows (instanced low-poly pines/oaks, <= 80 tris each, <= 2500 instances), palmetto clumps.
+  Nothing taller than 0.6 m at z < 12 for x in [-700, 0].
 - Keep clear: the car path polyline (except the fences, culvert and pole), the truck path, Witness B, and the west
   sight corridor x [-700, 0], z <= 40 (nothing > 0.6 m there).
 **Not yours:** pavement of US-27A and its shoulders (r1-r3), the culvert at x=118 (r3), terrain mesh (r6).` },
-  { id: 'r6_terrain', tris: 280000, brief: `
+  { id: 'r6_terrain', tris: 250000, brief: `
 **Scope:** the GROUND for the whole site and the far vegetation ring.
 **Build:**
 - One terrain mesh covering x [-1000, 800], z [-500, 500], heights from ctx.groundY(x,z) at every vertex (the road
@@ -163,13 +172,38 @@ the car came to rest, and south-side vegetation.
 - Grass detail: instanced low grass tufts / weeds along fence lines and ditch edges only (cheap, <= 15k instances,
   <= 6 tris each, height <= 0.4 m) — none on pavement.
 - Far vegetation ring that closes the horizon: continuous tree lines (instanced low-poly pines + oak blobs, plus
-  silhouette cards) along x = -1000 / 800 and z = ±500 bands and scattered hammocks between 150 and 500 m from the
-  road. Respect ctx.blocked(x,z): NOTHING solid in the west sight corridor x [-700, 0], z [-45, 40]. Beyond the
+  silhouette cards) along x = -1000 / 800 and z = ±500 bands, i.e. OUTSIDE the aerial's coverage (x [-500,500],
+  z [-300,300]) which r4/r5 populate. Land-cover colours inside the aerial area must match it (mown ROW, pasture/field
+  SE, sandy clearings, forest floor under the pines darker). Respect ctx.blocked(x,z): NOTHING solid in the west sight
+  corridor x [-700, 0], z [-50, 12]. Beyond the
   crest (x < -345) the road must remain visible from the crest: keep trees > 45 m from the road centreline there.
 - A huge, low-detail skirt beyond the terrain edge (ring out to 3 km, flat at the edge heights, same pasture color)
   so the horizon never shows a void.
 **Not yours:** pavement, markings, signs, fences, poles, buildings, the near-road vegetation of r4/r5.` },
 ];
+
+// ------------------------------------------------------------------ USGS NAIP aerial (ground truth for land cover)
+const AERIAL_DIR = path.join(RDIR, 'aerial');
+const AERIAL_IMAGES = [path.join(AERIAL_DIR, 'aerial_world_grid.jpg'), path.join(AERIAL_DIR, 'aerial_crossover_grid.jpg')];
+function aerialParts() { return AERIAL_IMAGES.filter((f) => fs.existsSync(f)).map((f) => imagePart(f)); }
+const AERIAL_NOTE = `# Ground truth: USGS NAIP aerial (the FIRST TWO attached images)
+Source cases/demo/exhibits/aerial/aerial.jpg (USDA FSA NAIP via USGS The National Map, public domain, ~0.30 m/px), already
+ROTATED INTO THE WORLD FRAME for you (calibration world = rotY(18.83 deg)*photo + offset; residual < 0.5 m): image up = -Z
+(north), right = +X (east), magenta circle = origin (impact point). Image 1 = whole site x [-500, 500], z [-300, 300] with a
+50 m grid (yellow labels x every 100 m, cyan labels z every 100 m). Image 2 = close-up x [-150, 150], z [-100, 100] with a
+10 m grid (labels every 50 m). Read positions straight off the grid. Cite such elements "USGS NAIP aerial (measured)".
+What it shows (verify yourself): dense pine forest on both sides with the forest edge roughly 55-75 m north of the
+highway and 15-30 m south of it west of the side road; mown rights-of-way along the highway; the 4-leg crossover:
+a NORTH leg road leaving the WB carriageway at x ~ -25 heading north-north-west, and NE 140th Ct to the south (the model
+straightens it to run due south at x = 0; the real road drifts east ~0.33 m per m south — shift anything you place along
+it by x_model = x_aerial - 0.33*z); a retail store with a large paved parking lot NORTH of the highway at about
+x [-110, -50], z [-115, -60]; a small commercial building + canopy/structure and a landscaped corner island at the SW
+corner of the side road (x ~ -25..0, z ~ 3..55); an open grass field SE (x ~ 60..260, z ~ 10..95) with scattered oaks;
+houses along the side road and along a dirt road at z ~ 130; more buildings north-east (x 150..300, z -120..-60).
+CONFLICT RULE: the shared layout (pavement, side road at x=0, the SE-corner case store at (18,19) with its bench
+shelter and Witness B's spot, the struck pole, the two fences, the residence/rest area, the culvert, the keep-clear
+zones) is AUTHORITATIVE because the motion data and witness testimony are keyed to it. Everything else — forest edges,
+other buildings, the north store + lot, the north leg road, driveways, fields, house positions — take from the aerial.`;
 
 // ------------------------------------------------------------------ prompt pieces
 const ASSET_API = `- assets.tree({id, kind:'oak'|'pine'|'palm'|'shrub', height}) → detailed tree (oak/pine ~10k tris, palm ~1.5k). Hero trees only.
@@ -234,7 +268,7 @@ async function buildPrompt(R, extra = '') {
   const { LAYOUT } = await loadLayout();
   return fill(readPrompt('region_forge'), {
     REGION_ID: R.id, REGION_BRIEF: R.brief.trim(), LAYOUT_JSON: layoutJSON(LAYOUT), ASSET_API, STANDARD,
-    TRI_BUDGET: R.tris.toLocaleString('en-US'), EXTRA: [sceneSpecText(), extra].filter(Boolean).join('\n\n'),
+    TRI_BUDGET: R.tris.toLocaleString('en-US'), EXTRA: [AERIAL_NOTE, sceneSpecText(), extra].filter(Boolean).join('\n\n'),
   });
 }
 
@@ -338,7 +372,7 @@ async function forgeOne(R, round, partsBuilder) {
     for (let k = 1; k <= 2 && !v.ok; k++) {
       log(`${R.id} round ${round}: validation failed (${v.errors.join(' ; ').slice(0, 300)}) → repair call ${k}`);
       const rname = `${name}_repair${k > 1 ? k : ''}`;
-      const parts = [textPart(await buildPrompt(R, `# REPAIR\nYour previous module for this region failed validation in Node (headless: ctx.makeCanvas returns null):\n${v.errors.map((e) => '- ' + e).join('\n')}\n\nReturn the COMPLETE corrected module (same scope and detail), fixing these errors. Previous module:\n\`\`\`js\n${code}\n\`\`\``))];
+      const parts = [textPart(await buildPrompt(R, `# REPAIR\nYour previous module for this region failed validation in Node (headless: ctx.makeCanvas returns null):\n${v.errors.map((e) => '- ' + e).join('\n')}\n\nReturn the COMPLETE corrected module (same scope and detail), fixing these errors. Previous module:\n\`\`\`js\n${code}\n\`\`\``)), ...aerialParts()];
       ({ code, meta } = await argonModule(rname, parts));
       rec.calls.push({ name: rname, usage: meta?.usage, seconds: meta?.seconds, finish: meta?.finishReason });
       stage = path.join(STAGE, `${R.id}.r${round}.repair${k}.js`);
@@ -374,7 +408,7 @@ async function cmdGen() {
   const round = Number(opt('round', 0));
   const regs = REGIONS.filter((R) => !ONLY || ONLY.includes(R.id));
   log(`gen round ${round}: ${regs.length} parallel gemini-4-argon calls (thinking ${THINK}, maxOutputTokens 32768); scene_spec ${fs.existsSync(SCENE_SPEC) ? 'present' : 'absent'}`);
-  const recs = await Promise.all(regs.map((R) => forgeOne(R, round, async () => [textPart(await buildPrompt(R))])));
+  const recs = await Promise.all(regs.map((R) => forgeOne(R, round, async () => [textPart(await buildPrompt(R)), ...aerialParts()])));
   fs.writeFileSync(path.join(RDIR, `gen_round${round}.json`), JSON.stringify(recs, null, 2));
   return recs;
 }
@@ -438,7 +472,7 @@ async function cmdCritique() {
     const v = prevVal.regions?.[R.id] || {};
     const views = REGION_VIEWS[R.id];
     const parts = [textPart(await buildPrompt(R, `# REVIEW ROUND ${round}: your module below was rendered (headless Chromium, SwiftShader WebGL, 16:36 sun, environment sky).
-The attached stills are: ${views.map((x, i) => `image ${i + 1} = view '${x}' (${VIEW_DESC[x]})`).join('; ')}. Other regions (written by other copies of you) are also visible.
+The first two attached images are the aerial (see above); the renders follow: ${views.map((x, i) => `image ${i + 3} = view '${x}' (${VIEW_DESC[x]})`).join('; ')}. Other regions (written by other copies of you) are also visible.
 Node validation of your module: ${JSON.stringify({ tris: v.tris, budget: R.tris, bbox: v.bbox, warnings: v.warnings, buildMs: v.buildMs })}.
 
 Task: act as a senior forensic-animation art director. Compare what YOUR region contributes in these stills with a
@@ -453,6 +487,7 @@ Current module:
 \`\`\`js
 ${code}
 \`\`\``))];
+    parts.push(...aerialParts());
     for (const x of views) { const f = path.join(prevDir, `${x}.png`); if (fs.existsSync(f)) parts.push(imagePart(f)); }
     return parts;
   })));

@@ -37,11 +37,19 @@ export const LAYOUT = {
   brokenPole: [239.3, 18.5],
   residence: { center: [262, 40], w: 20, d: 14, faces: 'north', driveway: { x: [278, 282], z: [3.35, 44] } },
   carRest: [276.6, 23.9],
+  // From the USGS NAIP aerial (rotated to world): real features outside the case-keyed layout.
+  aerial: {
+    northLeg: { note: 'local road leaving the WB carriageway north shoulder at x ~ -25, z = -38, heading NNW (reaches x ~ -60 by z = -170)', mouthX: [-38, -14] },
+    northStore: { note: 'retail store + paved parking lot north of US-27A', building: { x: [-108, -82], z: [-112, -92] }, lot: { x: [-112, -50], z: [-100, -58] } },
+    swCorner: { note: 'small commercial building + canopy and a landscaped corner island SW of the side road', island: { x: [-24, -2], z: [3, 12] }, building: { x: [-24, -6], z: [37, 52] }, canopy: { x: [-22, -10], z: [22, 30] } },
+    forestEdge: { north: -60, southWestOfSideRoad: 15, note: 'dense pine forest beyond these z, mown ROW inside' },
+    openFieldSE: { x: [60, 260], z: [10, 95] },
+  },
   carPostImpactPath: [[0, 0], [40, 2.9], [63, 4.7], [123, 9.4], [191, 14.7], [235, 18.2], [255.8, 21.0], [276.6, 23.9]],
   truckPath: [[25.2, -27.43], [14.8, -27.4], [5.2, -24.8], [0.8, -18.2], [0, -12.5], [0, 0], [0, 44.7]],
   crestX: -345, gradeLevelX: 100, grade: 0.0215,
   keepClear: [
-    { what: 'EB approach sight corridor (no fixed obstructions; NTSB p.29-30)', x: [-700, 0], z: [-45, 40], allow: 'pavement, markings, flush grass, low signs on breakaway posts <= 2.5 m, delineators' },
+    { what: 'EB approach sight corridor (no fixed obstructions; NTSB p.29-30)', x: [-700, 0], z: [-50, 12], allow: 'pavement, markings, flush grass, low signs on breakaway posts <= 2.5 m, delineators' },
     { what: 'Witness B standing point', center: [7.5, 6.5], radius: 1.5 },
     { what: 'Witness C standing point', center: [-18, -40.5], radius: 2.0 },
     { what: 'Witness A (in WB outside lane)', center: [357.2, -34.75], radius: 3.0 },
@@ -154,7 +162,7 @@ export function makeCtx({ flat = false, headless } = {}) {
     },
     /** True if (x,z) violates a keepClear zone for a solid object taller than 0.6 m. */
     blocked(x, z) {
-      if (x >= -700 && x <= 0 && z >= -45 && z <= 40) return true;
+      if (x >= -700 && x <= 0 && z >= -50 && z <= 12) return true;
       for (const k of L.keepClear) if (k.center && Math.hypot(x - k.center[0], z - k.center[1]) < k.radius) return true;
       for (const [key, hw] of [['carPostImpactPath', 2.0], ['truckPath', 4.0]]) {
         const P = L[key];

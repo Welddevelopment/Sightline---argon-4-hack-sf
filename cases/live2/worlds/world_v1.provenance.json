@@ -1,0 +1,62 @@
+{
+  "world": "/cases/live2/worlds/world_v1.js",
+  "version": 1,
+  "createdAt": "2026-10-25T20:17:55.668Z",
+  "mode": "live",
+  "model": "gemini-4-argon",
+  "promptFile": "argon/prompts/generate_world_v2.md",
+  "promptVersion": "4ca0b52e8b71",
+  "inputs": [
+    {
+      "file": "text/deposition.txt",
+      "sha256": "4c0cb2f76681059939846bdd46483ce67d918787c4bde6676618a251f2ef8263",
+      "bytes": 30738
+    },
+    {
+      "file": "text/deposition_transcript.txt",
+      "sha256": "416d65e03cfb46aed00d9b2caeea511a145013a23f69bc6e304b6bba2e100432",
+      "bytes": 20708
+    },
+    {
+      "file": "text/facts.txt",
+      "sha256": "16a2ac328322655c10775315a2666ebef5eb8a76ddab222b6e7e8c98fcf7cfad",
+      "bytes": 6883
+    },
+    {
+      "file": "text/police_report.txt",
+      "sha256": "6b994577e18a90415850198d288091c0e19de0ee2ce655d11072e472e0c85791",
+      "bytes": 6532
+    },
+    {
+      "file": "text/witness_A.txt",
+      "sha256": "57b80e791b7642498bbfb3756d46ecf878beeb5cee317c2e04313c0fc04e5c8c",
+      "bytes": 1729
+    },
+    {
+      "file": "text/witness_C.txt",
+      "sha256": "14873e9544ba08b9b7e61a3b3fb368ca313b76ec2ff98bc434cd73ee8cd8656e",
+      "bytes": 1507
+    },
+    {
+      "file": "evidence/deposition.mp4",
+      "sha256": "8811f02e4e9e62da6a70a698186374a76ebf5ace7abb39016df9345a318168fd",
+      "bytes": 4244843
+    },
+    {
+      "file": "evidence/map.png",
+      "sha256": "e44f99efb5dd48300e638c39b92ad9a70c2642c31da7f66dd30b9248bf251aaa",
+      "bytes": 54576
+    }
+  ],
+  "outputSha256": "0d775906578b716d0c17833ca6db5d8974ff7962cebe3d76f9a0318fc6ee9521",
+  "usage": {
+    "promptTokens": 163928,
+    "outputTokens": 5248,
+    "thoughtsTokens": 0
+  },
+  "seconds": 53.9,
+  "finishReason": "STOP",
+  "thinkingBudget": 8192,
+  "maxOutputTokens": 65536,
+  "parentWorld": null
+}
