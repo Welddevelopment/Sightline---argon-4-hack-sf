@@ -1,0 +1,99 @@
+{
+  "id": "rob_wit_C",
+  "type": "robustness",
+  "witness": "wit_C",
+  "why": "Position robustness for wit_C. (added for coverage)",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_ChdoblBlYXIzWUNlYUZ5dE1QNnBxQ2lRNBIXaG5QZWFyM1lDZWFGeXRNUDZwcUNpUTQ",
+  "dispatchedAtMs": 2251,
+  "createMs": 38199,
+  "status": "completed",
+  "environmentId": "0d07d905bdde18da5f41ed1c526d25ba",
+  "usage": {
+    "total": 77461,
+    "input": 74753,
+    "cached": 53760
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"rob_wit_C\",\"ok\":true,\"ms\":1306}",
+    "interpretation": "Witness C had an entirely unobstructed line of sight to the tractor-trailer at the time of observation, with zero blocked rays across all tested perturbation radii."
+  },
+  "result": {
+    "task": {
+      "id": "rob_wit_C",
+      "type": "robustness",
+      "witness": "wit_C",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_T_trailer",
+      "tObs": 10.43,
+      "standard": {
+        "radiusM": 2,
+        "samples": 25,
+        "blocked": 0,
+        "clear": 25,
+        "eyeJitterM": 0.1,
+        "verdict": "not_blocked",
+        "blockers": {}
+      },
+      "rings": [
+        {
+          "radiusM": 0.5,
+          "samples": 25,
+          "blocked": 0,
+          "blockers": {}
+        },
+        {
+          "radiusM": 1,
+          "samples": 25,
+          "blocked": 0,
+          "blockers": {}
+        },
+        {
+          "radiusM": 2,
+          "samples": 25,
+          "blocked": 0,
+          "blockers": {}
+        },
+        {
+          "radiusM": 3,
+          "samples": 25,
+          "blocked": 0,
+          "blockers": {}
+        },
+        {
+          "radiusM": 5,
+          "samples": 25,
+          "blocked": 0,
+          "blockers": {}
+        },
+        {
+          "radiusM": 8,
+          "samples": 25,
+          "blocked": 0,
+          "blockers": {}
+        }
+      ]
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 1306,
+      "worldSha": "526ea902d593",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 282790,
+  "doneAtMs": 285041
+}

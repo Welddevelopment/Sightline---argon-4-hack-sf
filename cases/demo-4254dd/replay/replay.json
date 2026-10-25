@@ -1,0 +1,15 @@
+{
+  "caseId": "demo-4254dd",
+  "replayOf": "demo-full",
+  "sourceTitle": "Car into turning tractor-semitrailer at an uncontrolled median crossover, US-27A near Williston, Florida (2016) — full case file",
+  "clonedAt": "2026-10-25T21:33:42.122Z",
+  "recordedAt": "2026-10-25T20:17:08.332Z",
+  "recordedMode": "live",
+  "liveCalls": 5,
+  "recorded": [
+    "extraction.json",
+    "extraction.meta.json",
+    "state.json",
+    "loop_log.json"
+  ]
+}

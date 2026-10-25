@@ -1,0 +1,64 @@
+{
+  "id": "gz_wit_A",
+  "type": "gaze",
+  "witness": "wit_A",
+  "why": "Gaze angle for wit_A. (added for coverage)",
+  "command": "cd /workspace/job && mkdir -p repo out && cp -r /workspace/repo/checks /workspace/repo/web repo/ && npm i --no-audit --no-fund --loglevel=error three@0.186.1 >/dev/null && node run_task.mjs --repo /workspace/job/repo --world /workspace/job/world.js --task-file /workspace/job/task.json --out /workspace/job/out/result.json",
+  "interactionId": "v1_ChdsblhlYXJXWkVjYW94ZElQOTlPSDBBdxIXbG5YZWFyV1pFY2FveGRJUDk5T0gwQXc",
+  "dispatchedAtMs": 1251,
+  "createMs": 567030,
+  "status": "completed",
+  "environmentId": "e9f48b0a9d48dd8ac69261437009aac1",
+  "usage": {
+    "total": 100438,
+    "input": 97210,
+    "cached": 73021
+  },
+  "agentReply": {
+    "ran": true,
+    "exit_ok": true,
+    "summary_line": "{\"id\":\"gz_wit_A\",\"ok\":true,\"ms\":1223}",
+    "interpretation": "At the observation time of 4.5 seconds, Vehicle A was directly within Witness A's central field of view at only 2.8 degrees off-axis."
+  },
+  "result": {
+    "task": {
+      "id": "gz_wit_A",
+      "type": "gaze",
+      "witness": "wit_A",
+      "params": {}
+    },
+    "ok": true,
+    "error": null,
+    "result": {
+      "target": "veh_A",
+      "tObs": 4.5,
+      "gaze": {
+        "offAxisDeg": 2.8,
+        "assumed": true,
+        "cameraFovDeg": 60,
+        "peripheral": false,
+        "source": "mark_poi"
+      },
+      "altGazeDegByMark": {
+        "mark_poi": 2.77,
+        "mark_pole_poi": 73.06,
+        "mark_tire_impression": 2.94
+      }
+    },
+    "env": {
+      "host": "",
+      "node": "v22.23.4",
+      "cpus": 10,
+      "ms": 1223,
+      "worldSha": "526ea902d593",
+      "checksSha": {
+        "checks.js": "8b54e5598ebe",
+        "robustness.js": "7ffe748d2d02",
+        "physics.js": "31d365b6bf24"
+      }
+    }
+  },
+  "ok": true,
+  "wallMs": 647789,
+  "doneAtMs": 649040
+}
