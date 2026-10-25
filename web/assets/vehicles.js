@@ -542,10 +542,10 @@ function buildBed(THREE, cfg, f, root, addMesh, z) {
 // trimmed with a lip + dark liner. Lamps, grille, seams, plates, handles, wipers are conforming patches raycast onto
 // the finished shell (offset a few mm), so they sit on the real surface instead of floating boxes.
 const NQF = 18, NQR = 16;
-const G = { PAINT: 0, TRIM: 1, UNDER: 2, GLASS: 3, PLASTIC: 4, INTERIOR: 5, GLOSS: 6, CHROME: 7 };
+const G = { PAINT: 0, TRIM: 1, UNDER: 2, GLASS: 3, PLASTIC: 4, INTERIOR: 5, GLOSS: 6, CHROME: 7, ALLOY: 8 };
 function gMats(THREE, color) {
   const M = getMaterials(THREE);
-  return [M.paint(color), M.trim, M.underbody, M.glassTint || M.glass, M.plastic, M.interior, M.trimGloss, M.chrome];
+  return [M.paint(color), M.trim, M.underbody, M.glassTint || M.glass, M.plastic, M.interior, M.trimGloss, M.chrome, M.alloy];
 }
 const C = (pts) => curve(pts);
 const K = (v) => (typeof v === 'number' ? () => v : typeof v === 'function' ? v : curve(v));
@@ -590,12 +590,258 @@ export const SPECS = {
     mirror: { u: 2.1, dy: 0.065 },
     headY: 0.655,
     rows: 2,
-    detail: 'sedan',
+    D: {
+      seams: [
+        [[1.86, 0.31], [1.86, 0.72], [1.9, 0.9]],                         // front door leading edge
+        [[2.85, 0.27], [2.85, 0.93]],                                     // B gap
+        (f) => { const R2 = f.R + 0.045, ax = 3.81, p = [[3.74, f.yS(3.74) - 0.004]];
+          for (let i = 0; i <= 10; i++) { const a = Math.PI * (0.38 + 0.5 * (i / 10)); p.push([ax - R2 * Math.cos(a), f.yc + R2 * Math.sin(a)]); }
+          p.push([ax - R2 - 0.005, 0.31]); return p; },
+        [[1.86, 0.31], [3.37, 0.31]],                                     // door bottoms
+      ],
+      fuel: [4.21, 0.86, 0.085, 0.06],
+      handles: [2.55, 3.5], handleDrop: 0.1,
+      head: { s0: 0.4, s1: 1.04, lo: (t) => 0.628 - 0.01 * t, hi: (t) => 0.666 + 0.026 * Math.pow(t, 1.4), drl: (t) => 0.627, proj: [0.62, 0.76], projY: 0.66 },
+      hoodFront: { s: 0.39, y: 0.69 }, hoodSide: { x: 0.72, u0: 0.33, u1: 1.68 },
+      grille: { y0: 0.36, y1: 0.585, w0: 0.34, w1: 0.46, bars: 6, surround: 0.014 },
+      intake: { y: 0.255, h: 0.05, w: 0.52, taper: 0.04 },
+      vent: { s0: 0.72, s1: 0.9, lo: (t) => 0.3 + 0.02 * t, hi: (t) => 0.4 + 0.04 * t },
+      plateF: 0.405,
+      tail: { s0: 0.33, s1: 1.02, lo: (t) => 0.832 - 0.035 * Math.pow(t, 1.3), hi: (t) => 0.905 - 0.004 * t, rev: [0.38, 0.5, 0.84, 0.868] },
+      trunk: { s: 0.31, y: 0.818, x: 0.6, u0: 4.19, u1: 4.8 },
+      plateR: 0.626, garnish: { w: 0.34, y: 0.83 }, bumperSeam: { s: 1.0, y: 0.62 },
+      reflector: [0.72, 0.86, 0.47], exhaust: [0.42, 0.255, 0.14],
+    },
+  },
+};
+
+SPECS.suv = {
+  L: 4.8, W: 1.95, H: 1.75,
+  wheel: { r: 0.37, w: 0.245, rim: 'alloy' }, axles: [0.93, 3.78], arch: { R: 0.43, yc: 0.385, lip: 0.02 }, archFlare: true,
+  body: {
+    yBot: [[0, 0.44], [0.2, 0.34], [0.5, 0.295], [0.8, 0.28], [4.1, 0.28], [4.45, 0.31], [4.65, 0.37], [4.8, 0.45]],
+    yS: [[0, 0.855], [0.15, 0.875], [0.4, 0.915], [0.9, 0.985], [1.4, 1.04], [1.6, 1.058], [2.2, 1.075], [3.5, 1.095], [4.3, 1.105], [4.8, 1.1]],
+    half: [[0, 0.85], [0.35, 0.9], [0.9, 0.922], [2.0, 0.925], [3.6, 0.925], [4.4, 0.915], [4.8, 0.89]],
+    zF: [[0, 0.17], [0.1, 0.075], [0.25, 0.025], [0.42, 0.004], [0.55, 0], [0.7, 0.012], [0.82, 0.035], [0.92, 0.07], [0.97, 0.095], [1, 0.12]],
+    zR: [[0, 0.17], [0.12, 0.065], [0.25, 0.02], [0.36, 0.002], [0.4, 0], [0.415, 0.004], [0.43, 0.026], [0.6, 0.03], [0.8, 0.036], [0.93, 0.046], [1, 0.065]],
+    dF: [[0, 0.42], [0.5, 0.46], [1, 0.46]], nF: 2.6, dR: [[0, 0.3], [1, 0.32]], nR: 3.2,
+    s: [[0, 0.06], [0.04, 0.035], [0.1, 0.016], [0.18, 0.008], [0.21, 0.004], [0.35, 0.001], [0.55, 0], [0.7, 0.002], [0.8, 0.005], [0.84, 0.006], [0.87, 0.011], [0.93, 0.02], [0.97, 0.03], [1, 0.04]],
+    fLevels: [0, 0.015, 0.04, 0.08, 0.13, 0.18, 0.21, 0.24, 0.26, 0.3, 0.36, 0.4, 0.415, 0.43, 0.45, 0.5, 0.56, 0.62, 0.68, 0.74, 0.79, 0.82, 0.84, 0.855, 0.87, 0.89, 0.92, 0.95, 0.975, 0.99, 1],
+    roll: { r: 0.03, crown: 0.03 },
+    lowerFront: 0.0, lowerRear: 0.0,
+  },
+  clad: (u, q) => 0.5,
+  gh: {
+    dGH: 0.055,
+    yRail: [[2.0, 1.6], [3.4, 1.625], [4.6, 1.6]],
+    roofTop: [[2.3, 1.64], [2.6, 1.672], [3.1, 1.69], [3.9, 1.69], [4.4, 1.672], [4.7, 1.64]],
+    zF: (f) => 1.55 + 0.8 * f - 0.03 * Math.sin(Math.PI * f),
+    zR: (f) => 4.73 - 0.22 * f + 0.015 * Math.sin(Math.PI * f),
+    dF: [[0, 0.3], [1, 0.16]], dR: [[0, 0.16], [1, 0.12]], nF: 2.4, nR: 2.8,
+    tumble: (f) => 0.12 * f + 0.025 * f * f,
+    side: [
+      { to: (f, a) => a + 0.09, n: 3, mat: 'PAINT' },
+      { to: () => 2.78, n: 12, mat: 'GLASS' },
+      { to: () => 2.875, n: 3, mat: 'GLOSS' },
+      { to: (f) => 3.72 - 0.04 * f, n: 12, mat: 'GLASS' },
+      { to: (f) => 3.8 - 0.04 * f, n: 2, mat: 'GLOSS' },
+      { to: (f) => 4.42 - 0.2 * f, n: 7, mat: 'GLASS' },
+      { to: 'b', n: 4, mat: 'GLOSS' },
+    ],
+    fLevels: [-0.25, 0, 0.035, 0.07, 0.14, 0.24, 0.36, 0.5, 0.64, 0.78, 0.88, 0.93, 0.965, 1],
+    roofT: [0.012, 0.03, 0.055, 0.085, 0.11, 0.14, 0.19, 0.27, 0.37, 0.5, 0.64, 0.78, 0.9, 1],
+    frame: 0.93, belt: 0.035, beltMat: 'GLOSS', header: 0.1, headerR: 0.09, uc: 3.3,
+  },
+  eye: { u: 2.72, y: 1.42, x: -0.38 },
+  mirror: { u: 1.92, dy: 0.075 },
+  headY: 0.82,
+  rows: 2,
+  D: {
+    seams: [
+      [[1.72, 0.52], [1.72, 0.85], [1.76, 1.04]],
+      [[2.83, 0.48], [2.83, 1.07]],
+      (f) => { const R2 = f.R + 0.06, ax = 3.78, p = [[3.76, f.yS(3.76) - 0.004]];
+        for (let i = 0; i <= 10; i++) { const a = Math.PI * (0.36 + 0.42 * (i / 10)); p.push([ax - R2 * Math.cos(a), f.yc + R2 * Math.sin(a)]); }
+        return p; },
+      [[1.72, 0.52], [3.3, 0.52]],
+    ],
+    fuel: [4.12, 0.95, 0.085, 0.065],
+    handles: [2.45, 3.45], handleDrop: 0.11,
+    head: { s0: 0.42, s1: 1.06, lo: (t) => 0.79 - 0.012 * t, hi: (t) => 0.835 + 0.03 * Math.pow(t, 1.3), drl: (t) => 0.79, proj: [0.66, 0.8], projY: 0.815 },
+    hoodFront: { s: 0.41, y: 0.85 }, hoodSide: { x: 0.74, u0: 0.32, u1: 1.52 },
+    grille: { y0: 0.56, y1: 0.76, w0: 0.38, w1: 0.48, bars: 5, surround: 0.016 },
+    intake: { y: 0.4, h: 0.09, w: 0.55, taper: 0.03 },
+    skid: { y: 0.33, h: 0.06, w: 0.5 },
+    vent: { s0: 0.74, s1: 0.94, lo: (t) => 0.44 + 0.02 * t, hi: (t) => 0.53 + 0.03 * t },
+    plateF: 0.565, plateFOff: 0.014,
+    tail: { s0: 0.42, s1: 1.04, lo: (t) => 0.985 - 0.06 * Math.pow(t, 1.5), hi: (t) => 1.045 + 0.02 * t, rev: [0.47, 0.6, 0.995, 1.022] },
+    trunk: { s: 0.84, y: 0.62 },
+    plateR: 0.74, garnish: { w: 0.4, y: 0.93 }, bumperSeam: { s: 1.0, y: 0.6 },
+    reflector: [0.78, 0.92, 0.5], skidR: { y: 0.36, h: 0.05, w: 0.48 },
+    roofRails: { x: 0.56, u0: 2.7, u1: 4.4, h: 0.05, r: 0.016 },
+    spoiler: { w: 0.62, u0: 4.48, u1: 4.6 },
+  },
+};
+
+SPECS.pickup = {
+  L: 5.9, W: 2.0, H: 1.9,
+  wheel: { r: 0.4, w: 0.275, rim: 'alloy' }, axles: [0.98, 4.66], arch: { R: 0.465, yc: 0.415, lip: 0.024 }, archFlare: true,
+  extraDense: [[3.12, 3.36], [5.7, 5.9]],
+  body: {
+    yBot: [[0, 0.5], [0.2, 0.44], [0.6, 0.44], [1.4, 0.47], [3.25, 0.48], [3.45, 0.6], [5.75, 0.6], [5.9, 0.62]],
+    yS: [[0, 1.11], [0.1, 1.13], [0.5, 1.17], [1.4, 1.225], [1.65, 1.25], [3.2, 1.27], [5.9, 1.29]],
+    half: [[0, 0.875], [0.3, 0.905], [0.8, 0.915], [5.5, 0.915], [5.9, 0.905]],
+    zF: [[0, 0.11], [0.12, 0.05], [0.28, 0.015], [0.45, 0], [0.7, 0.004], [0.88, 0.02], [0.96, 0.04], [1, 0.065]],
+    zR: [[0, 0.045], [0.08, 0.012], [0.18, 0], [0.92, 0], [1, 0.012]],
+    dF: [[0, 0.24], [1, 0.26]], nF: 3.6, dR: 0.07, nR: 5,
+    s: [[0, 0.04], [0.05, 0.02], [0.12, 0.008], [0.3, 0], [0.82, 0], [0.86, 0.002], [0.9, 0.006], [0.96, 0.012], [1, 0.022]],
+    fLevels: [0, 0.015, 0.04, 0.08, 0.13, 0.19, 0.25, 0.28, 0.3, 0.36, 0.44, 0.52, 0.6, 0.68, 0.75, 0.8, 0.84, 0.86, 0.88, 0.9, 0.93, 0.96, 0.98, 0.995, 1],
+    roll: { r: 0.022, crown: 0.02 },
+    lowerFront: 0, lowerRear: 0,
+  },
+  bodyMat: (q) => {
+    const lv = q.lv;
+    if (lv.kind === 'side' && q.seg === 'F' && lv.f < 0.28) return G.ALLOY;                  // front bumper
+    if (lv.kind === 'side' && (q.seg === 'R' || q.u > 5.82) && lv.f < 0.2) return G.ALLOY;     // rear step bumper
+    if (lv.kind === 'top' && q.u > 3.24) return G.TRIM;                                      // bed rail caps
+    return null;
+  },
+  cutExtra: (q) => q.lv.kind === 'top' && q.lv.d > 0.05 && q.u > 3.26 && q.u < 5.84,
+  gh: {
+    dGH: 0.05,
+    yRail: [[2.0, 1.82], [3.2, 1.82]],
+    roofTop: [[2.3, 1.86], [2.6, 1.893], [3.0, 1.9], [3.15, 1.885]],
+    zF: (f) => 1.6 + 0.84 * f - 0.03 * Math.sin(Math.PI * f),
+    zR: (f) => 3.15 - 0.03 * f,
+    dF: [[0, 0.28], [1, 0.16]], dR: 0.05, nF: 2.6, nR: 4.5,
+    tumble: (f) => 0.1 * f + 0.02 * f * f,
+    side: [
+      { to: (f, a) => a + 0.09, n: 3, mat: 'PAINT' },
+      { to: () => 2.56, n: 10, mat: 'GLASS' },
+      { to: () => 2.66, n: 3, mat: 'GLOSS' },
+      { to: () => 3.02, n: 8, mat: 'GLASS' },
+      { to: 'b', n: 3, mat: 'PAINT' },
+    ],
+    fLevels: [-0.25, 0, 0.035, 0.07, 0.14, 0.24, 0.36, 0.5, 0.64, 0.78, 0.88, 0.93, 0.965, 1],
+    roofT: [0.012, 0.03, 0.055, 0.085, 0.11, 0.14, 0.19, 0.27, 0.37, 0.5, 0.64, 0.78, 0.9, 1],
+    frame: 0.93, belt: 0.035, beltMat: 'GLOSS', header: 0.1, headerR: 0.06, uc: 2.75,
+  },
+  eye: { u: 2.62, y: 1.56, x: -0.4 },
+  mirror: { u: 1.86, dy: 0.13, big: true },
+  headY: 0.98,
+  rows: 2,
+  D: {
+    seams: [
+      [[1.72, 0.52], [1.72, 1.0], [1.76, 1.24]],
+      [[2.62, 0.5], [2.62, 1.26]],
+      [[3.1, 0.52], [3.1, 1.27]],
+      [[1.72, 0.53], [3.1, 0.53]],
+      [[3.2, 0.62], [3.2, 1.285]],
+    ],
+    fuel: [3.95, 1.1, 0.09, 0.07],
+    handles: [2.35, 3.0], handleDrop: 0.1, handleMat: 'chrome',
+    head: { s0: 0.67, s1: 1.0, lo: (t) => 0.93 - 0.02 * t, hi: (t) => 1.06 + 0.005 * t, drl: (t) => 0.935, proj: [0.76, 0.86], projY: 1.0, round: 0.08 },
+    hoodFront: { s: 0.66, y: 1.085 }, hoodSide: { x: 0.76, u0: 0.24, u1: 1.55 },
+    grille: { y0: 0.72, y1: 1.07, w0: 0.6, w1: 0.63, bars: 6, surround: 0.035, barMat: 'chrome', barW: 0.016 },
+    intake: { y: 0.5, h: 0.08, w: 0.5, taper: 0.0 },
+    plateF: 0.52, plateFOff: 0.006,
+    tail: { s0: 0.81, s1: 0.99, lo: () => 0.92, hi: () => 1.24, round: 0.06, barDy: 0.0, rev: [0.835, 0.93, 1.02, 1.1] },
+    trunk: null,
+    plateR: 0.46, bumperSeam: null,
+    reflector: null, exhaust: [0.5, 0.48, 0.12],
+  },
+  extra: (THREE, { S, f, kit, add, both, mats, M, Z }) => {
+    const L = S.L, u0 = 3.26, u1 = 5.84, rail = f.yS(5) + 0.01, floor = 0.92, hw = f.half(4.5) - f.s(1) - 0.05;
+    const liner = M.plastic;
+    add(roundedBox(THREE, 2 * hw, 0.04, u1 - u0, 0.01), liner, 'bed_floor').position.set(0, floor, Z((u0 + u1) / 2));
+    for (const sx of [-1, 1]) {
+      add(roundedBox(THREE, 0.03, rail - floor, u1 - u0, 0.01), liner, 'bed_wall').position.set(sx * (hw + 0.005), (rail + floor) / 2 - 0.01, Z((u0 + u1) / 2));
+      add(roundedBox(THREE, 0.26, 0.24, 0.95, 0.06), liner, 'bed_wheelhouse').position.set(sx * (hw - 0.12), floor + 0.11, Z(S.axles[1]));
+    }
+    add(roundedBox(THREE, 2 * hw, rail - floor, 0.03, 0.01), liner, 'bed_front').position.set(0, (rail + floor) / 2 - 0.01, Z(u0 + 0.005));
+    add(roundedBox(THREE, 2 * hw, rail - floor, 0.03, 0.01), liner, 'tailgate_inner').position.set(0, (rail + floor) / 2 - 0.01, Z(u1 - 0.005));
+    // tailgate panel lines + handle
+    const rib = (hits, w = 0.007) => hitRibbon(THREE, hits, w, 0.0012);
+    const tg = cachedGeo(THREE, 'v3|pickup|tailgate', () => rib(kit.line(30, t => kit.rear(-0.82 + 1.64 * t, 0.74))));
+    add(tg, M.trim, 'seam_tailgate');
+    both(cachedGeo(THREE, 'v3|pickup|tgside', () => rib(kit.line(20, t => kit.rear(0.8, 0.74 + (rail - 0.76) * t)))), M.trim, 'seam_tailgate');
+    add(cachedGeo(THREE, 'v3|pickup|tghandle', () => hitPatch(THREE, kit.grid(3, 8, (i, j) => kit.rear(-0.14 + 0.28 * j, 1.16 + 0.05 * i)), 0.003)), M.trimGloss, 'tailgate_handle');
+    // tow hitch receiver
+    add(roundedBox(THREE, 0.08, 0.08, 0.25, 0.01), M.underbody, 'hitch').position.set(0, 0.5, Z(L - 0.08));
+  },
+};
+
+SPECS.van = {
+  L: 5.3, W: 2.0, H: 2.0,
+  wheel: { r: 0.36, w: 0.235, rim: 'steel' }, axles: [0.92, 4.22], arch: { R: 0.42, yc: 0.375, lip: 0.016 },
+  body: {
+    yBot: [[0, 0.44], [0.2, 0.37], [0.5, 0.34], [1.2, 0.33], [4.8, 0.34], [5.1, 0.38], [5.3, 0.46]],
+    yS: [[0, 0.88], [0.15, 0.9], [0.45, 0.97], [0.8, 1.06], [1.2, 1.1], [5.3, 1.12]],
+    half: [[0, 0.86], [0.3, 0.9], [0.9, 0.925], [4.8, 0.925], [5.3, 0.91]],
+    zF: [[0, 0.15], [0.12, 0.06], [0.3, 0.015], [0.5, 0], [0.7, 0.012], [0.85, 0.04], [0.95, 0.08], [1, 0.115]],
+    zR: [[0, 0.13], [0.12, 0.045], [0.25, 0.008], [0.33, 0], [0.35, 0.004], [0.37, 0.022], [0.6, 0.026], [1, 0.032]],
+    dF: [[0, 0.42], [1, 0.46]], nF: 2.5, dR: [[0, 0.14], [1, 0.14]], nR: 4,
+    s: [[0, 0.05], [0.04, 0.03], [0.1, 0.014], [0.2, 0.006], [0.35, 0.001], [0.6, 0], [0.8, 0.003], [0.9, 0.008], [0.96, 0.016], [1, 0.03]],
+    fLevels: [0, 0.015, 0.04, 0.08, 0.13, 0.19, 0.25, 0.3, 0.33, 0.35, 0.37, 0.4, 0.46, 0.53, 0.6, 0.67, 0.74, 0.8, 0.85, 0.89, 0.92, 0.95, 0.975, 0.99, 1],
+    roll: { r: 0.025, crown: 0.025 },
+    lowerFront: 0.3, lowerRear: 0.3,
+  },
+  gh: {
+    dGH: 0.05,
+    yRail: [[1.5, 1.9], [5.3, 1.9]],
+    roofTop: [[1.8, 1.955], [2.2, 1.995], [4.9, 2.0], [5.25, 1.975]],
+    zF: (f) => 0.84 + 0.92 * f - 0.04 * Math.sin(Math.PI * f),
+    zR: (f) => 5.285 - 0.025 * f,
+    dF: [[0, 0.36], [1, 0.2]], dR: 0.1, nF: 2.4, nR: 4,
+    tumble: (f) => 0.07 * f + 0.02 * f * f,
+    side: [
+      { to: (f, a) => a + 0.1, n: 3, mat: 'PAINT' },
+      { to: () => 2.0, n: 8, mat: 'GLASS' },
+      { to: () => 2.1, n: 3, mat: 'GLOSS' },
+      { to: () => 3.25, n: 12, mat: 'GLASS' },
+      { to: () => 3.35, n: 3, mat: 'GLOSS' },
+      { to: () => 4.95, n: 16, mat: 'GLASS' },
+      { to: 'b', n: 4, mat: 'PAINT' },
+    ],
+    rearMat: (q) => (q.lv.kind === 'gh' && q.lv.f > 0.3 && q.lv.f < 0.9 && q.k > 0 ? 'GLASS' : q.k === 0 ? 'GLOSS' : 'PAINT'),
+    fLevels: [-0.25, 0, 0.035, 0.07, 0.14, 0.24, 0.3, 0.36, 0.5, 0.64, 0.78, 0.88, 0.9, 0.93, 0.965, 1],
+    roofT: [0.012, 0.03, 0.055, 0.085, 0.11, 0.14, 0.19, 0.27, 0.37, 0.5, 0.64, 0.78, 0.9, 1],
+    frame: 0.93, belt: 0.035, beltMat: 'GLOSS', header: 0.09, headerR: 0.0, uc: 3.4,
+  },
+  eye: { u: 1.98, y: 1.62, x: -0.42 },
+  mirror: { u: 1.08, dy: 0.15, big: true },
+  headY: 0.92,
+  rows: 2,
+  D: {
+    seams: [
+      [[1.42, 0.38], [1.42, 1.0], [1.36, 1.1]],
+      [[2.05, 0.36], [2.05, 1.115]],
+      [[3.3, 0.36], [3.3, 1.115]],
+      [[1.42, 0.39], [3.3, 0.39]],
+      [[3.3, 1.07], [4.98, 1.07]],
+    ],
+    fuel: [1.75, 0.95, 0.08, 0.06],
+    handles: [1.85, 3.1], handleDrop: 0.07, handleMat: 'chrome',
+    head: { s0: 0.44, s1: 1.06, lo: (t) => 0.86 - 0.015 * t, hi: (t) => 0.92 + 0.045 * Math.pow(t, 1.3), drl: (t) => 0.862, proj: [0.66, 0.8], projY: 0.895 },
+    hoodFront: { s: 0.43, y: 0.86 }, hoodSide: { x: 0.74, u0: 0.3, u1: 0.8 },
+    grille: { y0: 0.62, y1: 0.82, w0: 0.42, w1: 0.48, bars: 4, surround: 0.016 },
+    intake: { y: 0.45, h: 0.08, w: 0.55, taper: 0.03 },
+    plateF: 0.48, plateFOff: 0.012,
+    tail: { s0: 0.8, s1: 1.0, lo: () => 0.98, hi: () => 1.42, round: 0.06, barDy: 0, rev: [0.82, 0.92, 1.0, 1.08] },
+    trunk: null,
+    plateR: 0.7, bumperSeam: { s: 1.0, y: 0.6 },
+    reflector: [0.6, 0.78, 0.5],
+  },
+  extra: (THREE, { S, kit, add, M }) => {
+    const rib = (hits, w = 0.007) => hitRibbon(THREE, hits, w, 0.0012);
+    add(cachedGeo(THREE, 'v3|van|split', () => rib(kit.line(40, t => kit.rear(0.0, 0.62 + 1.25 * t, kit.hitA)), 0.008)), M.trim, 'seam_reardoor');
+    add(cachedGeo(THREE, 'v3|van|rhandle', () => hitPatch(THREE, kit.grid(3, 6, (i, j) => kit.rear(0.04 + 0.12 * j, 1.05 + 0.04 * i)), 0.003)), M.chrome, 'reardoor_handle');
   },
 };
 
 function prepSpec(S) {
   if (S._f) return S._f;
+  if (!S.type) S.type = Object.keys(SPECS).find(k => SPECS[k] === S);
   const B = S.body, f = {};
   f.yBot = C(B.yBot); f.yS = C(B.yS); f.half = C(B.half);
   f.zF = C(B.zF); const zRo = C(B.zR); f.zR = (ff) => S.L - zRo(ff);
@@ -878,7 +1124,8 @@ function buildCarV3(THREE, type) {
     both(liner, lm, 'arch_liner');
   }
 
-  if (S.detail === 'sedan') sedanDetails(THREE, S, kit, add, both, mats);
+  if (S.D) carDetails(THREE, S, kit, add, both, mats);
+  if (S.extra) S.extra(THREE, { S, f, kit, add, both, mats, M, Z });
 
   // ---- mirrors (housing tip defines the catalog width)
   {
@@ -937,110 +1184,112 @@ function buildCarV3(THREE, type) {
   return outer;
 }
 
-// ------------------------------------------------------------------ sedan trim, lamps, seams
-function sedanDetails(THREE, S, kit, add, both, mats) {
-  const M = getMaterials(THREE), f = kit.f, L = S.L;
+// ------------------------------------------------------------------ trim, lamps, seams (driven by SPEC.D)
+function carDetails(THREE, S, kit, add, both, mats) {
+  const M = getMaterials(THREE), f = kit.f, D = S.D, type = S.type;
   const seam = M.trim;
   const ribbon = (hits, w = 0.007, off = 0.0012) => hitRibbon(THREE, hits, w, off);
-  const cache = (key, fn) => cachedGeo(THREE, `v3|${S.detail}|${key}`, fn);
-  // ---- side panel gaps (right side, mirrored)
-  const sideLine = (pts, n = 40) => {
+  const cache = (key, fn) => cachedGeo(THREE, `v3|${type}|${key}`, fn);
+  const center = (key, fn, mat, name) => { add(cache(key, fn), mat, name); add(cache(key + '_L', () => mirrorX(THREE, cache(key, fn))), mat, name); };
+  const sideLine = (pts, n = 30) => {
     const c = []; for (let i = 0; i < pts.length - 1; i++) for (let j = 0; j < n; j++) { const t = j / n; c.push([pts[i][0] + (pts[i + 1][0] - pts[i][0]) * t, pts[i][1] + (pts[i + 1][1] - pts[i][1]) * t]); }
     c.push(pts[pts.length - 1]);
     return c.map(([u, y]) => kit.side(u, y));
   };
-  const beltAt = (u) => f.yS(u) - 0.004;
-  const R2 = f.R + 0.045, ax2 = S.axles[1];
-  const rearDoor = [[3.74, beltAt(3.74)]];
-  for (let i = 0; i <= 10; i++) { const a = Math.PI * (0.38 + 0.5 * (i / 10)); rearDoor.push([ax2 - R2 * Math.cos(a), f.yc + R2 * Math.sin(a)]); }
-  rearDoor.push([ax2 - R2 - 0.005, 0.31]);
-  const seams = [
-    [[1.86, 0.31], [1.86, 0.72], [1.9, beltAt(1.9)]],        // front door leading edge
-    [[2.85, 0.27], [2.85, beltAt(2.85)]],                     // B gap
-    rearDoor,                                                 // rear door trailing edge round the arch
-    [[1.86, 0.31], [ax2 - R2 - 0.005, 0.31]],                 // door bottoms
-  ];
-  seams.forEach((sl, i) => both(cache('seam' + i, () => ribbon(sideLine(sl, 30))), seam, 'seam_side'));
-  // fuel door (right rear quarter)
-  {
-    const u0 = 4.12, u1 = 4.3, y0 = 0.8, y1 = 0.92, pts = [];
-    for (let i = 0; i <= 32; i++) { const a = i / 32 * Math.PI * 2; pts.push([(u0 + u1) / 2 + Math.cos(a) * (u1 - u0) / 2 * 1.0, (y0 + y1) / 2 + Math.sin(a) * (y1 - y0) / 2]); }
+  const lens = (end, L, layers, names) => {
+    const [bezMat, lensMat, kind] = layers;
+    both(cache(names + '_bezel', () => hitPatch(THREE, kit.wrapGrid(end, L.s0, L.s1, L.lo, L.hi, { expand: L.bezel ?? 0.011, round: 0.1 }), 0.0025)), bezMat, names + '_bezel');
+    const g = cache(names + '_lens', () => hitPatch(THREE, kit.wrapGrid(end, L.s0, L.s1, L.lo, L.hi, { round: L.round ?? 0.13 }), 0.0045));
+    const nm = kind === 'tail' ? 'taillight_' : 'headlight_';
+    add(g, lensMat, nm + 'R').userData.lampKind = kind;
+    add(mirrorX(THREE, g), lensMat, nm + 'L').userData.lampKind = kind;
+  };
+  // ---- side panel gaps
+  (D.seams || []).forEach((sl, i) => both(cache('seam' + i, () => ribbon(sideLine(typeof sl === 'function' ? sl(f) : sl))), seam, 'seam_side'));
+  if (D.fuel) {
+    const [uc, yc2, rw, rh] = D.fuel, pts = [];
+    for (let i = 0; i <= 32; i++) { const a = i / 32 * Math.PI * 2; pts.push([uc + Math.cos(a) * rw, yc2 + Math.sin(a) * rh]); }
     add(cache('fuel', () => ribbon(pts.map(([u, y]) => kit.side(u, y)), 0.005)), seam, 'fuel_door');
   }
-  // ---- door handles (body colour on a dark pocket)
-  for (const hu of [2.55, 3.5]) {
-    const hy = f.yS(hu) - 0.1;
-    const pocket = cache('pocket' + hu, () => hitPatch(THREE, kit.grid(3, 8, (i, j) => kit.side(hu - 0.09 + 0.18 * j, hy - 0.022 + 0.044 * i)), 0.0015));
-    both(pocket, M.trimGloss, 'handle_pocket');
+  // ---- door handles (body colour on a gloss-black pocket)
+  for (const hu of D.handles || []) {
+    const hy = f.yS(hu) - D.handleDrop;
+    both(cache('pocket' + hu, () => hitPatch(THREE, kit.grid(3, 8, (i, j) => kit.side(hu - 0.09 + 0.18 * j, hy - 0.022 + 0.044 * i)), 0.0015)), M.trimGloss, 'handle_pocket');
     const h = kit.side(hu, hy);
-    for (const s of [-1, 1]) {
-      const m = add(roundedBox(THREE, 0.03, 0.03, 0.16, 0.013), mats[0], 'door_handle', 0);
-      m.position.set(s * (h.p[0] + 0.006), hy, h.p[2]);
+    for (const sx of [-1, 1]) { const m = add(roundedBox(THREE, 0.03, 0.03, 0.16, 0.013), D.handleMat === 'chrome' ? M.chrome : mats[0], 'door_handle', D.handleMat === 'chrome' ? null : 0); m.position.set(sx * (h.p[0] + 0.006), hy, h.p[2]); }
+  }
+  // ---- head lamps
+  const HL = D.head;
+  lens('F', HL, [M.trimGloss, M.lightHead, 'head'], 'hl');
+  if (HL.drl) both(cache('hl_drl', () => ribbon(kit.line(30, t => kit.around('F', HL.s0 + 0.03 + (HL.s1 - HL.s0 - 0.05) * t, HL.drl(t))), 0.007, 0.006)), M.lightRev, 'drl');
+  for (const sp of HL.proj || []) both(cache('hl_proj' + sp, () => hitPatch(THREE, kit.wrapGrid('F', sp - 0.022, sp + 0.022, () => HL.projY - 0.013, () => HL.projY + 0.013, { cols: 8, rows: 4, round: 0.5 }), 0.0055)), M.chrome, 'projector');
+  // ---- hood seams
+  if (D.hoodFront) center('hood_front', () => ribbon(kit.line(40, t => kit.around('F', 0.0001 + D.hoodFront.s * t, D.hoodFront.y))), seam, 'seam_hood');
+  if (D.hoodSide) { const H = D.hoodSide; both(cache('hood_side', () => ribbon(kit.line(40, t => kit.top(H.x - 0.06 * Math.pow(1 - t, 3), H.u0 + (H.u1 - H.u0) * t)))), seam, 'seam_hood'); }
+  // ---- grille, intake, vents, plate
+  if (D.grille) {
+    const Gr = D.grille, gw = (y) => Gr.w0 + (Gr.w1 - Gr.w0) * (y - Gr.y0) / (Gr.y1 - Gr.y0);
+    add(cache('grille', () => hitPatch(THREE, kit.grid(8, 24, (i, j) => { const y = Gr.y0 + (Gr.y1 - Gr.y0) * i; return kit.front((2 * j - 1) * gw(y), y); }), 0.003)), M.trimGloss, 'grille');
+    for (let b = 1; b < Gr.bars; b++) {
+      const y = Gr.y0 + (Gr.y1 - Gr.y0) * b / Gr.bars;
+      add(cache('gbar' + b, () => ribbon(kit.line(24, t => kit.front((2 * t - 1) * (gw(y) - 0.015), y)), Gr.barW || 0.008, 0.006)), Gr.barMat === 'chrome' ? M.chrome : M.plastic, 'grille_bar');
+    }
+    if (Gr.surround) {
+      const ring = [], P = [[-gw(Gr.y0), Gr.y0], [gw(Gr.y0), Gr.y0], [gw(Gr.y1), Gr.y1], [-gw(Gr.y1), Gr.y1], [-gw(Gr.y0), Gr.y0]];
+      for (let i = 0; i < 4; i++) for (let j = 0; j < 12; j++) { const t = j / 12; ring.push(kit.front(P[i][0] + (P[i + 1][0] - P[i][0]) * t, P[i][1] + (P[i + 1][1] - P[i][1]) * t)); }
+      ring.push(ring[0]);
+      add(cache('gsurround', () => ribbon(ring, Gr.surround, 0.005)), M.chrome, 'grille_surround');
     }
   }
-  // ---- headlamps: slim wraparound units under the hood shut line
-  const hl = { s0: 0.4, s1: 1.04, lo: (t) => 0.628 - 0.01 * t, hi: (t) => 0.666 + 0.026 * Math.pow(t, 1.4) };
-  both(cache('hl_bezel', () => hitPatch(THREE, kit.wrapGrid('F', hl.s0, hl.s1, hl.lo, hl.hi, { expand: 0.012, round: 0.1 }), 0.0025)), M.trimGloss, 'headlamp_bezel');
-  const hlLens = cache('hl_lens', () => hitPatch(THREE, kit.wrapGrid('F', hl.s0, hl.s1, hl.lo, hl.hi, { round: 0.14 }), 0.0045));
-  add(hlLens, M.lightHead, 'headlight_R').userData.lampKind = 'head';
-  add(mirrorX(THREE, hlLens), M.lightHead, 'headlight_L').userData.lampKind = 'head';
-  both(cache('hl_drl', () => ribbon(kit.line(30, t => kit.around('F', hl.s0 + 0.03 + (hl.s1 - hl.s0 - 0.05) * t, hl.lo(t) + 0.009)), 0.007, 0.006)), M.lightRev, 'drl');
-  for (const sp of [0.62, 0.76]) both(cache('hl_proj' + sp, () => hitPatch(THREE, kit.wrapGrid('F', sp - 0.022, sp + 0.022, () => 0.647, () => 0.672, { cols: 8, rows: 4, round: 0.5 }), 0.0055)), M.chrome, 'projector');
-  // ---- hood shut line, hood side seams, bumper-to-fender seam
-  add(cache('hood_front', () => ribbon(kit.line(40, t => kit.around('F', 0.0001 + 0.39 * t, 0.69)).concat([]))), seam, 'seam_hood');
-  add(cache('hood_front_L', () => mirrorX(THREE, ribbon(kit.line(40, t => kit.around('F', 0.0001 + 0.39 * t, 0.69))))), seam, 'seam_hood');
-  both(cache('hood_side', () => ribbon(kit.line(40, t => kit.top(0.72 - 0.06 * Math.pow(1 - t, 3), 0.33 + (1.68 - 0.33) * t)))), seam, 'seam_hood');
-  // ---- grille + intake + front plate
-  const gy0 = 0.36, gy1 = 0.585, gw = (y) => 0.34 + 0.12 * (y - gy0) / (gy1 - gy0);
-  add(cache('grille', () => hitPatch(THREE, kit.grid(8, 24, (i, j) => { const y = gy0 + (gy1 - gy0) * i; return kit.front((2 * j - 1) * gw(y), y); }), 0.003)), M.trimGloss, 'grille');
-  for (let b = 1; b < 6; b++) {
-    const y = gy0 + (gy1 - gy0) * b / 6;
-    add(cache('gbar' + b, () => ribbon(kit.line(24, t => kit.front((2 * t - 1) * (gw(y) - 0.015), y)), 0.008, 0.006)), M.plastic, 'grille_bar');
-  }
+  if (D.intake) { const I = D.intake; add(cache('intake', () => hitPatch(THREE, kit.grid(3, 24, (i, j) => { const y = I.y + I.h * (i / 3); return kit.front((2 * j - 1) * (I.w - I.taper * (i / 3)), y); }), 0.003)), I.mat === 'chrome' ? M.alloy : M.trimGloss, 'intake'); }
+  if (D.vent) { const Vt = D.vent; both(cache('fvent', () => hitPatch(THREE, kit.wrapGrid('F', Vt.s0, Vt.s1, Vt.lo, Vt.hi, { cols: 10, rows: 5, round: 0.3 }), 0.003)), M.trimGloss, 'bumper_vent'); }
+  if (D.skid) { const Sk = D.skid; add(cache('skidF', () => hitPatch(THREE, kit.grid(3, 20, (i, j) => kit.front((2 * j - 1) * (Sk.w - 0.05 * i / 3), Sk.y + Sk.h * i / 3)), 0.0035)), M.alloy, 'skid_plate'); }
+  add(cache('plateF', () => hitPatch(THREE, kit.grid(3, 8, (i, j) => kit.front(-0.152 + 0.304 * j, D.plateF + 0.15 * i)), D.plateFOff ?? 0.012)), M.plate, 'plate_front');
+  // ---- wipers
   {
-    const ring = [];
-    const P = [[-gw(gy0), gy0], [gw(gy0), gy0], [gw(gy1), gy1], [-gw(gy1), gy1], [-gw(gy0), gy0]];
-    for (let i = 0; i < 4; i++) for (let j = 0; j < 12; j++) { const t = j / 12; ring.push(kit.front(P[i][0] + (P[i + 1][0] - P[i][0]) * t, P[i][1] + (P[i + 1][1] - P[i][1]) * t)); }
-    ring.push(ring[0]);
-    add(cache('gsurround', () => ribbon(ring, 0.014, 0.005)), M.chrome, 'grille_surround');
-  }
-  add(cache('intake', () => hitPatch(THREE, kit.grid(3, 24, (i, j) => { const y = 0.255 + 0.05 * i; return kit.front((2 * j - 1) * (0.52 - 0.04 * i), y); }), 0.003)), M.trimGloss, 'intake');
-  both(cache('fvent', () => hitPatch(THREE, kit.wrapGrid('F', 0.72, 0.9, (t) => 0.3 + 0.02 * t, (t) => 0.4 + 0.04 * t, { cols: 10, rows: 5, round: 0.3 }), 0.003)), M.trimGloss, 'bumper_vent');
-  add(cache('plateF', () => hitPatch(THREE, kit.grid(3, 8, (i, j) => kit.front(-0.152 + 0.304 * j, 0.405 + 0.15 * i)), 0.012)), M.plate, 'plate_front');
-  // ---- windshield wipers + cowl
-  {
-    const g = ghPrep(S, f), Gs = S.gh;
-    const yW = (x) => f.topY(x, Gs.zF(0)) + 0.03;
+    const Gs = S.gh, yW = (x) => f.topY(x, Gs.zF(0)) + (D.wiperDy ?? 0.03);
     for (const [x0, x1] of [[-0.66, 0.02], [-0.02, 0.6]]) {
-      add(cache('wiper' + x0, () => ribbon(kit.line(20, t => { const x = x0 + (x1 - x0) * t; return kit.hitG([x, yW(x) + 0.02 * t, kit.Z(0)], [0, -0.48, 1]); }), 0.018, 0.012)), M.trim, 'wiper');
+      add(cache('wiper' + x0, () => ribbon(kit.line(20, t => { const x = x0 + (x1 - x0) * t; return kit.hitG([x, yW(x) + 0.02 * t, kit.Z(0)], [0, -(D.wiperSlope ?? 0.48), 1]); }), 0.018, 0.012)), M.trim, 'wiper');
     }
-    void g;
   }
-  // ---- rear: trunk seams, separate wraparound tail lamps, plate recess, garnish, bumper crease, reflectors
-  const ry = (t) => t;
-  void ry;
-  const tl = { s0: 0.33, s1: 1.02, lo: (t) => 0.832 - 0.035 * Math.pow(t, 1.3), hi: (t) => 0.905 - 0.004 * t };
-  both(cache('tl_bezel', () => hitPatch(THREE, kit.wrapGrid('R', tl.s0, tl.s1, tl.lo, tl.hi, { expand: 0.01, round: 0.1 }), 0.0025)), M.trimGloss, 'taillamp_bezel');
-  const tlLens = cache('tl_lens', () => hitPatch(THREE, kit.wrapGrid('R', tl.s0, tl.s1, tl.lo, tl.hi, { round: 0.12 }), 0.0045));
-  add(tlLens, M.lightTail, 'taillight_R').userData.lampKind = 'tail';
-  add(mirrorX(THREE, tlLens), M.lightTail, 'taillight_L').userData.lampKind = 'tail';
-  both(cache('tl_bar', () => ribbon(kit.line(30, t => kit.around('R', tl.s0 + 0.04 + (tl.s1 - tl.s0 - 0.08) * t, (tl.lo(t) + tl.hi(t)) / 2 + 0.008)), 0.012, 0.006)), M.brake, 'taillamp_bar');
-  both(cache('tl_rev', () => hitPatch(THREE, kit.wrapGrid('R', tl.s0 + 0.05, tl.s0 + 0.17, () => 0.84, () => 0.868, { cols: 8, rows: 3, round: 0.3 }), 0.0058)), M.lightRev, 'reverse_lamp');
-  // trunk lid shut lines (rear face + deck sides)
-  add(cache('trunk_rear', () => ribbon(kit.line(40, t => kit.around('R', 0.0001 + 0.31 * t, 0.818)))), seam, 'seam_trunk');
-  add(cache('trunk_rear_L', () => mirrorX(THREE, ribbon(kit.line(40, t => kit.around('R', 0.0001 + 0.31 * t, 0.818))))), seam, 'seam_trunk');
-  both(cache('trunk_side', () => ribbon(kit.line(30, t => kit.top(0.6 + 0.02 * t, 4.18 + (4.8 - 4.18) * t)))), seam, 'seam_trunk');
-  add(cache('trunk_front', () => ribbon(kit.line(30, t => kit.top(-0.6 + 1.2 * t, 4.19)))), seam, 'seam_trunk');
-  // plate recess: dark shadow surround + inner panel + plate + chrome garnish over it
-  add(cache('plate_recess', () => hitPatch(THREE, kit.grid(4, 10, (i, j) => kit.rear(-0.2 + 0.4 * j, 0.6 + 0.205 * i)), 0.0015)), M.trim, 'plate_recess');
-  add(cache('plate_recess_in', () => hitPatch(THREE, kit.grid(4, 10, (i, j) => kit.rear(-0.188 + 0.376 * j, 0.612 + 0.181 * i)), 0.0022)), M.plastic, 'plate_recess_inner');
-  add(cache('plateR', () => hitPatch(THREE, kit.grid(3, 8, (i, j) => kit.rear(-0.152 + 0.304 * j, 0.626 + 0.152 * i)), 0.0035)), M.plate, 'plate_rear');
-  add(cache('garnish', () => ribbon(kit.line(30, t => kit.rear(-0.34 + 0.68 * t, 0.83)), 0.016, 0.004)), M.chrome, 'trunk_garnish');
-  // bumper crease highlight seam (bumper cover to body)
-  add(cache('bumper_seam', () => ribbon(kit.line(60, t => kit.around('R', 0.0001 + 1.0 * t, 0.62)), 0.006)), seam, 'seam_bumper');
-  add(cache('bumper_seam_L', () => mirrorX(THREE, ribbon(kit.line(60, t => kit.around('R', 0.0001 + 1.0 * t, 0.62)), 0.006))), seam, 'seam_bumper');
-  both(cache('reflector', () => hitPatch(THREE, kit.wrapGrid('R', 0.72, 0.86, () => 0.47, () => 0.495, { cols: 8, rows: 2, round: 0.3 }), 0.003)), M.lightTail, 'reflector');
-  both(cache('exhaust', () => hitPatch(THREE, kit.grid(3, 10, (i, j) => kit.rear(0.42 + 0.14 * j, 0.255 + 0.05 * i)), 0.004)), M.chrome, 'exhaust_trim');
+  // ---- rear: separate tail-lamp units, plate recess, garnish, bumper seam, reflectors, exhaust
+  if (D.tail) {
+    const TL = D.tail;
+    lens('R', TL, [M.trimGloss, M.lightTail, 'tail'], 'tl');
+    both(cache('tl_bar', () => ribbon(kit.line(30, t => kit.around('R', TL.s0 + 0.04 + (TL.s1 - TL.s0 - 0.08) * t, (TL.lo(t) + TL.hi(t)) / 2 + (TL.barDy ?? 0.008))), 0.012, 0.006)), M.brake, 'taillamp_bar');
+    if (TL.rev) both(cache('tl_rev', () => hitPatch(THREE, kit.wrapGrid('R', TL.rev[0], TL.rev[1], () => TL.rev[2], () => TL.rev[3], { cols: 8, rows: 3, round: 0.3 }), 0.0058)), M.lightRev, 'reverse_lamp');
+  }
+  if (D.trunk) {
+    const T = D.trunk;
+    center('trunk_rear', () => ribbon(kit.line(40, t => kit.around('R', 0.0001 + T.s * t, T.y))), seam, 'seam_trunk');
+    if (T.x) both(cache('trunk_side', () => ribbon(kit.line(30, t => kit.top(T.x + 0.02 * t, T.u0 + (T.u1 - T.u0) * t)))), seam, 'seam_trunk');
+    if (T.u0) add(cache('trunk_front', () => ribbon(kit.line(30, t => kit.top(-T.x + 2 * T.x * t, T.u0)))), seam, 'seam_trunk');
+    if (T.sideLine) both(cache('hatch_side', () => ribbon(sideLine(T.sideLine))), seam, 'seam_trunk');
+  }
+  if (D.plateR) {
+    const y = D.plateR;
+    add(cache('plate_recess', () => hitPatch(THREE, kit.grid(4, 10, (i, j) => kit.rear(-0.2 + 0.4 * j, y - 0.026 + 0.205 * i)), 0.0015)), M.trim, 'plate_recess');
+    add(cache('plate_recess_in', () => hitPatch(THREE, kit.grid(4, 10, (i, j) => kit.rear(-0.188 + 0.376 * j, y - 0.014 + 0.181 * i)), 0.0022)), M.plastic, 'plate_recess_inner');
+    add(cache('plateR', () => hitPatch(THREE, kit.grid(3, 8, (i, j) => kit.rear(-0.152 + 0.304 * j, y + 0.152 * i)), 0.0035)), M.plate, 'plate_rear');
+  }
+  if (D.garnish) add(cache('garnish', () => ribbon(kit.line(30, t => kit.rear(-D.garnish.w + 2 * D.garnish.w * t, D.garnish.y)), 0.016, 0.004)), M.chrome, 'trunk_garnish');
+  if (D.bumperSeam) center('bumper_seam', () => ribbon(kit.line(60, t => kit.around('R', 0.0001 + D.bumperSeam.s * t, D.bumperSeam.y)), 0.006), seam, 'seam_bumper');
+  if (D.reflector) { const Rf = D.reflector; both(cache('reflector', () => hitPatch(THREE, kit.wrapGrid('R', Rf[0], Rf[1], () => Rf[2], () => Rf[2] + 0.025, { cols: 8, rows: 2, round: 0.3 }), 0.003)), M.lightTail, 'reflector'); }
+  if (D.exhaust) { const E = D.exhaust; add(cache('exhaust', () => hitPatch(THREE, kit.grid(3, 10, (i, j) => kit.rear(E[0] + E[2] * j, E[1] + 0.05 * i)), 0.004)), M.chrome, 'exhaust_trim'); }
+  if (D.skidR) { const Sk = D.skidR; add(cache('skidR', () => hitPatch(THREE, kit.grid(3, 20, (i, j) => kit.rear((2 * j - 1) * Sk.w, Sk.y + Sk.h * i / 3)), 0.0035)), M.alloy, 'skid_plate_rear'); }
+  // ---- roof rails (suv)
+  if (D.roofRails) {
+    const RR = D.roofRails;
+    both(cache('rail', () => {
+      const pts = [];
+      for (let i = 0; i <= 24; i++) { const u = RR.u0 + (RR.u1 - RR.u0) * (i / 24), h = kit.top(RR.x, u, kit.hitG); const lift = RR.h * Math.min(1, Math.min(i, 24 - i) / 3); pts.push(new THREE.Vector3(RR.x, (h ? h.p[1] : 1.6) + lift, kit.Z(u))); }
+      return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 48, RR.r, 8, false);
+    }), M.trim, 'roof_rail');
+  }
+  if (D.spoiler) {
+    const Sp = D.spoiler;
+    add(cache('spoiler', () => hitPatch(THREE, kit.grid(3, 20, (i, j) => kit.top((2 * j - 1) * Sp.w, Sp.u0 + (Sp.u1 - Sp.u0) * i / 3, kit.hitG)), 0.012)), mats[0], 'spoiler', 0);
+  }
 }
 
 // ------------------------------------------------------------------ public factories

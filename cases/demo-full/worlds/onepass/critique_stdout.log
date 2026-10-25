@@ -1,0 +1,3 @@
+(node:6761) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[argon] critique_round3: calling gemini-4-argon (16 parts, maxOutputTokens=65536)

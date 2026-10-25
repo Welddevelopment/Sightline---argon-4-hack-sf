@@ -9,3 +9,5 @@
 - 20:56Z checks v3: wit_witness_B CLEAR 0/25 (Argon read her Exhibit-4 mark as (7.5,12), obsT 9.5 s), wit_witness_A BLOCKED by its own pickup (self-occlusion), C/D clear-partial -> critique round next
 - 20:58Z aerial for demo-full verified: exhibits/aerial copied; origin identical (POI = EB outside lane centre at NE 140th Ct); viewer loadAerial drapes it
 - 14:25 local: checks fix (observer's own vehicle excluded: checks.js observerVehicles + robustness.js) — tests 19/19 + 19/19 pass; v3 now A blocked by veh_truck_tractor (t=7), B clear 0/25, C clear 0/25, D blocked by store. Waiting for render lock for critique-input stills
+- 14:59 local: v3 stills via record.js timed out (page.screenshot 180 s, SwiftShader, 2 CPUs); capture via viewer page hanging -> critique round 3 STARTED without render stills (evidence + Depo Witness B 1:54:34 pen-mark frame + Exhibit 4 + checks + position-audit instruction)
+- one-pass raw validator errors (7): witness ids lacked wit_ prefix (4); car post-impact pole strike 2.76 g outside impact window; tractor 1.07 g at t=4.35; semitrailer start-of-path spike (69.7 m/s at t=0.15). All fixed by the ONE repair call.

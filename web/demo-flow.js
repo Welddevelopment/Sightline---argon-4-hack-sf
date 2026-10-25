@@ -123,7 +123,8 @@
       focusedFor = key;
       document.querySelectorAll('.step-focus').forEach((x) => x.classList.remove('step-focus'));
       el.classList.add('step-focus');
-      try { el.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch { /* */ }
+      const scroll = () => { try { el.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch { /* */ } };
+      scroll(); setTimeout(scroll, 1500); setTimeout(scroll, 4000); // findings render above it after load and push it down
       if (cur === 6) { const t = document.getElementById('witText'); if (t) t.focus({ preventScroll: true }); }
       setTimeout(() => el.classList.remove('step-focus'), 6000);
     };
