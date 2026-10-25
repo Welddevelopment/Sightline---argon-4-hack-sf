@@ -15,3 +15,7 @@ cases/demo-full/cache/extract_run.log
 cases/demo-full/cache/extract_run2.log
 cases/demo-full/cache/stills*.log
 cases/demo-full/cache/*.raw.txt
+
+# runtime demo clones (created by "Start demo"); demo-full is the source and stays tracked
+cases/demo-*/
+!cases/demo-full/

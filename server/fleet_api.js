@@ -90,7 +90,8 @@ export function mountFleet(app, ctx = {}) {
           const sw = r.sweep || [];
           const allClear = sw.length && sw.every((x) => x.visible);
           out.cell = allClear ? 'clear' : (() => { const w = clearWindow(sw, r.tObs); return w ? `${w.from}–${w.to}` : 'blocked'; })();
-          out.line = allClear ? `Visible across the whole sweep t=${sw[0].t}–${sw[sw.length - 1].t} s` : sw.map((x) => `${x.t}s ${x.visible ? 'clear' : '✕'}`).join(' · ');
+          out.line = allClear ? `Visible across the whole sweep t=${sw[0].t}–${sw[sw.length - 1].t} s`
+            : runs(sw).map((g) => `${g.visible ? 'clear' : 'blocked'} t=${g.from === g.to ? g.from : g.from + '–' + g.to} s${g.blockedBy ? ' (' + human(g.blockedBy) + ')' : ''}`).join('; ');
           out.detail = { sweep: sw.map((x) => ({ t: x.t, visible: !!x.visible, blockedBy: x.blockedBy || null })) };
           break;
         }
@@ -98,7 +99,8 @@ export function mountFleet(app, ctx = {}) {
           const sw = r.sweep || [];
           const firstK = sw.find((x) => x.visible);
           out.cell = firstK ? `k≥${firstK.k}` : 'blocked';
-          out.line = sw.map((x) => `×${x.k} ${x.visible ? 'clear' : '✕'}`).join(' · ');
+          out.line = firstK ? `At t=${r.tObs} s the view clears only if ${human(r.target)} was ×${firstK.k} or faster (${firstK.robustBlockedOf25}/25 positions still blocked); blocked for ×${sw[0].k}–${(sw[sw.indexOf(firstK) - 1] || sw[0]).k}`
+            : `Blocked for every speed in the sweep ×${sw[0].k}–${sw[sw.length - 1].k}`;
           out.detail = { sweep: sw.map((x) => ({ k: x.k, visible: !!x.visible, robustBlockedOf25: x.robustBlockedOf25 })), note: r.note || null };
           break;
         }
@@ -113,6 +115,15 @@ export function mountFleet(app, ctx = {}) {
         default: break;
       }
     } catch { /* keep defaults */ }
+    return out;
+  }
+  function runs(sweep) { // consecutive samples with the same visibility + blocker
+    const out = [];
+    for (const x of sweep) {
+      const last = out[out.length - 1];
+      if (last && last.visible === !!x.visible && last.blockedBy === (x.blockedBy || null)) last.to = x.t;
+      else out.push({ visible: !!x.visible, blockedBy: x.blockedBy || null, from: x.t, to: x.t });
+    }
     return out;
   }
   function clearWindow(sweep, tObs) {
