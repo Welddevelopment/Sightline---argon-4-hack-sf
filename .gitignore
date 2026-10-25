@@ -3,3 +3,8 @@ node_modules
 
 # raw downloaded model packs (large; curated models get copied into web/models/)
 assets_src/
+
+# demo-full: real NTSB docket PDFs/photos are fetched, not committed (manifest + extracted text only)
+cases/demo-full/evidence/docket/
+deposition/out_long/
+case_full/render_tmp/
