@@ -206,11 +206,21 @@
     {
       "round": 1,
       "world": "/cases/demo/worlds/world_v1.js",
-      "startedAt": "2026-10-25T18:30:22.188Z",
+      "startedAt": "2026-10-25T18:30:45.730Z",
       "contractProblems": [],
       "renders": {
-        "videos": [],
-        "stills": []
+        "videos": [
+          "/cases/demo/renders/world_v1/overhead.mp4",
+          "/cases/demo/renders/world_v1/wit_A.mp4",
+          "/cases/demo/renders/world_v1/wit_B.mp4",
+          "/cases/demo/renders/world_v1/wit_C.mp4"
+        ],
+        "stills": [
+          "/cases/demo/renders/world_v1/overhead.png",
+          "/cases/demo/renders/world_v1/wit_A.png",
+          "/cases/demo/renders/world_v1/wit_B.png",
+          "/cases/demo/renders/world_v1/wit_C.png"
+        ]
       },
       "checks": [
         {
@@ -320,7 +330,7 @@
           {
             "id": "F2",
             "severity": "high",
-            "summary": "From the position she marked on Exhibit 4, the Truck-tractor (Vehicle T), then the Refrigerated van semitrailer (Vehicle T) block her view of the car from about t=9.1s until impact.",
+            "summary": "From the position she marked on Exhibit 4, the truck-tractor and then the refrigerated van semitrailer block her view of the car from about t=9.1s until impact.",
             "detail": "In the video at Depo 27:04 she says only \"I was over by the corner, near the shelter.\" while marking an X at about (7.5, 6.5) m in the world frame, in front of the store near the bench shelter; at Depo 27:24 she says she was standing (eye 1.6 m). The truck turns left across both eastbound lanes (HAR-17/02 p.1, p.21), so its tractor and then its trailer pass between her and the westbound-facing view of the approaching car. The independent ray-cast agrees: clear at t=9s, blocked by veh_T_tractor then veh_T_trailer from t=9.1s. NTSB records the same effect for the real westbound witness: the semitrailer blocked his view of the car (HAR-17/02 p.1–2, p.29–30).",
             "evidence": [
               {
@@ -448,7 +458,7 @@
         {
           "id": "F2",
           "severity": "high",
-          "summary": "From the position she marked on Exhibit 4, the Truck-tractor (Vehicle T), then the Refrigerated van semitrailer (Vehicle T) block her view of the car from about t=9.1s until impact.",
+          "summary": "From the position she marked on Exhibit 4, the truck-tractor and then the refrigerated van semitrailer block her view of the car from about t=9.1s until impact.",
           "detail": "In the video at Depo 27:04 she says only \"I was over by the corner, near the shelter.\" while marking an X at about (7.5, 6.5) m in the world frame, in front of the store near the bench shelter; at Depo 27:24 she says she was standing (eye 1.6 m). The truck turns left across both eastbound lanes (HAR-17/02 p.1, p.21), so its tractor and then its trailer pass between her and the westbound-facing view of the approaching car. The independent ray-cast agrees: clear at t=9s, blocked by veh_T_tractor then veh_T_trailer from t=9.1s. NTSB records the same effect for the real westbound witness: the semitrailer blocked his view of the car (HAR-17/02 p.1–2, p.29–30).",
           "evidence": [
             {
@@ -541,16 +551,26 @@
         "world": "/cases/demo/worlds/world_v2.js",
         "problems": []
       },
-      "finishedAt": "2026-10-25T18:30:22.233Z"
+      "finishedAt": "2026-10-25T18:33:22.209Z"
     },
     {
       "round": 2,
       "world": "/cases/demo/worlds/world_v2.js",
-      "startedAt": "2026-10-25T18:30:22.233Z",
+      "startedAt": "2026-10-25T18:33:22.209Z",
       "contractProblems": [],
       "renders": {
-        "videos": [],
-        "stills": []
+        "videos": [
+          "/cases/demo/renders/world_v2/overhead.mp4",
+          "/cases/demo/renders/world_v2/wit_A.mp4",
+          "/cases/demo/renders/world_v2/wit_B.mp4",
+          "/cases/demo/renders/world_v2/wit_C.mp4"
+        ],
+        "stills": [
+          "/cases/demo/renders/world_v2/overhead.png",
+          "/cases/demo/renders/world_v2/wit_A.png",
+          "/cases/demo/renders/world_v2/wit_B.png",
+          "/cases/demo/renders/world_v2/wit_C.png"
+        ]
       },
       "checks": [
         {
@@ -626,7 +646,7 @@
       ],
       "critique": {
         "verdict": "contradiction_found",
-        "summary": "With Witness B at her Exhibit 4 mark and her claim tested at the moment she describes, the world matches the evidence. Her testimony that she watched the car \"the whole way in\" with \"nothing in the way\" is contradicted: the truck's truck-tractor and then its refrigerated van semitrailer block her line of sight for about the last 1.3 s before impact. No further patch is needed; the contradiction is in the testimony.",
+        "summary": "With Witness B at her Exhibit 4 mark and her claim tested at the moment she describes, the world matches the evidence. Her testimony that she watched the car \"the whole way in\" with \"nothing in the way\" is contradicted: the truck-tractor and then the refrigerated van semitrailer of Vehicle T block her line of sight for about the last 1.3 s before impact. No further patch is needed; the contradiction is in the testimony.",
         "findings": [
           {
             "id": "F1",
@@ -887,10 +907,10 @@
           "status": "unverifiable"
         }
       ],
-      "finishedAt": "2026-10-25T18:30:22.249Z"
+      "finishedAt": "2026-10-25T18:36:03.537Z"
     }
   ],
   "verdict": "contradiction_found",
   "mode": "mock",
-  "updatedAt": "2026-10-25T18:30:22.249Z"
+  "updatedAt": "2026-10-25T18:36:03.537Z"
 }
