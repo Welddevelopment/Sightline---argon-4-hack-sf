@@ -1,12 +1,12 @@
 {
   "name": "generate_world",
   "model": "gemini-4-argon",
-  "hash": "750510a150e1f2a5",
-  "finishReason": "MAX_TOKENS",
+  "hash": "13831b570f36f8da",
+  "finishReason": "STOP",
   "usage": {
     "promptTokenCount": 164203,
-    "candidatesTokenCount": 8097,
-    "totalTokenCount": 196971,
+    "candidatesTokenCount": 12638,
+    "totalTokenCount": 176841,
     "promptTokensDetails": [
       {
         "modality": "TEXT",
@@ -24,11 +24,10 @@
     "candidatesTokensDetails": [
       {
         "modality": "TEXT",
-        "tokenCount": 8097
+        "tokenCount": 12638
       }
-    ],
-    "thoughtsTokenCount": 24671
+    ]
   },
-  "seconds": 338.5,
-  "at": "2026-10-25T18:44:55.232Z"
+  "seconds": 129.4,
+  "at": "2026-10-25T18:50:36.919Z"
 }
