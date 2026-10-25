@@ -114,3 +114,29 @@ Catalog (exact real dimensions L x W x H in meters):
 Boxes remain the automatic fallback: if any factory throws, it returns a labeled box of the same dims.
 Overlays (speed, time-to-impact, signal state, labels, sight lines, stopping distances) are drawn by the VIEWER from checks.js output — Argon does not write them.
 Validation (argon/validate_world.js): syntax check, isolated dynamic import, contract (required keys; citation on every object/witness; id prefixes; no import/require/fetch/eval; setTime deterministic over [0,duration]; positions within scene bounds; witnesses on ground; only catalog asset types). On failure: one Argon repair round with the validator errors, then fall back to worlds/reference_world.js and log it.
+
+## CREDIBILITY v1 — shared data contract (11:57, lead). Agents code against these exact names.
+
+### checks (checks/checks.js runAll output; all existing fields stay)
+- sightline result (per witness) adds:
+  - `robustness: { radiusM: 2, samples: 25, blocked: N, clear: 25-N, eyeJitterM: 0.1, verdict: "robust"|"partial"|"not_blocked" }` — ray-cast from 25 deterministic points in a 2 m disc around the marked eye position, eye height ±0.1 m.
+  - `gaze: { offAxisDeg, assumed: bool, cameraFovDeg: 60, peripheral: offAxisDeg > 30 }` — angle between where the witness was looking and the target.
+  - detail wording: "had line of sight; target X° from gaze" / "line of sight blocked by …"; never "could see".
+- skid result adds `range: { mu: [0.6, 0.8], mph: [lo, hi], mps: [lo, hi] }`.
+- timing result adds `prt: { availableS, rangeS: [1.0, 2.5], typicalS: 1.5, verdict: "insufficient"|"marginal"|"sufficient"|"unverifiable" }`.
+- new results `{ check: "plausibility", subject, pass, maxAccelG, maxSpeedMph, issues: [string], detail }` (one per moving object; >1.0 g outside ±0.5 s of impact, jumps >5 m per 0.05 s, >60 m/s).
+- `export const KINEMATIC_LABEL = "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation."`
+- physics helpers live in checks/physics.js (skidRange, prtCheck, plausibilityCheck); robustness/gaze in checks/robustness.js; checks.js runAll wires them.
+
+### provenance — cases/<id>/worlds/world_vN.provenance.json
+`{ world, version, createdAt, mode: "mock"|"live"|"live-cached"|"seeded", model, promptFile, promptVersion (sha256 first 12 hex), inputs: [{file, sha256, bytes}], outputSha256, usage: {promptTokens, outputTokens, thoughtsTokens}, seconds, finishReason, thinkingBudget, maxOutputTokens, parentWorld }`
+
+### validation — cases/<id>/validation_facts.json (input) and cases/<id>/cache/validation.json (output)
+- facts: `[{ id, label, value, unit, tolerance, citation, how }]` taken only from cited case facts (published investigation).
+- output: `{ source: "NTSB HAR-17/02", world, matched, total, items: [{ id, label, expected, actual, unit, tolerance, pass, citation }] }`
+
+### server — GET /api/cases/:id additionally returns
+`provenance: { "<world path>": {...} }`, `validation: {...}|null`, `kinematicLabel: string`.
+
+### UI conventions
+- objects/values whose citation contains "inferred" render in the INFERRED colour (amber dashed) with an "inferred" tag; cited ones normal.

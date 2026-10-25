@@ -1,0 +1,165 @@
+{
+  "round": 1,
+  "verdict": "contradiction_found",
+  "summary": "The 3D reconstruction is faithful to the physical evidence from NTSB/HAR-17/02, the police report, and Exhibit 4, and it exposes a direct physical contradiction in Witness B's deposition testimony. From the exact standing position Witness B marked on Exhibit 4, the turning semitrailer completely blocks her line of sight to the eastbound sedan in the final second before impact, refuting her claim that she had a clear, unobstructed view of the car right up until it struck the trailer. The accounts of Witness A and Witness C are consistent with the physical reconstruction.",
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "high",
+      "summary": "Witness B's claim that she had a clear, unobstructed view of the front of Vehicle A in the last second before impact is physically impossible because Vehicle T's semitrailer blocked her line of sight.",
+      "detail": "In her deposition, Witness B testified that in the last second before impact she had 'a clear view of the car the whole way in' and watched the front of the car 'right up until the moment it hit' with '[n]othing ... in the way' (Depo 27:47-28:27). However, at t=9.8s (0.63s before the t=10.43s impact), Vehicle T had already pulled across the median crossover and its 16.15 m refrigerated semitrailer (box height 1.20 m to 4.11 m) was stretched across both eastbound lanes directly between Witness B's marked standing position ([6.9, 0, 4.5], eye height 1.6 m) and the approaching eastbound sedan (Vehicle A). Both the witness-view render and the deterministic sightline check confirm that her line of sight to Vehicle A is completely blocked by the semitrailer (and just prior, at t=9.4s, by the tractor).",
+      "evidence": [
+        {
+          "source": "evidence/deposition.mp4",
+          "citation": "Depo 27:37-28:50"
+        },
+        {
+          "source": "text/deposition.txt",
+          "citation": "p.10 (lines 279-292)"
+        },
+        {
+          "source": "Render",
+          "citation": "wit_B.png @ t=9.8s"
+        },
+        {
+          "source": "Independent check",
+          "citation": "sightline wit_B→veh_A: blocked by veh_T_trailer"
+        }
+      ],
+      "involves": [
+        "wit_B",
+        "veh_A",
+        "veh_T_trailer",
+        "veh_T_tractor"
+      ],
+      "status": "contradiction"
+    },
+    {
+      "id": "F2",
+      "severity": "medium",
+      "summary": "Witness B's marked standing position on Exhibit 4 differs from her verbal description of sitting under the bench shelter roof and standing up there, and she admitted her claim of watching the car all the way to impact was absent from her written statement.",
+      "detail": "Witness B testified that she waited on the bench under the shelter roof in front of the store (centered at [8.4, 0, 7.9] on Exhibit 4) and stood up when she saw the truck pulling across (Depo 09:05-09:20, 27:25-27:36). When asked to mark her standing position on Exhibit 4 during the video deposition (Depo 27:05-27:13), she placed a red 'X' north of the shelter between the shelter and the eastbound shoulder at [6.9, 0, 4.5]. Even with this closer position, the semitrailer still blocks her view of Vehicle A prior to impact. She also conceded under examination that her claim of watching the car all the way into impact was not in her contemporaneous written statement to law enforcement (Depo 28:51-29:27).",
+      "evidence": [
+        {
+          "source": "evidence/deposition.mp4",
+          "citation": "Depo 09:05-09:20"
+        },
+        {
+          "source": "evidence/deposition.mp4",
+          "citation": "Depo 27:05-27:36"
+        },
+        {
+          "source": "evidence/deposition.mp4",
+          "citation": "Depo 28:51-29:27"
+        },
+        {
+          "source": "evidence/map.png",
+          "citation": "Bench shelter and SE corner geometry"
+        },
+        {
+          "source": "Render",
+          "citation": "overhead.png @ t=11.0s"
+        }
+      ],
+      "involves": [
+        "wit_B",
+        "occ_shelter",
+        "bld_retail_store"
+      ],
+      "status": "contradiction"
+    },
+    {
+      "id": "F3",
+      "severity": "low",
+      "summary": "Witness A's statement that he saw Vehicle A crest the hill before the truck turned and that the trailer subsequently blocked his view of the impact is consistent with the physical evidence.",
+      "detail": "Witness A (modeled on the real westbound eyewitness in NTSB/HAR-17/02) was traveling westbound at about 60 mph in the outside lane roughly 0.25 miles behind Vehicle T. The render timeline confirms he had a clear view down the highway to see Vehicle A crest the hill at t=0s before the truck turned, and saw the car emerge from under the trailer post-impact. Note that at t=9.8s the single-point raycast check from eye height 1.2 m to Vehicle A's center height (0.72 m) passes just beneath the 1.20 m lower edge of the trailer box on the flat model plane, whereas in the render view the trailer body stretches across the eastbound lanes and, combined with the 2.15% downhill grade from the crest, occluded the upper body and impact of the car as reported in F30.",
+      "evidence": [
+        {
+          "source": "text/witness_A.txt",
+          "citation": "p.1"
+        },
+        {
+          "source": "text/facts.txt",
+          "citation": "p.2 (F10, F30)"
+        },
+        {
+          "source": "Render",
+          "citation": "wit_A.png @ t=9.8s"
+        },
+        {
+          "source": "Independent check",
+          "citation": "sightline wit_A→veh_A: clear (under 1.2m trailer bed on flat plane)"
+        }
+      ],
+      "involves": [
+        "wit_A",
+        "veh_Wit_A",
+        "veh_A",
+        "veh_T_trailer"
+      ],
+      "status": "consistent"
+    },
+    {
+      "id": "F4",
+      "severity": "low",
+      "summary": "Witness C's account of watching Vehicle T creep out of the turn lane and swing across the eastbound lanes from his stopped pickup is physically consistent.",
+      "detail": "Witness C was stopped in his pickup truck in the westbound inside lane about 18 m west of NE 140th Court ([-18.0, 0, -28.04], eye height 1.8 m), looking east-southeast toward the crossover. Both the render from Witness C's perspective and the independent sightline check confirm an unobstructed view of Vehicle T's tractor and semitrailer throughout the left-turn maneuver across the eastbound lanes and onto NE 140th Court.",
+      "evidence": [
+        {
+          "source": "text/witness_C.txt",
+          "citation": "p.1"
+        },
+        {
+          "source": "Render",
+          "citation": "wit_C.png @ t=9.8s"
+        },
+        {
+          "source": "Independent check",
+          "citation": "sightline wit_C→veh_T_trailer: clear"
+        }
+      ],
+      "involves": [
+        "wit_C",
+        "veh_wit_C",
+        "veh_T_tractor",
+        "veh_T_trailer"
+      ],
+      "status": "consistent"
+    },
+    {
+      "id": "F5",
+      "severity": "low",
+      "summary": "Vehicle speeds, pre-impact kinematics, and post-impact rest positions in the reconstruction match all recorded NTSB and police report data.",
+      "detail": "Vehicle A approaches eastbound at a constant 74 mph (33.08 m/s) over the 1,132 ft (345 m) sight distance from the vertical crest (10.43 s travel time) with no pre-impact braking or skid marks (0 m). It underrides the right side of Vehicle T's semitrailer 45 ft 5 in (13.84 m) behind the tractor front in the outside eastbound lane at t=10.43s, continues 910 ft (277.37 m) off the south roadside, strikes the utility pole 8.4 s after initial impact (t=18.83s), and comes to rest perpendicular to the highway at (276.6, 23.9), while Vehicle T stops on NE 140th Court south of the retail store where Witness B marked Exhibit 4 (Depo 26:38-26:47).",
+      "evidence": [
+        {
+          "source": "text/facts.txt",
+          "citation": "p.1-2 (F10, F16-F18, F21-F28)"
+        },
+        {
+          "source": "text/police_report.txt",
+          "citation": "p.1-3"
+        },
+        {
+          "source": "evidence/deposition.mp4",
+          "citation": "Depo 26:38-26:47"
+        },
+        {
+          "source": "Render",
+          "citation": "overhead.png @ t=11.0s"
+        }
+      ],
+      "involves": [
+        "veh_A",
+        "veh_T_tractor",
+        "veh_T_trailer",
+        "occ_utility_pole",
+        "mark_poi",
+        "mark_rest_veh_A",
+        "mark_rest_veh_T"
+      ],
+      "status": "consistent"
+    }
+  ],
+  "patch": null
+}

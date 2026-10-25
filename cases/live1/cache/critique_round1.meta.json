@@ -1,0 +1,34 @@
+{
+  "name": "critique_round1",
+  "model": "gemini-4-argon",
+  "hash": "4399cd3ce02cf64f",
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 188502,
+    "candidatesTokenCount": 2544,
+    "totalTokenCount": 194424,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 48820
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5492
+      },
+      {
+        "modality": "VIDEO",
+        "tokenCount": 134190
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2544
+      }
+    ],
+    "thoughtsTokenCount": 3378
+  },
+  "seconds": 77.5,
+  "at": "2026-10-25T18:56:55.395Z"
+}
