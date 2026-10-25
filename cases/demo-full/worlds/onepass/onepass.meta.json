@@ -387,34 +387,32 @@
     }
   ],
   "critique": {
-    "round": 3,
+    "round": 4,
     "verdict": "world_patched",
-    "summary": "The Round 3 world module contained two evidentiary and contract errors: (1) Witness B's marked position on Exhibit 4 (Depo Witness B 1:54:34) was mis-measured as [7.5, 0, 12.0] m when the center of her red X mark is actually on the south edge of the bench shelter at [8.5, 0, 9.0] m, and her observationTime was set to t=9.5s rather than the final second before impact (t=9.9s) when the turning tractor-semitrailer blocks her sightline; and (2) driving witnesses A and C lacked `vehicleId` bindings and dynamic eye-position updates in `setTime(t)`. Patching the world module to place Witness B at her exact Exhibit 4 pen mark [8.5, 0, 9.0] m at t=9.9s and binding Witnesses A and C to their respective pickup trucks reveals the true physical contradiction in Witness B's testimony—that the turning tractor-semitrailer and bench shelter obstructed her view in the final seconds before impact—while confirming that Witness A's, Witness C's, and Witness D's accounts and the solar lighting (azimuth 265.0°, elevation 45.1°) are fully consistent with the record.",
+    "summary": "The physical reconstruction confirms a direct contradiction in Witness B's testimony: from the exact position she marked on Exhibit 4 ([8.5, 0, 9.0] m, on the south side of the bench shelter), her line of sight to the oncoming eastbound sedan (Vehicle A) is doubly obstructed by the opaque sheet-metal back of the bench shelter and by the turning tractor-semitrailer (Vehicle T) in the seconds before impact. Accounts from Witness A (westbound driver), Witness C (stopped westbound driver), and Witness D (store clerk inside behind the register) are physically consistent with the scene geometry and sightlines. A Round 5 patch is applied to refine four vehicle-kinematics measurements so the car's center starts slightly west of the 345 m hill crest (giving the full 10.4 s mutual sight time), the tractor-semitrailer combination spans the exact 71 ft 7 in (21.82 m) length, impact occurs 45 ft 5 in (13.84 m) aft of the tractor front, and the utility pole strike occurs at 8.4 s post-impact.",
     "findings": 5,
     "patched": true,
     "patch": {
-      "world": "/cases/demo-full/worlds/world_v4.js",
+      "world": "/cases/demo-full/worlds/world_v5.js",
       "problems": [],
-      "valid": true,
+      "valid": false,
       "errors": [
-        "witness wit_witness_A: position must be [x, y, z] numbers",
-        "witness wit_witness_C: position must be [x, y, z] numbers"
-      ],
-      "postFix": "1 mechanical edit: driverEye read as local [x,y,z] array per WORLD CONTRACT v2 (Argon read .x/.y/.z -> NaN eye for wit_witness_A/C); Argon output kept in worlds/onepass/world_v4_argon_unfixed.js"
+        "implausible motion of veh_truck_tractor: acceleration 1.05 g at t=2.65 s exceeds 1 g before impact (over the limit at 2 samples between t=2.65 and t=4.85 s) — keyframes must give continuous speed (≤0.8 g before impact; ease/constant-acceleration segments; no teleports)"
+      ]
     },
-    "seconds": 326,
+    "seconds": 235,
     "usage": {
-      "promptTokenCount": 863985,
-      "candidatesTokenCount": 20292,
-      "totalTokenCount": 884277,
+      "promptTokenCount": 863707,
+      "candidatesTokenCount": 18636,
+      "totalTokenCount": 882343,
       "promptTokensDetails": [
         {
           "modality": "TEXT",
-          "tokenCount": 155493
+          "tokenCount": 154115
         },
         {
           "modality": "IMAGE",
-          "tokenCount": 4392
+          "tokenCount": 5492
         },
         {
           "modality": "VIDEO",
@@ -424,16 +422,16 @@
       "candidatesTokensDetails": [
         {
           "modality": "TEXT",
-          "tokenCount": 20292
+          "tokenCount": 18636
         }
       ]
     },
     "finalWorld": "/cases/demo-full/worlds/world_v4.js"
   },
   "finalChecks": [
-    "wit_witness_A: CLEAR (0/25)",
-    "wit_witness_B: BLOCKED by occ_bench_shelter (25/25)",
-    "wit_witness_C: CLEAR (0/25)",
-    "wit_witness_D: BLOCKED by bld_retail_store (23/25)"
+    "wit_witness_A: CLEAR (0/25 blocked, not_blocked)",
+    "wit_witness_B: BLOCKED by occ_bench_shelter (25/25 blocked, robust)",
+    "wit_witness_C: CLEAR (0/25 blocked, not_blocked)",
+    "wit_witness_D: BLOCKED by bld_retail_store (23/25 blocked, partial)"
   ]
 }

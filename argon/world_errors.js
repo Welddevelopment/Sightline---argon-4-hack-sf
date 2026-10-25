@@ -32,6 +32,7 @@ function confirmedMarkErrors(caseId, world) {
   for (const cw of c?.witnesses || []) {
     const m = cw.markedPosition; if (!Array.isArray(m) || m.length < 2) continue;
     const w = (world.witnesses || []).find((x) => norm(x.id) === norm(cw.id)); if (!w || w.vehicleId) continue; // drivers ride their vehicle
+    if (/driver|driving|pickup|in (his|her|a) (car|truck|vehicle)/i.test(`${cw.name || ''} ${w.name || ''} ${w.label || ''}`)) continue; // a driver's mark is a moving point, not a standing spot
     const [mx, mz] = m.length === 3 ? [m[0], m[2]] : m;
     const d = Math.hypot(w.position[0] - mx, w.position[2] - mz);
     if (d > MARK_TOLERANCE_M) out.push({ kind: 'known_fact', id: `mark_${w.id}`, message: `${w.id} stands ${d.toFixed(1)} m from the confirmed mark [${mx}, ${mz}] (tolerance ${MARK_TOLERANCE_M} m)`, expected: [mx, mz], actual: [w.position[0], w.position[2]], citation: cw.positionCitation || 'confirmed_facts.json' });
