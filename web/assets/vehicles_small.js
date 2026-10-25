@@ -142,15 +142,15 @@ function discX(T, R, w, seg = 40, open = false) {
 // Unit-stature figure (1.0 = height); the "figure" group is scaled uniformly by height.
 const FIG = {
   hipY: 0.53, hipX: 0.05, thigh: 0.245, shin: 0.241, ankleY: 0.044,
-  spineY: 0.60, shoulderY: 0.805, shoulderX: 0.106, upperArm: 0.178, foreArm: 0.148,
+  spineY: 0.60, shoulderY: 0.805, shoulderX: 0.101, upperArm: 0.178, foreArm: 0.148,
   neckY: 0.83, headY: 0.89, eyeY: 0.93, headC: 0.932, seatDrop: 0.075,
 };
-const PELVIS_PROF = [[0, 0.452], [0.05, 0.456], [0.08, 0.469], [0.096, 0.495], [0.1, 0.525], [0.095, 0.565], [0.086, 0.6], [0.082, 0.625], [0.06, 0.632], [0, 0.634]];
-const CHEST_PROF = [[0, 0.583], [0.072, 0.586], [0.084, 0.6], [0.083, 0.625], [0.086, 0.665], [0.092, 0.71], [0.096, 0.75], [0.097, 0.78], [0.092, 0.803], [0.072, 0.822], [0.042, 0.836], [0, 0.841]];
+const PELVIS_PROF = [[0, 0.452], [0.05, 0.456], [0.08, 0.469], [0.096, 0.495], [0.1, 0.525], [0.095, 0.565], [0.085, 0.598], [0.077, 0.62], [0.05, 0.628], [0, 0.63]];
+const CHEST_PROF = [[0, 0.58], [0.078, 0.582], [0.09, 0.592], [0.0895, 0.612], [0.087, 0.635], [0.087, 0.665], [0.092, 0.71], [0.096, 0.75], [0.097, 0.778], [0.093, 0.797], [0.08, 0.815], [0.056, 0.83], [0.034, 0.84], [0, 0.844]];
 
 function shoeGeo(T) {
   return geo(T, 'shoe', () => {
-    const g = sideGeo(T, 'shoeRaw', [[0.04, 0], [0.046, 0.03], [0.032, 0.066], [0.0, 0.08], [-0.035, 0.062], [-0.075, 0.042], [-0.1, 0.03], [-0.109, 0.013], [-0.105, 0]], 0.052, 0.008, true).clone();
+    const g = sideGeo(T, 'shoeRaw', [[0.04, 0], [0.045, 0.026], [0.03, 0.056], [0.0, 0.066], [-0.035, 0.05], [-0.075, 0.034], [-0.1, 0.024], [-0.108, 0.011], [-0.104, 0]], 0.05, 0.007, true).clone();
     g.translate(0, 0.007 - FIG.ankleY, 0);
     return g;
   });
@@ -173,7 +173,7 @@ function buildFigure(T, o = {}) {
   j.head = G('head', j.neck, 0, FIG.headY - FIG.neckY, -0.004);
   const hc = FIG.headC - FIG.headY;
   const cran = mesh(T, ellipsoidGeo(T, 0.0445, 0.066, 0.055, 28), skin, 'head'); cran.position.set(0, hc, 0.004); j.head.add(cran);
-  const jaw = mesh(T, ellipsoidGeo(T, 0.036, 0.04, 0.043), skin, 'jaw'); jaw.position.set(0, hc - 0.034, -0.014); j.head.add(jaw);
+  const jaw = mesh(T, ellipsoidGeo(T, 0.035, 0.038, 0.04), skin, 'jaw'); jaw.position.set(0, hc - 0.032, -0.006); j.head.add(jaw);
   const nose = mesh(T, ellipsoidGeo(T, 0.008, 0.015, 0.012, 12), skin, 'nose'); nose.position.set(0, hc - 0.01, -0.05); nose.rotation.x = -0.25; j.head.add(nose);
   for (const s of [-1, 1]) { const ear = mesh(T, ellipsoidGeo(T, 0.006, 0.017, 0.011, 10), skin, 'ear'); ear.position.set(s * 0.044, hc - 0.006, 0.006); j.head.add(ear); }
   const eye = new T.Object3D(); eye.name = 'eye'; eye.position.set(0, FIG.eyeY - FIG.headY, -0.046); j.head.add(eye); j.eye = eye;
@@ -191,7 +191,7 @@ function buildFigure(T, o = {}) {
   // arms (L = -X, figure faces -Z)
   for (const [S, s] of [['L', -1], ['R', 1]]) {
     const sh = j['shoulder' + S] = G('shoulder' + S, j.spine, s * FIG.shoulderX, FIG.shoulderY - FIG.spineY, 0.004);
-    const delt = mesh(T, ellipsoidGeo(T, 0.031, 0.034, 0.032), top, 'deltoid'); delt.position.set(-s * 0.002, -0.012, 0); sh.add(delt);
+    const delt = mesh(T, ellipsoidGeo(T, 0.029, 0.033, 0.031), top, 'deltoid'); delt.position.set(-s * 0.003, -0.014, 0); sh.add(delt);
     sh.add(mesh(T, limbGeo(T, 0.03, 0.0225, FIG.upperArm, 0.002, 0.4), top, 'upperArm' + S));
     const el = j['elbow' + S] = G('elbow' + S, sh, 0, -FIG.upperArm, 0);
     el.add(mesh(T, limbGeo(T, 0.0235, 0.0165, FIG.foreArm, 0.003, 0.25), skin, 'foreArm' + S));
@@ -225,6 +225,17 @@ function aimFoot(T, ankle, dirW) {
   ankle.rotation.set(Math.atan2(f.y, -f.z), Math.asin(clamp(-f.x, -1, 1)), 0, 'XYZ');
   ankle.updateMatrixWorld(true);
 }
+// Orient a hand: fingers along fwdW, palm normal (thin local X axis) along thinW.
+function orientHand(T, wrist, fwdW, thinW) {
+  const y = fwdW.clone().normalize().negate();
+  const x = thinW.clone().sub(y.clone().multiplyScalar(thinW.dot(y))).normalize();
+  const z = new T.Vector3().crossVectors(x, y);
+  const qW = new T.Quaternion().setFromRotationMatrix(new T.Matrix4().makeBasis(x, y, z));
+  wrist.parent.updateWorldMatrix(true, false);
+  const qP = wrist.parent.getWorldQuaternion(new T.Quaternion()).invert();
+  wrist.quaternion.copy(qP.multiply(qW));
+  wrist.updateMatrixWorld(true);
+}
 // Two-bone IK: upper joint -> lower joint -> end joint reaches targetW; pole sets the bend plane.
 function solveLimb(T, upper, lower, end, targetW, poleW) {
   upper.updateWorldMatrix(true, true);
@@ -250,7 +261,7 @@ function setGait(fig, j, phase) {
   const legs = [['L', 0], ['R', Math.PI]];
   for (const [S, off] of legs) {
     const s = Math.sin(w + off), c = Math.cos(w + off);
-    const th = 0.36 * s, kn = -(0.07 + 0.62 * Math.max(0, c) * Math.max(0, -s + 0.6) / 1.6);
+    const th = 0.32 * s, kn = -(0.07 + 0.62 * Math.max(0, c) * Math.max(0, -s + 0.6) / 1.6);
     j['hip' + S].rotation.set(th, 0, (S === 'L' ? -1 : 1) * 0.02);
     j['knee' + S].rotation.set(kn, 0, 0);
     j['ankle' + S].rotation.set(clamp(-(th + kn) * 0.75 + (s > 0 ? -0.12 * s : 0.25 * -s), -0.4, 0.5), 0, 0);
@@ -296,7 +307,9 @@ function poseSeatedTo(T, F, space, t) {
     if (t.hands) {
       const ht = t.hands[S === 'L' ? 0 : 1];
       solveLimb(T, j['shoulder' + S], j['elbow' + S], j['wrist' + S], toW(ht), new T.Vector3(s * 0.7, -0.5, 0.5).normalize());
-      j['wrist' + S].rotation.set(-0.35, s * -0.2, s * 0.15);
+      const hf = t.handFwd ? new T.Vector3(s * t.handFwd[0], t.handFwd[1], t.handFwd[2]) : new T.Vector3(s * 0.25, -0.55, -0.8);
+      const hn = t.handPalm ? new T.Vector3(s * t.handPalm[0], t.handPalm[1], t.handPalm[2]) : new T.Vector3(s * 0.2, 1, 0);
+      orientHand(T, j['wrist' + S], hf, hn);
     }
   }
   space.updateMatrixWorld(true);
@@ -338,7 +351,8 @@ export function createPedestrian(THREE, opts = {}) {
     poseSeatedTo(T, F, root, {
       hip: [0, 0, 0], pelvis: 0.24, spine: 0.04, neck: -0.18, head: -0.1,
       feet: [[-0.13 * s, -0.24 * s, -0.74 * s], [0.13 * s, -0.24 * s, -0.74 * s]], footPitch: 0.75, kneeOut: 0.2,
-      hands: opts.hands === false ? null : [[-0.19 * s, 0.37 * s, -0.37 * s], [0.19 * s, 0.37 * s, -0.37 * s]],
+      hands: opts.hands === false ? null : [[-0.215 * s, 0.375 * s, -0.33 * s], [0.215 * s, 0.375 * s, -0.33 * s]],
+      handFwd: [-0.15, -0.25, -1], handPalm: [1, 0.15, 0],
     });
     if (opts.hands === false) restArms(j, 0.9);
   }
@@ -346,7 +360,7 @@ export function createPedestrian(THREE, opts = {}) {
   const eye = eyeIn(T, F, root);
   root.userData = {
     assetType: 'pedestrian', height: H, pose, dims: dimsOf(T, root),
-    eyeHeight: pose === 'seated' ? eye[1] : +(0.93 * H).toFixed(3), eye,
+    eyeHeight: pose === 'standing' ? +(0.93 * H).toFixed(3) : eye[1], eye,
     origin: pose === 'seated' && !(opts.seat === 'bench' || opts.seatHeight != null) ? 'h-point' : 'ground',
     joints: j,
     setGait: p => { setGait(fig, j, p); },

@@ -55,7 +55,7 @@ const CARS = {
       [3.6, 0.995], [3.96, 1.0], [4.4, 0.995], [4.66, 0.975], [4.78, 0.94], [4.85, 0.87], [4.885, 0.8], [4.9, 0.72]],
     bot: [[0, 0.33], [0.06, 0.255], [0.25, 0.2], [0.5, 0.19], [4.4, 0.19], [4.7, 0.24], [4.86, 0.3], [4.9, 0.36]],
     hw: [[0, 0.70], [0.02, 0.78], [0.07, 0.84], [0.2, 0.885], [0.55, 0.905], [1.2, 0.91], [3.9, 0.91], [4.4, 0.9], [4.7, 0.87], [4.84, 0.82], [4.9, 0.74]],
-    nTop: 3.2, nBot: 5, tumble: 0.07, flare: 0.07,
+    nTop: 6, nBot: 5, tumble: 0.07, flare: 0.07,
     gh: { u0: 1.70, u1: 3.98, top: [[1.70, 0.94], [1.85, 1.03], [2.1, 1.19], [2.35, 1.32], [2.58, 1.405], [2.8, 1.44], [3.1, 1.45], [3.35, 1.43], [3.55, 1.35], [3.78, 1.18], [3.98, 1.0]],
       aTop: 2.62, cTop: 3.38, b: [2.93, 3.03], nTop: 3.0, tumble: 0.2, cPillarPaint: true, quarter: [3.42, 3.62] },
     seams: [{ u: 1.86, y0: 0.3, y1: 0.99 }, { u: 2.98, y0: 0.27, y1: 0.99 }, { u: 3.9, y0: 0.4, y1: 0.99 }, { u: 0.17, top: true }, { u: 4.02, top: true }],
@@ -73,7 +73,7 @@ const CARS = {
       [4.68, 1.12], [4.75, 1.08], [4.785, 1.0], [4.8, 0.9]],
     bot: [[0, 0.44], [0.08, 0.35], [0.3, 0.28], [0.5, 0.27], [4.3, 0.27], [4.55, 0.33], [4.75, 0.42], [4.8, 0.48]],
     hw: [[0, 0.72], [0.025, 0.8], [0.08, 0.86], [0.22, 0.9], [0.6, 0.915], [4.3, 0.92], [4.6, 0.905], [4.74, 0.87], [4.8, 0.8]],
-    nTop: 3.4, nBot: 5, tumble: 0.06, flare: 0.05,
+    nTop: 7, nBot: 5, tumble: 0.06, flare: 0.05,
     gh: { u0: 1.58, u1: 4.74, top: [[1.58, 1.09], [1.75, 1.2], [2.0, 1.4], [2.25, 1.57], [2.5, 1.675], [2.8, 1.71], [3.6, 1.715], [4.3, 1.705], [4.5, 1.68], [4.62, 1.58], [4.7, 1.36], [4.74, 1.12]],
       aTop: 2.55, cTop: 4.48, b: [2.86, 2.97], c: [3.86, 3.96], dPaint: 4.25, nTop: 3.4, tumble: 0.16 },
     seams: [{ u: 1.75, y0: 0.42, y1: 1.12 }, { u: 2.91, y0: 0.4, y1: 1.12 }, { u: 3.88, y0: 0.6, y1: 1.12 }, { u: 0.2, top: true }],
@@ -91,7 +91,7 @@ const CARS = {
     top: [[0, 1.0], [0.03, 1.08], [0.1, 1.13], [0.3, 1.16], [0.9, 1.19], [1.45, 1.22], [1.62, 1.24], [3.12, 1.26]],
     bot: [[0, 0.5], [0.12, 0.44], [0.35, 0.42], [0.6, 0.43], [3.12, 0.43]],
     hw: [[0, 0.82], [0.03, 0.885], [0.1, 0.915], [0.3, 0.935], [3.12, 0.94]],
-    nTop: 4.2, nBot: 6, tumble: 0.04, flare: 0.03,
+    nTop: 8, nBot: 6, tumble: 0.04, flare: 0.03,
     gh: { u0: 1.6, u1: 3.1, top: [[1.6, 1.24], [1.78, 1.38], [2.05, 1.6], [2.3, 1.77], [2.55, 1.865], [2.8, 1.9], [3.0, 1.895], [3.06, 1.85], [3.1, 1.6]],
       aTop: 2.5, cTop: 3.03, b: [2.42, 2.52], nTop: 4.0, tumble: 0.12, flatBack: true },
     seams: [{ u: 1.7, y0: 0.48, y1: 1.24 }, { u: 2.47, y0: 0.45, y1: 1.24 }, { u: 3.06, y0: 0.5, y1: 1.24 }],
@@ -109,7 +109,7 @@ const CARS = {
     top: [[0, 0.72], [0.03, 0.82], [0.09, 0.9], [0.25, 0.97], [0.6, 1.06], [0.82, 1.11], [2.0, 1.13], [5.24, 1.14], [5.29, 1.1], [5.3, 1.04]],
     bot: [[0, 0.42], [0.1, 0.34], [0.3, 0.29], [5.0, 0.3], [5.22, 0.35], [5.3, 0.4]],
     hw: [[0, 0.76], [0.03, 0.84], [0.1, 0.895], [0.3, 0.93], [0.8, 0.94], [5.15, 0.94], [5.26, 0.925], [5.3, 0.88]],
-    nTop: 3.5, nBot: 6, tumble: 0.04, flare: 0.03,
+    nTop: 7, nBot: 6, tumble: 0.04, flare: 0.03,
     gh: { u0: 0.8, u1: 5.3, top: [[0.8, 1.11], [0.95, 1.28], [1.15, 1.52], [1.35, 1.75], [1.55, 1.9], [1.8, 1.97], [2.1, 2.0], [5.18, 2.0], [5.27, 1.98], [5.3, 1.94]],
       aTop: 1.55, cTop: 5.3, b: [1.9, 2.0], nTop: 5.0, tumble: 0.07, flatBack: true, van: true },
     seams: [{ u: 0.96, y0: 0.62, y1: 1.12 }, { u: 1.95, y0: 0.36, y1: 1.12 }, { u: 3.18, y0: 0.36, y1: 1.12 }, { u: 5.28, y0: 0.4, y1: 1.12 }],
@@ -211,7 +211,7 @@ function buildGreenhouseGeo(THREE, cfg) {
   const section = (u) => {
     const yb0 = belt(u);
     const yt = Math.max(f.ghTop(u), yb0 + 0.004);
-    const hw = Math.max(0.05, f.sideX(u, yb0 - 0.004) - 0.012);
+    const hw = Math.max(0.05, f.sideX(u, yb0 - 0.03) - 0.018);
     return { yb: yb0 - sink, yt, hw, nTop: g.nTop, nBot: 10, tumble: g.tumble * Math.min(1, (yt - yb0) / 0.45), flare: 0, _belt: yb0 };
   };
   const inB = (u, r) => r && u > r[0] && u < r[1];
@@ -260,21 +260,24 @@ function placeLamp(THREE, cfg, f, spec, kind, sideSign, rear) {
   const L = cfg.L;
   const name = (kind === 'tail' ? 'taillight_' : 'headlight_') + (sideSign > 0 ? 'R' : 'L');
   const lamp = makeLamp(THREE, { name, kind, w: spec.w, h: spec.h, d: spec.d, r: Math.min(spec.w, spec.h) * 0.35 });
-  const u = spec.u, y = spec.y;
-  // surface slope (pitch) at the given point on the nose / tail
-  const du = 0.01, t = (f.top(Math.min(u + du, L)) - f.top(Math.max(u - du, 0))) / (2 * du);
-  let pitch = spec.pitch ?? (rear ? -Math.atan2(1, -t) : Math.atan2(1, t));
-  if (rear) pitch = spec.pitch ?? Math.atan2(1, Math.max(0.0001, -t));
+  const y = spec.y, u = f.noseU(y, rear);
+  // outward surface normal in the (z,y) plane from the profile slope
+  const du = 0.006, t = (f.top(Math.min(u + du, L)) - f.top(Math.max(u - du, 0))) / (2 * du);
+  const atEnd = rear ? u >= (cfg.bodyEnd || L) - 1e-4 : u <= 1e-4;
+  let a = spec.pitch ?? (atEnd ? 0 : Math.atan2(1, Math.abs(t)));   // 0 = vertical face, PI/2 = horizontal
   lamp.rotation.order = 'YXZ';
-  if (rear) { lamp.rotation.y = Math.PI + sideSign * spec.yaw; lamp.rotation.x = pitch; }
-  else { lamp.rotation.y = -sideSign * spec.yaw; lamp.rotation.x = pitch; }
-  lamp.position.set(sideSign * spec.x, y, u - L / 2 + (rear ? -spec.d * 0.3 : spec.d * 0.3));
+  lamp.rotation.x = a;
+  lamp.rotation.y = rear ? Math.PI + sideSign * spec.yaw : -sideSign * spec.yaw;
+  const ny = Math.sin(a), nz = (rear ? 1 : -1) * Math.cos(a);
+  const inset = spec.d / 2 - 0.012;
+  lamp.position.set(sideSign * spec.x, y - ny * inset, u - L / 2 - nz * inset);
   return lamp;
 }
 
 function buildCarTemplate(THREE, type) {
   const cfg = CARS[type], f = prep(cfg), L = cfg.L, M = getMaterials(THREE);
-  const root = new THREE.Group();
+  const outer = new THREE.Group();
+  const root = new THREE.Group(); root.name = 'shell'; outer.add(root);
   const mats = slotMats(THREE, 0xa9adb2);
   const addMesh = (geo, mat, name, pos, rot, paintSlot) => {
     const m = new THREE.Mesh(geo, mat); m.name = name;
@@ -300,7 +303,7 @@ function buildCarTemplate(THREE, type) {
   // interior: dark tub at belt + headrests so glass reads as glass, not paint
   const g = cfg.gh;
   const beltMid = f.top((g.u0 + g.cTop) / 2);
-  const cabLen = (g.cTop - g.aTop) + 0.5;
+  const cabLen = Math.min(g.cTop, g.u1 - 0.15) - g.aTop + 0.5;
   addMesh(roundedBox(THREE, 2 * (f.sideX((g.aTop + g.cTop) / 2, beltMid) - 0.06), 0.03, cabLen, 0.01), M.interior, 'interior_tub', [0, beltMid + 0.02, z(g.aTop - 0.35 + cabLen / 2)]);
   const eyeZ = z(cfg.eye.u);
   const seatsRows = type === 'pickup' ? [cfg.eye.u + 0.18, cfg.eye.u + 0.95 > g.cTop ? null : cfg.eye.u + 0.95] : type === 'van' ? [cfg.eye.u + 0.18] : [cfg.eye.u + 0.18, cfg.eye.u + 1.0];
@@ -395,7 +398,12 @@ function buildCarTemplate(THREE, type) {
       addMesh(roundedBox(THREE, 0.01, 0.03, 0.09, 0.01), M.lightTail, 'reflector', [s * (f.sideX(ru, Math.max(ry, f.section(ru).yb + 0.05)) + 0.0), Math.max(ry, f.section(ru).yb + 0.05), z(ru)]);
     }
   }
-  return root;
+  // snap the assembled shell to the exact catalog envelope (add-ons may poke out by a few mm-cm)
+  root.updateMatrixWorld(true);
+  const bb = new THREE.Box3().setFromObject(root), sz = bb.getSize(new THREE.Vector3());
+  root.scale.set(cfg.W / sz.x, cfg.H / sz.y, cfg.L / sz.z);
+  root.position.set(-(bb.min.x + bb.max.x) / 2 * root.scale.x, -bb.min.y * root.scale.y, -(bb.min.z + bb.max.z) / 2 * root.scale.z);
+  return outer;
 }
 
 function buildBed(THREE, cfg, f, root, addMesh, z) {

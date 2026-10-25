@@ -4,13 +4,13 @@
 //
 // Live path (the demo's live beat), fastest first and never hanging:
 //   1. gemini-4-argon with a small prompt (world summary + moving-object timeline, no evidence/video),
-//      JSON schema output, per-attempt timeout, one retry.            [source: "argon-live"]
+//      JSON schema output, hedged retry (2nd call if the 1st fails or is slow), hard total timeout. [source: "argon-live"]
 //   2. On failure: replay of the last good live answer for the same statement (hash-keyed,
 //      cases/<id>/cache/new_witness_replay.json).                     [source: "argon-replay"]
 //   3. Deterministic parser for "N m/yards/ft <direction> of <landmark>", "<side> side of the highway",
 //      "driving west ... from the crossover".                        [source: "parser"]
 //   Mock mode: replay → parser → cached example.
-// Env: ARGON_WITNESS_MODEL (default ARGON_MODEL), ARGON_WITNESS_TIMEOUT_MS (18000), ARGON_WITNESS_RETRY_TIMEOUT_MS (12000),
+// Env: ARGON_WITNESS_MODEL (default ARGON_MODEL), ARGON_WITNESS_TIMEOUT_MS (total, 22000), ARGON_WITNESS_HEDGE_MS (9000),
 //      ARGON_WITNESS_THINKING (thinkingLevel, e.g. LOW|MINIMAL; unset = model default).
 import fs from 'node:fs';
 import path from 'node:path';
@@ -21,8 +21,8 @@ import { caseDirs, defaultCaseId } from './case.js';
 import { summarizeWorld } from './world_io.js';
 
 const MODEL = process.env.ARGON_WITNESS_MODEL || ARGON_MODEL;
-const T1 = Number(process.env.ARGON_WITNESS_TIMEOUT_MS || 18000);
-const T2 = Number(process.env.ARGON_WITNESS_RETRY_TIMEOUT_MS || 12000);
+const TOTAL = Number(process.env.ARGON_WITNESS_TIMEOUT_MS || 22000); // whole live budget before falling back
+const HEDGE = Number(process.env.ARGON_WITNESS_HEDGE_MS || 9000);    // start a parallel second call if the first is this slow
 
 const SCHEMA = {
   type: 'object',
@@ -357,21 +357,38 @@ export async function newWitness(statement, world, caseOpt) {
     WITNESSES: s.witnesses, FACTS: s.facts, STATEMENT: statement.replace(/"""/g, "'''"),
   });
   const name = `new_witness_${statementKey(statement)}`;
+  // Hedged retry: attempt 1 starts now; attempt 2 starts when attempt 1 fails OR is still pending after HEDGE ms.
+  // First valid answer wins; everything is over by TOTAL ms, then the offline fallbacks answer.
   const errors = [];
-  for (const [i, ms] of [T1, T2].entries()) {
-    try {
-      // Retry drops whichever optional config the API rejected (schema / thinking level).
+  const t0call = Date.now();
+  const winner = await new Promise((resolve) => {
+    let settled = false, started = 0, finished = 0, hedgeTimer = null;
+    const finish = (v) => { if (!settled) { settled = true; clearTimeout(hedgeTimer); clearTimeout(totalTimer); resolve(v); } };
+    const totalTimer = setTimeout(() => { errors.push(`no answer within ${TOTAL} ms`); finish(null); }, TOTAL);
+    const start = () => {
+      if (settled || started >= 2) return;
+      const i = started++;
+      if (i === 0) hedgeTimer = setTimeout(start, HEDGE);
+      // Attempt 2 drops whichever optional config the API rejected (schema / thinking level).
       const opts = { useSchema: !errors.some((e) => /schema/i.test(e)), useThinking: !errors.some((e) => /thinking/i.test(e)) };
-      const { w, secs } = await callOnce(prompt, ms, i ? `${name}_retry` : name, d, opts);
-      console.log(`[new_witness] ${caseId}: ${MODEL} placed witness in ${secs.toFixed(1)}s (attempt ${i + 1})`);
-      const out = await done(w, 'argon-live', { model: MODEL, modelSeconds: secs, attempt: i + 1 });
-      const { source, latencyMs, attempt, modelSeconds, ...keep } = out;
-      replayPut(d, statement, { witness: keep, model: MODEL, seconds: secs });
-      return out;
-    } catch (e) {
-      errors.push(e.message);
-      console.warn(`[new_witness] ${caseId}: attempt ${i + 1} failed: ${e.message}`);
-    }
+      const budget = Math.max(1000, TOTAL - (Date.now() - t0call));
+      callOnce(prompt, budget, i ? `${name}_retry` : name, d, opts)
+        .then(({ w, secs }) => finish({ w, secs, attempt: i + 1 }))
+        .catch((e) => {
+          errors.push(`attempt ${i + 1}: ${e.message}`);
+          console.warn(`[new_witness] ${caseId}: attempt ${i + 1} failed: ${e.message}`);
+          if (++finished >= 2) finish(null); else start();
+        });
+    };
+    start();
+  });
+  if (winner) {
+    const { w, secs, attempt } = winner;
+    console.log(`[new_witness] ${caseId}: ${MODEL} placed witness in ${secs.toFixed(1)}s (attempt ${attempt}, ${((Date.now() - t0call) / 1000).toFixed(1)}s incl. hedge)`);
+    const out = await done(w, 'argon-live', { model: MODEL, modelSeconds: secs, attempt });
+    const { source, latencyMs, attempt: _a, modelSeconds, ...keep } = out;
+    replayPut(d, statement, { witness: keep, model: MODEL, seconds: secs });
+    return out;
   }
   const fb = await fallbacks(errors.join(' | '));
   if (fb) return fb;

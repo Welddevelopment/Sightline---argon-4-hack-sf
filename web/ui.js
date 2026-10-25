@@ -205,7 +205,7 @@ function renderCameras() {
 }
 // time a witness's claim is tested at: the sightline check's t, else the witness's observationTime
 function witnessTime(id) {
-  const c = ((state && state.checks) || []).find((x) => x && x.check === 'sightline' && x.subject === id && x.t != null);
+  const c = ((state && state.checks) || (caseInfo && caseInfo.state && caseInfo.state.checks) || []).find((x) => x && x.check === 'sightline' && x.subject === id && x.t != null);
   if (c && Number.isFinite(Number(c.t))) return Number(c.t);
   const w = sl.world && (sl.world.witnesses || []).find((x) => x.id === id);
   return w && w.observationTime != null && Number.isFinite(Number(w.observationTime)) ? Number(w.observationTime) : null;
@@ -775,10 +775,10 @@ sl.events && sl.events.addEventListener('loaded', () => { try { afterWorld(); } 
   afterWorld();
   initCasePicker();
   if (CASE) { try { caseInfo = await fetchJson(CASE_API); afterWorld(); } catch (_) {} }
-  loadDocs();
-  await loadState(true);
   // ?cam=<witness> without ?t= opens at that witness's observation time
-  if (!params.has('t') && params.get('cam') && witnessTime(sl.camera) != null && sl.camera === params.get('cam')) sl.setTime(witnessTime(sl.camera));
+  if (!params.has('t') && params.get('cam') && sl.camera === params.get('cam') && witnessTime(sl.camera) != null) sl.setTime(witnessTime(sl.camera));
+  loadDocs();
+  loadState(true);
 })();
 
 // re-apply ?cam= / ?t= after a world (re)load resets the camera and clock

@@ -1,0 +1,25 @@
+{
+  "name": "generate_world_repair",
+  "model": "gemini-4-argon",
+  "hash": "1d18177212a36724",
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 5802,
+    "candidatesTokenCount": 5392,
+    "totalTokenCount": 11194,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 5802
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 5392
+      }
+    ]
+  },
+  "seconds": 54.3,
+  "at": "2026-10-25T19:24:07.321Z"
+}

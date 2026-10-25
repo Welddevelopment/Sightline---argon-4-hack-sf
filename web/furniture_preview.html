@@ -29,6 +29,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import * as F from './assets/furniture.js';
 
+const T0 = performance.now();
 const q = new URLSearchParams(location.search);
 const view = q.get('view') || 'overview';
 const night = view === 'night';
@@ -37,7 +38,7 @@ if (q.get('clean')) document.getElementById('hud').style.display = 'none';
 const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
 renderer.setPixelRatio(Math.min(2, devicePixelRatio));
 renderer.setSize(innerWidth, innerHeight);
-renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = night ? 0.9 : 1.0;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 document.body.appendChild(renderer.domElement);
@@ -110,16 +111,17 @@ const VIEWS = {
   street: [[48, 1.4, -10], [20, 2.5, -3]],
   night: [[44, 1.6, -14], [28, 3, 0]],
 };
-const [p, t] = VIEWS[view] || VIEWS.overview;
-cam.position.set(...p);
-const controls = new OrbitControls(cam, renderer.domElement); controls.target.set(...t); controls.update();
+const controls = new OrbitControls(cam, renderer.domElement);
+function setView(v) { const [p, t] = VIEWS[v] || VIEWS.overview; cam.position.set(...p); controls.target.set(...t); controls.update(); renderer.render(scene, cam); }
+window.__setView = setView;
+setView(view);
 addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+console.warn('build ms', Math.round(performance.now() - T0));
 let frames = 0;
+span.userData.setState('yellow');
 renderer.setAnimationLoop(() => {
-  span.userData.setState('flash', performance.now() / 1000);
-  span.userData.setState('yellow');
   controls.update(); renderer.render(scene, cam);
-  if (++frames === 3) window.__ready = true;
+  if (++frames === 2) { window.__ready = true; console.warn('first frames ms', Math.round(performance.now() - T0)); }
 });
 window.__items = items;
 </script>

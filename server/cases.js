@@ -437,7 +437,7 @@ export function mountCases(app, h) {
         const job = rr.mod.renderViews({ world: state.world, worldUrl: state.world, views: [witness.id], t: witness.observationTime ?? 0, stillOnly: true, extraWitnesses: list, outDir: store.dir(id, 'renders', 'live') });
         job.catch(() => {});
         let budgetTimer;
-        const budget = Number(process.env.WITNESS_RENDER_BUDGET_MS || 15000);
+        const budget = Number(process.env.WITNESS_RENDER_BUDGET_MS || 8000);
         const out = await Promise.race([job, new Promise((_, rej) => { budgetTimer = setTimeout(() => rej(new Error(`still rendering after ${budget} ms; returned verdict without it`)), budget); })])
           .finally(() => clearTimeout(budgetTimer));
         // Stills land under cases/<id>/renders/live, served at /cases/<id>/... (h.findRenderUrl assumes ROOT/renders → 404).

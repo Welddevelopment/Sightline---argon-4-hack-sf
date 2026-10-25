@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scene Kit Preview</title>
+<style>
+  :root { --bg: #e9edf0; --fg: #1d232a; --muted: #5b6672; --panel: rgba(255,255,255,0.86); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #12161a; --fg: #e6eaee; --muted: #9aa6b2; --panel: rgba(20,24,28,0.82); } }
+  :root[data-theme="dark"] { --bg: #12161a; --fg: #e6eaee; --muted: #9aa6b2; --panel: rgba(20,24,28,0.82); }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font: 13px/1.4 system-ui, sans-serif; overflow: hidden; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+  #hud { position: fixed; left: 12px; top: 12px; background: var(--panel); padding: 8px 10px; border-radius: 6px; max-width: calc(100vw - 48px); }
+  #hud b { font-weight: 600; } #hud span { color: var(--muted); }
+  #views { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px; }
+  #views a { color: inherit; text-decoration: none; border: 1px solid var(--muted); border-radius: 4px; padding: 1px 6px; }
+  body.clean #hud { display: none; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "/node_modules/three/build/three.module.js",
+  "three/addons/": "/node_modules/three/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="hud"><b>Scene kit preview</b> <span id="info">loading…</span>
+  <div id="views">
+    <a href="?view=eye">eye (EB shoulder)</a><a href="?view=driver">driver EB</a><a href="?view=intersection">at side road</a>
+    <a href="?view=crest">toward crest</a><a href="?view=overhead">overhead</a><a href="?view=wide">overhead wide</a>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { Sky } from 'three/addons/objects/Sky.js';
+import * as K from './assets/scene.js';
+import * as ENV from './assets/environment.js';
+
+const q = new URLSearchParams(location.search);
+const view = q.get('view') || 'eye';
+if (q.has('clean')) document.body.classList.add('clean');
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.setSize(innerWidth, innerHeight, false);
+ENV.configureRenderer(THREE, renderer);
+document.body.appendChild(renderer.domElement);
+K.setAnisotropy(renderer.capabilities.getMaxAnisotropy());
+
+const scene = new THREE.Scene();
+const t0 = performance.now();
+
+// ---------------------------------------------------------------- the demo site (case live1 geometry)
+// Origin = centre of the EB outside lane on the NE 140th Ct centreline (world_v1). Highway runs east-west.
+const FT = 0.3048;
+const medianW = 78 * FT;                   // EB inside edge -> WB inside edge (turn lane + median + shoulders)
+const zC = -5.49 - medianW / 2;            // highway centreline z
+K.hillCrest({ at: [-345, zC], heading: -Math.PI / 2, gradeUp: 0.02, lengthUp: 400, gradeDown: 0.0215, lengthDown: 444.7, curve: 240, datumAt: 345 });
+
+const hw = K.road({ id: 'road_us27a', lanes: 4, laneWidth: 12 * FT, divided: true, medianWidth: medianW, length: 1700,
+  shoulderWidth: 5 * FT, leftShoulderWidth: 2 * FT, position: [100, zC], heading: -Math.PI / 2,
+  openings: [{ at: -100, width: 130 * FT, radius: 6 }],
+  turnLanes: [{ carriageway: 'reverse', stopAt: -100 + 65 * FT, length: 550 * FT - 15, taper: 15 }],
+  sideRoads: [{ at: -100, side: 'right', width: 6.1, radius: 9 }] });
+scene.add(hw);
+const outer = hw.userData.edges.outer;      // centreline -> outside edge of shoulder
+const sideStart = zC + outer;
+const side = K.road({ id: 'road_ne140th', lanes: 2, laneWidth: 3.05, shoulderWidth: 0, markings: 'center_double', edgeLines: false,
+  length: 260, position: [0, sideStart + 130], heading: 0, stopBar: { s: 130 - 1.5, side: 'right' }, rpms: false, roadside: { ditchDepth: 0.35 } });
+scene.add(side);
+scene.add(K.groundPlane({ id: 'ground', size: 4000, kind: 'pasture' }));
+scene.add(K.impactMarker({ id: 'mark_poi', position: [0, 0] }));
+scene.add(K.skidMark({ id: 'mark_demo_skid', points: [[-62, 0.15], [-40, 0.2], [-20, 0.35], [-4, 0.6]], pair: true, track: 1.62 }));
+
+// hammock tree lines and pines at the pasture edges
+scene.add(K.treeline({ id: 'occ_trees_n', points: [[-900, -170], [-400, -190], [0, -160], [500, -185], [900, -175]], depth: 22, spacing: 8, seed: 3 }));
+scene.add(K.treeline({ id: 'occ_trees_s', points: [[-900, 150], [-300, 170], [60, 95], [400, 140], [900, 160]], depth: 26, spacing: 8, seed: 5, pineRatio: 0.45 }));
+scene.add(K.treeline({ id: 'occ_trees_s2', points: [[-260, 60], [-180, 64]], depth: 10, spacing: 7, seed: 9, height: 11 }));
+
+// furniture (other agents' library; stubs if absent)
+const add = (o, x, z, ry = 0) => { o.position.set(x, K.roadHeight(x, z), z); o.rotation.y = ry; scene.add(o); return o; };
+try {
+  for (const zf of [zC - 36, zC + 36]) {
+    const pts = []; for (let x = -800; x <= 800; x += 50) pts.push([x, zf]);
+    const segs = zf > 0 ? [[-800, -14], [40, 800]] : [[-800, 800]];
+    for (const [a, b] of segs) { const p = pts.filter(([x]) => x >= a && x <= b); if (p.length > 1) { const f = K.fence({ id: 'fence_' + a, points: p.map(([x, z]) => [x, z]) }); f.position.y = 0; scene.add(f); } }
+  }
+  for (let x = -760; x <= 800; x += 46) if (x < -8 || x > 30) add(K.pole({ id: 'pole_' + x, height: 10.7 }), x, zC + 31, 0);
+  add(K.sign('stop', { id: 'sig_stop' }), 4.2, 6.2, Math.PI);
+  add(K.building({ id: 'bld_store', w: 18, d: 11.4, h: 4.2, kind: 'store' }), 18.2, 19.6, 0);
+  add(K.shelter({ id: 'occ_shelter', open: true }), 8.4, 7.9, 0);
+  for (const [x, z, h, k] of [[34, 30, 10, 'oak'], [-22, 26, 12, 'oak'], [-40, 40, 18, 'pine'], [60, -64, 9, 'oak'], [-120, 52, 17, 'pine'], [140, 48, 10, 'oak']])
+    add(K.tree({ id: 'tree_' + x, kind: k, height: h }), x, z, x);
+} catch (e) { console.warn('furniture', e); }
+
+// ---------------------------------------------------------------- environment (sun, sky, fog for 2016-05-07 16:36 EDT, Levy County FL)
+let env = null;
+try {
+  env = ENV.environment(THREE, { date: '2016-05-07T16:36:00-04:00', lat: 29.39, lon: -82.55, weather: 'clear', Sky, center: [0, 0], radius: 140 });
+  scene.add(env.group); if (env.fog) scene.fog = env.fog; if (env.background && !env.sky) scene.background = env.background;
+} catch (e) {
+  console.warn('environment', e);
+  scene.background = new THREE.Color(0xbcd3ea); scene.fog = new THREE.Fog(0xd5e0ea, 300, 2400);
+  const sun = new THREE.DirectionalLight(0xffffff, 2.5); sun.position.set(-200, 300, 50); scene.add(sun, new THREE.HemisphereLight(0xcfe3ff, 0x6b6a4a, 1));
+}
+
+// ---------------------------------------------------------------- cameras
+const aspect = innerWidth / innerHeight;
+const cam = new THREE.PerspectiveCamera(60, aspect, 0.1, 2000);
+const eye = (x, z, lx, lz, h = 1.6, ly = null) => { const y = K.roadHeight(x, z); cam.position.set(x, y + h, z); cam.lookAt(lx, ly ?? (K.roadHeight(lx, lz) + h * 0.9), lz); };
+const VIEWS = {
+  eye: () => eye(-150, 2.6, 60, 0.5),                               // standing on EB shoulder, looking east toward the crossover
+  driver: () => { cam.fov = 60; eye(-110, -0.4, 0, -0.2, 1.15); },   // driver eye, EB outside lane
+  intersection: () => eye(-2.5, 30, 0, -40, 1.6),                    // on NE 140th Ct looking north across the highway
+  crest: () => eye(60, -1.2, -400, -1.2, 1.6),                       // looking west up to the crest
+  overhead: () => { cam.position.set(0, 120, zC + 10); cam.up.set(0, 0, -1); cam.lookAt(0, 0, zC + 10); },
+  wide: () => { cam.position.set(-60, 520, zC); cam.up.set(0, 0, -1); cam.lookAt(-60, 0, zC); },
+};
+(VIEWS[view] || VIEWS.eye)();
+cam.updateProjectionMatrix();
+
+function render() { env?.update?.(cam, [cam.position.x, cam.position.z]); renderer.render(scene, cam); }
+render(); render();
+const ms = Math.round(performance.now() - t0);
+let tris = 0; scene.traverse(o => { if (o.isMesh && o.geometry?.index) tris += o.geometry.index.count / 3 * (o.isInstancedMesh ? o.count : 1); });
+document.getElementById('info').textContent = `${view} · built ${ms} ms · ${Math.round(tris / 1000)}k tris · furniture ${K.LOADED.furniture ? 'lib' : 'stub'}`;
+window.preview = { ready: Promise.resolve(true), render, scene, cam, K };
+window.__ready = true;
+addEventListener('resize', () => { renderer.setSize(innerWidth, innerHeight, false); cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); render(); });
+</script>
+</body>
+</html>

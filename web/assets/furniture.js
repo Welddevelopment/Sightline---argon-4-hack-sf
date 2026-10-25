@@ -570,7 +570,7 @@ function slab(parent, p1, p2, len, t, mat, axis = 'z', tile = 1) {
   const m = mesh(geo, mat, parent);
   const cu = (p1[0] + p2[0]) / 2, cy = (p1[1] + p2[1]) / 2 + t / 2;
   if (axis === 'z') { m.position.set(cu, cy, 0); m.rotation.z = Math.atan2(dy, du); }
-  else { m.rotation.order = 'YZX'; m.rotation.y = Math.PI / 2; m.rotation.z = Math.atan2(dy, du); m.position.set(0, cy, cu); }
+  else { m.rotation.order = 'YZX'; m.rotation.y = -Math.PI / 2; m.rotation.z = Math.atan2(dy, du); m.position.set(0, cy, cu); }
   return m;
 }
 const shingleMat = col => texStd('shingle:' + col, () => ctex('shingle:' + col, 256, 256, (g, W, H) => {
@@ -807,7 +807,7 @@ export function tree(opts = {}) {
     im.castShadow = im.receiveShadow = true; im.name = 'wood'; root.add(im);
   }
   // foliage blobs (instanced, per-clump colour variation)
-  const palette = { oak: [0.27, 0.42, 0.13, 0.2], pine: [0.25, 0.35, 0.13, 0.2], shrub: [0.27, 0.45, 0.16, 0.24] }[kind];
+  const palette = { oak: [0.24, 0.34, 0.09, 0.16], pine: [0.22, 0.3, 0.1, 0.16], shrub: [0.25, 0.38, 0.11, 0.18] }[kind];
   if (clumps.length) {
     const groups = [0, 1, 2].map(v => clumps.filter((_, i) => i % 3 === v));
     groups.forEach((cl, v) => {
@@ -832,7 +832,7 @@ export function tree(opts = {}) {
         const p = V(rr * Math.cos(a) * c.s * 1.02, u * c.s * fl * 1.02, rr * Math.sin(a) * c.s * 1.02).add(c.p);
         e.set(R() * 6.28, R() * 6.28, R() * 6.28); q.setFromEuler(e); const sz = c.s * (kind === 'pine' ? 0.9 : 0.75) * (0.7 + R() * 0.6);
         m4.compose(p, q, V(sz, sz, sz)); im.setMatrixAt(i, m4);
-        col.setHSL(palette[0] + (R() - 0.5) * 0.05, palette[1] + 0.05, 0.42 + R() * 0.25); im.setColorAt(i++, col);
+        col.setHSL(palette[0] + (R() - 0.5) * 0.05, palette[1] + 0.05, 0.26 + R() * 0.18); im.setColorAt(i++, col);
       }
       im.castShadow = true; im.receiveShadow = true; im.name = 'leaves'; root.add(im);
     }
@@ -860,8 +860,10 @@ export function tree(opts = {}) {
     for (const h of hang) for (const ry of [0, Math.PI / 2]) { q.setFromAxisAngle(UP, ry + h.l); m4.compose(h.p.clone().add(V(0, -h.l / 2, 0)), q, V(0.45, h.l, 1)); im.setMatrixAt(i++, m4); }
     im.castShadow = true; im.name = 'moss'; root.add(im);
   }
-  root.updateMatrixWorld(true);
-  const bb = new THREE.Box3(); root.traverse(o => { if (o.isInstancedMesh) { o.computeBoundingBox(); o.computeBoundingSphere(); bb.union(o.boundingBox); } else if (o.isMesh) bb.expandByObject(o); });
+  const measure = () => { root.updateMatrixWorld(true); const bb = new THREE.Box3(); root.traverse(o => { if (o.isInstancedMesh) { o.computeBoundingBox(); o.computeBoundingSphere(); bb.union(o.boundingBox.clone().applyMatrix4(o.matrixWorld)); } else if (o.isMesh) bb.expandByObject(o); }); return bb; };
+  let bb = measure();
+  const k = H / Math.max(0.1, bb.max.y); // hit the requested overall height exactly
+  if (Math.abs(k - 1) > 0.01) { const inner = new THREE.Group(); inner.name = id + '_inner'; while (root.children.length) inner.add(root.children[0]); inner.scale.setScalar(k); root.add(inner); bb = measure(); }
   return finish(root, 'tree', id, { length: +(bb.max.z - bb.min.z).toFixed(2), width: +(bb.max.x - bb.min.x).toFixed(2), height: +bb.max.y.toFixed(2) }, { kind });
 }
 const palmTrunkMat = () => texStd('palmTrunk', () => ctex('palmTrunk', 128, 256, (g, W, H) => {
