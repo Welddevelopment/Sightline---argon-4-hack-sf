@@ -83,7 +83,8 @@
     const f = d.key;
     const rc = f ? renderCitation(f) : null;
     const wit = (rc && rc.wit) || (f && (f.involves || []).find((x) => /^wit_/.test(x))) || null;
-    const witName = wit ? wit.replace(/^wit_/, 'Witness ') : 'Witness';
+    const wb = wit ? String(wit).replace(/_t\d.*$/, '').replace(/^wit_(witness_)?/i, '') : '';
+    const witName = wb ? 'Witness ' + (wb.length <= 2 ? wb.toUpperCase() : wb.replace(/_/g, ' ')) : 'Witness'; // wit_witness_B_t9p5 → Witness B
     // witness-eye render
     if (kf && kf.render_png) {
       out.render = { src: relUrl(d.id, kf.render_png), t: Number(kf.render_t), wit, witName };
