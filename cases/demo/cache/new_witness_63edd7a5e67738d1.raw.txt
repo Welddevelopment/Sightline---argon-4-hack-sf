@@ -1,10 +1,10 @@
 {
-  "name": "Westbound driver (100 yd from crossover)",
+  "name": "Westbound Driver (100 yd east)",
   "position": [91.44, 0, -32.9],
   "eyeHeight": 1.2,
   "lookAt": "veh_A",
   "observationTime": 2,
-  "claim": "I could see the eastbound car coming the entire time as the truck started its turn.",
+  "claim": "I was driving west about 100 yards from the crossover when the truck started its turn, and I could see the eastbound car coming the entire time.",
   "confidence": "medium",
-  "assumptions": "Mapped 'driving west, about 100 yards from the crossover' to x = 91.44 m (100 yards east of the crossover center at x = 0, approaching westbound) in the center of the westbound lanes (z = -32.9 m) with car driver eye height (1.2 m). Set observationTime to t = 2 s when the tractor begins deflecting south out of the turn lane (z = -26.4 m) to start its turn."
+  "assumptions": "Placed in the westbound lanes (z = -32.9 m) 100 yards (91.44 m) east of the crossover center (x = 0 m) since they are driving west toward it, with a standard car driver eye height of 1.2 m. Set observationTime to t = 2 s, the moment in the trajectory table when the truck begins turning south out of the left-turn lane."
 }
