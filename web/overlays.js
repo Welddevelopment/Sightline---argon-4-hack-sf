@@ -760,6 +760,7 @@ function update(cam) {
     q.x = Math.max(6, Math.min(W - L.w - 6, q.x));
     for (let k = 0; k < 10 && placed.some((z) => rectsHit(z, q)); k++) q.y += overhead ? L.h + 4 : -(L.h + 4);
     q.y = Math.max(4, Math.min(H - L.h - 30, q.y));
+    if (placed.some((z) => rectsHit(z, q, 1))) continue; // no free spot: drop the tag rather than overlap (speed is in the HUD)
     placed.push(q);
     const ly = overhead ? q.y : q.y + L.h;
     svg.push(`<line class="slo-lead${L.hidden ? ' hid' : ''}" x1="${L.s.x.toFixed(1)}" y1="${L.s.y.toFixed(1)}" x2="${(q.x + q.w / 2).toFixed(1)}" y2="${ly.toFixed(1)}"/><circle class="slo-anc" cx="${L.s.x.toFixed(1)}" cy="${L.s.y.toFixed(1)}" r="2"/>`);

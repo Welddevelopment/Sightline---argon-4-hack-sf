@@ -19,9 +19,19 @@ Owner files: `web/overlays.js`, `web/overlays.css` (+ small HUD/label edits in `
 - **Full mode only**: stopping-distance / brake-point bars on the road with one-line tags, vehicle gap as a thin dimension
   line with a small label, street/lane labels on the overhead plan.
 
+## Declutter pass (14:20, studio style)
+- **Auto mode = Minimal in every view** (overhead included); Full via the toggle / `?callouts=full`.
+- **Minimal overhead** shows only: HUD (top-left), vehicle tags (`A · 74 mph`), witness names, the main road name, the
+  ACTIVE sight line, lower-third card (witness explanation + stopping / brake-point note). Hidden in minimal: viewer
+  object labels (trees, poles, coolers, occluders), amber "inferred" boxes, the all-witness overhead rays (`__sl_rays`).
+- **No overlaps**: viewer label sprites and vehicle tags that would overlap an already placed box are dropped, not stacked.
+- **Blocker highlight** (viewer.js `applyXray`): the blocking object stays SOLID with a subtle red edge outline on its
+  body (parts < 0.6 m radius skipped). The old see-through red wireframe ghost is gone.
+- **Overhead framing** (viewer.js `fitOverhead`): witnesses > 70 m and vehicles > 80 m from the impact mark no longer
+  widen the plan (demo-full Witness A is 270 m back), so the camera frames the crossover.
+
 ## Controls / API
-- Toggle (top-right of stage, hidden with `?clean=1`): `Callouts  Off | Minimal | Full`. Default (auto): Full on overhead,
-  Minimal on witness / chase views. URL `?callouts=0|1|min|full`. `sl.overlays.set(true|false|'min'|'full'|'off')`,
+- Toggle (top-right of stage, hidden with `?clean=1`): `Callouts  Off | Minimal | Full`. Default (auto): Minimal everywhere. URL `?callouts=0|1|min|full`. `sl.overlays.set(true|false|'min'|'full'|'off')`,
   `sl.setCallouts(...)`, `sl.overlays.selectWitness(id)`, `sl.overlays.info()`. `#stage.slo-on` while on.
 - Viewer's `.sl-eye` panel and `.sl-banner` are hidden by CSS while callouts are on (banner text still in DOM for server/report.js).
 - Overlays update inside `scene.onBeforeRender`, so `render/record.js` / `server/clips.js` captures include them.

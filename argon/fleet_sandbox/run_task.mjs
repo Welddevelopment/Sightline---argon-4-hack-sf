@@ -14,7 +14,7 @@ const arg = (k, d) => { const i = argv.indexOf('--' + k); return i >= 0 ? argv[i
 const REPO = path.resolve(arg('repo', '/workspace/repo'));
 const WORLD = path.resolve(arg('world', 'world.js'));
 const OUT = path.resolve(arg('out', 'out/result.json'));
-const task = JSON.parse(arg('task', '{"type":"full_checks"}'));
+const task = JSON.parse(arg('task-file') ? fs.readFileSync(arg('task-file'), 'utf8') : arg('task', '{"type":"full_checks"}'));
 const imp = (rel) => import(pathToFileURL(path.join(REPO, rel)).href);
 const sha = (f) => { try { return crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex').slice(0, 12); } catch { return null; } };
 const r2 = (x) => (Number.isFinite(x) ? Math.round(x * 100) / 100 : x);
