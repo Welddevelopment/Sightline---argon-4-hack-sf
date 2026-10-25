@@ -80,7 +80,7 @@ function chip(citation, source, opts = {}) {
   if (!cite && !src) return '<span class="chip none">no citation</span>';
   const key = 'c' + (++chipSeq);
   chipReg.set(key, { cite, src, hl: opts.hl });
-  const cls = ['chip', src ? src.kind === 'video' ? 'vid' : 'doc' : 'none', inf ? 'inf' : '', S.srcKey === cite ? 'on' : ''].join(' ');
+  const cls = ['chip', src ? src.kind === 'video' ? 'k-vid' : 'k-doc' : 'none', inf ? 'inf' : '', S.srcKey === cite ? 'on' : ''].join(' ');
   const title = src ? (src.kind === 'video' ? `Play ${src.file.name} at ${src.ts}` : `Open ${src.file.name}${src.page ? ' at page ' + src.page : ''}`) : 'Source not found in this case';
   return `<button type="button" class="${cls}" data-chip="${key}" title="${esc(title + ' — ' + cite)}">${src ? '<i></i>' : ''}<span>${esc(cite || src.file.name)}</span></button>`;
 }

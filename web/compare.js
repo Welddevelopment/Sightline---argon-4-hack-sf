@@ -197,16 +197,22 @@ export function retimeWorld(world, { object, targetMph, base } = {}) {
   const d = new THREE.Vector3(b.dir[0], 0, b.dir[1]);
   const ghost = { position: new THREE.Vector3(), quaternion: new THREE.Quaternion() };
   const st = { freezeT: Infinity };
+  // the object's original local pose sampled every 0.025 s (one pass), so the wrapper costs ~1 original setTime
+  const LDT = 0.025, nL = Math.ceil(b.impactT / LDT) + 1;
+  const lutP = [], lutQ = [];
+  for (let i = 0; i < nL; i++) { origSet.call(world, Math.min(i * LDT, b.impactT, origDur)); lutP.push(node.position.clone()); lutQ.push(node.quaternion.clone()); }
   const pos = new THREE.Vector3(), quat = new THREE.Quaternion();
   const wrapped = function setTime(t) {
     t = Math.min(Math.max(+t || 0, 0), newDur);
     const tc = Math.min(t, st.freezeT);
-    if (tc <= T1) { origSet.call(world, Math.min(tc * k, origDur)); pos.copy(node.position); quat.copy(node.quaternion); }
-    else { pos.copy(pImp).addScaledVector(d, v1mps * (tc - T1)); quat.copy(qImp); }
+    if (tc <= T1) {
+      const f = Math.min(tc * k, b.impactT) / LDT, i = Math.min(Math.floor(f), nL - 1), j = Math.min(i + 1, nL - 1), u = f - i;
+      pos.copy(lutP[i]).lerp(lutP[j], u); quat.copy(lutQ[i]).slerp(lutQ[j], u);
+    } else { pos.copy(pImp).addScaledVector(d, v1mps * (tc - T1)); quat.copy(qImp); }
     origSet.call(world, Math.min(t, origDur));
     ghost.position.copy(node.position); ghost.quaternion.copy(node.quaternion);
     node.position.copy(pos); node.quaternion.copy(quat);
-    world.root.updateMatrixWorld(true);
+    node.updateMatrixWorld(true);
   };
   world.setTime = wrapped;
   world.duration = newDur;
@@ -263,7 +269,8 @@ export function whatIfSentence(world, r) {
   let tail;
   if (r.contact) tail = ` The footprints still meet: contact with ${nounFor(world, r.contact.with)} at t=${r.contact.t.toFixed(1)} s.`;
   else tail = ` No footprint contact in the re-timed paths${r.minGap ? ` (closest ${r.minGap.m.toFixed(1)} m to ${nounFor(world, r.minGap.with)} at t=${r.minGap.t.toFixed(1)} s)` : ''}.`;
-  return head + mid + tail;
+  const be = r.breakEvenMph != null && r.breakEvenMph < r.origMph ? ` From the same start, arriving after ${other} had cleared needs ${Math.floor(r.breakEvenMph)} mph or less.` : '';
+  return head + mid + tail + be;
 }
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
