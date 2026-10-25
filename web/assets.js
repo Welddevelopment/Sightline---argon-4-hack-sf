@@ -20,19 +20,23 @@ export const VEHICLE_DIMS = {
 export const VEHICLE_TYPES = Object.keys(VEHICLE_DIMS);
 export const ASSET_METHODS = ['vehicle', 'parkedVehicle', 'pedestrian', 'road', 'median', 'intersection', 'crosswalk', 'curb',
   'sidewalk', 'signal', 'sign', 'pole', 'streetlight', 'shelter', 'building', 'tree', 'environment', 'skidMark', 'impactMarker', 'groundPlane'];
+// Optional extras (not in the SPEC v2 catalog; Argon worlds may use them, validator allows them): scenery + terrain.
+export const EXTRA_METHODS = ['treeline', 'fence', 'terrain', 'beginWorld'];
 export const SIGN_KINDS = ['stop', 'yield', 'speed_limit', 'street_name', 'generic'];
 export const BUILDING_KINDS = ['store', 'house', 'generic'];
-export const GROUND_KINDS = ['grass', 'asphalt', 'dirt'];
+export const GROUND_KINDS = ['grass', 'pasture', 'asphalt', 'dirt'];
 export const MARKINGS = ['center_dashed', 'center_double', 'none'];
 
-const MODULE_NAMES = ['vehicles', 'vehicles_heavy', 'vehicles_small', 'vehicle_parts', 'scene', 'textures', 'furniture', 'environment'];
+// 'argon' = web/assets_argon/index.js (Argon-authored winners); when present it is tried FIRST for every type it exports.
+const MODULE_NAMES = ['argon', 'vehicles', 'vehicles_heavy', 'vehicles_small', 'vehicle_parts', 'scene', 'textures', 'furniture', 'environment'];
+const MODULE_PATH = (n) => (n === 'argon' ? './assets_argon/index.js' : `./assets/${n}.js`);
 
-/** Import every web/assets/<name>.js that exists. Returns { name: module }. Never throws. */
+/** Import every web/assets/<name>.js (and web/assets_argon/index.js) that exists. Returns { name: module }. Never throws. */
 export async function loadAssetModules(names = MODULE_NAMES) {
   const out = {};
   const isNode = typeof window === 'undefined';
   await Promise.all(names.map(async (n) => {
-    const url = new URL(`./assets/${n}.js`, import.meta.url);
+    const url = new URL(MODULE_PATH(n), import.meta.url);
     try {
       if (isNode) { const fs = await import('node:fs'); if (!fs.existsSync(url)) return; }
       out[n] = await import(url.href);
@@ -78,7 +82,9 @@ export function createAssets(THREE, opts = {}) {
   function candidates(method, arg0) {
     const names = namesFor(method, arg0);
     const fns = [];
-    for (const mn of modOrder) {
+    // environment: the physically based module first (scene.js only re-exports it through a rest-args wrapper)
+    const order = method === 'environment' ? ['argon', 'environment', ...modOrder].filter((k, i, a) => modules[k] && a.indexOf(k) === i) : modOrder;
+    for (const mn of order) {
       const mod = modules[mn];
       for (const n of names) if (typeof mod[n] === 'function' && !fns.includes(mod[n])) fns.push(mod[n]);
     }
@@ -210,7 +216,7 @@ export function createAssets(THREE, opts = {}) {
   }
 
   const api = {
-    catalog: { VEHICLE_DIMS, VEHICLE_TYPES, ASSET_METHODS, SIGN_KINDS, BUILDING_KINDS, GROUND_KINDS, MARKINGS },
+    catalog: { VEHICLE_DIMS, VEHICLE_TYPES, ASSET_METHODS, SIGN_KINDS, BUILDING_KINDS, GROUND_KINDS, MARKINGS, EXTRA_METHODS },
     stats: () => JSON.parse(JSON.stringify(stats)),
     modules: modOrder,
     headless,
@@ -367,7 +373,7 @@ export function createAssets(THREE, opts = {}) {
     },
     tree(o = {}) {
       const h = o.height ?? 8;
-      return run('tree', 'tree', D(h * 0.5, h * 0.5, h), [{ ...o, height: h, headless }], () => {
+      return run('tree', 'tree', D(h * 0.5, h * 0.5, h), [{ ...o, height: h, headless }], () => {  // o.kind: 'oak'|'pine'|... passed through
         const g = new THREE.Group();
         g.add(cyl(h * 0.03, h * 0.04, h * 0.45, mat(0x5a4330), 0, h * 0.225, 0, 8));
         const c = new THREE.Mesh(new THREE.SphereGeometry(h * 0.27, 12, 10), mat(0x3d6b35, { roughness: 1 })); c.position.y = h * 0.68; g.add(c);
@@ -401,6 +407,23 @@ export function createAssets(THREE, opts = {}) {
         const g = new THREE.Group(); g.add(flat(s, s, mat({ grass: 0x6f7f4f, asphalt: 0x3d3d3f, dirt: 0x8a7556 }[kind], { roughness: 1 }), 0)); return g;
       }, o.id || 'ground', { kind });
     },
+    // ----- optional extras (scenery + terrain); safe no-ops when the scene module is missing -----
+    treeline(o = {}) {
+      return run('treeline', 'treeline', D(0, o.depth ?? 14, o.height ?? 13), [{ ...o, headless }], () => new THREE.Group(), o.id || 'treeline');
+    },
+    fence(o = {}) {
+      return run('fence', 'fence', D(o.length ?? 30, 0.1, 1.3), [{ ...o, headless }], () => new THREE.Group(), o.id || 'fence');
+    },
+    terrain: {
+      reset: () => { try { modules.scene?.resetTerrain?.(); } catch (e) { note('terrain', e); } },
+      hillCrest: (o) => { try { return modules.scene?.hillCrest?.(o) || null; } catch (e) { note('terrain', e); return null; } },
+      elevationProfile: (o) => { try { return modules.scene?.elevationProfile?.(o) || null; } catch (e) { note('terrain', e); return null; } },
+      setOptions: (o) => { try { modules.scene?.setTerrainOptions?.(o); } catch (e) { note('terrain', e); } },
+      height: (x, z) => { try { const y = modules.scene?.terrainHeight?.(x, z); return Number.isFinite(y) ? y : 0; } catch { return 0; } },
+      roadHeight: (x, z) => { try { const y = modules.scene?.roadHeight?.(x, z); return Number.isFinite(y) ? y : 0; } catch { return 0; } },
+    },
+    /** Loaders call this before every createWorld: clears terrain registered by a previously loaded world. */
+    beginWorld() { api.terrain.reset(); try { modules.scene?.setTerrainOptions?.({ undulation: 0.45, seed: 7 }); } catch {} },
     environment(o = {}) {
       const env = run('environment', 'environment', D(0, 0, 0), [{ ...o, Sky: o.Sky || opts.Sky, headless }], () => builtinEnvironment(o), o.id || 'environment');
       return wrapEnvironment(env, o);

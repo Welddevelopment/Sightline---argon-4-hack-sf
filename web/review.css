@@ -13,6 +13,8 @@ body { display: block; overflow: auto; }
 .btn:disabled { opacity: .45; cursor: default; filter: none; }
 
 .rv-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 452px; gap: 0; min-height: calc(100vh - 54px); }
+.rv-wrap.map-lg { grid-template-columns: minmax(0, 1fr) min(760px, 55vw); }
+#mapSize { margin-left: 6px; flex: none; }
 .rv-main { padding: 26px 36px 80px; min-width: 0; }
 .rv-side { border-left: 1px solid var(--line); background: var(--panel); padding: 18px 16px 40px; display: flex; flex-direction: column; gap: 14px; position: sticky; top: 54px; align-self: start; max-height: calc(100vh - 54px); overflow-y: auto; }
 
@@ -200,7 +202,8 @@ label.f { display: block; font: 600 10px var(--sans); letter-spacing: .1em; text
 @keyframes rot { to { transform: rotate(360deg); } }
 
 @media (max-width: 1100px) {
-  .rv-wrap { grid-template-columns: 1fr; }
+  .rv-wrap, .rv-wrap.map-lg { grid-template-columns: 1fr; }
+  #mapSize { display: none; }
   .rv-side { position: static; max-height: none; border-left: none; border-top: 1px solid var(--line); }
   .rv-main { padding: 22px 16px 40px; }
   .scene { grid-template-columns: repeat(2, minmax(0, 1fr)); }

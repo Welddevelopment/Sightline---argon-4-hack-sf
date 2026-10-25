@@ -75,6 +75,12 @@ export function getMaterials(THREE) {
     lightAmberOn: std({ color: 0xffa020, roughness: 0.3, emissive: 0xff8a00, emissiveIntensity: 3 }),
     lightRev: std({ color: 0xdadde0, roughness: 0.1, metalness: 0.5 }),
     plate: std({ color: 0xf1f1ec, roughness: 0.45, metalness: 0.1 }),
+    seat: std({ color: 0x1e2024, roughness: 0.9, metalness: 0 }),
+    dash: std({ color: 0x15171a, roughness: 0.85, metalness: 0 }),
+    steering: std({ color: 0x0e0f11, roughness: 0.7, metalness: 0 }),
+    cabinLining: std({ color: 0x1a1c1f, roughness: 0.92, metalness: 0, side: THREE.BackSide }),
+    glassTint: new Phys({ color: 0x1a232b, metalness: 0, roughness: 0.05, transmission: 0.7, thickness: 0.004, ior: 1.5,
+      transparent: true, opacity: 1, clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 1.2, side: THREE.DoubleSide, depthWrite: false }),
     plateText: std({ color: 0x9aa0a6, roughness: 0.6, metalness: 0 }),
   };
   m.paint = (color) => {
@@ -486,4 +492,61 @@ export function finalizeVehicle(THREE, root, { type, id, dims, driverEye, wheels
   root.userData.wheels = ws;
   root.userData.roll = (dist) => { for (const w of ws) w.userData.roll && w.userData.roll(dist); };
   return root;
+}
+
+
+// ---------------------------------------------------------------- interior tub (driver-seat views)
+/**
+ * makeInterior(THREE, {eye:[x,y,z], width, floorY, dashZ, rearZ, rows, wheelR}) -> Group 'interior'
+ * Dark, low-poly cabin: floor tub, dash with hood/cowl top, steering wheel + column ahead of the driver eye,
+ * front seats (+ optional rear bench). Coordinates are vehicle-local (front = -Z, driver on -X).
+ */
+export function makeInterior(THREE, o = {}) {
+  const M = getMaterials(THREE);
+  const g = new THREE.Group(); g.name = 'interior';
+  const [ex, ey, ez] = o.eye || [-0.36, 1.15, 0];
+  const W = o.width || 1.5, floorY = o.floorY ?? 0.32;
+  const dashZ = o.dashZ ?? ez - 0.85, rearZ = o.rearZ ?? ez + 1.3;
+  const add = (geo, mat, name, x, y, z, rx = 0, ry = 0, rz = 0) => {
+    const m = new THREE.Mesh(geo, mat); m.name = name; m.position.set(x, y, z); m.rotation.set(rx, ry, rz); g.add(m); return m;
+  };
+  const seatH = ey - 0.62;                       // cushion top ~0.62 m below eye
+  // floor tub
+  add(roundedBox(THREE, W, 0.04, rearZ - dashZ + 0.2, 0.01), M.interior, 'int_floor', 0, floorY, (dashZ + rearZ) / 2);
+  // dash: main block + top pad + centre stack
+  const dashTop = ey - 0.32;
+  add(roundedBox(THREE, W, dashTop - floorY - 0.05, 0.38, 0.04), M.interior, 'int_dash', 0, (dashTop + floorY) / 2, dashZ - 0.12);
+  add(roundedBox(THREE, W - 0.04, 0.05, 0.5, 0.025), M.dash || M.interior, 'int_dash_top', 0, dashTop, dashZ - 0.08, -0.12);
+  add(roundedBox(THREE, 0.26, 0.3, 0.08, 0.02), M.trimGloss, 'int_stack', 0, dashTop - 0.2, dashZ + 0.09, 0.15);
+  add(roundedBox(THREE, 0.28, 0.06, 0.6, 0.02), M.interior, 'int_console', 0, seatH - 0.05, ez + 0.25);
+  // instrument binnacle + steering wheel
+  add(roundedBox(THREE, 0.34, 0.09, 0.16, 0.03), M.interior, 'int_binnacle', ex, dashTop + 0.035, dashZ + 0.05);
+  const swZ = ez - 0.47, swY = ey - 0.4, T = 0.4;   // wheel plane tilted back ~23 deg
+  const ring = cachedGeo(THREE, 'int_swring', () => new THREE.TorusGeometry(0.185, 0.017, 8, 28));
+  add(ring, M.steering, 'steering_wheel', ex, swY, swZ, T, 0, 0);
+  add(cachedGeo(THREE, 'int_swhub', () => new THREE.CylinderGeometry(0.055, 0.06, 0.05, 14)), M.trim, 'steering_hub', ex, swY, swZ, Math.PI / 2 + T);
+  for (const a of [0, Math.PI, -Math.PI / 2]) {
+    const sp = add(roundedBox(THREE, 0.15, 0.024, 0.014, 0.006), M.trim, 'steering_spoke', ex, swY, swZ, T, 0, a);
+    sp.translateX(0.095);
+  }
+  const col = add(cachedGeo(THREE, 'int_col', () => new THREE.CylinderGeometry(0.035, 0.045, 0.42, 10)), M.trim, 'steering_column', ex, swY, swZ, Math.PI / 2 + T);
+  col.translateY(-0.22);
+  // seats
+  const seat = (x, z, w) => {
+    add(roundedBox(THREE, w, 0.13, 0.5, 0.05), M.seat || M.interior, 'seat_cushion', x, seatH, z);
+    const back = add(roundedBox(THREE, w, 0.62, 0.12, 0.05), M.seat || M.interior, 'seat_back', x, seatH + 0.33, z + 0.28);
+    back.rotation.x = 0.2;
+    add(roundedBox(THREE, w * 0.55, 0.18, 0.1, 0.04), M.seat || M.interior, 'headrest', x, seatH + 0.75, z + 0.38);
+    add(roundedBox(THREE, w * 0.9, seatH - floorY - 0.08, 0.4, 0.02), M.interior, 'seat_base', x, (seatH + floorY) / 2, z);
+  };
+  seat(ex, ez + 0.12, 0.5); seat(-ex, ez + 0.12, 0.5);
+  if (o.rows !== 1 && rearZ - ez > 1.05) {
+    add(roundedBox(THREE, W - 0.1, 0.13, 0.5, 0.05), M.seat || M.interior, 'rear_cushion', 0, seatH - 0.02, ez + 0.98);
+    const rb = add(roundedBox(THREE, W - 0.1, 0.6, 0.12, 0.05), M.seat || M.interior, 'rear_back', 0, seatH + 0.3, ez + 1.25); rb.rotation.x = 0.22;
+    for (const x of [-0.45, 0.45]) add(roundedBox(THREE, 0.26, 0.17, 0.1, 0.04), M.seat || M.interior, 'headrest', x, seatH + 0.68, ez + 1.33);
+  }
+  // rear-view mirror
+  add(roundedBox(THREE, 0.24, 0.07, 0.03, 0.015), M.trim, 'int_rvmirror', 0, o.mirrorY ?? ey + 0.1, o.mirrorZ ?? ez - 0.6);
+  g.traverse(m => { if (m.isMesh) { m.castShadow = false; m.receiveShadow = true; } });
+  return g;
 }

@@ -78,3 +78,28 @@ Owner: QA agent. Runs every ~8 min for 90 min: unit tests (checks, physics, worl
 - NEWLY BROKEN: shot: shots
   - files modified since last all-green run (19:08:58Z): ./blender/render_still.py ./blender/out/render_log.txt ./server/clips.js ./server/review.js ./server/report.js ./server/jobs.js ./server/whatif.js ./server/case_size.js ./server/cases.js ./server/scene_export.js ./server/server.js ./cases/live1/cache/new_witness_8dbed99bdd177849.meta.json ./cases/live1/cache/extraction.json ./cases/live1/cache/extraction_raw.json ./cases/live1/cache/new_witness_ece46586511f9fd1.meta.json ./cases/live1/cache/new_witness_8dbed99bdd177849.raw.txt ./cases/live1/cache/state.json ./cases/live1/cache/new_witness_63edd7a5e67738d1.raw.txt ./cases/live1/cache/new_witness_replay.json ./cases/live1/cache/new_witness_865d7236e960cf40.raw.txt ./cases/live1/cache/new_witness_865d7236e960cf40_retry.meta.json ./cases/live1/cache/extraction_raw.meta.json ./cases/live1/cache/new_witness_ece46586511f9fd1.raw.txt ./cases/live1/cache/new_witness_865d7236e960cf40_retry.raw.txt ./cases/live1/cache/new_witness_865d7236e960cf40.meta.json 
   - git status --short:  M server/whatif.js; M status/qa.md; M web/assets/vehicles.js; M web/compare.js; M web/heavy_preview.html;
+
+### QA run 20261025T194644Z — 2 FAIL
+- **PASS** test_checks — 19 tests passed
+- **PASS** test_physics — 19 tests passed
+- **PASS** world_reference — ALL CONTRACT ASSERTIONS PASSED (reference_world.js: 18 objects, 3 witnesses)
+- **FAIL** test_glare — rc=1: TypeError: Cannot read properties of undefined (reading 'environment')  (log /tmp/claude-0/-home-claude/19c8862f-35f6-521f-b076-4851a50cf262/scratchpad/qa/runs/20261025T194644Z/test_glare.log)
+- **PASS** world_demo_latest — world_v2.js: ALL CONTRACT ASSERTIONS PASSED (world_v2.js: 18 objects, 3 witnesses)
+- **PASS** live_stub — LIVE-STUB: PASS
+- **PASS** server_boot — pid 11128 port 5191 mode=mock
+- **PASS** api: health — 200 {"ok":true,"mode":"mock"}
+- **PASS** api: cases — 200 n=3
+- **PASS** api: demo json — 200
+- **PASS** api: demo findings — n=5 verdict=contradiction_found world=/cases/demo/worlds/world_v2.js
+- **PASS** api: deposition durationSec~1801.8 — durationSec=1801.8
+- **PASS** api: Witness B contradiction 25/25 — finding=F1 check.pass=false blocked=25/25 by=veh_T_trailer
+- **PASS** api: report.pdf — 200 210350B magic="%PDF" 115ms
+- **PASS** api: scene.glb — 200 311852B magic="glTF" 309ms
+- **FAIL** shot: demo_witB_t9.9 — /tmp/claude-0/-home-claude/19c8862f-35f6-521f-b076-4851a50cf262/scratchpad/qa/runs/20261025T194644Z/demo_witB_t9.9.png {"cam":"wit_B","t":9.9,"world":"/cases/demo/worlds/world_v2.js","witB":{"visible":false,"blockedBy":"veh_T_trailer"}} [console: Failed to load resource: the server responded with a status of 404 (Not Found)] http>=400: 404 /assets_argon/index.js
+- NEWLY BROKEN: test_glare shot: demo_witB_t9.9
+  - files modified since last all-green run (19:08:58Z): ./blender/render_still.py ./blender/out/render_log.txt ./server/clips.js ./server/review.js ./server/report.js ./server/jobs.js ./server/whatif.js ./server/case_size.js ./server/aerial.js ./server/cases.js ./server/scene_export.js ./server/server.js ./cases/live1/cache/new_witness_8dbed99bdd177849.meta.json ./cases/live1/cache/extraction.json ./cases/live1/cache/extraction_raw.json ./cases/live1/cache/new_witness_ece46586511f9fd1.meta.json ./cases/live1/cache/new_witness_8dbed99bdd177849.raw.txt ./cases/live1/cache/state.json ./cases/live1/cache/new_witness_63edd7a5e67738d1.raw.txt ./cases/live1/cache/new_witness_replay.json ./cases/live1/cache/new_witness_865d7236e960cf40.raw.txt ./cases/live1/cache/new_witness_865d7236e960cf40_retry.meta.json ./cases/live1/cache/extraction_raw.meta.json ./cases/live1/cache/new_witness_ece46586511f9fd1.raw.txt ./cases/live1/cache/new_witness_865d7236e960cf40_retry.raw.txt 
+  - git diff --stat (likely culprits):  cases/demo/cache/frames/eye_wit_B_9.9.jpg | Bin 106653 -> 69037 bytes; cases/demo/cache/frames/eye_wit_B_9.9.json | 2 +-; web/assets.js | 37 +++++++++--; web/assets/vehicle_parts.js | 63 ++++++++++++++++++; worlds/build_reference_world.mjs | 101 +++++++++++++++++++----------; worlds/reference_world.js | 77 +++++++++++++++-------; 7 files changed, 234 insertions(+), 66 deletions(-);
+  - untracked: argon/prompts/region_forge.md cases/demo/cache/plan_scene_spec.json cases/demo/cache/plan_scene_spec.meta.json cases/demo/cache/plan_scene_spec.raw.txt cases/demo/cache/plan_shots_reference.json cases/demo/cache/plan_shots_reference.meta.json cases/demo/cache/plan_shots_reference.raw.txt cases/demo/exhibits/ cases/demo/plan/ render/film.mjs server/aerial.js web/assets/aerial.js web/film.html web/film.js web/regions_argon/ 
+- triage 19:56Z (QA harness v2: +test_glare, latest world_vN, report.pdf/scene.glb, 25/25 robustness; single witB shot via render_lock; port 5191):
+  - test_glare FAIL is a real bug, not flake: checks/test_glare.mjs:121 calls `createWorld(THREE)` with no assets, but cases/demo/worlds/world_v2.js (v2 contract, 12:23 local) calls `assets.environment(...)` at line 19. Fix belongs in checks/test_glare.mjs: pass `await nodeAssets()` from checks/load_world.js. Owner: glare/checks agent.
+  - witB shot FAIL comes only from the console 404 on /assets_argon/index.js. The sightline is still correctly blocked (veh_T_trailer). Cause: the uncommitted web/assets.js edit adds 'argon' to MODULE_NAMES (./assets_argon/index.js), but web/assets_argon/ only contains studio.html. Owner: assets agent. Either add index.js or probe for it before importing (the browser logs the 404 even though the import is caught).

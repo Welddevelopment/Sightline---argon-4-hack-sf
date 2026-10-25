@@ -1,0 +1,1089 @@
+{
+  "videos": [
+    {
+      "id": "ref_esi",
+      "url": "https://www.youtube.com/watch?v=Y7Api99fPuw",
+      "titleGuess": "ESI Forensic Animation — Night-Time Semi-Trailer Left-Turn Underride Collision",
+      "durationSec": 133,
+      "style": "Traditional offline 3D studio render (3ds Max / Mental Ray look). Clean, neutral, non-photorealistic materials with flat-shaded grey asphalt, crisp white lane markings, photo-mapped commercial building facades, and soft diffuse daylight for clarity shots contrasted with dark ambient night lighting with point-light streetlamps, traffic signals, and headlight cones. Title cards are plain white sans-serif (Arial/Helvetica bold) centered on pure black.",
+      "pacing": "Deliberate, unhurried courtroom pacing. Average shot length ~12 seconds (excluding 5–6 second title cards). Long static holds (2–6 seconds) before and after camera moves and at the end of crash runs allow the expert witness to speak over the video.",
+      "sequenceLogic": "Follows the classic foundation-to-perspective hierarchy: (1) authenticate the 3D model by dissolving directly from a real satellite aerial photo into the 3D geometry, (2) 360° orbit and push-in to orient the jury to the intersection and the tractor-trailer's starting position in clear daylight, (3) top-down plan view of the entire crash sequence in daylight to establish trajectories and timing, (4) night-time chase view showing actual conspicuity/lighting conditions for the approaching sedan, (5) identical chase view in daylight to show the physical mechanics clearly, and (6) static witness-eye view from the corner showing the full turn and impact.",
+      "shots": [
+        {
+          "n": 1,
+          "start": "00:00.0",
+          "end": "00:34.0",
+          "startSec": 0,
+          "endSec": 34,
+          "durationSec": 34,
+          "type": "aerial_dissolve",
+          "description": "Starts on a high-altitude satellite photograph of a multi-lane commercial highway intersection, pushes in while tilting up, and dissolves (00:05.5–00:07.5) into the matching 3D scene with a white semi-tractor-trailer stopped in the left-turn lane. The camera then orbits 360° clockwise around the intersection (00:09–00:21) and pushes in to a medium close-up of the semi at the stop bar, holding static for the final 6.5 seconds.",
+          "camera": {
+            "projection": "perspective",
+            "heightM": 220,
+            "fovDeg": 45,
+            "lensMm35": 43,
+            "distanceToSubjectM": 250,
+            "pitchDeg": -75,
+            "target": "Intersection center, then white Volvo semi-tractor-trailer in the left-turn bay"
+          },
+          "motion": {
+            "kind": "orbit",
+            "path": "Holds 1.5s on ortho aerial, dollies in and tilts from -85° to -35° (00:01.5–00:07.5), holds 1.5s, orbits 360° clockwise around intersection at ~60m height and ~95m radius (00:09.0–00:21.0), then dollies in to ~22m from the semi cab at ~8m height (00:21.5–00:27.5)",
+            "speed": "30 deg/s during orbit, ~12 m/s during push-in",
+            "easing": "ease-in-out"
+          },
+          "holds": {
+            "preSec": 1.5,
+            "postSec": 6.5,
+            "freezeFrame": true
+          },
+          "playback": "real-time",
+          "transitionIn": "cut",
+          "transitionOut": "dissolve (1.0s)",
+          "overlays": [
+            {
+              "text": "ESI",
+              "kind": "watermark",
+              "position": "bottom-right",
+              "appearsAtSec": 0
+            }
+          ],
+          "lighting": "Diffuse overcast daylight; even illumination with soft ambient shadows for geometric clarity.",
+          "proves": "Authenticates that the 3D scene geometry matches the real-world roadway and establishes the surrounding commercial environment, lane configuration, traffic signal placement, and initial position of the tractor-trailer.",
+          "confidence": 0.92
+        },
+        {
+          "n": 2,
+          "start": "00:34.0",
+          "end": "01:02.5",
+          "startSec": 34,
+          "endSec": 62.5,
+          "durationSec": 28.5,
+          "type": "top_down_tracking",
+          "description": "High-angle plan view over the highway shows the real aerial image dissolving out as the camera pushes down slightly toward the intersection. The white semi begins a slow left turn across the opposing lanes while a dark blue sedan approaches from the right in the leftmost thru lane, strikes and underrides the trailer's mid-tandem area, and spins out as the truck comes to rest.",
+          "camera": {
+            "projection": "perspective",
+            "heightM": 160,
+            "fovDeg": 45,
+            "lensMm35": 43,
+            "distanceToSubjectM": 165,
+            "pitchDeg": -80,
+            "target": "Intersection and approach lanes of the opposing highway"
+          },
+          "motion": {
+            "kind": "dolly",
+            "path": "Slowly dollies down from ~200m to ~140m altitude and pans slightly left to center the intersection (00:36–00:44), then locks static from 00:44 to 01:02.5 while vehicles complete the collision",
+            "speed": "7 m/s during initial push, then 0 m/s",
+            "easing": "ease-in-out"
+          },
+          "holds": {
+            "preSec": 2,
+            "postSec": 4.5,
+            "freezeFrame": false
+          },
+          "playback": "real-time",
+          "transitionIn": "dissolve (1.0s)",
+          "transitionOut": "fade-to-black",
+          "overlays": [
+            {
+              "text": "ESI",
+              "kind": "watermark",
+              "position": "bottom-right",
+              "appearsAtSec": 34
+            }
+          ],
+          "lighting": "Diffuse overcast daylight.",
+          "proves": "Establishes the overall kinematics, relative speeds, lane positions, point of impact, and post-impact rest positions of both vehicles from an objective map-like vantage.",
+          "confidence": 0.93
+        },
+        {
+          "n": 3,
+          "start": "01:02.5",
+          "end": "01:08.5",
+          "startSec": 62.5,
+          "endSec": 68.5,
+          "durationSec": 6,
+          "type": "title_card",
+          "description": "Full-screen black title card with centered white text reading 'Night Time View'.",
+          "camera": {
+            "projection": "orthographic",
+            "heightM": 0,
+            "fovDeg": 0,
+            "lensMm35": 0,
+            "distanceToSubjectM": 0,
+            "pitchDeg": 0,
+            "target": "2D title card"
+          },
+          "motion": {
+            "kind": "static",
+            "path": "None",
+            "speed": "0",
+            "easing": "linear"
+          },
+          "holds": {
+            "preSec": 6,
+            "postSec": 0,
+            "freezeFrame": false
+          },
+          "playback": "real-time",
+          "transitionIn": "fade-from-black",
+          "transitionOut": "fade-to-black",
+          "overlays": [
+            {
+              "text": "Night Time View",
+              "kind": "title",
+              "position": "center",
+              "appearsAtSec": 63.5
+            },
+            {
+              "text": "ESI",
+              "kind": "watermark",
+              "position": "bottom-right",
+              "appearsAtSec": 62.5
+            }
+          ],
+          "lighting": "Black background.",
+          "proves": "Signposts the transition to night-time visibility conditions.",
+          "confidence": 0.98
+        },
+        {
+          "n": 4,
+          "start": "01:08.5",
+          "end": "01:20.0",
+          "startSec": 68.5,
+          "endSec": 80,
+          "durationSec": 11.5,
+          "type": "chase",
+          "description": "Night-time third-person chase camera follows directly behind the sedan in the left thru lane as it approaches the green signalized intersection. The opposing semi turns left across the dark roadway ahead; its trailer blocks the lanes before being illuminated by the sedan's headlights just prior to impact.",
+          "camera": {
+            "projection": "perspective",
+            "heightM": 2.2,
+            "fovDeg": 45,
+            "lensMm35": 43,
+            "distanceToSubjectM": 7.5,
+            "pitchDeg": -5,
+            "target": "Rear of the approaching sedan and the intersection ahead"
+          },
+          "motion": {
+            "kind": "locked_to_vehicle",
+            "path": "Locked at constant offset (~7.5m behind, ~2.2m high) following the sedan westbound along the left thru lane up to the moment of impact",
+            "speed": "~22 m/s (matching vehicle speed)",
+            "easing": "linear"
+          },
+          "holds": {
+            "preSec": 0,
+            "postSec": 0,
+            "freezeFrame": false
+          },
+          "playback": "real-time",
+          "transitionIn": "fade-from-black",
+          "transitionOut": "cut",
+          "overlays": [
+            {
+              "text": "ESI",
+              "kind": "watermark",
+              "position": "bottom-right",
+              "appearsAtSec": 68.5
+            }
+          ],
+          "lighting": "Night-time lighting with dark sky, orange/amber streetlamp glow, illuminated commercial signs (KFC, Kohl's), bright green traffic signals, sedan taillights and headlight beam cones, and trailer side/rear marker lights.",
+          "proves": "Demonstrates the nighttime conspicuity challenge: the sedan driver had green traffic signals ahead while the white trailer side was poorly illuminated against the dark background until entering the headlight beams.",
+          "confidence": 0.92
+        },
+        {
+          "n": 5,
+          "start": "01:20.0",
+          "end": "01:26.0",
+          "startSec": 80,
+          "endSec": 86,
+          "durationSec": 6,
+          "type": "title_card",
+          "description": "Full-screen black title card with centered white text reading 'Rear View'.",
+          "camera": {
+            "projection": "orthographic",
+            "heightM": 0,
+            "fovDeg": 0,
+            "lensMm35": 0,
+            "distanceToSubjectM": 0,
+            "pitchDeg": 0,
+            "target": "2D title card"
+          },
+          "motion": {
+            "kind": "static",
+            "path": "None",
+            "speed": "0",
+            "easing": "linear"
+          },
+          "holds": {
+            "preSec": 6,
+            "postSec": 0,
+            "freezeFrame": false
+          },
+          "playback": "real-time",
+          "transitionIn": "fade-from-black",
+          "transitionOut": "fade-to-black",
+          "overlays": [
+            {
+              "text": "Rear View",
+              "kind": "title",
+              "position": "center",
+              "appearsAtSec": 81
+            },
+            {
+              "text": "ESI",
+              "kind": "watermark",
+              "position": "bottom-right",
+              "appearsAtSec": 80
+            }
+          ],
+          "lighting": "Black background.",
+          "proves": "Signposts the upcoming daylight rear-chase camera perspective.",
+          "confidence": 0.98
+        },
+        {
+          "n": 6,
+          "start": "01:26.0",
+          "end": "01:38.0",
+          "startSec": 86,
+          "endSec": 98,
+          "durationSec": 12,
+          "type": "chase",
+          "description": "Identical third-person chase camera behind the blue Honda Civic sedan, now rendered in diffuse daylight so the jury can clearly see the road geometry, median barrier, green signals, and the semi-truck turning across the path ahead.",
+          "camera": {
+            "projection": "perspective",
+            "heightM": 2.2,
+            "fovDeg": 45,
+            "lensMm35": 43,
+            "distanceToSubjectM": 7.5,
+            "pitchDeg": -5,
+            "target": "Rear of blue sedan and intersection ahead"
+          },
+          "motion": {
+            "kind": "locked_to_vehicle",
+            "path": "Locked at constant offset (~7.5m behind, ~2.2m high) following the blue sedan along the left thru lane until impact with the trailer",
+            "speed": "~22 m/s",
+            "easing": "linear"
+          },
+          "holds": {
+            "preSec": 0,
+            "postSec": 0,
+            "freezeFrame": false
+          },
+          "playback": "real-time",
+          "transitionIn": "fade-from-black",
+          "transitionOut": "cut",
+          "overlays": [
+            {
+              "text": "ESI",
+              "kind": "watermark",
+              "position": "bottom-right",
+              "appearsAtSec": 86
+            }
+          ],
+          "lighting": "Diffuse overcast daylight.",
+          "proves": "Allows the jury to compare the exact same approach geometry and timing without darkness obscuring the physical positions of the truck, median, and signals.",
+          "confidence": 0.94
+        },
+        {
+          "n": 7,
+          "start": "01:38.0",
+          "end": "01:44.0",
+          "startSec": 98,
+          "endSec": 104,
+          "durationSec": 6,
+          "type": "title_card",
+          "description": "Full-screen black title card with centered white text reading 'Witness View'.",
+          "camera": {
+            "projection": "orthographic",
+            "heightM": 0,
+            "fovDeg": 0,
+            "lensMm35": 0,
+            "distanceToSubjectM": 0,
+            "pitchDeg": 0,
+            "target": "2D title card"
+          },
+          "motion": {
+            "kind": "static",
+            "path": "None",
+            "speed": "0",
+            "easing": "linear"
+          },
+          "holds": {
+            "preSec": 6,
+            "postSec": 0,
+            "freezeFrame": false
+          },
+          "playback": "real-time",
+          "transitionIn": "fade-from-black",
+          "transitionOut": "fade-to-black",
+          "overlays": [
+            {
+              "text": "Witness View",
+              "kind": "title",
+              "position": "center",
+              "appearsAtSec": 99
+            },
+            {
+              "text": "ESI",
+              "kind": "watermark",
+              "position": "bottom-right",
+              "appearsAtSec": 98
+            }
+          ],
+          "lighting": "Black background.",
+          "proves": "Signposts the stationary corner witness perspective.",
+          "confidence": 0.98
+        },
+        {
+          "n": 8,
+          "start": "01:44.0",
+          "end": "02:13.0",
+          "startSec": 104,
+          "endSec": 133,
+          "durationSec": 29,
+          "type": "witness_eye",
+          "description": "Stationary eye-level view from the corner island looking across the intersection in daylight. The white semi-truck pulls forward from the left-turn bay, turns left toward the camera's left, and the blue sedan enters from the left background, underriding the trailer and spinning to a stop in the intersection while the semi halts.",
+          "camera": {
+            "projection": "perspective",
+            "heightM": 1.6,
+            "fovDeg": 50,
+            "lensMm35": 36,
+            "distanceToSubjectM": 38,
+            "pitchDeg": 0,
+            "target": "Center of intersection and turning path of the semi-tractor-trailer"
+          },
+          "motion": {
+            "kind": "static",
+            "path": "Fixed tripod/eye position on the corner island throughout the entire sequence",
+            "speed": "0 m/s",
+            "easing": "linear"
+          },
+          "holds": {
+            "preSec": 2,
+            "postSec": 4,
+            "freezeFrame": false
+          },
+          "playback": "real-time",
+          "transitionIn": "fade-from-black",
+          "transitionOut": "cut",
+          "overlays": [
+            {
+              "text": "ESI",
+              "kind": "watermark",
+              "position": "bottom-right",
+              "appearsAtSec": 104
+            }
+          ],
+          "lighting": "Diffuse overcast daylight.",
+          "proves": "Corroborates a stationary bystander's line of sight and shows the real-time duration of the truck's turn and the mechanics of the underride impact from a human eye height.",
+          "confidence": 0.95
+        }
+      ]
+    },
+    {
+      "id": "ref_ziva",
+      "url": "https://www.youtube.com/watch?v=JlXN-FTQxDE",
+      "titleGuess": "Ziva — Real-Time Unreal Engine Forensic Crash Reconstruction from Police Report & EDR",
+      "durationSec": 50,
+      "style": "Modern real-time Unreal Engine 5 render paired with sleek dark-mode UI product shots. The 3D environment uses crisp directional sunlight, sharp shadows, physically based asphalt/vehicle shaders, dynamic sight-line rays (orange for occluded, green for clear), and high-contrast semi-transparent dark slate HUD overlays with monospace/sans-serif telemetry readouts (countdown to impact and vehicle speed).",
+      "pacing": "Brisk, data-driven pacing (~5.5 seconds per shot) tailored for rapid comprehension. Each demonstrative camera view runs the exact same ~4.2-second pre-impact window in real time and ends with a 1-second freeze-frame at impact (or stop).",
+      "sequenceLogic": "Structured as an evidentiary proof + counterfactual comparison: (1) side-by-side validation comparing the 2D police diagram directly to the 3D Unreal Engine overhead view, (2) UI provenance showing the source files (police report, EDR, witness statements, photos) and build process, (3) top-down orthographic sight-line analysis showing the box truck hiding Unit 2, (4) Unit 1 driver's POV proving Unit 2 becomes visible only 1.2s before impact (less than 1.5s reaction time), (5) NE corner witness POV corroborating the occlusion, and (6) side-by-side split-screen comparing the 52 mph EDR speed against the driver's claimed 38 mph speed (which results in no collision).",
+      "shots": [
+        {
+          "n": 1,
+          "start": "00:00.0",
+          "end": "00:02.6",
+          "startSec": 0,
+          "endSec": 2.6,
+          "durationSec": 2.6,
+          "type": "split_screen",
+          "description": "Split-screen comparison showing the black-and-white Police Diagram on the left and the matching top-down 3D Unreal Engine render at the moment of impact on the right, with a centered bottom banner reading 'Built from the police report'.",
+          "camera": {
+            "projection": "orthographic",
+            "heightM": 90,
+            "fovDeg": 45,
+            "lensMm35": 43,
+            "distanceToSubjectM": 90,
+            "pitchDeg": -90,
+            "target": "Intersection point of impact between Unit 1, Unit 2, and the box truck"
+          },
+          "motion": {
+            "kind": "static",
+            "path": "Static overhead plan comparison",
+            "speed": "0 m/s",
+            "easing": "linear"
+          },
+          "holds": {
+            "preSec": 2.6,
+            "postSec": 0,
+            "freezeFrame": true
+          },
+          "playback": "real-time",
+          "transitionIn": "cut",
+          "transitionOut": "cut",
+          "overlays": [
+            {
+              "text": "POLICE DIAGRAM",
+              "kind": "label",
+              "position": "top-left",
+              "appearsAtSec": 0
+            },
+            {
+              "text": "Z Ziva",
+              "kind": "watermark",
+              "position": "top-center",
+              "appearsAtSec": 0
+            },
+            {
+              "text": "UNREAL ENGINE",
+              "kind": "label",
+              "position": "top-center-right",
+              "appearsAtSec": 0
+            },
+            {
+              "text": "Built from the police report",
+              "kind": "title",
+              "position": "bottom-center",
+              "appearsAtSec": 0
+            }
+          ],
+          "lighting": "Clear daytime sunlight with crisp directional shadows cast to the right/east.",
+          "proves": "Authenticates that the 3D scene geometry and vehicle impact positions correspond directly to the official police crash diagram.",
+          "confidence": 0.96
+        },
+        {
+          "n": 2,
+          "start": "00:02.6",
+          "end": "00:10.7",
+          "startSec": 2.6,
+          "endSec": 10.7,
+          "durationSec": 8.1,
+          "type": "other",
+          "description": "Screen-capture UI animation showing case files (PDF crash report, EDR report, witness statements, signal timing, and scene photos) being dragged into a prompt box alongside a Google Maps intersection link and instructions to rebuild the crash.",
+          "camera": {
+            "projection": "orthographic",
+            "heightM": 0,
+            "fovDeg": 0,
+            "lensMm35": 0,
+            "distanceToSubjectM": 0,
+            "pitchDeg": 0,
+            "target": "2D software interface"
+          },
+          "motion": {
+            "kind": "static",
+            "path": "None (UI animation)",
+            "speed": "0",
+            "easing": "linear"
+          },
+          "holds": {
+            "preSec": 0.5,
+            "postSec": 1,
+            "freezeFrame": false
+          },
+          "playback": "real-time",
+          "transitionIn": "cut",
+          "transitionOut": "cut",
+          "overlays": [
+            {
+              "text": "THE CASE FILE / Add the case file / Add photos and the map",
+              "kind": "title",
+              "position": "top-left",
+              "appearsAtSec": 2.6
+            },
+            {
+              "text": "Z Ziva",
+              "kind": "watermark",
+              "position": "top-center",
+              "appearsAtSec": 2.6
+            },
+            {
+              "text": "INTERSECTION maps.app.goo.gl/Xq7FcNw2rjhT5aLv9",
+              "kind": "label",
+              "position": "bottom-left",
+              "appearsAtSec": 7.5
+            }
+          ],
+          "lighting": "Dark UI theme.",
+          "proves": "Establishes evidentiary provenance: the reconstruction is driven by the official crash report, EDR data, signal timing, and scene photographs.",
+          "confidence": 0.97
+        },
+        {
+          "n": 3,
+          "start": "00:10.7",
+          "end": "00:17.2",
+          "startSec": 10.7,
+          "endSec": 17.2,
+          "durationSec": 6.5,
+          "type": "establishing",
+          "description": "Unreal Engine editor viewport showing the 3D intersection being procedurally assembled step-by-step (roads, lane markings, building, trees, signals, vehicles) while the AI log executes Python build scripts on the left.",
+          "camera": {
+            "projection": "perspective",
+            "heightM": 65,
+            "fovDeg": 60,
+            "lensMm35": 28,
+            "distanceToSubjectM": 110,
+            "pitchDeg": -35,
+            "target": "3D intersection inside Unreal Engine viewport"
+          },
+          "motion": {
+            "kind": "static",
+            "path": "Static high-angle oblique establishing view while scene assets populate",
+            "speed": "0 m/s",
+            "easing": "linear"
+          },
+          "holds": {
+            "preSec": 0,
+            "postSec": 1.5,
+            "freezeFrame": false
+          },
+          "playback": "time-lapse",
+          "transitionIn": "cut",
+          "transitionOut": "cut",
+          "overlays": [
+            {
+              "text": "ZIVA BUILDS IT / Measured from the report, timed from the EDR",
+              "kind": "title",
+              "position": "top-right",
+              "appearsAtSec": 10.7
+            },
+            {
+              "text": "Z Ziva",
+              "kind": "watermark",
+              "position": "top-center",
+              "appearsAtSec": 10.7
+            }
+          ],
+          "lighting": "Daylight directional sun.",
+          "proves": "Shows how the 3D environment is constructed from measured report geometry and EDR timing.",
+          "confidence": 0.95
+        },
+        {
+          "n": 4,
+          "start": "00:17.2",
+          "end": "00:23.3",
+          "startSec": 17.2,
+          "endSec": 23.3,
+          "durationSec": 6.1,
+          "type": "top_down_tracking",
+          "description": "Top-down overhead view pushes in toward the intersection as Unit 2 approaches from the north at 52 mph and Unit 1 begins turning left from the south. An orange sight-line ray between Unit 1 and Unit 2 shows the white box truck blocking the line of sight until ~1.2 seconds before impact, when the ray turns green just before collision.",
+          "camera": {
+            "projection": "orthographic",
+            "heightM": 120,
+            "fovDeg": 45,
+            "lensMm35": 43,
+            "distanceToSubjectM": 120,
+            "pitchDeg": -90,
+            "target": "Intersection and north approach lane"
+          },
+          "motion": {
+            "kind": "zoom",
+            "path": "Smoothly zooms/dollies in from wide corridor (~140m field height) to tight intersection framing (~65m field height) as Unit 2 approaches, then freezes at impact",
+            "speed": "~12 m/s equivalent zoom",
+            "easing": "ease-out"
+          },
+          "holds": {
+            "preSec": 0,
+            "postSec": 1,
+            "freezeFrame": true
+          },
+          "playback": "real-time",
+          "transitionIn": "cut",
+          "transitionOut": "cut",
+          "overlays": [
+            {
+              "text": "IMPACT IN 4.07 s → IMPACT / UNIT 2 52 mph → 44 mph",
+              "kind": "HUD",
+              "position": "top-left",
+              "appearsAtSec": 17.2
+            },
+            {
+              "text": "FROM ABOVE / The truck hides Unit 2",
+              "kind": "title",
+              "position": "bottom-left",
+              "appearsAtSec": 17.2
+            },
+            {
+              "text": "Orange-to-green sight-line ray between Unit 1 and Unit 2",
+              "kind": "sight-line",
+              "position": "center",
+              "appearsAtSec": 17.2
+            },
+            {
+              "text": "Z Ziva",
+              "kind": "watermark",
+              "position": "top-center",
+              "appearsAtSec": 17.2
+            }
+          ],
+          "lighting": "Clear daytime sunlight with sharp directional shadows.",
+          "proves": "Geometrically proves from above that the opposing box truck creates a sight-line obstruction between the left-turning driver (Unit 1) and the oncoming vehicle (Unit 2) until 1.2 seconds before impact.",
+          "confidence": 0.95
+        },
+        {
+          "n": 5,
+          "start": "00:23.3",
+          "end": "00:29.4",
+          "startSec": 23.3,
+          "endSec": 29.4,
+          "durationSec": 6.1,
+          "type": "driver_pov",
+          "description": "First-person view from Unit 1's driver's seat looking over the steering wheel and dashboard as the car initiates a left turn facing the white box truck. Unit 2 emerges from behind the box truck at 'IMPACT IN 1.23 s' (when a caption notes 'Visible 1.2 s before impact. A normal reaction takes 1.5 s.') and strikes the front-right of Unit 1.",
+          "camera": {
+            "projection": "perspective",
+            "heightM": 1.25,
+            "fovDeg": 75,
+            "lensMm35": 21,
+            "distanceToSubjectM": 0.6,
+            "pitchDeg": 0,
+            "target": "Opposing left-turn lane, white box truck, and oncoming thru lane from driver's eye point"
+          },
+          "motion": {
+            "kind": "locked_to_vehicle",
+            "path": "Locked to Unit 1 driver's eye position, moving forward and yawing left with the vehicle into the turn until freeze-frame at impact",
+            "speed": "~5 m/s forward + left yaw",
+            "easing": "linear"
+          },
+          "holds": {
+            "preSec": 0,
+            "postSec": 0.8,
+            "freezeFrame": true
+          },
+          "playback": "real-time",
+          "transitionIn": "cut",
+          "transitionOut": "cut",
+          "overlays": [
+            {
+              "text": "IMPACT IN 4.07 s → 0.07 s / UNIT 2 52 mph → 45 mph / UNIT 2 NOW VISIBLE (at 1.23 s)",
+              "kind": "HUD",
+              "position": "top-left",
+              "appearsAtSec": 23.3
+            },
+            {
+              "text": "FROM THE DRIVER'S SEAT / Could they have seen it? / Visible 1.2 s before impact. A normal reaction takes 1.5 s.",
+              "kind": "title",
+              "position": "bottom-left",
+              "appearsAtSec": 23.3
+            },
+            {
+              "text": "Z Ziva",
+              "kind": "watermark",
+              "position": "top-center",
+              "appearsAtSec": 23.3
+            }
+          ],
+          "lighting": "Clear daytime sunlight with interior cab shading and realistic side/rearview mirror reflections.",
+          "proves": "Proves from the turning driver's exact eye point that the oncoming vehicle was completely hidden behind the box truck until 1.23 seconds before impact—less than the standard 1.5-second human perception-reaction time.",
+          "confidence": 0.96
+        },
+        {
+          "n": 6,
+          "start": "00:29.4",
+          "end": "00:33.5",
+          "startSec": 29.4,
+          "endSec": 33.5,
+          "durationSec": 4.1,
+          "type": "witness_eye",
+          "description": "Stationary eye-level view from the northeast corner sidewalk looking southwest across the intersection. The white box truck waits in the turn lane in the foreground while Unit 1 turns left on the left and Unit 2 speeds in from the right from behind the truck, colliding in the crosswalk area.",
+          "camera": {
+            "projection": "perspective",
+            "heightM": 1.65,
+            "fovDeg": 65,
+            "lensMm35": 25,
+            "distanceToSubjectM": 18,
+            "pitchDeg": -2,
+            "target": "White box truck in foreground and collision zone to its left"
+          },
+          "motion": {
+            "kind": "static",
+            "path": "Fixed witness eye position on the NE corner",
+            "speed": "0 m/s",
+            "easing": "linear"
+          },
+          "holds": {
+            "preSec": 0,
+            "postSec": 0.5,
+            "freezeFrame": true
+          },
+          "playback": "real-time",
+          "transitionIn": "cut",
+          "transitionOut": "cut",
+          "overlays": [
+            {
+              "text": "IMPACT IN 3.50 s → 0.60 s / UNIT 2 52 mph → 45 mph",
+              "kind": "HUD",
+              "position": "top-left",
+              "appearsAtSec": 29.4
+            },
+            {
+              "text": "FROM THE WITNESS'S CORNER / Out from behind the truck",
+              "kind": "title",
+              "position": "bottom-left",
+              "appearsAtSec": 29.4
+            },
+            {
+              "text": "Z Ziva",
+              "kind": "watermark",
+              "position": "top-center",
+              "appearsAtSec": 29.4
+            }
+          ],
+          "lighting": "Clear daytime sunlight.",
+          "proves": "Corroborates the NE corner witness statement and visually demonstrates the speed differential between the creeping left-turning car and the 52 mph oncoming SUV emerging from behind the box truck.",
+          "confidence": 0.95
+        },
+        {
+          "n": 7,
+          "start": "00:33.5",
+          "end": "00:37.6",
+          "startSec": 33.5,
+          "endSec": 37.6,
+          "durationSec": 4.1,
+          "type": "other",
+          "description": "Dark-mode UI screen showing the user prompting 'Now run it again with Unit 2 at 38 mph, like their driver says.' and selecting the clarifying anchor option 'Same spot when U1 starts turning (Recommended)'.",
+          "camera": {
+            "projection": "orthographic",
+            "heightM": 0,
+            "fovDeg": 0,
+            "lensMm35": 0,
+            "distanceToSubjectM": 0,
+            "pitchDeg": 0,
+            "target": "2D software interface"
+          },
+          "motion": {
+            "kind": "static",
+            "path": "None (UI screen)",
+            "speed": "0",
+            "easing": "linear"
+          },
+          "holds": {
+            "preSec": 0,
+            "postSec": 1,
+            "freezeFrame": false
+          },
+          "playback": "real-time",
+          "transitionIn": "cut",
+          "transitionOut": "cut",
+          "overlays": [
+            {
+              "text": "THEIR DRIVER SAYS 38 MPH / Run it again",
+              "kind": "title",
+              "position": "top-left",
+              "appearsAtSec": 33.5
+            },
+            {
+              "text": "Z Ziva",
+              "kind": "watermark",
+              "position": "top-center",
+              "appearsAtSec": 33.5
+            }
+          ],
+          "lighting": "Dark UI theme.",
+          "proves": "Documents the explicit physical assumptions used to construct the counterfactual 38 mph comparison run.",
+          "confidence": 0.98
+        },
+        {
+          "n": 8,
+          "start": "00:37.6",
+          "end": "00:45.6",
+          "startSec": 37.6,
+          "endSec": 45.6,
+          "durationSec": 8,
+          "type": "split_screen",
+          "description": "Synchronized top-down split-screen comparing '52 mph EDR DOWNLOAD' on the left against '38 mph THEIR DRIVER' on the right. As both cameras zoom in toward the intersection, the 52 mph run collides and freezes at impact, while on the right at 38 mph Unit 1 clears the lane and Unit 2 brakes to a complete stop 24.5 feet short of contact.",
+          "camera": {
+            "projection": "orthographic",
+            "heightM": 120,
+            "fovDeg": 45,
+            "lensMm35": 43,
+            "distanceToSubjectM": 120,
+            "pitchDeg": -90,
+            "target": "Dual synchronized overhead views of the intersection"
+          },
+          "motion": {
+            "kind": "zoom",
+            "path": "Both viewports zoom/dolly in synchronously from ~140m to ~65m field height over 4.2 seconds and then hold static",
+            "speed": "~12 m/s equivalent zoom",
+            "easing": "ease-out"
+          },
+          "holds": {
+            "preSec": 0,
+            "postSec": 1.2,
+            "freezeFrame": true
+          },
+          "playback": "real-time",
+          "transitionIn": "cut",
+          "transitionOut": "cut",
+          "overlays": [
+            {
+              "text": "52 mph EDR DOWNLOAD / IMPACT IN 4.23 s → IMPACT / UNIT 2 52 mph → 44 mph",
+              "kind": "HUD",
+              "position": "top-left",
+              "appearsAtSec": 37.6
+            },
+            {
+              "text": "38 mph THEIR DRIVER / HYPOTHETICAL: UNIT 2 AT 38 MPH (EDR: 52) / ACTUAL IMPACT TIME +2.50 s / UNIT 2 0 mph / NO CONTACT: UNIT 2 STOPS 24.5 FT SHORT",
+              "kind": "HUD",
+              "position": "top-center-right",
+              "appearsAtSec": 37.6
+            },
+            {
+              "text": "SAME SCENE, NEW SPEED / At 38 mph, no collision",
+              "kind": "title",
+              "position": "bottom-left",
+              "appearsAtSec": 37.6
+            },
+            {
+              "text": "Z Ziva",
+              "kind": "watermark",
+              "position": "top-center",
+              "appearsAtSec": 37.6
+            }
+          ],
+          "lighting": "Clear daytime sunlight.",
+          "proves": "Proves causation and speed significance: had Unit 2 been traveling at the 38 mph speed claimed by its driver rather than the 52 mph recorded by the EDR, Unit 1 would have cleared the lane and Unit 2 would have stopped 24.5 feet short with no collision.",
+          "confidence": 0.97
+        },
+        {
+          "n": 9,
+          "start": "00:45.6",
+          "end": "00:50.0",
+          "startSec": 45.6,
+          "endSec": 50,
+          "durationSec": 4.4,
+          "type": "title_card",
+          "description": "End-slate brand title card on dark slate background reading 'Z Ziva / Send the police report and a few photos from one case. / The first animation is on us. / Demonstratives for settlement demands and mediation'.",
+          "camera": {
+            "projection": "orthographic",
+            "heightM": 0,
+            "fovDeg": 0,
+            "lensMm35": 0,
+            "distanceToSubjectM": 0,
+            "pitchDeg": 0,
+            "target": "2D title card"
+          },
+          "motion": {
+            "kind": "static",
+            "path": "None",
+            "speed": "0",
+            "easing": "linear"
+          },
+          "holds": {
+            "preSec": 4.4,
+            "postSec": 0,
+            "freezeFrame": false
+          },
+          "playback": "real-time",
+          "transitionIn": "cut",
+          "transitionOut": "cut",
+          "overlays": [
+            {
+              "text": "Z Ziva / Send the police report and a few photos from one case. / The first animation is on us. / Demonstratives for settlement demands and mediation",
+              "kind": "title",
+              "position": "center-left",
+              "appearsAtSec": 45.6
+            }
+          ],
+          "lighting": "Dark slate background.",
+          "proves": "Concludes presentation with brand attribution.",
+          "confidence": 0.99
+        }
+      ]
+    }
+  ],
+  "grammar": [
+    {
+      "type": "aerial_dissolve",
+      "purpose": "Authenticate the 3D reconstruction by registering and cross-dissolving a real satellite photograph or official police diagram directly into the 3D scene geometry.",
+      "typicalDurationSec": 8,
+      "camera": {
+        "heightM": 180,
+        "fovDeg": 45,
+        "distanceM": 200,
+        "pitchDeg": -80,
+        "motion": "Hold static on ortho/aerial image for 1.5–2.5s, cross-dissolve (1.0–2.0s) into the 3D model, then tilt up or push in."
+      },
+      "holdRule": "Hold 1.5–2.5s on the real image before the dissolve so the jury recognizes the map/diagram.",
+      "overlayRule": "Minimal label ('POLICE DIAGRAM' / 'UNREAL ENGINE') or clean with studio watermark only.",
+      "sourceShots": [
+        "ref_esi#1",
+        "ref_ziva#1"
+      ]
+    },
+    {
+      "type": "orbit",
+      "purpose": "Orient the jury to the 3D layout, lane configuration, signal placement, and surrounding landmarks while all vehicles are frozen at their initial positions.",
+      "typicalDurationSec": 14,
+      "camera": {
+        "heightM": 60,
+        "fovDeg": 45,
+        "distanceM": 95,
+        "pitchDeg": -35,
+        "motion": "Smooth 360° clockwise orbit at constant radius and height around the intersection center, followed by a dolly push-in to the key vehicle."
+      },
+      "holdRule": "Freeze simulation time completely; hold 1.5s before orbit and 3–6s after pushing in to the key vehicle.",
+      "overlayRule": "No telemetry clutter; watermark only.",
+      "sourceShots": [
+        "ref_esi#1"
+      ]
+    },
+    {
+      "type": "top_down_tracking",
+      "purpose": "Show the complete kinematics, vehicle trajectories, sight-line obstructions, and timing from an objective map-like plan view.",
+      "typicalDurationSec": 10,
+      "camera": {
+        "heightM": 130,
+        "fovDeg": 45,
+        "distanceM": 130,
+        "pitchDeg": -85,
+        "motion": "Slow zoom/dolly in from wide approach corridor (~150m) to intersection framing (~70m), locking static prior to impact."
+      },
+      "holdRule": "Hold 1–2s before motion or freeze for 1.0–4.0s at impact/rest.",
+      "overlayRule": "Top-left telemetry HUD (time-to-impact countdown and speed in mph), dynamic sight-line ray (orange = blocked, green = clear), and bottom-left context banner.",
+      "sourceShots": [
+        "ref_esi#2",
+        "ref_ziva#4"
+      ]
+    },
+    {
+      "type": "title_card",
+      "purpose": "Clearly signpost changes in camera perspective, lighting condition (Day vs. Night), or counterfactual assumptions so the jury never loses context.",
+      "typicalDurationSec": 5.5,
+      "camera": {
+        "heightM": 0,
+        "fovDeg": 0,
+        "distanceM": 0,
+        "pitchDeg": 0,
+        "motion": "Static 2D full-screen card."
+      },
+      "holdRule": "Hold full-screen text static for 4–5s between 0.5–1.0s fades.",
+      "overlayRule": "Single concise phrase (2–4 words, e.g., 'Night Time View', 'Rear View', 'Witness View') centered on screen.",
+      "sourceShots": [
+        "ref_esi#3",
+        "ref_esi#5",
+        "ref_esi#7",
+        "ref_ziva#9"
+      ]
+    },
+    {
+      "type": "chase",
+      "purpose": "Follow directly behind an approaching vehicle to show lane alignment, traffic signal state, and conspicuity of hazards ahead without interior cab occlusion.",
+      "typicalDurationSec": 11.5,
+      "camera": {
+        "heightM": 2.2,
+        "fovDeg": 45,
+        "distanceM": 7.5,
+        "pitchDeg": -5,
+        "motion": "Rigidly locked at constant offset behind the subject vehicle along its travel vector up to impact."
+      },
+      "holdRule": "Run in strict 1.0x real-time; pair a night-time lighting pass with an identical daylight clarity pass.",
+      "overlayRule": "Clean frame (watermark only) so lighting/conspicuity is judged without HUD distraction.",
+      "sourceShots": [
+        "ref_esi#4",
+        "ref_esi#6"
+      ]
+    },
+    {
+      "type": "driver_pov",
+      "purpose": "Demonstrate exactly what a driver could see from their eye position (including A-pillar, mirror, and traffic occlusions) and when the hazard first became visible relative to human reaction time.",
+      "typicalDurationSec": 6,
+      "camera": {
+        "heightM": 1.25,
+        "fovDeg": 75,
+        "distanceM": 0.6,
+        "pitchDeg": 0,
+        "motion": "Locked to driver's eye point inside the cabin, translating and yawing with the vehicle."
+      },
+      "holdRule": "Run in 1.0x real-time and freeze-frame for ~1.0s at the moment of impact.",
+      "overlayRule": "Top-left countdown timer + speed readout + trigger flag ('UNIT 2 NOW VISIBLE' at the exact visibility timestamp) and bottom-left callout comparing visibility time (1.2s) to normal reaction time (1.5s).",
+      "sourceShots": [
+        "ref_ziva#5"
+      ]
+    },
+    {
+      "type": "witness_eye",
+      "purpose": "Corroborate third-party eyewitness testimony and show the real-time speed and collision mechanics from a stationary human eye height on the roadside.",
+      "typicalDurationSec": 15,
+      "camera": {
+        "heightM": 1.65,
+        "fovDeg": 55,
+        "distanceM": 25,
+        "pitchDeg": -1,
+        "motion": "Completely static tripod/eye position on the corner sidewalk or island."
+      },
+      "holdRule": "Hold 1–2s before vehicles enter the intersection and 1–4s after impact/rest.",
+      "overlayRule": "Optional top-left countdown/speed HUD and bottom-left location label ('FROM THE WITNESS'S CORNER').",
+      "sourceShots": [
+        "ref_esi#8",
+        "ref_ziva#6"
+      ]
+    },
+    {
+      "type": "split_screen",
+      "purpose": "Compare two scenarios or data sources side-by-side in perfect temporal or spatial sync (e.g., Police Diagram vs. 3D Model, or Actual EDR Speed vs. Hypothetical Claimed Speed).",
+      "typicalDurationSec": 8,
+      "camera": {
+        "heightM": 120,
+        "fovDeg": 45,
+        "distanceM": 120,
+        "pitchDeg": -90,
+        "motion": "Synchronized top-down orthographic views zooming in together and holding after the event."
+      },
+      "holdRule": "Freeze the impact side at T=0 while letting the counterfactual side continue until the vehicle clears or stops, then hold 1.2s.",
+      "overlayRule": "Clear header above each pane ('52 mph EDR DOWNLOAD' vs. '38 mph THEIR DRIVER'), independent telemetry HUDs in each pane, and a bottom summary banner ('At 38 mph, no collision').",
+      "sourceShots": [
+        "ref_ziva#1",
+        "ref_ziva#8"
+      ]
+    }
+  ],
+  "titleCardSpec": {
+    "background": "Pure black (#000000) for traditional courtroom dividers (ref_esi) or dark slate (#0F191E) for modern UI/HUD cards (ref_ziva).",
+    "fontStyle": "Clean, neutral sans-serif (Arial / Helvetica / Inter Bold), white (#FFFFFF) with optional muted grey/teal kickers.",
+    "sizeRelativeToFrameHeight": "0.055 to 0.065 (approx. 5.5%–6.5% of frame height for main title text).",
+    "durationSec": 5.5,
+    "fades": "1.0s fade-to-black / fade-from-black for full-screen divider cards; instant cut or 0.3s dissolve for lower-third HUD banners."
+  },
+  "rulesOfThumb": [
+    "Always anchor the 3D scene to official physical evidence first (dissolve from a satellite aerial or place side-by-side with the police diagram) before showing any vehicle motion.",
+    "Run every crash sequence at strict 1.0x real-time playback so the jury experiences true time and speed; never use slow-motion without explicit labeling.",
+    "Separate camera motion from vehicle motion whenever possible: orbit and push in while time is frozen, then lock the camera static (or locked to a vehicle) while the crash plays out.",
+    "When night-time visibility or conspicuity is at issue, show both the accurate night-time lighting pass and an identical daylight clarity pass from the exact same camera path.",
+    "Quantify visibility and avoidance claims on screen with synchronized countdown timers (IMPACT IN X.XX s), EDR speeds, and sight-line rays that change color at the exact frame an obstruction clears.",
+    "Use synchronized side-by-side split-screens for 'what-if' counterfactuals (such as recorded EDR speed vs. driver's claimed speed) with clearly labeled assumptions so the jury can see causation directly."
+  ],
+  "_provenance": {
+    "step": "A",
+    "prompt": "argon/prompts/shots_reference.md",
+    "model": "gemini-4-argon",
+    "mode": "live",
+    "cacheName": "plan_shots_reference",
+    "cachePath": "cases/demo/cache/plan_shots_reference.json",
+    "name": "plan_shots_reference",
+    "hash": "acb1b86b9f85dcbc",
+    "finishReason": "STOP",
+    "usage": {
+      "promptTokenCount": 20473,
+      "candidatesTokenCount": 12723,
+      "totalTokenCount": 33196,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 1969
+        },
+        {
+          "modality": "VIDEO",
+          "tokenCount": 18504
+        }
+      ],
+      "candidatesTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 12723
+        }
+      ]
+    },
+    "seconds": 148,
+    "at": "2026-10-25T19:52:15.721Z"
+  }
+}

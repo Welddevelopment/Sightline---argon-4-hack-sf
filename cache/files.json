@@ -89,5 +89,12 @@
     "mimeType": "video/mp4",
     "expiresAt": "2026-10-27T19:25:43.761724791Z",
     "uploadedAt": "2026-10-25T19:26:01.923Z"
+  },
+  "cases/stubtest/evidence/deposition.mp4|4244843|1792958071716": {
+    "uri": "https://stub/files/x1",
+    "name": "files/x1",
+    "mimeType": "video/mp4",
+    "expiresAt": null,
+    "uploadedAt": "2026-10-25T19:54:37.823Z"
   }
 }
