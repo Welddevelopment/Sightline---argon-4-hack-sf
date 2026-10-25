@@ -13,7 +13,7 @@ The script below is written for the real demo case (NTSB HWY16FH018, Williston F
 - [ ] `case/deposition_script.json` → `npm run deposition` built the full ~31-minute deposition (`deposition/out/deposition.mp4`), not the 2:42 sample.
 - [ ] `node argon/seed_demo.js` re-run, so `cases/demo/` holds the Williston evidence, world and cache.
 - [ ] Witness B's finding chips read **Depo 27:04 or 27:05** (map mark; the X goes down at 1624.9 s, and Argon's live run placed it at 27:05) and **Depo 27:46** (claim), and the blocker is **the truck (veh_T_tractor / veh_T_trailer)**. Say whatever the chip says. If the cache still says "signal / 01:16", either re-seed or swap those words in the script lines below (the beats stay the same).
-- [ ] Credibility numbers are filled in: the robustness chip on wit_B ("blocked from N of 25"), the gaze angle, and the NTSB match panel ("X of Y"). Copy the real numbers into the 1:45 beat and into section 3 wherever it says **TODO**. Sources: `cases/demo/cache/state.json` → `checks[].robustness` / `checks[].gaze`; `cases/demo/cache/validation.json` → `matched` / `total`.
+- [ ] Credibility numbers are filled in: the robustness chip on wit_B (should read "blocked from 25 of 25"), the gaze angle (28°, assumed toward the impact point), and the NTSB match panel (should read "11 of 12"). If they changed, update the 1:45 beat, Q&A #7 and section 3. Sources: `cases/demo/cache/state.json` → `checks[].robustness` / `checks[].gaze`; `cases/demo/cache/validation.json` → `matched` / `total`.
 - [ ] Never say "a million tokens out". Argon's output limit is 32,768 tokens; the 1M figure is input context.
 - [ ] The Flash baseline result (`cases/demo/cache/baseline.json`) is visible somewhere in the UI. If it is not wired into the viewer, open the JSON in a tab ahead of time and switch to it at 1:50.
 - [ ] Laptop is in `SIGHTLINE_MODE=live` with `GEMINI_API_KEY` set, so the judge's live witness is a real Argon call. Test one statement before the slot.
@@ -48,7 +48,7 @@ Rule of thumb: about 140 spoken words per minute. Lines in quotes are said out l
 
 ### 0:55 – 1:45 · The loop: Witness B
 
-> "Here's the verification loop. Witness B testified she clearly saw the driver's head, looking down at the dash, in the last second before impact. That matters: it's the whole distraction theory."
+> "Here's the verification loop. Witness B testified: 'I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.' A jury would believe her."
 
     Open the findings panel. Point at Witness B's finding.
 
@@ -66,11 +66,11 @@ Rule of thumb: about 140 spoken words per minute. Lines in quotes are said out l
 
 ### 1:45 – 2:00 · Credibility (why an expert won't laugh at it)
 
-> "Before you trust that: her mark could be off a meter or two, so we test 25 spots in a two-meter circle around it. The truck blocks her from [TODO N] of 25. The car was [TODO X] degrees off her line of gaze. And this world matches [TODO X of Y] facts NTSB measured. Model, prompt and input hashes are all logged."
+> "Before you trust that: her mark could be off a meter or two, so we test 25 spots in a two-meter circle around it. The truck blocks her from all 25. We also report the car was 28 degrees off her assumed line of gaze. And this world matches 11 of 12 facts NTSB measured, and the one miss is shown, not hidden. Model, prompt and input hashes are all logged."
 
-    Point, in order: (1) robustness chip on wit_B ("blocked from N of 25"), (2) gaze angle + "60° camera FOV" note,
-    (3) NTSB match panel ("X of Y measured facts"), (4) methodology panel (model, prompt version, input hashes, kinematic label).
-    Fill N / X / Y from the screen before the slot (see section 0). If a panel isn't there, say only the lines whose panel you can point at.
+    Point, in order: (1) robustness chip on wit_B ("blocked from 25 of 25": tractor 14, trailer 11), (2) gaze angle + "60° camera FOV" note,
+    (3) NTSB match panel ("11 of 12 measured facts"), (4) methodology panel (model, prompt version, input hashes, kinematic label).
+    Re-check the numbers on screen before the slot (see section 0). If a panel isn't there, say only the lines whose panel you can point at.
 
 ### 2:00 – 2:12 · Flash baseline
 
@@ -122,7 +122,7 @@ Personal injury firms and insurance-defense firms, and the reconstruction expert
 All of it, between 10:30 and 5:00: the case ingest and upload flow, the text and video pipeline, the prompts and loop (generate → render → critique → patch), the headless renderer, the independent checks, the viewer and findings panel, the simulated deposition video, and the demo case file built from the NTSB report. We used open-source libraries (Three.js, Express, Playwright, ffmpeg) and the Gemini API. No prior code. The repo history shows it.
 
 **7. "How accurate is it?"**
-It's as accurate as the evidence and it tells you where it's guessing. Geometry is boxes at real dimensions, not a photoreal scan. Positions come from documents and marks, so a witness's location is only as good as their mark. The sightline check is exact for the model it's given; the model's uncertainty is in the inputs, which are cited and labeled. Treat its output as "this testimony deserves a closer look," with the reason attached, not as a final answer. On this case the world matches **TODO X of Y** facts NTSB measured (see section 3); the expert-level follow-ups are in section 3.
+It's as accurate as the evidence and it tells you where it's guessing. Geometry is boxes at real dimensions, not a photoreal scan. Positions come from documents and marks, so a witness's location is only as good as their mark. The sightline check is exact for the model it's given; the model's uncertainty is in the inputs, which are cited and labeled. Treat its output as "this testimony deserves a closer look," with the reason attached, not as a final answer. On this case the world matches 11 of 12 facts NTSB measured; the expert-level follow-ups are in section 3.
 
 **8. "What happens with a brand-new case?"**
 Nothing in the engine knows about this crash. Prompts, checks, loop, server and viewer contain no case-specific facts. You create a case, upload PDFs, text, images and videos, press Run, and Argon extracts the vehicles, occluders, timing and witness positions (including ones shown only on video) and writes that case's world. A new case needs a live run (minutes, mostly video upload and long generation); the demo case is cached so judging doesn't depend on Wi-Fi. If you want, we'll start one on a case you name and show the result at the end.
@@ -136,7 +136,7 @@ Spare answers if time allows:
 
 ## 3. What a skeptical expert would ask — and our answer
 
-For the reconstruction expert, the trial lawyer or the judge who has seen a paid crash animation. One or two lines each; say the line, then point at the panel if there is one. Items marked **TODO** need the real number from the cache before you go on stage (section 0).
+For the reconstruction expert, the trial lawyer or the judge who has seen a paid crash animation. One or two lines each; say the line, then point at the panel if there is one. Numbers come from the cache as of 12:00–12:02; re-check them on screen before you go on stage (section 0).
 
 **"No qualified expert signs this."**
 Right, and it isn't meant to be signed. Sightline is the analysis a lawyer runs before deciding to spend $5–20k; its output is a cited draft for their expert, not trial evidence.
@@ -151,7 +151,7 @@ Roadmap: enterprise deployment, no-training and no-retention terms with the mode
 An EDR report is just another evidence type: Argon reads it and cites it like any report page (roadmap: a structured EDR parser so speeds and brake timing feed the checks directly).
 
 **"Your accuracy is unvalidated."**
-We validate against public NTSB investigations with known answers: **TODO X of Y** measured facts match on this case (from `cases/demo/cache/validation.json`, not yet generated). Next, a benchmark across dozens of NTSB cases.
+We validate against public NTSB investigations with known answers: **11 of 12** measured facts match on this case (`cases/demo/cache/validation.json`: speed 74 mph, no braking, and so on). The miss: NTSB's 10.4 s crest-to-impact sight time can't be checked because the modeled car path starts about 1.6 m short of the crest, and we show that instead of hiding it. Next, a benchmark across dozens of NTSB cases.
 
 **"The geometry comes from documents, not a survey."**
 Every dimension is cited to a page; anything inferred rather than stated is labeled and drawn in amber. Roadmap: aerial imagery and scene scans as inputs.
@@ -160,7 +160,7 @@ Every dimension is cited to a page; anything inferred rather than stated is labe
 Correct, and it says so on screen. Motion is fitted to cited evidence and checked for physical plausibility (flags anything over 1 g, teleports, impossible speeds). Roadmap: export to crash-physics tools for the expert's own simulation.
 
 **"Her map mark is only good to a meter or two."**
-So we don't test one point. We ray-cast from 25 positions in a 2 m disc around her mark, with eye height ±0.1 m: the truck blocks her from **TODO N of 25** (from `checks[].robustness` in `cases/demo/cache/state.json`, not yet generated).
+So we don't test one point. We ray-cast from 25 positions in a 2 m disc around her mark, with eye height ±0.1 m: the truck blocks her from **all 25 of 25** (tractor from 14, trailer from 11). Verdict: robust.
 
 **"Line of sight doesn't mean she'd notice."**
 Agreed. We report the angle between her gaze and the target, flag peripheral vision past 30°, and state the 60° camera field of view on every witness render. The finding says "had line of sight", never "could see". That's more honest than most paid animations.

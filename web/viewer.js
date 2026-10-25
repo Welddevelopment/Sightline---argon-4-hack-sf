@@ -35,6 +35,25 @@ stage.appendChild(hud);
 const hudCam = hud.querySelector('.sl-hud-cam');
 const hudTime = hud.querySelector('.sl-hud-time');
 
+// witness-eye measurements (FOV, gaze, robustness) — shown only in witness cameras
+const eyePanel = document.createElement('div');
+eyePanel.className = 'sl-eye';
+eyePanel.hidden = true;
+stage.appendChild(eyePanel);
+
+// persistent kinematic disclaimer (text from API kinematicLabel when available)
+const KINEMATIC_FALLBACK = 'Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation.';
+const kinLabel = document.createElement('div');
+kinLabel.className = 'sl-kin';
+kinLabel.textContent = KINEMATIC_FALLBACK;
+stage.appendChild(kinLabel);
+
+// case data pushed in by ui.js (or fetched at boot with ?case=): checks, kinematicLabel
+let caseData = { checks: [], kinematicLabel: null };
+const INFERRED_RE = /inferred/i;
+const INFERRED_COLOR = 0xf5a524;
+const isInferred = (o) => !!(o && o.citation && INFERRED_RE.test(String(o.citation)));
+
 const scene = new THREE.Scene();
 const envGroup = new THREE.Group();   // lights, ground
 const markerGroup = new THREE.Group(); // witness markers
@@ -42,7 +61,8 @@ const labelGroup = new THREE.Group();  // sprite labels
 const rayGroup = new THREE.Group();    // sight lines
 const hiGroup = new THREE.Group();     // highlight boxes
 const previewGroup = new THREE.Group(); // placement preview (Place on map)
-scene.add(envGroup, markerGroup, labelGroup, rayGroup, hiGroup, previewGroup);
+const infGroup = new THREE.Group();    // dashed outlines around inferred (uncited) objects
+scene.add(envGroup, markerGroup, labelGroup, rayGroup, hiGroup, previewGroup, infGroup);
 let pickHandler = null;   // when set, overhead clicks go to this instead of the popover
 let previewSpec = null;
 
@@ -111,7 +131,9 @@ function makeLabel(text, opts = {}) {
   ctx.fillRect(0, 0, c.width, c.height);
   ctx.strokeStyle = opts.border || 'rgba(255,255,255,0.25)';
   ctx.lineWidth = 2;
+  if (opts.dashed) ctx.setLineDash([7, 5]);
   ctx.strokeRect(1, 1, c.width - 2, c.height - 2);
+  ctx.setLineDash([]);
   ctx.fillStyle = opts.color || '#e8ecf2';
   ctx.textBaseline = 'middle';
   ctx.fillText(text, pad, c.height / 2 + 1);
@@ -316,17 +338,55 @@ function rebuildMarkers() {
     g.position.set(p[0], 0, p[2]);
     markerGroup.add(g);
     markers.set(w.id, g);
-    const sp = makeLabel(shortName(w), { color: '#ffd98a', border: 'rgba(242,184,75,0.8)' });
+    const winf = isInferred(w);
+    const sp = makeLabel(shortName(w) + (winf ? '  · inferred' : ''), { color: '#ffd98a', border: winf ? '#f5a524' : 'rgba(242,184,75,0.8)', dashed: winf });
     sp.userData.ref = w.id; sp.userData.kind = 'witness';
     labelGroup.add(sp);
     labels.push(sp);
   }
   for (const [id, o] of Object.entries(world.objects)) {
-    if (!['vehicle', 'occluder', 'signal'].includes(o.kind)) continue;
-    const sp = makeLabel(shortLabel(o.label || id));
+    const inf = isInferred(o);
+    if (!['vehicle', 'occluder', 'signal'].includes(o.kind) && !(inf && !isHuge(o))) continue;
+    const sp = inf
+      ? makeLabel(shortLabel(o.label || id) + '  · inferred', { color: '#ffd28a', border: '#f5a524', dashed: true })
+      : makeLabel(shortLabel(o.label || id));
     sp.userData.ref = id; sp.userData.kind = 'object';
     labelGroup.add(sp);
     labels.push(sp);
+  }
+}
+
+// roads, ground planes and other very large objects get no outline/label (they would frame the whole scene)
+function isHuge(o) {
+  if (!o || !o.node || o.kind === 'road') return true;
+  const b = nodeBox(o.node, new THREE.Box3());
+  if (b.isEmpty()) return true;
+  const s = b.getSize(new THREE.Vector3());
+  return s.x > 80 || s.z > 80;
+}
+
+// thin amber dashed box around every inferred object (redrawn per frame: dynamic objects move)
+const BOX_EDGES = [[0, 1], [1, 3], [3, 2], [2, 0], [4, 5], [5, 7], [7, 6], [6, 4], [0, 4], [1, 5], [2, 6], [3, 7]];
+function updateInferred() {
+  disposeGroup(infGroup);
+  if (!world) return;
+  const overhead = camId === 'overhead';
+  const dash = overhead ? Math.max(0.5, halfNow() * 0.018) : 0.35;
+  for (const [id, o] of Object.entries(world.objects)) {
+    if (!isInferred(o) || isHuge(o)) continue;
+    if (camId === 'chase_' + id) continue;
+    const b = nodeBox(o.node, new THREE.Box3());
+    b.expandByScalar(0.3);
+    const c = [];
+    for (let i = 0; i < 8; i++) c.push(new THREE.Vector3(i & 1 ? b.max.x : b.min.x, i & 2 ? b.max.y : b.min.y, i & 4 ? b.max.z : b.min.z));
+    const pts = [];
+    for (const [a, z] of BOX_EDGES) pts.push(c[a], c[z]);
+    const seg = new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts),
+      new THREE.LineDashedMaterial({ color: INFERRED_COLOR, dashSize: dash, gapSize: dash * 0.7, depthTest: !overhead, transparent: true, opacity: 0.95 }));
+    seg.computeLineDistances();
+    seg.renderOrder = 17;
+    seg.name = 'inferred_' + id;
+    infGroup.add(seg);
   }
 }
 
@@ -620,9 +680,64 @@ function updateXrayAndBanner() {
   const lbl = (id) => ((world.objects[id] && world.objects[id].label) || id || 'unknown').replace(/\s*\([^)]*\)/g, '').replace(/\s+with\s.*$/i, '');
   banner.hidden = false;
   banner.className = 'sl-banner ' + (res.visible ? 'ok' : 'bad');
-  banner.textContent = res.visible ? 'LINE OF SIGHT: VISIBLE' : 'LINE OF SIGHT BLOCKED \u2014 ' + lbl(res.blockedBy);
+  banner.textContent = res.visible ? 'LINE OF SIGHT: CLEAR' : 'LINE OF SIGHT BLOCKED \u2014 ' + lbl(res.blockedBy);
   banner.dataset.verdict = res.visible ? 'VISIBLE' : 'BLOCKED';
   banner.dataset.blockedBy = res.blockedBy || '';
+}
+
+// ---------- witness-eye measurement panel ----------
+function sightCheckFor(wid) {
+  const arr = Array.isArray(caseData.checks) ? caseData.checks : [];
+  return arr.find((c) => c && c.check === 'sightline' && c.subject === wid) || null;
+}
+const fmtDeg = (x) => Math.round(Number(x)) + '\u00b0';
+const escH = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+export function robustnessLine(rb) {
+  if (!rb || rb.samples == null) return null;
+  const n = Number(rb.samples), blocked = Number(rb.blocked ?? (n - Number(rb.clear || 0)));
+  const clear = Number(rb.clear ?? (n - blocked));
+  const r = rb.radiusM != null ? rb.radiusM : 2;
+  if (blocked >= n || (rb.verdict === 'robust' && blocked > 0 && blocked >= clear)) return { cls: 'bad', text: `Blocked from ${blocked} of ${n} positions within ${r} m of mark` };
+  if (blocked <= 0 || rb.verdict === 'not_blocked') return { cls: 'ok', text: `Clear from ${clear} of ${n} positions within ${r} m of mark` };
+  return { cls: 'warn', text: `Blocked from ${blocked} of ${n} positions within ${r} m of mark` };
+}
+export function gazeLine(g) {
+  if (!g || g.offAxisDeg == null || !Number.isFinite(Number(g.offAxisDeg))) return null;
+  const per = g.peripheral != null ? !!g.peripheral : Number(g.offAxisDeg) > 30;
+  let how = '';
+  if (g.assumed) {
+    const src = g.source && world && world.objects[g.source] ? String(world.objects[g.source].label || g.source).replace(/\s*\([^)]*\)/g, '') : null;
+    how = src ? ` (gaze assumed toward ${src.toLowerCase()})` : ' (gaze direction assumed)';
+  }
+  return { cls: per ? 'warn' : '', text: `Target ${fmtDeg(g.offAxisDeg)} off gaze \u2014 ${per ? 'peripheral' : 'central'}${how}` };
+}
+
+function updateEyePanel() {
+  const w = !camId.startsWith('chase_') && camId !== 'overhead' ? findWitness(camId) : null;
+  if (!w) { eyePanel.hidden = true; return; }
+  const chk = sightCheckFor(w.id);
+  const rows = [];
+  const fov = Math.round(persp.fov);
+  rows.push({ cls: '', text: `Camera FOV ${fov}\u00b0${fov !== 60 ? ' (widened: target close)' : ''}` });
+  const g = chk && gazeLine(chk.gaze);
+  if (g) rows.push(g);
+  const rb = chk && robustnessLine(chk.robustness);
+  if (rb) rows.push(rb);
+  if (chk && chk.t != null && (g || rb) && Math.abs(Number(chk.t) - curT) > 0.05) rows.push({ cls: 'note', text: `measured at t = ${Number(chk.t).toFixed(1)} s` });
+  eyePanel.innerHTML = rows.map((r) => `<div class="sl-eye-row ${r.cls}">${escH(r.text)}</div>`).join('');
+  eyePanel.hidden = false;
+}
+
+function setCaseData(d) {
+  d = d || {};
+  const st = d.state || d;
+  caseData = {
+    checks: Array.isArray(d.checks) ? d.checks : Array.isArray(st.checks) ? st.checks : caseData.checks,
+    kinematicLabel: d.kinematicLabel || caseData.kinematicLabel,
+  };
+  kinLabel.textContent = caseData.kinematicLabel || KINEMATIC_FALLBACK;
+  if (world) renderFrame();
 }
 
 function cameraLabel() {
@@ -640,7 +755,9 @@ function renderFrame() {
   updateSightRays();
   updateHighlight();
   updatePreview();
+  updateInferred();
   updateXrayAndBanner();
+  updateEyePanel();
   hudCam.textContent = cameraLabel();
   hudTime.textContent = 't = ' + curT.toFixed(2) + ' s';
   renderer.render(scene, camera);
@@ -754,6 +871,11 @@ Object.assign(sl, {
   setPreview(spec) { previewSpec = spec || null; if (world) renderFrame(); },
   setRays(v) { showRays = !!v; renderFrame(); },
   setLabels(v) { showLabels = !!v; renderFrame(); },
+  // credibility: checks + kinematicLabel from GET /api/cases/:id (or /api/state); missing fields degrade gracefully
+  setCaseData,
+  isInferred,
+  fmt: { robustnessLine, gazeLine },
+  refresh() { if (world) { rebuildMarkers(); renderFrame(); } },
   world: null,
   worldUrl: null,
   THREE,
@@ -801,8 +923,35 @@ function pick(ev) {
 
 let down = null;
 canvas.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY, lx: e.clientX, ly: e.clientY, moved: false }; try { canvas.setPointerCapture(e.pointerId); } catch (_) {} });
+// hover tooltip: object label + citation (marks inferred objects)
+let hoverTs = 0;
+function hoverTitle(e) {
+  const now = performance.now();
+  if (!world || now - hoverTs < 120) return;
+  hoverTs = now;
+  const r = canvas.getBoundingClientRect();
+  raycaster.setFromCamera(new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1), camera);
+  raycaster.near = 0; raycaster.far = Infinity;
+  let tip = '';
+  for (const h of raycaster.intersectObjects([markerGroup, world.root], true)) {
+    if (!h.object.isMesh || !isVisibleChain(h.object)) continue;
+    if (h.object.userData.witnessId) {
+      const w = findWitness(h.object.userData.witnessId);
+      if (w) tip = shortName(w) + (isInferred(w) ? ' [inferred]' : '') + (w.citation ? '\nSource: ' + w.citation : '');
+      break;
+    }
+    const id = idForNode(h.object);
+    if (id) {
+      const o = world.objects[id];
+      if (o.kind === 'road' && !isInferred(o)) continue;
+      tip = (o.label || id) + (isInferred(o) ? ' [inferred]' : '') + (o.citation ? '\nSource: ' + o.citation : '');
+      break;
+    }
+  }
+  if (canvas.title !== tip) canvas.title = tip;
+}
 canvas.addEventListener('pointermove', (e) => {
-  if (!down) return;
+  if (!down) { hoverTitle(e); return; }
   if (Math.hypot(e.clientX - down.x, e.clientY - down.y) > 5) down.moved = true;
   if (down.moved && camId === 'overhead' && world) {
     const upp = (2 * halfNow()) / (canvas.clientHeight || 1);
@@ -836,6 +985,7 @@ window.addEventListener('resize', () => renderFrame());
       try {
         const cj = await (await fetch('/api/cases/' + encodeURIComponent(caseId))).json();
         want = cj && cj.state && cj.state.world;
+        if (cj) setCaseData(cj);
       } catch (_) {}
       if (!want) { location.replace('/cases.html?case=' + encodeURIComponent(caseId)); return; }
     }

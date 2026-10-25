@@ -179,12 +179,15 @@ function timingResults(world) {
   try { items = physics.prtAll(world) || []; } catch (e) { return [{ check: 'timing', subject: 'world', pass: false, detail: `Could not evaluate perception-reaction timing: ${e.message}`, citation: '' }]; }
   return items.map((r) => {
     const prt = r.prt || { availableS: r.availableS ?? null, rangeS: r.rangeS || [1.0, 2.5], typicalS: r.typicalS ?? 1.5, verdict: r.verdict || 'unverifiable' };
-    const base = r.check ? { ...r } : {
+    // SPEC: a "timing" result carrying a nested prt object. pass=false only when time was insufficient.
+    return {
+      ...r,
       check: 'timing', subject: r.subject || r.observerId || 'world',
-      pass: prt.verdict !== 'insufficient', detail: r.detail || '', citation: r.citation || '',
-      target: r.targetId, impactT: r.impactT ?? null,
+      pass: typeof r.pass === 'boolean' ? r.pass : prt.verdict !== 'insufficient',
+      detail: r.detail || '', citation: r.citation || r.impactSource || '',
+      target: r.targetId ?? r.target ?? null,
+      prt,
     };
-    return { ...base, prt };
   });
 }
 

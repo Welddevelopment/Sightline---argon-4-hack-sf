@@ -137,8 +137,26 @@ export function mountCases(app, h) {
   };
 
   const urlFor = (id, rel) => `/cases/${id}/${rel}`;
+  // Size/duration always come from the file on disk (manifest values can go stale when evidence is replaced).
+  const liveMeta = new Map(); // path -> { mtimeMs, size, durationSec }
+  const freshMeta = (id, f) => {
+    try {
+      const p = store.dir(id, 'evidence', f.name);
+      const st = fs.statSync(p);
+      let m = liveMeta.get(p);
+      if (!m || m.mtimeMs !== st.mtimeMs) {
+        m = { mtimeMs: st.mtimeMs, size: st.size };
+        if (f.type === 'video') Object.assign(m, videoInfo(p));
+        liveMeta.set(p, m);
+      }
+      const out = { size: m.size };
+      if (m.durationSec != null) out.durationSec = m.durationSec;
+      return out;
+    } catch { return {}; }
+  };
   const fileUrls = (id, f) => ({
     ...f,
+    ...freshMeta(id, f),
     url: urlFor(id, 'evidence/' + encodeURIComponent(f.name)),
     textUrl: f.textPath ? urlFor(id, f.textPath.split('/').map(encodeURIComponent).join('/')) : null,
   });

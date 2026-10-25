@@ -20,7 +20,7 @@ Built at the Gemini 4 Argon SF Hackathon, Oct 25, 2026. Track: **More Dimensions
 5. **Critique and patch.** Argon watches the renders against the evidence and the check results, writes findings (contradiction / consistent / unverifiable) with citations, and returns a patched world if the world itself was wrong. The loop repeats up to 3 rounds.
 6. **Ask "what if".** Type a new witness statement; Argon places that witness in the world and the same checks give a verdict. Or place a witness on the map by hand.
 
-In the demo case, Witness B says she clearly saw the driver's head in the last second before impact. She marks where she stood on a map exhibit 27 minutes into the deposition, and never says the position out loud. Argon's first draft places her from her words; after watching the renders against the video, it moves her to the marked spot, and the ray-cast check shows the turning truck blocking her view from 1.3 s before impact. A transcript-only baseline (Gemini Flash, chunk-and-summarize) calls her testimony consistent.
+In the demo case, Witness B says she had a clear view of the car the whole way in, right up until it hit. She marks where she stood on a map exhibit 27 minutes into the deposition, and never says the position out loud. Argon's first draft places her from her words; after watching the renders against the video, it moves her to the marked spot, and the ray-cast check shows the turning truck blocking her view from 1.3 s before impact, from all 25 test positions within 2 m of her mark. A transcript-only baseline (Gemini Flash, chunk-and-summarize) calls her testimony consistent.
 
 ## Why it needs Argon
 
@@ -130,10 +130,10 @@ We used open-source libraries (Three.js, Express, Playwright, @sparticuz/chromiu
 - **Is it reproducible?** Every world version records the model, prompt version (hash) and a hash of every input (`cases/<id>/worlds/world_vN.provenance.json`). The checks are deterministic, so any run can be replayed.
 - **Confidentiality and privilege?** Roadmap: enterprise deployment, no-training and no-retention terms, per-matter access control, audit log.
 - **Event data recorder?** An EDR report is just another evidence type that Argon reads and cites (roadmap).
-- **Accuracy is unvalidated.** We validate against public NTSB investigations with known answers: **TODO X of Y** measured facts match on this case (`cases/demo/cache/validation.json`, not yet generated). Next, a benchmark across dozens of cases.
+- **Accuracy is unvalidated.** We validate against public NTSB investigations with known answers: **11 of 12** measured facts match on this case (`cases/demo/cache/validation.json`; the miss is NTSB's 10.4 s crest-to-impact time, which can't be checked because the modeled car path starts about 1.6 m short of the crest). Next, a benchmark across dozens of cases.
 - **Geometry from documents, not a survey.** Every dimension is cited; inferred values are labeled and drawn in amber. Roadmap: aerial imagery and scans.
 - **Kinematic, not physics.** Motion is fitted to cited evidence and checked for physical plausibility (over 1 g, teleports, impossible speeds). Roadmap: export to crash-physics tools.
-- **Her map mark is only good to ±1–2 m.** We ray-cast from 25 positions in a 2 m disc around it (eye height ±0.1 m): blocked from **TODO N of 25** (`checks[].robustness` in `cases/demo/cache/state.json`, not yet generated).
+- **Her map mark is only good to ±1–2 m.** We ray-cast from 25 positions in a 2 m disc around it (eye height ±0.1 m): in the demo, blocked from **25 of 25** (tractor 14, trailer 11).
 - **Line of sight is not the same as noticing.** We report the angle between her gaze and the target, flag anything past 30° as peripheral, and state the 60° camera field of view. Findings say "had line of sight", never "could see".
 - **Night and glare.** Lighting objects are cited from the evidence; a sun-angle glare check is on the roadmap.
 

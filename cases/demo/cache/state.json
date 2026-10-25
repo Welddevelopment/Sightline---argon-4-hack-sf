@@ -135,7 +135,7 @@
       "check": "sightline",
       "subject": "wit_A",
       "pass": true,
-      "detail": "From Witness A's marked position (Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account) the line of sight to veh_A is clear at t=2s (distance 639.5 m). Claim: \"Saw the car come over the hill and approach before the truck began its turn; once the truck pulled across, the trailer blocked my view of the car.\"",
+      "detail": "From Witness A's marked position (Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account) Witness A had line of sight to veh_A at t=2s (distance 639.5 m); target 2° from gaze (gaze assumed toward mark_impact). Clear from all 25 positions within 2 m of Witness A's mark. Claim: \"Saw the car come over the hill and approach before the truck began its turn; once the truck pulled across, the trailer blocked my view of the car.\"",
       "citation": "Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account",
       "blockedBy": null,
       "target": "veh_A",
@@ -151,13 +151,29 @@
         0.7225000005960465,
         0
       ],
-      "hitPoint": null
+      "hitPoint": null,
+      "robustness": {
+        "radiusM": 2,
+        "samples": 25,
+        "blocked": 0,
+        "clear": 25,
+        "eyeJitterM": 0.1,
+        "verdict": "not_blocked",
+        "blockers": {}
+      },
+      "gaze": {
+        "offAxisDeg": 2.4,
+        "assumed": true,
+        "cameraFovDeg": 60,
+        "peripheral": false,
+        "source": "mark_impact"
+      }
     },
     {
       "check": "sightline",
       "subject": "wit_B",
       "pass": false,
-      "detail": "From Witness B's marked position (Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter') the line of sight to veh_A is blocked by veh_T_tractor at t=9.9s (distance 28.3 m). Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
+      "detail": "From Witness B's marked position (Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter') the line of sight to veh_A is blocked by veh_T_tractor at t=9.9s (distance 28.3 m). Blocked from 25 of 25 positions within 2 m of Witness B's mark. Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
       "citation": "Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter'",
       "blockedBy": "veh_T_tractor",
       "target": "veh_A",
@@ -177,13 +193,32 @@
         1.2500000000000007,
         1.400698633757006,
         5.02369358238244
-      ]
+      ],
+      "robustness": {
+        "radiusM": 2,
+        "samples": 25,
+        "blocked": 25,
+        "clear": 0,
+        "eyeJitterM": 0.1,
+        "verdict": "robust",
+        "blockers": {
+          "veh_T_tractor": 14,
+          "veh_T_trailer": 11
+        }
+      },
+      "gaze": {
+        "offAxisDeg": 28.4,
+        "assumed": true,
+        "cameraFovDeg": 60,
+        "peripheral": false,
+        "source": "mark_impact"
+      }
     },
     {
       "check": "sightline",
       "subject": "wit_C",
       "pass": true,
-      "detail": "From Witness C's marked position (Witness C statement (fictional); consistent with NTSB/HAR-17/02 p.1-2 and p.5) the line of sight to veh_T_tractor is clear at t=5s (distance 29.3 m). Claim: \"The truck was barely creeping when it started across; I never heard brakes before the bang.\"",
+      "detail": "From Witness C's marked position (Witness C statement (fictional); consistent with NTSB/HAR-17/02 p.1-2 and p.5) Witness C had line of sight to veh_T_tractor at t=5s (distance 29.3 m); target 17° from gaze (gaze assumed toward mark_impact). Clear from all 25 positions within 2 m of Witness C's mark. Claim: \"The truck was barely creeping when it started across; I never heard brakes before the bang.\"",
       "citation": "Witness C statement (fictional); consistent with NTSB/HAR-17/02 p.1-2 and p.5",
       "blockedBy": null,
       "target": "veh_T_tractor",
@@ -199,7 +234,141 @@
         3.8500000238418584,
         -18.179999988423177
       ],
-      "hitPoint": null
+      "hitPoint": null,
+      "robustness": {
+        "radiusM": 2,
+        "samples": 25,
+        "blocked": 0,
+        "clear": 25,
+        "eyeJitterM": 0.1,
+        "verdict": "not_blocked",
+        "blockers": {}
+      },
+      "gaze": {
+        "offAxisDeg": 17.3,
+        "assumed": true,
+        "cameraFovDeg": 60,
+        "peripheral": false,
+        "source": "mark_impact"
+      }
+    },
+    {
+      "check": "timing",
+      "subject": "veh_A",
+      "observerId": "veh_A",
+      "targetId": "veh_T_trailer",
+      "impactT": 10.43,
+      "availableS": 10.43,
+      "rangeS": [
+        1,
+        2.5
+      ],
+      "typicalS": 1.5,
+      "verdict": "sufficient",
+      "method": "sightline",
+      "firstVisibleT": 0,
+      "conflictT": 7.550000000000001,
+      "conflictS": 2.88,
+      "cappedAtStart": true,
+      "blockedBy": null,
+      "detail": "The driver of Vehicle A had a continuous line of sight to Vehicle T for 10.43 s before impact (t=0.00–10.43 s), from the start of the reconstructed timeline, so this is a lower bound. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Vehicle T came within 3 m of the centerline of this driver's remaining path 2.88 s before impact. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
+      "impactSource": "fact f_impact_t (NTSB/HAR-17/02 p.22, p.29 (derived from 74 mph over 345 m))",
+      "pass": true,
+      "citation": "fact f_impact_t (NTSB/HAR-17/02 p.22, p.29 (derived from 74 mph over 345 m))",
+      "target": "veh_T_trailer",
+      "prt": {
+        "availableS": 10.43,
+        "rangeS": [
+          1,
+          2.5
+        ],
+        "typicalS": 1.5,
+        "verdict": "sufficient"
+      }
+    },
+    {
+      "check": "timing",
+      "subject": "veh_T_tractor",
+      "observerId": "veh_T_tractor",
+      "targetId": "veh_A",
+      "impactT": 10.43,
+      "availableS": 10.4,
+      "rangeS": [
+        1,
+        2.5
+      ],
+      "typicalS": 1.5,
+      "verdict": "sufficient",
+      "method": "sightline",
+      "firstVisibleT": 0.03,
+      "conflictT": null,
+      "conflictS": null,
+      "cappedAtStart": false,
+      "blockedBy": "occ_crest",
+      "detail": "The driver of Vehicle T had a continuous line of sight to Vehicle A for 10.40 s before impact (t=0.03–10.43 s); before that it was blocked by occ_crest. Typical perception-reaction time is 1.5 s (range 1–2.5 s). Time available is more than the 2.5 s upper bound, so there was time to perceive and begin reacting. Kinematic estimate from the reconstructed geometry; it does not account for attention, conspicuity, glare or expectation.",
+      "impactSource": "fact f_impact_t (NTSB/HAR-17/02 p.22, p.29 (derived from 74 mph over 345 m))",
+      "pass": true,
+      "citation": "fact f_impact_t (NTSB/HAR-17/02 p.22, p.29 (derived from 74 mph over 345 m))",
+      "target": "veh_A",
+      "prt": {
+        "availableS": 10.4,
+        "rangeS": [
+          1,
+          2.5
+        ],
+        "typicalS": 1.5,
+        "verdict": "sufficient"
+      }
+    },
+    {
+      "check": "plausibility",
+      "subject": "veh_A",
+      "pass": false,
+      "maxAccelG": 1.11,
+      "maxSpeedMph": 74.1,
+      "issues": [
+        "acceleration 1.11 g at t=21.80 s exceeds 1 g outside the impact window (over the limit at 3 samples between t=21.70 and t=21.80 s)"
+      ],
+      "detail": "Vehicle A has implausible motion: acceleration 1.11 g at t=21.80 s exceeds 1 g outside the impact window (over the limit at 3 samples between t=21.70 and t=21.80 s). Impact at t=10.43 s (fact f_impact_t (NTSB/HAR-17/02 p.22, p.29 (derived from 74 mph over 345 m))); accelerations within ±0.5 s of it are excluded.",
+      "citation": "NTSB/HAR-17/02 p.1 (910 ft post-impact), p.2 & p.15 (74 mph, no braking, headlights off), p.5 (no pre-impact marks); dims: typical full-size sedan, assumed",
+      "maxAccelT": 21.8,
+      "maxSpeedT": 4.5,
+      "impactAccelG": 1.01,
+      "impactT": 10.43,
+      "impactSource": "fact f_impact_t (NTSB/HAR-17/02 p.22, p.29 (derived from 74 mph over 345 m))",
+      "label": "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation."
+    },
+    {
+      "check": "plausibility",
+      "subject": "veh_T_tractor",
+      "pass": true,
+      "maxAccelG": 0.2,
+      "maxSpeedMph": 13.7,
+      "issues": [],
+      "detail": "Vehicle T moves plausibly: peak speed 13.7 mph, peak acceleration 0.2 g outside the impact window, no position jumps. Impact at t=10.43 s (fact f_impact_t (NTSB/HAR-17/02 p.22, p.29 (derived from 74 mph over 345 m))); accelerations within ±0.5 s of it are excluded.",
+      "citation": "NTSB/HAR-17/02 p.1 (left turn from WB turn lane onto NE 140th Ct; stopped south of retail business), p.1-2 (witness could not tell if stopped or moving very slowly)",
+      "maxAccelT": 4.2,
+      "maxSpeedT": 10.350000000000001,
+      "impactAccelG": 0.06,
+      "impactT": 10.43,
+      "impactSource": "fact f_impact_t (NTSB/HAR-17/02 p.22, p.29 (derived from 74 mph over 345 m))",
+      "label": "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation."
+    },
+    {
+      "check": "plausibility",
+      "subject": "veh_T_trailer",
+      "pass": true,
+      "maxAccelG": 0.19,
+      "maxSpeedMph": 13.6,
+      "issues": [],
+      "detail": "Vehicle T moves plausibly: peak speed 13.6 mph, peak acceleration 0.19 g outside the impact window, no position jumps. Impact at t=10.43 s (fact f_impact_t (NTSB/HAR-17/02 p.22, p.29 (derived from 74 mph over 345 m))); accelerations within ±0.5 s of it are excluded.",
+      "citation": "NTSB/HAR-17/02 p.6 (71 ft 7 in overall; impact 45 ft 5 in behind tractor front)",
+      "maxAccelT": 5.7,
+      "maxSpeedT": 10.450000000000001,
+      "impactAccelG": 0.08,
+      "impactT": 10.43,
+      "impactSource": "fact f_impact_t (NTSB/HAR-17/02 p.22, p.29 (derived from 74 mph over 345 m))",
+      "label": "Kinematic reconstruction: motion fitted to cited evidence; not a crash-physics simulation."
     }
   ],
   "loopLog": [

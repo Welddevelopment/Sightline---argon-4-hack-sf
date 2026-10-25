@@ -8,7 +8,11 @@
 - Pre-stage checklist (PITCH §0) now includes filling the credibility numbers and "never say a million tokens out".
 - Later sections renumbered: video §4, checklist §5, README draft §6.
 
-## TODO (blocked on other slices)
-- "X of Y" NTSB facts matched: fill from `cases/demo/cache/validation.json` (`matched`/`total`) — not present yet. Marked **TODO X of Y** in PITCH §1 (1:45 beat), §2 Q7, §3, README.
-- "blocked from N of 25": fill from `cases/demo/cache/state.json` `checks[].robustness.blocked` — not present yet. Marked **TODO N of 25** in PITCH §1 and §3, README.
-- Gaze angle "X degrees" in the 1:45 beat: fill from `checks[].gaze.offAxisDeg` (wit_B → veh_A).
+## Watch
+- Gaze line in the 1:45 beat says "28 degrees off her assumed line of gaze" (wit_B offAxisDeg 28.4, assumed toward mark_impact). Re-check if checks change.
+- If validation.json or robustness numbers change, update PITCH §0/§1/§2 Q7/§3 and README.
+
+## Filled from cache (state.json 12:00, validation.json 12:02)
+- NTSB validation: 11 of 12 matched. The miss is crest_to_impact_time (expected 10.4 s): the car path starts 343.4 m before impact, short of the 345 m needed. Stated openly in PITCH §3 and README. A WORLD/CASE fix (start veh_A path a few m earlier) would make it 12/12; then update the numbers.
+- wit_B robustness: blocked 25/25 (tractor 14, trailer 11), verdict robust; gaze 28.4° (assumed). Filled in PITCH §0, §1, §3 and README.
+- Witness B claim wording in script + README updated to the cached claim ("clear view of the car the whole way in ... nothing was in the way"); the old "driver's head / looking at the dash" line was stale.

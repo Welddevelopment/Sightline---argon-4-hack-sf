@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sightline — Cases</title>
 <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/methodology.css">
 <style>
   body { display: block; overflow: auto; }
   #top { height: 54px; position: sticky; top: 0; z-index: 5; }
@@ -332,5 +333,6 @@ $('#newBtn').onclick = showNew;
   if (want) selectCase(want); else if (cases.length && new URLSearchParams(location.search).get('new') == null) selectCase(cases[0].caseId); else showNew();
 })();
 </script>
+<script type="module" src="/methodology.js"></script>
 </body>
 </html>

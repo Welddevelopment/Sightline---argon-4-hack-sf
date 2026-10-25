@@ -301,8 +301,103 @@ function renderCompare() {
   box.querySelectorAll('.chip').forEach((chip) => { chip.onclick = () => openCitation(chip.dataset.cite); });
 }
 
+// ---------- measurements (CREDIBILITY v1 check fields; every field optional) ----------
+const cleanLbl = (id) => String(labelOf(id)).replace(/\s*\([^)]*\)/g, '');
+const fmtFmt = () => (sl && sl.fmt) || {};
+const n0 = (x) => Math.round(Number(x));
+const n1 = (x) => (Math.round(Number(x) * 10) / 10).toFixed(1);
+function sightChecks() { return ((state && state.checks) || []).filter((c) => c && c.check === 'sightline'); }
+function witnessMeasureLines(c) {
+  const out = [];
+  const f = fmtFmt();
+  const rb = f.robustnessLine ? f.robustnessLine(c.robustness) : null;
+  if (rb) out.push(rb);
+  const g = f.gazeLine ? f.gazeLine(c.gaze) : null;
+  if (g) out.push(g);
+  return out;
+}
+function prtLine(p) {
+  if (!p) return null;
+  const v = String(p.verdict || 'unverifiable').toLowerCase();
+  const cls = { insufficient: 'bad', marginal: 'warn', sufficient: 'ok' }[v] || '';
+  const typ = p.typicalS != null ? `typical ${n1(p.typicalS)} s` : '';
+  if (p.availableS == null || !Number.isFinite(Number(p.availableS))) return { cls, text: `Perception-reaction time: unverifiable${typ ? ' (' + typ + ')' : ''}` };
+  return { cls, text: `${n1(p.availableS)} s available to perceive and react; ${typ}${typ ? ' — ' : ''}${v}` };
+}
+function rangeLine(r) {
+  if (!r || !Array.isArray(r.mph) || r.mph.length < 2) return null;
+  const mu = Array.isArray(r.mu) ? r.mu : [0.6, 0.8];
+  return `${n0(r.mph[0])}–${n0(r.mph[1])} mph, friction ${mu[0]}–${mu[1]}`;
+}
+function measureItems() {
+  const items = [];
+  const checks = (state && state.checks) || [];
+  for (const c of checks) {
+    if (!c) continue;
+    if (c.check === 'sightline') {
+      const w = (sl.world.witnesses || []).find((x) => x.id === c.subject);
+      const who = w ? shortWit(w) : c.subject;
+      const tgt = c.target && sl.world.objects[c.target] ? cleanLbl(c.target) : (c.target || 'target');
+      const lines = [];
+      if (c.pass === false && c.blockedBy) lines.push({ cls: 'bad', text: `Line of sight blocked by ${cleanLbl(c.blockedBy)}` });
+      else if (c.pass === true) lines.push({ cls: 'ok', text: `Had line of sight${c.distance != null ? ' (' + n1(c.distance) + ' m)' : ''}` });
+      lines.push(...witnessMeasureLines(c));
+      items.push({ head: `${who} → ${tgt}`, sub: c.t != null ? `t = ${n1(c.t)} s` : '', lines, focus: () => focusFinding({ involves: [c.subject] }, null) });
+    }
+    if (c.range) {
+      const txt = rangeLine(c.range);
+      if (txt) {
+        const lines = [{ cls: c.pass === false ? 'bad' : '', text: `Skid speed ${txt}` }];
+        if (c.actualMph != null) lines.push({ cls: c.pass === false ? 'bad' : 'ok', text: `Reconstruction: ${n0(c.actualMph)} mph${c.t != null ? ' at t = ' + n1(c.t) + ' s' : ''}` });
+        items.push({ head: c.subject && sl.world.objects[c.subject] ? cleanLbl(c.subject) : (c.subject || 'Skid'), sub: 'skid marks', lines });
+      }
+    }
+    if (c.prt) {
+      const l = prtLine(c.prt);
+      const obs = c.prt.observerId || c.observerId || c.subject;
+      const tg = c.prt.targetId || c.targetId || c.target;
+      const wObs = (sl.world.witnesses || []).find((x) => x.id === obs);
+      const who = wObs ? shortWit(wObs) : obs && sl.world.objects[obs] ? (sl.world.objects[obs].kind === 'vehicle' ? 'Driver of ' : '') + cleanLbl(obs) : (obs || 'Observer');
+      if (l && c.cappedAtStart && l.text.includes('available')) l.text = l.text.replace(' s available', ' s+ available');
+      if (l) items.push({ head: who + (tg ? ' \u2192 ' + (sl.world.objects[tg] ? cleanLbl(tg) : tg) : ''), sub: 'perception-reaction', lines: [l] });
+    }
+  }
+  const pl = checks.filter((c) => c && c.check === 'plausibility');
+  const failed = pl.filter((c) => c.pass === false);
+  if (failed.length) {
+    for (const c of failed) {
+      const issues = Array.isArray(c.issues) && c.issues.length ? c.issues : [c.detail || 'implausible motion'];
+      items.push({ head: sl.world.objects[c.subject] ? cleanLbl(c.subject) : c.subject, sub: 'motion plausibility', lines: issues.map((t) => ({ cls: 'bad', text: String(t) })) });
+    }
+  } else if (pl.length) {
+    items.push({ head: 'Motion plausibility', sub: '', lines: [{ cls: 'ok', text: `${pl.length} moving object${pl.length > 1 ? 's' : ''}: no acceleration, jump or speed limit exceeded` }] });
+  }
+  return items;
+}
+function lineHtml(l, base = 'm-line') { return `<div class="${base} ${esc(l.cls || '')}">${esc(l.text)}</div>`; }
+function renderMeasures() {
+  let box = $('measures');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'measures';
+    const f = $('findings');
+    if (!f || !f.parentNode) return;
+    f.parentNode.insertBefore(box, f);
+  }
+  if (!sl.world || !state) { box.innerHTML = ''; return; }
+  const items = measureItems();
+  if (!items.length) { box.innerHTML = ''; return; }
+  box.innerHTML = `<details open><summary>Measurements <span class="count">(independent checks)</span></summary><ul class="m-list">${items.map((it, i) =>
+    `<li class="m-item" data-i="${i}"><div class="m-head">${esc(it.head)}${it.sub ? ' <span class="muted small">· ' + esc(it.sub) + '</span>' : ''}</div>${it.lines.map((l) => lineHtml(l)).join('')}</li>`).join('')}</ul></details>`;
+  box.querySelectorAll('.m-item').forEach((li) => {
+    const it = items[+li.dataset.i];
+    if (it.focus) { li.style.cursor = 'pointer'; li.onclick = it.focus; }
+  });
+}
+
 function renderFindings() {
   const box = $('findings');
+  renderMeasures();
   $('findCount').textContent = findings.length ? '(' + findings.length + ')' : '';
   if (!findings.length) {
     box.innerHTML = '<div class="muted">No findings yet. Run the loop on the server to generate them' + (state ? '.' : ' (API not available — viewer is running standalone).') + '</div>';
@@ -316,13 +411,25 @@ function renderFindings() {
     el.dataset.id = f.id;
     el.innerHTML = `<div class="f-top"><span class="pill ${sevClass(f.severity)}">${esc(f.severity || 'info')}</span><span class="pill ${esc(st)}">${esc(st)}</span></div>
       <div class="f-sum">${esc(f.summary)}</div>
-      <div class="chips">${citationsOf(f).map((c) => `<span class="chip" data-cite="${esc(c)}">${esc(c)}</span>`).join('')}</div>`;
+      ${findingMeasures(f)}
+      <div class="chips">${citationsOf(f).map((c) => `<span class="chip${/inferred/i.test(c) ? ' inferred' : ''}" data-cite="${esc(c)}">${esc(c)}</span>`).join('')}</div>`;
     el.onclick = () => focusFinding(f, el);
     el.querySelectorAll('.chip').forEach((chip) => {
       chip.onclick = (ev) => { ev.stopPropagation(); openCitation(chip.dataset.cite); };
     });
     box.appendChild(el);
   }
+}
+// robustness + gaze lines for the witness(es) a finding involves
+function findingMeasures(f) {
+  if (!sl.world) return '';
+  const inv = f.involves || [];
+  const lines = [];
+  for (const c of sightChecks()) {
+    if (!inv.includes(c.subject)) continue;
+    lines.push(...witnessMeasureLines(c));
+  }
+  return lines.length ? `<div class="f-meas">${lines.map((l) => lineHtml(l)).join('')}</div>` : '';
 }
 function focusFinding(f, el) {
   document.querySelectorAll('.finding.active').forEach((x) => x.classList.remove('active'));
@@ -337,7 +444,7 @@ function focusFinding(f, el) {
     if (w.observationTime != null) sl.setTime(w.observationTime);
     const r = sl.sightline(w.id);
     if (r && !r.visible && r.blockedBy && !hi.includes(r.blockedBy)) hi.push(r.blockedBy);
-    toast(shortWit(w) + ' @ t=' + (w.observationTime != null ? w.observationTime : sl.time).toFixed(1) + ' s — ' + (r ? (r.visible ? 'target VISIBLE' : 'view BLOCKED by ' + labelOf(r.blockedBy)) : ''));
+    toast(shortWit(w) + ' @ t=' + (w.observationTime != null ? w.observationTime : sl.time).toFixed(1) + ' s — ' + (r ? (r.visible ? 'had line of sight to target' : 'line of sight blocked by ' + labelOf(r.blockedBy)) : ''));
   } else {
     const veh = hi.find((id) => sl.world.objects[id].kind === 'vehicle');
     sl.setCamera(veh && f.camera === 'chase' ? 'chase_' + veh : 'overhead');
@@ -370,12 +477,14 @@ function showPopover(d) {
     const w = d.witness;
     title = w.name || w.id; meta = 'Witness · observes t=' + w.observationTime + ' s';
     cite = w.citation;
-    p.innerHTML = `<div class="p-title">${esc(title)}</div><div class="p-meta">${esc(meta)}</div><div style="margin-bottom:6px">“${esc(w.claim)}”</div>${cite ? `<span class="chip" data-cite="${esc(cite)}">${esc(cite)}</span>` : ''}`;
+    const inf = /inferred/i.test(cite || '');
+    p.innerHTML = `<div class="p-title">${esc(title)}${inf ? '<span class="tag-inferred">inferred</span>' : ''}</div><div class="p-meta">${esc(meta)}</div><div style="margin-bottom:6px">“${esc(w.claim)}”</div>${cite ? `<span class="chip${inf ? ' inferred' : ''}" data-cite="${esc(cite)}">${esc(cite)}</span>` : ''}`;
   } else {
     const o = d.obj;
     title = o.label || d.id; meta = (o.kind || 'object') + ' · ' + d.id + (o.occludes ? ' · occludes' : '');
     cite = o.citation;
-    p.innerHTML = `<div class="p-title">${esc(title)}</div><div class="p-meta">${esc(meta)}</div>${cite ? `<span class="chip" data-cite="${esc(cite)}">${esc(cite)}</span>` : ''}`;
+    const inf = /inferred/i.test(cite || '');
+    p.innerHTML = `<div class="p-title">${esc(title)}${inf ? '<span class="tag-inferred">inferred</span>' : ''}</div><div class="p-meta">${esc(meta)}${inf ? ' · not directly cited' : ''}</div>${cite ? `<span class="chip${inf ? ' inferred' : ''}" data-cite="${esc(cite)}">${esc(cite)}</span>` : '<span class="muted small">No citation</span>'}`;
   }
   p.querySelectorAll('.chip').forEach((c) => { c.onclick = () => openCitation(c.dataset.cite); });
   const wrap = $('stageWrap').getBoundingClientRect();
@@ -457,7 +566,8 @@ function fillTargets() {
   items.sort((a, b) => kinds.indexOf(a[1].kind) - kinds.indexOf(b[1].kind));
   for (const [id, o] of items) {
     const op = document.createElement('option');
-    op.value = id; op.textContent = String(o.label || id).replace(/\s*\([^)]*\)/g, '');
+    op.value = id; op.textContent = String(o.label || id).replace(/\s*\([^)]*\)/g, '') + (/inferred/i.test(o.citation || '') ? ' [inferred]' : '');
+    if (o.citation) op.title = o.citation;
     sel.appendChild(op);
   }
 }
@@ -575,6 +685,7 @@ async function loadState(allowWorldSwap) {
     return;
   }
   findings = state.findings || [];
+  try { sl.setCaseData && sl.setCaseData({ checks: state.checks || [], kinematicLabel: (caseInfo && caseInfo.kinematicLabel) || state.kinematicLabel }); } catch (_) {}
   renderFindings();
   renderCompare();
   loadBaseline();
@@ -583,6 +694,7 @@ async function loadState(allowWorldSwap) {
     try {
       await sl.loadWorld(state.world);
       afterWorld();
+      renderFindings();
     } catch (e) { console.warn('Could not load state world', e); }
   }
   // live witnesses added earlier through the API
