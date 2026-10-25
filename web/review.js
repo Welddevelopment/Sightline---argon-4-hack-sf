@@ -29,7 +29,9 @@ const S = {
 const isInferred = (it, cite) => (it && it.cited === false) || /inferred/i.test(String(cite ?? (it && it.citation) ?? ''));
 const prep = (arr) => (Array.isArray(arr) ? arr : []).map((x, i) => ({ ...clone(x), id: x.id || `item${i + 1}`, _rej: false, _ed: false, _editing: false }));
 const strip = (it) => { const o = {}; for (const [k, v] of Object.entries(it)) if (!k.startsWith('_')) o[k] = v; if (it._ed) o.edited = true; return o; };
-const witLetter = (w, i) => { const m = /\b([A-Z])$/.exec(String(w.name || '').trim()) || /wit_([a-z0-9])/i.exec(w.id || ''); return (m ? m[1] : String(i + 1)).toUpperCase().slice(0, 2); };
+// Short display name for the scene plan: drop parentheticals and anything after ';' or ',' ("Witness A (fictional; …)" → "Witness A").
+const shortName = (w) => { const n = String(w.name || w.id || '').replace(/\s*\(.*$/, '').split(/[;,]/)[0].trim(); return n.length > 22 ? n.slice(0, 21) + '…' : n; };
+const witLetter = (w, i) => { const m = /\b([A-Z])$/.exec(shortName(w)) || /^wit_(?:witness_)?([a-z0-9])$/i.exec(w.id || '') || /\b([A-Z])\b/.exec(shortName(w)); return (m ? m[1] : String(i + 1)).toUpperCase().slice(0, 2); };
 const fmtPos = (p) => (Array.isArray(p) && p.length >= 2 && p.every(Number.isFinite)) ? `x ${p[0].toFixed(1)} m, z ${p[1].toFixed(1)} m` : null;
 // Where Argon originally put a witness (before any drag), and how far the reviewer moved it.
 const origPos = (w) => { const o = ((S.ext && S.ext.witnesses) || []).find((x) => x.id === w.id); return o && hasPos(o.markedPosition) ? o.markedPosition.map(Number) : null; };
@@ -495,8 +497,11 @@ function drawMap() {
     const [px, py] = toPx(wt.markedPosition.map(Number));
     if (offPlan(px, py)) return;
     ctx.font = '600 10.5px ' + sans;
-    const tw = ctx.measureText(String(wt.name || wt.id) + (wt._ed ? ' (moved)' : '')).width;
-    occ.push([px - 11, py - 11, 22, 22], [px + 12, py - 8, tw + 8, 16]);
+    occ.push([px - 11, py - 11, 22, 22]);
+    ctx.font = '600 10.5px ' + sans;
+    const lbl = shortName(wt) + (wt._ed ? ' · moved' : ''), tw = ctx.measureText(lbl).width;
+    const lx = px + tw + 22 > w ? px - tw - 20 : px + 12;
+    wt._lr = [lx, place(lx, py - 8, tw + 8, 16), tw, lbl]; // reserved before scenery labels
   });
   S.witnesses.forEach((wt) => {
     if (!hasPos(wt.markedPosition)) return;
@@ -505,7 +510,7 @@ function drawMap() {
     const [ex, ey, a] = clampEdge(px, py);
     ctx.globalAlpha = wt._rej ? 0.35 : 1;
     ctx.save(); ctx.translate(ex, ey); ctx.rotate(a); ctx.fillStyle = '#e2b052'; ctx.beginPath(); ctx.moveTo(9, 0); ctx.lineTo(-5, -7); ctx.lineTo(-5, 7); ctx.closePath(); ctx.fill(); ctx.restore();
-    edgeLabel(ex, ey, `${wt.name || wt.id} · ${compass(+wt.markedPosition[0], +wt.markedPosition[1])} (off plan)`);
+    edgeLabel(ex, ey, `${shortName(wt)} · ${compass(+wt.markedPosition[0], +wt.markedPosition[1])}`);
     ctx.globalAlpha = 1;
   });
   // objects
@@ -516,14 +521,15 @@ function drawMap() {
     if (offPlan(px, py)) {
       const [ex, ey, a] = clampEdge(px, py);
       ctx.save(); ctx.translate(ex, ey); ctx.rotate(a); ctx.fillStyle = '#6f7c90'; ctx.beginPath(); ctx.moveTo(6, 0); ctx.lineTo(-4, -5); ctx.lineTo(-4, 5); ctx.closePath(); ctx.fill(); ctx.restore();
-      edgeLabel(ex, ey, `${String(o.label || o.kind || o.id).slice(0, 18)} · ${compass(+o.position[0], +o.position[1])}`);
-      return;
+      return; // arrow only: off-plan scenery labels crowded the plan (full list is in the table)
     }
     ctx.fillStyle = '#6f7c90'; ctx.strokeStyle = '#0b0e13'; ctx.lineWidth = 1;
     ctx.fillRect(px - 4, py - 4, 8, 8); ctx.strokeRect(px - 4, py - 4, 8, 8);
-    const ol0 = String(o.label || o.kind || o.id), ol = ol0.length > 24 ? ol0.slice(0, 23).replace(/\s+\S*$/, '') + '…' : ol0;
+    const ol0 = String(o.label || o.kind || o.id).replace(/\s*\(.*$/, '').split(/[;,]/)[0].trim(), ol = ol0.length > 18 ? ol0.slice(0, 17).replace(/\s+\S*$/, '') + '…' : ol0;
     ctx.font = '600 9.5px ' + sans; const tw = ctx.measureText(ol).width;
-    const ly = place(px + 6, py - 7, tw + 6, 14);
+    const r0 = [px + 6, py - 7, tw + 6, 14];
+    if (occ.some((q) => hits(r0, q))) return; // no free spot: show the marker only
+    occ.push(r0); const ly = py - 7;
     ctx.fillStyle = 'rgba(8,11,16,.62)'; ctx.fillRect(px + 6, ly, tw + 6, 14);
     ctx.fillStyle = '#b4bfcf'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(ol, px + 9, ly + 7);
   });
@@ -551,10 +557,9 @@ function drawMap() {
     ctx.fillStyle = '#17130a'; ctx.font = '700 10px ' + getComputedStyle(document.body).getPropertyValue('--sans'); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(witLetter(wt, i), px, py + 0.5);
     ctx.font = '600 10.5px ' + getComputedStyle(document.body).getPropertyValue('--sans'); ctx.textAlign = 'left';
-    const lbl = String(wt.name || wt.id) + (wt._ed ? ' (moved)' : '');
-    const tw = ctx.measureText(lbl).width;
-    ctx.fillStyle = 'rgba(8,11,16,.8)'; ctx.fillRect(px + 12, py - 8, tw + 8, 16);
-    ctx.fillStyle = '#e8ecf2'; ctx.fillText(lbl, px + 16, py);
+    const [lx, ly, tw, lbl] = wt._lr || [px + 12, py - 8, ctx.measureText(shortName(wt)).width, shortName(wt)];
+    ctx.fillStyle = 'rgba(8,11,16,.8)'; ctx.fillRect(lx, ly, tw + 8, 16);
+    ctx.fillStyle = '#e8ecf2'; ctx.textBaseline = 'middle'; ctx.fillText(lbl, lx + 4, ly + 8);
     ctx.globalAlpha = 1;
   });
   // north arrow + scale bar
