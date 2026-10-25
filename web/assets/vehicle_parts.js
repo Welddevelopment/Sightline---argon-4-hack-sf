@@ -169,10 +169,21 @@ export function loft(THREE, spec) {
   } else {
     for (let j = 0; j < M; j++) ringT.push((j / M) * Math.PI * 2);
   }
-  const R = ringT.length;
+  let R = ringT.length;
   const spow = (v, e) => Math.sign(v) * Math.pow(Math.abs(v), e);
+  const crisp = !open && spec.section(st[0]).crisp;
+  if (crisp) { const r0 = crispRing(spec.section(st[0])); ringT.length = 0; for (const p of r0) ringT.push(p[2]); R = ringT.length; }
   for (let i = 0; i < N; i++) {
     const z = st[i], s = spec.section(z);
+    if (crisp) {
+      const ring = crispRing(s);
+      for (let j = 0; j < R; j++) {
+        let [x, y] = ring[j];
+        if (spec.clampY) y = spec.clampY(z, x, y);
+        pos.push(x, y, z); uvs.push(j / (R - 1), i / (N - 1));
+      }
+      continue;
+    }
     const yc = (s.yb + s.yt) / 2, hh = Math.max(1e-4, (s.yt - s.yb) / 2), cx = s.cx || 0;
     const nTop = s.nTop || s.n || 4, nBot = s.nBot || s.n || 4;
     for (let j = 0; j < R; j++) {
@@ -228,8 +239,102 @@ export function loft(THREE, spec) {
   return geo;
 }
 
+// ---------------------------------------------------------------- crisp sections (flat panels, defined creases)
+// s.crisp = { crease: 0..1 (height fraction of the beltline/shoulder crease = max width), tuck: rocker tuck-in (fraction of hw),
+//             shoulder: top-edge inset (fraction of hw), crown: hood/roof crown (m), r: [rocker, lowerSide, crease, shoulder, top] fillet radii (m) }
+// Fixed topology (same vertex count at every station). Returns ring [[x, y, t], ...] with t in [0, 2PI) as in loft
+// (0 = +X side, PI/2 = top), starting near t = 0 and running CCW (up over the top).
+const CRISP_SEG = [3, 1, 4, 3, 2, 5];   // straight-run subdivisions between the 7 key points
+const CRISP_FIL = 4;                    // points per fillet
+function filletPolyline(P, radii) {
+  const out = [];
+  const seg = (a, b, n, from0) => { for (let k = from0 ? 0 : 1; k <= n; k++) { const f = k / n; out.push([a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f]); } };
+  // trim points for each interior vertex
+  const cuts = P.map((B, i) => {
+    if (i === 0 || i === P.length - 1) return null;
+    const A = P[i - 1], C = P[i + 1];
+    const la = Math.hypot(A[0] - B[0], A[1] - B[1]), lc = Math.hypot(C[0] - B[0], C[1] - B[1]);
+    const d = Math.max(1e-5, Math.min(radii[i - 1] || 0.01, la * 0.45, lc * 0.45));
+    return { a: [B[0] + (A[0] - B[0]) * d / la, B[1] + (A[1] - B[1]) * d / la], c: [B[0] + (C[0] - B[0]) * d / lc, B[1] + (C[1] - B[1]) * d / lc], B };
+  });
+  let cur = P[0]; out.push(cur.slice());
+  for (let i = 1; i < P.length; i++) {
+    const end = cuts[i] ? cuts[i].a : P[i];
+    seg(cur, end, CRISP_SEG[i - 1] || 2, false);
+    if (cuts[i]) {
+      const { a, c, B } = cuts[i];
+      for (let k = 1; k <= CRISP_FIL; k++) { const t = k / (CRISP_FIL + 1), u = 1 - t; out.push([u * u * a[0] + 2 * u * t * B[0] + t * t * c[0], u * u * a[1] + 2 * u * t * B[1] + t * t * c[1]]); }
+      out.push(c.slice()); cur = c;
+    } else cur = end;
+  }
+  return out;
+}
+export function crispHalf(s) {
+  const c = s.crisp, yb = s.yb, yt = s.yt, hw = s.hw, h = Math.max(1e-3, yt - yb);
+  const yc = yb + (c.crease ?? 0.82) * h;
+  const tuck = c.tuck ?? 0.05, sh = c.shoulder ?? 0.07, crown = c.crown ?? 0.01;
+  const topY = yt - crown;
+  const P = [
+    [0, yb],
+    [hw * (1 - tuck) - Math.min(0.08, h * 0.12), yb],
+    [hw * (1 - tuck * 0.6), yb + Math.min(0.1, h * 0.16)],
+    [hw, yc],
+    [hw * (1 - sh * 0.75), Math.max(yc + 0.01, topY - Math.min(0.02, h * 0.03))],
+    [hw * (1 - sh) - Math.min(0.12, hw * 0.14), topY],
+    [0, yt],
+  ];
+  return filletPolyline(P, c.r || [0.05, 0.12, 0.018, 0.05, 0.2]);
+}
+const RING_CACHE = new WeakMap();
+export function crispRing(s) {
+  if (RING_CACHE.has(s)) return RING_CACHE.get(s);
+  const H = crispHalf(s), cx = s.cx || 0;
+  const yb = s.yb, yt = s.yt, ycen = (yb + yt) / 2, hh = Math.max(1e-4, (yt - yb) / 2), hw = Math.max(1e-4, s.hw);
+  const tOf = (x, y) => { let t = Math.atan2((y - ycen) / hh, x / hw); if (t < 0) t += Math.PI * 2; return t; };
+  // right half bottom->top, then left half top->bottom (skip the shared centre points)
+  const full = [];
+  for (const p of H) full.push([p[0], p[1]]);
+  for (let k = H.length - 2; k >= 1; k--) full.push([-H[k][0], H[k][1]]);
+  // rotate so the ring starts at the right-side point nearest t = 0 and t increases CCW (up over the top)
+  let i0 = 0, best = 1e9;
+  for (let k = 0; k < H.length; k++) { const d = Math.abs(full[k][1] - ycen); if (d < best) { best = d; i0 = k; } }
+  const ring = [];
+  for (let k = 0; k < full.length; k++) {
+    const p = full[(i0 + k) % full.length];
+    let t = tOf(p[0], p[1]);
+    if (k === 0) t = 0; else if (t < ring[k - 1][2] - 1e-6) t += Math.PI * 2;  // keep monotonic
+    if (t >= Math.PI * 2 - 1e-6 && k > 0 && k === full.length - 1) t = Math.min(t, Math.PI * 2 - 1e-4);
+    ring.push([cx + p[0], p[1], Math.min(t, Math.PI * 2 - 1e-4)]);
+  }
+  RING_CACHE.set(s, ring);
+  return ring;
+}
+/** x of a crisp section's right-hand surface at height y (max over the profile). */
+export function crispX(s, y) {
+  const H = crispHalf(s);
+  let best = 0;
+  for (let k = 0; k < H.length - 1; k++) {
+    const a = H[k], b = H[k + 1];
+    if ((a[1] - y) * (b[1] - y) <= 0 && a[1] !== b[1]) { const f = (y - a[1]) / (b[1] - a[1]); best = Math.max(best, a[0] + (b[0] - a[0]) * f); }
+  }
+  return best;
+}
+
 // point on a loft section (same formula as loft); t = ring angle; off = outward offset (m)
 export function sectionPoint(s, t, off = 0) {
+  if (s.crisp) {
+    const ring = crispRing(s);
+    const tt = ((t % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+    let k = 0; while (k < ring.length - 1 && ring[k + 1][2] < tt) k++;
+    const a = ring[k], b = ring[(k + 1) % ring.length];
+    const tb = k + 1 < ring.length ? b[2] : Math.PI * 2;
+    const f = Math.max(0, Math.min(1, (tt - a[2]) / Math.max(1e-6, tb - a[2])));
+    let x = a[0] + (b[0] - a[0]) * f, y = a[1] + (b[1] - a[1]) * f;
+    // outward offset along the segment normal
+    const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1;
+    x += (dy / l) * off; y += (-dx / l) * off;
+    return [x, y];
+  }
   const spow = (v, e) => Math.sign(v) * Math.pow(Math.abs(v), e);
   const yb = s.yb - off, yt = s.yt + off, hw = s.hw + off;
   const yc = (yb + yt) / 2, hh = Math.max(1e-4, (yt - yb) / 2);
