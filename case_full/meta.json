@@ -1,0 +1,22 @@
+{
+  "private": "Answer key for scoring only. NEVER put in evidence/ or any prompt.",
+  "witness_id": "wit_B",
+  "mark_video": "deposition_witness_B.mp4",
+  "mark_sec": 8070,
+  "mark_timecode": "2:14:30",
+  "mark_xz_m": [7.5, 6.5],
+  "mark_spoken_words": "I was over by the corner, near the shelter.",
+  "truck_stop_mark": {"sec": 7930, "xz_m": [0.0, 40.0]},
+  "claim_locations": [
+    {"video": "deposition_witness_B.mp4", "sec": 2470, "timecode": "0:41:10", "text": "I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way."},
+    {"video": "deposition_witness_B.mp4", "sec": 3120, "timecode": "0:52:00", "text": "I never lost sight of it. I watched it the whole way, right up until it hit."},
+    {"video": "deposition_witness_D.mp4", "sec": 1880, "timecode": "0:31:20", "text": "She said she had a clear view of the car the whole way in. She said she watched it right up until it hit."}
+  ],
+  "geometry_sources": [
+    "docket_vehicle_dynamics_study p.3 (73-ft combination, trailer wheelbase), p.6/p.13 (truck ~10-13 mph in turn, ~6.2 s to clear)",
+    "docket_tech_recon_factual p.10-11 (trailer height ~13.3 ft, underride clearance ~3.42 ft, dimension figure)",
+    "docket_preliminary_report p.1 (53-ft semitrailer)",
+    "docket_highway_factual p.10, docket_har1702 p.32/p.39 (crest ~1,132 ft west)"
+  ],
+  "expected": "Witness B blocked by the semitrailer from her marked position at impact-0.5 s (blocked 25/25 within 2 m in the demo case)"
+}

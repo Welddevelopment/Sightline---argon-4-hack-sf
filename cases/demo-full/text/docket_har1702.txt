@@ -1,0 +1,2727 @@
+SOURCE: NTSB public docket HWY16FH018 — NTSB Highway Accident Report HAR-17/02 (adopted board report) — https://www.ntsb.gov/investigations/AccidentReports/Reports/HAR1702.pdf
+
+=== HAR-17/02 p.1 ===
+ Collision Between a Car Operating With
+ Automated Vehicle Control Systems
+ and a Tractor-Semitrailer Truck
+ Near Williston, Florida
+ May 7, 2016
+
+ Accident Report
+ NTSB/HAR-17/02
+National PB2017-102600
+Transportation
+Safety Board
+
+=== HAR-17/02 p.2 ===
+ NTSB/HAR-17/02
+ PB2017-102600
+ Notation 56955
+ Adopted September 12, 2017
+
+ Highway Accident Report
+Collision Between a Car Operating With Automated Vehicle
+ Control Systems and a Tractor-Semitrailer Truck
+ Near Williston, Florida
+ May 7, 2016
+
+ National
+ Transportation
+ Safety Board
+ 490 L’Enfant Plaza, S.W.
+ Washington, D.C. 20594
+
+=== HAR-17/02 p.3 ===
+National Transportation Safety Board. 2017. Collision Between a Car Operating With Automated
+Vehicle Control Systems and a Tractor-Semitrailer Truck Near Williston, Florida, May 7, 2016.
+Highway Accident Report NTSB/HAR-17/02. Washington, DC.
+
+Abstract: At 4:36 p.m. eastern daylight time on Saturday, May 7, 2016, a 2015 Tesla Model S 70D car,
+traveling eastbound on US Highway 27A (US-27A), west of Williston, Florida, struck a refrigerated
+semitrailer powered by a 2014 Freightliner Cascadia truck-tractor. At the time of the collision, the truck
+was making a left turn from westbound US-27A across the two eastbound travel lanes onto NE 140th Court,
+a local paved road. The car struck the right side of the semitrailer, crossed underneath it, and then went off
+the right roadside at a shallow angle. The impact with the underside of the semitrailer sheared off the roof
+of the car. After leaving the roadway, the car continued through a drainage culvert and two wire fences. It
+then struck and broke a utility pole, rotated counterclockwise, and came to rest perpendicular to the highway
+in the front yard of a private residence. Meanwhile, the truck continued across the intersection and came to
+a stop on NE 140th Court, south of a retail business located on the intersection corner. The driver and sole
+occupant of the car died in the crash; the commercial truck driver was not injured. System performance data
+downloaded from the car indicated that the driver was operating it using the Traffic-Aware Cruise Control
+and Autosteer lane-keeping systems, which are automated vehicle control systems within Tesla’s Autopilot
+suite. The crash investigation focused on the following safety issues: operational design domains for
+SAE International Level 2 vehicle automation, surrogate means of determining the automated vehicle
+driver’s degree of engagement, event data recorders for automated vehicles, safety metrics and exposure
+data for automated vehicles, and connected vehicle technology and vehicle-to-vehicle requirements. The
+NTSB made safety recommendations to the US Department of Transportation, the National Highway
+Traffic Safety Administration (NHTSA), manufacturers of vehicles equipped with Level 2 vehicle
+automation systems, the Alliance of Automobile Manufacturers, and the Association of Global Automakers.
+The NTSB also reiterated safety recommendations to NHTSA.
+
+The National Transportation Safety Board (NTSB) is an independent federal agency dedicated to promoting aviation,
+railroad, highway, marine, and pipeline safety. Established in 1967, the agency is mandated by Congress through the
+Independent Safety Board Act of 1974 to investigate transportation accidents, determine the probable causes of the
+accidents, issue safety recommendations, study transportation safety issues, and evaluate the safety effectiveness of
+government agencies involved in transportation. The NTSB makes public its actions and decisions through accident
+reports, safety studies, special investigation reports, safety recommendations, and statistical reviews.
+
+The NTSB does not assign fault or blame for an accident or incident; rather, as specified by NTSB regulation,
+“accident/incident investigations are fact-finding proceedings with no formal issues and no adverse parties … and are
+not conducted for the purpose of determining the rights or liabilities of any person.” 49 C.F.R. § 831.4. Assignment
+of fault or legal liability is not relevant to the NTSB’s statutory mission to improve transportation safety by
+investigating accidents and incidents and issuing safety recommendations. In addition, statutory language prohibits
+the admission into evidence or use of any part of an NTSB report related to an accident in a civil action for damages
+resulting from a matter mentioned in the report. 49 U.S.C. § 1154(b).
+
+For more detailed background information on this report, visit NTSB investigations website and search for NTSB
+accident ID HWY16FH018. Recent publications are available in their entirety on the Internet at NTSB website. Other
+information about available publications also may be obtained from the website or by contacting:
+
+National Transportation Safety Board, Records Management Division, CIO-40, 490 L’Enfant Plaza SW,
+Washington, DC 20594, (800) 877-6799 or (202) 314-6551
+
+Copies of NTSB publications may be purchased from the National Technical Information Service. To purchase this
+publication, order product number PB2017-102600 from:
+
+National Technical Information Service, 5301 Shawnee Rd., Alexandria, VA 22312, (800) 553-6847 or
+(703) 605-6000 (see NTIS website)
+
+This report was reissued on October 12, 2017, with corrections to pages vii and 43.
+
+=== HAR-17/02 p.4 ===
+NTSB Highway Accident Report
+
+Contents
+Figures ........................................................................................................................................... iii
+
+Acronyms and Abbreviations ..................................................................................................... iv
+
+Executive Summary ..................................................................................................................... vi
+
+1 Factual Information ....................................................................................................................1
+1.1 The Crash ...................................................................................................................................1
+ 1.1.1 Crash Events ....................................................................................................................1
+ 1.1.2 Crash Scene .....................................................................................................................2
+ 1.1.3 Occupant Protection and Injuries.....................................................................................5
+1.2 Vehicle Damage .........................................................................................................................5
+ 1.2.1 Tesla Model S 70D Car ...................................................................................................5
+ 1.2.2 Utility Semitrailer ............................................................................................................6
+1.3 Tesla Model S 70D Car..............................................................................................................8
+ 1.3.1 Mechanical Inspections ...................................................................................................8
+ 1.3.2 Automated Vehicle Control Systems...............................................................................8
+ 1.3.3 Autopilot Description ......................................................................................................9
+ 1.3.4 Autopilot Availability and Constraints ..........................................................................10
+ 1.3.5 Tesla-Recorded Performance Data ................................................................................14
+ 1.3.6 Postcrash Changes to Autopilot .....................................................................................16
+1.4 Car Driver Information ............................................................................................................16
+ 1.4.1 Precrash Activities .........................................................................................................17
+ 1.4.2 Health .............................................................................................................................17
+ 1.4.3 Portable Electronic Devices ...........................................................................................17
+1.5 Truck Driver, Motor Carrier, and Truck Information ..............................................................18
+ 1.5.1 Truck Driver ..................................................................................................................18
+ 1.5.2 Motor Carrier Operations ..............................................................................................20
+ 1.5.3 Postcrash Inspection of the Truck-Tractor and Semitrailer ...........................................20
+1.6 Highway Factors ......................................................................................................................21
+ 1.6.1 Road Description and Characteristics ............................................................................21
+ 1.6.2 Road Geometry and Traffic Volume .............................................................................22
+ 1.6.3 Road Classification ........................................................................................................22
+1.7 Regulation and Policy Concerning Automated Vehicles.........................................................23
+ 1.7.1 Levels of Automation ....................................................................................................23
+ 1.7.2 Federal Automated Vehicles Policy ..............................................................................24
+1.8 NHTSA Defect Investigation ...................................................................................................25
+
+2 Analysis ......................................................................................................................................27
+2.1 Introduction ..............................................................................................................................27
+ 2.1.1 Automated Vehicle Control Systems.............................................................................27
+ 2.1.2 Structure of the Analysis ...............................................................................................27
+
+ i
+
+=== HAR-17/02 p.5 ===
+NTSB Highway Accident Report
+
+2.2 Factors Not Affecting the Crash ..............................................................................................28
+ 2.2.1 Driver, Vehicle, and Highway Factors ..........................................................................28
+ 2.2.2 Sight Distance ................................................................................................................29
+ 2.2.3 Side Underride Protection..............................................................................................30
+ 2.2.4 Forward Collision Warning and Automatic Emergency Braking .................................30
+2.3 Truck Driver Drug Use ............................................................................................................31
+2.4 Operational Design Domains for Level 2 Vehicle Automation...............................................32
+2.5 Surrogate Means of Determining the Automated Vehicle Driver’s Degree
+ of Engagement .........................................................................................................................34
+2.6 EDRs for Automated Vehicles.................................................................................................36
+2.7 Safety Metrics and Exposure Data for Automated Vehicles ...................................................38
+2.8 Connected Vehicle Technology and V2V Requirements ........................................................38
+
+3 Conclusions ................................................................................................................................41
+3.1 Findings....................................................................................................................................41
+3.2 Probable Cause.........................................................................................................................42
+
+4 Recommendations .....................................................................................................................43
+4.1 New Recommendations ...........................................................................................................43
+4.2 Reiterated Recommendations ..................................................................................................44
+
+Board Member Statement ...........................................................................................................45
+
+Appendix A. Investigation ...........................................................................................................47
+
+Appendix B. Tesla’s Automated Vehicle Control Systems and Subsystems ..........................48
+
+Appendix C. Alert Timing Sequence for Tesla Autopilot Version 8 .......................................50
+
+References .....................................................................................................................................51
+
+ ii
+
+=== HAR-17/02 p.6 ===
+NTSB Highway Accident Report
+
+Figures
+Figure 1. Overhead view of the crash intersection, showing the route of the eastbound car
+traveling toward the crash location with a straight arrow, and the route of the westbound truck,
+turning south, with a curved arrow ..................................................................................................2
+
+Figure 2. Diagram of the crash intersection, showing US-27A and NE 140th Court .....................3
+
+Figure 3. Approach to the crash scene from the US-27A westbound left turn lane, looking
+west as viewed from the truck’s route of travel ...............................................................................4
+
+Figure 4. Approach to the crash scene from US-27A eastbound, looking east as viewed from
+the car’s route in the righthand travel lane.......................................................................................4
+
+Figure 5. Damaged car ....................................................................................................................6
+
+Figure 6. Damaged right side of the Utility semitrailer ..................................................................7
+
+Figure 7. Closeup view of impact damage to the right side of the Utility semitrailer ....................7
+
+Figure 8. Tesla instrument panel ...................................................................................................10
+
+Figure 9. Autopilot system alert timing; top portion of figure provides timing of initial visual
+alert and bottom portion provides timing of auditory alerts ..........................................................12
+
+Figure 10. Route of the Williston car driver’s final trip ...............................................................13
+
+Figure 11. Chart showing how much time during the 41-minute crash trip that, while
+Autopilot was active, the driver had his hands on the steering wheel ...........................................15
+
+Figure 12. Summary of SAE taxonomy and definitions for terms related to driving
+automation systems for on-road motor vehicles ............................................................................24
+
+Figure C-1. Autopilot system alert timing sequence for version 8 ...............................................50
+
+ iii
+
+=== HAR-17/02 p.7 ===
+NTSB Highway Accident Report
+
+Acronyms and Abbreviations
+AASHTO American Association of State Highway and Transportation Officials
+
+AdaptIVe Automated Driving Applications and Technologies for Intelligent Vehicles
+
+AEB automatic emergency braking
+
+AV Policy Federal Automated Vehicles Policy (NHTSA)
+
+AVR Automated Vehicle Research
+
+BASIC Behavior Analysis and Safety Improvement Category
+
+BMI body mass index
+
+CAMI Civil Aerospace Medical Institute (FAA)
+
+CAMP Crash Avoidance Metrics Partnership
+
+CDL commercial driver’s license
+
+CDLIS Commercial Driver’s License Information System
+
+CFR Code of Federal Regulations
+
+DDEC Detroit Diesel Electronic Controller
+
+DOT US Department of Transportation
+
+ECU electronic control unit
+
+EDR event data recorder
+
+FAA Federal Aviation Administration
+
+FCW forward collision warning
+
+FDOT Florida Department of Transportation
+
+FHP Florida Highway Patrol
+
+FHWA Federal Highway Administration
+
+FMCSA Federal Motor Carrier Safety Administration
+
+FMVSSs Federal Motor Vehicle Safety Standards
+
+GPS global positioning system
+
+ iv
+
+=== HAR-17/02 p.8 ===
+NTSB Highway Accident Report
+
+HAV highly automated vehicle
+
+HOS hours-of-service
+
+I-ADAS intersection advanced driver assist systems
+
+MCMIS Motor Carrier Management Information System
+
+mL milliliter
+
+MY model year
+
+ng nanogram
+
+NHTSA National Highway Traffic Safety Administration
+
+NTSB National Transportation Safety Board
+
+ODD operational design domain
+
+ODI Office of Defects Investigation (NHTSA)
+
+OOS out-of-service
+
+SAE SAE International
+
+SD secure digital
+
+SR-24 State Road 24
+
+TACC Traffic-Aware Cruise Control
+
+THC tetrahydrocannabinol
+
+THC-COOH tetrahydrocannabinol carboxylic acid
+
+US-27A US Highway 27A
+
+V2V vehicle-to-vehicle
+
+VTTI Virginia Tech Transportation Institute
+
+ v
+
+=== HAR-17/02 p.9 ===
+NTSB Highway Accident Report
+
+Executive Summary
+Investigation Synopsis
+ At 4:36 p.m. eastern daylight time on Saturday, May 7, 2016, a 2015 Tesla Model S 70D
+car, traveling eastbound on US Highway 27A (US-27A), west of Williston, Florida, struck a
+refrigerated semitrailer powered by a 2014 Freightliner Cascadia truck-tractor. At the time of the
+collision, the truck was making a left turn from westbound US-27A across the two eastbound travel
+lanes onto NE 140th Court, a local paved road. The car struck the right side of the semitrailer,
+crossed underneath it, and then went off the right roadside at a shallow angle. The impact with the
+underside of the semitrailer sheared off the roof of the car.
+
+ After leaving the roadway, the car continued through a drainage culvert and two wire
+fences. It then struck and broke a utility pole, rotated counterclockwise, and came to rest
+perpendicular to the highway in the front yard of a private residence. Meanwhile, the truck
+continued across the intersection and came to a stop on NE 140th Court, south of a retail business
+located on the intersection corner.
+
+ The driver and sole occupant of the car died in the crash; the commercial truck driver was
+not injured.
+
+ System performance data downloaded from the car indicated that the driver was operating
+it using the Traffic-Aware Cruise Control and Autosteer lane-keeping systems, which are
+automated vehicle control systems within Tesla’s Autopilot suite.
+
+ The National Transportation Safety Board (NTSB) became aware of the circumstances of
+the crash when the National Highway Traffic Safety Administration (NHTSA) began a defect
+investigation on June 28, 2016, which focused on the automatic emergency braking and Autopilot
+systems of the Tesla Models S and X, for model years 2014–2016. On learning of the May 7, 2016,
+Williston crash that prompted the NHTSA investigation, the NTSB initiated our investigation,
+which focused on the use of the Autopilot system.
+
+Probable Cause
+ The National Transportation Safety Board determines that the probable cause of the
+Williston, Florida, crash was the truck driver’s failure to yield the right of way to the car, combined
+with the car driver’s inattention due to overreliance on vehicle automation, which resulted in the
+car driver’s lack of reaction to the presence of the truck. Contributing to the car driver’s
+overreliance on the vehicle automation was its operational design, which permitted his prolonged
+disengagement from the driving task and his use of the automation in ways inconsistent with
+guidance and warnings from the manufacturer.
+
+ vi
+
+=== HAR-17/02 p.10 ===
+NTSB Highway Accident Report
+
+Safety Issues
+ The crash investigation focused on the following safety issues:
+
+ • Operational design domains for SAE International Level 2 vehicle automation,
+
+ • Surrogate means of determining the automated vehicle driver’s degree of engagement,
+
+ • Event data recorders for automated vehicles,
+
+ • Safety metrics and exposure data for automated vehicles, and
+
+ • Connected vehicle technology and vehicle-to-vehicle (V2V) requirements.
+
+Recommendations
+ As a result of this crash investigation, the NTSB makes safety recommendations to the
+US Department of Transportation, NHTSA, manufacturers of vehicles equipped with Level 2
+vehicle automation systems (Volkswagen Group of America, BMW of North America, Nissan
+Group of North America, Mercedes-Benz USA, Tesla Inc., and Volvo Car USA), the Alliance of
+Automobile Manufacturers, and the Association of Global Automakers. The NTSB also reiterates
+Safety Recommendations H-13-30 and -31 to NHTSA.
+
+ vii CORRECTED COPY
+
+=== HAR-17/02 p.11 ===
+NTSB Highway Accident Report
+
+1 Factual Information
+1.1 The Crash
+1.1.1 Crash Events
+
+ At 4:36 p.m. eastern daylight time on Saturday, May 7, 2016, a 2015 Tesla Model S 70D
+car, traveling eastbound on US Highway 27A (US-27A) near mile marker 29 in Levy County, west
+of Williston, Florida, struck the right side of a 2003 Utility 3000R refrigerated semitrailer, which
+was being towed by a 2014 Freightliner Cascadia truck-tractor. 1 At the time of the collision, the
+truck was making a left turn from westbound US-27A across the two eastbound travel lanes onto
+NE 140th Court, a local paved road. 2 After the car struck the right side of the semitrailer, it crossed
+underneath the semitrailer and went off the right roadside at a shallow angle. The impact with the
+underside of the semitrailer sheared off the car’s roof.
+
+ After leaving the roadway, the car continued through a drainage culvert and two wire
+fences. It then struck and broke a utility pole, rotated counterclockwise, and came to rest
+perpendicular to the highway in the front yard of a private residence. Overall, the car traveled
+about 910 feet after striking the semitrailer. The driver and sole occupant of the car died in the
+crash.
+
+ System performance data downloaded from the Tesla indicated that the driver was
+operating the car using features of its Autopilot suite: Traffic-Aware Cruise Control (TACC) and
+the Autosteer lane-keeping system. “Autopilot” is a proprietary name used by Tesla for a
+combination of vehicle automation systems that provide driver assistance. The car was also
+equipped with a forward collision warning (FCW) system and automatic emergency
+braking (AEB), but those systems did not activate. System performance data indicated that the
+vehicle speed just before impact with the semitrailer was 74 mph. The highway has a posted speed
+limit of 65 mph.
+
+ Following the crash, the truck continued across the intersection and came to a stop on
+NE 140th Court, south of a retail business on the intersection corner. The truck-tractor towing the
+semitrailer was undamaged, and the semitrailer experienced minimal impact damage. The truck
+driver was uninjured.
+
+ Ten days after the crash, the Florida Highway Patrol (FHP) recorded an interview with a
+driver who had been traveling behind the truck on westbound US-27A at an estimated speed of
+60 mph. In July 2016, National Transportation Safety Board (NTSB) investigators also
+interviewed this witness. He said that when he first saw the truck, it was in the left turn lane at the
+intersection; he could not discern whether the truck was stopped or moving very slowly. He said
+he saw the Tesla on US-27A eastbound before the truck began to turn through the median, with
+no other traffic in the area. He described seeing the car crest the grade before the truck began its
+ 1
+ Unless otherwise indicated, all times in this report are eastern daylight time.
+ 2
+ In this report, the vehicle consisting of the truck-tractor in combination with the semitrailer is referred to
+generically as the “truck”; the truck-tractor and semitrailer components may also be referred to separately.
+
+ 1
+
+=== HAR-17/02 p.12 ===
+NTSB Highway Accident Report
+
+left turn and crossed the median. He said that he saw the Tesla for several seconds before his view
+was blocked by the semitrailer. He said he thought the car driver would need to slow down to avoid
+a collision with the truck. As the truck entered the eastbound lanes, the witness lost sight of the
+car, which was then on the far side of the truck. He reported that as he approached the location of
+the westbound left turn lane for the intersection, he heard the crash and saw the car emerge from
+underneath the semitrailer, continue traveling eastward, and leave the roadway.
+
+ The witness said he made a U-turn at the intersection and followed the Tesla to its stopped
+location near a residential driveway. The witness stated that there were no obstructions to the lines
+of sight for the two vehicles, and that sun glare was not a problem at the time of the crash.
+
+ The FHP cited the truck driver for failure to yield right of way. 3
+
+1.1.2 Crash Scene
+
+ The crash occurred in the righthand eastbound travel lane of US-27A near mile marker 29,
+approximately 5 miles west of Williston in Levy County, Florida. Figure 1 provides an overhead
+view of the crash location.
+
+Figure 1. Overhead view of the crash intersection, showing the route of the eastbound car
+traveling toward the crash location with a straight arrow, and the route of the westbound truck,
+turning south, with a curved arrow. (Source: Google Earth [modified])
+
+ 3
+ In December 2016, the FHP investigation of the truck driver resulted in the issuance of a commercial uniform
+traffic citation for a noncriminal traffic violation.
+
+ 2
+
+=== HAR-17/02 p.13 ===
+NTSB Highway Accident Report
+
+ At the crash location, US-27A is a four-lane divided highway with two through lanes in
+each direction separated by a 60-foot-wide paved median. Turn lanes extend for a length of
+approximately 550 feet in both the east- and westbound directions. The local road NE 140th Court
+runs due south, intersecting US-27A at a 109-degree angle. The intersection has a median
+crossover area between the two directions of travel on US-27A; the crossover area is about 130 feet
+long. The horizontal alignment of US-27A is straight both east and west of the intersection; the
+vertical alignment involves a descending grade in the eastbound direction. Figure 2 is a diagram
+of the scene. Figures 3 and 4 show the crash intersection as approached from the east- and
+westbound routes.
+
+Figure 2. Diagram of the crash intersection, showing US-27A and NE 140th Court extending
+south (down toward the bottom of the diagram). The initial point of impact is on the south side of
+the intersection. After traveling off the highway, the Tesla struck a utility pole and came to rest
+near a residential driveway.
+
+ 3
+
+=== HAR-17/02 p.14 ===
+NTSB Highway Accident Report
+
+Figure 3. Approach to the crash scene from the US-27A westbound left turn lane, looking west
+as viewed from the truck’s route of travel.
+
+Figure 4. Approach to the crash scene from US-27A eastbound, looking east as viewed from the
+car’s route in the righthand travel lane. (Based on the known length of the left turn lane, the
+distance to the intersection in this view is approximately 750 feet.)
+
+ 4
+
+=== HAR-17/02 p.15 ===
+NTSB Highway Accident Report
+
+ The impact occurred within the intersection in the righthand lane of eastbound US-27A.
+Postcrash, debris from the car, including the exterior and interior roof panel structure, was located
+on the southwest corner of the intersection and in the travel lanes of NE 140th Court. Other debris
+trailed eastward from the area of impact along the car’s path of travel. Investigators found no
+evidence of precollision roadway marks for the eastbound car or the truck crossing the intersection.
+
+ The collision occurred during daylight hours, the weather was clear, and the road was dry. 4
+At the time of the crash, the sun would have been high in the sky, behind the car as it headed east.
+
+1.1.3 Occupant Protection and Injuries
+
+ The 40-year-old male car driver was seated in the driver’s seat and was restrained with a
+lap/shoulder belt at the time of the crash. 5 The driver sustained fatal blunt force trauma injuries to
+the head consistent with contact from the car’s roof structure as it was displaced rearward or with
+contact from both the car’s roof structure and the structure of the semitrailer.
+
+ According to the data recorded by the car, the airbags did not deploy when the car struck
+and passed under the semitrailer, most likely due to the car’s low change in velocity during this
+portion of the crash. About 8.4 seconds after the initial impact with the semitrailer, the car’s airbags
+deployed when it collided with the utility pole.
+
+ The truck driver, who was wearing his lap/shoulder seat belt, was not injured.
+
+1.2 Vehicle Damage
+1.2.1 Tesla Model S 70D Car
+
+ Damage to the car, as shown in figure 5, included separation of the roof panel, which
+exhibited fore-to-aft accordion-like compression. The forward-facing surfaces of the car’s
+A-pillars were separated and deformed just below where the roof met the pillars. Additional impact
+evidence consisted of scrapes to the trailing edge of the hood just forward of the windshield. The
+scrapes were about 5 inches long and were located on the driver’s side of the hood, about 5 inches
+from its longitudinal centerline (see figure 5, yellow arrow). The scrape widths were consistent
+with the length of the semitrailer’s center side-marker lamp, which had been mounted below the
+side rail on the right side of the semitrailer. The static height of the trailing end of the hood was
+about 3 feet. Postcollision measurements indicated that the car’s seatback headrests were at least
+3.5 inches taller than the bottom edge of the semitrailer. The driver and front passenger seats were
+deformed rearward.
+
+ 4
+ This information is based on FHP and Ocala International Airport records. The airport is 25.3 miles southeast
+of the crash site.
+ 5
+ Investigators determined that the driver used the three-point continuous loop lap/shoulder restraint based on
+postcrash photographs showing the driver properly belted; the data recorded by the vehicle; and the postcrash
+inspection of the vehicle, which showed the belt cut by first responders but still latched.
+
+ 5
+
+=== HAR-17/02 p.16 ===
+NTSB Highway Accident Report
+
+ The damage to the car from the impact with the utility pole was centered 12.4 inches
+inboard of the left side in front of the wheel well. The impact of the front of the car with the utility
+pole displaced the left front fender and chassis structures (see figure 5, red arrow). Postcrash, the
+left (driver’s) side wheelbase measured about 4 inches shorter than the right side. The battery pack
+of the electric car, located aft of the front axle, was not damaged.
+
+Figure 5. Damaged car. Scrapes from the semitrailer’s center side-marker lamp are indicated by
+the yellow arrow. Impact damage associated with the utility pole is indicated by the red arrow.
+(Source: Florida Highway Patrol)
+
+1.2.2 Utility Semitrailer
+
+ Investigators examined the involved semitrailer, which was a 2003 Utility VS2RA 3000R
+refrigerated van-body trailer. The investigators’ comparison of the semitrailer with the
+photographs the FHP took at the crash scene showed that the external condition and appearance of
+the semitrailer had not changed since the crash. Collision evidence consisted of minor impact
+damage to the lower sidewall rails on both sides of the semitrailer and the undercarriage between
+the opposing damaged rails. Damage to the passenger (right) side exhibited inward intrusion, while
+damage on the driver (left) side exhibited outward deformation. The damage on both sides
+exhibited two distinct areas of contact. The undercarriage damage consisted of a displaced
+transverse floor support rail between the damaged areas on the two sides. 6 A segment of windshield
+
+ 6
+ The overall length of the combination vehicle was 71 feet 7 inches, based on as-built data provided by
+Freightliner, the truck-tractor manufacturer. Based on the semitrailer’s overall calculated length, the impact would
+have been centered about 45 feet 5 inches rearward from the front of the truck-tractor at the time of the collision.
+
+ 6
+
+=== HAR-17/02 p.17 ===
+NTSB Highway Accident Report
+
+trim from the car was found entangled within the forward-most area of contact damage on the
+semitrailer. Figure 6 shows a postcrash photograph of the semitrailer, and figure 7 focuses on the
+damage to the semitrailer.
+
+Figure 6. Damaged right side of the Utility semitrailer.
+
+Figure 7. Closeup view of impact damage to the right side of the Utility semitrailer. The arrow
+indicates a segment of front windshield trim from the Tesla entrapped in the forward-most area of
+damage.
+
+ 7
+
+=== HAR-17/02 p.18 ===
+NTSB Highway Accident Report
+
+1.3 Tesla Model S 70D Car
+ This section first discusses the mechanical inspection of the car and then focuses on its
+automated vehicle control systems. The section also presents the recorded data that provided
+information about those systems and the car’s operation.
+
+1.3.1 Mechanical Inspections
+
+ Investigators examined the major mechanical systems on the car, which included the
+powertrain, steering, braking, and suspension systems. They identified no anomalies within the
+major vehicle systems.
+
+ The Tesla was equipped with electric power-assisted rack-and-pinion steering gear; all the
+steering arm linkages remained intact and connected. It was possible to rotate the steering gear
+from stop to stop by turning the steering wheel. All ball joint connections remained intact and
+showed no evidence of excessive wear or play.
+
+ The vehicle was equipped with two independent suspension systems. On the front steering
+axle, the mounting bolt for the forward lower control arm ball joint was broken at the steering
+knuckle in a manner consistent with impact damage. Investigators noted no other damage to the
+suspension system, including to the suspension components of the rear axle.
+
+ Both axles had disc brake assemblies. The brake calipers on either side of the disc were
+rigidly mounted with four pistons each. A functional check verified that the brakes were capable
+of working. When the brake master cylinder was actuated, all brake assemblies locked from hand
+rotation and released when the brake master cylinder was released.
+
+1.3.2 Automated Vehicle Control Systems
+
+ The basic function of automated vehicle systems is to aid a driver in performing driving
+tasks. Some automated systems are safety systems that alert a driver to a potentially hazardous
+situation, such as FCW, or that take momentary control of vehicle functions, such as AEB. Other
+automated systems may be considered convenience systems, which supplement or fully control
+driving tasks.
+
+ In general, automated vehicle control systems consist of three main subsystems:
+(a) a sensor suite (optical, radar, LIDAR, and/or ultrasonic) designed to assess the nearby
+environment, (b) a data-processing suite designed to collect input data from the sensors and
+compute instructions, and (c) a servo suite designed to provide control inputs to the vehicle. These
+three subsystems provide performance monitoring, processing, and control. Information travels
+between subsystems using multiple controller area network busses. 7 The performance data
+associated with automated vehicle control systems are stored in the vehicle’s memory and may be
+communicated through an over-the-air network to the manufacturer’s central computer network.
+
+ 7
+ A series of core SAE J1939 standards addresses vehicle networks.
+
+ 8
+
+=== HAR-17/02 p.19 ===
+NTSB Highway Accident Report
+
+ The Tesla Model S was equipped with the following automated vehicle control systems:
+Autopilot (comprising TACC, Autosteer, and Auto Lane Change systems), Forward Collision
+Avoidance (comprising FCW and AEB), Speed Assist, Lane Assist, and Autopark. 8
+
+1.3.3 Autopilot Description
+
+ Although Tesla’s Autopilot suite is a combination of three systems, when discussing
+Autopilot in this report, we primarily refer to the combined activation of two systems—TACC and
+Autosteer. (The driver may also activate Auto Lane Change to automatically move the car into a
+lane.) TACC is an adaptive cruise control system that maintains the set cruise speed, applies brakes
+to preserve a predetermined following distance when approaching a slower-moving vehicle ahead
+of the Tesla, and accelerates to the set cruising speed when the area in front of the Tesla is no
+longer obstructed. Autosteer automatically steers the car to keep it within its lane of travel. In short,
+TACC provides longitudinal control (acceleration and deceleration) and Autosteer provides lateral
+control (steering) of the car within the lane, making the Tesla Autopilot consistent with an SAE
+International (SAE) Level 2 automated vehicle system. (The SAE classification of automated
+vehicle technologies is discussed in section 1.7.1.)
+
+ When Autopilot is active, the system (1) monitors the traveling path, (2) maintains the set
+cruise speed, (3) maintains the Tesla’s position in the traveling lane, (4) brakes when it detects
+slower-moving vehicles ahead of the Tesla, and (5) decelerates and follows a slower-moving
+vehicle in front of the Tesla at the predetermined following distance. Figure 8 shows a view of the
+Tesla instrument panel. This view represents to the driver that TACC is active, which is indicated
+by a blue-colored speedometer icon at the top left of the display; the operator-established cruising
+speed appears in numerals under the speedometer icon. The actual vehicle speed appears in large
+numerals in the top/center of the instrument panel display. When Autosteer is active, the driver
+sees an icon depicting a blue steering wheel in the upper right of the instrument panel display.
+When this icon is gray-colored rather than blue, it indicates that Autosteer is not active but is
+available.
+
+ 8
+ (a) See appendix B for information on these automated systems and their capabilities. (b) The systems are
+discussed in the Human Performance Supplemental Report—Driver Assistance Systems in the NTSB public docket
+case file HWY16FH018.
+
+ 9
+
+=== HAR-17/02 p.20 ===
+NTSB Highway Accident Report
+
+Figure 8. Tesla instrument panel. The blue speed dial at the top left indicates that TACC is active,
+and the blue steering wheel at the top right indicates that Autosteer is active. (Source: Owner’s
+Manual for 2016 Tesla Model S [Tesla 2016])
+
+1.3.4 Autopilot Availability and Constraints
+
+ On the Tesla, TACC is available only when traveling above 18 mph. 9 Once TACC is
+activated, Autosteer is available whenever the system detects lane markings. A driver can activate
+TACC by itself but can activate Autosteer only after activating TACC; that is, Autosteer is not
+available without TACC. In addition, Tesla imposes two types of constraints on the driver’s use
+of Autopilot: these are (1) hard constraints that the system imposes automatically, and (2) soft
+constraints that Tesla provides as cautions to the driver through the instrument screen and
+instructions in the vehicle owner’s manual.
+
+ Hard Constraints. System-imposed constraints on driver use of Autopilot include
+(1) setting an upper limit on lateral acceleration that affects the system alert sequence; (2) limiting
+the maximum cruising speed, depending on the detection of the speed limit on a restricted road;
+and (3) measuring the level of driver engagement and deactivating Autopilot if the level is
+
+ 9
+ TACC can be activated at speeds lower than 18 mph, if a vehicle is detected in front of the Tesla.
+
+ 10
+
+=== HAR-17/02 p.21 ===
+NTSB Highway Accident Report
+
+insufficient. 10 In addition, as a general hard constraint, the driver can activate Autopilot only if the
+driver’s seat belt is latched.
+
+ With respect to constraint (1), Autopilot has a lateral acceleration limit used to qualify
+“straight” roads that affects the timing duration of hands-off operation of Autopilot. 11 For
+constraint (2), when Autopilot cannot detect the speed limit, it allows a maximum cruise speed in
+TACC of 45 mph. When this occurs, the instrument panel displays the following message:
+“Driving on a Restricted Road.” In such circumstances, the driver can manually accelerate to
+exceed the limited TACC speed, but when the driver releases the accelerator pedal, TACC slows
+the vehicle to the 45-mph cruise speed. With respect to constraint (3), Autopilot assesses the
+driver’s level of engagement by monitoring driver interaction with the steering wheel through
+changes in steering wheel torque. 12 The system uses the driver’s interactions with the wheel as a
+surrogate means of determining the driver’s degree of engagement with the tasks of monitoring
+the road environment and the Autopilot system’s performance.
+
+ Autopilot uses a sequence of warnings to encourage the driver to interact with the steering
+wheel. The first alert is a visual warning, which appears in the instrument panel display and reads
+“Hold Steering Wheel.” If the system does not detect driver-applied torque on the steering wheel
+after this visual warning, it sounds an auditory chime. If there is again no driver interaction with
+the steering wheel, the system sounds a second, louder chime. If the driver still does not apply
+detectable torque to the steering wheel, the system presents a final visual warning in the instrument
+panel display, which reads “To Maintain Set Speed Place Hands On Steering Wheel.” If the driver
+does not respond to the final visual warning, Autopilot decelerates the Tesla to a full stop in the
+current travel lane and activates the car’s hazard flashers. 13 (This situation would likely occur only
+in the event of an incapacitated or completely unresponsive driver.)
+
+ On the crash-involved car, the timing for the initial visual warning ranged from 1 to
+5 minutes when traveling above 45 mph, depending on the system conditions. However, when
+traveling 45 mph and below, the warning for hands-off driving would not occur, unless the car
+exceeded the lateral acceleration threshold, such as when traveling on certain curves. When
+traveling above 45 mph, the initial warning would occur earlier when another vehicle was not
+detected ahead of the Tesla—and later when following another vehicle. The timing of the visual
+warning did not depend on the type of roadway being traveled. (See figure 9 for a graphic
+indicating the warning conditions and alert timing sequences for the Autopilot system firmware
+that was running on the Tesla at the time of the crash [firmware version 7.1].)
+
+ 10
+ With respect to constraint (1), vehicles experience lateral acceleration when going around curves. Under lateral
+acceleration, drivers experience a feeling of being pulled to the outside of the curve. Autopilot uses lateral acceleration
+as an indication of the degree of curvature in the travel route.
+ 11
+ The lateral acceleration thresholds for Autopilot are linearly interpolated over a range of speeds.
+ 12
+ Torque is force applied to an object (in this case, the steering wheel) to make it rotate about an axis (the steering
+column). The weight of the hands on the steering wheel is sufficient to register as driver interaction.
+ 13
+ In the Autopilot system in use on the crash Tesla, this sequence could be repeatedly restarted by engaging with
+the steering wheel.
+
+ 11
+
+=== HAR-17/02 p.22 ===
+NTSB Highway Accident Report
+
+Figure 9. Autopilot system alert timing; top portion of figure provides timing of initial visual alert
+and bottom portion provides timing of auditory alerts. Following a visual alert, if the driver does
+not interact with the steering wheel, the Autopilot system proceeds to the auditory alert sequence
+as shown in the bottom portion of the figure (Tesla firmware version 7.1).
+
+ On the day of the crash, the Tesla driver was traveling from Cedar Key toward Ocala,
+Florida. (See figure 10 for route information.) He traveled along State Road 24 (SR-24) before
+turning eastbound onto US-27A, where the crash occurred. 14 SR-24 is a two-lane roadway without
+a center divider, and it is not a limited-access roadway. 15 Because it lacks a center divider, the
+Tesla’s automation system considered SR-24 a “non-preferred” roadway for the use of Autopilot.
+The system allowed the Tesla to travel 5 mph above the speed limit while on SR-24; the speed
+limit on SR-24 is 60 mph. The roadway on which the crash occurred, US-27A, is a four-lane road
+with an earthen center median, but it is not a limited-access roadway. 16
+
+ 14
+ Tesla could not provide data to the NTSB on the car’s route of travel. Investigators determined that the Tesla
+traveled on SR-24 based on the originating location, the limited options for the route of travel, the speed of travel, and
+turning information.
+ 15
+ Access control is a key factor in the functional classification of roads. All interstates are “limited-access”
+roadways, providing no access to abutting land users. Travelers use high-speed entrance and exit ramps to access
+limited-access roadways (Federal Highway Administration 2013, p. 14).
+ 16
+ Tesla uses a functional road classification system based on the HERE open location platform as the data source
+(accessed September 7, 2017). Road classification is discussed in section 1.6.3.
+
+ 12
+
+=== HAR-17/02 p.23 ===
+NTSB Highway Accident Report
+
+Figure 10. Route of the Williston car driver’s final trip.
+
+ The Tesla’s automation system considered US-27A a “preferred roadway”; consequently,
+the system would have allowed the Tesla to travel at speeds up to 90 mph while on US-27.
+According to vehicle data, about 2 minutes before the crash, while traveling on US-27A, the Tesla
+driver set the cruise speed to 74 mph. Because the Tesla was traveling on preferred roadway
+US-27A at that time, the vehicle’s actual velocity matched the driver-set cruise speed, which was
+9 mph over the posted speed limit of 65 mph.
+
+ Soft Constraints. As a soft constraint to Autopilot use, Tesla provided written instructions
+in its owner’s manual about those types of roads on which Autopilot should and should not be used
+(Tesla 2016). The Tesla Model S Owner’s Manual stated that “Traffic-Aware Cruise Control is
+primarily intended for driving on dry, straight roads, such as highways and freeways” (p. 68). The
+manual also provided the following statement: “Warning: Do not use Traffic-Aware Cruise
+Control on city streets or on roads where traffic conditions are constantly changing and where
+bicycles and pedestrians are present” (p. 68). Similarly, with respect to the Autosteer system, the
+manual stated, “Warning: Autosteer is intended for use only on highways and limited-access roads
+with a fully attentive driver” (p. 74). In discussing restricted roads, the manual stated that
+“Autosteer is intended for use on freeways and highways where access is limited by entry and exit
+ramps” (p. 75). The manual also stated that “Autosteer is a hands-on feature. You must keep your
+hands on the steering wheel at all times” (p. 74). 17
+
+ 17
+ The 10-page-long section in the owner’s manual concerning driver assistance, which addresses TACC and
+Autosteer, contains 16 items designated as warnings and 4 items designated as cautions.
+
+ 13
+
+=== HAR-17/02 p.24 ===
+NTSB Highway Accident Report
+
+1.3.5 Tesla-Recorded Performance Data
+
+ The Tesla Model S stores data in nonvolatile memory using a removable secure
+digital (SD) card installed within the vehicle’s electronic control unit (ECU). Parameter data are
+written continually to the ECU while the car is on. Typical parameters of vehicle system
+performance include steering angle, accelerator pedal position, driver-applied brake pedal
+application, vehicle speed, automated system states, and lead vehicle distance, among others. Some
+of these parameters are recorded continuously at a set sample rate; others are recorded only when
+the state of a system changes. All parameter data are timestamped using a global positioning
+system (GPS)-derived clock time as they arrive at the ECU.
+
+ The SD card typically maintains a complete record of all stored data for the vehicle’s
+lifetime. Data from the SD card are episodically data-linked to Tesla using a virtual private network
+connection established via Wi-Fi or the vehicle’s data-download capabilities. Any data stored since
+the last auto-upload event will exist only on the vehicle itself and must be recovered by the
+following means: (1) forcing an over-the-air upload, (2) using maintenance download equipment
+to connect directly to the vehicle, or (3) directly accessing the SD card after removing it from the
+dash-mounted electronics.
+
+ Tesla downloaded and provided to the NTSB parameter data for 53 distinct variables and
+text-based information related to 42 distinct error messages, covering a 42-hour period before the
+crash. In addition, image data from the vehicle’s camera were recovered from the SD card.18
+However, the recovered image data did not contain information related to the crash. 19
+
+ Figure 11 illustrates the periods of time during the crash trip when the driver interacted
+with the steering wheel. Vehicle performance data showed that for the 41-minute trip from Cedar
+Key, Autopilot was active for 37 minutes. During the trip, while Autopilot was in use, the system
+detected driver-applied torque on the steering wheel on seven different occasions for a total of
+25 seconds. The longest period between alerts during which Autopilot did not detect the driver’s
+hands on the steering wheel was nearly 6 minutes. For the entire trip, Autopilot was in some form
+of warning mode for a total of approximately 2 minutes. 20
+
+ Vehicle-recorded data for the trip that originated in Cedar Key showed that the system
+displayed the initial visual warning to the driver seven times (displaying the text message “Hold
+Steering Wheel” on the instrument panel). The system progressed to the initial auditory warning
+(alert chime 1) six times during the trip. Progression to the second auditory warning (alert chime 2)
+did not occur during the trip, nor did the system initiate the Autosteer deactivation protocol.
+
+ 18
+ By design, these data do not contain timestamp information.
+ 19
+ The stored images were consistent with an unrelated, noncrash event that preceded the crash.
+ 20
+ For more information about the recorded data, see the Driver Assistance System—Factual Report in the NTSB
+public docket case file HWY16FH018.
+
+ 14
+
+=== HAR-17/02 p.25 ===
+NTSB Highway Accident Report
+
+Figure 11. Chart showing how much time during the 41-minute crash trip that, while Autopilot was
+active, the driver had his hands on the steering wheel. Visual and auditory warnings are also
+indicated. (Timing provided is based on vehicle data and is approximate and relative.)
+
+ System Performance Data. The vehicle performance data revealed the following:
+
+ • The crash-involved Tesla’s last trip began at 3:55:23 p.m. The car was stopped or
+ nearly stopped about 4:19 p.m. and again about 4:30 p.m. The collision with the truck
+ occurred at 4:36:12.7, as indicated by fault codes and system disruptions.
+
+ • The last driver input before the crash was to increase the TACC speed to 74 mph at
+ 4:34:21, which was 1 minute 51 seconds before the crash. After that input, there was
+ no driver interaction with Autopilot, no change in steering angle, and no brake lamp
+ switch activation until the collision.
+
+ • During the last trip, TACC detected a vehicle ahead of the Tesla seven times. For the
+ final 1 minute 35 seconds preceding the crash, TACC detected no lead vehicle in front
+ of the Tesla.
+
+ • About 9.7 seconds before the collision, the motor torque demand steadily decreased
+ (indicating that the vehicle was on a descending grade). The reported torque demand
+ dropped to zero at the time of the first fault report.
+
+ • No brakes were applied before or during the collision.
+
+ • Vehicle headlights were not on at the time of the collision.
+
+ • The driver was wearing his seat belt during the trip.
+
+ • Throughout the approach to the collision with the truck, the electronic power assist
+ steering exhibited no substantial changes in steering angle.
+
+ • There was no record indicating that the Tesla’s automation system identified the truck
+ that was crossing in the car’s path or that it recognized the impending crash. Because
+ the system did not detect the combination vehicle—either as a moving hazard or as a
+ stationary object—Autopilot did not reduce the vehicle’s speed, the FCW did not
+
+ 15
+
+=== HAR-17/02 p.26 ===
+NTSB Highway Accident Report
+
+ provide an alert, and the AEB did not activate. All recorded data were consistent with
+ the FCW and AEB systems being enabled when the crash occurred. 21
+
+ Crash Event Data Recorder. The Tesla Model S involved in this crash did not have, nor
+was it required to have, an event data recorder (EDR). 22 As noted, it did have an ECU that recorded
+many vehicle performance parameters. Because there is no commercially available tool for
+retrieval and review of the ECU data, NTSB investigators had to rely on Tesla and its proprietary
+software to retrieve and interpret the data.
+
+1.3.6 Postcrash Changes to Autopilot
+
+ Following the crash, Tesla made design changes to version 7.1 of its Autopilot firmware
+and hardware. On September 23, 2016, Tesla made a fleetwide firmware update to version 8. The
+firmware update affected the driver interface and warning logic.
+
+ Firmware version 8 reduced the period of time that the Autopilot system allows a driver to
+have hands off the steering wheel before being warned/alerted. Version 8 also provides that if the
+driver is warned on three separate occasions by alerts, Autosteer will deactivate and be unavailable
+for an hour or until an ignition restart. That firmware change also added a preferred road constraint
+to the alert timing sequence. In version 8, on preferred roads, no alerts are made when the vehicle
+is traveling below 8 mph; at speeds 8–45 mph, the first alert displays after 10 minutes of hands off
+the steering wheel; at speeds above 45 mph, the first alert timing for hands off the steering wheel
+depends on whether the system detects a vehicle ahead of the Tesla (alert displays in 3 minutes if
+there is a lead vehicle, but in 2 minutes if there is not). See appendix C for the alert timing sequence
+for Autopilot version 8.
+
+1.4 Car Driver Information
+ The driver of the car was a 40-year-old male. Due to the requirements of his job, he traveled
+frequently. He had purchased the Tesla Model S new in 2015.
+
+ At the time of the crash, the driver held an Ohio Class D driver’s license with motorcycle
+endorsement and no restrictions. 23 His license was renewed in February 2015 and had an expiration
+date in January 2019. Ohio Motor Vehicles records indicated that the driver had nine traffic
+violations between July 2010 and September 2015. Eight of those violations were for speeding,
+and one was for failing to obey a traffic signal. 24 The records indicated that the driver had not been
+involved in a reportable crash, and his license had not been suspended, revoked, or denied.
+
+ 21
+ Although these systems can be deactivated by the driver, vehicle data indicated that they were enabled.
+ 22
+ An EDR is a device or function that records the vehicle’s dynamic time-series data during the time just before
+a crash event (for example, vehicle speed versus time) or during a crash event (for example, delta–V versus time),
+intended for retrieval after the crash event. Title 14 Code of Federal Regulations Part 563 details the requirements for
+EDRs.
+ 23
+ Ohio Class A, B, and C licenses are commercial licenses. A Class D license is a noncommercial passenger
+class license; it can have a motorcycle endorsement or be a motorcycle-only license.
+ 24
+ The driver’s last speeding ticket was issued in September 2015; he was ticketed for traveling 64 mph in a
+35-mph zone.
+
+ 16
+
+=== HAR-17/02 p.27 ===
+NTSB Highway Accident Report
+
+1.4.1 Precrash Activities
+
+ The driver spent the week before the crash—May 1 to 7—with family members in Orlando,
+Florida. Family members reported that the driver had slept well throughout the vacation and
+appeared relaxed. They also stated that he left Orlando about 10:00 a.m. on May 7, headed to a job
+scheduled for later that day in Cedar Key, Florida. En route, he stopped in Ocala, Florida, to charge
+his electric car. After completing the job in Cedar Key, the driver sent his sister a text message to
+inform her that he was leaving to travel to the next job site, which was in Swamp Fox, North
+Carolina.
+
+ Postcrash review of the data from the Tesla showed that the car slowed to a near stop
+6.4 minutes before the crash, at which point the driver assumed manual control of the vehicle.
+Autosteer was activated about 6.2 minutes before the crash. The reported average vehicle speed
+over this period indicates that Autosteer was activated about 6.7 miles before the crash, which
+would place the vehicle near the intersection with SR-24 in Bronson, Florida. US-27A through the
+intersection with SR-24 in Bronson is not configured as a divided highway. US-27A became a
+divided highway approximately 1.0 mile east of that intersection.
+
+1.4.2 Health
+
+ According to his driver’s license, the car driver was 5 feet 9 inches tall and weighed
+190 pounds. 25 The driver’s family stated that he did not drink alcohol or smoke and was in
+excellent health overall. The driver did not have a regular personal physician. Insurance records
+did not indicate that he had been prescribed any medications, and pharmacies near the driver’s
+residence revealed no records of medications. At the NTSB’s request, the Federal Aviation
+Administration (FAA) Civil Aerospace Medical Institute (CAMI) Bioaeronautical Sciences
+Research Laboratory performed a postcrash toxicological analysis of the driver’s blood. The
+results were negative for alcohol and other drugs. 26
+
+1.4.3 Portable Electronic Devices
+
+ NTSB investigators located the car driver’s cell phone, two laptop computers, and several
+other Internet-connected devices associated with his employment. 27 Investigators did not uncover
+evidence that any of the devices had been in use at the time of the crash. Due to damage, however,
+examination results were inconclusive for the cell phone and one laptop.
+
+ A review of the driver’s cell phone records indicated that his first outgoing phone activity
+on May 7, 2016—the day of the crash—took place at 5:15 a.m. That morning, he had sent and
+received about 40 text messages by 10:00 a.m., the approximate time of his departure from
+Orlando. No phone activity took place between 10:00 a.m. and 1:00 p.m. The driver’s phone
+
+ 25
+ These data indicate he had a body mass index (BMI) of 29.8 (kg/m2). An adult with a BMI over 25 is considered
+overweight; one with a BMI greater than or equal to 30 is considered obese.
+ 26
+ Analyses conducted by the laboratory detect amphetamines, opiates, marijuana, cocaine, phencyclidine,
+benzodiazepines, barbiturates, antidepressants, antihistamines, and commonly used prescription drugs.
+ 27
+ The cell phone and one laptop were found in the vehicle when it was inspected; a second laptop that had been
+returned to the family was provided to NTSB investigators.
+
+ 17
+
+=== HAR-17/02 p.28 ===
+NTSB Highway Accident Report
+
+records indicate that he received and sent text messages between 1:00 p.m. and 2:00 p.m., about
+the time he was completing the work at Cedar Key.
+
+ The driver’s sister reported that she received a text message from the driver at 4:03 p.m.
+on the day of the crash, but investigators could not identify a device or time associated with that
+message. The driver’s cell phone records do not indicate phone use for conversation or texting
+near the time of the crash.
+
+1.5 Truck Driver, Motor Carrier, and Truck Information
+ This section addresses the commercial truck driver and his owner-operator trucking
+business.
+
+1.5.1 Truck Driver
+
+ Background. The truck driver was a 62-year-old male, who was 5 feet 8 inches tall and
+weighed 246 pounds. 28 The truck driver refused interview requests from NTSB investigators, but
+his attorney provided some documentation. According to his attorney, for the 6 years preceding
+the crash, the truck driver had been the owner and sole operator of the motor carrier Okemah
+Express LLC. 29
+
+ At the time of the crash, the truck driver had a Florida Class A commercial driver’s
+license (CDL) without any endorsements or restrictions. 30 His CDL was renewed in
+November 2012 and had an expiration date in January 2021. His medical certificate was valid for
+2 years, until September 28, 2017. According to the documentation of the September 18, 2015,
+medical examination he underwent for recertification for commercial driver fitness, the driver did
+not report having any medical conditions or using any medications.
+
+ An inquiry using the Commercial Driver’s License Information System (CDLIS) revealed
+that the truck driver had three traffic violations while driving commercial motor vehicles—two
+from 2013 for failure to obey traffic control devices and one from 2015 for an improper lane
+change. 31 Additionally, the CDLIS report showed that his commercial driving privilege had been
+
+ 28
+ NTSB investigators took the truck driver’s height and weight data from his medical certification information.
+These data indicate that he had a BMI of 37.4 (kg/m2). The FHP crash report indicates that the driver was 5 feet
+10 inches tall and that he weighed 245 pounds, corresponding to a BMI of 35.2. An adult with a BMI over 25 is
+considered overweight; one with a BMI greater than or equal to 30 is considered obese.
+ 29
+ Motor carrier records indicate that the carrier operated under a different name from 2002 to 2005 with a
+principal place of business in Okemah, Oklahoma. In 2005, the carrier changed its name and corporate structure to
+Okemah Express LLC.
+ 30
+ A Class A CDL permits the driver to operate a tractor-trailer combination vehicle that has an actual weight,
+declared weight, or gross vehicle weight rating of 26,001 pounds or more, provided that the towed vehicle weighs
+more than 10,000 pounds.
+ 31
+ CDLIS is a nationwide computer system that enables state driver licensing agencies to ensure that each
+commercial driver has only one driver’s license and one complete driver record. State driver licensing agencies use
+CDLIS to complete various procedures, including (1) transmitting out-of-state convictions and withdrawals,
+(2) transferring the driver’s record when a CDL holder moves to another state, and (3) responding to requests for
+driver status and history.
+
+ 18
+
+=== HAR-17/02 p.29 ===
+NTSB Highway Accident Report
+
+withdrawn on five separate occasions since 1984. 32 His motor vehicle records indicated that he
+had not been involved in any other reportable crash.
+
+ A review of the truck driver’s roadside inspection history showed that he had undergone
+18 inspections in 10 state jurisdictions; 11 inspections found hours-of-service (HOS) violations.
+HOS violations for the carrier resulted in its being in HOS alert status from November 2010 to
+September 2011 and again from July 2012 until April 2015. 33 Based on this HOS alert history, the
+Federal Motor Carrier Safety Administration (FMCSA) issued the carrier a warning letter, dated
+March 25, 2011. The carrier’s record-of-duty status for the 6 months before the crash indicated a
+continuing issue of noncompliance with the HOS requirements at 49 Code of Federal
+Regulations (CFR) Part 395. 34
+
+ Precrash Activities. NTSB investigators used the truck driver’s logbooks and cell phone
+records obtained through subpoena to reconstruct his activities before the crash. On the 3 days
+before the crash (Wednesday, May 4, through Friday, May 6), his phone activity began about
+10:00 a.m. each morning and ended about 9:00 p.m., 4:00 p.m., and midnight, respectively. 35
+
+ On the day of the crash, Saturday, May 7, the truck driver’s logbooks show that he slept in
+the truck’s sleeper berth from midnight to 8:00 a.m. During the day, the driver was involved in
+31 phone calls and 4 text messages. By cross-referencing his logbook information with cell phone
+records, investigators determined that, while on duty and driving that day, the truck driver
+conducted 15 phone conversations and received 2 inbound text messages. His phone records do
+not show activity at the time of the crash. 36
+
+ Postcrash Toxicology. The truck driver remained on scene, interacting with FHP officers
+and first responders, for more than 90 minutes following the crash. The FHP did not record any
+behavioral evidence of impairment. At FHP direction, a blood sample was obtained from the truck
+driver. According to the FHP Blood Withdrawal/Fatal Traffic Crash Checklist, on-scene
+paramedics drew blood from the truck driver approximately 1.5 hours after the crash (at 6:11 p.m.
+and 6:12 p.m. for two tubes). A portion of the sample was sent for toxicological analysis to the
+Florida Department of Law Enforcement laboratory. It tested positive for
+tetrahydrocannabinol (THC) and its metabolites, and negative for nine other common classes of
+abuse drugs. The laboratory’s analysis of THC was considered by the State’s Attorney, but the
+FHP Case Closing Report, dated December 18, 2016, resulted in a noncriminal traffic violation.
+
+ 32
+ Violations for speeding or failure to comply with traffic control signage or devices occurred in 1984, 1991 (two
+violations), 2005, and 2013.
+ 33
+ To quantify operator performance, the Federal Motor Carrier Safety Administration Safety Measurement
+System uses data on a motor carrier based on roadside inspections (including all safety-based violations),
+state-reported crashes, and Federal Motor Carrier Census information. Unsafe carriers, which exceed the designated
+thresholds in the Behavior Analysis and Safety Improvement Categories (BASICs), are noted by alerts. For the two
+cited periods, the carrier had a BASIC alert in the HOS category.
+ 34
+ (a) The driver did not maintain any of the required documents mandated by the Federal Motor Carrier Safety
+Regulations. (b) Several months after the crash (in February 2017), the carrier received an FMCSA warning letter for
+an alert in the “Unsafe Driving” BASIC.
+ 35
+ See NTSB public docket case file HWY16FH018, HP Factual Report Attachment 7: Truck driver’s motor
+vehicle records, and Attachment 8: Truck driver’s cell phone records.
+ 36
+ The driver concluded a call at 4:11 p.m., about 25 minutes before the crash occurred.
+
+ 19
+
+=== HAR-17/02 p.30 ===
+NTSB Highway Accident Report
+
+That record of the investigation documented four FHP officers on scene and stated that the trooper
+responsible for overseeing the blood draw “did not observe any signs of impairment” in the truck
+driver.
+
+ NTSB investigators sent a portion of the blood sample to the FAA CAMI laboratory for
+further analysis. The laboratory identified 3.1 nanograms/milliliter (ng/mL) of THC and
+66.2 ng/mL of tetrahydrocannabinol carboxylic acid (THC-COOH) in the sample. THC is the main
+psychoactive compound in marijuana; THC-COOH is its primary (inactive) metabolite. (The truck
+driver’s drug use will be discussed further in section 2.3 of this report.)
+
+ Following the crash, US Department of Transportation (DOT) postcrash drug and alcohol
+testing was not performed. DOT regulations require a carrier to submit the crash-involved truck
+driver for drug and alcohol screening following certain types of crashes, including those that
+involve a fatality. The carrier did not comply with this regulation. 37
+
+1.5.2 Motor Carrier Operations
+
+ Okemah Express LLC was a “for-hire” carrier of general freight, fresh produce, grain,
+meat, and refrigerated food that operated with one vehicle and one driver. The company’s primary
+place of business was Palm Harbor, Florida.
+
+ Okemah Express had six roadside or terminal inspections during the year preceding the
+crash (from May 2015 to May 2016). Those six inspections resulted in one driver
+out-of-service (OOS) violation and no vehicle OOS violations. The Motor Carrier Management
+Information System (MCMIS) profile indicated that the carrier had no DOT-reportable crashes in
+2015.
+
+ At the time of the crash, the carrier’s Safety Measurement System profile displayed no
+BASIC alerts. The carrier provided no driver qualification file and did not have records indicating
+that it maintained a drug testing program, as required by 49 CFR Parts 40 and 382.
+
+ The FMCSA did not perform a postcrash compliance review of Okemah Express.
+
+1.5.3 Postcrash Inspection of the Truck-Tractor and Semitrailer
+
+ The FHP postcrash inspection of the 2014 Freightliner Cascadia truck-tractor did not reveal
+any mechanical issues. The truck-tractor was not damaged in the crash, and the FHP released it
+following postcrash inspection. By the time the NTSB investigation began, the truck-tractor was
+back in service and was not examined by NTSB investigators.
+
+ The engine of the 2014 Freightliner was managed by a Detroit Diesel Electronic
+Controller (DDEC) that could record certain data associated with vehicle operation. The FHP
+provided NTSB investigators with a copy of a report of a May 10, 2016, data download conducted
+ 37
+ Title 49 CFR 382.303 details the requirements for postaccident drug and alcohol testing. Under this part,
+carriers who employ drivers who operate CDL-required commercial motor vehicles are subject to six testing
+procedures. Title 49 CFR 382.303(g)(1) and (2) allow a carrier to fulfill this requirement by obtaining the results of
+the tests conducted by federal, state, or local officials. The carrier did not receive any test results and did not qualify
+for exemption from the postaccident drug test requirement.
+
+ 20
+
+=== HAR-17/02 p.31 ===
+NTSB Highway Accident Report
+
+by a third party that accessed the DDEC control module. The report indicated that postcrash
+movement of the truck-tractor on May 8, 2016, made certain data associated with vehicle operation
+at the time of the May 7, 2016, crash event unavailable.
+
+ The FHP conducted a postcrash mechanical inspection of the 2003 Utility 3000R
+refrigerated semitrailer on May 12, 2016. That inspection identified missing and broken frame
+crossmembers and inoperable intermediate marker lamps. It also found an air leak at a connection
+between axles 4 and 5. No brakes were found to be out of adjustment.
+
+ NTSB investigators located the semitrailer, which Okemah Express had sold to a salvage
+yard following the crash, and inspected it on July 14, 2016. The inspection included visually
+examining its brake linings, air lines, and foundation brake components. All brake linings
+exceeded the minimum requirements of 0.25 inch. The thermoplastic emergency brake air line
+attached to the right side of the axle was worn through to the inner (second) color layer; this is an
+OOS condition, according to North American Standard Out-of-Service Criteria. The emergency
+brake hose, forward of the front axle, contained a non-DOT approved fitting. The semitrailer’s
+suspension consisted of air springs, shock absorbers, cantilever arms, and solid axles; investigators
+identified no damage to the suspension.
+
+ The semitrailer did not have, nor was it required to have, side underride protection guards.
+In the United States, standards for side underride protection guards for trailers do not exist.
+European Union regulations address the performance of side guards on trailers; they are designed
+to protect vulnerable road users, such as pedestrians and bicyclists, from falling under the trailer
+and being caught in the wheels (United Nations Economic Commission for Europe 2004).
+
+1.6 Highway Factors
+1.6.1 Road Description and Characteristics
+
+ US-27A at the crash location is a rural four-lane road divided by a grassy median. 38 Travel
+lanes are 12 feet wide, and the median is approximately 60 feet wide. The left and right shoulders
+are about 2 and 5 feet wide, respectively. US-27A is not a limited-access roadway because it has
+intersections, business access, and private driveway access. 39
+
+ According to the Florida Department of Transportation (FDOT), in the past 5 years,
+84 crashes took place in the 10-mile segment of US-27A that centers on the intersection of US-27A
+and NE 140th Court; of those, 4 were fatal crashes involving 7 fatalities. Property-damage-only
+crashes accounted for 37 percent of the crashes. Seven nonfatal crashes occurred in close proximity
+to the intersection of US-27A and NE 140th Court; three of the seven crashes were designated as
+taking place at the intersection.
+
+ 38
+ A median is the portion of the highway separating opposing directions of the travelway. Median width is
+expressed as the dimension between the edges of the traveled way, including the width of the shoulders, if any.
+ 39
+ A limited-access roadway has on-ramps and off-ramps to control the flow onto and off the roadway. On-ramps
+and off-ramps enable vehicles to merge into the traffic flow while traveling in the same direction as the main traffic
+flow. There is no crossing traffic on a limited-access roadway.
+
+ 21
+
+=== HAR-17/02 p.32 ===
+NTSB Highway Accident Report
+
+1.6.2 Road Geometry and Traffic Volume
+
+ The eastbound approach to the intersection exhibits a descending grade of about
+2.15 percent. Based on highway profile plans from FDOT, the height of the grade crests
+approximately 1,132 feet west of the center of the NE 140th Court intersection. The grade
+descends for about 1,459 feet, leveling off about 327 feet east of the intersection. Farther east, the
+highway appears essentially level, although the profile plans indicate a very slight (0.08 percent)
+descending grade for at least another 2,400 feet. Other than the vertical curve, the highway is
+essentially straight for several miles east and west of the intersection. 40
+
+ The average daily traffic for 2015 on US-27A was about 8,800 vehicles with a slightly
+higher percentage of traffic (about 5 percent more) traveling westbound. A speed study conducted
+on August 24, 2016, on US-27A for both east- and westbound traffic near the intersection with
+NE 140th Court found that the 85th percentile speed was 69 mph. 41 In 2003, this section of the
+roadway was reconstructed from a two-lane to a four-lane configuration with a design speed of
+68 mph. It was resurfaced in 2013 to a design speed of 70 mph. 42 At the time of the crash, the
+posted speed limit was 65 mph.
+
+ A signal warrant analysis considered the traffic volume, turning movements, and pedestrian
+use of the crash intersection. With respect to whether US-27A at NE 140th Court should have been
+a signalized intersection, conditions at this location met none of the five applicable signal warrants
+in the Manual on Uniform Traffic Control Devices for Streets and Highways (Federal Highway
+Administration [FHWA] 2009).
+
+1.6.3 Road Classification
+
+ FDOT functionally classifies US-27A at the crash location as “rural principal arterial
+other,” which is a classification comparable to the American Association of State Highway and
+Transportation Officials (AASHTO) designation of “other principal arterial” (AASHTO 2011).
+This class of roadway provides direct access to cities and larger towns. According to AASHTO,
+the principal arterial system is stratified into three classifications: (1) interstate highways, (2) other
+freeways and expressways, and (3) other principal arterials. On rural arterial roadways, access to
+abutting land can be provided by driveways to specific parcels and at-grade intersections with
+other roadways (AASHTO 2011, pp. 1–9).
+
+ The functional classification of a roadway characterizes its design, including its expected
+speed and capacity. The six AASHTO categories are as follows: interstates, other freeways and
+expressways, other principal arterials, minor arterials, collectors, and local roads. Each
+classification can be subcategorized as urban or rural. The FHWA summarizes the relationship
+between the design concepts and the three broad categories of functional classification (FHWA
+2013). With respect to traffic access, the first three AASHTO categories are described as follows:
+
+ 40
+ The GPS coordinates for the crash area are 29.4106 N / -82.53979 W for the location of impact and
+29.409516 N / -82.537291 W for the location of the car at rest.
+ 41
+ The 85th percentile speed is the speed at which 85 percent of the vehicle traffic is traveling either at or below.
+ 42
+ See FDOT State Project 34010-3539.
+
+ 22
+
+=== HAR-17/02 p.33 ===
+NTSB Highway Accident Report
+
+interstates—fully controlled; freeways and expressways—fully/partially controlled; and other
+principal arterials—partially uncontrolled.
+
+ The Tesla owner’s manual included numerous statements that drivers should use Autopilot
+on highways and limited-access roads (as discussed in section 1.3.4). But the firmware’s logic did
+not restrict the system’s use based on functional road classification; the system had no hard
+constraint concerning road classification.
+
+1.7 Regulation and Policy Concerning Automated Vehicles
+ Individual states are responsible for registering motor vehicles and regulating the operation
+of motor vehicles on public roads in their states. The National Highway Traffic Safety
+Administration (NHTSA) is responsible for setting safety standards for vehicle systems; however,
+many vehicle aspects are not covered by a Federal Motor Vehicle Safety Standard (FMVSS). 43
+For new and developing technologies, manufacturers design and test new systems and determine
+when they will be added to the fleet. As a technology matures and enters fleet production, NHTSA
+may define an FMVSS for the system on new vehicles. For example, electronic stability control
+systems, which reduce loss of wheel traction, were first developed in the late 1980s and began to
+appear on new cars in the 1990s. After the systems had been demonstrated to be effective in
+reducing crashes, NHTSA established FMVSS 126 for electronic stability control systems for light
+vehicles, which required these systems for all such vehicles, effective September 1, 2011. 44
+
+1.7.1 Levels of Automation
+
+ The SAE has an On-Road Automated Driving Committee. In September 2016, that
+committee issued a revised Taxonomy and Definitions for Terms Related to Driving Automation
+Systems for On-Road Motor Vehicles. 45 The revision incorporated lessons learned from both
+industry and government research groups, including the Automated Driving Applications and
+Technologies for Intelligent Vehicles (AdaptIVe) Consortium, the Crash Avoidance Metrics
+Partnership (CAMP), and the Automated Vehicle Research (AVR) Consortium (CAMP 2016).46
+
+ 43
+ The Federal Motor Vehicle Safety Standards (FMVSSs) are regulations specifying the design, construction,
+performance, and durability requirements for motor vehicles and regulated automobile safety-related components,
+systems, and design features. The requirements are specified in such a manner “that the public is protected against
+unreasonable risk of accidents occurring as a result of the design, construction, or performance of motor vehicles and
+is also protected against unreasonable risk of death or injury in the event accidents do occur.” (See P.L. 89–563,
+80 Stat. 718: National Traffic and Motor Vehicle Safety Act of 1966.)
+ 44
+ See 72 Federal Register 17236 (April 6, 2007), final rule amending 49 CFR Parts 571 and 585, Federal Motor
+Vehicle Safety Standards, “Electronic Stability Control Systems,” docket no. NHTSA-2007-27662.
+ 45
+ See Surface Vehicle Recommended Practice J3016. The SAE first published SAE J3016, which was developed
+by the SAE On-Road Automated Driving Committee, on January 16, 2014. That 12-page standard provided detailed
+definitions only for the three highest levels of automation. The revised 30-page standard released on September 30,
+2016, provided a taxonomy for all six levels of driving automation.
+ 46
+ (a) AdaptIVe is a consortium of 28 partners from 8 countries that was formed in 2014 and is supported by the
+European Union and the European Council for Automotive R&D EUCAR. See AdaptIVe project, accessed
+September 7, 2017. (b) CAMP originated as a partnership formed in 1995 between vehicle manufacturers Ford and
+General Motors to accelerate the implementation of crash avoidance countermeasures in cars. The consortium has
+since expanded to include Mercedes-Benz, Nissan, Toyota, and Volkswagen.
+
+ 23
+
+=== HAR-17/02 p.34 ===
+NTSB Highway Accident Report
+
+The revised taxonomy included definitions for six levels or degrees of driving automation, as
+shown in figure 12.
+
+Figure 12. Summary of SAE taxonomy and definitions for terms related to driving automation
+systems for on-road motor vehicles. (Source: SAE International J3016 [SAE International 2016])
+
+ According to these definitions, the Tesla car involved in the Williston crash was equipped
+with a Level 2 automated driving system. Level 2 systems provide lateral control (lane-keeping or
+steering) and longitudinal control (adaptive cruise control or acceleration/deceleration). When
+operating a Level 2 vehicle, the driver is responsible for monitoring the driving environment.
+
+1.7.2 Federal Automated Vehicles Policy
+
+ In September 2016, NHTSA issued its Federal Automated Vehicles Policy (AV Policy) as
+agency guidance (NHTSA 2016). The policy specifically incorporated the SAE’s six-level
+taxonomy described above for levels of automation. Using the SAE levels, NHTSA drew a
+distinction between Levels 0–2 and Levels 3–5 based on whether the human operator or the
+automated system is primarily responsible for monitoring the driving environment. Vehicles in the
+second group (Levels 3–5) are referred to as highly automated vehicles (HAV).
+
+ 24
+
+=== HAR-17/02 p.35 ===
+NTSB Highway Accident Report
+
+ For the purposes of this investigation, the following summary points characterize
+NHTSA’s AV Policy (NHTSA 2016):
+
+ • The AV Policy principally addresses HAVs—those vehicles in Levels 3–5—rather
+ than focusing on those in Levels 0–2.
+
+ • Lower-level systems primarily rely on the human driver when active and operating;
+ HAV systems do not. However, this distinction does not restrict manufacturers and
+ other entities from applying the AV Policy guidance to the development, testing, and
+ deployment of lower-level systems.
+
+ • HAV manufacturers should have a documented process for testing, validating, and
+ collecting data from events, incidents, and crashes to record malfunctions,
+ degradations, and failures in a way that can be used to understand and improve system
+ performance.
+
+ o For crash reconstruction purposes, the data should be stored, maintained, and
+ readily available for retrieval by the manufacturer and NHTSA.
+
+ o Enhanced EDRs would enable NHTSA to reconstruct the circumstances of
+ crashes and gain an understanding of how an automated vehicle involved in a
+ crash or incident sensed and responded to its driving environment immediately
+ before and during the crash or near-crash event.
+
+1.8 NHTSA Defect Investigation
+ On June 28, 2016, in response to the May 7, 2016, Williston crash, NHTSA’s Office of
+Defects Investigation (ODI) opened an investigation (PE 16-007) to consider whether the AEB
+and Autopilot systems on the Tesla Model S and Model X functioned as designed. The ODI
+examined the following: (1) AEB design and performance in Tesla vehicles and peer vehicles,
+(2) human-machine interface issues related to the Autopilot operating mode, (3) data from crash
+incidents related to Autopilot and AEB, and (4) postcrash changes that Tesla made to its Autopilot
+version 8 and AEB systems. On January 19, 2017, NHTSA issued an ODI Resume report stating
+that the preliminary evaluation was closed. The report stated, “NHTSA’s examination did not
+identify any defects in design or performance of the AEB or Autopilot systems of the subject
+vehicles [2014–2016 Tesla Model S and Model X] nor any incidents in which the systems did not
+perform as designed.” The report further stated that “AEB systems used in the automotive industry
+through MY 2016 [model year 2016] are rear-end collision avoidance technologies that are not
+designed to reliably perform in all crash modes, including crossing path collisions.” (NHTSA
+2017, p. 1)
+
+ The ODI report also referenced past NHTSA research. Beginning in 2007, NHTSA began
+to develop test methods for assessing the effectiveness of crash-imminent braking systems
+(Carpenter and others 2011). The four-phase project (1) used crash reports to identify crash
+scenarios to develop preliminary functional requirements; (2) developed system and component
+performance capabilities and identified target systems for testing; (3) developed, demonstrated,
+and validated tests; and (4) developed benefits estimations. The project identified eight
+
+ 25
+
+=== HAR-17/02 p.36 ===
+NTSB Highway Accident Report
+
+vehicle-to-vehicle (V2V) crash types. The project could not demonstrate and validate two types of
+scenarios—straight crossing path events and left turn across path events; these two scenarios are
+the crash types most closely associated with the Williston crash sequence. The ODI investigation
+surveyed a dozen automated system manufacturers and several suppliers; none indicated that their
+AEB systems through model year 2016 were designed to brake for crossing path collisions
+(NHTSA 2017, p. 3).
+
+ 26
+
+=== HAR-17/02 p.37 ===
+NTSB Highway Accident Report
+
+2 Analysis
+2.1 Introduction
+2.1.1 Automated Vehicle Control Systems
+
+ For mass market vehicles in diverse driving environments, it has proven difficult to
+automate the full range of driving tasks. Automated vehicle control systems must be designed to
+handle both the common, expected control tasks encountered by human drivers and the unexpected
+and unusual tasks as well. Functionally, automated vehicle control systems detect and respond to
+objects and events, but the current systems have operating limitations with respect to the types of
+situations they can handle reliably and well. Such limitations are associated with the conditions in
+which the automated system is intended to operate.
+
+ Level 2 automated systems simultaneously control lateral lane-keeping movements and
+longitudinal vehicle following distances. 47 Level 2 systems can execute steering and
+acceleration/deceleration tasks, but the degree of automation is, by definition, partial.
+
+ Automated vehicle control systems can operate a vehicle on the road, but in certain
+situations, the existing systems have significant limitations that require driver intervention.
+Although system designers understand the limits of partial automation, the driving public may
+not. 48 Eventually, as highway vehicles progress through increasing degrees of automation and
+incorporate additional technological advances, vehicle engineers will shift the driving
+responsibility from the human driver to a fully autonomous system. But until automated vehicle
+systems mature, driver engagement remains integral to the automated driving system.
+
+2.1.2 Structure of the Analysis
+
+ The Analysis begins with an account of several factors that did not affect the crash
+(section 2.2). A section discussing the truck driver’s use of drugs follows this material
+(section 2.3). Then, the Analysis discusses the safety issues identified in this investigation,
+organized into sections as follows:
+
+ • Operational design domains for SAE Level 2 vehicle automation (section 2.4),
+
+ • Surrogate means of determining the automated vehicle driver’s degree of engagement
+ (section 2.5),
+
+ • EDRs for automated vehicles (section 2.6),
+
+ 47
+ Intelligent cruise control systems in recent vehicle models provide Level 1 driver assistance capability.
+ 48
+ Consumer Reports reviewed 280 model year 2017 vehicles and included an “Alert” for 14 models, stating that
+“This vehicle can be outfitted with a semiautonomous driving package. Consumer Reports believes automakers should
+take stronger steps to ensure that vehicles with these systems are designed, developed, and marketed safely. Please
+heed all warnings and keep your hands on the wheel” (Consumer Reports 2017).
+
+ 27
+
+=== HAR-17/02 p.38 ===
+NTSB Highway Accident Report
+
+ • Safety metrics and exposure data for automated vehicles (section 2.7), and
+
+ • Connected vehicle technology and V2V requirements (section 2.8).
+
+2.2 Factors Not Affecting the Crash
+2.2.1 Driver, Vehicle, and Highway Factors
+
+ The following bulleted statements relate to the drivers:
+
+ • Based on cell phone records, work schedules, and witness accounts, investigators found
+ no evidence of fatigue for either driver.
+
+ • Although the truck driver had engaged in numerous cell phone conversations while
+ driving in the hours before the crash, investigators discovered no evidence that he was
+ distracted by cell phone use at the time of the crash.
+
+ • Both drivers held valid driver’s licenses, and the truck driver had a current medical
+ certificate.
+
+ • Based on toxicological analysis, the car driver was not impaired by alcohol or other
+ drugs.
+
+ The following bulleted statements relate to the vehicles involved in the crash and the
+roadway they were on at the time of the crash:
+
+ • Investigators found no mechanical problems that would have affected either vehicle’s
+ handling or stopping performance.
+
+ • Investigators found no evidence of precollision roadway marks, such as would be
+ associated with evasive maneuver by the eastbound Tesla; moreover, no record in the
+ Tesla’s performance data indicated that the vehicle systems or the driver initiated
+ braking or steering input immediately before the crash.
+
+ • Investigators conducted a signal warrant analysis of the crash intersection. Neither the
+ road design of nor the levels of traffic on US-27A at the intersection of NE 140th Court
+ warranted a traffic signal.
+
+ The NTSB concludes that no investigative evidence indicates that either driver was
+fatigued, that cell phone use distracted the truck driver, that the car driver was impaired by alcohol
+or other drugs, that any mechanical system on either vehicle failed, or that the highway design was
+inappropriate; consequently, these were not factors in the crash.
+
+ 28
+
+=== HAR-17/02 p.39 ===
+NTSB Highway Accident Report
+
+2.2.2 Sight Distance
+
+ Highway Features. The highway had a heading that was straight, but the line of sight
+available to opposing drivers operating near the intersection was affected by a vertical crest in the
+road west of the intersection. 49 Using highway profile data provided by FDOT and applicable
+AASHTO intersection sight distance calculation methodology, the sight distance for the truck
+driver was calculated at 1,132 feet, as measured from the area of impact (AASHTO 2011). 50 Based
+on the Tesla’s 74-mph approach speed and the calculated line-of-sight distance, both drivers could
+potentially have had up to 10.4 seconds to observe and respond to one another. 51
+
+ According to FDOT, the highway design speed was 70 mph. For left-turning combination
+vehicles, AASHTO guidelines recommend intersection sight distances of 781 and 842 feet for
+highway design speeds of 65 and 70 mph, respectively. Those distances are based on a minimum
+gap time of 8.2 seconds (7.5 seconds for a combination vehicle plus 0.7 second for crossing the
+additional through lane). 52 Therefore, the calculated sight distance of 1,132 feet for the truck driver
+exceeded the minimum sight distance that AASHTO recommends for a roadway of this design
+speed.
+
+ The median crossover associated with the intersection had an opening along the distance
+of the travelway that provided sufficient area to safely “store” the 72-foot-long combination
+vehicle. 53 The highway configuration should not have influenced the truck driver to hurry through
+the turn.
+
+ Witness Account. A witness who had been traveling westbound on US-27A behind the
+crash-involved truck said that he saw the truck in the left turn lane at the intersection. The witness
+described seeing the eastbound Tesla crest the grade before the truck began its left turn. He said
+he saw the Tesla for several seconds before the semitrailer blocked his view of the car.
+
+ The witness described reaching the westbound left turn lane for the intersection after the
+impact occurred. The witness said he was traveling about 60 mph. The fact that the witness had
+time to slow his speed, make a U-turn at the intersection, and follow the Tesla on its postimpact
+route suggests that he was traveling about 0.25 mile behind the truck, which could explain why he
+could not be sure whether the truck only slowed or came to a full stop in the turn lane before
+
+ 49
+ The eastbound approach to the intersection has a descending grade of approximately 2.15 percent.
+ 50
+ AASHTO guidelines recommend an average eye height of 7.6 feet for truck drivers. A target height of 3.5 feet
+is recommended for passing and intersection sight distances.
+ 51
+ Two additional line-of-sight distances were considered. The truck driver began his turn from the westbound
+turn lane from an estimated position that would have involved a slightly longer sight distance. The Tesla driver’s sight
+distance would have been slightly shorter because his height was lesser. Because of the known travel time for the
+Tesla along the eastbound roadway, and because that was a median of the possible calculations, the discussion used
+that distance to impact. The choice of calculation had no appreciable effect on the calculated response time of
+10.4 seconds.
+ 52
+ See AASHTO 2011, table 9-13, “Gap Time for Left Turn from Major Road.”
+ 53
+ Dimensions are based on 3D scanning of the highway. The median left turn lane is an auxiliary lane for
+left-turning vehicles. The median, left turn lane, and shoulders totaled 78 feet in width. (See AASHTO 2011,
+section 9.8.2, for minimum designs for median openings.)
+
+ 29
+
+=== HAR-17/02 p.40 ===
+NTSB Highway Accident Report
+
+turning through the intersection. The witness saw no obstructions to the lines of sight for the two
+vehicle drivers and said that sun glare was not a problem.
+
+ Based on the foregoing information concerning the car speed, the highway features and
+design, and the witness’s report of the vehicles’ locations and movements preceding the crash, the
+NTSB concludes that there was sufficient sight distance to afford time for either the truck driver
+or the car driver to have acted to prevent the crash.
+
+ In the context of right of way, the truck driver had the duty to yield to the Tesla. 54 Following
+the crash, the FHP cited him for failure to yield.
+
+2.2.3 Side Underride Protection
+
+ The semitrailer of this truck did not have, nor was it required to have, side underride
+protection guards. European regulations concerning underride protection do not address impact by
+a vehicle. Thus, even if the semitrailer had been equipped with side underride guards designed to
+the European regulations, they would not have significantly mitigated the severity of the crash.
+Although research into the potential benefits of trailer side guards designed for vehicle impacts
+has indicated some benefit achieved by their reducing the incompatibility between passenger cars
+and trailers (Brumbelow 2012), guards designed to prevent passenger vehicle underride are
+typically tested at 56 kilometers per hour (35 mph). Given that the Tesla struck the semitrailer at
+74 mph—more than double the test speed—it is unlikely that the injury outcome of the crash would
+have been significantly improved by side underride guards on the semitrailer.
+
+2.2.4 Forward Collision Warning and Automatic Emergency Braking
+
+ On the 2015 Tesla Model S, the FCW/AEB system uses vehicle-resident camera and radar
+sensors and computer processing to provide warnings to the driver and to activate braking to
+prevent or mitigate an imminent crash. The system is designed to recognize and detect slow,
+stopped, and decelerating vehicles when they are traveling ahead of the Tesla in the same lane.
+TACC, when enabled, incorporates an AEB feature that can respond to an object that the camera
+system detects in the Tesla’s path but cannot classify as a vehicle. Such an unclassified object in
+the path of the Tesla must be detected by both the camera and the radar for the AEB to activate.
+
+ A postcrash review of the Tesla’s performance data determined that no status messages
+indicated that AEB or FCW was disabled during the last trip segment. The recorded data showed
+no indication of an FCW event, an AEB event, or any other event indicating detection of a vehicle
+or an object at or just before the time of the crash. The NTSB concludes that the Tesla’s automated
+vehicle control system was not designed to, and did not, identify the truck crossing the car’s path
+or recognize the impending crash; consequently, the Autopilot system did not reduce the car’s
+velocity, the FCW system did not provide an alert, and the AEB did not activate.
+
+ Current Level 2 vehicle automation technologies cannot reliably identify and respond to
+crossing vehicle traffic. NHTSA’s ODI report on the Tesla Models S and X, which was prompted
+by the Williston crash, states: “None of the companies contacted by ODI indicated that AEB
+
+ 54
+ See Florida State Statute 316.123—“Vehicle Entering Stop or Yield Intersection,” accessed September 7, 2017.
+
+ 30
+
+=== HAR-17/02 p.41 ===
+NTSB Highway Accident Report
+
+systems used in their products through MY 2016 production were designed to brake for crossing
+path collisions” (NHTSA 2017, p. 3). As part of its defect investigation, NHTSA conducted a
+series of test-track-based AEB evaluations on the Tesla Model S, as well as a peer vehicle
+system. 55 The testing confirmed that the Tesla AEB system avoided crashes for the majority of
+rear-end scenarios, and its TACC generally provided enough braking to avoid rear-end crash
+scenarios; but neither test vehicle effectively responded to “target vehicles” in straight crossing
+path or left turn across path scenarios. NHTSA concluded that there was no defect in the design of
+the Tesla crash avoidance and mitigation systems.
+
+2.3 Truck Driver Drug Use
+ The FHP had a blood sample taken from the truck driver following the crash. Law
+enforcement’s toxicological analysis of the sample was positive for THC, the active ingredient in
+marijuana. A portion of that blood draw was also sent to the FAA CAMI laboratory for analysis;
+it also tested positive for THC, at 3.1 ng/mL.
+
+ According to 21 United States Code Section 812, marijuana is a Schedule I controlled
+substance. Although some states and the District of Columbia permit its use for medicinal and
+recreational purposes, it is unacceptable for any safety‐sensitive employee subject to DOT drug
+regulations to use marijuana. 56 Florida has no current statute regarding the level of THC that
+indicates impairment. 57
+
+ THC has mood-altering effects that may include euphoria, relaxation of inhibitions,
+disorientation, time/image distortion, and psychosis. Significant performance impairments are
+usually observed for at least 1–2 hours following marijuana use, and residual effects have been
+reported for up to 24 hours. 58 Blood THC levels peak during the act of smoking and then decline
+rapidly as the drug is distributed into highly vascular tissues, including the brain. The rate of
+decline then slows as THC is absorbed into adipose tissue. In one study, peak THC plasma levels
+in six volunteers averaged 84 ng/mL (range 50–129 ng/mL) at an average of 8.4 minutes after
+beginning to smoke a cigarette containing 15.8 milligrams of THC (the volunteers were allowed
+11 minutes to smoke the cigarette). By 3.0 hours after beginning to smoke, volunteers’ THC levels
+averaged 1.2 ng/mL (Huestis, Henningfield, and Cone 1992).
+
+ THC metabolism varies among individuals and is also influenced by the chronicity of its
+use. Terminal half-life, a measure of the amount of time for half of a drug to be eliminated after
+the initial rapid distribution is complete, ranges from 20–57 hours for infrequent users and from
+3–13 days for regular users after smoking (Wall and Perez-Reyes 1981, Agurell and others 1986).
+Part of the reason for this disparity is that THC and its metabolites accumulate in adipose tissue
+and are then released slowly back into the bloodstream. Chronic marijuana-using volunteers
+
+ 55
+ The peer vehicle was the 2015 Mercedes C300 4Matic.
+ 56
+ See DOT "Medical Marijuana" Notice and DOT "Recreational Marijuana" Notice, both accessed September 7,
+2017.
+ 57
+ See Governors Highway Safety Association webpage on drug-impaired driving laws by state, accessed
+September 7, 2017. (Website is updated when states report changes.)
+ 58
+ See NHTSA factsheet on marijuana, accessed September 7, 2017.
+
+ 31
+
+=== HAR-17/02 p.42 ===
+NTSB Highway Accident Report
+
+confined to a secure facility to ensure abstinence have been found to have THC levels as high as
+2 ng/mL after as many as 7 days of abstinence (Bergamaschi and others 2013).
+
+ Using a single determination of THC level following a crash to extrapolate back to a
+smoker’s THC level at the time of the crash is difficult, unless the timing of the last dose is known.
+The task is particularly complex when the tested level is below 5 ng/mL, as was the case with the
+Williston truck driver (Hartman and others 2016). In addition, most studies have been performed
+with drivers who have been smoking marijuana rather than ingesting it. The variation in absorption
+from the gut, as well as differences in metabolism for ingested marijuana, make extrapolating
+backward even more difficult for users who have ingested, rather than smoked, the drug. In the
+case of the Williston truck driver, the NTSB does not know how he used marijuana or when he
+last did so before the crash. The truck driver did not exhibit impaired behavior to FHP officers or
+other first responders following the crash. The FHP Case Closing Report for this crash stated that
+the trooper overseeing the blood draw “did not observe any signs of impairment” in the truck
+driver. Therefore, the NTSB concludes that, although the results of postcrash drug testing
+established that the truck driver had used marijuana before the crash, his level of impairment, if
+any, at the time of the crash could not be determined from the available evidence.
+
+2.4 Operational Design Domains for Level 2 Vehicle Automation
+ In September 2016, NHTSA released its AV Policy, which characterizes how it will
+address increasing levels of vehicle automation, focusing on HAVs in the SAE categories defined
+as Level 3, Conditional Automation; Level 4, High Automation; and Level 5, Full Automation
+(NHTSA 2016). 59 Manufacturers are not required to follow the vehicle performance guidance in
+the AV Policy, but it provides a framework for operation, testing, and safety assessment of vehicle
+automation.
+
+ With respect to vehicles with no or limited automation (Levels 0–2), the AV Policy gives
+some guidelines for Level 3–5 systems that could apply to Level 2 systems, but it does not provide
+vehicle performance guidance explicitly for Level 2 systems, such as those on the Tesla involved
+in the Williston crash. Regarding the features and qualities necessary for all vehicle automation
+systems, the AV Policy states—
+
+ Most of the Guidance elements and considerations specified under the cross-cutting
+ areas of Vehicle Performance Guidance for HAVs, such as “Data Recording and
+ Sharing,” “Privacy,” “System Safety,” “Vehicle Cybersecurity,” “Human Machine
+ Interface,” “Crashworthiness,” and “Consumer Education and Training” should
+ generally apply to the full spectrum of automated vehicle systems.
+
+ Addressing the need for driver involvement in vehicle automation systems, the AV Policy
+states—
+
+ There is a clear technical distinction between HAV systems (those classified as
+ SAE Level 3, Level 4, and Level 5) and lower levels of automation (SAE Levels 2
+
+ 59
+ See AV Policy, accessed August 21, 2017. Also, see figure 12 of this report for the SAE automation levels.
+
+ 32
+
+=== HAR-17/02 p.43 ===
+NTSB Highway Accident Report
+
+ and below) based on whether the automation system relies on the human driver
+ when engaged and operating.
+
+ The AV Policy includes within its framework guidance specific to HAV systems. It states
+that “The Operational Design Domain (ODD) concept, Object and Event Detection and Response
+(OEDR) and associated tests and validation methods discussed in this Guidance are primarily
+focused on HAV systems (those classified as SAE Level 3, Level 4 and Level 5).”
+
+ The ODD refers to the conditions in which the automated system is intended to operate.
+Examples of such conditions include roadway type, geographic location, clear roadway markings,
+weather condition, speed range, lighting condition, and other manufacturer-defined system
+performance criteria or constraints. In the case of an automated lateral control system that cannot
+detect crossing-path traffic, such as Autopilot, the manufacturer may establish an ODD for
+limited-access roadways and design the system so that the vehicle will not permit activation of the
+automated control system unless that ODD is met.
+
+ The ODD concept is as important for Level 2 vehicle automation as it is for the HAVs in
+Levels 3–5. That is, Level 2 automated systems have more operational design limitations than
+HAVs do and so should also limit system operation to the manufacturer’s designated ODDs. The
+Insurance Institute for Highway Safety recognized the importance of ODDs in its comments on
+the AV Policy, as follows: “Driving automation systems should self-enforce their use within the
+operational design domain rather than relying on users to do so” (Kidd 2016).
+
+ As detailed in section 1.3.4 of this report, Tesla constrained Autopilot operation based on
+seat belt use, speed, and the presence of a lead vehicle. The owner’s manual stated that Autopilot
+should only be used in preferred road environments, but Tesla did not automatically restrict the
+availability of Autopilot based on road classification. The driver of the Tesla involved in the
+Williston crash was able to activate Autopilot on portions of SR-24, which is not a divided road,
+and on both SR-24 and US-27A, which are not limited-access roadways. 60 Simply stated, the driver
+could use the Autopilot system on roads for which it was not intended to be used.
+
+ Tesla’s manufacture of cars equipped with Autopilot preceded NHTSA’s issuance of its
+AV Policy, and that policy applies to SAE Levels 3–5 rather than Level 2 automated vehicles, but
+Tesla clearly understands the ODD concept and advised drivers to use the Autopilot systems only
+on limited-access roadways. Following the crash, Tesla modified its Autopilot firmware to add a
+preferred road usage constraint, which affects the timing of the hands-off driving alert. But despite
+these modifications, a Tesla driver can still operate Autopilot on any roads with adequate lane
+markings.
+
+ Today’s vehicle automation systems can assess the vehicle’s route and determine whether
+it is appropriate to the system’s ODD. 61 But Tesla’s Autopilot remains available to the driver, even
+
+ 60
+ Postcrash data show that the driver had the cruise speed set to 70 mph for almost 29 minutes before he turned
+off non-preferred roadway SR-24 onto US-27A. Moreover, he activated Autosteer about 6.18 minutes before the crash
+event, which, based on speed and distance data, would have placed the car on a portion of US-27A that is not
+configured as a divided highway.
+ 61
+ Tesla’s Autopilot system uses vehicle GPS data, commercially available road data, and camera recognition of
+speed signs to determine the type of road and the speed limit of the roadway on which the vehicle travels.
+
+ 33
+
+=== HAR-17/02 p.44 ===
+NTSB Highway Accident Report
+
+under some conditions that do not meet its ODD. This situation allows the driver to activate
+automated systems in locations and circumstances for which their use is not appropriate or safe.
+The NTSB concludes that if automated vehicle control systems do not automatically restrict their
+own operation to those conditions for which they were designed and are appropriate, the risk of
+driver misuse remains. Therefore, the NTSB recommends that manufacturers of vehicles equipped
+with Level 2 vehicle automation systems incorporate system safeguards that limit the use of
+automated vehicle control systems to those conditions for which they were designed. The NTSB
+further recommends that NHTSA develop a method to verify that manufacturers of vehicles
+equipped with Level 2 vehicle automation systems incorporate system safeguards that limit the
+use of automated vehicle control systems to those conditions for which they were designed.
+Finally, to ensure that vehicle manufacturers that do not currently produce vehicles equipped with
+Level 2 automation but may do so in the future are aware of the significance of this issue, the
+NTSB recommends that the Alliance of Automobile Manufacturers and the Association of Global
+Automakers notify their members of the importance of incorporating system safeguards that limit
+the use of automated vehicle control systems to those conditions for which they were designed.
+
+2.5 Surrogate Means of Determining the Automated Vehicle Driver’s
+Degree of Engagement
+ Based on system design, in an SAE-defined Level 2 automated vehicle, it is the driver’s
+responsibility to monitor the automation, maintain situation awareness of traffic conditions,
+understand the limitations of the automation, and be available to intervene and take over for the
+system at any time. In practice, however, human drivers have cognitive limitations that make
+fulfilling this responsibility difficult because people are poor at monitoring automation and do not
+perform well on tasks requiring passive vigilance (Parasuraman, Molloy, and Singh 1993;
+Parasuraman and Riley 1997; Moray and Inagaki 2000; and Parasuraman and Manzey 2010).
+Moreover, there is evidence that drivers lack a complete understanding of advanced automation
+systems, including their functionality and limitations (McDonald and others 2016).
+
+ Manufacturers try to make systems safer by encouraging driver engagement through the
+incorporation of design solutions that monitor driver behavior and issue warnings when
+engagement seems lacking. Several vehicle models with Level 2 automated systems use steering
+wheel torque to monitor driver engagement. 62 However, driving is a highly visual task, so the
+driver’s touching the steering wheel may not accurately indicate that he or she is fully engaged
+with the driving task. Simply checking whether the driver has placed a hand on the steering wheel
+gives little indication of where the driver is focusing his or her attention. 63 The NTSB concludes
+that because driving is an inherently visual task and a driver may touch the steering wheel without
+visually assessing the roadway, traffic conditions, or vehicle control system performance,
+
+ 62
+ Examples of such vehicles with Level 2 automation other than Teslas include the Infiniti Q50,
+Mercedes-Benz S65, BMW 50i, Audi A7, and Volvo XC60.
+ 63
+ In the event of an incapacitated driver, the system slows the vehicle to a stop in its travel lane and activates the
+hazard flashers. We anticipate that more advanced future systems will remove the vehicle from the travel lane before
+stopping it.
+
+ 34
+
+=== HAR-17/02 p.45 ===
+NTSB Highway Accident Report
+
+monitoring steering wheel torque provides a poor surrogate means of determining the automated
+vehicle driver’s degree of engagement with the driving task.
+
+ On-road driver behavior has been the subject of substantial naturalistic driving research.
+Currently, the Virginia Tech Transportation Institute (VTTI) is conducting a naturalistic driving
+study using vehicles with Level 2 automation capabilities from five different manufacturers.64
+Data from both forward- and driver-facing cameras are being collected to better understand driver
+behavior. A similar study, conducted by Volvo, is underway in Sweden. 65 These longer-term
+naturalistic studies are essential to understanding drivers’ interactions with automated systems and
+the extent to which they may misuse them. These studies also address different approaches to
+system monitoring, such as the use of eye-tracking cameras, which have long been used in driving
+simulation research. Toyota has deployed an eye-tracking system on its Lexus brand vehicles, and
+Volvo has announced plans to use eye-tracking technology in its Driver State Estimation system.
+The Driver Attention System on the 2018 Cadillac CT6 Super Cruise vehicle uses a small camera
+located at the top of the steering column; the camera focuses exclusively on the driver and uses
+infrared light to track the driver’s head position.
+
+ The time intervals permitted before an automated system issues an alert are a vital
+component of the monitoring system. Although the operational design of the Tesla Autopilot
+requires an attentive driver as an integral system element, the Autopilot on the Williston crash
+vehicle allowed the driver to operate in the automated control mode for almost 6 minutes, during
+which the system did not detect the driver’s hands on the steering wheel. 66 In fact, of the
+37 minutes in which the Tesla driver operated the vehicle in the automated control mode during
+the crash trip, the system detected his hands on the steering wheel for only 25 seconds.
+Investigators found no indication in recorded vehicle data that the Tesla driver attempted to take
+any action (by braking or steering) to prevent crashing into the semitrailer or that he was even
+aware of the impending crash.
+
+ The hands-off warning interval has been under consideration elsewhere in the world,
+particularly in Europe. The United Nations Economic Commission for Europe adopted a new
+regulation pertaining to hands-off warning time in lane-keeping systems. This regulation, which
+is expected to go into effect in the first quarter of 2018, would require lane-keeping systems to
+provide an initial visual warning after 15 seconds of hands-off driving and deactivate in a
+controlled manner after 1 minute of hands-off driving.
+
+ To summarize the discussion of the Williston crash driver’s actions before the crash, he
+used the Autopilot system on roadways for which it was not designed (section 2.4) and had
+extended periods of hands-off driving and other indications of lack of engagement/awareness
+before the crash (section 2.5). Both driver behaviors strongly indicate that, although the Tesla
+
+ 64
+ (a) In 2005, the VTTI 100-Car Naturalistic Driving Study was completed. The study was sponsored by
+NHTSA, Virginia Tech, the Virginia Department of Transportation, and the Virginia Transportation Research
+Council. (b) The current naturalistic driving project is the VTTI Center for Automated Vehicle Systems Study of Level 2
+Automation.
+ 65
+ In January 2017, Volvo began recruiting volunteers to participate in this study. Additional information can be
+found at Volvo driving project, accessed June 19, 2017.
+ 66
+ Firmware changes to the Autopilot system issued in September 2016 shortened the alert timeframe and altered
+the alert sequence. The postcrash changes are discussed in appendix C.
+
+ 35
+
+=== HAR-17/02 p.46 ===
+NTSB Highway Accident Report
+
+owner’s manual provided information and warnings on these subjects, the driver either did not
+know of or did not heed the guidance in the manual. Therefore, the NTSB concludes that the Tesla
+driver’s pattern of use of the Autopilot system indicates an overreliance on the automation and a
+lack of understanding of system limitations. Also, the NTSB concludes that the Tesla driver was
+not attentive to the driving task, but investigators could not determine from the available evidence
+the reason for his inattention.
+
+ Based on the lack of response from the Tesla’s driver before the impact with the truck and
+data indicating extended periods of hands-off driving, the NTSB further concludes that the way
+that the Tesla Autopilot system monitored and responded to the driver’s interaction with the
+steering wheel was not an effective method of ensuring driver engagement. Therefore, the NTSB
+recommends that manufacturers of vehicles equipped with Level 2 vehicle automation systems
+develop applications to more effectively sense the driver’s level of engagement and alert the driver
+when engagement is lacking while automated vehicle control systems are in use.
+
+2.6 EDRs for Automated Vehicles
+ The final rule on EDRs (49 CFR Part 563) published in August 2006 sets forth
+requirements for data elements, data capture and format, data retrieval, and data crash survivability
+for EDRs installed in light vehicles manufactured on or after September 1, 2012. 67 The regulation
+does not mandate the installation of EDRs in light vehicles; rather, if the vehicle manufacturer
+chooses to install an EDR, the regulation defines the format and specifies the requirements for
+providing commercially available tools and/or the methods for retrieving data from the EDR in the
+event of a crash.
+
+ NHTSA estimated that as of vehicle model year 2010, about 92 percent of light vehicles
+had EDRs that met the regulatory standard. 68 Since then, many vehicle manufacturers have begun
+to design and develop automated control systems that have special data collection capabilities that
+do not necessarily comply with EDR requirements. Because of these innovations, the proportion
+of light vehicles not equipped with EDRs meeting the specifications of 49 CFR Part 563 has been
+increasing.
+
+ Vehicle manufacturers have a robust proprietary interest in capturing and maintaining their
+own fleet data so that the information can be used to improve the active safety systems and designs
+of future vehicle control systems. But even if current and future models of HAVs record the 15 data
+parameters defined more than a decade ago in 49 CFR Part 563, those data now are inadequate to
+comprehend even the simplest questions of who/what controlled an automated vehicle at the time
+of a crash.
+
+ For example, the Tesla Model S involved in this crash recorded substantial parameter data,
+but the methodology by which the car recorded that data did not meet, nor was it required to meet,
+the Part 563 definition of an EDR. As a result, the data recorded by the ECU on the Tesla could
+
+ 67
+ The EDR requirements apply to “light vehicles” required to have frontal airbags—those with a gross vehicle
+weight rating of 3,855 kilograms (8,500 pounds) or less and an unloaded vehicle weight of 2,495 kilograms
+(5,500 pounds) or less.
+ 68
+ See 77 Federal Register 74146.
+
+ 36
+
+=== HAR-17/02 p.47 ===
+NTSB Highway Accident Report
+
+be retrieved only by Tesla; there is no commercially available tool for retrieval and review of these
+Tesla data. Other manufacturers of vehicles with automated systems similarly control access to the
+postcrash proprietary information associated with their vehicles. The NTSB concludes that,
+without the manufacturer’s involvement, vehicle performance data associated with highly
+automated systems on vehicles involved in crashes cannot be independently analyzed or verified.
+
+ As more manufacturers deploy automated systems on their vehicles, to improve system
+safety, it will be necessary to develop detailed information about how the active safety systems
+performed during, and how drivers responded to, a crash sequence. Manufacturers, regulators, and
+crash investigators all need specific data in the event of a system malfunction or crash. Recorded
+data can be used to improve the automated systems and to understand situations that may not have
+been considered in the original designs. Further, data are needed to distinguish between automated
+control actions and driver control actions. All these crucial data must be reflected in the required
+recording parameters.
+
+ NHTSA’s recently issued AV Policy recognizes the need for enhanced EDRs. The policy
+states that “When HAVs experience incidents or crashes, records and reports about those problems
+and manufacturer response actions would facilitate identification of problem causes” (NHTSA
+2016). It also says that “When crashes or near crashes occur, the best source of information for
+learning the underlying causes will be the vehicle itself.” The policy further states that—
+
+ NHTSA believes enhanced event data recorders would be useful to allow the
+ Agency to reconstruct the circumstances of crashes and to gain an understanding of
+ how a vehicle involved in a crash or incident sensed and responded to its driving
+ environment immediately before and during the crash or near crash.
+
+ NHTSA’s AV Policy calls for automated vehicle control systems to be equipped with the
+tools needed to provide the data necessary for external safety oversight—recordkeeping/reporting
+and enhanced data collection tools. The NTSB also needs access to such data to perform our
+investigative work. The NTSB concludes that a standardized set of retrievable data is needed to
+enable independent assessment of automated vehicle safety and to foster automation system
+improvements.
+
+ The NTSB, NHTSA, the Institute of Electrical and Electronics Engineers, and the SAE
+have long histories of working on standards and regulations for EDRs on light vehicles, heavy
+vehicles, and buses. 69 Over time, the associated crash data that have been collected from
+state-of-the-art EDRs have provided manufacturers, researchers, and regulators with science-based
+means of understanding vehicle crashes. Automated vehicle control systems introduce new ways
+for drivers to interact with their vehicles and for vehicles to interact with the environment.
+Consequently, the types of crashes or near-crashes that an automated vehicle experiences may
+differ from those involving traditional vehicles. To understand these events, data standards
+different from those currently in 49 CFR Part 563 will be required.
+
+ 69
+ The NTSB has a recommendation history concerning EDRs in the highway mode that is two decades old,
+beginning with Safety Recommendation H-97-18, which called for recorder requirements for light vehicles.
+
+ 37
+
+=== HAR-17/02 p.48 ===
+NTSB Highway Accident Report
+
+ A technical advisory committee will be required to consider the types of data-recording
+requirements needed for automated vehicles that are equipped with active safety systems and
+automated control systems. Therefore, the NTSB recommends that the DOT define the data
+parameters needed to understand the automated vehicle control systems involved in a crash. The
+parameters must reflect the vehicle’s control status and the frequency and duration of control
+actions to adequately characterize driver and vehicle performance before and during a crash.
+
+ NTSB investigators need effective event data to conduct valid and productive
+investigations involving vehicles using automated vehicle control systems. Such data are also vital
+to identifying emerging problems in this swiftly evolving area of highway technology. Regulators
+such as NHTSA will have to rely on such data when developing and conducting regulatory
+activities—including defect investigations—in this area. Therefore, the NTSB also recommends
+that NHTSA use the data parameters defined by the DOT in response to Safety
+Recommendation H-17-37 as a benchmark for new vehicles equipped with automated vehicle
+control systems so that they capture data that reflect the vehicle’s control status and the frequency
+and duration of control actions needed to adequately characterize driver and vehicle performance
+before and during a crash; the captured data should be readily available to, at a minimum, NTSB
+investigators and NHTSA regulators.
+
+2.7 Safety Metrics and Exposure Data for Automated Vehicles
+ Improved data collection could greatly enhance our ability to evaluate the safety benefits
+provided by automated safety systems. In assessing these relatively new systems, industry
+members, manufacturers, researchers, and regulators need reliable data about the availability and
+use of automated safety systems on vehicles in the fleet and involved in crashes. NHTSA’s
+AV Policy includes a section on “Data Recording and Sharing.” The Governors Highway Safety
+Association has called for including the vehicle’s automation level in vehicle registration, driver
+licensing, and crash information systems, beginning with vehicles equipped with Level 3
+automation (Hedlund 2017, p. 12). NHTSA has an opportunity to collect exposure metrics for
+automated vehicle control systems (such as miles driven using these systems) from manufacturers.
+A standard system of reporting is needed to facilitate aggregation and comparison of data across
+all manufacturers and fleet operators. The NTSB concludes that to determine the safety effects
+from the use of automated vehicle control systems and to analyze the benefit–cost outcomes of
+these systems, reliable information is needed on the types of systems deployed and the numbers
+of miles driven using them. Therefore, to evaluate the safety effects of automated vehicle control
+systems, the NTSB recommends that NHTSA define a standard format for reporting automated
+vehicle control systems data, and require manufacturers of vehicles equipped with automated
+vehicle control systems to report incidents, crashes, and vehicle miles operated with such systems
+enabled.
+
+2.8 Connected Vehicle Technology and V2V Requirements
+ V2V systems transmit warnings and basic safety information (speed, position, heading,
+brake status, etc.) among vehicles. Intersection crashes, such as occurred in this case, are among
+the most frequent and fatal of crash types, accounting for 36 percent of all crashes (Choi 2010,
+p. v). For years, NHTSA has encouraged the development of connected vehicle technology and
+crash avoidance systems that could improve intersection safety. In a 2014 evaluation report,
+
+ 38
+
+=== HAR-17/02 p.49 ===
+NTSB Highway Accident Report
+
+NHTSA announced plans for deploying V2V technology on heavy vehicles (Harding and others
+2014, p. 10).
+
+ For V2V systems to function properly, all vehicles on the roads must be equipped with
+on-board communication capabilities. Also, the communication spectrum frequency for Dedicated
+Short Range Communication Services must be allocated to intelligent vehicle technologies. 70 In
+1995, based on the investigation of a heavy truck crash that took place in Menifee, Arkansas, the
+NTSB recommended that the Federal Communications Commission allocate frequencies that
+would enhance collision warning systems (NTSB 1995). 71 A 2015 NTSB Special Investigation
+Report includes a summary of the many recommendations concerning crash avoidance systems
+that the NTSB issued to NHTSA in the years following the Menifee investigation (NTSB 2015,
+p. 11), including V2V systems.
+
+ In 2014, researchers categorized the precrash scenarios involving heavy trucks that could
+be addressed by V2V systems. Of the 37 scenarios considered, 17 were evaluated. The researchers
+found that a fully mature V2V system could potentially prevent about 267,000 police-reported
+crashes involving heavy trucks each year. The annual comprehensive costs of those crashes were
+estimated at $24.7 billion. Of the 17 scenarios evaluated, “straight crossing path at non-signalized
+intersection” (like the Williston crash) ranked second in terms of cost, accounting for over
+15 percent of the total costs ($3.8 billion) (Toma and others 2014). A more recent simulation study
+for all types of vehicles estimated that 19–35 percent of straight crossing path intersection crashes
+could be prevented if both vehicles were equipped with intersection advanced driver assist
+systems (I-ADAS), a V2V technology designed for intersections (Scanlon, Sherony, and Gabler
+2017).
+
+ In July 2016, NHTSA released a report addressing V2V for heavy vehicles (Chang 2016).
+That report summarized research that began in the 1990s and covered the development of systems
+for integrated truck and retrofit V2V systems, including real-world evaluations (Safety Pilot Model
+Deployment) and test track experience. The report also addressed the safety benefits provided by
+V2V systems. The report stated that—
+
+ Analysis of the potential safety benefits associated with heavy-vehicle V2V
+ systems has shown good promise based on initial results. In 2013 there were 3,964
+ people killed and 95,000 people injured in crashes involving at least one large truck.
+ Based on data from police-reported crashes, 70 percent of crashes involving trucks
+ occurred in scenarios that could potentially be addressed by V2V systems.
+
+ In early 2017, NHTSA proposed rulemaking on a new FMVSS for V2V communication
+technology. 72 However, NHTSA’s proposed FMVSS 150 does not address V2V applications or
+requirements for heavy commercial vehicles. These vehicles travel more miles than light vehicles
+and are over-represented in fatal crashes; consequently, the omission of heavy commercial vehicles
+
+ 70
+ See 47 CFR Parts 90 and 95.
+ 71
+ Safety Recommendation H-95-46 to the Federal Communications Commission was classified “Closed—
+Acceptable Action” in 1999.
+ 72
+ See Notice of Proposed Rulemaking, “Federal Motor Vehicle Safety Standards (FMVSS);
+Vehicle-to-Vehicle (V2V) Communications,” published at 82 Federal Register 3854, January 12, 2017.
+
+ 39
+
+=== HAR-17/02 p.50 ===
+NTSB Highway Accident Report
+
+from FMVSS 150 is a missed opportunity to significantly improve highway safety. As the NTSB’s
+response to the proposed rule stated, “Widespread use throughout the vehicle fleet—including all
+heavy vehicles and motorcycles—is required to capitalize on the full lifesaving benefits of V2V
+technology” (NTSB 2017).
+
+ Fusing V2V communication-based technology with vehicle-resident systems can enhance
+the safety benefits of vehicle automation systems. Such technology might have affected the
+outcome of the Williston crash. Increasing implementation of crash avoidance technologies is one
+of the NTSB’s Most Wanted Transportation Safety Improvements for 2017–2018. V2V
+technology could address potential crash situations (that is, intersection and left turn scenarios)
+that are challenging for current vehicle-resident safety systems (FCW and AEB) and other
+automated technologies. Moreover, V2V communications will provide a complementary source
+of information to vehicle-resident systems, improve the reliability and accuracy of data, extend the
+range of threat detection, and detect crash risks that are outside of a vehicle-resident sensor’s field
+of observation. The NTSB concludes that connected vehicle technology will be most effective
+when all vehicles traveling on our roadways are equipped with the technology, and that is
+particularly important with respect to large, heavy trucks that pose the highest risk of injury to
+occupants of other vehicles.
+
+ Following an investigation into a 2012 collision between a school bus and a heavy truck
+near Chesterfield, New Jersey, the NTSB issued Safety Recommendations H-13-30 and -31 to
+NHTSA, which read as follows (NTSB 2013):
+
+ H-13-30
+ Develop minimum performance standards for connected vehicle technology for all
+ highway vehicles.
+
+ H-13-31
+ Once minimum performance standards for connected vehicle technology are
+ developed, require this technology to be installed on all newly manufactured
+ highway vehicles.
+
+ The status of these two recommendations is “Open—Initial Response Received.”
+
+ It has been 4 years since the NTSB issued these recommendations. The Williston crash
+serves as a reminder of how the installation of V2V technology on heavy trucks could improve the
+safety of traffic on our nation’s roadways. Because NHTSA’s recent rulemaking on proposed
+FMVSS 150 does not address these heavy vehicles, the NTSB reiterates Safety
+Recommendations H-13-30 and -31.
+
+ 40
+
+=== HAR-17/02 p.51 ===
+NTSB Highway Accident Report
+
+3 Conclusions
+3.1 Findings
+1. No investigative evidence indicates that either driver was fatigued, that cell phone use
+ distracted the truck driver, that the car driver was impaired by alcohol or other drugs, that any
+ mechanical system on either vehicle failed, or that the highway design was inappropriate;
+ consequently, these were not factors in the crash.
+
+2. There was sufficient sight distance to afford time for either the truck driver or the car driver to
+ have acted to prevent the crash.
+
+3. The Tesla’s automated vehicle control system was not designed to, and did not, identify the
+ truck crossing the car’s path or recognize the impending crash; consequently, the Autopilot
+ system did not reduce the car’s velocity, the forward collision warning system did not provide
+ an alert, and the automatic emergency braking did not activate.
+
+4. Although the results of postcrash drug testing established that the truck driver had used
+ marijuana before the crash, his level of impairment, if any, at the time of the crash could not
+ be determined from the available evidence.
+
+5. If automated vehicle control systems do not automatically restrict their own operation to those
+ conditions for which they were designed and are appropriate, the risk of driver misuse remains.
+
+6. Because driving is an inherently visual task and a driver may touch the steering wheel without
+ visually assessing the roadway, traffic conditions, or vehicle control system performance,
+ monitoring steering wheel torque provides a poor surrogate means of determining the
+ automated vehicle driver’s degree of engagement with the driving task.
+
+7. The Tesla driver’s pattern of use of the Autopilot system indicates an overreliance on the
+ automation and a lack of understanding of system limitations.
+
+8. The Tesla driver was not attentive to the driving task, but investigators could not determine
+ from the available evidence the reason for his inattention.
+
+9. The way that the Tesla Autopilot system monitored and responded to the driver’s interaction
+ with the steering wheel was not an effective method of ensuring driver engagement.
+
+10. Without the manufacturer’s involvement, vehicle performance data associated with highly
+ automated systems on vehicles involved in crashes cannot be independently analyzed or
+ verified.
+
+11. A standardized set of retrievable data is needed to enable independent assessment of automated
+ vehicle safety and to foster automation system improvements.
+
+ 41
+
+=== HAR-17/02 p.52 ===
+NTSB Highway Accident Report
+
+12. To determine the safety effects from the use of automated vehicle control systems and to
+ analyze the benefit‒cost outcomes of these systems, reliable information is needed on the types
+ of systems deployed and the numbers of miles driven using them.
+
+13. Connected vehicle technology will be most effective when all vehicles traveling on our
+ roadways are equipped with the technology, and that is particularly important with respect to
+ large, heavy trucks that pose the highest risk of injury to occupants of other vehicles.
+
+3.2 Probable Cause
+ The National Transportation Safety Board determines that the probable cause of the
+Williston, Florida, crash was the truck driver’s failure to yield the right of way to the car, combined
+with the car driver’s inattention due to overreliance on vehicle automation, which resulted in the
+car driver’s lack of reaction to the presence of the truck. Contributing to the car driver’s
+overreliance on the vehicle automation was its operational design, which permitted his prolonged
+disengagement from the driving task and his use of the automation in ways inconsistent with
+guidance and warnings from the manufacturer.
+
+ 42
+
+=== HAR-17/02 p.53 ===
+NTSB Highway Accident Report
+
+4 Recommendations
+4.1 New Recommendations
+ As a result of its investigation, the National Transportation Safety Board makes the
+following new safety recommendations:
+
+To the US Department of Transportation:
+
+ Define the data parameters needed to understand the automated vehicle control
+ systems involved in a crash. The parameters must reflect the vehicle’s control status
+ and the frequency and duration of control actions to adequately characterize driver
+ and vehicle performance before and during a crash. (H-17-37)
+
+To the National Highway Traffic Safety Administration:
+
+ Develop a method to verify that manufacturers of vehicles equipped with Level 2
+ vehicle automation systems incorporate system safeguards that limit the use of
+ automated vehicle control systems to those conditions for which they were
+ designed. (H-17-38)
+
+ Use the data parameters defined by the US Department of Transportation in
+ response to Safety Recommendation H-17-37 as a benchmark for new vehicles
+ equipped with automated vehicle control systems so that they capture data that
+ reflect the vehicle’s control status and the frequency and duration of control actions
+ needed to adequately characterize driver and vehicle performance before and
+ during a crash; the captured data should be readily available to, at a minimum,
+ National Transportation Safety Board investigators and National Highway Traffic
+ Safety Administration regulators. (H-17-39)
+
+ Define a standard format for reporting automated vehicle control systems data, and
+ require manufacturers of vehicles equipped with automated vehicle control systems
+ to report incidents, crashes, and vehicle miles operated with such systems enabled.
+ (H-17-40)
+
+To manufacturers of vehicles equipped with Level 2 vehicle automation systems
+(Volkswagen Group of America, BMW of North America, Nissan Group of North America,
+Mercedes-Benz USA, Tesla Inc., and Volvo Car USA):
+
+ Incorporate system safeguards that limit the use of automated vehicle control
+ systems to those conditions for which they were designed. (H-17-41)
+
+ Develop applications to more effectively sense the driver’s level of engagement
+ and alert the driver when engagement is lacking while automated vehicle control
+ systems are in use. (H-17-42)
+
+ 43 CORRECTED COPY
+
+=== HAR-17/02 p.54 ===
+NTSB Highway Accident Report
+
+To the Alliance of Automobile Manufacturers and to the Association of Global
+Automakers:
+
+ Notify your members of the importance of incorporating system safeguards that
+ limit the use of automated vehicle control systems to those conditions for which
+ they were designed. (H-17-43)
+
+4.2 Reiterated Recommendations
+ As a result of its investigation, the National Transportation Safety Board reiterates the
+following safety recommendations:
+
+To the National Highway Traffic Safety Administration:
+
+ Develop minimum performance standards for connected vehicle technology for all
+ highway vehicles. (H-13-30)
+
+ Once minimum performance standards for connected vehicle technology are
+ developed, require this technology to be installed on all newly manufactured
+ highway vehicles. (H-13-31)
+
+BY THE NATIONAL TRANSPORTATION SAFETY BOARD
+ROBERT L. SUMWALT, III EARL F. WEENER
+Chairman Member
+
+CHRISTOPHER A. HART T. BELLA DINH-ZARR
+Member Member
+
+Adopted: September 12, 2017
+
+Member Hart filed the following concurring statement on September 14, 2017.
+
+ 44
+
+=== HAR-17/02 p.55 ===
+NTSB Highway Accident Report
+
+Board Member Statement
+Notation 56955: Collision Between a Car Operating With Automated Vehicle Control Systems
+and a Tractor-Semitrailer Truck, Near Williston, Florida, May 7, 2016 (HWY16FH018)
+Member Christopher A. Hart, Concurring
+
+I concur with the report and its findings, probable cause, and recommendations, and I would like
+to add some additional comments.
+
+Because more than 90% of motor vehicle crashes are attributed to driver error, automation in
+cars offers significant potential to save tens of thousands of lives every year by eventually
+replacing the driver. However, introducing automation into such a complex and unstructured
+environment will be very challenging and must be pursued thoughtfully and with considerable
+caution.
+
+Early automation history in aviation includes many examples in which automation was
+introduced because the industry had the technological capability to do it. They learned from
+experience that automation “because we can” does not necessarily make the human-automation
+system work better. That resulted in an evolution toward “human-centric” automation, in which
+the objective was improving the overall performance of the human-automation system. This
+crash is an example of what can happen when automation is introduced “because we can”
+without adequate consideration of the human element.
+
+The human element was not adequately considered in several ways. First, the owner’s manual
+warns that the Autopilot mode, the automation mode that was being used when this crash
+occurred, should be used “only on highways and limited access roads.” Aside from the ambiguity
+of this warning – route US-27A, on which this crash occurred, is arguably a highway – it fails to
+consider the human reality that very few owners, and even fewer non-owner drivers, read the
+manual. Some may look at it only twice a year, to reset the clock when daylight savings time
+begins and ends.
+
+Second, even if the owner or non-owner driver reads the manual, he or she may not remember it
+or follow it. Moreover, many owners who are impressed with the amazing things that their car
+can do may experiment to find out how far they can stretch the boundaries of what it can do.
+
+Adding to the problem is the moniker “Autopilot.” In aviation, airline pilots know that even
+when the autopilot is controlling their airplane, the pilots still play a crucial role. Joe and Suzy
+Public, on the other hand, may conclude from the name “autopilot” that they need not pay any
+attention to the driving task because the autopilot is doing everything.
+
+This crash demonstrates that not all owners will read and follow the owner’s manual, so the
+automated systems must be designed to function only in circumstances for which they were
+designed rather than leaving that decision up to the driver.
+
+ 45
+
+=== HAR-17/02 p.56 ===
+NTSB Highway Accident Report
+
+The system that monitors and responds to lack of driver engagement also reflects inadequate
+consideration of the human element. First, the mere fact that the driver touches and moves the
+steering wheel from time to time does not necessarily indicate that the driver is engaged in the
+driving task. Designing the system to stop the car in the travel lane after a certain number of
+warnings about nonresponsiveness, as some automakers are doing, is also very troubling because
+stopping in a travel lane on a high-speed road greatly increases the likelihood of serious
+collisions.
+
+More specifically, we have investigated many crashes on interstate highways – limited access
+roads – involving crashes into cars that were slowed or stopped, often for construction. Most of
+those crashes occurred despite the existence of numerous conspicuous warning signs in the mile
+or two leading up to the construction. There will be no warning signs leading up to a stopped
+vehicle, and without those warning signs, the likelihood of such a crash will obviously be much
+greater. Although it is clearly undesirable to have a car with an unresponsive driver traveling at
+high speed, query which is worse -- the collision of a high-speed car with an unresponsive driver
+into whatever happens to be in the way, or the potential chain collision of one or more
+high-speed cars and trucks into a stopped car. The anticipated safety benefits of automation are
+obviously considerable, but if there is no “graceful exit” from the scenario if something does not
+go as designed, query whether the entire scenario should be avoided.
+
+In aviation, although automation has generated substantial safety, efficiency, and other benefits,
+we will not see airliners without pilots any time soon because no graceful exit has yet been
+developed from that scenario (a) if the automation encounters a situation that was not
+contemplated by the designer, such as in Sioux City, Iowa, in 1989, when an uncontained engine
+explosion resulted in the loss of all three of the airplane's hydraulic systems, or in New York
+City in 2009 when both of the airplane's engines were damaged beyond operability by ingesting
+birds; or (b) if the automation fails.
+
+The potential benefits of automation on our streets and highways are truly phenomenal, but they
+must be pursued carefully and thoughtfully, and hopefully the automakers will inform the
+process with automation lessons learned from aviation and elsewhere.
+
+Chairman Robert L. Sumwalt, III, joined this statement.
+
+ 46
+
+=== HAR-17/02 p.57 ===
+NTSB Highway Accident Report
+
+Appendix A. Investigation
+ The National Transportation Safety Board (NTSB) became aware of the Williston, Florida,
+crash after Tesla notified the National Highway Traffic Safety Administration (NHTSA) of the
+event and after NHTSA opened a defect investigation of the Tesla Autopilot and automatic
+emergency braking systems. Tesla sent representatives to Ocala, Florida, to assist the Florida
+Highway Patrol in downloading data from the vehicle. The crash occurred on May 7, 2016; the
+NTSB dispatched an investigative team on July 13, 2016. Due to the delayed launch, the NTSB
+took the case as a field investigation. Once on scene, investigators determined that a complete
+investigation, including crash reconstruction, could be accomplished. The NTSB established
+groups to investigate human performance, data recorders, motor carrier operations, traumatology,
+highway factors, and vehicle factors.
+
+ Parties to the investigation were Tesla Inc. and the Florida Highway Patrol.
+
+ 47
+
+=== HAR-17/02 p.58 ===
+NTSB Highway Accident Report
+
+Appendix B. Tesla’s Automated Vehicle Control
+Systems and Subsystems
+Automation Subsystem Functional Description
+ System
+AUTOPARK n/a Autopark is a convenience feature that provides assistance
+ when parking. It offers two different functionalities that differ in
+ the level of assistance: (1) the system can provide partially
+ autonomous parallel and perpendicular parking on demand
+ when the driver is in the Tesla, and (2) the system can
+ autonomously park and retrieve the Tesla from a designated
+ parked location without a driver being in the vehicle.
+SPEED n/a Speed Assist is a safety feature that provides a warning when
+ASSIST the driver exceeds the speed limit. Speed limit information is
+ derived from the camera system and the Tesla’s GPS mapping
+ information.
+LANE Side Collision Side Collision Warning is a crash avoidance system that
+ASSIST Warning provides a graded warning (visual warning only for least urgent,
+ visual and auditory warning for most urgent) when another
+ vehicle enters the Tesla’s blind spot or travels too close to its
+ side.
+ Lane Departure Lane Departure Warning is a crash avoidance system that
+ Warning provides a haptic warning when the vehicle’s front wheel
+ crosses a lane marking and the associated turn signal is not
+ active. The haptic warning is presented as a vibration of the
+ steering wheel. This vibration does not result in any steering
+ corrections; it is intended only to orient the driver’s attention to
+ the lane departure.
+ Autonomous Steering Autonomous Steering Intervention is a crash avoidance
+ Intervention system that provides automated corrective steering intervention
+ when the Tesla drifts into or close to an adjacent lane in which
+ another vehicle is detected. The automated steering correction
+ brings the Tesla back to the center of its own traveling lane.
+ Concurrent to the steering correction, a visual warning is
+ presented on the instrument panel. The system is disabled if
+ Autosteer is activated.
+(Table continues on next page)
+
+ 48
+
+=== HAR-17/02 p.59 ===
+NTSB Highway Accident Report
+
+Automation Subsystem Functional Description
+ System
+FORWARD Forward Collision FCW is a crash avoidance system that provides a visual and
+COLLISION Warning (FCW) auditory warning regarding a potential forward collision
+AVOIDANCE (rear-end crash). The visual warning appears on the Tesla’s
+ instrument panel and consists of an icon of a red vehicle in front
+ of the Tesla vehicle icon. The auditory warning consists of a
+ chime. The warnings remain until the driver brakes or steers
+ away from the forward hazard.
+ Automatic Emergency AEB is a crash avoidance system that automatically applies
+ Braking (AEB) brakes when it determines that a frontal collision is
+ unavoidable. The system is designed to mitigate the severity of
+ the crash, although in some cases it may even prevent the
+ collision. The braking is automatic. When the system
+ automatically applies brakes, it also presents visual and
+ auditory alerts. The visual warning consists of a rectangular bar
+ in the instrument panel with lettering that reads “Emergency
+ Braking in Progress.” The auditory warning consists of a chime.
+AUTOPILOT Traffic-Aware Cruise TACC is a convenience feature. After the driver activates TACC
+ Control (TACC) and selects a cruising speed, the system (1) maintains the set
+ cruise speed as long as the forward area is not obstructed,
+ (2) decelerates the Tesla when it detects a vehicle ahead and
+ then maintains a set following distance, and (3) resumes the
+ set cruise speed when the forward area is no longer obstructed.
+ When necessary to maintain a set following distance, TACC
+ applies braking force that results in deceleration of up to 0.5G.
+ The driver can select the following distance—how closely to
+ follow a leading vehicle. TACC has an Overtake Acceleration
+ function that, in conjunction with Auto Lane Change, will
+ automatically accelerate the Tesla to the set cruising speed
+ once it is in a passing lane.
+ Autosteer Autosteer is a convenience feature that automatically steers
+ the Tesla and keeps it within the traveling lane. Autosteer can
+ be activated only after activating TACC; Autosteer cannot
+ operate without TACC. When Autopilot (TACC and Autosteer)
+ is activated, the system (1) monitors the environment on the
+ travel path, (2) maintains the set cruise velocity, (3) maintains
+ the Tesla’s position in the traveling lane, (4) brakes when it
+ detects a slower-moving vehicle or an obstacle ahead, and
+ (5) decelerates and follows a leading slower-moving vehicle at
+ the predetermined following distance. Autosteer detects lane
+ markings and the presence of other vehicles and objects
+ ahead, to maintain the Tesla within the lane. When Autosteer is
+ activated, an icon of a blue steering wheel appears on the
+ instrument panel.
+ Auto Lane Change With Autosteer activated, Auto Lane Change moves the Tesla
+ into an adjacent travel lane as indicated by an activated turn
+ signal. Auto Lane Change can only operate in conjunction with
+ Autosteer and when the Lane Assist system does not detect
+ another vehicle in the blind spot.
+
+ 49
+
+=== HAR-17/02 p.60 ===
+NTSB Highway Accident Report
+
+Appendix C. Alert Timing Sequence for Tesla
+Autopilot Version 8
+
+Figure C-1. Autopilot system alert timing sequence for version 8.
+
+ Since the crash, Tesla has implemented several changes to the Autopilot system,
+including reducing the allowed driver hands-off time. In addition, the timing of the initial
+visual warning is now dependent on the type of road and the speed at which the vehicle is
+traveling.
+
+ If the driver is driving on an unrestricted road—with a center divider or limited
+access—with maximum cruise speed of 90 mph, the initial visual warning for hands-off
+operation would occur after 3 minutes. If the driver does not place hands on the steering
+wheel within 15 seconds of the initial warning, an auditory warning sounds, followed by
+another auditory warning of greater intensity. If the driver does not place hands on the
+steering wheel within 5 seconds of the second auditory warning, the system initiates
+controlled deceleration of the vehicle. Furthermore, at that time, the system disables the
+use of Autopilot for the rest of that ignition cycle.
+
+ Tesla also added another constraint to Autopilot 8; Tesla referred to this as a “three
+strikes and you’re out” rule. If any three warnings occur during a single trip, that sequence
+will cause Autopilot to be disabled for the remainder of the trip.
+
+ 50
+
+=== HAR-17/02 p.61 ===
+NTSB Highway Accident Report
+
+References
+AASHTO (American Association of State Highway and Transportation Officials). 2011.
+ A Policy on Geometric Design of Highways and Streets, 6th edition. Washington,
+ DC: AASHTO.
+
+Agurell, S., M. Halldin, J.E. Lindgren, A. Ohlsson, M. Widman, H. Gillespie, and
+ L. Hollister. 1986. “Pharmacokinetics and Metabolism of Delta
+ 1-Tetrahydrocannabinol and Other Cannabinoids with Emphasis on Man.”
+ Pharmacological Reviews 38(1): 21–43.
+
+Bergamaschi, M., E. Karschner, R. Goodwin, K. Scheidweiler, J. Hirvonen, R. Queiroz,
+ and M. Huestis. 2013. “Impact of Prolonged Cannabinoid Excretion in Chronic
+ Daily Cannabis Smokers’ Blood on Per Se Drugged Driving Laws.” Clinical
+ Chemistry 59(3): 519–526.
+
+Brumbelow, M.L. 2012. “Potential Benefits of Underride Guards in Large Truck Crashes.”
+ Traffic Injury Prevention 13: 592–599.
+
+Carpenter, Michael G., Michael Feldmann, Thomas M. Fornari, M. Todd Moury,
+ Christopher D. Walker, Timothy D. Zwicky, and Steven M. Kiger. 2011. Objective
+ Tests for Automatic Crash Imminent Braking (CIB) Systems Final Report. Vol. 1
+ of 2. DOT HS 811 521, Washington, DC: NHTSA.
+
+Chang, James. 2016. Summary of NHTSA Heavy-Vehicle Vehicle-to-Vehicle Safety
+ Communications Research. DOT HS 812 300. Washington, DC: NHTSA.
+
+Choi, Eun-Ha. 2010. Crash Factors in Intersection-Related Crashes: An On-Scene
+ Perspective. DOT HS 811 366. Washington, DC: NHTSA.
+
+Consumer Reports magazine. 2017. April 2017 (Annual Auto Issue). Vol. 82, No. 4.
+ Consumers Union.
+
+CAMP (Crash Avoidance Metrics Partnership). 2016. AVR Project Final Report. NHTSA
+ Docket No. 2014-0070.
+
+FHWA (Federal Highway Administration). 2009. Manual on Uniform Traffic Control
+ Devices for Streets and Highways. Washington, DC: FHWA.
+
+–––. 2013. Highway Functional Classification: Concepts, Criteria and Procedures.
+ Washington, DC: FHWA.
+
+Harding, John, Gregory Powell, Rebecca Yoon, Joshua Fikentscher, Charlene Doyle, Dana
+ Sade, Mike Lukuc, Jim Simons, and Jing Wang. 2014. Vehicle-to-Vehicle
+ Communication: Readiness of V2V Technology for Application. DOT HS 812 014.
+ Washington, DC: NHTSA.
+
+ 51
+
+=== HAR-17/02 p.62 ===
+NTSB Highway Accident Report
+
+Hartman, R.L., T.L. Brown, G. Milavetz, A. Spurgin, D.A. Gorelick, G.R. Gaffney,
+ M.A. Huestis. 2016. “Effect of Blood Collection Time on Measured
+ Δ9-Tetrahydrocannabinol Concentrations: Implications for Driving Interpretation
+ and Drug Policy.” Clinical Chemistry 62(2): 367–377.
+
+Hedlund, James. 2017. Autonomous Vehicles Meet Human Drivers: Traffic Safety Issues
+ for States. Washington, DC: Governors Highway Safety Association.
+
+Huestis, M.A., J.E. Henningfield, and E.J. Cone. 1992. “Blood Cannabinoids I. Absorption
+ of THC and Formation of 11-OH-THC and THCCOOH During and After Smoking
+ Marijuana.” Journal of Analytical Toxicology 16: 276–282.
+
+Kidd, David. 2016. Comments on behalf of the Insurance Institute for Highway Safety at
+ the DOT Public Meeting on Federal Automated Policy, November 10, 2016.
+
+McDonald, Ashley B., Daniel V. McGehee, Susan T. Chrysler, Natoshia M. Askelson,
+ Linda S. Angell, and Bobbie D. Seppelt. 2016. “National Survey Identifying Gaps
+ in Consumer Knowledge of Advanced Vehicle Safety Systems.” Transportation
+ Research Record 2559.
+
+Moray, N., and T. Inagaki. 2000. “Attention and Complacency.” Theoretical Issues in
+ Ergonomics Science 1: 354–365.
+
+NHTSA (National Highway Traffic Safety Administration). 2016. Federal Automated
+ Vehicles Policy—Accelerating the Next Revolution in Roadway Safety. NHTSA
+ docket 2016-0090. Washington, DC: NHTSA. (See AV Policy.)
+
+–––. 2017. ODI Resume report from NHTSA Office of Defects Investigation on
+ Investigation PE 16-007 concerning Tesla automatic vehicle control systems. (See
+ ODI report.)
+
+NTSB (National Transportation Safety Board). 1995. Multiple Vehicle Collision With Fire
+ During Fog Near Milepost 118 on Interstate 40, Menifee, Arkansas, January 9,
+ 1995. Highway Accident Report NTSB/HAR-95/03. Washington, DC: NTSB.
+
+–––. 2013. School Bus and Truck Collision at Intersection Near Chesterfield, New Jersey,
+ February 16, 2012. Highway Accident Report NTSB/HAR-13/01. Washington,
+ DC: NTSB.
+
+–––. 2015. The Use of Forward Collision Avoidance Systems to Prevent and Mitigate
+ Rear-End Crashes. Special Investigation Report NTSB/SIR-15/01. Washington,
+ DC: NTSB.
+
+–––. 2017. NTSB memorandum to NHTSA regarding docket no. NHTSA-2016-0126,
+ dated March 29, 2017.
+
+Parasuraman, R., and D.H. Manzey. 2010. “Complacency and Bias in Human Use of
+ Automation: An Attentional Integration.” Human Factors 52(3): 381–410.
+
+ 52
+
+=== HAR-17/02 p.63 ===
+NTSB Highway Accident Report
+
+Parasuraman, R., R. Molloy, and I.L. Singh. 1993. “Performance Consequences of
+ Automation-Induced ‘Complacency’.” International Journal of Aviation
+ Psychology 3: 1–23.
+
+Parasuraman, R., and V. Riley. 1997. “Humans and Automation: Use, Misuse, Disuse,
+ Abuse.” Human Factors 39(2): 230–253.
+
+SAE International. 2016. Surface Vehicle Recommended Practice J3016—Taxonomy and
+ Definitions for Terms Related to Driving Automation Systems for On-Road Motor
+ Vehicles. See SAE Standards webpage.
+
+Scanlon, J.M., R. Sherony, and H.C. Gabler. 2017. “Injury Mitigation Estimates for an
+ Intersection Driver Assistance System in Straight Crossing Path Crashes in the
+ U.S.” Traffic Injury Prevention. Published online March 21, 2017.
+
+Tesla Inc. 2016. Tesla Model S Owner’s Manual.
+
+Toma, Samuel, Elizabeth Swanson, John D. Smith, and Wassim G. Najm. 2014. Heavy
+ Truck Pre-Crash Scenarios for Safety Applications Based on Vehicle-to-Vehicle
+ Communications. DOT HS 812 023. Washington, DC: NHTSA.
+
+United Nations Economic Commission for Europe. 2004. Official Journal of the European
+ Union, Regulation 73: “Uniform provisions concerning the approval of goods
+ vehicles, trailers and semi-trailers with regard to their lateral protection”
+ (March 31, 2004).
+
+Wall, M.E., and M. Perez-Reyes. 1981. “The Metabolism of Delta 9-Tetrahydrocannabinol
+ and Related Cannabinoids in Man.” Journal of Clinical Pharmacology 21
+ (8-9 Suppl.): 178S–189S.
+
+ 53

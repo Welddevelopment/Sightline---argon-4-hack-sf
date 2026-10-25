@@ -1,0 +1,560 @@
+[
+ {
+  "speaker": "Attorney",
+  "text": "Let's pick up where we left off. You told us that when you came out the front door, you saw a woman outside, out front of the store. Is that right?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. That's right."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Had you ever seen her before that afternoon?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I think she'd been in earlier. She bought a few things, maybe twenty minutes before. I remember her because she asked if she could wait out front for her ride."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "And what did you tell her?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I told her sure, people do it all the time. There's the bench out there."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you came outside after the bang, did you go to her right away?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Pretty much. She was the first person I saw. She was upset, and she was saying something, and I went over to her."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did the two of you talk?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What, if anything, did she tell you about what she saw?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Objection, hearsay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You can answer."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "She said she had a clear view of the car the whole way in. She said she watched it right up until it hit.",
+  "anchor_sec": 1880
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you remember anything else she said in that conversation?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Same objection."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "She kept saying, oh my God, oh my God. She said it didn't stop. Something like that. And she kept looking down the road, east, toward where the car went."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When she told you she had a clear view of the car, how soon was that after you heard the bang?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Right away. A minute, maybe less. I'd just come out the door."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you ask her any questions?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I asked her if she was okay. I asked her what happened. I think that's when she told me."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "So she told you in response to you asking what happened?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. I said, what happened, and that's what she said."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How would you describe the way she was acting at that point?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Objection to form."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "You can answer."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "She was shaking. Her hands were shaking. She had a shopping bag and she kind of dropped it down by her feet. She was talking fast."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was she crying?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "A little. More just shaken up. Like she couldn't believe it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you do anything for her?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I went back inside and got her a bottle of water out of the cooler. And I brought it out to her and told her to sit down."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did she sit down?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "For a little bit, on the bench. Then she stood back up. She couldn't really sit still."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How long were you outside with her?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Off and on, maybe a half hour. I had to go back in a couple of times. I had the register and I couldn't just leave the store open."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Was anyone else working in the store with you that afternoon?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. Just me. Saturdays it's usually just one person until five."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you lock the store at any point?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. I thought about it. But people started coming in asking to use the phone and the bathroom, so I just left it open."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "While you were outside with her, did she make any phone calls?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "She called somebody. Her sister, I think. She said her sister was coming to get her and she needed to tell her what happened, to be careful coming in."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did her sister eventually arrive?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. Around five, I think. Maybe a little before. A woman pulled in and she got in the car with her."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Before that, did deputies arrive?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. They got there pretty fast. Ten minutes, maybe fifteen. First one car and then a lot of them."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Where did the deputies go first, if you know?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I saw them go down the road, east, toward where the car ended up. And some went over to the truck down 140th."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did any deputy speak with you that afternoon?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. One came up to the store a while later. He asked if I saw anything. I told him no, I was inside, I just heard it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did he take your name and phone number?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. He wrote it down. And he asked about the cameras."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "What did he ask about the cameras?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Objection, hearsay."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'm not offering it for the truth. Go ahead."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "He asked if we had any cameras that pointed at the road. And I told him we have one over the register and one at the back door. Nothing that looks out at the highway."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is that accurate, as far as you know?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. The one inside just shows the counter. You can't see anything out the windows on it. The windows are covered up anyway."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you see the deputy speak with the woman from out front?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. He talked with her for a while. Longer than with me."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Could you hear what she told him?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. I was back inside by then. I just saw them standing out there talking."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you later give a written statement?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. A few days later. A deputy came back to the store and asked me to write down what I remembered."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Do you remember what day that was?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "It was the next week. Tuesday or Wednesday. I was working."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "I'm going to hand you what's been marked as Exhibit 2. Do you recognize this?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. That's my statement. That's my handwriting."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Take a moment and read it to yourself, and tell me when you're done."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Okay. I'm done."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is that a true and accurate copy of the statement you wrote?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. It looks like it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Is there anything in it that you'd change today?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. It's short. It just says I was inside, I heard a loud bang, I went outside, I saw the truck and the car down the road, and a lady out front told me she saw it."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Does your statement say what the lady told you?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "It says she told me she saw the whole thing. I didn't write down every word."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "When you wrote that, were you trying to put down what she said, or a summary?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Objection to form."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "A summary, I guess. That's what I remembered. That she saw it the whole time."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you talk with her again after that day?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. I never saw her again. I don't think she's been back in."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you talk about what happened with anyone else, other than the deputies?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "My manager. I called him that evening and told him. And people in town asked about it for a while. Customers."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you tell your manager what the woman out front said to you?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I told him there was a lady outside who saw it. That's about all."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Let me go back to that afternoon for a moment. At any point did you walk down to either of the vehicles?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. I never did."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Why not?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I didn't want to. And there were already people going down there. People who'd stopped. And then the deputies. I stayed up by the store."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you walk down 140th toward the truck?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. I could see it from the front of the store. I didn't go down there."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "From where you were, out front of the store, could you see the car?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Off in the distance. Down to the east, off the road, by the pole. I could see it was there. That's all."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did anyone from the store go down to the vehicles?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. It was just me working."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Did you notice anything about the road itself after the crash? Anything on the pavement?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "There was some stuff in the road. Pieces. I couldn't tell you what. The deputies closed the eastbound side for a long time."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "How long, if you know?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Hours. It was still closed when I left. I left around eight."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Were you still at the store when the truck was moved?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. It was still down there when I left. They had lights set up."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "All right. I think that's all I have for now. Thank you. Counsel may have some questions."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Thank you. Just a few. Good afternoon."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Good afternoon."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "I want to make sure the record is clear. You did not see the collision between the car and the truck, correct?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Correct. I didn't see it."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "You were inside the store, at the register, when it happened?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "And from the register you can't see the eastbound lanes of the highway?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. Not with the posters and the cooler. You can't see the road from there."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "So you didn't see the car approaching the intersection?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "And you didn't see the truck making its turn?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. When I came out, it was already down 140th, stopped."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Before you heard the bang, had you seen the woman from out front at any time after she left the counter?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. I was doing other things. Stocking a little. I didn't look out."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "So you don't know where she was standing at the moment the car reached the intersection?"
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Objection, asked and answered. Go ahead."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. I didn't see her until after. When I came out, she was out front."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "You don't know whether she moved between the time of the impact and the time you came out the door?"
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Objection to form."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "I don't know. I wasn't out there."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "How long would you say it took you to get from the register to the front door after you heard the bang?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "A few seconds. Maybe ten. I kind of froze for a second, and then I went."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "And everything you've told us about what she saw, that's what she told you, not something you saw yourself?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Right. That's just what she said to me."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "You'd agree she was very upset when she said it?"
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Objection to form."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "Yes. She was upset."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "You didn't ask her where she'd been standing?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. I didn't think to ask that."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "And she didn't tell you?"
+ },
+ {
+  "speaker": "Witness D",
+  "text": "No. Not that I remember."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Thank you. That's all I have."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Just one follow-up. When she told you she had a clear view of the car, did she seem unsure about it in any way?"
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Objection, foundation, calls for speculation."
+ },
+ {
+  "speaker": "Witness D",
+  "text": "She didn't sound unsure. She said it like she was sure."
+ },
+ {
+  "speaker": "Attorney",
+  "text": "Thank you. Nothing further."
+ },
+ {
+  "speaker": "Opposing counsel",
+  "text": "Nothing further from me. The witness will read and sign."
+ },
+ {
+  "speaker": "Videographer",
+  "text": "This concludes the videotaped deposition of Witness D. The time is 2:15 p.m. We are off the record.",
+  "anchor_sec": 2680
+ }
+]

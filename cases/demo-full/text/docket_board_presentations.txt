@@ -1,0 +1,861 @@
+SOURCE: NTSB public docket HWY16FH018 — Staff's Board Meeting Presentations — https://data.ntsb.gov/Docket/Document/docBLOB?ID=40456837&FileExtension=.PDF&FileName=Staff%27s%20Board%20Meeting%20Presentations-Master.PDF
+
+=== Board Meeting Presentations p.1 ===
+ Title slide with NTSB
+ 50th Anniversary
+ Commemorative
+ Emblem-Making
+ Transportation Safer
+ Yesterday, Today,
+ Tomorrow. National
+ Transportation Safety
+ Board.
+
+Collision Between a Car Operating With
+Automated Vehicle Control Systems and a
+Tractor-Semitrailer Truck
+Near Williston, Florida
+May 7, 2016
+
+1
+
+=== Board Meeting Presentations p.2 ===
+ Title slide with NTSB
+ 50th Anniversary
+ Commemorative
+ Emblem-Making
+ Transportation Safer
+ Yesterday, Today,
+ Tomorrow. National
+ Transportation Safety
+ Board.
+
+Collision Between a Car Operating With
+Automated Vehicle Control Systems and a
+Tractor-Semitrailer Truck
+Near Williston, Florida
+Deb Bruce, PhD
+Investigator-in-Charge
+2
+
+=== Board Meeting Presentations p.3 ===
+On-Scene Staff
+• Ensar Becic, PhD, Human Performance and
+ Automated Systems Analysis
+• Deb Bruce, PhD, IIC and Highway Factors
+• Jerome Cantrell, Vehicle Factors and
+ Motor Carrier Operations
+• George Haralampopoulos, Recorders
+• Robert Squire, Accident Reconstruction
+
+3
+
+=== Board Meeting Presentations p.4 ===
+Investigative Team
+• Jane Foster, Electronics Engineering
+• Joseph Gregor, PhD, Recorders
+• Shane Lack, Simulation Analysis
+• Michael LaPonte, Motor Carrier Analysis
+• Mary Pat McKay, MD, Medical Analysis
+• Alice Park, Animation
+• Kristin Poland, PhD, Traumatology
+• Kevin Renze, PhD, GeoData Analysis
+4
+
+=== Board Meeting Presentations p.5 ===
+Report Development Staff
+• Deb Bruce, PhD, Project Manager
+• Jesus Cudemus, Visual Information Specialist
+• Eric Emery, PhD, Mapping Graphics
+• Elias Kontanis, PhD, Transportation Disaster
+ Assistance
+• Christopher O’Neil, Media Relations
+• Gwynne O’Reagan, Writer-Editor
+• Julie Perrot, Safety Recommendations
+• David Tochen, Legal Counsel
+5
+
+=== Board Meeting Presentations p.6 ===
+Parties to the Investigation
+• Tesla Inc.
+• Florida Highway Patrol
+
+6
+
+=== Board Meeting Presentations p.7 ===
+Safety Issues
+• Operational design domains for vehicle automation
+• Monitoring of driver engagement
+• Event data recorders for automated vehicles
+• Safety metrics and exposure data
+• Vehicle-to-Vehicle communication requirements
+
+7
+
+=== Board Meeting Presentations p.8 ===
+Last slide
+with NTSB
+50th
+Anniversary
+Commemor
+ative
+Emblem-
+Making
+Transportati
+on Safer
+Yesterday,
+Today,
+Tomorrow.
+
+=== Board Meeting Presentations p.9 ===
+ Title slide with NTSB
+ 50th Anniversary
+ Commemorative
+ Emblem-Making
+ Transportation Safer
+ Yesterday, Today,
+ Tomorrow. National
+ Transportation Safety
+ Board.
+
+Collision Overview
+
+Robert Squire
+9
+
+=== Board Meeting Presentations p.10 ===
+Location and Pre-Impact Movement
+ N
+
+ W E
+
+ S
+
+ NE 140th Court
+ Google Earth image 11/2016 (modified)
+
+ 10
+
+=== Board Meeting Presentations p.11 ===
+Post-Impact Movement
+ N
+
+ W E
+
+ S
+
+ Departure from
+ pavement
+
+ NE 140th Court
+ Fence impacts
+
+ Pole impact
+
+ Position of rest
+
+ Google Earth image 11/2016 (modified)
+
+ 11
+
+=== Board Meeting Presentations p.12 ===
+Highway Overview
+ N
+
+ W E
+
+ S
+ Median
+
+ Grade crest
+
+ Crossover
+
+ NE 140th Court
+ Bottom of grade
+
+ Google Earth image 11/2016 (modified)
+
+ 12
+
+=== Board Meeting Presentations p.13 ===
+Highway - Westbound
+
+ 13
+
+=== Board Meeting Presentations p.14 ===
+Highway - Eastbound
+
+ 14
+
+=== Board Meeting Presentations p.15 ===
+Vehicle System Data
+ • System performance data indicated–
+ • Automated vehicle control features were in use
+ • Cruise control speed was set for 74 mph
+ • No driver interaction since last setting of cruise control
+ ~2 minutes before crash
+ • No electronic or physical evidence of precollision
+ evasive action by either vehicle
+
+ 15
+
+=== Board Meeting Presentations p.16 ===
+Collision Animation
+
+ 16
+
+=== Board Meeting Presentations p.17 ===
+Vehicles
+
+ Courtesy of Florida Highway Patrol
+
+ 17
+
+=== Board Meeting Presentations p.18 ===
+Summary
+
+ • The Tesla was operated using automated vehicle
+ control features
+ • The highway sight distance was sufficient and time
+ was available for either driver to have acted to avoid
+ the crash
+ • The Tesla system data provided no indication of driver
+ interaction with the vehicle after the final cruise speed
+ was set
+ 18
+
+=== Board Meeting Presentations p.19 ===
+Last slide
+with NTSB
+50th
+Anniversary
+Commemor
+ative
+Emblem-
+Making
+Transportati
+on Safer
+Yesterday,
+Today,
+Tomorrow.
+
+=== Board Meeting Presentations p.20 ===
+ Title slide with NTSB
+ 50th Anniversary
+ Commemorative
+ Emblem-Making
+ Transportation Safer
+ Yesterday, Today,
+ Tomorrow. National
+ Transportation Safety
+ Board.
+
+Level 2 Vehicle Automation
+
+Ensar Becic, PhD
+20
+
+=== Board Meeting Presentations p.21 ===
+Overview
+
+• Tesla Model S 70D
+ • Autopilot
+• Level 2 automation systems
+ • Operational Design Domain
+ • Monitoring driver engagement
+• Tesla driver actions
+
+21
+
+=== Board Meeting Presentations p.22 ===
+Tesla Model S 70D
+
+• Collision prevention/mitigation systems
+ • Forward collision warning
+ • Automatic emergency braking
+ • Lane departure warning
+• Driver assistance systems
+• Autopilot
+
+22
+
+=== Board Meeting Presentations p.23 ===
+Autopilot
+
+• Traffic-Aware Cruise Control (TACC)
+ • Longitudinal control (acceleration and deceleration)
+• Autosteer
+ • Lateral control (maintaining lane position)
+• Auto Lane Change
+ • Automatic lane change upon driver request
+• Firmware version 7.1
+23
+
+=== Board Meeting Presentations p.24 ===
+Autopilot
+
+• TACC availability
+ • Available above 18 mph
+
+24
+
+=== Board Meeting Presentations p.25 ===
+Autopilot
+
+• TACC availability
+ • Available above 18 mph
+• Autosteer availability
+ • Lane markings detected
+ • TACC is engaged
+
+25
+
+=== Board Meeting Presentations p.26 ===
+Autopilot
+ Engaged
+• TACC availability
+ • Available above 18 mph
+• Autosteer availability
+ • Lane markings detected
+ • TACC is engaged
+• Limitations
+ • Roadway
+ • Environmental
+26
+
+=== Board Meeting Presentations p.27 ===
+Autopilot
+• Monitors the traveling path
+• Maintains set cruise speed
+• Maintains vehicle’s position in the travel lane
+• Brakes when it detects a slow-moving vehicle ahead
+ • Decelerates and follows the vehicle at a predetermined
+ following distance
+• Driver is responsible for monitoring driving
+ environment
+27
+
+=== Board Meeting Presentations p.28 ===
+Overview
+
+• Level 2 automation systems
+
+28
+
+=== Board Meeting Presentations p.29 ===
+ SAE Automation Taxonomy
+
+• SAE International:
+ Categorization of 5
+ levels of automation
+ systems
+ • From a vehicle with
+ no automated
+ systems to a self-
+ driving vehicle
+
+ 29
+
+=== Board Meeting Presentations p.30 ===
+SAE Automation Taxonomy
+
+30
+
+=== Board Meeting Presentations p.31 ===
+ SAE Automation Taxonomy
+
+Tesla’s Autopilot
+ • Provides lateral and
+ longitudinal control
+
+ 31
+
+=== Board Meeting Presentations p.32 ===
+ SAE Automation Taxonomy
+
+Tesla’s Autopilot
+ • Level 2 automation
+
+ 32
+
+=== Board Meeting Presentations p.33 ===
+ SAE Automation Taxonomy
+
+• Tesla’s Autopilot
+ • Provides lateral and
+ longitudinal control
+
+ 33
+
+=== Board Meeting Presentations p.34 ===
+ SAE Automation Taxonomy
+
+• Tesla’s Autopilot
+ • Provides lateral and
+ longitudinal control
+
+ 34
+
+=== Board Meeting Presentations p.35 ===
+Overview
+
+• Level 2 automation systems
+ • Operational Design Domain
+
+35
+
+=== Board Meeting Presentations p.36 ===
+Autopilot: Operational Design Domain
+
+• Operational Design Domain (ODD)
+ • Conditions in which the automated system is designed
+ to operate
+• ODD constraints
+ • System-based implementation (hard constraint)
+ • User-based adherence (soft constraint)
+
+36
+
+=== Board Meeting Presentations p.37 ===
+Roadway ODD: System-Based
+• Autopilot availability
+ • Any roadway with adequate lane markings
+• Autopilot constraints
+ • Maximum cruise speed of 45 mph when speed limit is not
+ detected
+ • Maximum cruise speed of 5 mph over the speed limit on
+ roads without central median divider
+ • Maximum cruise speed of 90 mph on roadways with
+ central median divider, regardless of speed limit
+
+37
+
+=== Board Meeting Presentations p.38 ===
+Roadway ODD: User-Based
+
+ • Driver informed of the constraints through vehicle
+ manual
+ • Vehicle manual includes warnings pertaining to the
+ intended use of Autopilot
+ • Roadways
+ • Driver role
+
+38
+
+=== Board Meeting Presentations p.39 ===
+Roadway ODD: User-Based
+
+ Excerpt from Model S
+ vehicle manual
+39
+
+=== Board Meeting Presentations p.40 ===
+ Roadway ODD: User-Based
+
+ US-27A
+• 4-lane roadway
+• With central
+ median divider
+• Not limited access
+
+ 40
+
+=== Board Meeting Presentations p.41 ===
+ Roadway ODD: User-Based
+
+ SR-24
+• 2-lane roadway
+• No central median
+ divider
+• Not limited access
+
+ 41
+
+=== Board Meeting Presentations p.42 ===
+Autopilot Operation During the Crash Trip
+
+• Autopilot did not detect the truck
+ • TACC did not reduce speed
+ • Collision mitigation systems did not activate
+• Autopilot maintained lane position, cruise speed, and
+ following distance
+• Autopilot functioned as designed, but it operated
+ outside of the domain for which it was designed
+
+42
+
+=== Board Meeting Presentations p.43 ===
+Level 2: Operational Design Domain
+
+• NHTSA 2016 automated vehicles policy
+ • Establish operational domain constraints
+ • Operate on specific roadways
+ • Focus on Levels 3-5
+• Level 2 automated system
+ • More operational design limitations compared to Levels 3-5
+ • No established guidelines for constraining operational
+ domain
+
+43
+
+=== Board Meeting Presentations p.44 ===
+Overview
+
+• Level 2 automation systems
+
+ • Monitoring driver engagement
+
+44
+
+=== Board Meeting Presentations p.45 ===
+Autopilot: Driver Engagement
+
+• Driver is responsible for monitoring driving
+ environment in Level 2 automation system
+• Tesla monitors driver engagement through
+ driver-applied changes to steering wheel torque
+ • System provides warnings after extended period of
+ hands-free operation in Autopilot mode
+
+45
+
+=== Board Meeting Presentations p.46 ===
+Driver Engagement: Timing of the Alerts
+
+• Dependent on lateral acceleration, speed of Tesla,
+ and presence of a lead vehicle
+• On relatively straight roads–
+ • Initial visual alert after 3-5 minutes when traveling above
+ 45 mph, depending on the presence of a lead vehicle
+ • Up to 5 minutes, if a lead vehicle is detected in that period
+ • No alert when traveling less than 45 mph
+
+46
+
+=== Board Meeting Presentations p.47 ===
+Driver Engagement: Timing of the Alerts
+
+• After the initial visual alert–
+ • 2 auditory alerts
+ • Final auditory alert and slowdown
+
+47
+
+=== Board Meeting Presentations p.48 ===
+Driver Engagement During the Crash Trip
+• The crash trip lasted 41 minutes
+ • Autopilot was engaged for 37 minutes
+
+48
+
+=== Board Meeting Presentations p.49 ===
+Driver Engagement During the Crash Trip
+
+ Hands on the steering wheel for 25 seconds
+
+49
+
+=== Board Meeting Presentations p.50 ===
+Driver Engagement During the Crash Trip
+ Lack of responsiveness indicates overreliance on
+ automation
+
+50
+
+=== Board Meeting Presentations p.51 ===
+Driver Engagement in Level 2
+
+• Role of the Level 2 driver–
+ • Remain engaged and monitor the environment
+ • Not required to physically operate the vehicle
+ • Monitor the automation
+ • Decades of research show that humans are very poor at
+ this task
+• Steering wheel torque monitoring is a poor surrogate
+ measure of driver engagement
+51
+
+=== Board Meeting Presentations p.52 ===
+Summary
+• The Tesla was a Level 2 automated vehicle
+• Autopilot did not detect the truck
+• Autopilot functioned as designed; however, it permitted
+ operation outside of its operational domain
+• Tesla driver’s lack of responsiveness indicates
+ overreliance on automation
+• Monitoring steering wheel torque is not an effective
+ method of ensuring driver engagement
+52
+
+=== Board Meeting Presentations p.53 ===
+Last slide
+with NTSB
+50th
+Anniversary
+Commemor
+ative
+Emblem-
+Making
+Transportati
+on Safer
+Yesterday,
+Today,
+Tomorrow.
+
+=== Board Meeting Presentations p.54 ===
+ Title slide with NTSB
+ 50th Anniversary
+ Commemorative
+ Emblem-Making
+ Transportation Safer
+ Yesterday, Today,
+ Tomorrow. National
+ Transportation Safety
+ Board.
+
+Driver Assistance System Data
+
+Joseph A. Gregor, PhD
+54
+
+=== Board Meeting Presentations p.55 ===
+Overview
+ • Description of data recovered from the Tesla
+ Model S
+ • Issues related to data recording and data
+ access
+
+55
+
+=== Board Meeting Presentations p.56 ===
+ Data Stored in Memory in Vehicle
+
+Main user interface touchscreen (exemplar) Interface unit from this investigation
+
+ 56
+
+=== Board Meeting Presentations p.57 ===
+Data Storage and Download
+• Stored data uplinked to Tesla servers
+• Vehicle data recorded since last uplink must be
+ merged with Tesla server data
+• Merged data set queried, and results are converted
+ to engineering units – mph, degrees, meters
+
+ 57
+
+=== Board Meeting Presentations p.58 ===
+Recovered Data
+• Large dataset recorded by vehicle but only a subset
+ was directly relevant to investigation
+ • Autopilot state and Cruise setting information
+ • Speed, acceleration, motor torque, steering angle
+ • System status information
+
+ 58
+
+=== Board Meeting Presentations p.59 ===
+Recovered Data
+
+• GPS track data not recorded on SD card
+• Camera images related to most recent emergency
+ braking activation event also stored
+
+ 59
+
+=== Board Meeting Presentations p.60 ===
+Recovered Data
+• Subset of data reflecting vehicle operation analyzed
+ • TACC and Autosteer in use for majority of drive
+ • Vehicle automation systems recognized vehicles ahead of Tesla
+ • Vehicle automation systems responded as expected
+• Lead vehicle sensed ahead of Tesla about 1.5 minutes
+ before crash
+• No indication of any obstacle ahead of Tesla, or of any
+ change in vehicle operation, after this time
+
+ 60
+
+=== Board Meeting Presentations p.61 ===
+Event Data Recorders
+• Event data recorders (EDRs) not required on light vehicles
+• 49 CFR Part 563 defines purpose, application, and
+ data-recording requirements, if EDR is installed–
+ • Minimum set of 15 data elements
+ • Guidance for 30 optional data elements
+ • Guidance for survivability and accessibility
+• EDR rule is not sufficient for vehicles with automated
+ systems
+
+ 61
+
+=== Board Meeting Presentations p.62 ===
+Automated System Data Challenges
+• Data are not accessible to investigators without
+ manufacturer assistance
+• Standard set of parameters is needed to assess
+ driver and vehicle performance
+
+62
+
+=== Board Meeting Presentations p.63 ===
+Summary
+• Very large set of recorded data recovered from the
+ vehicle
+• Data consistent with normal Autopilot operation
+
+63
+
+=== Board Meeting Presentations p.64 ===
+Last slide
+with NTSB
+50th
+Anniversary
+Commemor
+ative
+Emblem-
+Making
+Transportati
+on Safer
+Yesterday,
+Today,
+Tomorrow.
+
+=== Board Meeting Presentations p.65 ===
+ Title slide with NTSB
+ 50th Anniversary
+ Commemorative
+ Emblem-Making
+ Transportation Safer
+ Yesterday, Today,
+ Tomorrow. National
+ Transportation Safety
+ Board.
+
+Safety Metrics and Exposure Data
+
+Deb Bruce, PhD
+65
+
+=== Board Meeting Presentations p.66 ===
+Overview
+ • Data can improve our ability to evaluate safety
+ benefits
+ • Needed by industry, manufacturers, operators,
+ researchers, and regulators
+ • Standard system of reporting will facilitate data
+ aggregation and comparison
+
+66
+
+=== Board Meeting Presentations p.67 ===
+ Metrics for Safety Assessments
+
+ Events
+ Exposure
+
+ Events can be hard braking, evasive action, crashes,
+ system disengagement, or system failure
+ Exposure can be hours of automated system use,
+ on number of equipped vehicles, within
+ a manufacturer’s fleet
+
+67
+
+=== Board Meeting Presentations p.68 ===
+Importance of Safety Metrics
+• Quantify safety
+• Benefit/Cost analysis
+• System analysis
+• Determine system improvements
+
+68
+
+=== Board Meeting Presentations p.69 ===
+Summary
+
+• Well-defined event and exposure data
+• Automated system categorization must address
+ similar functionality
+• Periodic and consistent data-reporting timeframes
+
+69
+
+=== Board Meeting Presentations p.70 ===
+Connected Vehicle Technology
+and
+Vehicle-to-Vehicle Requirements
+Deb Bruce, PhD
+70
+
+=== Board Meeting Presentations p.71 ===
+Overview
+
+• Description of Vehicle-to-Vehicle (V2V) systems
+• History of recommendations
+• Research and rulemaking history
+• Scope of new Federal Motor Vehicle Safety
+ Standard (FMVSS)
+
+71
+
+=== Board Meeting Presentations p.72 ===
+How do V2V systems work?
+• Use Dedicated Short-range Radio Communications
+• Exchange basic safety messages (location,
+ heading, speed) with other vehicles
+• Radio spectrum allocated by Federal
+ Communications Commission
+• Supplement the capabilities of vehicle-resident
+ sensors
+
+72
+
+=== Board Meeting Presentations p.73 ===
+History of V2V
+
+• 1995 NTSB recommendation to allocate and
+ reserve available radio spectrum
+• 2013 recommendations H-13-30 to develop
+ minimum performance standards and
+ H-13-31 to require V2V systems on all new
+ vehicles
+
+73
+
+=== Board Meeting Presentations p.74 ===
+Research and Rulemaking
+• Recent research includes–
+ • 2014 Readiness of V2V Technology for Application
+ • 2016 Heavy Vehicle V2V Research
+• 2014 advance notice of proposed rulemaking
+ included heavy trucks
+• 2016 notice of proposed rulemaking to establish a
+ new FMVSS addressed only light vehicles
+
+74
+
+=== Board Meeting Presentations p.75 ===
+Summary
+• Limitation of partial fleet requirement
+• High risk posed by heavy trucks
+• Ability to enhance vehicle-resident crash avoidance
+ technologies
+
+75
+
+=== Board Meeting Presentations p.76 ===
+Last slide
+with NTSB
+50th
+Anniversary
+Commemor
+ative
+Emblem-
+Making
+Transportati
+on Safer
+Yesterday,
+Today,
+Tomorrow.

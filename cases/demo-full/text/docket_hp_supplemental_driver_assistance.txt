@@ -1,0 +1,887 @@
+SOURCE: NTSB public docket HWY16FH018 — Human Performance Supplemental Report - Driver Assistance Systems — https://data.ntsb.gov/Docket/Document/docBLOB?ID=40453275&FileExtension=.PDF&FileName=Human%20Performance%20Supplemental%20Report%20-%20Driver%20Assistance%20Systems-Master.PDF
+
+=== HP Supplemental Driver Assistance Systems p.1 ===
+HUMAN PERFORMANCE FACTORS GROUP CHAIRMAN’S SUPPLEMENTAL
+ REPORT: DRIVER ASSISTANCE SYSTEMS
+
+ Williston, FL
+
+ HWY16FH018
+
+ (23 pages)
+
+=== HP Supplemental Driver Assistance Systems p.2 ===
+ NATIONAL TRANSPORTATION SAFETY BOARD
+ OFFICE OF HIGHWAY SAFETY
+ WASHINGTON, D.C.
+
+ HUMAN PERFORMANCE FACTORS GROUP CHAIRMAN’S SUPPLEMENTAL
+ REPORT: DRIVER ASSISTANCE SYSTEMS
+
+A. CRASH INFORMATION
+
+Location: Intersection of eastbound US Highway 27A (US-27A) and NE 140th Court, west
+ of Williston, Florida.
+Vehicle1: 2015 Tesla Model S
+Operator1: Private vehicle.
+
+Vehicle2: 2014 Freightliner Cascadia truck-tractor in combination with a 53-foot semitrailer
+Operator2: Okemah Express, LLC.
+
+Date: Saturday, May 7, 2016
+Time: Approximately 4:36 p.m. EST
+NTSB #: HWY16FH018
+
+B. HUMAN PERFORMANCE FACTORS GROUP
+
+ Ensar Becic, Human Performance Factors Investigator, Group Chairman
+ NTSB Office of Highway Safety
+ 490 L’Enfant Plaza East, S.W., Washington, DC 20594
+
+ Matthew Schwall, Director Field Performance Engineering
+ Tesla Motors
+
+C. CRASH SUMMARY
+
+ For a summary of the crash, refer to the Crash Summary Report in the docket for this
+investigation.
+
+D. DETAILS OF THE HUMAN PERFORMANCE SUPPLEMENTAL REPORT
+
+ The Human Performance supplemental factual report focuses on driver assistance
+systems in the 2015 Tesla Model S. The report includes a description of each system including
+its function, availability, limitations, restrictions and activation during the crash trip.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 2 of 23
+
+=== HP Supplemental Driver Assistance Systems p.3 ===
+ 1. OVERVIEW
+
+ The 2015 Tesla Model S involved in this crash was equipped with a suite of driver
+assistance systems (DAS). The basic function of a driver assistance system is to aid a driver in
+performance of a driving task.
+
+ The functionality of various DAS in a Tesla is afforded by the components that monitor
+and collect information about the environment, analyze data and make determination about
+possible hazards. Depending on the particular system, that information is used to either inform/
+alert the driver or actively control the vehicle. This report discusses Tesla’s DAS in terms of its
+(1) structural components, and (2) functional components. Furthermore, this report presents
+information regarding the activation of various DAS during the crash trip, system updates and
+discusses the process of forward hazard detection.
+
+ 2. TESLA’S DAS: STRUCTURAL COMPONENTS
+
+ 2015 Tesla Model S is equipped with several systems capable of monitoring and
+analyzing the surrounding environment, each consisting of hardware components and
+accompanying software analysis systems. These components are:
+
+ • Radar system
+ • Camera system
+ • Ultrasonic sensors system
+ • GPS mapping system
+
+ The radar system uses super high frequency (SHF) 1 radio waves that broadcast and
+receive waves using a single radar transceiver mounted behind the front grille of the vehicle.
+Time of flight between the broadcast of a radio wave impulse and the reception of its return
+reflected from a nearby object is used to compute distance. The radar is manufactured by Bosch;
+the Bosch system conducts the initial data analysis, which is then used by Tesla and Mobileye
+systems. Radar sensing is limited to a cone-shaped region forward of the vehicle with a specified
+range of 160 meters (525 feet) under ideal conditions.
+
+ The camera system employs a single camera mounted in the rear-view-mirror area of the
+front windshield to receive light waves coming from a region ahead of the vehicle. The camera
+system is manufactured by Mobileye. This optical data is routed to Mobileye’s visual processing
+unit that performs pre-processing of the incoming optical data and provides reduced data to
+various DAS components. The optical view is limited to a cone-shaped region directly ahead of
+the vehicle. The maximum range of the camera system is limited by the resolution and the size of
+the forward object.
+
+ The ultrasonic sensors can emit and receive ultrasounds—an acoustic wave of high
+frequency, short wavelength—and use the information to detect obstacles in its path. Time of
+
+1
+ SHF is defined by the International Telecommunications Union (ITU) as that band of frequencies ranging from 3
+to 30 GHz, where 1 GHz represents 1,000,000,000 cycles per second.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 3 of 23
+
+=== HP Supplemental Driver Assistance Systems p.4 ===
+flight between the broadcast of a sound impulse and the reception of its return reflected from a
+nearby object is used to compute distance. The ultrasonic sensors were located behind the front
+and rear bumper of the accident vehicle. There were 6 sensors in the front and 6 in the rear
+bumper. The ultrasonic sensors are primarily used to assist in parking, but also to detect another
+vehicle in the blind spot. The ultrasonic sensors have a specified range of 5 meters (16 feet)
+under ideal conditions. The ultrasonic sensors are manufactured by Bosch, and the analysis of the
+collected data is conducted by Bosch and Tesla systems.
+
+ The GPS is used to determine location of the vehicle, which is used as a secondary input
+for path planning. The location information from the GPS is also used to identify the road
+class—some of the functional DAS components have operational restrictions on specific types of
+roads—and along with camera system, determine the speed limit on the traveled road. The GPS
+information is not stored in the vehicle’s data recorder; rather, small segments of data are
+temporarily held for the analysis and then deleted when no longer actively used.
+
+ The information obtained from camera, radar, GPS, and ultrasonic sensors is used to
+build an internal model of nearby surroundings including both vehicles and other obstacles. For
+additional information on the structural components of DAS read the Recorders Factual Report
+for this crash investigation.
+
+ 3. TESLA’S DAS: STRUCTURAL COMPONENTS
+
+ 3.1. Overview
+
+ The structural components afforded the functionality to DAS components. The DAS that
+are present on 2015 Tesla Model S vehicles, including the accident vehicle, vary in the level of
+assistance provided to driver. This assistance could be viewed on multiple scales. For example,
+
+ • Some are continuous—use of adaptive cruise control, while others are discrete—
+ occurrence of a warning from the lane departure warning system.
+
+ • Some systems only alert a driver to a potential situation—a warning from the forward
+ collision warning system, while others take momentary control of certain vehicle
+ functions—automatic brake application by the automatic emergency braking system.
+
+ • Some systems may be considered a convenience feature—adaptive cruise control,
+ while others can be viewed as crash avoidance systems—lane departure warning
+ system.
+
+ The driver assistance systems in Model S Tesla rely on all or some structural components
+that monitor the environment around the vehicle. Some of the safety and convenience features on
+2015 Tesla Model S are standard, while others are optional.
+
+ The following are some of the standard safety features on 2015 Tesla Model S: Speed
+Assist, Lane Assist, Forward Collision Avoidance. 2015 Tesla Model S also offers an optional
+Autopilot Technology Package. This suite consists of the following convenience features:
+Autopark, Traffic-Aware Cruise Control, Autosteer, Auto Lane Change.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 4 of 23
+
+=== HP Supplemental Driver Assistance Systems p.5 ===
+ The accident vehicle was equipped with the optional Autopilot package. Unless otherwise
+specified, the description of the systems in this report applies to those that were present on the
+accident vehicle at the time of the crash. The following functional components of DAS were
+present on the accident vehicle:
+ • Autopark – component of A utopilot Technology Package
+ o Parking with driver in vehicle
+ o Parking with driver outside vehicle (Summon)
+ • Speed Assist
+ • Lane Assist
+ o Side Collision Warning
+ o Lane Departure Warning
+ o Auotomatic Steering Intervention
+ • Forward Collision Avoidance
+ o Forward Collision Warning
+ o Automatic Emergency Braking
+ • Highway Convenience features – component of A utopilot Technology Package
+ o Traffic-Aware Cruise Control
+ o Autosteer
+ o Auto Lane Change
+
+ 3.2. Autopark
+
+ This is a convenience feature that provides assistance when parking. It offers two
+different functionalities that differ in the level of assistance.
+
+3.2.1 Driver in vehicle
+
+ W hat: Provides parallel and perpendicular parking on demand. The system controls
+acceleration, braking and steering to move the vehicle into a parking space while driver monitors
+the system’s automatic actions from within the vehicle.
+
+ How: When traveling below a certain velocity (15 mph or 10 mph, depending on the type
+of parking) a driver can request the system—through push of a button—to identify an available
+parking spot. When the system indicates that it has identified an available location, a driver
+pushes another button to request that the system initiate the parking sequence. If parking in
+parallel, driver has to engage reverse gear before initiating the parking sequence.
+
+ Structural components: This driver assistance feature relies on information from the
+ultrasonic sensor system.
+
+ A vailability: This is an on-demand system. It is available upon driver’s request, provided
+it meets specific conditions. Parallel parking is available when traveling under 15 mph, and
+perpendicular parking is available when traveling under 10 mph.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 5 of 23
+
+=== HP Supplemental Driver Assistance Systems p.6 ===
+ A ctivation in the accident vehicle: Based on the vehicle’s recorder data, the Tesla driver
+did not use this system on the day of the crash.
+
+3.2.1 Driver in vehicle (Summon)
+
+ W hat: While outside the vehicle, a driver can request the system to park and retrieve the
+vehicle from a designated parking space.
+
+ How: Using the mobile app or the vehicle’s key, driver can request the system to initiate
+parking sequence and move the vehicle into a parking space after driver exits the vehicle.
+Likewise, driver can also request the system to move the vehicle from the parking space to a
+specified location.
+
+ Structural components: This driver assistance feature relies on information from the
+ultrasonic sensor system.
+
+ A vailability: This is an on-demand system. It is available upon driver’s request, provided
+it meets specific conditions. The paths into and out of the designated parking space must be
+primarily straight and cannot be longer than 12 meters (39 feet).
+
+ Restrictions: The vehicle manual states that this feature is intended to be used only on
+private residential property. However, there are no automatic restrictions that would prevent this
+feature from being used elsewhere.
+
+ A ctivation in the accident vehicle: Based on the vehicle’s recorder data, the Tesla driver
+did not use this system on the day of the crash.
+
+ 3.3. Speed Assist
+
+ W hat: This is a safety feature that provides a warning when driver exceeds the speed
+limit.
+
+ How: The warning can be unimodal—visual, or bimodal—auditory and visual. The visual
+warning (see figure 1) consists of a looming speed limit sign on the instrument panel—the speed
+limit sign increases in size. The auditory warning consists of a chime. The warnings cease when
+driver reduces the velocity to speed limit or after 10 seconds of the initial warning, even if driver
+has not reduced the speed of the vehicle. The functionality of the system resets after the vehicle’s
+speed decreases to below the warning threshold.
+
+ Structural components: This driver assistance feature relies on information from the
+camera system and the vehicle’s GPS mapping.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 6 of 23
+
+=== HP Supplemental Driver Assistance Systems p.7 ===
+Figure 1. Depiction of Tesla’s visual alert for the speed warning system. The visual warning—
+increase in the size of the speed limit sign—is presented in the instrumental panel and occurs
+when vehicle’s velocity exceeds the speed limit. Source: Manual for 2016 Tesla Model S.
+
+ A vailability: Driver can select whether this feature (1) provides visual warning only, (2)
+provides both visual and auditory warnings, or (3) is turned off. The default state is on, and the
+driver’s selection persists until changed again by the driver. Driver can also select the offset—the
+amount by which driver exceeds the speed limit before warning onsets (e.g., alert occurs only
+when exceeding the speed limit by 10 mph).
+
+ Restrictions: The accuracy is dependent on the GPS mapping and time since detection of
+the last speed limit sign by the camera system.
+
+ A ctivation in the accident vehicle: The recorder data that NTSB investigators received
+from Tesla does not provide information about the activation of Speed Assist system. NTSB
+investigators cannot determine whether the system (1) was available (i.e., no turned off) or (2)
+activated during the trip on which the crash occurred.
+
+ 3.4. Lane Assist
+
+ Tesla’s Lane Assist system consists of multiple components, including (1) side collision
+warning, (2) lane departure warning, and (3) automatic steering intervention. The first two
+components provide only a warning, while the third component takes momentary and limited
+control of steering—steers the vehicle away from the detected hazard—but it is not designed to
+move the vehicle out of its travel lane.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 7 of 23
+
+=== HP Supplemental Driver Assistance Systems p.8 ===
+3.4.1. Warning Only Components
+
+ Side collision warning
+
+ W hat: This is a crash avoidance system that provides a graded warning when another
+vehicle enters Tesla’s blind spot or travels too close to the side of the Tesla. 2 The onset of a
+warning is not dependent on Tesla’s action; side collision warning would occur even when the
+Tesla has not activated lane change signal or drifted into neighboring lane.
+
+ How: The visual warning is presented on the instrument panel (see figure 2)—a cone of
+different colors emanating from a side/corner of the image of the Tesla; the location of the cone
+corresponds to the location of the detected vehicle. The color of the cone indicates the proximity
+of the detected vehicle—white, yellow, orange or red—with white representing a vehicle farthest
+away. When the detected vehicle is closest, the cone turns red and an auditory warning—
+chime—onsets.
+
+ Structural components: This driver assistance feature relies on information from the
+ultrasonic sensor system.
+
+ A vailability: Active when vehicle is traveling between 18 mph and 85 mph. The system
+can be disabled by driver. Default state is on, but driver’s selection persists until changed again
+by driver (if driver disables the system, it will stay disabled until driver changes the selection).
+
+ Restrictions: Dependent on the proper functioning of the ultrasonic sensors. Extreme
+weather conditions—heavy snow and rain, fog, extremely hot or cold temperatures—as well as
+interference by other electrical equipment using ultrasonic waves may degrade the performance
+of this system.
+
+ A ctivation in the accident vehicle: The recorder data that NTSB investigators received
+from Tesla does not provide information about the activation of Side Collision Warning system.
+NTSB investigators cannot determine whether the system (1) was available (i.e., no turned off)
+or (2) activated during the trip on which the crash occurred.
+
+2
+ Graded warning indicates various levels of warning, from least to most urgent, often accompanied by additional
+warning modalities (visual warning only for least urgent, visual and auditory for most urgent).
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 8 of 23
+
+=== HP Supplemental Driver Assistance Systems p.9 ===
+Figure 2. Depiction of Tesla’s visual alert for the side object warning system. The visual warning
+is presented in the instrumental panel with different colors indicating difference in the proximity.
+Source: Manual for 2016 Tesla Model S.
+
+ Lane departure warning
+
+ W hat: This is a crash avoidance system that provides a haptic warning when vehicle’s
+front wheel crosses a lane marking and associated turn signal is turned off.
+
+ How: The haptic warning is presented as a vibration of the steering wheel. This vibration
+does not result in any steering corrections, but is intended only to orient driver’s attention to the
+lane departure.
+
+ A vailability: Active when vehicle is traveling over 45 mph. Driver can select the system
+to “on” or “off” position. Default state is off, but driver’s selection persists until changed again
+by driver (if driver enables the system, it will stay enabled until driver changes it again).
+
+ Structural components: This driver assistance feature relies on information from the
+camera system.
+
+ Restrictions: It is dependent on the presence of lane markings and proper functioning of
+the camera system. The performance is degraded when the following conditions are present:
+congestion (if driving to close to a vehicle in front), bright lights, narrow or winding roads,
+heavy shadows on lane markers, and poor visibility (due to snow, rain and fog).
+
+ A ctivation in the accident vehicle: The recorder data that NTSB investigators received
+from Tesla does not provide information about the activation of Lane Departure Warning system.
+NTSB investigators cannot determine whether the system (1) was available (i.e., no turned off)
+or (2) activated during the trip on which the crash occurred.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 9 of 23
+
+=== HP Supplemental Driver Assistance Systems p.10 ===
+3.4.2. Active Assistance
+
+ Automatic Steering Intervention
+
+ W hat: This is a crash avoidance system that provides automatic corrective steering
+intervention when Tesla drifts into or close to an adjacent lane in which another vehicle is
+detected.
+
+ How: The automatic steering correction brings the Tesla back to the center of its own
+traveling lane. Concurrent to the steering correction, a visual warning is presented on the
+instrument panel.
+
+ Structural components: This driver assistance feature relies on information from the
+ultrasonic sensor and camera systems.
+
+ A vailability: Active when vehicle is traveling between 45 mph and 85 mph. The default
+state is on; driver cannot disable it. However, the system is not active when Autosteer (see
+section 3.7) is engaged.
+
+ Restrictions: It is dependent on the presence of lane markings and proper functioning of
+the camera system, as well as the proper functioning of the ultrasonic sensors. The performance
+is degraded when the following conditions are present: congestion (if driving to close to a
+vehicle in front), bright lights, narrow or winding roads, heavy shadows on lane markers, and
+poor visibility (due to snow, rain and fog).
+
+ A ctivation in the accident vehicle: The system cannot be disabled by driver. However,
+since Autosteer was active at the time of the crash, as well as for the majority of that trip,
+Automatic Steering Intervention would not have been active.
+
+ 3.5. Forward Collision Avoidance System
+
+ Tesla’s Forward Collision Avoidance System consists of (1) forward collision warning
+(FCW), which only provides a warning regarding the forward hazard, and (2) automatic
+emergency braking (AEB) which automatically applies brakes to prevent or mitigate a rear-end
+collision.
+
+3.5.1 Warning Only
+
+ Forward Collision Warning
+
+ W hat: This is a crash avoidance system that provides a visual and auditory warning
+regarding a potential forward collision (rear-end crash).
+
+ How: The visual warning consists of an icon of a red vehicle presented in front of the
+image of the Tesla on the instrument panel (see figure 3). The auditory warning consists of a
+chime. The warnings remain until driver brakes or steers away from the forward hazard.
+
+ Timing and Testing: Driver can select the timing of the warning to occur earlier or later.
+A later selection indicates a warning that occurs when a Tesla is closer to the lead vehicle, and an
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 10 of 23
+
+=== HP Supplemental Driver Assistance Systems p.11 ===
+earlier selection indicates a warning that occurs when a Tesla is farther away from the lead
+vehicle.
+ The timing of the warnings are based on distance between the subject vehicle and the
+detected forward vehicle, and their velocities. Those dynamics are used to determine the time
+required by driver to avoid the crash by braking or steering. As such, the time of the warning
+onset is not fixed.
+
+ In an effort to further research the latency of warnings, and determine representative
+values for some crash scenarios, NTSB investigators examined NHTSA’s New Car Assessment
+Program (NCAP).The NCAP consists of a 5-star safety ratings program that provides consumers
+with information regarding passenger vehicle crashworthiness and rollover safety. 3 Driver
+assistance technologies are not included in the 5-star safety rating. Certain DAS technologies like
+forward collision warning receive recognition in the form of an icon indicating the presence of
+that safety technology, located next to the vehicle’s star rating; however, this icon appears only
+on the NCAP website.
+
+ Examination of the NHTSA’s NCAP revealed that 2015 Tesla Model S received
+recognition for the forward collision warning technology. In order to receive this recognition, the
+tested vehicle has to meet NHTSA’s minimum performance standards—the warning has to occur
+within a specific time period—as tested by NHTSA or self-certified by the manufacturer. The
+investigators did not determine whether NHTSA tested this vehicle’s forward collision warning
+system.
+
+ NTSB investigators also examined European NCAP (EuroNCAP) and Australian NCAP
+(ANCAP); however, those agencies did not test 2015 or 2016 Model S.
+
+ Structural components: This driver assistance feature relies on information from the radar
+and camera systems.
+
+ A vailability: Available when the vehicle is traveling between 5 mph and 85 mph. FCW is
+available on all road types. A driver can select one of the four options: (1) early warning, (2)
+medium latency warning (3) late warning, (4) warning is off. The default state of the system is
+medium warning, but driver’s selection persists until changed again by the driver (if a driver
+turns the warning off, it will remain disabled until driver changes it again).
+
+ Restrictions: The accuracy of this system can be affected by road geometry (winding
+roads, sharp curves, or large slopes), weather conditions (rain, ice, fog), brightness (from
+oncoming headlights or direct sunlight) or interference (electronic interference with radar waves
+or visible obstruction such as mud on radar). For additional limitations of this system, including
+detection of forward hazards, see section 3.9.
+
+ A ctivation in the accident vehicle: The recorder data that NTSB investigators received
+from Tesla does not contain values that would indicate that FCW was disabled. The data does
+not contain any information indicating that FCW was activated at any point during the crash trip.
+
+3
+ Crashworthiness is the capacity of a vehicle to protect its occupants during a crash. Five stars rating indicates the
+safest vehicle, and single star indicates that the vehicle meets only minimum safety crashworthiness requirements.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 11 of 23
+
+=== HP Supplemental Driver Assistance Systems p.12 ===
+Figure 3. Depiction of Tesla’s visual alert for the forward collision warning system. The visual
+warning is presented in the instrumental panel with different colors indicating difference in the
+proximity. Source: Manual for 2016 Tesla Model S.
+
+3.5.2. Active Assistance
+
+ Automatic Emergency Braking
+
+ W hat: This is a crash avoidance system that automatically applies brakes when the
+system determines that a frontal collision is unavoidable. The system is designed to mitigate the
+severity of the crash, although in some cases may even prevent the collision. When the system
+automatically applies brakes, it also presents visual and auditory alerts.
+
+ How: The braking is automatic. The visual warning consists of a rectangular bar
+presented in the instrument panel that reads “Emergency Braking in Progress”. The auditory
+warning consists of a chime.
+
+ When AEB activates, the system applies up to full braking force. The applied force
+depends on surface friction, but can be up to 1 G. The AEB remains engaged until (1) driver
+takes a specific action, (2) the forward hazard is no longer detected, or (3) the velocity of the
+Tesla is reduced by 25 mph or it has stopped (this can occur if AEB engages when traveling less
+than 25 mph).
+
+ Disengagement: The following specific actions by driver would disengage the AEB after
+initial activation: (1) initiates an avoidance steering maneuver, (2) presses the accelerator pedal,
+or (3) applies and then releases the brake. However, if driver applies brakes during automatic
+braking, but does not fully release them, the AEB remains engaged until the end of its cycle. If a
+driver applies brakes with less than full braking force, the AEB remains engaged at full braking
+force until the end of its cycle.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 12 of 23
+
+=== HP Supplemental Driver Assistance Systems p.13 ===
+ Testing: The AEB events are triggered based on criteria that include a threshold for the
+deceleration level necessary to avoid a collision. The AEB system of the 2016 Tesla Model S
+was tested by the Insurance Institute for Highway Safety (IIHS). The testing was performed on a
+2016 Tesla Model S traveling at 12 and 25 mph and approaching a stationary object. Tesla’s
+AEB system completely prevented the rear-end collision. The AEB hardware in the tested Tesla
+was the same as in the accident vehicle. The tested vehicle was running firmware 7.1 (2.28.19)
+and the accident vehicle was running firmware version 7.1 (2.17.37). Tesla confirmed that there
+are no significant differences in AEB operation between these two firmware versions.
+
+ Structural components: This driver assistance feature relies on information from the radar
+and camera systems.
+
+ A vailability: Available when the vehicle is traveling between 5 mph and 85 mph. AEB is
+available on all road types. The default state of the system is “on”. A driver can turn AEB off
+when starting the vehicle, but the selection would revert to “on” at next ignition cycle.
+
+ Restrictions: The accuracy of this system can be affected by road geometry (winding
+roads, sharp curves, or large slopes), weather conditions (rain, ice, fog), brightness (from
+oncoming headlights or direct sunlight) or interference (electronic interference with radar waves
+or visible obstruction such as mud on radar). For additional limitations of this system, including
+detection of forward hazards, see section 3.9.
+
+ A ctivation in the accident vehicle: The recorder data that NTSB investigators received
+from Tesla does not contain values that would indicate that AEB was disabled. The data does not
+contain any information indicating that AEB was activated at any point during the crash trip.
+
+ 3.6. Traffic-Aware Cruise Control - Component of Autopilot
+
+ W hat: Tesla’s Traffic-Aware Cruise Control (TACC) is a convenience feature; it is an
+adaptive cruise control system that maintains the set cruise speed, applies brakes when
+approaching a slower moving lead vehicle to preserve a following distance, or accelerates to the
+set cruising speed when forward area is no longer obstructed.
+
+ How: TACC detects vehicles or objects in path of the Tesla. After driver engages
+TACC—selects a cruising speed—the system (1) maintains the set cruise speed as long as the
+forward area is not obstructed, (2) decelerates the vehicle when it detects a vehicle ahead and
+then maintains a set following distance, and (3) resumes the set cruise speed when the forward
+area is no longer obstructed. When necessary to maintain a set following distance, TACC applies
+braking force that results in deceleration of up to 0.5G.
+
+ Driver can select the following distance—how closely to follow a vehicle in front. The
+following distance selection ranges from 1 to 7, with the lower number indicating closer
+following distance.
+
+ Structural components: This driver assistance feature relies on the information from the
+radar and camera systems.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 13 of 23
+
+=== HP Supplemental Driver Assistance Systems p.14 ===
+ Disengagement: TACC disengages if (1) driver deactivates TACC with the cruise control
+lever, (2) driver presses the brake pedal, (3) velocity drops below 18 mph and the system has not
+detected a vehicle in front, (4) driver’s seat belt unbuckles, or (5) the driver shifts to neutral.
+
+ Interaction with FCW and AEB : When TACC is engaged and the system detects a
+forward hazard, but determines that TACC braking would not be sufficient to prevent a rear-end
+crash, the system brakes up to its limit (0.5 G), but also initiates a brake capacity warning
+(BCW). The BCW alert is identical to the FCW alert; driver cannot distinguish between them.
+The BCW activates even if FCW system is turned off.
+
+ If a driver does not respond to the BCW alert, Tesla’s AEB engages, but only if it has not
+been turned off. If AEB has been turned off at the start of the ignition cycle, TACC could still be
+engaged and brake up to its limits, and BCW would still activate, but automatic emergency
+braking would not occur.
+
+ A vailability: This is an on-demand system. It is available upon driver’s request,
+provided the vehicle is traveling above 18 mph. TACC can also be engaged even if Tesla is
+stationary, if the system has detected a vehicle in front. The maximum allowed cruising speed is
+90 mph, regardless of speed limit.
+
+ Restrictions: The accuracy of this system can be affected by road geometry (winding
+roads, sharp curves, or large slopes), weather conditions (rain, ice, fog), brightness (from
+oncoming headlights or direct sunlight) or interference (electronic interference with radar waves
+or visible obstruction such as mud on radar).
+
+ The vehicle’s manual contains multiple warnings regarding the use of TACC (see figures
+4 and 5). The warnings illustrate the limitations of the system—cannot detect all forward
+hazards— instruct drivers not to rely on the system to avoid collisions, and caution drivers to
+always attend to the road ahead. For additional limitations of this system, including detection of
+forward hazards, see section 3.9.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 14 of 23
+
+=== HP Supplemental Driver Assistance Systems p.15 ===
+Figure 4. Excerpts from the vehicle’s manual pertaining to the use of TAAC system. Source:
+Manual for 2016 Tesla Model S.
+
+Figure 5. Excerpts from the vehicle’s manual pertaining to the use of TACC system. Source:
+Manual for 2016 Tesla Model S.
+
+ A ctivation in the accident vehicle: Based on the vehicle’s recorder data, TACC was active
+at the time of the crash. TACC was concurrently active with the Autosteer system (see next
+section).
+
+ 3.7. Autosteer – Component of Autopilot
+
+ W hat: Tesla’s Autosteer is a convenience feature that automatically steers the vehicle to
+keep it within its traveling lane. Autosteer can be engaged only after activating TAAC; Autosteer
+cannot operate without TACC.
+
+ When TACC and Autosteer are both engaged, the system (1) monitors the environment
+on the traveling path, (2) maintains the set cruise velocity, (3) maintains vehicle’s position in the
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 15 of 23
+
+=== HP Supplemental Driver Assistance Systems p.16 ===
+traveling lane, (4) brakes when detecting a slower moving vehicle or an obstacle ahead, and (5)
+decelerates and follows a slower-moving vehicle in front at the predetermined following
+distance.
+
+ How: Autosteer detects lane markings and presence of other vehicles and objects ahead to
+maintain the vehicle within the lane. When engaged, an icon depicting a blue steering wheel
+appears on the instrument panel (see figure 6).
+
+ Structural components: This driver assistance feature relies on information from the radar
+and camera systems.
+
+Figure 6. Depiction of Tesla’s instrument panel when Autosteer is engaged. The blue steer
+wheel in the top right corner indicates that Autosteer is engaged, and the blue speed dial
+indicates that TAAC is engaged. Source: Manual for 2016 Tesla Model S.
+
+ Disengagement: There are multiple conditions that can result in disengagement of
+Autosteer system. Some are the result of driver’s actions while others are the consequence of
+system’s own limitations.
+
+ Autosteer disengages if any of the conditions that would disengage TACC occur (see
+section 3.6).
+
+ Autosteer disengages if the system is unable to detect lane markings. At that time, the
+system presents an auditory alert and a visual warning—a rectangular bar in the instrument panel
+that reads “Take Over Immediately”.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 16 of 23
+
+=== HP Supplemental Driver Assistance Systems p.17 ===
+ Autosteer disengages if a driver starts steering manually and applies steering torque that
+exceeds a fixed threshold; however, TACC remains engaged.
+
+ Autosteer disengages—after a series of warnings—if the system does not detect driver-
+applied steering wheel torque for a prolonged period (i.e., driver’s hands on the steering wheel).
+Upon request by NTSB investigators, Tesla provided the logic detailing the conditions that affect
+the timing of the onset of the initial warning, which is a visual alert. This timing depends on
+several factors, including (1) the speed of a Tesla, (2) presence of a vehicle ahead of a Tesla, and
+(3) lateral acceleration. Also, any interactions with vehicle controls (e.g., change in set cruise
+speed) reset the hands-off counter.
+
+ The initial warning occurs earlier when traveling at lower speed or when another vehicle
+ahead of a Tesla is not detected, and later when traveling at higher speeds or another vehicle
+ahead of a Tesla is detected (see figure 7). For example:
+
+ • When a Tesla is traveling at speed greater than 45 mph with the lateral
+ acceleration below a fixed limit and no lead vehicle present, the system issues
+ a visual warning after 3 minutes of not detecting driver-applied torque on the
+ steering wheel.
+
+ • When a Tesla is traveling at speed greater than 45 mph with the lateral
+ acceleration below a fixed limit and with lead vehicle present, the system
+ issues a visual warning after 5 minutes of not detecting driver-applied torque
+ on the steering wheel.
+
+Figure 7. Depiction of the conditions that affect the timing of the onset of the initial warning (top
+figure) and the sequence of the warnings before disengagement of Autosteer (bottom figure) for
+the system on the accident vehicle.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 17 of 23
+
+=== HP Supplemental Driver Assistance Systems p.18 ===
+ Before Autosteer disengages, the system provides graded warnings to driver, starting
+with a visual warning—a bar presented in the instrument panel that reads “Hold Steering
+Wheel”, and auditory warnings that increase in frequency. If driver still does not apply detectable
+torque on the steering wheel, the system presents final visual warning in the instrument panel—
+that reads “To Maintain Set Speed Place Hands On Steering Wheel”—and begins to decelerate
+the vehicle until it stops. At that time, the system turns on hazard flashers. If driver applies
+sufficiently high torque on the steering wheel during the slowdown phase—higher than is
+required for hands-on detection during other operating conditions—Autosteer re-engages.
+
+ As shown in figure 7, the first auditory warning is presented 15 seconds after the visual
+warning. If driver-applied torque on the steering wheel is still not detected, the system presents
+second auditory warning 10 seconds after the first auditory warning. If driver-applied torque on
+the steering wheel is still not detected, 5 seconds later the system applies third auditory warning
+and begins to decelerate the vehicle.
+
+ Interaction with FCW and AEB : When Autosteer is engaged, the system interacts with
+FCW and AEB in the same way as TACC.
+
+ When Autosteer is engaged and the system detects a forward hazard, but determines that
+TACC braking would not be sufficient to prevent a rear-end crash, TACC brakes up to its full
+capacity of 0.5G and brake capacity warning (BCW) occur. The BCW would activate even if
+FCW system was turned off.
+
+ If a driver does not respond to the BCW alert, Tesla’s AEB could engage, but only if it
+has not been turned off; Autosteer could be engaged even if AEB has been turned off at the start
+of the ignition cycle.
+
+ A vailability: This is an on-demand system. It is available upon driver’s request,
+provided it meets specific conditions. If the system determines that the environmental cues—lane
+markings—are sufficient to operate the system, an icon—grey steering wheel—appears on the
+instrument panel indicating that Autosteer available and is ready to be engaged (see figure 8).
+
+ Available when vehicle is traveling above 18 mph, although it could be engaged even if
+Tesla is stationary—provided that the system has detected a vehicle in front.
+
+ When Autosteer is engaged, the maximum cruising speed, as set in TACC, is dependent
+on the road type and the speed limit. The roadway-based restrictions are the following:
+
+ • If the system can detect the speed limit while traveling on roads with center divider,
+ the maximum cruising speed is the same as when using only TACC, which is 90 mph.
+
+ • When driving on roads without center divider, the maximum cruising speed is
+ limited to 5 mph over the speed limit.
+
+ • If the system cannot detect the roadway speed limit, the maximum cruising speed is
+ limited to 45 mph, regardless of the type of the road in which the vehicle is traveling.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 18 of 23
+
+=== HP Supplemental Driver Assistance Systems p.19 ===
+Figure 8. Depiction of Tesla’s instrument panel showing grey steering wheel indicating that
+Autosteer is available and ready to be engaged. Source: Manual for 2016 Tesla Model S.
+
+ Restrictions: The accuracy of this system can be affected by road geometry (winding
+roads, sharp curves, or large slopes), weather conditions (rain, ice, fog), brightness (from
+oncoming headlights or direct sunlight) or interference (electronic interference with radar waves
+or visible obstruction such as mud on radar).
+
+ The vehicle’s manual states that the system is intended to be used on “highways where
+access is limited by entry and exit ramps”. The vehicle’s manual contains multiple warnings
+regarding the use of Autosteer (see figure 9). The warnings indicate that the system is intended to
+be used on freeway, with fully attentive driver. The warnings further instruct the driver to never
+depend on the system to determine the appropriate travel path and to always be prepared to take
+immediate action. For additional limitations of this system, including detection of forward
+hazards, see section 3.9.
+
+Figure 9. Excerpts from the vehicle’s manual pertaining to the use of Autosteer system. Source:
+Manual for 2016 Tesla Model S.
+
+ A ctivation in the accident vehicle: Based on the vehicle’s recorder data, TACC and
+Autosteer were active (in use) at the time of the crash. The trip (ignition cycle) during which the
+crash occurred, lasted 41 minutes. For the first approximately 2.5 minutes of that trip, the Tesla
+driver operated the vehicle manually. For the remainder of the trip—approximately 38.5
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 19 of 23
+
+=== HP Supplemental Driver Assistance Systems p.20 ===
+minutes—the Tesla driver operated the vehicle with TACC and Autosteer engaged, excluding
+two occasions during which the Tesla driver manually controlled the vehicle (about 20-30
+seconds on each occasion). Of the 41 minutes of the last segment of the crash trip, the driver
+operated the vehicle with TACC and Autosteer engaged for approximately 37.5 minutes, or more
+than 90 percent of the trip.
+
+ The data shows that out of those 37.5 minutes during which the Autopilot was active, the
+system did not detect driver’s hands on the steering wheel for approximately 37 minutes. The
+longest period between alerts during which the system did not detect driver-applied torque on the
+steering wheel was about 6 minutes. The driver increased the cruise speed about 2 minutes
+before the crash, which did not require the driver to place hands on the steering wheel; however,
+this action reset the hands-off counter. See the Recorders factual report for this crash for more
+detailed information.
+
+ During the time when TACC and Autosteer were active, the system presented a visual
+warning to the driver on 7 occasions (bar presented in the instrument panel that reads “Hold
+Steering Wheel”). On 6 occasions, the visual warnings occasions were followed with the initial
+level of auditory warning. The second level of auditory warning did not occur during the last
+ignition cycle, nor did the system initiate Autosteer disengagement protocol.
+
+ A ctivation in the accident vehicle: Based on the vehicle’s recorder data, the Tesla driver
+did not use this system on the day of the crash.
+
+ 3.8. Auto Lane Change – Component of Autopilot
+
+ W hat: This is a convenience feature that automatically moves the vehicle into adjacent
+lane upon demand. Auto Lane Change can be activated only when Autosteer is engaged.
+
+ How: When Autosteer is engaged, a driver can request the system—by activating the turn
+signal—to move the vehicle into an adjacent travel lane. The system monitors the Tesla’s blind
+spot and forward to determine the availability of the target lane before executing the lane change.
+
+ The system would execute driver’s lane change request only when (1) camera’s view is
+unobstructed, (2) the system does not detect a vehicle in the target lane or in Tesla’s blind spot,
+and (3) the system can detect the outside of the target lane after initiating the lane change. If the
+system does not detect the outside of the target lane, it cancels the Auto Lane Change and
+Autosteer. At that time, the system also presents a visual prompt on the instrument panel,
+instructing the driver to immediately take over the steering wheel.
+
+ Structural components: This driver assistance feature relies on information from the
+camera and ultrasonic sensor systems.
+
+ A vailability: This is an on-demand system. It is available upon driver’s request, provided
+it meets specific conditions. The system can be activated only when Auto Lane Change has been
+enabled, Autosteer is engaged and Tesla is traveling at least 30 mph. The default state of the
+system is “on”, but driver’s selection persists until changed again by the driver (if a driver turns
+the system off, it will remain unavailable until driver changes it again).
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 20 of 23
+
+=== HP Supplemental Driver Assistance Systems p.21 ===
+ Restrictions: The accuracy of this system can be affected by road geometry (winding
+roads, sharp curves, or large slopes), weather conditions (rain, ice, fog) and camera’s capability
+to recognize lane markings.
+
+ The vehicle’s manual contains multiple warnings regarding the use of Auto Lane Change.
+The warnings indicate that the driver is responsible to determine whether the target lane is safe
+and appropriate and that the system cannot detect fast moving vehicles from the rear. The
+warnings also indicate that this feature should not be used on winding roads.
+
+ A ctivation in the accident vehicle: Based on the vehicle’s recorder data, the Tesla driver
+did not use this system on the day of the crash.
+
+ 3.9. Forward Hazard Detection
+
+ Several functional components of Tesla’s DAS rely on system’s capability to detect
+forward hazards and lane markings in order to provide warnings, initiate automatic braking or
+automatically maintain the vehicle within a lane. The components that rely on detection of
+forward hazards include: FCW, AEB, TACC and Autosteer. When it comes to the detection of
+obstacles, the forward hazard detection systems are designed to detect slow, decelerating and
+stopped vehicles moving in the same general direction as Tesla.
+
+ Detection of forward hazards is typically made by interpreting input from both camera
+and the radar systems. While both of these systems perform detection of forward objects, they
+have specialized functions. Camera system performs object recognition and classification
+processes, while the radar system is used to determine longitudinal measurements—how far
+away the forward hazard is located, and to determine the relative velocity of the hazard.
+
+ Potential forward hazards are classified based on (1) specific distance measurement by
+the radar system and (2) detection and appropriate classification by the camera system. Most
+classes of objects are required to meet both criteria. An exception is a specific class of forward
+hazards that are classified as In-Path Stationary Objects (IPSO).
+
+ An object is classified as an IPSO if it is associated with a stationary radar target—
+specific distance measurement from the radar system—and the camera system does not detect a
+recognized object at that distance, but does detect lack of free space or clear path in travel
+direction of the Tesla. For example, a highway overpass would likely not be classified as IPSO,
+even though a radar system may detect the overpass as a stationary object, but camera system
+would detect available free space in the vehicle’s path underneath the overpass.
+
+ Additionally, through the radar system, the Tesla can also detect a vehicle in front of the
+vehicle directly in front of the Tesla. In such cases, radar system can obtain a reflection of the
+wave underneath the vehicle directly in front of the Tesla; yet, the camera system would not be
+able to detect the obscured vehicle.
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 21 of 23
+
+=== HP Supplemental Driver Assistance Systems p.22 ===
+ 3.10. Software Updates
+
+ At the time of the crash, the accident vehicle had the latest version of system software—
+version 7.1—which controls and monitors all of the vehicle’s electronic components, including
+DAS. The system software is updated wirelessly on Model S vehicles. When a new version of
+system software becomes available, a prompt appears on the touchscreen informing the driver to
+schedule the installation of the update. Software update can be performed only when the vehicle
+is parked.
+
+ At the beginning of the first ignition cycle after an update to system software, a prompt
+appears on the touchscreen informing the driver of the changes that were made as a result of the
+latest software update.
+
+ Since the crash, Tesla issued several updates to the system. Version 8.0, which was
+released on September 21, 2016, included changes that affected functioning of Autosteer
+component. More specifically, the changes affected the conditions of disengagement. While in
+the version 7.1—on which the accident vehicle operated—the number of hand-off warnings was
+not limited, version 8.0 introduced such limits.
+
+ Version 8.0 reduced the time that the system allows a driver not to place hands on the
+steering wheel (see figure 10). According to Tesla, the maximum hands-off time was 5 minutes
+in version 7.1. In version 8.0, the maximum allowed hands-off time was reduced to 3 minutes
+when traveling at speed greater than 45 mph. When traveling between 8 and 45 mph, the
+maximum hands-off time is 10 minutes. When traveling less than 8 mph, the system does not
+provide warnings to indicate hands-off driving.
+
+Figure 10. Depiction of the conditions that affect the timing of the onset of the initial warning
+before disengagement of Autosteer in version 8.0.
+
+ Finally, Tesla introduced another condition—type of a roadway—that affects the timing
+of the visual warning. When driving on preferred roads, depending on other characteristics
+(vehicle speed, presence of another vehicle in front of the Tesla), the maximum time before the
+onset of the visual warning indicating hands-off driving is 3 minutes. When driving on non-
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 22 of 23
+
+=== HP Supplemental Driver Assistance Systems p.23 ===
+preferred roads, the maximum time before the onset of the visual warning is 45 seconds when
+traveling at the minimum of 25 mph.
+
+ If a system does not detect driver-applied torque on the steering wheel after the visual
+warning is presented, it is followed by two auditory warnings and then a subsequent auditory
+warning during the slowdown phase. If driver receives any combination of three separate
+auditory alerts within an hour, Autosteer disengages in version 8.0. For example, three separate
+occurrences of level one auditory warning disengage the Autosteer. Also, a single third level
+auditory warning (during the slowdown phase) also disengages the Autosteer (first two levels of
+auditory warning have to occur first). The disengagement occurs in the same manner as
+described in section 3.7. For the remainder of that ignition cycle, Autosteer would not be
+available.
+
+(Ensar Becic, Ph.D.)
+(Senior Human Performance Investigator)
+
+Williston, FL – Human Performance Factors Factual Report: Supplemental Page 23 of 23
