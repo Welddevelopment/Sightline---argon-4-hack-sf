@@ -82,6 +82,12 @@ export function getMaterials(THREE) {
     glassTint: new Phys({ color: 0x1a232b, metalness: 0, roughness: 0.05, transmission: 0.7, thickness: 0.004, ior: 1.5,
       transparent: true, opacity: 1, clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 1.2, side: THREE.DoubleSide, depthWrite: false }),
     plateText: std({ color: 0x9aa0a6, roughness: 0.6, metalness: 0 }),
+    // passenger-car glazing: windshield / front side glass transmit like real (~75-85 %) glass so driver-eye views see
+    // out; rear "privacy" glass is darker. The dark look from outside comes from the dark cabin behind it + reflections.
+    glassClear: new Phys({ color: 0xcfd9da, metalness: 0, roughness: 0.03, transmission: 0.92, thickness: 0.004, ior: 1.5,
+      transparent: true, opacity: 1, clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 1.25, side: THREE.DoubleSide, depthWrite: false }),
+    glassPrivacy: new Phys({ color: 0x5d6870, metalness: 0, roughness: 0.03, transmission: 0.88, thickness: 0.004, ior: 1.5,
+      transparent: true, opacity: 1, clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 1.25, side: THREE.DoubleSide, depthWrite: false }),
   };
   m.paint = (color) => {
     const col = parseColor(THREE, color);
@@ -654,10 +660,11 @@ export function makeInterior(THREE, o = {}) {
     add(roundedBox(THREE, w * 0.9, seatH - floorY - 0.08, 0.4, 0.02), M.interior, 'seat_base', x, (seatH + floorY) / 2, z);
   };
   seat(ex, ez + 0.12, 0.5); seat(-ex, ez + 0.12, 0.5);
-  if (o.rows !== 1 && rearZ - ez > 1.05) {
-    add(roundedBox(THREE, W - 0.1, 0.13, 0.5, 0.05), M.seat || M.interior, 'rear_cushion', 0, seatH - 0.02, ez + 0.98);
-    const rb = add(roundedBox(THREE, W - 0.1, 0.6, 0.12, 0.05), M.seat || M.interior, 'rear_back', 0, seatH + 0.3, ez + 1.25); rb.rotation.x = 0.22;
-    for (const x of [-0.45, 0.45]) add(roundedBox(THREE, 0.26, 0.17, 0.1, 0.04), M.seat || M.interior, 'headrest', x, seatH + 0.68, ez + 1.33);
+  if (o.rows !== 1 && (o.rearSeatZ != null || rearZ - ez > 1.05)) {
+    const rz = o.rearSeatZ ?? ez + 0.98;
+    add(roundedBox(THREE, W - 0.1, 0.13, 0.5, 0.05), M.seat || M.interior, 'rear_cushion', 0, seatH - 0.02, rz);
+    const rb = add(roundedBox(THREE, W - 0.1, 0.6, 0.12, 0.05), M.seat || M.interior, 'rear_back', 0, seatH + 0.3, rz + 0.27); rb.rotation.x = 0.22;
+    for (const x of [-0.45, 0.45]) add(roundedBox(THREE, 0.26, 0.17, 0.1, 0.04), M.seat || M.interior, 'headrest', x, seatH + 0.68, rz + 0.35);
   }
   // rear-view mirror
   add(roundedBox(THREE, 0.24, 0.07, 0.03, 0.015), M.trim, 'int_rvmirror', 0, o.mirrorY ?? ey + 0.1, o.mirrorZ ?? ez - 0.6);

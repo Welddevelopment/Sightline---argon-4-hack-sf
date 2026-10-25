@@ -1,0 +1,217 @@
+{
+  "source": "NTSB HAR-17/02",
+  "caseId": "demo-full",
+  "world": "/cases/demo-full/worlds/world_v4.js",
+  "matched": 8,
+  "total": 12,
+  "impact": {
+    "t": 10.35,
+    "contact": true,
+    "point": [
+      -2.62,
+      0
+    ]
+  },
+  "roles": {
+    "car": "veh_car_a",
+    "truck_front": "veh_truck_tractor",
+    "tractor": "veh_truck_tractor",
+    "trailer": "veh_semitrailer",
+    "pole": "occ_wire_fence_2",
+    "crest": "occ_hill_crest"
+  },
+  "notes": [],
+  "generatedAt": "2026-10-25T22:15:02.192Z",
+  "items": [
+    {
+      "id": "v_car_pre_impact",
+      "label": "Car speed just before impact",
+      "expected": 74,
+      "actual": 74,
+      "unit": "mph",
+      "tolerance": 2,
+      "pass": true,
+      "citation": "NTSB/HAR-17/02 p.2, p.15 (facts.md F17)",
+      "objects": {
+        "car": "veh_car_a"
+      },
+      "delta": 0,
+      "note": "mean over t=9.35..10.3 s"
+    },
+    {
+      "id": "no_braking",
+      "label": "No braking before impact (max deceleration in the 5 s before impact)",
+      "expected": 0,
+      "actual": 0,
+      "unit": "g",
+      "tolerance": 0.1,
+      "pass": true,
+      "citation": "NTSB/HAR-17/02 p.15 (facts.md F18); p.5 no pre-collision roadway marks (F22)",
+      "objects": {
+        "car": "veh_car_a"
+      },
+      "delta": 0,
+      "note": "over t=5.35..10.3 s, 0.5 s smoothing"
+    },
+    {
+      "id": "crest_to_impact_time",
+      "label": "Time for the car to cover the 1,132 ft from the crest to impact (NTSB mutual sight time)",
+      "expected": 10.4,
+      "actual": null,
+      "unit": "s",
+      "tolerance": 0.3,
+      "pass": false,
+      "citation": "NTSB/HAR-17/02 p.29 (facts.md F28)",
+      "objects": {
+        "car": "veh_car_a"
+      },
+      "note": "car path starts only 342 m (10.35 s) before impact; cannot cover 345 m"
+    },
+    {
+      "id": "crest_distance",
+      "label": "Vertical crest west of the intersection (sight restriction) - distance from impact point to the crest occluder's near edge",
+      "expected": 345,
+      "actual": 339.2,
+      "unit": "m",
+      "tolerance": 15,
+      "pass": true,
+      "citation": "NTSB/HAR-17/02 p.22-23, p.29 (facts.md F10, F27): 1,132 ft",
+      "objects": {
+        "crest": "occ_hill_crest"
+      },
+      "delta": -5.8,
+      "note": "impact point to the occluder edge nearest the intersection, along the car's travel direction"
+    },
+    {
+      "id": "impact_location",
+      "label": "Impact in the right (outside) eastbound lane at the NE 140th Ct crossing (car front at impact vs. case-frame POI)",
+      "expected": [
+        0,
+        0
+      ],
+      "actual": [
+        -2.62,
+        0
+      ],
+      "unit": "m",
+      "tolerance": {
+        "x": 5,
+        "z": 1.83
+      },
+      "pass": true,
+      "citation": "NTSB/HAR-17/02 p.3, p.5 (facts.md F21); lane 12 ft (F6) -> +/-1.83 m lateral; origin = POI per case.json coordinate_frame_note (modeling convention)",
+      "objects": {
+        "car": "veh_car_a"
+      },
+      "delta": [
+        -2.62,
+        0
+      ],
+      "note": "car front at t=10.35s"
+    },
+    {
+      "id": "impact_offset_on_trailer",
+      "label": "Impact point on the trailer, distance behind the front of the tractor",
+      "expected": 13.84,
+      "actual": 11.56,
+      "unit": "m",
+      "tolerance": 1,
+      "pass": false,
+      "citation": "NTSB/HAR-17/02 p.6 fn.6 (facts.md F16): 45 ft 5 in; tolerance = half the car's width",
+      "objects": {
+        "car": "veh_car_a",
+        "truck_front": "veh_truck_tractor"
+      },
+      "delta": -2.28,
+      "note": "at t=10.35s"
+    },
+    {
+      "id": "combination_length",
+      "label": "Tractor-semitrailer combination length",
+      "expected": 21.82,
+      "actual": 20.11,
+      "unit": "m",
+      "tolerance": 0.5,
+      "pass": false,
+      "citation": "NTSB/HAR-17/02 p.1, p.6 (facts.md F15): 71 ft 7 in",
+      "objects": {
+        "truck_front": "veh_truck_tractor",
+        "trailer": "veh_semitrailer"
+      },
+      "delta": -1.71,
+      "note": "at t=0s (tractor/trailer 0 deg apart)"
+    },
+    {
+      "id": "scene_time",
+      "label": "Time of day of the collision",
+      "expected": "16:36:12.7",
+      "actual": "16:36",
+      "unit": "clock",
+      "tolerance": 60,
+      "pass": true,
+      "citation": "NTSB/HAR-17/02 p.1, p.15 (facts.md F1): car data recorded collision at 4:36:12.7 p.m.",
+      "objects": {
+        "field": "meta.timeOfDay"
+      },
+      "delta": -12.7
+    },
+    {
+      "id": "pole_strike_time",
+      "label": "Pole strike (airbag deployment) time after first impact",
+      "expected": 8.4,
+      "actual": 0.08,
+      "unit": "s",
+      "tolerance": 0.5,
+      "pass": false,
+      "citation": "NTSB/HAR-17/02 p.5 (facts.md F26); pole struck on post-impact path p.1 (F24)",
+      "objects": {
+        "car": "veh_car_a",
+        "pole": "occ_wire_fence_2"
+      },
+      "delta": -8.32
+    },
+    {
+      "id": "post_impact_travel",
+      "label": "Car travel from point of impact to final rest",
+      "expected": 277.4,
+      "actual": 280,
+      "unit": "m",
+      "tolerance": 20,
+      "pass": true,
+      "citation": "NTSB/HAR-17/02 p.1, p.3 (facts.md F25; police_report p.3 'POI to final rest'): about 910 ft",
+      "objects": {
+        "car": "veh_car_a"
+      },
+      "delta": 2.6,
+      "note": "straight line, impact point to car centre at end"
+    },
+    {
+      "id": "rest_off_right_side",
+      "label": "Final rest off the road to the right (south) of the eastbound lanes",
+      "expected": ">= 3.35",
+      "actual": 21,
+      "unit": "m",
+      "tolerance": 0,
+      "pass": true,
+      "citation": "NTSB/HAR-17/02 p.1, p.3 (facts.md F23, F25: left the right roadside, rest in a front yard); 12-ft lane half-width + 5-ft right shoulder (F6) = 3.35 m from lane centre",
+      "objects": {
+        "car": "veh_car_a"
+      },
+      "delta": 17.65
+    },
+    {
+      "id": "rest_perpendicular",
+      "label": "Final rest perpendicular to the highway",
+      "expected": 90,
+      "actual": 90,
+      "unit": "deg",
+      "tolerance": 20,
+      "pass": true,
+      "citation": "NTSB/HAR-17/02 p.1, p.3 (facts.md F25)",
+      "objects": {
+        "car": "veh_car_a"
+      },
+      "delta": 0
+    }
+  ]
+}
