@@ -1,997 +1,1306 @@
 ```js
-// r4_north — North roadside, ROW fence, farm driveways, homesteads, pasture details, and distant pine/oak tree line
+// r4_north — North roadside & rural Florida pastureland (z in [-500, -44], x in [-1000, 800])
 export default function region(THREE, assets, ctx) {
   const root = new THREE.Group();
   root.name = 'region_r4_north';
-  root.userData.citation = 'NTSB/HAR-17/02 p.29-30 (no sight obstructions on approach); inferred: rural Florida north roadside pasture, ROW fence at z=-50, farmsteads, and background pine/oak treeline';
+  root.userData.citation = 'NTSB/HAR-17/02 p.29-30 (no vegetation or fixed obstructions in approach sight corridor); inferred rural Florida pastureland north of US-27A ROW';
 
-  const rand = ctx.rand(404);
-  const dummy = new THREE.Object3D();
+  const citeNoObs = ctx.layout.cite.noObstruction;
+  const citeInferred = 'inferred: typical rural Levy County Florida pastureland, farmsteads, ROW fencing, and distant slash pine/live oak treeline outside clear zone';
 
-  // Shared materials
-  const matWoodPost = new THREE.MeshStandardMaterial({ color: 0x5a4632, roughness: 0.88, metalness: 0.05 });
-  const matDarkWood = new THREE.MeshStandardMaterial({ color: 0x3f3122, roughness: 0.9, metalness: 0.05 });
-  const matSteelPost = new THREE.MeshStandardMaterial({ color: 0x3b4d3b, roughness: 0.6, metalness: 0.7 });
-  const matGalvanized = new THREE.MeshStandardMaterial({ color: 0x9aa0a6, roughness: 0.45, metalness: 0.8 });
-  const matWire = new THREE.MeshStandardMaterial({ color: 0x80858a, roughness: 0.5, metalness: 0.8 });
-  const matConcrete = ctx.surface('concrete', { color: 0x9c9a94, roughness: 0.85 });
-  const matGravel = ctx.surface('gravel', { color: 0xc8c3b8, roughness: 0.9, polygonOffset: true });
-  const matDirt = ctx.surface('dirt', { color: 0x7c6e58, roughness: 0.95, polygonOffset: true });
-  const matPastureWear = ctx.surface('dirt', { color: 0x8a7d65, roughness: 0.92, polygonOffset: true });
-  const matHay = new THREE.MeshStandardMaterial({ color: 0xb89a54, roughness: 0.92, metalness: 0.0 });
-  const matHayWrap = new THREE.MeshStandardMaterial({ color: 0xd9cbb0, roughness: 0.7, metalness: 0.0 });
-  const matWater = new THREE.MeshStandardMaterial({ color: 0x243b4a, roughness: 0.15, metalness: 0.1 });
-  const matPineBark = new THREE.MeshStandardMaterial({ color: 0x4d3b2c, roughness: 0.9, metalness: 0.0 });
-  const matPineNeedles1 = new THREE.MeshStandardMaterial({ color: 0x2f461f, roughness: 0.88, metalness: 0.0 });
-  const matPineNeedles2 = new THREE.MeshStandardMaterial({ color: 0x3b5323, roughness: 0.88, metalness: 0.0 });
-  const matOakFoliage = new THREE.MeshStandardMaterial({ color: 0x364b24, roughness: 0.9, metalness: 0.0 });
-  const matPalmetto = new THREE.MeshStandardMaterial({ color: 0x415c2b, roughness: 0.82, metalness: 0.05, side: THREE.DoubleSide });
-  const matRedReflector = new THREE.MeshStandardMaterial({ color: 0xc41e3a, roughness: 0.3, metalness: 0.2, emissive: 0x220000 });
-  const matBarnRed = new THREE.MeshStandardMaterial({ color: 0x6e2c24, roughness: 0.8, metalness: 0.1 });
-  const matBarnWall = new THREE.MeshStandardMaterial({ color: 0xc5bfb3, roughness: 0.75, metalness: 0.2 });
-
-  // Corrugated metal material using canvas if available
-  let matCorrugated = matGalvanized;
-  const corrCanvas = ctx.makeCanvas(128, 128);
-  if (corrCanvas) {
-    const c2d = corrCanvas.getContext('2d');
-    for (let y = 0; y < 128; y++) {
-      const v = Math.floor(145 + 30 * Math.sin((y / 8) * Math.PI * 2));
-      c2d.fillStyle = `rgb(${v},${v + 2},${v + 5})`;
-      c2d.fillRect(0, y, 128, 1);
+  // Keep-clear helper wrapping ctx.blocked and explicit Witness C buffer
+  function isClear(x, z, r = 1.0) {
+    if (z > -44) return false;
+    // Witness C stood at (-18, -40.5) — keep (-35..0, -65..-38) completely free of tall objects
+    if (x >= -35 && x <= 0 && z >= -65 && z <= -38) return false;
+    if (ctx.blocked(x, z)) return false;
+    if (r > 0.5) {
+      if (ctx.blocked(x - r, z) || ctx.blocked(x + r, z) || ctx.blocked(x, z - r) || ctx.blocked(x, z + r)) return false;
     }
-    const tex = new THREE.CanvasTexture(corrCanvas);
-    tex.wrapS = THREE.RepeatWrapping;
-    tex.wrapT = THREE.RepeatWrapping;
-    tex.repeat.set(8, 8);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    tex.anisotropy = 8;
-    matCorrugated = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.45, metalness: 0.75 });
-  }
-
-  // Helper: check if position is safe to place tall object (also explicitly guarding Witness C sight zone)
-  function isSafe(x, z, checkBlocked = true) {
-    if (x >= -32 && x <= -4 && z >= -62 && z <= -36) return false;
-    if (checkBlocked && ctx.blocked(x, z)) return false;
     return true;
   }
 
-  // Helper: Grounded terrain strip or patch following ctx.groundY(x, z)
-  function buildGroundStrip(x0, z0, x1, z1, segsX, segsZ, yOffset, mat) {
-    const geom = new THREE.BufferGeometry();
-    const nx = segsX + 1;
-    const nz = segsZ + 1;
-    const positions = new Float32Array(nx * nz * 3);
-    const uvs = new Float32Array(nx * nz * 2);
-    const indices = [];
+  // ============================================================================
+  // SHARED MATERIALS & PROCEDURAL TEXTURES
+  // ============================================================================
+  const matWoodPost = new THREE.MeshStandardMaterial({ color: 0x5a4632, roughness: 0.88, metalness: 0.0 });
+  const matDarkWood = new THREE.MeshStandardMaterial({ color: 0x3f3021, roughness: 0.90, metalness: 0.0 });
+  const matSteelPost = new THREE.MeshStandardMaterial({ color: 0x485244, roughness: 0.55, metalness: 0.70 });
+  const matGalv = new THREE.MeshStandardMaterial({ color: 0x9aa0a6, roughness: 0.45, metalness: 0.80 });
+  const matWire = new THREE.MeshStandardMaterial({ color: 0x8a8f94, roughness: 0.50, metalness: 0.75 });
+  const matConcrete = ctx.surface('concrete', { color: 0x9c9a94, roughness: 0.85 });
+  const matGravel = ctx.surface('gravel', { color: 0xc8c2b4, roughness: 0.90, polygonOffset: true });
+  const matDirt = ctx.surface('dirt', { color: 0x8b7b65, roughness: 0.95, polygonOffset: true });
+  const matDarkHole = new THREE.MeshBasicMaterial({ color: 0x121314 });
+  const matHay = new THREE.MeshStandardMaterial({ color: 0xb89a4c, roughness: 0.92, metalness: 0.0 });
+  const matHaySide = new THREE.MeshStandardMaterial({ color: 0xa4873d, roughness: 0.94, metalness: 0.0 });
+  const matWater = new THREE.MeshStandardMaterial({ color: 0x243b4a, roughness: 0.15, metalness: 0.10 });
+  const matRedFlag = new THREE.MeshStandardMaterial({ color: 0xd12626, roughness: 0.50, metalness: 0.10 });
+  const matWhiteMetal = new THREE.MeshStandardMaterial({ color: 0xe8e8e5, roughness: 0.40, metalness: 0.30 });
+  const matRustRoof = new THREE.MeshStandardMaterial({ color: 0x7a4b3a, roughness: 0.70, metalness: 0.40 });
+  const matBarnWall = new THREE.MeshStandardMaterial({ color: 0x8c3b32, roughness: 0.78, metalness: 0.15 });
+  const matTrimWhite = new THREE.MeshStandardMaterial({ color: 0xdcdad5, roughness: 0.65, metalness: 0.10 });
+  const matPineBark = new THREE.MeshStandardMaterial({ color: 0x4d382a, roughness: 0.92, metalness: 0.0 });
+  const matOakBark = new THREE.MeshStandardMaterial({ color: 0x453b32, roughness: 0.90, metalness: 0.0 });
+  const matPineNeedles = new THREE.MeshStandardMaterial({ color: 0x2f4822, roughness: 0.86, metalness: 0.0 });
+  const matOakLeaves = new THREE.MeshStandardMaterial({ color: 0x3b5323, roughness: 0.85, metalness: 0.0 });
+  const matPalmetto = new THREE.MeshStandardMaterial({ color: 0x46632b, roughness: 0.78, metalness: 0.05, side: THREE.DoubleSide });
 
-    let pIdx = 0;
-    let uIdx = 0;
-    for (let iz = 0; iz <= segsZ; iz++) {
-      const tz = iz / segsZ;
-      const z = z0 + (z1 - z0) * tz;
-      for (let ix = 0; ix <= segsX; ix++) {
-        const tx = ix / segsX;
-        const x = x0 + (x1 - x0) * tx;
-        const y = ctx.groundY(x, z) + yOffset;
-        positions[pIdx++] = x;
-        positions[pIdx++] = y;
-        positions[pIdx++] = z;
-        uvs[uIdx++] = x * 0.25;
-        uvs[uIdx++] = z * 0.25;
-      }
+  function makeCorrugatedMaterial(baseHex, stripeHex, repeatX, repeatY) {
+    const c = ctx.makeCanvas(128, 128);
+    if (!c) {
+      return new THREE.MeshStandardMaterial({ color: baseHex, roughness: 0.55, metalness: 0.65 });
     }
-
-    for (let iz = 0; iz < segsZ; iz++) {
-      for (let ix = 0; ix < segsX; ix++) {
-        const a = iz * nx + ix;
-        const b = a + 1;
-        const c = (iz + 1) * nx + ix;
-        const d = c + 1;
-        indices.push(a, c, b, b, c, d);
-      }
+    const g = c.getContext('2d');
+    g.fillStyle = baseHex;
+    g.fillRect(0, 0, 128, 128);
+    for (let x = 0; x < 128; x += 8) {
+      g.fillStyle = stripeHex;
+      g.fillRect(x, 0, 3, 128);
+      g.fillStyle = 'rgba(255,255,255,0.14)';
+      g.fillRect(x + 3, 0, 2, 128);
     }
-
-    geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geom.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
-    geom.setIndex(indices);
-    geom.computeVertexNormals();
-    return new THREE.Mesh(geom, mat);
+    g.fillStyle = 'rgba(0,0,0,0.15)';
+    g.fillRect(0, 62, 128, 2);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+    tex.repeat.set(repeatX, repeatY);
+    tex.anisotropy = 8;
+    return new THREE.MeshStandardMaterial({ map: tex, roughness: 0.52, metalness: 0.65 });
   }
 
-  // Helper: Flared driveway apron mesh from WB shoulder edge (z = -38.1) north to z = -50
-  function buildFlaredDriveway(centerX, width, flareExtra, zStart, zEnd, segsX, segsZ, yOffset, mat) {
-    const geom = new THREE.BufferGeometry();
-    const nx = segsX + 1;
-    const nz = segsZ + 1;
-    const positions = new Float32Array(nx * nz * 3);
-    const uvs = new Float32Array(nx * nz * 2);
+  const matCorrugatedRoof = makeCorrugatedMaterial('#8c9298', '#686d73', 12, 4);
+  const matCorrugatedWall = makeCorrugatedMaterial('#a5a9ad', '#7e8286', 10, 2);
+  const matBarnRedMetal = makeCorrugatedMaterial('#7c2f26', '#591f18', 10, 3);
+
+  // ============================================================================
+  // HELPER: CONFORMING GROUND STRIP / APRON
+  // ============================================================================
+  function buildConformingStrip(pts, mat, yOffset = 0.018) {
+    // pts is an array of [xLeft, xRight, z] rows ordered along Z
+    const rows = pts.length;
+    const positions = [];
+    const uvs = [];
     const indices = [];
 
-    let pIdx = 0;
-    let uIdx = 0;
-    for (let iz = 0; iz <= segsZ; iz++) {
-      const tz = iz / segsZ;
-      const z = zStart + (zEnd - zStart) * tz;
-      // Flare near the road (tz near 0)
-      const flareFactor = Math.max(0, 1 - tz * 3.0);
-      const halfW = width * 0.5 + flareExtra * flareFactor * flareFactor;
-      for (let ix = 0; ix <= segsX; ix++) {
-        const tx = (ix / segsX) * 2 - 1;
-        const x = centerX + tx * halfW;
-        // Bridge smoothly across the ditch at z = -44 so the driveway is graded over the culvert
-        let y = ctx.groundY(x, z);
-        const distFromDitch = Math.abs(z - (-44));
-        if (distFromDitch < 3.5) {
-          const yRoad = ctx.groundY(x, -38.5);
-          const yNorth = ctx.groundY(x, -48.5);
-          const bridgeY = yRoad + (yNorth - yRoad) * ((z - (-38.5)) / (-10.0));
-          const blend = Math.cos((distFromDitch / 3.5) * Math.PI * 0.5);
-          y = y * (1 - blend) + bridgeY * blend;
+    for (let i = 0; i < rows; i++) {
+      const [xL, xR, z] = pts[i];
+      const cols = 5;
+      for (let c = 0; c <= cols; c++) {
+        const f = c / cols;
+        const x = xL + (xR - xL) * f;
+        // Near WB shoulder edge (z >= -38.5), blend smoothly with roadY(x)
+        let y = ctx.groundY(x, z) + yOffset;
+        if (z > -38.5) {
+          y = ctx.roadY(x) + 0.012;
         }
-        positions[pIdx++] = x;
-        positions[pIdx++] = y + yOffset;
-        positions[pIdx++] = z;
-        uvs[uIdx++] = x * 0.3;
-        uvs[uIdx++] = z * 0.3;
+        positions.push(x, y, z);
+        uvs.push(x * 0.25, z * 0.25);
       }
     }
 
-    for (let iz = 0; iz < segsZ; iz++) {
-      for (let ix = 0; ix < segsX; ix++) {
-        const a = iz * nx + ix;
+    const stride = 6;
+    for (let i = 0; i < rows - 1; i++) {
+      for (let c = 0; c < 5; c++) {
+        const a = i * stride + c;
         const b = a + 1;
-        const c = (iz + 1) * nx + ix;
-        const d = c + 1;
-        indices.push(a, b, c, b, d, c);
+        const d = (i + 1) * stride + c;
+        const e = d + 1;
+        indices.push(a, d, b, b, d, e);
       }
     }
 
-    geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geom.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
-    geom.setIndex(indices);
-    geom.computeVertexNormals();
-    return new THREE.Mesh(geom, mat);
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+    geo.setIndex(indices);
+    geo.computeVertexNormals();
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.receiveShadow = true;
+    return mesh;
   }
 
-  // Helper: Foundation skirt for buildings on sloping terrain
-  function addBuildingWithSkirt(parent, bldOpts, x, z, rotY = 0) {
-    const { w, d } = bldOpts;
-    const corners = [
-      [x - w * 0.5, z - d * 0.5],
-      [x + w * 0.5, z - d * 0.5],
-      [x - w * 0.5, z + d * 0.5],
-      [x + w * 0.5, z + d * 0.5],
-      [x, z]
+  // ============================================================================
+  // 1. NORTH DITCH DETAILS (z = -44, x in [-1000, 800])
+  // ============================================================================
+  {
+    const ditchGroup = new THREE.Group();
+    ditchGroup.name = 'north_ditch_details';
+    ditchGroup.userData.citation = citeInferred;
+
+    // Sandy/silty swale bottom patches & concrete drainage grates/headwalls at intervals
+    const patchPositions = [-820, -640, -490, -330, -140, 60, 210, 360, 560, 710];
+    for (let i = 0; i < patchPositions.length; i++) {
+      const px = patchPositions[i];
+      const rows = [];
+      for (let s = -12; s <= 12; s += 4) {
+        const x = px + s;
+        // Strip along X at z in [-45.1, -42.9]
+        rows.push([x, x, -44]);
+      }
+      // Build a small conforming sandy swale patch along X
+      const pos = [];
+      const uvs = [];
+      const idx = [];
+      const xSteps = 6;
+      const zSteps = 3;
+      for (let xi = 0; xi <= xSteps; xi++) {
+        const x = px - 12 + (xi / xSteps) * 24;
+        for (let zi = 0; zi <= zSteps; zi++) {
+          const z = -45.2 + (zi / zSteps) * 2.4;
+          const y = ctx.groundY(x, z) + 0.012;
+          pos.push(x, y, z);
+          uvs.push(x * 0.3, z * 0.3);
+        }
+      }
+      for (let xi = 0; xi < xSteps; xi++) {
+        for (let zi = 0; zi < zSteps; zi++) {
+          const a = xi * (zSteps + 1) + zi;
+          const b = a + 1;
+          const c = (xi + 1) * (zSteps + 1) + zi;
+          const d = c + 1;
+          idx.push(a, b, c, b, d, c);
+        }
+      }
+      const g = new THREE.BufferGeometry();
+      g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+      g.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+      g.setIndex(idx);
+      g.computeVertexNormals();
+      const m = new THREE.Mesh(g, matDirt);
+      ditchGroup.add(m);
+    }
+
+    // Concrete ditch check-dams / drop-inlets at 4 locations along the downgrade
+    const inletXs = [-550, -345, -110, 150, 520];
+    const boxGeo = new THREE.BoxGeometry(1.4, 0.45, 1.8);
+    const grateGeo = new THREE.BoxGeometry(1.1, 0.06, 1.3);
+    for (const ix of inletXs) {
+      const iz = -44.0;
+      const iy = ctx.groundY(ix, iz);
+      const box = new THREE.Mesh(boxGeo, matConcrete);
+      box.position.set(ix, iy - 0.14, iz);
+      ditchGroup.add(box);
+      const grate = new THREE.Mesh(grateGeo, matSteelPost);
+      grate.position.set(ix, iy + 0.09, iz);
+      ditchGroup.add(grate);
+    }
+
+    // Flexible white FDOT roadside ditch/culvert marker posts (low profile <= 1.1 m)
+    const markerXs = [-750, -550, -345, -264, -256, -110, 150, 416, 424, 520, 700];
+    const postGeo = new THREE.BoxGeometry(0.09, 1.05, 0.025);
+    const capGeo = new THREE.BoxGeometry(0.092, 0.16, 0.03);
+    const matOrange = new THREE.MeshStandardMaterial({ color: 0xd96b16, roughness: 0.4 });
+    for (const mx of markerXs) {
+      const mz = -42.4;
+      const my = ctx.groundY(mx, mz);
+      const post = new THREE.Mesh(postGeo, matWhiteMetal);
+      post.position.set(mx, my + 0.52, mz);
+      ditchGroup.add(post);
+      const cap = new THREE.Mesh(capGeo, matOrange);
+      cap.position.set(mx, my + 0.96, mz);
+      ditchGroup.add(cap);
+    }
+
+    root.add(ditchGroup);
+  }
+
+  // ============================================================================
+  // 2. NORTH RIGHT-OF-WAY FENCE (z = -50, x in [-1000, 800]) & INTERIOR FENCES
+  // ============================================================================
+  {
+    const fenceGroup = new THREE.Group();
+    fenceGroup.name = 'north_row_and_pasture_fences';
+    fenceGroup.userData.citation = citeInferred;
+
+    // Gate openings at the two farm driveways: x = -260 ([-264.5, -255.5]) and x = 420 ([415.5, 424.5])
+    const rowSpans = [
+      { x0: -1000, x1: -264.5, z0: -50, z1: -50 },
+      { x0: -255.5, x1: 415.5, z0: -50, z1: -50 },
+      { x0: 424.5, x1: 800, z0: -50, z1: -50 }
     ];
-    let maxY = -Infinity;
-    let minY = Infinity;
-    for (const [cx, cz] of corners) {
-      const gy = ctx.groundY(cx, cz);
-      if (gy > maxY) maxY = gy;
-      if (gy < minY) minY = gy;
+
+    // Interior pasture cross-fences (N-S and E-W paddocks)
+    const crossSpans = [
+      // Farmstead 1 west boundary & driveway lane fences
+      { x0: -320, x1: -320, z0: -50, z1: -220 },
+      { x0: -264.5, x1: -264.5, z0: -50, z1: -132 },
+      { x0: -255.5, x1: -255.5, z0: -50, z1: -132 },
+      { x0: -195, x1: -195, z0: -50, z1: -220 },
+      { x0: -320, x1: -195, z0: -220, z1: -220 },
+      // Mid-pasture divider
+      { x0: 85, x1: 85, z0: -50, z1: -190 },
+      { x0: -195, x1: 85, z0: -125, z1: -125 },
+      // Homestead 2 paddock fences
+      { x0: 375, x1: 375, z0: -50, z1: -185 },
+      { x0: 415.5, x1: 415.5, z0: -50, z1: -118 },
+      { x0: 424.5, x1: 424.5, z0: -50, z1: -118 },
+      { x0: 495, x1: 495, z0: -50, z1: -185 },
+      { x0: 375, x1: 495, z0: -185, z1: -185 }
+    ];
+
+    const allSpans = [...rowSpans, ...crossSpans];
+
+    // Collect post transforms and wire segment transforms
+    const woodMats = [];
+    const tPostMats = [];
+    const braceMats = [];
+    const wireSegs = [];
+
+    const dummy = new THREE.Object3D();
+    const wireHeights = [0.28, 0.56, 0.84, 1.12];
+
+    for (const s of allSpans) {
+      const dx = s.x1 - s.x0;
+      const dz = s.z1 - s.z0;
+      const len = Math.hypot(dx, dz);
+      const steps = Math.max(1, Math.round(len / 3.0)); // post every 3 m
+      const ux = dx / len;
+      const uz = dz / len;
+      const yaw = Math.atan2(-dz, dx);
+
+      for (let i = 0; i <= steps; i++) {
+        const f = i / steps;
+        const px = s.x0 + dx * f;
+        const pz = s.z0 + dz * f;
+        const py = ctx.groundY(px, pz);
+
+        // Alternate wood posts and steel T-posts; ends and every 3rd post are wood
+        const isEnd = (i === 0 || i === steps);
+        const isWood = isEnd || (i % 3 === 0);
+
+        dummy.position.set(px, py + 0.65, pz);
+        dummy.rotation.set(0, yaw, 0);
+        dummy.scale.set(1, isEnd ? 1.08 : 1.0, 1);
+        dummy.updateMatrix();
+
+        if (isWood) {
+          woodMats.push(dummy.matrix.clone());
+        } else {
+          tPostMats.push(dummy.matrix.clone());
+        }
+
+        // H-brace horizontal bar at span ends
+        if (i === 0 && steps >= 2) {
+          const nx = s.x0 + dx * (1 / steps);
+          const nz = s.z0 + dz * (1 / steps);
+          const ny = ctx.groundY(nx, nz);
+          dummy.position.set((px + nx) * 0.5, (py + ny) * 0.5 + 1.02, (pz + nz) * 0.5);
+          dummy.rotation.set(0, yaw, 0);
+          dummy.scale.set(len / steps, 1, 1);
+          dummy.updateMatrix();
+          braceMats.push(dummy.matrix.clone());
+        } else if (i === steps - 1 && steps >= 2) {
+          const nx = s.x1;
+          const nz = s.z1;
+          const ny = ctx.groundY(nx, nz);
+          dummy.position.set((px + nx) * 0.5, (py + ny) * 0.5 + 1.02, (pz + nz) * 0.5);
+          dummy.rotation.set(0, yaw, 0);
+          dummy.scale.set(len / steps, 1, 1);
+          dummy.updateMatrix();
+          braceMats.push(dummy.matrix.clone());
+        }
+      }
+
+      // Wire segments every 6 m to follow grade smoothly
+      const wStepLen = 6.0;
+      const wSteps = Math.max(1, Math.round(len / wStepLen));
+      for (let i = 0; i < wSteps; i++) {
+        const f0 = i / wSteps;
+        const f1 = (i + 1) / wSteps;
+        const xA = s.x0 + dx * f0, zA = s.z0 + dz * f0, yA = ctx.groundY(xA, zA);
+        const xB = s.x0 + dx * f1, zB = s.z0 + dz * f1, yB = ctx.groundY(xB, zB);
+        const segHoriz = Math.hypot(xB - xA, zB - zA);
+        const dy = yB - yA;
+        const seg3D = Math.hypot(segHoriz, dy);
+        const pitch = Math.atan2(dy, segHoriz);
+
+        for (let w = 0; w < wireHeights.length; w++) {
+          const wh = wireHeights[w];
+          dummy.position.set((xA + xB) * 0.5, (yA + yB) * 0.5 + wh, (zA + zB) * 0.5);
+          dummy.rotation.set(0, yaw, pitch);
+          dummy.scale.set(seg3D, 1, 1);
+          dummy.updateMatrix();
+          wireSegs.push(dummy.matrix.clone());
+        }
+      }
     }
 
-    const bld = assets.building(bldOpts);
-    bld.position.set(x, maxY, z);
-    bld.rotation.y = rotY;
-    parent.add(bld);
+    // Build InstancedMeshes for posts, T-posts, braces, and 4-strand wires
+    const woodGeo = new THREE.CylinderGeometry(0.065, 0.072, 1.35, 7);
+    const woodInst = new THREE.InstancedMesh(woodGeo, matWoodPost, woodMats.length);
+    for (let i = 0; i < woodMats.length; i++) woodInst.setMatrixAt(i, woodMats[i]);
+    woodInst.castShadow = true;
+    fenceGroup.add(woodInst);
 
-    const skirtH = Math.max(0.35, maxY - minY + 0.25);
-    const skirtGeo = new THREE.BoxGeometry(w + 0.2, skirtH, d + 0.2);
-    const skirt = new THREE.Mesh(skirtGeo, matConcrete);
-    skirt.position.set(x, maxY - skirtH * 0.5 + 0.02, z);
-    skirt.rotation.y = rotY;
-    parent.add(skirt);
+    const tPostGeo = new THREE.BoxGeometry(0.038, 1.32, 0.038);
+    const tPostInst = new THREE.InstancedMesh(tPostGeo, matSteelPost, tPostMats.length);
+    for (let i = 0; i < tPostMats.length; i++) tPostInst.setMatrixAt(i, tPostMats[i]);
+    fenceGroup.add(tPostInst);
 
-    return { maxY, minY, bld };
+    const braceGeo = new THREE.BoxGeometry(1.0, 0.08, 0.08);
+    const braceInst = new THREE.InstancedMesh(braceGeo, matWoodPost, braceMats.length);
+    for (let i = 0; i < braceMats.length; i++) braceInst.setMatrixAt(i, braceMats[i]);
+    fenceGroup.add(braceInst);
+
+    const wireGeo = new THREE.BoxGeometry(1.0, 0.014, 0.014);
+    const wireInst = new THREE.InstancedMesh(wireGeo, matWire, wireSegs.length);
+    for (let i = 0; i < wireSegs.length; i++) wireInst.setMatrixAt(i, wireSegs[i]);
+    fenceGroup.add(wireInst);
+
+    // Build tubular steel farm gates at the two driveways (open inward to the north)
+    function buildTubularGate(hingeX, hingeZ, width, angleY) {
+      const g = new THREE.Group();
+      const hy = ctx.groundY(hingeX, hingeZ);
+      g.position.set(hingeX, hy, hingeZ);
+      g.rotation.y = angleY;
+
+      const railGeo = new THREE.CylinderGeometry(0.022, 0.022, width, 6);
+      railGeo.rotateZ(Math.PI / 2);
+      const railHeights = [0.25, 0.46, 0.67, 0.88, 1.09, 1.25];
+      for (const rh of railHeights) {
+        const rail = new THREE.Mesh(railGeo, matGalv);
+        rail.position.set(width * 0.5, rh, 0);
+        g.add(rail);
+      }
+      const vertGeo = new THREE.CylinderGeometry(0.025, 0.025, 1.15, 6);
+      for (const vx of [0.05, width * 0.5, width - 0.05]) {
+        const v = new THREE.Mesh(vertGeo, matGalv);
+        v.position.set(vx, 0.72, 0);
+        g.add(v);
+      }
+      // Diagonal brace tube
+      const diagLen = Math.hypot(width * 0.5, 1.0);
+      const diagGeo = new THREE.CylinderGeometry(0.018, 0.018, diagLen, 6);
+      const diag = new THREE.Mesh(diagGeo, matGalv);
+      diag.position.set(width * 0.25, 0.75, 0);
+      diag.rotation.z = Math.atan2(width * 0.5, 1.0);
+      g.add(diag);
+      return g;
+    }
+
+    // Driveway 1 double gate at x = -260, z = -50 (swung open into pasture)
+    fenceGroup.add(buildTubularGate(-264.4, -50, 4.2, Math.PI * 0.46));
+    fenceGroup.add(buildTubularGate(-255.6, -50, 4.2, Math.PI * 0.54));
+
+    // Driveway 2 double gate at x = 420, z = -50 (swung open into pasture)
+    fenceGroup.add(buildTubularGate(415.6, -50, 4.2, Math.PI * 0.46));
+    fenceGroup.add(buildTubularGate(424.4, -50, 4.2, Math.PI * 0.54));
+
+    root.add(fenceGroup);
   }
 
-  // Helper: Metal ranch gate (tube frame)
-  function buildRanchGate(width, height = 1.25) {
-    const g = new THREE.Group();
-    const bars = 5;
-    for (let i = 0; i < bars; i++) {
-      const y = 0.2 + (i / (bars - 1)) * (height - 0.25);
-      const hBar = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, width, 6), matGalvanized);
-      hBar.rotation.z = Math.PI * 0.5;
-      hBar.position.set(0, y, 0);
-      g.add(hBar);
+  // ============================================================================
+  // 3. TWO SHELL-ROCK FARM DRIVEWAYS, CULVERTS & MAILBOXES (x = -260 & x = 420)
+  // ============================================================================
+  function buildFarmDriveway(centerX, endZ, mailboxOffsetX, boxNumberText) {
+    const drvGroup = new THREE.Group();
+    drvGroup.name = `farm_driveway_x_${centerX}`;
+    drvGroup.userData.citation = citeInferred;
+
+    // Flared shell-rock driveway strip from WB shoulder (z = -38.05) to farmyard (endZ)
+    const rows = [];
+    rows.push([centerX - 6.5, centerX + 6.5, -38.05]);
+    rows.push([centerX - 4.2, centerX + 4.2, -40.5]);
+    rows.push([centerX - 2.6, centerX + 2.6, -43.5]);
+    rows.push([centerX - 2.4, centerX + 2.4, -46.5]);
+    for (let z = -50; z >= endZ; z -= 7) {
+      rows.push([centerX - 2.2, centerX + 2.2, z]);
     }
-    for (const sx of [-width * 0.5, 0, width * 0.5]) {
-      const vBar = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, height, 6), matGalvanized);
-      vBar.position.set(sx, height * 0.5, 0);
-      g.add(vBar);
+    if (rows[rows.length - 1][2] > endZ) {
+      rows.push([centerX - 2.2, centerX + 2.2, endZ]);
     }
-    // Diagonal brace
-    const diagLen = Math.hypot(width * 0.5, height - 0.25);
-    const diag = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, diagLen, 6), matGalvanized);
-    diag.rotation.z = Math.atan2(width * 0.5, height - 0.25);
-    diag.position.set(-width * 0.25, height * 0.5, 0);
-    g.add(diag);
-    return g;
-  }
+    drvGroup.add(buildConformingStrip(rows, matGravel, 0.022));
 
-  // Helper: Culvert assembly with concrete headwalls and corrugated pipe
-  function buildCulvert(centerX, centerZ, lengthX = 8.5, diameter = 0.75) {
-    const g = new THREE.Group();
-    const yBase = ctx.groundY(centerX, centerZ) - 0.05;
+    // Corrugated steel culvert pipe & concrete mitered headwalls at z = -44
+    const culvertZ = -44.0;
+    const ditchBottomY = ctx.groundY(centerX, culvertZ);
+    const pipeLen = 8.4;
+    const pipeRadius = 0.38;
 
-    // Outer pipe
-    const pipeGeo = new THREE.CylinderGeometry(diameter * 0.5, diameter * 0.5, lengthX, 14, 1, true);
-    const pipe = new THREE.Mesh(pipeGeo, matGalvanized);
-    pipe.rotation.z = Math.PI * 0.5;
-    pipe.position.set(centerX, yBase + diameter * 0.45, centerZ);
-    g.add(pipe);
+    const pipeGeo = new THREE.CylinderGeometry(pipeRadius, pipeRadius, pipeLen, 16, 1, true);
+    pipeGeo.rotateZ(Math.PI / 2);
+    const pipe = new THREE.Mesh(pipeGeo, matCorrugatedWall);
+    pipe.position.set(centerX, ditchBottomY + pipeRadius - 0.05, culvertZ);
+    drvGroup.add(pipe);
 
-    // Dark interior cap discs recessed slightly
-    const capGeo = new THREE.CircleGeometry(diameter * 0.47, 12);
-    const capMat = new THREE.MeshBasicMaterial({ color: 0x121314, side: THREE.DoubleSide });
+    // Dark interior occlusion discs at each end of the culvert
+    const capGeo = new THREE.CircleGeometry(pipeRadius * 0.96, 14);
+    capGeo.rotateY(Math.PI / 2);
+    const capW = new THREE.Mesh(capGeo, matDarkHole);
+    capW.position.set(centerX - pipeLen * 0.5 + 0.02, ditchBottomY + pipeRadius - 0.05, culvertZ);
+    drvGroup.add(capW);
+    const capE = new THREE.Mesh(capGeo, matDarkHole);
+    capE.position.set(centerX + pipeLen * 0.5 - 0.02, ditchBottomY + pipeRadius - 0.05, culvertZ);
+    capE.rotation.y = Math.PI;
+    drvGroup.add(capE);
+
+    // Sloped concrete mitered end headwalls on both ends of the pipe
+    const hwGeo = new THREE.BoxGeometry(0.45, 0.82, 1.45);
     for (const side of [-1, 1]) {
-      const cap = new THREE.Mesh(capGeo, capMat);
-      cap.rotation.y = Math.PI * 0.5;
-      cap.position.set(centerX + side * (lengthX * 0.5 - 0.15), yBase + diameter * 0.45, centerZ);
-      g.add(cap);
-
-      // Concrete mitered headwall
-      const hw = new THREE.Mesh(new THREE.BoxGeometry(0.28, diameter + 0.35, diameter * 2.1), matConcrete);
-      hw.position.set(centerX + side * (lengthX * 0.5 - 0.12), yBase + diameter * 0.5, centerZ);
-      g.add(hw);
-
-      // Object marker post at culvert end
-      const post = new THREE.Mesh(new THREE.BoxGeometry(0.06, 1.1, 0.02), matGalvanized);
-      post.position.set(centerX + side * (lengthX * 0.5 + 0.1), yBase + diameter + 0.4, centerZ + 0.8);
-      g.add(post);
-      const refl = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.22, 0.03), matRedReflector);
-      refl.position.set(centerX + side * (lengthX * 0.5 + 0.1), yBase + diameter + 0.82, centerZ + 0.8);
-      g.add(refl);
+      const hx = centerX + side * (pipeLen * 0.5);
+      const hw = new THREE.Mesh(hwGeo, matConcrete);
+      hw.position.set(hx, ditchBottomY + 0.32, culvertZ);
+      hw.rotation.z = side * 0.25;
+      drvGroup.add(hw);
     }
-    return g;
-  }
 
-  // Helper: Rural US Mailbox on wooden post
-  function buildMailbox(x, z, numberText) {
-    const g = new THREE.Group();
-    const y0 = ctx.groundY(x, z);
-    g.position.set(x, y0, z);
+    // Rural US Mailbox on wooden post near WB shoulder edge (z = -39.4)
+    const mbX = centerX + mailboxOffsetX;
+    const mbZ = -39.4;
+    const mbY = ctx.groundY(mbX, mbZ);
+    const mbGroup = new THREE.Group();
+    mbGroup.position.set(mbX, mbY, mbZ);
 
-    const post = new THREE.Mesh(new THREE.BoxGeometry(0.1, 1.15, 0.1), matWoodPost);
-    post.position.set(0, 0.575, 0);
-    g.add(post);
+    const post = new THREE.Mesh(new THREE.BoxGeometry(0.10, 1.12, 0.10), matWoodPost);
+    post.position.set(0, 0.56, 0);
+    mbGroup.add(post);
 
-    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.08, 0.45), matWoodPost);
-    arm.position.set(0, 1.02, 0.14);
-    g.add(arm);
+    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.10, 0.08, 0.52), matWoodPost);
+    arm.position.set(0, 1.05, 0.16);
+    mbGroup.add(arm);
 
-    const brace = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.32, 0.06), matWoodPost);
-    brace.rotation.x = -Math.PI * 0.25;
-    brace.position.set(0, 0.88, 0.12);
-    g.add(brace);
+    const brace = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.34, 0.08), matWoodPost);
+    brace.position.set(0, 0.90, 0.16);
+    brace.rotation.x = -Math.PI / 4;
+    mbGroup.add(brace);
 
-    // Box body (bottom box + half cylinder top)
-    const boxLower = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.14, 0.48), matGalvanized);
-    boxLower.position.set(0, 1.13, 0.18);
-    g.add(boxLower);
+    // Classic rounded-top rural mailbox body facing the highway (+Z)
+    const boxBase = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.14, 0.48), matWhiteMetal);
+    boxBase.position.set(0, 1.16, 0.22);
+    mbGroup.add(boxBase);
 
-    const boxUpper = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.48, 10, 1, false, 0, Math.PI), matGalvanized);
-    boxUpper.rotation.z = Math.PI * 0.5;
-    boxUpper.rotation.y = Math.PI * 0.5;
-    boxUpper.position.set(0, 1.20, 0.18);
-    g.add(boxUpper);
+    const boxTopGeo = new THREE.CylinderGeometry(0.11, 0.11, 0.48, 12, 1, false, 0, Math.PI);
+    boxTopGeo.rotateZ(Math.PI / 2);
+    boxTopGeo.rotateY(Math.PI / 2);
+    const boxTop = new THREE.Mesh(boxTopGeo, matWhiteMetal);
+    boxTop.position.set(0, 1.23, 0.22);
+    mbGroup.add(boxTop);
 
-    // Red flag
-    const flagStaff = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.22, 0.03), matRedReflector);
-    flagStaff.position.set(-0.12, 1.24, 0.32);
-    g.add(flagStaff);
-    const flagTip = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.07, 0.09), matRedReflector);
-    flagTip.position.set(-0.12, 1.32, 0.35);
-    g.add(flagTip);
+    // Red outgoing mail flag
+    const flagStem = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.20, 0.025), matRedFlag);
+    flagStem.position.set(0.12, 1.26, 0.34);
+    mbGroup.add(flagStem);
+    const flagTip = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.07, 0.09), matRedFlag);
+    flagTip.position.set(0.12, 1.34, 0.37);
+    mbGroup.add(flagTip);
 
-    // Number plate if canvas available
+    // Number plaque on side of mailbox
     const c = ctx.makeCanvas(128, 48);
-    if (c && numberText) {
-      const ctx2 = c.getContext('2d');
-      ctx2.fillStyle = '#1f2421';
-      ctx2.fillRect(0, 0, 128, 48);
-      ctx2.strokeStyle = '#ffffff';
-      ctx2.lineWidth = 4;
-      ctx2.strokeRect(2, 2, 124, 44);
-      ctx2.fillStyle = '#ffffff';
-      ctx2.font = 'bold 28px sans-serif';
-      ctx2.textAlign = 'center';
-      ctx2.textBaseline = 'middle';
-      ctx2.fillText(numberText, 64, 25);
+    if (c) {
+      const g = c.getContext('2d');
+      g.fillStyle = '#1d2228';
+      g.fillRect(0, 0, 128, 48);
+      g.strokeStyle = '#ffffff';
+      g.lineWidth = 3;
+      g.strokeRect(3, 3, 122, 42);
+      g.fillStyle = '#ffffff';
+      g.font = 'bold 26px sans-serif';
+      g.textAlign = 'center';
+      g.textBaseline = 'middle';
+      g.fillText(boxNumberText, 64, 25);
       const tex = new THREE.CanvasTexture(c);
       tex.colorSpace = THREE.SRGBColorSpace;
-      const plateMat = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.4 });
-      const plate = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.10, 0.26), plateMat);
-      plate.position.set(0, 0.92, 0.22);
-      g.add(plate);
+      const plaqueMat = new THREE.MeshBasicMaterial({ map: tex });
+      const plaque = new THREE.Mesh(new THREE.PlaneGeometry(0.28, 0.10), plaqueMat);
+      plaque.position.set(-0.115, 1.17, 0.22);
+      plaque.rotation.y = -Math.PI / 2;
+      mbGroup.add(plaque);
     }
 
-    return g;
+    drvGroup.add(mbGroup);
+    return drvGroup;
   }
 
-  // ==========================================================================
-  // 1. NORTH DITCH DETAILS (z = -44, x in [-1000, 800])
-  // ==========================================================================
-  const ditchGroup = new THREE.Group();
-  ditchGroup.name = 'north_ditch_details';
-  ditchGroup.userData.citation = 'inferred: rural Florida highway north drainage swale at z=-44 with mitered cross-drains and swale soil';
+  root.add(buildFarmDriveway(-260, -155, -3.8, '13840'));
+  root.add(buildFarmDriveway(420, -135, -3.8, '14420'));
 
-  // Subtle moist sandy swale bottom strips (broken around the two driveways at -260 and +420)
-  const swaleSegments = [
-    [-980, -266],
-    [-254, 414],
-    [426, 780]
-  ];
-  for (const [sx0, sx1] of swaleSegments) {
-    const segs = Math.max(10, Math.round((sx1 - sx0) / 8));
-    const swaleStrip = buildGroundStrip(sx0, -45.1, sx1, -42.9, segs, 2, 0.012, matDirt);
-    ditchGroup.add(swaleStrip);
-  }
+  // ============================================================================
+  // 4. FARMSTEAD #1 AT x ~ -250, z ~ -160
+  //    (House + Carport, Metal-Roofed Pole Barn, Water Tank on Stand, Hero Oaks/Palms)
+  // ============================================================================
+  {
+    const farm1 = new THREE.Group();
+    farm1.name = 'farmstead_west';
+    farm1.userData.citation = citeInferred;
 
-  // Periodic concrete ditch check-structures / cross-drain headwalls along the 1.8 km swale
-  const drainStations = [-820, -610, -410, -110, 140, 290, 620];
-  for (const dx of drainStations) {
-    if (!isSafe(dx, -44, false)) continue;
-    const yDitch = ctx.groundY(dx, -44);
-    const pad = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.14, 1.8), matConcrete);
-    pad.position.set(dx, yDitch + 0.04, -44);
-    ditchGroup.add(pad);
-    const grate = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.16, 0.9), matGalvanized);
-    grate.position.set(dx, yDitch + 0.05, -44);
-    ditchGroup.add(grate);
-  }
-  root.add(ditchGroup);
+    // Shell-rock turnaround yard pad connecting driveway at x = -260 to house & pole barn
+    const yardRows = [
+      [-266, -242, -132],
+      [-278, -236, -142],
+      [-282, -234, -155],
+      [-280, -236, -168],
+      [-274, -240, -176]
+    ];
+    farm1.add(buildConformingStrip(yardRows, matGravel, 0.02));
 
-  // ==========================================================================
-  // 2. NORTH RIGHT-OF-WAY FENCE AT z = -50 & PASTURE CROSS-FENCES
-  // ==========================================================================
-  const fenceGroup = new THREE.Group();
-  fenceGroup.name = 'north_row_and_pasture_fences';
-  fenceGroup.userData.citation = 'ctx.layout.rowFence.north (z=-50, x=[-1000,800]); inferred: 4-strand barbed wire on wood posts every 6m with steel T-posts between, plus pasture cross-fences';
-
-  // Collect all fence runs: [x0, z0, x1, z1]
-  const fenceRuns = [
-    // Main ROW fence at z = -50 with gate openings at driveways x = -260 (-264..-256) and x = 420 (416..424)
-    [-1000, -50, -264, -50],
-    [-256, -50, 416, -50],
-    [424, -50, 800, -50],
-    // Driveway #1 throat fences leading back to gate at z = -58
-    [-264, -50, -264, -58],
-    [-256, -50, -256, -58],
-    // Driveway #2 throat fences leading back to gate at z = -58
-    [416, -50, 416, -58],
-    [424, -50, 424, -58],
-    // Interior pasture cross-fences (N-S and E-W)
-    [-550, -50, -550, -240],
-    [-315, -50, -315, -240],
-    [-185, -50, -185, -240],
-    [80, -50, 80, -220],
-    [375, -50, 375, -220],
-    [495, -50, 495, -220],
-    // E-W paddock divider behind farmsteads
-    [-550, -240, -185, -240],
-    [375, -220, 495, -220],
-    // Cattle corral near barn at (-285, -185)
-    [-302, -162, -268, -162],
-    [-302, -196, -268, -196],
-    [-302, -162, -302, -196],
-    [-268, -162, -268, -196]
-  ];
-
-  // Pre-calculate post transforms and wire segment transforms for instancing
-  const woodPostMats = [];
-  const tPostMats = [];
-  const wireSegMats = [];
-  const strandHeights = [0.30, 0.58, 0.86, 1.14];
-
-  for (const [x0, z0, x1, z1] of fenceRuns) {
-    const dx = x1 - x0;
-    const dz = z1 - z0;
-    const len = Math.hypot(dx, dz);
-    const steps = Math.max(1, Math.round(len / 3.0));
-    const angle = Math.atan2(dx, dz);
-
-    let prevX = x0;
-    let prevZ = z0;
-    let prevY = ctx.groundY(x0, z0);
-
-    for (let i = 0; i <= steps; i++) {
-      const t = i / steps;
-      const px = x0 + dx * t;
-      const pz = z0 + dz * t;
-      const py = ctx.groundY(px, pz);
-
-      // Every even post (6 m) or end post is a wooden post; odd posts are steel T-posts
-      if (i === 0 || i === steps || i % 2 === 0) {
-        dummy.position.set(px, py + 0.675, pz);
-        dummy.rotation.set(0, (i * 1.7) % Math.PI, 0);
-        const isCorner = (i === 0 || i === steps) ? 1.25 : 1.0;
-        dummy.scale.set(isCorner, 1.0, isCorner);
-        dummy.updateMatrix();
-        woodPostMats.push(dummy.matrix.clone());
-      } else {
-        dummy.position.set(px, py + 0.65, pz);
-        dummy.rotation.set(0, angle, 0);
-        dummy.scale.set(1, 1, 1);
-        dummy.updateMatrix();
-        tPostMats.push(dummy.matrix.clone());
-      }
-
-      // Wire segments every 6 m (every 2 steps) or at the end
-      if (i > 0 && (i % 2 === 0 || i === steps)) {
-        const segDx = px - prevX;
-        const segDy = py - prevY;
-        const segDz = pz - prevZ;
-        const segLen = Math.hypot(segDx, segDy, segDz);
-        const midX = (px + prevX) * 0.5;
-        const midY = (py + prevY) * 0.5;
-        const midZ = (pz + prevZ) * 0.5;
-
-        const dir = new THREE.Vector3(segDx, segDy, segDz).normalize();
-        const quat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
-
-        for (let s = 0; s < strandHeights.length; s++) {
-          dummy.position.set(midX, midY + strandHeights[s], midZ);
-          dummy.quaternion.copy(quat);
-          dummy.scale.set(1, segLen, 1);
-          dummy.updateMatrix();
-          wireSegMats.push(dummy.matrix.clone());
+    // 4a. Single-story farmhouse at (-248, -160), facing south (+Z toward highway)
+    const hx = -248, hz = -160, hw = 16, hd = 11, hh = 3.8;
+    if (isClear(hx, hz, 9)) {
+      let maxH = -Infinity;
+      for (const dx of [-hw * 0.5, 0, hw * 0.5]) {
+        for (const dz of [-hd * 0.5, 0, hd * 0.5]) {
+          maxH = Math.max(maxH, ctx.groundY(hx + dx, hz + dz));
         }
-        prevX = px;
-        prevZ = pz;
-        prevY = py;
       }
-    }
-  }
+      // Foundation skirt
+      const skirt = new THREE.Mesh(new THREE.BoxGeometry(hw + 0.3, 1.2, hd + 0.3), matConcrete);
+      skirt.position.set(hx, maxH - 0.55, hz);
+      farm1.add(skirt);
 
-  // Build InstancedMeshes for posts and wires
-  const woodPostGeo = new THREE.CylinderGeometry(0.065, 0.075, 1.35, 7);
-  const instWoodPosts = new THREE.InstancedMesh(woodPostGeo, matWoodPost, woodPostMats.length);
-  for (let i = 0; i < woodPostMats.length; i++) instWoodPosts.setMatrixAt(i, woodPostMats[i]);
-  instWoodPosts.instanceMatrix.needsUpdate = true;
-  fenceGroup.add(instWoodPosts);
+      const house = assets.building({
+        id: 'farm1_house',
+        w: hw,
+        d: hd,
+        h: hh,
+        kind: 'house',
+        style: 'house'
+      });
+      // assets.building front faces local -Z; rotate PI so front faces +Z (south toward US-27A)
+      house.rotation.y = Math.PI;
+      house.position.set(hx, maxH, hz);
+      farm1.add(house);
 
-  const tPostGeo = new THREE.BoxGeometry(0.035, 1.30, 0.035);
-  const instTPosts = new THREE.InstancedMesh(tPostGeo, matSteelPost, tPostMats.length);
-  for (let i = 0; i < tPostMats.length; i++) instTPosts.setMatrixAt(i, tPostMats[i]);
-  instTPosts.instanceMatrix.needsUpdate = true;
-  fenceGroup.add(instTPosts);
+      // Front porch canopy & steps on south side (+Z)
+      const porchW = 7.5, porchD = 2.4;
+      const porchSlab = new THREE.Mesh(new THREE.BoxGeometry(porchW, 0.35, porchD), matConcrete);
+      porchSlab.position.set(hx, maxH - 0.1, hz + hd * 0.5 + porchD * 0.5);
+      farm1.add(porchSlab);
 
-  const wireGeo = new THREE.CylinderGeometry(0.0045, 0.0045, 1.0, 4);
-  const instWires = new THREE.InstancedMesh(wireGeo, matWire, wireSegMats.length);
-  for (let i = 0; i < wireSegMats.length; i++) instWires.setMatrixAt(i, wireSegMats[i]);
-  instWires.instanceMatrix.needsUpdate = true;
-  fenceGroup.add(instWires);
+      const porchRoof = new THREE.Mesh(new THREE.BoxGeometry(porchW + 0.4, 0.16, porchD + 0.3), matCorrugatedRoof);
+      porchRoof.position.set(hx, maxH + 2.75, hz + hd * 0.5 + porchD * 0.5);
+      porchRoof.rotation.x = 0.12;
+      farm1.add(porchRoof);
 
-  // Add tubular steel ranch gates at the two recessed driveway entrances (z = -58)
-  const gate1 = buildRanchGate(7.6, 1.25);
-  // Open gate1 swung inward alongside the west throat fence
-  gate1.position.set(-263.8, ctx.groundY(-263.8, -58), -61.8);
-  gate1.rotation.y = Math.PI * 0.48;
-  fenceGroup.add(gate1);
-
-  const gate2 = buildRanchGate(7.6, 1.25);
-  gate2.position.set(416.2, ctx.groundY(416.2, -58), -61.8);
-  gate2.rotation.y = Math.PI * 0.48;
-  fenceGroup.add(gate2);
-
-  root.add(fenceGroup);
-
-  // ==========================================================================
-  // 3. TWO SHELL-ROCK FARM DRIVEWAYS, CULVERTS & MAILBOXES (x = -260, x = 420)
-  // ==========================================================================
-  const drivewaysGroup = new THREE.Group();
-  drivewaysGroup.name = 'north_farm_driveways';
-  drivewaysGroup.userData.citation = 'inferred: two shell-rock farm driveways from WB shoulder north at x=-260 and x=420 with concrete/corrugated culverts and rural mailboxes';
-
-  // Driveway 1 (x = -260, leads to West Farmstead at x = -250, z = -160)
-  const apron1 = buildFlaredDriveway(-260, 4.4, 4.5, -38.1, -55, 8, 8, 0.018, matGravel);
-  drivewaysGroup.add(apron1);
-  const lane1 = buildGroundStrip(-262.2, -155, -257.8, -55, 2, 16, 0.018, matGravel);
-  drivewaysGroup.add(lane1);
-  const yardPad1 = buildGroundStrip(-292, -185, -236, -142, 8, 8, 0.016, matGravel);
-  drivewaysGroup.add(yardPad1);
-
-  const culvert1 = buildCulvert(-260, -44, 9.2, 0.75);
-  drivewaysGroup.add(culvert1);
-
-  const mailbox1 = buildMailbox(-265.2, -39.2, '13840');
-  mailbox1.rotation.y = 0; // faces +Z (toward highway shoulder)
-  drivewaysGroup.add(mailbox1);
-
-  // Driveway 2 (x = 420, leads to East Homestead at x = 430, z = -140)
-  const apron2 = buildFlaredDriveway(420, 4.2, 4.2, -38.1, -55, 8, 8, 0.018, matGravel);
-  drivewaysGroup.add(apron2);
-  const lane2 = buildGroundStrip(417.9, -135, 422.1, -55, 2, 14, 0.018, matGravel);
-  drivewaysGroup.add(lane2);
-  const yardPad2 = buildGroundStrip(414, -152, 452, -124, 6, 5, 0.016, matGravel);
-  drivewaysGroup.add(yardPad2);
-
-  const culvert2 = buildCulvert(420, -44, 8.8, 0.75);
-  drivewaysGroup.add(culvert2);
-
-  const mailbox2 = buildMailbox(415.0, -39.2, '14420');
-  mailbox2.rotation.y = 0;
-  drivewaysGroup.add(mailbox2);
-
-  root.add(drivewaysGroup);
-
-  // ==========================================================================
-  // 4. WEST FARMSTEAD (x ~ -250, z ~ -160)
-  // ==========================================================================
-  const westFarmGroup = new THREE.Group();
-  westFarmGroup.name = 'west_farmstead_x_neg250';
-  westFarmGroup.userData.citation = 'inferred: rural Florida farmstead at x=-250, z=-160 with ranch house, carport, corrugated pole barn, water tank on tower, live oaks, and cabbage palms';
-
-  // 4a. Single-story ranch house (front faces +Z toward US-27A -> rotation.y = Math.PI)
-  const house1Info = addBuildingWithSkirt(
-    westFarmGroup,
-    { id: 'north_farmhouse_west', kind: 'house', style: 'house', w: 18, d: 12, h: 4.2 },
-    -248,
-    -160,
-    Math.PI
-  );
-
-  // Attached open-sided metal carport on the west side of the house (x = -260.5, z = -160)
-  const cpGroup = new THREE.Group();
-  const cpY = house1Info.maxY;
-  cpGroup.position.set(-260.5, cpY, -160);
-  const cpSlab = new THREE.Mesh(new THREE.BoxGeometry(6.8, 0.25, 8.4), matConcrete);
-  cpSlab.position.set(0, -0.1, 0);
-  cpGroup.add(cpSlab);
-  for (const px of [-3.1, 3.1]) {
-    for (const pz of [-3.8, 0, 3.8]) {
-      const post = new THREE.Mesh(new THREE.BoxGeometry(0.12, 2.9, 0.12), matGalvanized);
-      post.position.set(px, 1.45, pz);
-      cpGroup.add(post);
-    }
-  }
-  const cpRoof = new THREE.Mesh(new THREE.BoxGeometry(7.2, 0.16, 9.0), matCorrugated);
-  cpRoof.position.set(0, 2.95, 0);
-  cpRoof.rotation.z = 0.05; // slight drainage slope
-  cpGroup.add(cpRoof);
-  westFarmGroup.add(cpGroup);
-
-  // 4b. Metal-roofed agricultural pole barn at x = -284, z = -175
-  const barnGroup = new THREE.Group();
-  const barnX = -284;
-  const barnZ = -175;
-  const barnW = 14.0;
-  const barnD = 20.0;
-  const barnEaveH = 4.6;
-  const barnPeakH = 6.4;
-  const barnY = Math.max(
-    ctx.groundY(barnX - 7, barnZ - 10),
-    ctx.groundY(barnX + 7, barnZ - 10),
-    ctx.groundY(barnX - 7, barnZ + 10),
-    ctx.groundY(barnX + 7, barnZ + 10)
-  );
-  barnGroup.position.set(barnX, barnY, barnZ);
-
-  // Foundation dirt/concrete pad
-  const barnPad = new THREE.Mesh(new THREE.BoxGeometry(barnW + 0.6, 0.4, barnD + 0.6), matConcrete);
-  barnPad.position.set(0, -0.18, 0);
-  barnGroup.add(barnPad);
-
-  // 12 heavy timber poles (2 rows of 6 along Z)
-  for (const px of [-barnW * 0.5 + 0.2, barnW * 0.5 - 0.2]) {
-    for (let iz = 0; iz < 6; iz++) {
-      const pz = -barnD * 0.5 + 0.3 + iz * ((barnD - 0.6) / 5);
-      const pole = new THREE.Mesh(new THREE.BoxGeometry(0.22, barnEaveH, 0.22), matWoodPost);
-      pole.position.set(px, barnEaveH * 0.5, pz);
-      barnGroup.add(pole);
-    }
-  }
-
-  // Partially enclosed upper walls & end gables (red/tan metal siding)
-  const sideWallL = new THREE.Mesh(new THREE.BoxGeometry(0.12, barnEaveH - 1.2, barnD - 0.4), matBarnRed);
-  sideWallL.position.set(-barnW * 0.5 + 0.2, 1.2 + (barnEaveH - 1.2) * 0.5, 0);
-  barnGroup.add(sideWallL);
-  const sideWallR = new THREE.Mesh(new THREE.BoxGeometry(0.12, barnEaveH - 1.2, barnD - 0.4), matBarnRed);
-  sideWallR.position.set(barnW * 0.5 - 0.2, 1.2 + (barnEaveH - 1.2) * 0.5, 0);
-  barnGroup.add(sideWallR);
-  const backWall = new THREE.Mesh(new THREE.BoxGeometry(barnW - 0.4, barnEaveH, 0.12), matBarnWall);
-  backWall.position.set(0, barnEaveH * 0.5, -barnD * 0.5 + 0.2);
-  barnGroup.add(backWall);
-
-  // Gable roof pitches (2 sloped corrugated panels + ridge cap)
-  const slopeSpan = Math.hypot(barnW * 0.5 + 0.6, barnPeakH - barnEaveH);
-  const slopeAngle = Math.atan2(barnPeakH - barnEaveH, barnW * 0.5);
-  for (const side of [-1, 1]) {
-    const roofPitch = new THREE.Mesh(new THREE.BoxGeometry(slopeSpan, 0.12, barnD + 1.0), matCorrugated);
-    roofPitch.position.set(side * (barnW * 0.25 + 0.15), (barnEaveH + barnPeakH) * 0.5, 0);
-    roofPitch.rotation.z = -side * slopeAngle;
-    barnGroup.add(roofPitch);
-  }
-  const ridgeCap = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.16, barnD + 1.05), matGalvanized);
-  ridgeCap.position.set(0, barnPeakH + 0.04, 0);
-  barnGroup.add(ridgeCap);
-
-  // Stacked round hay bales inside the pole barn
-  for (let bx = -4.2; bx <= -1.8; bx += 2.2) {
-    for (let bz = -6.5; bz <= 2.5; bz += 2.2) {
-      const bale = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 1.5, 12), matHay);
-      bale.rotation.z = Math.PI * 0.5;
-      bale.position.set(bx, 0.85, bz);
-      barnGroup.add(bale);
-    }
-  }
-  westFarmGroup.add(barnGroup);
-
-  // 4c. Elevated cylindrical water tank on steel truss stand at x = -234, z = -174
-  const tankGroup = new THREE.Group();
-  const tx = -234;
-  const tz = -174;
-  const ty = ctx.groundY(tx, tz);
-  tankGroup.position.set(tx, ty, tz);
-
-  const tankPad = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.3, 3.6), matConcrete);
-  tankPad.position.set(0, 0.05, 0);
-  tankGroup.add(tankPad);
-
-  const standH = 5.2;
-  for (const lx of [-1.2, 1.2]) {
-    for (const lz of [-1.2, 1.2]) {
-      const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.10, standH, 8), matGalvanized);
-      leg.position.set(lx, standH * 0.5, lz);
-      tankGroup.add(leg);
-    }
-  }
-  // Horizontal brace rings on the tower
-  for (const by of [1.8, 3.5, 5.1]) {
-    const ring1 = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.08, 0.08), matGalvanized);
-    ring1.position.set(0, by, -1.2);
-    tankGroup.add(ring1);
-    const ring2 = ring1.clone();
-    ring2.position.set(0, by, 1.2);
-    tankGroup.add(ring2);
-    const ring3 = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.08, 2.5), matGalvanized);
-    ring3.position.set(-1.2, by, 0);
-    tankGroup.add(ring3);
-    const ring4 = ring3.clone();
-    ring4.position.set(1.2, by, 0);
-    tankGroup.add(ring4);
-  }
-  // Platform deck, cylindrical tank, and conical roof
-  const deck = new THREE.Mesh(new THREE.CylinderGeometry(1.9, 1.9, 0.18, 14), matWoodPost);
-  deck.position.set(0, standH + 0.09, 0);
-  tankGroup.add(deck);
-  const tankBody = new THREE.Mesh(new THREE.CylinderGeometry(1.55, 1.55, 3.2, 16), matCorrugated);
-  tankBody.position.set(0, standH + 0.18 + 1.6, 0);
-  tankGroup.add(tankBody);
-  const tankRoof = new THREE.Mesh(new THREE.ConeGeometry(1.7, 0.85, 16), matGalvanized);
-  tankRoof.position.set(0, standH + 0.18 + 3.2 + 0.425, 0);
-  tankGroup.add(tankRoof);
-  const riserPipe = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, standH, 8), matSteelPost);
-  riserPipe.position.set(0, standH * 0.5, 0);
-  tankGroup.add(riserPipe);
-  westFarmGroup.add(tankGroup);
-
-  // 4d. Hero Live Oaks (max 4 at West Farmstead) and Cabbage Palms (5 palms)
-  const westOaks = [
-    { id: 'west_oak_1', x: -234, z: -152, h: 13.5 },
-    { id: 'west_oak_2', x: -269, z: -148, h: 12.8 },
-    { id: 'west_oak_3', x: -242, z: -182, h: 14.2 },
-    { id: 'west_oak_4', x: -298, z: -162, h: 12.0 }
-  ];
-  for (const o of westOaks) {
-    if (isSafe(o.x, o.z)) {
-      const tree = assets.tree({ id: o.id, kind: 'oak', height: o.h });
-      tree.position.set(o.x, ctx.groundY(o.x, o.z), o.z);
-      westFarmGroup.add(tree);
-    }
-  }
-
-  const westPalms = [
-    { id: 'west_palm_1', x: -255, z: -64, h: 8.5 },
-    { id: 'west_palm_2', x: -265, z: -72, h: 9.2 },
-    { id: 'west_palm_3', x: -239, z: -145, h: 8.8 },
-    { id: 'west_palm_4', x: -256, z: -146, h: 7.9 },
-    { id: 'west_palm_5', x: -274, z: -186, h: 9.5 }
-  ];
-  for (const p of westPalms) {
-    if (isSafe(p.x, p.z)) {
-      const palm = assets.tree({ id: p.id, kind: 'palm', height: p.h });
-      palm.position.set(p.x, ctx.groundY(p.x, p.z), p.z);
-      westFarmGroup.add(palm);
-    }
-  }
-
-  root.add(westFarmGroup);
-
-  // ==========================================================================
-  // 5. EAST HOMESTEAD (x ~ 430, z ~ -140)
-  // ==========================================================================
-  const eastHomeGroup = new THREE.Group();
-  eastHomeGroup.name = 'east_homestead_x_430';
-  eastHomeGroup.userData.citation = 'inferred: rural Florida homestead at x=430, z=-140 with single-family house, storage shed, 2 live oaks, and cabbage palms';
-
-  // 5a. House facing south toward highway (+Z -> rotation.y = Math.PI)
-  addBuildingWithSkirt(
-    eastHomeGroup,
-    { id: 'north_homestead_east', kind: 'house', style: 'house', w: 16, d: 11, h: 4.0 },
-    430,
-    -140,
-    Math.PI
-  );
-
-  // 5b. Outbuilding / workshop shed at x = 448, z = -148
-  addBuildingWithSkirt(
-    eastHomeGroup,
-    { id: 'north_shed_east', kind: 'generic', style: 'barn', w: 8, d: 6, h: 3.4 },
-    448,
-    -148,
-    Math.PI * 0.5
-  );
-
-  // Well pump house next to shed
-  const pumpX = 444;
-  const pumpZ = -138;
-  const pumpY = ctx.groundY(pumpX, pumpZ);
-  const pumpHouse = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.5, 1.8), matBarnWall);
-  pumpHouse.position.set(pumpX, pumpY + 0.75, pumpZ);
-  eastHomeGroup.add(pumpHouse);
-  const pumpRoof = new THREE.Mesh(new THREE.ConeGeometry(1.5, 0.5, 4), matCorrugated);
-  pumpRoof.rotation.y = Math.PI * 0.25;
-  pumpRoof.position.set(pumpX, pumpY + 1.75, pumpZ);
-  eastHomeGroup.add(pumpRoof);
-
-  // 5c. 2 Hero Live Oaks + 3 Cabbage Palms at East Homestead (staying strictly <= 8 total hero oaks/pines)
-  const eastOaks = [
-    { id: 'east_oak_1', x: 416, z: -132, h: 13.0 },
-    { id: 'east_oak_2', x: 444, z: -128, h: 13.8 }
-  ];
-  for (const o of eastOaks) {
-    if (isSafe(o.x, o.z)) {
-      const tree = assets.tree({ id: o.id, kind: 'oak', height: o.h });
-      tree.position.set(o.x, ctx.groundY(o.x, o.z), o.z);
-      eastHomeGroup.add(tree);
-    }
-  }
-
-  const eastPalms = [
-    { id: 'east_palm_1', x: 425, z: -66, h: 8.6 },
-    { id: 'east_palm_2', x: 424, z: -126, h: 9.0 },
-    { id: 'east_palm_3', x: 438, z: -152, h: 8.2 }
-  ];
-  for (const p of eastPalms) {
-    if (isSafe(p.x, p.z)) {
-      const palm = assets.tree({ id: p.id, kind: 'palm', height: p.h });
-      palm.position.set(p.x, ctx.groundY(p.x, p.z), p.z);
-      eastHomeGroup.add(palm);
-    }
-  }
-
-  root.add(eastHomeGroup);
-
-  // ==========================================================================
-  // 6. PASTURE DETAILS: HAY BALES, CATTLE TROUGHS & FEEDERS
-  // ==========================================================================
-  const pastureGroup = new THREE.Group();
-  pastureGroup.name = 'pasture_bales_and_troughs';
-  pastureGroup.userData.citation = 'inferred: rural Florida Bahia grass cattle pasture with round hay bales, galvanized stock water troughs, and hay ring feeders';
-
-  // Galvanized oval stock troughs with water surface and dirt wear apron
-  const troughCoords = [
-    [-420, -95],
-    [-205, -88],
-    [-95, -92],
-    [195, -85],
-    [350, -98]
-  ];
-  for (const [tx, tz] of troughCoords) {
-    if (!isSafe(tx, tz)) continue;
-    const ty = ctx.groundY(tx, tz);
-    const tg = new THREE.Group();
-    tg.position.set(tx, ty, tz);
-
-    // Worn sandy patch around trough
-    const wear = buildGroundStrip(tx - 3.5, tz - 3.5, tx + 3.5, tz + 3.5, 2, 2, 0.012, matPastureWear);
-    pastureGroup.add(wear);
-
-    const wall = new THREE.Mesh(new THREE.CylinderGeometry(1.15, 1.1, 0.68, 16), matGalvanized);
-    wall.scale.set(1.45, 1.0, 0.9);
-    wall.position.set(0, 0.34, 0);
-    tg.add(wall);
-
-    const water = new THREE.Mesh(new THREE.CircleGeometry(1.1, 16), matWater);
-    water.rotation.x = -Math.PI * 0.5;
-    water.scale.set(1.42, 0.87, 1.0);
-    water.position.set(0, 0.64, 0);
-    tg.add(water);
-
-    pastureGroup.add(tg);
-  }
-
-  // Instanced round hay bales scattered across open pastures (z in [-210, -70])
-  const baleCoords = [
-    [-720, -110], [-695, -135], [-660, -95], [-610, -145],
-    [-490, -88], [-465, -115], [-435, -142], [-385, -92], [-355, -128],
-    [-225, -112], [-210, -138], [-155, -86], [-125, -115], [-75, -132],
-    [45, -96], [115, -84], [148, -118], [182, -140], [235, -92],
-    [275, -125], [320, -88], [345, -135], [535, -95], [575, -125],
-    [620, -88], [665, -135], [710, -105]
-  ];
-  const baleGeo = new THREE.CylinderGeometry(0.88, 0.88, 1.55, 14);
-  baleGeo.rotateZ(Math.PI * 0.5); // lie flat on side
-  const instBales = new THREE.InstancedMesh(baleGeo, matHay, baleCoords.length);
-  const wrapGeo = new THREE.CylinderGeometry(0.89, 0.89, 1.25, 14, 1, true);
-  wrapGeo.rotateZ(Math.PI * 0.5);
-  const instBaleWraps = new THREE.InstancedMesh(wrapGeo, matHayWrap, baleCoords.length);
-
-  let bCount = 0;
-  for (let i = 0; i < baleCoords.length; i++) {
-    const [bx, bz] = baleCoords[i];
-    if (!isSafe(bx, bz)) continue;
-    const by = ctx.groundY(bx, bz);
-    const yaw = rand() * Math.PI;
-    dummy.position.set(bx, by + 0.84, bz);
-    dummy.rotation.set(0, yaw, 0);
-    dummy.scale.set(1, 1, 1);
-    dummy.updateMatrix();
-    instBales.setMatrixAt(bCount, dummy.matrix);
-    instBaleWraps.setMatrixAt(bCount, dummy.matrix);
-    bCount++;
-  }
-  instBales.count = bCount;
-  instBaleWraps.count = bCount;
-  instBales.instanceMatrix.needsUpdate = true;
-  instBaleWraps.instanceMatrix.needsUpdate = true;
-  pastureGroup.add(instBales);
-  pastureGroup.add(instBaleWraps);
-
-  root.add(pastureGroup);
-
-  // ==========================================================================
-  // 7. MASSED VEGETATION: SAW PALMETTO CLUMPS & PINE/OAK PLANTATIONS (z < -120)
-  // ==========================================================================
-  const vegGroup = new THREE.Group();
-  vegGroup.name = 'north_treeline_and_palmettos';
-  vegGroup.userData.citation = 'scene_spec.json veg_distant_treeline; NTSB/HAR-17/02 p.29-30 (no obstructions on approach); inferred: slash pine plantation, oak hammocks beyond z<-120, and saw palmetto clumps along z<-50 fence';
-
-  // 7a. Saw Palmetto clumps (instanced fan-blade clusters along fence line z in [-58, -48.5] & tree line edge)
-  const palmettoFrondGeo = new THREE.ConeGeometry(0.55, 1.15, 5, 1, true);
-  palmettoFrondGeo.scale(1.0, 1.0, 0.18);
-  palmettoFrondGeo.translate(0, 0.55, 0);
-
-  const palmettoTransforms = [];
-  for (let x = -960; x <= 760; x += 9.5) {
-    // Skip driveways and Witness C clear zone
-    if (Math.abs(x - (-260)) < 9 || Math.abs(x - 420) < 9) continue;
-    if (x > -35 && x < 0) continue;
-
-    if (rand() < 0.65) {
-      const cx = x + (rand() - 0.5) * 4.0;
-      const cz = -49.2 - rand() * 5.5; // strictly north of z = -48
-      if (!isSafe(cx, cz)) continue;
-      const cy = ctx.groundY(cx, cz);
-      const frondsInClump = 4;
-      for (let f = 0; f < frondsInClump; f++) {
-        const a = (f / frondsInClump) * Math.PI * 2 + rand() * 0.5;
-        dummy.position.set(cx + Math.cos(a) * 0.2, cy - 0.05, cz + Math.sin(a) * 0.2);
-        dummy.rotation.set(0.35 + rand() * 0.35, a, 0);
-        const s = 0.75 + rand() * 0.45;
-        dummy.scale.set(s, s, s);
-        dummy.updateMatrix();
-        palmettoTransforms.push(dummy.matrix.clone());
-      }
-    }
-  }
-
-  const instPalmetto = new THREE.InstancedMesh(palmettoFrondGeo, matPalmetto, palmettoTransforms.length);
-  for (let i = 0; i < palmettoTransforms.length; i++) instPalmetto.setMatrixAt(i, palmettoTransforms[i]);
-  instPalmetto.instanceMatrix.needsUpdate = true;
-  vegGroup.add(instPalmetto);
-
-  // 7b. Low-poly Instanced Slash Pines (<= 56 tris each: 6-sided trunk + 3 stacked 7-sided cones)
-  const pineTrunkGeo = new THREE.CylinderGeometry(0.11, 0.22, 9.5, 6);
-  pineTrunkGeo.translate(0, 4.75, 0);
-
-  const pineCrown1Geo = new THREE.ConeGeometry(2.6, 4.2, 7);
-  pineCrown1Geo.translate(0, 8.2, 0);
-
-  const pineCrown2Geo = new THREE.ConeGeometry(2.1, 3.8, 7);
-  pineCrown2Geo.translate(0, 10.6, 0);
-
-  const pineCrown3Geo = new THREE.ConeGeometry(1.4, 3.0, 7);
-  pineCrown3Geo.translate(0, 12.6, 0);
-
-  // 7c. Low-poly Instanced Live Oaks for distant hammocks (<= 64 tris each: trunk + 2 flattened icosahedra)
-  const oakTrunkGeo = new THREE.CylinderGeometry(0.22, 0.38, 4.2, 6);
-  oakTrunkGeo.translate(0, 2.1, 0);
-
-  const oakCrownGeo = new THREE.IcosahedronGeometry(3.8, 1);
-  oakCrownGeo.scale(1.35, 0.72, 1.25);
-  oakCrownGeo.translate(0, 5.4, 0);
-
-  const pineMats = [];
-  const oakMats = [];
-
-  // Populate pine plantation blocks & oak hammocks for z in [-490, -120], x in [-980, 780]
-  // Also place a lighter scattered hammock band around z in [-120, -68] well clear of farmsteads
-  for (let z = -485; z <= -70; z += 16) {
-    for (let x = -975; x <= 775; x += 18) {
-      const jx = x + (rand() - 0.5) * 12;
-      const jz = z + (rand() - 0.5) * 11;
-
-      // Keep clear of West Farmstead (-310..-220, -200..-50) and East Homestead (400..465, -170..-50)
-      if (jx > -312 && jx < -220 && jz > -205) continue;
-      if (jx > 402 && jx < 465 && jz > -175) continue;
-
-      // For z > -125, only place occasional distant treeline clusters per scene_spec (-65..-120)
-      if (jz > -125) {
-        if (jz > -68) continue;
-        // Sparse windbreak / hammock clusters along z = -72..-120
-        const inWindbreak =
-          (jx > -880 && jx < -560) ||
-          (jx > -170 && jx < 65) ||
-          (jx > 505 && jx < 750);
-        if (!inWindbreak || rand() > 0.28) continue;
-      } else {
-        // Dense pine plantation blocks north of z = -125 with natural pasture clearings
-        const clearingNoise = Math.sin(jx * 0.011) * Math.cos(jz * 0.015);
-        if (clearingNoise > 0.42 && jz > -280) continue;
-        if (rand() > 0.62) continue;
+      const pColGeo = new THREE.BoxGeometry(0.12, 2.75, 0.12);
+      for (const px of [-porchW * 0.46, -porchW * 0.15, porchW * 0.15, porchW * 0.46]) {
+        const col = new THREE.Mesh(pColGeo, matTrimWhite);
+        col.position.set(hx + px, maxH + 1.35, hz + hd * 0.5 + porchD - 0.15);
+        farm1.add(col);
       }
 
-      if (!isSafe(jx, jz)) continue;
-      if (pineMats.length + oakMats.length >= 1150) break;
+      // Attached open-sided metal carport on the west side of the house (x = -259.5, z = -159)
+      const cpX = hx - hw * 0.5 - 3.5;
+      const cpZ = hz + 0.5;
+      const cpW = 6.2, cpD = 7.6, cpH = 2.85;
+      const cpSlab = new THREE.Mesh(new THREE.BoxGeometry(cpW, 0.25, cpD), matConcrete);
+      cpSlab.position.set(cpX, maxH - 0.08, cpZ);
+      farm1.add(cpSlab);
 
-      const gy = ctx.groundY(jx, jz);
-      const scaleH = 0.82 + rand() * 0.48;
-      const scaleW = 0.85 + rand() * 0.38;
-      dummy.position.set(jx, gy - 0.15, jz);
+      const cpPostGeo = new THREE.CylinderGeometry(0.055, 0.055, cpH, 8);
+      for (const px of [-cpW * 0.45, cpW * 0.45]) {
+        for (const pz of [-cpD * 0.44, 0, cpD * 0.44]) {
+          const p = new THREE.Mesh(cpPostGeo, matGalv);
+          p.position.set(cpX + px, maxH + cpH * 0.5, cpZ + pz);
+          farm1.add(p);
+        }
+      }
+      // Shallow gable metal carport roof
+      const cpRoofHalf = new THREE.BoxGeometry(cpW * 0.56, 0.08, cpD + 0.5);
+      const cpRoofL = new THREE.Mesh(cpRoofHalf, matCorrugatedRoof);
+      cpRoofL.position.set(cpX - cpW * 0.25, maxH + cpH + 0.18, cpZ);
+      cpRoofL.rotation.z = 0.14;
+      farm1.add(cpRoofL);
+      const cpRoofR = new THREE.Mesh(cpRoofHalf, matCorrugatedRoof);
+      cpRoofR.position.set(cpX + cpW * 0.25, maxH + cpH + 0.18, cpZ);
+      cpRoofR.rotation.z = -0.14;
+      farm1.add(cpRoofR);
+    }
+
+    // 4b. Custom Metal-Roofed Pole Barn at (-274, -172)
+    const bx = -274, bz = -172, bw = 14.0, bd = 18.0, bh = 4.6;
+    if (isClear(bx, bz, 10)) {
+      const barnGroup = new THREE.Group();
+      let bMaxY = -Infinity;
+      for (const dx of [-bw * 0.5, bw * 0.5]) {
+        for (const dz of [-bd * 0.5, bd * 0.5]) {
+          bMaxY = Math.max(bMaxY, ctx.groundY(bx + dx, bz + dz));
+        }
+      }
+      barnGroup.position.set(bx, bMaxY, bz);
+
+      // Earthen/concrete floor pad
+      const pad = new THREE.Mesh(new THREE.BoxGeometry(bw + 0.4, 0.5, bd + 0.4), matConcrete);
+      pad.position.set(0, -0.22, 0);
+      barnGroup.add(pad);
+
+      // Heavy pressure-treated timber poles along perimeter (4 bays along Z)
+      const poleGeo = new THREE.BoxGeometry(0.18, bh, 0.18);
+      for (const px of [-bw * 0.5, bw * 0.5]) {
+        for (let i = 0; i <= 4; i++) {
+          const pz = -bd * 0.5 + (i / 4) * bd;
+          const pole = new THREE.Mesh(poleGeo, matWoodPost);
+          pole.position.set(px, bh * 0.5, pz);
+          pole.castShadow = true;
+          barnGroup.add(pole);
+        }
+      }
+
+      // Enclosed upper rear & side corrugated walls (leaving front two bays open as equipment shed)
+      const sideWallRear = new THREE.Mesh(new THREE.BoxGeometry(0.12, bh - 0.1, bd * 0.5), matBarnRedMetal);
+      for (const side of [-1, 1]) {
+        const sw = sideWallRear.clone();
+        sw.position.set(side * (bw * 0.5 - 0.04), bh * 0.5, -bd * 0.25);
+        barnGroup.add(sw);
+      }
+      const backWall = new THREE.Mesh(new THREE.BoxGeometry(bw, bh - 0.1, 0.12), matBarnRedMetal);
+      backWall.position.set(0, bh * 0.5, -bd * 0.5);
+      barnGroup.add(backWall);
+
+      const midPartition = new THREE.Mesh(new THREE.BoxGeometry(bw, bh - 0.1, 0.12), matBarnRedMetal);
+      midPartition.position.set(0, bh * 0.5, 0);
+      barnGroup.add(midPartition);
+
+      // Large sliding barn door on the partition wall
+      const door = new THREE.Mesh(new THREE.BoxGeometry(4.2, 3.6, 0.18), matTrimWhite);
+      door.position.set(0, 1.8, 0.08);
+      barnGroup.add(door);
+
+      // Timber roof trusses at each bay
+      const tieGeo = new THREE.BoxGeometry(bw + 0.4, 0.18, 0.12);
+      const ridgeH = 2.1;
+      for (let i = 0; i <= 4; i++) {
+        const tz = -bd * 0.5 + (i / 4) * bd;
+        const tie = new THREE.Mesh(tieGeo, matWoodPost);
+        tie.position.set(0, bh - 0.05, tz);
+        barnGroup.add(tie);
+      }
+
+      // Gable ends (triangular fill at front, middle, and rear)
+      const gableShape = new THREE.Shape();
+      gableShape.moveTo(-bw * 0.5, 0);
+      gableShape.lineTo(bw * 0.5, 0);
+      gableShape.lineTo(0, ridgeH);
+      gableShape.closePath();
+      const gableGeo = new THREE.ShapeGeometry(gableShape);
+      for (const gz of [-bd * 0.5, 0, bd * 0.5]) {
+        const gm = new THREE.Mesh(gableGeo, matBarnRedMetal);
+        gm.position.set(0, bh, gz);
+        if (gz < 0) gm.rotation.y = Math.PI;
+        barnGroup.add(gm);
+      }
+
+      // Corrugated metal gable roof panels with standing seams / purlin ridges
+      const slopeLen = Math.hypot(bw * 0.5 + 0.6, ridgeH);
+      const slopeAngle = Math.atan2(ridgeH, bw * 0.5);
+      const roofPanelGeo = new THREE.BoxGeometry(slopeLen, 0.09, bd + 1.0);
+
+      const roofWest = new THREE.Mesh(roofPanelGeo, matCorrugatedRoof);
+      roofWest.position.set(-(bw * 0.25 + 0.15), bh + ridgeH * 0.5 - 0.06, 0);
+      roofWest.rotation.z = slopeAngle;
+      roofWest.castShadow = true;
+      barnGroup.add(roofWest);
+
+      const roofEast = new THREE.Mesh(roofPanelGeo, matCorrugatedRoof);
+      roofEast.position.set(bw * 0.25 + 0.15, bh + ridgeH * 0.5 - 0.06, 0);
+      roofEast.rotation.z = -slopeAngle;
+      roofEast.castShadow = true;
+      barnGroup.add(roofEast);
+
+      // Raised standing-seam ribs on the pole barn roof for crisp geometric detail
+      const ribGeo = new THREE.BoxGeometry(slopeLen, 0.05, 0.06);
+      for (let rz = -bd * 0.5; rz <= bd * 0.5; rz += 1.5) {
+        const rW = new THREE.Mesh(ribGeo, matGalv);
+        rW.position.set(-(bw * 0.25 + 0.15), bh + ridgeH * 0.5 + 0.01, rz);
+        rW.rotation.z = slopeAngle;
+        barnGroup.add(rW);
+
+        const rE = new THREE.Mesh(ribGeo, matGalv);
+        rE.position.set(bw * 0.25 + 0.15, bh + ridgeH * 0.5 + 0.01, rz);
+        rE.rotation.z = -slopeAngle;
+        barnGroup.add(rE);
+      }
+
+      // Ridge cap
+      const ridgeCap = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.12, bd + 1.05), matGalv);
+      ridgeCap.position.set(0, bh + ridgeH + 0.02, 0);
+      barnGroup.add(ridgeCap);
+
+      // Hay bales stacked inside the open front bays of the pole barn
+      const baleGeo = new THREE.CylinderGeometry(0.75, 0.75, 1.4, 12);
+      baleGeo.rotateZ(Math.PI / 2);
+      for (const [hx2, hy2, hz2] of [[-4.2, 0.75, 3.2], [-4.2, 0.75, 5.0], [-4.2, 2.15, 4.1], [4.2, 0.75, 3.5]]) {
+        const b = new THREE.Mesh(baleGeo, matHay);
+        b.position.set(hx2, hy2, hz2);
+        barnGroup.add(b);
+      }
+
+      farm1.add(barnGroup);
+    }
+
+    // 4c. Elevated Farm Water Tank on Steel Stand at (-232, -168)
+    const tx = -232, tz = -168;
+    if (isClear(tx, tz, 3)) {
+      const ty = ctx.groundY(tx, tz);
+      const tankGroup = new THREE.Group();
+      tankGroup.position.set(tx, ty, tz);
+
+      // Concrete footing pad
+      const pad = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.3, 3.4), matConcrete);
+      pad.position.set(0, 0.15, 0);
+      tankGroup.add(pad);
+
+      // 4 steel tower legs (5.2 m tall, slightly battered)
+      const legH = 5.2;
+      const legGeo = new THREE.CylinderGeometry(0.06, 0.075, legH, 8);
+      const legOffsets = [[-1.15, -1.15], [1.15, -1.15], [-1.15, 1.15], [1.15, 1.15]];
+      for (const [lx, lz] of legOffsets) {
+        const leg = new THREE.Mesh(legGeo, matSteelPost);
+        leg.position.set(lx * 0.88, 0.25 + legH * 0.5, lz * 0.88);
+        leg.rotation.z = lx * 0.04;
+        leg.rotation.x = -lz * 0.04;
+        tankGroup.add(leg);
+      }
+
+      // Horizontal & X-brace struts at two tiers
+      const strutGeo = new THREE.BoxGeometry(2.1, 0.06, 0.06);
+      for (const sy of [2.0, 3.8]) {
+        for (const sz of [-0.95, 0.95]) {
+          const s1 = new THREE.Mesh(strutGeo, matSteelPost);
+          s1.position.set(0, sy, sz);
+          tankGroup.add(s1);
+        }
+        for (const sx of [-0.95, 0.95]) {
+          const s2 = new THREE.Mesh(strutGeo, matSteelPost);
+          s2.position.set(sx, sy, 0);
+          s2.rotation.y = Math.PI / 2;
+          tankGroup.add(s2);
+        }
+      }
+
+      // Upper deck platform
+      const deck = new THREE.Mesh(new THREE.CylinderGeometry(1.75, 1.75, 0.16, 16), matSteelPost);
+      deck.position.set(0, 5.45, 0);
+      tankGroup.add(deck);
+
+      // Cylindrical galvanized water tank + conical top cap
+      const tankBody = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, 3.2, 18), matCorrugatedWall);
+      tankBody.position.set(0, 7.1, 0);
+      tankBody.castShadow = true;
+      tankGroup.add(tankBody);
+
+      const tankRoof = new THREE.Mesh(new THREE.ConeGeometry(1.62, 0.75, 18), matGalv);
+      tankRoof.position.set(0, 9.07, 0);
+      tankGroup.add(tankRoof);
+
+      // Standpipe & ladder
+      const pipe = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 5.4, 8), matGalv);
+      pipe.position.set(0, 2.8, 0);
+      tankGroup.add(pipe);
+
+      const ladderRailGeo = new THREE.BoxGeometry(0.03, 7.8, 0.03);
+      for (const lx of [-0.22, 0.22]) {
+        const rail = new THREE.Mesh(ladderRailGeo, matGalv);
+        rail.position.set(lx, 4.1, 1.38);
+        tankGroup.add(rail);
+      }
+
+      farm1.add(tankGroup);
+    }
+
+    // 4d. Hero Live Oaks (max 4 at Farmstead 1) & Cabbage Palms
+    const farm1Oaks = [
+      { id: 'f1_oak_1', x: -233, z: -152, h: 12.5 },
+      { id: 'f1_oak_2', x: -264, z: -150, h: 11.8 },
+      { id: 'f1_oak_3', x: -242, z: -176, h: 13.2 },
+      { id: 'f1_oak_4', x: -286, z: -162, h: 11.5 }
+    ];
+    for (const o of farm1Oaks) {
+      if (isClear(o.x, o.z, 3)) {
+        const tree = assets.tree({ id: o.id, kind: 'oak', height: o.h });
+        tree.position.set(o.x, ctx.groundY(o.x, o.z), o.z);
+        farm1.add(tree);
+      }
+    }
+
+    const farm1Palms = [
+      { id: 'f1_palm_1', x: -255, z: -144, h: 8.5 },
+      { id: 'f1_palm_2', x: -253, z: -146, h: 7.4 },
+      { id: 'f1_palm_3', x: -239, z: -156, h: 9.0 },
+      { id: 'f1_palm_4', x: -266, z: -92, h: 8.2 },
+      { id: 'f1_palm_5', x: -254, z: -115, h: 8.8 }
+    ];
+    for (const p of farm1Palms) {
+      if (isClear(p.x, p.z, 2)) {
+        const palm = assets.tree({ id: p.id, kind: 'palm', height: p.h });
+        palm.position.set(p.x, ctx.groundY(p.x, p.z), p.z);
+        farm1.add(palm);
+      }
+    }
+
+    root.add(farm1);
+  }
+
+  // ============================================================================
+  // 5. HOMESTEAD #2 AT x ~ 430, z ~ -140 (House, Shed, 2 Hero Oaks, Palms)
+  // ============================================================================
+  {
+    const farm2 = new THREE.Group();
+    farm2.name = 'homestead_east';
+    farm2.userData.citation = citeInferred;
+
+    // Shell-rock driveway turnaround apron at homestead 2
+    const yard2Rows = [
+      [416, 438, -118],
+      [414, 452, -128],
+      [416, 456, -142],
+      [420, 450, -152]
+    ];
+    farm2.add(buildConformingStrip(yard2Rows, matGravel, 0.02));
+
+    // 5a. Ranch House at (432, -140), facing south (+Z)
+    const hx = 432, hz = -140, hw = 15, hd = 11, hh = 3.7;
+    if (isClear(hx, hz, 9)) {
+      let maxH = -Infinity;
+      for (const dx of [-hw * 0.5, 0, hw * 0.5]) {
+        for (const dz of [-hd * 0.5, 0, hd * 0.5]) {
+          maxH = Math.max(maxH, ctx.groundY(hx + dx, hz + dz));
+        }
+      }
+      const skirt = new THREE.Mesh(new THREE.BoxGeometry(hw + 0.3, 1.1, hd + 0.3), matConcrete);
+      skirt.position.set(hx, maxH - 0.5, hz);
+      farm2.add(skirt);
+
+      const house2 = assets.building({
+        id: 'homestead2_house',
+        w: hw,
+        d: hd,
+        h: hh,
+        kind: 'house',
+        style: 'house'
+      });
+      house2.rotation.y = Math.PI;
+      house2.position.set(hx, maxH, hz);
+      farm2.add(house2);
+
+      // Screened front porch / stoop on south facade
+      const stoop = new THREE.Mesh(new THREE.BoxGeometry(5.5, 0.3, 2.0), matConcrete);
+      stoop.position.set(hx, maxH - 0.08, hz + hd * 0.5 + 1.0);
+      farm2.add(stoop);
+    }
+
+    // 5b. Timber & Corrugated-Metal Storage Shed at (452, -148)
+    const sx = 452, sz = -148, sw = 6.4, sd = 8.2, sh = 3.0;
+    if (isClear(sx, sz, 5)) {
+      const sy = ctx.groundY(sx, sz);
+      const shedGroup = new THREE.Group();
+      shedGroup.position.set(sx, sy, sz);
+
+      const pad = new THREE.Mesh(new THREE.BoxGeometry(sw + 0.3, 0.35, sd + 0.3), matConcrete);
+      pad.position.set(0, 0.05, 0);
+      shedGroup.add(pad);
+
+      const body = new THREE.Mesh(new THREE.BoxGeometry(sw, sh, sd), matBarnWall);
+      body.position.set(0, sh * 0.5 + 0.15, 0);
+      body.castShadow = true;
+      shedGroup.add(body);
+
+      // Double doors facing west toward the house/driveway
+      const door = new THREE.Mesh(new THREE.BoxGeometry(0.12, 2.2, 2.6), matTrimWhite);
+      door.position.set(-sw * 0.5 - 0.02, 1.25, 0);
+      shedGroup.add(door);
+
+      // Shed gable roof
+      const rSlope = Math.hypot(sw * 0.5 + 0.4, 1.1);
+      const rAngle = Math.atan2(1.1, sw * 0.5);
+      const rGeo = new THREE.BoxGeometry(rSlope, 0.08, sd + 0.6);
+      const rL = new THREE.Mesh(rGeo, matRustRoof);
+      rL.position.set(-sw * 0.25, sh + 0.62, 0);
+      rL.rotation.z = rAngle;
+      shedGroup.add(rL);
+      const rR = new THREE.Mesh(rGeo, matRustRoof);
+      rR.position.set(sw * 0.25, sh + 0.62, 0);
+      rR.rotation.z = -rAngle;
+      shedGroup.add(rR);
+
+      farm2.add(shedGroup);
+    }
+
+    // 5c. 2 Hero Live Oaks + Cabbage Palms at Homestead 2
+    const farm2Oaks = [
+      { id: 'f2_oak_1', x: 416, z: -134, h: 12.2 },
+      { id: 'f2_oak_2', x: 446, z: -132, h: 11.6 }
+    ];
+    for (const o of farm2Oaks) {
+      if (isClear(o.x, o.z, 3)) {
+        const tree = assets.tree({ id: o.id, kind: 'oak', height: o.h });
+        tree.position.set(o.x, ctx.groundY(o.x, o.z), o.z);
+        farm2.add(tree);
+      }
+    }
+
+    const farm2Palms = [
+      { id: 'f2_palm_1', x: 425, z: -122, h: 8.4 },
+      { id: 'f2_palm_2', x: 438, z: -154, h: 7.8 },
+      { id: 'f2_palm_3', x: 414, z: -88, h: 8.6 }
+    ];
+    for (const p of farm2Palms) {
+      if (isClear(p.x, p.z, 2)) {
+        const palm = assets.tree({ id: p.id, kind: 'palm', height: p.h });
+        palm.position.set(p.x, ctx.groundY(p.x, p.z), p.z);
+        farm2.add(palm);
+      }
+    }
+
+    root.add(farm2);
+  }
+
+  // ============================================================================
+  // 6. PASTURE PROPS: ROUND HAY BALES & GALVANIZED CATTLE WATER TROUGHS
+  // ============================================================================
+  {
+    const pastureProps = new THREE.Group();
+    pastureProps.name = 'pasture_hay_bales_and_troughs';
+    pastureProps.userData.citation = citeInferred;
+
+    // 6a. Round Hay Bales scattered across the pastures (north of z = -65)
+    const baleCoords = [
+      [-680, -95, 0.4], [-650, -130, 1.2], [-610, -88, 2.1],
+      [-510, -105, 0.8], [-470, -140, 2.5], [-430, -85, 1.7],
+      [-360, -110, 0.3], [-310, -82, 1.9], [-210, -95, 1.1],
+      [-175, -155, 2.8], [-135, -88, 0.6], [-95, -110, 1.4],
+      [-55, -92, 2.2], [25, -86, 0.9], [65, -112, 1.8],
+      [125, -80, 2.6], [165, -118, 0.2], [215, -92, 1.5],
+      [275, -125, 2.3], [325, -85, 0.7], [360, -115, 1.3],
+      [515, -95, 2.0], [565, -130, 0.5], [625, -88, 1.6],
+      [690, -115, 2.9]
+    ];
+
+    const baleRollGeo = new THREE.CylinderGeometry(0.82, 0.82, 1.52, 14);
+    baleRollGeo.rotateZ(Math.PI / 2);
+    const baleInst = new THREE.InstancedMesh(baleRollGeo, matHay, baleCoords.length);
+    baleInst.castShadow = true;
+    baleInst.receiveShadow = true;
+
+    const dummy = new THREE.Object3D();
+    for (let i = 0; i < baleCoords.length; i++) {
+      const [bx, bz, rotY] = baleCoords[i];
+      const by = ctx.groundY(bx, bz);
+      dummy.position.set(bx, by + 0.78, bz);
+      dummy.rotation.set(0, rotY, 0);
+      dummy.scale.set(1, 1, 1);
+      dummy.updateMatrix();
+      baleInst.setMatrixAt(i, dummy.matrix);
+    }
+    pastureProps.add(baleInst);
+
+    // 6b. Galvanized Stock Water Troughs on concrete pads
+    const troughCoords = [
+      [-305, -72, 0.2],
+      [-182, -78, -0.3],
+      [72, -74, 0.1],
+      [388, -76, -0.2]
+    ];
+    for (const [tx, tz, rotY] of troughCoords) {
+      const ty = ctx.groundY(tx, tz);
+      const tg = new THREE.Group();
+      tg.position.set(tx, ty, tz);
+      tg.rotation.y = rotY;
+
+      const pad = new THREE.Mesh(new THREE.CylinderGeometry(1.85, 1.95, 0.16, 16), matConcrete);
+      pad.position.set(0, 0.06, 0);
+      tg.add(pad);
+
+      // Oval galvanized tank (scaled cylinder)
+      const wall = new THREE.Mesh(new THREE.CylinderGeometry(1.25, 1.22, 0.68, 18), matGalv);
+      wall.scale.set(1.35, 1, 0.85);
+      wall.position.set(0, 0.42, 0);
+      wall.castShadow = true;
+      tg.add(wall);
+
+      const water = new THREE.Mesh(new THREE.CylinderGeometry(1.18, 1.18, 0.05, 18), matWater);
+      water.scale.set(1.34, 1, 0.84);
+      water.position.set(0, 0.72, 0);
+      tg.add(water);
+
+      pastureProps.add(tg);
+    }
+
+    root.add(pastureProps);
+  }
+
+  // ============================================================================
+  // 7. SAW PALMETTO CLUMPS NEAR FENCE LINE (z < -48, outside Witness C zone)
+  // ============================================================================
+  {
+    const palmettoGroup = new THREE.Group();
+    palmettoGroup.name = 'saw_palmetto_clumps';
+    palmettoGroup.userData.citation = citeNoObs;
+
+    // Build a low-poly multi-fan saw palmetto bush geometry (~24 tris per clump)
+    const positions = [];
+    const normals = [];
+    const indices = [];
+    let vCount = 0;
+
+    const fanCount = 8;
+    for (let f = 0; f < fanCount; f++) {
+      const yaw = (f / fanCount) * Math.PI * 2 + (f % 2) * 0.25;
+      const tilt = 0.35 + (f % 3) * 0.18;
+      const len = 0.85 + (f % 2) * 0.22;
+      const w = 0.42;
+
+      const ca = Math.cos(yaw), sa = Math.sin(yaw);
+      const ct = Math.cos(tilt), st = Math.sin(tilt);
+
+      // 3 triangles radiating from base center (0, 0.05, 0)
+      for (let b = -1; b <= 1; b++) {
+        const a0 = b * 0.38 - 0.16;
+        const a1 = b * 0.38 + 0.16;
+
+        const x0 = 0, y0 = 0.05, z0 = 0;
+        const r1 = len * ct;
+        const y1 = 0.05 + len * st;
+        const x1 = Math.cos(yaw + a0) * r1;
+        const z1 = Math.sin(yaw + a0) * r1;
+        const x2 = Math.cos(yaw + a1) * r1;
+        const z2 = Math.sin(yaw + a1) * r1;
+
+        positions.push(x0, y0, z0, x1, y1, z1, x2, y1, z2);
+        normals.push(ca * st, ct, sa * st, ca * st, ct, sa * st, ca * st, ct, sa * st);
+        indices.push(vCount, vCount + 1, vCount + 2);
+        vCount += 3;
+      }
+    }
+
+    const palmClumpGeo = new THREE.BufferGeometry();
+    palmClumpGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    palmClumpGeo.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+    palmClumpGeo.setIndex(indices);
+
+    const rand = ctx.rand(4071);
+    const clumpMats = [];
+    const dummy = new THREE.Object3D();
+
+    for (let i = 0; i < 360; i++) {
+      const x = -980 + rand() * 1760;
+      // Concentrate near the fence line (z in [-56, -48.6]) and around hammock edges (z in [-135, -90])
+      const nearFence = (i < 240);
+      const z = nearFence ? (-48.6 - rand() * 6.5) : (-95 - rand() * 45);
+
+      // Skip driveways (|x + 260| < 8 or |x - 420| < 8) and Witness C buffer (-35..0, -65..-38)
+      if (Math.abs(x + 260) < 8 || Math.abs(x - 420) < 8) continue;
+      if (!isClear(x, z, 1.0)) continue;
+
+      const y = ctx.groundY(x, z);
+      const s = 0.75 + rand() * 0.65;
+      dummy.position.set(x, y, z);
+      dummy.rotation.set(0, rand() * Math.PI * 2, 0);
+      dummy.scale.set(s, s * (0.75 + rand() * 0.35), s);
+      dummy.updateMatrix();
+      clumpMats.push(dummy.matrix.clone());
+    }
+
+    const clumpInst = new THREE.InstancedMesh(palmClumpGeo, matPalmetto, clumpMats.length);
+    const cTemp = new THREE.Color();
+    for (let i = 0; i < clumpMats.length; i++) {
+      clumpInst.setMatrixAt(i, clumpMats[i]);
+      const shade = 0.85 + (i % 7) * 0.04;
+      cTemp.setRGB(0.27 * shade, 0.39 * shade, 0.17 * shade);
+      clumpInst.setColorAt(i, cTemp);
+    }
+    palmettoGroup.add(clumpInst);
+    root.add(palmettoGroup);
+  }
+
+  // ============================================================================
+  // 8. MASSED VEGETATION: DISTANT TREELINE, PINE PLANTATION BLOCKS & OAK HAMMOCKS
+  //    (Custom low-poly instanced pines & oaks, <= 100 tris each, ~1100 instances)
+  // ============================================================================
+  {
+    const vegGroup = new THREE.Group();
+    vegGroup.name = 'veg_distant_treeline';
+    vegGroup.userData.citation = 'facts.txt F27 (No vegetation or other obstructions were reported on the approach); inferred distant background treeline and pine plantation blocks outside sight corridors';
+
+    // Helper to merge an array of BufferGeometries into one single BufferGeometry
+    function mergeGeos(geos) {
+      const pos = [];
+      const norm = [];
+      const idx = [];
+      let offset = 0;
+      for (const g of geos) {
+        const pAttr = g.getAttribute('position');
+        const nAttr = g.getAttribute('normal');
+        for (let i = 0; i < pAttr.count; i++) {
+          pos.push(pAttr.getX(i), pAttr.getY(i), pAttr.getZ(i));
+          norm.push(nAttr.getX(i), nAttr.getY(i), nAttr.getZ(i));
+        }
+        const gIdx = g.getIndex();
+        if (gIdx) {
+          for (let i = 0; i < gIdx.count; i++) idx.push(gIdx.getX(i) + offset);
+        } else {
+          for (let i = 0; i < pAttr.count; i++) idx.push(i + offset);
+        }
+        offset += pAttr.count;
+      }
+      const out = new THREE.BufferGeometry();
+      out.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+      out.setAttribute('normal', new THREE.Float32BufferAttribute(norm, 3));
+      out.setIndex(idx);
+      return out;
+    }
+
+    // 8a. Low-poly Slash Pine geometry (trunk = 16 tris, 3 stacked foliage cones = 72 tris -> 88 tris total)
+    const pineTrunkGeo = new THREE.CylinderGeometry(0.14, 0.24, 9.5, 8, 1, true);
+    pineTrunkGeo.translate(0, 4.75, 0);
+
+    const c1 = new THREE.ConeGeometry(2.6, 4.2, 8, 1, false);
+    c1.translate(0, 8.8, 0);
+    const c2 = new THREE.ConeGeometry(2.15, 3.8, 8, 1, false);
+    c2.translate(0, 11.0, 0);
+    const c3 = new THREE.ConeGeometry(1.5, 3.0, 8, 1, false);
+    c3.translate(0, 12.9, 0);
+    const pineCrownGeo = mergeGeos([c1, c2, c3]);
+
+    // 8b. Low-poly Live Oak geometry (trunk = 14 tris, 3 wide spreading canopy domes = 96 tris -> 110 tris total)
+    const oakTrunkGeo = new THREE.CylinderGeometry(0.28, 0.42, 4.4, 7, 1, true);
+    oakTrunkGeo.translate(0, 2.2, 0);
+
+    const o1 = new THREE.DodecahedronGeometry(3.6, 0);
+    o1.scale(1.35, 0.68, 1.25);
+    o1.translate(0, 5.8, 0);
+    const o2 = new THREE.DodecahedronGeometry(2.8, 0);
+    o2.scale(1.25, 0.65, 1.20);
+    o2.translate(-1.9, 5.1, 0.9);
+    const o3 = new THREE.DodecahedronGeometry(2.7, 0);
+    o3.scale(1.20, 0.65, 1.25);
+    o3.translate(1.8, 5.2, -0.8);
+    const oakCrownGeo = mergeGeos([o1, o2, o3]);
+
+    const rand = ctx.rand(9021);
+    const pineTransforms = [];
+    const pineShades = [];
+    const oakTransforms = [];
+    const oakShades = [];
+    const dummy = new THREE.Object3D();
+
+    function addPine(x, z, scaleH, scaleW) {
+      // Keep farmstead yards clear
+      if (x > -295 && x < -220 && z > -190 && z < -125) return;
+      if (x > 405 && x < 465 && z > -165 && z < -115) return;
+      if (Math.abs(x + 260) < 10 && z > -160) return;
+      if (Math.abs(x - 420) < 10 && z > -140) return;
+      if (!isClear(x, z, 2.0)) return;
+
+      const y = ctx.groundY(x, z);
+      dummy.position.set(x, y - 0.15, z);
       dummy.rotation.set((rand() - 0.5) * 0.04, rand() * Math.PI * 2, (rand() - 0.5) * 0.04);
       dummy.scale.set(scaleW, scaleH, scaleW);
       dummy.updateMatrix();
+      pineTransforms.push(dummy.matrix.clone());
+      pineShades.push(0.82 + rand() * 0.34);
+    }
 
-      if (rand() < 0.76) {
-        pineMats.push(dummy.matrix.clone());
+    function addOak(x, z, scaleH, scaleW) {
+      if (x > -295 && x < -220 && z > -190 && z < -125) return;
+      if (x > 405 && x < 465 && z > -165 && z < -115) return;
+      if (Math.abs(x + 260) < 12 && z > -160) return;
+      if (Math.abs(x - 420) < 12 && z > -140) return;
+      if (!isClear(x, z, 2.5)) return;
+
+      const y = ctx.groundY(x, z);
+      dummy.position.set(x, y - 0.15, z);
+      dummy.rotation.set(0, rand() * Math.PI * 2, 0);
+      dummy.scale.set(scaleW, scaleH, scaleW);
+      dummy.updateMatrix();
+      oakTransforms.push(dummy.matrix.clone());
+      oakShades.push(0.80 + rand() * 0.36);
+    }
+
+    // 1) Sparse pasture shade trees & distant treeline band (z in [-95, -66])
+    // Matches scene_spec element `veg_distant_treeline` at z ~ -65 while staying well clear of Witness C
+    for (let x = -940; x <= 760; x += 28) {
+      if (rand() < 0.45) continue; // leave open pasture vistas
+      const px = x + (rand() - 0.5) * 14;
+      const pz = -68 - rand() * 24;
+      // Extra wide gap around the intersection / Witness C (-70..50)
+      if (px > -70 && px < 50 && pz > -88) continue;
+      if (rand() < 0.55) {
+        addOak(px, pz, 0.85 + rand() * 0.35, 0.90 + rand() * 0.35);
       } else {
-        oakMats.push(dummy.matrix.clone());
+        addPine(px, pz, 0.85 + rand() * 0.35, 0.85 + rand() * 0.30);
       }
     }
+
+    // 2) Structured Slash Pine Plantation Blocks (z in [-360, -135])
+    const plantationBlocks = [
+      { x0: -960, x1: -360, z0: -140, z1: -340, dx: 24, dz: 22 },
+      { x0: -175, x1: 350, z0: -145, z1: -340, dx: 24, dz: 22 },
+      { x0: 510, x1: 780, z0: -135, z1: -340, dx: 24, dz: 22 }
+    ];
+    for (const b of plantationBlocks) {
+      for (let x = b.x0; x <= b.x1; x += b.dx) {
+        for (let z = b.z0; z >= b.z1; z -= b.dz) {
+          if (rand() < 0.12) continue; // natural thinning gaps
+          const jx = x + (rand() - 0.5) * 6.0;
+          const jz = z + (rand() - 0.5) * 6.0;
+          const sh = 0.88 + rand() * 0.42;
+          const sw = 0.85 + rand() * 0.35;
+          addPine(jx, jz, sh, sw);
+        }
+      }
+    }
+
+    // 3) Live Oak Hammocks behind the two farmsteads and along woodland edges (z in [-280, -130])
+    for (let i = 0; i < 165; i++) {
+      const x = -950 + rand() * 1720;
+      const z = -132 - rand() * 180;
+      const sh = 0.85 + rand() * 0.48;
+      const sw = 0.90 + rand() * 0.45;
+      addOak(x, z, sh, sw);
+    }
+
+    // 4) Dense northern horizon closure belt (z in [-490, -350], x in [-980, 780])
+    for (let x = -980; x <= 780; x += 22) {
+      for (const zBase of [-365, -415, -468]) {
+        const jx = x + (rand() - 0.5) * 14;
+        const jz = zBase + (rand() - 0.5) * 18;
+        if (rand() < 0.72) {
+          addPine(jx, jz, 1.05 + rand() * 0.45, 1.0 + rand() * 0.35);
+        } else {
+          addOak(jx, jz, 1.05 + rand() * 0.40, 1.1 + rand() * 0.40);
+        }
+      }
+    }
+
+    // Build InstancedMeshes for Pines
+    const pineTrunkInst = new THREE.InstancedMesh(pineTrunkGeo, matPineBark, pineTransforms.length);
+    const pineCrownInst = new THREE.InstancedMesh(pineCrownGeo, matPineNeedles, pineTransforms.length);
+    pineCrownInst.castShadow = true;
+    pineCrownInst.receiveShadow = true;
+
+    const cPine = new THREE.Color();
+    for (let i = 0; i < pineTransforms.length; i++) {
+      pineTrunkInst.setMatrixAt(i, pineTransforms[i]);
+      pineCrownInst.setMatrixAt(i, pineTransforms[i]);
+      const s = pineShades[i];
+      cPine.setRGB(0.18 * s, 0.28 * s, 0.13 * s);
+      pineCrownInst.setColorAt(i, cPine);
+    }
+    vegGroup.add(pineTrunkInst);
+    vegGroup.add(pineCrownInst);
+
+    // Build InstancedMeshes for Oaks
+    const oakTrunkInst = new THREE.InstancedMesh(oakTrunkGeo, matOakBark, oakTransforms.length);
+    const oakCrownInst = new THREE.InstancedMesh(oakCrownGeo, matOakLeaves, oakTransforms.length);
+    oakCrownInst.castShadow = true;
+    oakCrownInst.receiveShadow = true;
+
+    const cOak = new THREE.Color();
+    for (let i = 0; i < oakTransforms.length; i++) {
+      oakTrunkInst.setMatrixAt(i, oakTransforms[i]);
+      oakCrownInst.setMatrixAt(i, oakTransforms[i]);
+      const s = oakShades[i];
+      cOak.setRGB(0.23 * s, 0.32 * s, 0.14 * s);
+      oakCrownInst.setColorAt(i, cOak);
+    }
+    vegGroup.add(oakTrunkInst);
+    vegGroup.add(oakCrownInst);
+
+    root.add(vegGroup);
   }
-
-  // Create InstancedMeshes for Pines
-  const instPineTrunks = new THREE.InstancedMesh(pineTrunkGeo, matPineBark, pineMats.length);
-  const instPineC1 = new THREE.InstancedMesh(pineCrown1Geo, matPineNeedles1, pineMats.length);
-  const instPineC2 = new THREE.InstancedMesh(pineCrown2Geo, matPineNeedles2, pineMats.length);
-  const instPineC3 = new THREE.InstancedMesh(pineCrown3Geo, matPineNeedles1, pineMats.length);
-
-  for (let i = 0; i < pineMats.length; i++) {
-    instPineTrunks.setMatrixAt(i, pineMats[i]);
-    instPineC1.setMatrixAt(i, pineMats[i]);
-    instPineC2.setMatrixAt(i, pineMats[i]);
-    instPineC3.setMatrixAt(i, pineMats[i]);
-  }
-  instPineTrunks.instanceMatrix.needsUpdate = true;
-  instPineC1.instanceMatrix.needsUpdate = true;
-  instPineC2.instanceMatrix.needsUpdate = true;
-  instPineC3.instanceMatrix.needsUpdate = true;
-
-  vegGroup.add(instPineTrunks);
-  vegGroup.add(instPineC1);
-  vegGroup.add(instPineC2);
-  vegGroup.add(instPineC3);
-
-  // Create InstancedMeshes for Low-Poly Hammock Oaks
-  const instOakTrunks = new THREE.InstancedMesh(oakTrunkGeo, matDarkWood, oakMats.length);
-  const instOakCrowns = new THREE.InstancedMesh(oakCrownGeo, matOakFoliage, oakMats.length);
-  for (let i = 0; i < oakMats.length; i++) {
-    instOakTrunks.setMatrixAt(i, oakMats[i]);
-    instOakCrowns.setMatrixAt(i, oakMats[i]);
-  }
-  instOakTrunks.instanceMatrix.needsUpdate = true;
-  instOakCrowns.instanceMatrix.needsUpdate = true;
-
-  vegGroup.add(instOakTrunks);
-  vegGroup.add(instOakCrowns);
-
-  root.add(vegGroup);
 
   return root;
 }

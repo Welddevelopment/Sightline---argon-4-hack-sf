@@ -10,3 +10,4 @@
 - 13:00 r4_north round 0: FAILED in 267s; tokens prompt 47987 / out 32056 / think 537; tris undefined, undefined B, warn: none
 - 13:02 gen round 0: 1 parallel gemini-4-argon calls (thinking 6000, maxOutputTokens 32768); scene_spec present
 - 13:03 r5_south round 0: OK in 403s; tokens prompt 56889 / out 45484 / think 1067; tris 179751, 56556 B, warn: none
+- 13:05 r4_north round 0: OK in 218s; tokens prompt 15751 / out 20992 / think 0; tris 170621, 52750 B, warn: none

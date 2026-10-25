@@ -118,7 +118,8 @@ test('environment(): sun light placed from solarPosition, flags per phase', () =
 
 // ---- glare on the demo world
 const { default: createWorld } = await import('../cases/demo/worlds/world_v2.js');
-const world = createWorld(THREE);
+const { nodeAssets } = await import('./load_world.js');
+const world = createWorld(THREE, await nodeAssets());
 const gopts = { date: '2016-05-07T16:36:12.7-04:00', tZero: 10.43, lat: CASE.lat, lon: CASE.lon };
 
 test('Witness B -> veh_A at t=9.9: no glare (sun 45 deg high)', () => {

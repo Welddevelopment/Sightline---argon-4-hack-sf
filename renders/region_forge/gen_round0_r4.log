@@ -2,4 +2,6 @@
 (Use `node --trace-warnings ...` to show where the warning was created)
 - 13:02 gen round 0: 1 parallel gemini-4-argon calls (thinking 6000, maxOutputTokens 32768); scene_spec present
 [argon] rf_r0_r4_north: calling gemini-4-argon (1 parts, maxOutputTokens=32768)
-.................................
+........................................
+[argon] rf_r0_r4_north: done in 216.9s, finish=STOP, chars=52759
+- 13:05 r4_north round 0: OK in 218s; tokens prompt 15751 / out 20992 / think 0; tris 170621, 52750 B, warn: none

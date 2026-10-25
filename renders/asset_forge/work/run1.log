@@ -25,3 +25,6 @@
 20:03:55 [forge] pine_tree r0: code 39051 chars valid=true 
 20:04:24 [argon] gas_station_canopy r0: 124.7s finish=STOP chars=33046 out=12804 think=undefined
 20:04:25 [forge] gas_station_canopy r0: code 31250 chars valid=true 
+20:05:39 [argon] pedestrian r0: 174.2s finish=STOP chars=41584 out=18248 think=undefined
+20:05:40 [forge] pedestrian r0: code 39445 chars valid=true 
+20:05:40 [render] batch r0: 28 stills (waiting for render lock)

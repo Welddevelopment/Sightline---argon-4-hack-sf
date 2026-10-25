@@ -54,10 +54,10 @@ export default function createWorld(THREE, assets) {
   }
 
   // ---------- evidence objects / occluders ----------
-  const crest = new THREE.Group();
-  const crestBox = new THREE.Mesh(new THREE.BoxGeometry(60, 0.2, 40), new THREE.MeshBasicMaterial({ visible: false }));
-  crestBox.visible = false; crestBox.position.set(-30, 0, 0); crest.add(crestBox);
-  crest.position.set(-345, 5.05, -17.37);
+  // invisible 60 x 40 m footprint just beyond the crest: the hill itself is the terrain; this only carries the label + extent
+  const crest = assets.building({ id: 'occ_crest', w: 60, d: 40, h: 0.2, kind: 'generic' });
+  crest.visible = false;
+  crest.position.set(-375, 5.05, -17.37);
   reg('occ_crest', crest, 'terrain', 'Vertical crest of US-27A, 345 m west (sight restriction; rendered as terrain)', "NTSB/HAR-17/02 p.22 (crest 1,132 ft W, 2.15% descent), p.29 (only sight restriction)", false);
   add('bld_store', assets.building({ id: 'bld_store', w: 18, d: 12, h: 4.5, kind: 'store' }), 'building', "Retail business on the SE corner (fictionalized footprint)", "inferred: NTSB/HAR-17/02 p.1 ('retail business on the intersection corner'); corner, footprint and height assumed", true, 18, 19);
   add('occ_shelter', assets.shelter({ id: 'occ_shelter', open: true }), 'occluder', "Open-sided covered bench shelter in front of the store (fictional, does not block)", "Fictional scene dressing referenced in Witness B deposition (~27:04). Roof only on 0.1 m posts, so it does not block a 1.6 m eye line.", false, 8, 7.9);

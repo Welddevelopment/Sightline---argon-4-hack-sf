@@ -111,10 +111,10 @@ export default function createWorld(THREE, assets) {
   }
 
   // ---------- evidence objects / occluders ----------
-  const crest = new THREE.Group();
-  const crestBox = new THREE.Mesh(new THREE.BoxGeometry(60, 0.2, 40), new THREE.MeshBasicMaterial({ visible: false }));
-  crestBox.visible = false; crestBox.position.set(-30, 0, 0); crest.add(crestBox);
-  crest.position.set(${crestX}, ${crestH}, ${zC});
+  // invisible 60 x 40 m footprint just beyond the crest: the hill itself is the terrain; this only carries the label + extent
+  const crest = assets.building({ id: 'occ_crest', w: 60, d: 40, h: 0.2, kind: 'generic' });
+  crest.visible = false;
+  crest.position.set(${crestX - 30}, ${crestH}, ${zC});
   reg('occ_crest', crest, 'terrain', 'Vertical crest of US-27A, ${-crestX} m west (sight restriction; rendered as terrain)', ${C(occ.occ_crest.citation)}, false);
   add('bld_store', assets.building({ id: 'bld_store', w: 18, d: 12, h: ${occ.bld_store.height}, kind: 'store' }), 'building', ${J(occ.bld_store.label)}, ${C(occ.bld_store.citation)}, true, ${occ.bld_store.position[0]}, ${occ.bld_store.position[2]});
   add('occ_shelter', assets.shelter({ id: 'occ_shelter', open: true }), 'occluder', ${J(occ.occ_shelter.label)}, ${C(occ.occ_shelter.citation)}, false, ${occ.occ_shelter.position[0]}, ${occ.occ_shelter.position[2]});
