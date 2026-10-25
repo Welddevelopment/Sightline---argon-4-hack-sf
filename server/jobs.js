@@ -40,12 +40,14 @@ export function mountJobs(app, store, h = {}) {
       fs.renameSync(tmp, f);
     } catch (e) { console.warn(`[jobs] could not persist ${job.caseId}: ${e.message}`); }
   };
+  // Only jobs this process runs are cached; anything else is re-read from disk (several dev servers may share cases/).
   const load = (id) => {
     if (jobs.has(id)) return jobs.get(id);
     const j = store.validId(id) ? store.readJson(file(id), null) : null;
-    if (j && typeof j === 'object') { j.caseId = id; jobs.set(id, j); }
+    if (j && typeof j === 'object') j.caseId = id;
     return j || null;
   };
+  const alive = (pid) => { if (!pid || pid === process.pid) return false; try { process.kill(pid, 0); return true; } catch (e) { return e.code === 'EPERM'; } };
   const queuePos = (id) => { const i = waiters.findIndex((w) => w.id === id); return i < 0 ? null : i + 1; };
   const view = (id) => {
     const j = load(id);

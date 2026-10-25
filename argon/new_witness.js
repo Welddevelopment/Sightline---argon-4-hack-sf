@@ -159,12 +159,12 @@ function parseWitnessJSON(text) {
   return o;
 }
 
-async function callOnce(prompt, timeoutMs, name, d, useSchema) {
+async function callOnce(prompt, timeoutMs, name, d, { useSchema = true, useThinking = true } = {}) {
   const ai = await getAI();
   const ctrl = new AbortController();
   const config = { responseMimeType: 'application/json', maxOutputTokens: 4096, abortSignal: ctrl.signal, httpOptions: { timeout: timeoutMs } };
   if (useSchema) config.responseJsonSchema = SCHEMA;
-  if (process.env.ARGON_WITNESS_THINKING) config.thinkingConfig = { thinkingLevel: process.env.ARGON_WITNESS_THINKING };
+  if (useThinking && process.env.ARGON_WITNESS_THINKING) config.thinkingConfig = { thinkingLevel: process.env.ARGON_WITNESS_THINKING };
   let timer;
   const t0 = Date.now();
   try {
@@ -357,7 +357,9 @@ export async function newWitness(statement, world, caseOpt) {
   const errors = [];
   for (const [i, ms] of [T1, T2].entries()) {
     try {
-      const { w, secs } = await callOnce(prompt, ms, i ? `${name}_retry` : name, d, !errors.some((e) => /schema/i.test(e)));
+      // Retry drops whichever optional config the API rejected (schema / thinking level).
+      const opts = { useSchema: !errors.some((e) => /schema/i.test(e)), useThinking: !errors.some((e) => /thinking/i.test(e)) };
+      const { w, secs } = await callOnce(prompt, ms, i ? `${name}_retry` : name, d, opts);
       console.log(`[new_witness] ${caseId}: ${MODEL} placed witness in ${secs.toFixed(1)}s (attempt ${i + 1})`);
       const out = await done(w, 'argon-live', { model: MODEL, modelSeconds: secs, attempt: i + 1 });
       const { source, latencyMs, attempt, modelSeconds, ...keep } = out;

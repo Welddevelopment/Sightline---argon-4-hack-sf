@@ -1,0 +1,10 @@
+{
+  "name": "New Witness (gas station pedestrian)",
+  "position": [0, 0, -45],
+  "eyeHeight": 1.6,
+  "lookAt": "mark_poi",
+  "observationTime": 10.4,
+  "claim": "I was pumping gas at the station on the north side of the highway, facing the intersection.",
+  "confidence": "low",
+  "assumptions": "The gas station on the north side of the highway is not modeled in the scene, so the witness is placed north of the US-27A westbound road edge (z = -35.1 m) at [0, 0, -45] opposite the intersection (x = 0). Standing pedestrian eye height (1.6 m) is used, looking at the intersection point of impact (mark_poi) at the time of impact (t = 10.4 s)."
+}

@@ -261,7 +261,8 @@ export function lightLevels({ sunEl, moonEl = -90, moonFraction = 0, moonPhaseDe
   const luxToIntensity = k * Math.pow(Eref / globalLux, 0.75);
   // colour: white-balanced to a high sun (camera 'daylight' balance, AM 1.2) so noon sun is neutral and a low sun turns amber
   const Twb = transmittance(56, w.beta);
-  const sunColor = (() => { const c = T.map((x, i) => x / Twb[i]); const m = Math.max(...c); return c.map((x) => x / m); })();
+  // partial chromatic adaptation (exponent 0.6): a 5 deg sun reads ~3200 K as an adapted eye/camera sees it, not the raw spectrum
+  const sunColor = (() => { const c = T.map((x, i) => Math.pow(x / Twb[i], 0.6)); const m = Math.max(...c); return c.map((x) => x / m); })();
   return {
     directNormalLux: directNormal, diffuseLux: diffuse, moonNormalLux: moonNormal, globalLux,
     luxToIntensity, perceivedBrightness: Math.pow(globalLux / Eref, 0.25), sunColor,
@@ -280,11 +281,12 @@ function patchSkyMaterial(material) {
   material.uniforms.overcastMix = { value: 0 };
   material.uniforms.overcastColor = { value: [0.62, 0.65, 0.69] };
   material.uniforms.twilight = { value: 0 };
+  material.uniforms.lowSun = { value: 0 };
   material.uniforms.sunDirTrue = { value: [0, 1, 0] };
   material.uniforms.hazeMix = { value: 0 };
   material.uniforms.hazeColor = { value: [0.7, 0.72, 0.75] };
   material.uniforms.nightColor = { value: [0.0, 0.0, 0.0] };
-  const decl = 'uniform float skyGain; uniform float overcastMix; uniform vec3 overcastColor; uniform float twilight; uniform vec3 sunDirTrue; uniform float hazeMix; uniform vec3 hazeColor; uniform vec3 nightColor;\n';
+  const decl = 'uniform float skyGain; uniform float overcastMix; uniform vec3 overcastColor; uniform float twilight; uniform float lowSun; uniform vec3 sunDirTrue; uniform float hazeMix; uniform vec3 hazeColor; uniform vec3 nightColor;\n';
   const tail = /\n\s*gl_FragColor = vec4\( texColor, 1\.0 \);/;
   if (!tail.test(fs)) throw new Error('environment: Sky.js shader layout changed; cannot patch');
   material.fragmentShader = decl + fs.replace(tail, `
@@ -298,6 +300,12 @@ function patchSkyMaterial(material) {
         vec3 tw = mix( vec3( 0.045, 0.085, 0.20 ), vec3( 0.20, 0.22, 0.32 ), horiz );
         tw += vec3( 0.55, 0.28, 0.12 ) * pow( toward, 3.0 ) * exp( -upY * 9.0 );
         texColor += twilight * tw;
+        // low sun: Preetham paints the whole horizon orange; the real anti-solar sky is blue-grey with a faint pink band
+        // (Belt of Venus) above the Earth's shadow. Desaturate the anti-solar half toward that, luminance preserved.
+        float anti = pow( 1.0 - toward, 1.5 ) * lowSun;
+        float lum = dot( texColor, vec3( 0.2126, 0.7152, 0.0722 ) );
+        vec3 beltCol = mix( vec3( 0.80, 0.86, 1.10 ), vec3( 1.10, 0.92, 0.95 ), smoothstep( 0.02, 0.10, upY ) * ( 1.0 - smoothstep( 0.10, 0.30, upY ) ) );
+        texColor = mix( texColor, lum * beltCol, anti * 0.85 );
         texColor += nightColor * ( 0.6 + 0.4 * horiz );
         // CIE standard overcast sky: L(theta) = Lz * (1 + 2 sin(elev)) / 3
         vec3 oc = overcastColor * ( 1.0 + 2.0 * upY ) / 3.0;
@@ -450,7 +458,8 @@ export function environment(THREE, opts = {}) {
     // twilight term: strongest just after sunset, gone by the end of nautical twilight; scaled to perceived light
     const dep = -sp.elevationDeg;
     const twAmt = dep < -4 ? 0 : clamp(1 - (dep + 4) / 16, 0, 1);  // ramps in from +4 deg to -12 deg
-    u.twilight.value = twAmt * twAmt * 0.12 / Math.max(u.skyGain.value, 1e-3) * clamp(pb * 3, 0, 1.5);
+    u.lowSun.value = clamp(1 - sp.elevationDeg / 12, 0, 1);
+    u.twilight.value = twAmt * twAmt * 0.3 / Math.max(u.skyGain.value, 1e-3) * clamp(pb * 3, 0, 1.5);
     u.nightColor.value = new THREE.Vector3(0.012, 0.016, 0.03).multiplyScalar(1 / Math.max(u.skyGain.value, 1e-3) * (sunUp ? 0 : 1));
     u.overcastMix.value = L.overcast;
     const ocg = clamp(L.perceivedBrightness * 0.95, 0, 1.2) / Math.max(u.skyGain.value, 1e-3);
