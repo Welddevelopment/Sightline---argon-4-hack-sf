@@ -40,11 +40,21 @@ function waitForSl() {
 const sl = await waitForSl();
 
 // ---------- state ----------
-let enabled = (() => {
-  if (params.get('callouts') === '0') return false;
-  if (params.get('callouts') === '1') return true;
-  try { return localStorage.getItem('sl.callouts') !== '0'; } catch (_) { return true; }
+// Callout density: 'off' | 'min' | 'full'. userMode null = auto: full on the overhead plan, minimal in
+// witness / chase views (keeps the picture clean). URL ?callouts=0|1|min|full; sl.overlays.set(bool|mode).
+const normMode = (m) => {
+  m = String(m == null ? '' : m).toLowerCase();
+  if (m === '0' || m === 'off' || m === 'false') return 'off';
+  if (m === 'min' || m === 'minimal') return 'min';
+  if (m === 'full') return 'full';
+  return null; // '1', 'on', 'auto', true
+};
+let userMode = (() => {
+  if (params.has('callouts')) return normMode(params.get('callouts'));
+  try { const v = localStorage.getItem('sl.callouts'); return v === '0' ? 'off' : normMode(v); } catch (_) { return null; }
 })();
+let enabled = userMode !== 'off';
+const modeFor = (camId) => userMode || ((camId || 'overhead') === 'overhead' ? 'full' : 'min');
 let world = null, scene = null, info = null;
 let checks = [];
 let findings = [];
@@ -72,11 +82,11 @@ const cardEl = document.createElement('div');          // lower-third narrative 
 cardEl.className = 'slo-card panel narrative';
 cardEl.hidden = true;
 stage.appendChild(cardEl);
-const btn = document.createElement('button');
-btn.type = 'button';
+const btn = document.createElement('div');
 btn.className = 'slo-toggle';
-btn.title = 'Show or hide measured callouts (speeds, clock, sight line, stopping distances). URL: ?callouts=0';
-btn.addEventListener('click', () => setEnabled(!enabled));
+btn.title = 'Callouts. Minimal: clock, speeds, sight line, witness card. Full: adds stopping distances, vehicle gap, street labels. URL: ?callouts=0|min|full';
+btn.innerHTML = '<span>Callouts</span><button type="button" data-m="off">Off</button><button type="button" data-m="min">Minimal</button><button type="button" data-m="full">Full</button>';
+btn.addEventListener('click', (e) => { const b = e.target.closest('button[data-m]'); if (b) setEnabled(b.dataset.m); });
 stage.appendChild(btn);
 const measureCtx = document.createElement('canvas').getContext('2d');
 const MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace';
@@ -89,10 +99,16 @@ function setHtml(el, html, key) {
   if (key === 'hud') lastHud = html; else lastCard = html;
 }
 
+let shownMode = null;
 function syncToggle() {
-  btn.textContent = 'Callouts ' + (enabled ? 'on' : 'off');
-  btn.classList.toggle('off', !enabled);
-  btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+  const m = modeFor(sl.camera);
+  enabled = m !== 'off';
+  if (m !== shownMode) {
+    shownMode = m;
+    for (const b of btn.querySelectorAll('button')) { const on = b.dataset.m === m; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+    btn.dataset.mode = m;
+    btn.dataset.auto = userMode ? '0' : '1';
+  }
   layer.hidden = !enabled;
   hudEl.hidden = !enabled;
   if (!enabled) cardEl.hidden = true;
@@ -101,8 +117,8 @@ function syncToggle() {
   stage.classList.toggle('slo-on', enabled);
 }
 function setEnabled(v) {
-  enabled = !!v;
-  try { localStorage.setItem('sl.callouts', enabled ? '1' : '0'); } catch (_) {}
+  userMode = v === true ? null : v === false ? 'off' : normMode(v);
+  try { localStorage.setItem('sl.callouts', userMode || 'auto'); } catch (_) {}
   syncToggle();
   if (sl.renderFrame) sl.renderFrame();
 }
@@ -497,7 +513,7 @@ function hudHtml(t, speeds, sight) {
     else if (d < 0) rows.push(`<div class="slo-imp pre" title="${esc(ttl)}">IMPACT IN ${(-d).toFixed(2)} s</div>`);
     else rows.push(`<div class="slo-imp post" title="${esc(ttl)}">IMPACT +${d.toFixed(2)} s</div>`);
   }
-  boxes.push(`<div class="slo-box slo-panel">${rows.join('')}</div>`);
+  boxes.push(`<div class="slo-sec">${rows.join('')}</div>`);
 
   // per-vehicle speed (one row per named unit)
   const vr = info.vehicles.filter((v) => v.primary).slice(0, 5).map((v) => {
@@ -512,7 +528,7 @@ function hudHtml(t, speeds, sight) {
     if (!/^(red|yellow|amber|green|off|flashing.*)$/.test(st)) st = 'off';
     vr.push(`<div class="slo-sig ${st.split(/\W/)[0]}" title="${esc((o.label || id) + (o.citation ? ' — ' + o.citation : ''))}"><i></i><span>${esc(shortLabel(o.label || id, 26).toUpperCase())}</span><b>${esc(st.toUpperCase())}</b></div>`);
   }
-  if (vr.length) boxes.push(`<div class="slo-box slo-units">${vr.join('')}</div>`);
+  if (vr.length) boxes.push(`<div class="slo-sec slo-units">${vr.join('')}</div>`);
 
   // sight-line state trigger for the selected witness
   if (sight) {
@@ -523,12 +539,25 @@ function hudHtml(t, speeds, sight) {
     const now = since != null && t - since < TRIGGER_S && since > 0.05;
     const head = r.visible ? `${tgt} ${now ? 'NOW ' : ''}VISIBLE TO ${who}` : `${tgt} ${now ? 'NOW ' : ''}HIDDEN FROM ${who}`;
     const sub = (r.visible ? 'line of sight clear' : 'behind ' + partName(r.blockedBy)) + (since == null || since <= 0.05 ? ' · whole timeline so far' : ` · since t = ${since.toFixed(1)} s`);
-    boxes.push(`<div class="slo-box slo-state ${r.visible ? 'ok status-consistent' : 'bad status-contradiction'}${now ? ' now' : ''}" data-verdict="${r.visible ? 'VISIBLE' : 'BLOCKED'}"><b>${esc(head)}</b><span>${esc(sub)}</span></div>`);
+    boxes.push(`<div class="slo-sec slo-state ${r.visible ? 'ok status-consistent' : 'bad status-contradiction'}${now ? ' now' : ''}" data-verdict="${r.visible ? 'VISIBLE' : 'BLOCKED'}"><b>${esc(head)}</b><span>${esc(sub)}</span></div>`);
   }
-  return boxes.join('');
+  return `<div class="slo-box slo-panel">${boxes.join('')}</div>`;
 }
 
 // ---------- lower-third narrative card ----------
+// One card at the bottom carries every sentence: the selected witness's claim + measured result, and
+// (overhead / chase) the stopping-distance note. Nothing paragraph-like is drawn in 3D space.
+function stopLine() {
+  const st = info.stop;
+  if (!st) return null;
+  if (st.kind === 'skid') return { cls: '', text: `${st.name}: skid ${fmtM(st.L)} → ${Math.round(st.lo)}–${Math.round(st.hi)} mph (μ ${st.mu[0]}–${st.mu[1]})`, cite: shortCite(st.cite, 30) };
+  const nm = info.noMarksFact;
+  return {
+    cls: nm ? 'warn' : '',
+    text: `${st.name} at ${fmtMph(st.v)}: must brake by ${Math.round(st.db)} m before impact (μ 0.7), perceive by ${Math.round(st.db + st.dp)} m (PRT 1.5 s)${nm ? ' · actual brake point: none recorded' : ''}`,
+    cite: nm && nm.citation ? shortCite(nm.citation, 26) : '',
+  };
+}
 function cardHtml(w, r, t, camId, cam) {
   const chk = checks.find((c) => c && c.check === 'sightline' && c.subject === w.id);
   const who = witName(w).toUpperCase();
@@ -548,18 +577,25 @@ function cardHtml(w, r, t, camId, cam) {
     const rad = rb.radiusM != null ? rb.radiusM : 2;
     const mark = `within ${rad} m of ${pronounFor(w)} mark`;
     meas.push(blocked > 0 ? `Blocked from ${blocked} of ${n} positions ${mark}` : `Clear from ${clear} of ${n} positions ${mark}`);
-  } else if (r) {
-    meas.push(r.visible ? `Line of sight clear · ${fmtM(r.distance)} to target` : `Blocked by ${partName(r.blockedBy)} · ${fmtM(r.distance)} to target`);
   }
   const g = chk && chk.gaze;
   if (g && Number.isFinite(Number(g.offAxisDeg))) meas.push(`target ${Math.round(Number(g.offAxisDeg))}° off gaze${g.assumed ? ' (assumed)' : ''}`);
   const cls = rb && Number(rb.blocked) > 0 ? 'bad' : rb ? 'ok' : r && !r.visible ? 'bad' : 'ok';
   if (meas.length) lines.push(`<div class="slo-card-m finding ${cls}">${esc(meas.join(' · '))}</div>`);
+  // live ray at this instant
   const notes = [];
+  if (r) {
+    const tgt = typeof w.lookAt === 'string' && world.objects[w.lookAt] ? vehName(w.lookAt, world.objects[w.lookAt]) : 'target';
+    notes.push(r.visible ? `Now: ${tgt} in view, ${fmtM(r.distance)}` : `Now: ${tgt} hidden behind ${partName(r.blockedBy)} (${fmtM(r.distanceToBlocker || 0)} away; ${tgt} ${fmtM(r.distance)})`);
+  }
   const camFov = (cam && cam.isPerspectiveCamera && cam.fov) || (g && g.cameraFovDeg) || 60;
-  if (camId === w.id) notes.push(`Camera FOV ${Math.round(camFov)}°${Math.round(camFov) !== 60 ? ' (widened: target close)' : ''} · eye ${w.eyeHeight || 1.6} m`);
-  if (chk && chk.t != null && Math.abs(Number(chk.t) - t) > 0.05) notes.push(`measured at t = ${Number(chk.t).toFixed(1)} s`);
+  if (camId === w.id) notes.push(`camera FOV ${Math.round(camFov)}°${Math.round(camFov) !== 60 ? ' (widened: target close)' : ''}, eye ${w.eyeHeight || 1.6} m`);
+  if (chk && chk.t != null && Math.abs(Number(chk.t) - t) > 0.05) notes.push(`check measured at t = ${Number(chk.t).toFixed(1)} s`);
   if (notes.length) lines.push(`<div class="slo-card-n">${esc(notes.join(' · '))}</div>`);
+  if (camId !== w.id) {
+    const sline = stopLine();
+    if (sline) lines.push(`<div class="slo-card-s ${sline.cls}"><b>STOPPING</b> ${esc(sline.text)}${sline.cite ? ` <span class="citation">(${esc(sline.cite)})</span>` : ''}</div>`);
+  }
   return lines.join('');
 }
 
@@ -567,10 +603,12 @@ function cardHtml(w, r, t, camId, cam) {
 function update(cam) {
   clearGroup();
   hideSight();
+  syncToggle();
   if (!enabled || !world || !info) { layer.innerHTML = ''; cardEl.hidden = true; return; }
   const W = stage.clientWidth || window.innerWidth, H = stage.clientHeight || window.innerHeight;
   const t = sl.time || 0;
   const camId = sl.camera || 'overhead';
+  const full = modeFor(camId) === 'full';
   const overhead = camId === 'overhead';
   const isChase = camId.startsWith('chase_');
   const isWit = !overhead && !isChase;
@@ -587,10 +625,10 @@ function update(cam) {
 
   // ---- telemetry HUD + lower-third card (persistent elements; obstacles for the rest) ----
   setHtml(hudEl, hudHtml(t, speeds, w && r ? { w, r } : null), 'hud');
-  const showCard = !!(w && (camId === w.id || (selWitness && selWitness === w.id)));
+  const showCard = !!(w && r);
   if (showCard) setHtml(cardEl, cardHtml(w, r, t, camId, cam), 'card');
   cardEl.hidden = !showCard;
-  for (const el of [hudEl, cardEl, btn, document.querySelector('.sl-hud')]) { const q = elRect(el); if (q) placed.push(q); }
+  for (const el of [hudEl, cardEl, btn, document.querySelector('.sl-hud'), document.querySelector('.ao-stage')]) { const q = elRect(el); if (q) placed.push(q); }
 
   // obstacles: the viewer's own overhead label sprites
   if (overhead) {
@@ -602,9 +640,9 @@ function update(cam) {
     });
   }
 
-  // ---- stopping distance / brake point (overhead + chase) ----
+  // ---- (full) stopping distance / brake point bars on the road, one-word tags; the sentence is in the card ----
   const stop = info.stop;
-  if (stop && (overhead || isChase)) {
+  if (full && stop && (overhead || isChase)) {
     const lw = overhead ? Math.max(0.25, 2.2 * mpp) : 0.22;
     const bar = (d, color, op = 0.95) => {
       const { p, dir } = stop.at(d);
@@ -613,14 +651,14 @@ function update(cam) {
       return { p, dir, n };
     };
     const side = (pp, nn, k = 1.25) => pp.clone().add(nn.clone().multiplyScalar(k));
-    const tag = (pp, cls, title, l1, l2) => {
+    const tag = (pp, cls, title, l1) => {
       const s = proj(pp);
       if (!s.on) return;
-      const tw = Math.max(textW(l1, `600 11px ${MONO}`), l2 ? textW(l2, `500 10px ${MONO}`) : 0) + 14, th = l2 ? 32 : 19;
-      const q = clampRect({ x: s.x - tw / 2, y: s.y + 6, w: tw, h: th }, W, H);
+      const tw = textW(l1, `600 10px ${MONO}`) + 12, th = 17;
+      const q = clampRect({ x: s.x - tw / 2, y: s.y + 4, w: tw, h: th }, W, H);
       for (let k = 0; k < 6 && placed.some((z) => rectsHit(z, q)); k++) q.y += th + 3;
       placed.push(q);
-      html.push(`<div class="slo-mark ${cls}" style="transform:translate(${q.x.toFixed(1)}px,${q.y.toFixed(1)}px)" title="${esc(title)}"><b>${esc(l1)}</b>${l2 ? `<span>${esc(l2)}</span>` : ''}</div>`);
+      html.push(`<div class="slo-mark ${cls}" style="transform:translate(${q.x.toFixed(1)}px,${q.y.toFixed(1)}px)" title="${esc(title)}"><b>${esc(l1)}</b></div>`);
     };
     if (stop.kind === 'skid') {
       const segs = 24;
@@ -630,7 +668,7 @@ function update(cam) {
       }
       const bp = bar(stop.L, C_BLOCK);
       bar(0, C_MARK, 0.6);
-      tag(side(bp.p, bp.n), 'brake', stop.cite, `Brake point — skid start (${stop.name})`, `skid ${fmtM(stop.L)} → ${Math.round(stop.lo)}–${Math.round(stop.hi)} mph (μ ${stop.mu[0]}–${stop.mu[1]})`);
+      tag(side(bp.p, bp.n), 'brake', stop.cite, `skid start · ${Math.round(stop.lo)}–${Math.round(stop.hi)} mph`);
     } else {
       // envelope: where braking (mu 0.6-0.8) and perception (PRT 1.5 s) would have had to start to stop short of impact
       const steps = 16;
@@ -645,28 +683,16 @@ function update(cam) {
       }
       const b1 = bar(stop.db, C_AMBER);
       const b2 = bar(Math.min(stop.pathLen, stop.db + stop.dp), C_MARK);
-      const beyond = stop.db + stop.dp > stop.pathLen + 0.5 ? ' (beyond start of timeline)' : '';
-      tag(side(b1.p, b1.n), 'brake', 'Braking distance v²/(2μg); band = μ 0.6–0.8', `Must brake by: ${fmtM(stop.db)} before impact`, `${fmtMph(stop.v)}, μ 0.7 (band 0.6–0.8)`);
-      tag(side(b2.p, b2.n), 'perceive', 'Perception-reaction 1.5 s typical (range 1.0–2.5 s)', `Perceive by: ${fmtM(stop.db + stop.dp)}${beyond}`, `+ PRT 1.5 s = ${fmtM(stop.dp)}`);
-      if (info.noMarksFact) {
-        const ip = stop.at(0);
-        const n = new THREE.Vector3(-ip.dir.z, 0, ip.dir.x);
-        tag(side(ip.p, n, -stop.halfW * 1.6), 'none', info.noMarksFact.citation || '', `Actual brake point: none recorded`, shortLabel(info.noMarksFact.text, 44) + (info.noMarksFact.citation ? ' — ' + shortCite(info.noMarksFact.citation, 22) : ''));
-      }
+      tag(side(b1.p, b1.n), 'brake', 'Braking distance v²/(2μg), μ 0.7 (band 0.6–0.8)', `brake by · ${Math.round(stop.db)} m`);
+      tag(side(b2.p, b2.n), 'perceive', 'Perception-reaction 1.5 s typical (range 1.0–2.5 s)', `perceive by · ${Math.round(stop.db + stop.dp)} m`);
     }
   }
 
-  // ---- sight line for the selected witness ----
+  // ---- sight line for the selected witness (Line2; its explanation lives in the card) ----
   if (w && r) {
-    const chk = checks.find((c) => c && c.check === 'sightline' && c.subject === w.id);
     const from = new THREE.Vector3(...r.from), to = new THREE.Vector3(...r.to);
     const hit = r.hit ? new THREE.Vector3(...r.hit) : null;
     const col = r.visible ? C_CLEAR : C_BLOCK;
-    const tgtShort = typeof w.lookAt === 'string' && world.objects[w.lookAt] ? vehName(w.lookAt, world.objects[w.lookAt]) : 'target';
-    const blkName = r.blockedBy ? partName(r.blockedBy) : '';
-    const wName = witName(w);
-    const rb = chk && chk.robustness;
-    const chkTxt = chk && rb && rb.samples ? `${chk.pass ? rb.clear : rb.blocked} of ${rb.samples} positions within ${rb.radiusM != null ? rb.radiusM : 2} m ${chk.pass ? 'clear' : 'blocked'} (t = ${Number(chk.t ?? w.observationTime).toFixed(1)} s)` : '';
     if (overhead || isChase) {
       const end = hit || to;
       if (overhead) {
@@ -686,36 +712,18 @@ function update(cam) {
         const eyeM = new THREE.Mesh(new THREE.SphereGeometry(0.14, 14, 10), basic(C_AMBER, 1));
         eyeM.position.copy(from); group.add(eyeM);
       }
-      const mid = proj(from.clone().lerp(end, 0.5));
-      if (mid.on) {
-        const l1 = `${wName} → ${tgtShort}: ${r.visible ? 'line of sight clear' : 'blocked by ' + blkName}`;
-        const l2 = r.visible ? `${fmtM(r.distance)} to target` : `${fmtM(r.distanceToBlocker || from.distanceTo(end))} to obstruction · ${fmtM(r.distance)} to target`;
-        const wd = Math.max(textW(l1, `600 11px ${MONO}`), textW(l2, `500 10px ${MONO}`), chkTxt ? textW(chkTxt, `500 10px ${MONO}`) : 0) + 16;
-        const hh = chkTxt ? 46 : 33;
-        const rr = clampRect({ x: mid.x - wd / 2, y: mid.y + 10, w: wd, h: hh }, W, H);
-        for (let k = 0; k < 8 && placed.some((q) => rectsHit(q, rr)); k++) rr.y += 18;
-        placed.push(rr);
-        html.push(`<div class="slo-sight ${r.visible ? 'ok' : 'bad'}" style="transform:translate(${rr.x.toFixed(1)}px,${rr.y.toFixed(1)}px)" title="${esc(w.citation || '')}"><b>${esc(l1)}</b><span>${esc(l2)}</span>${chkTxt ? `<span class="c">${esc(chkTxt)}</span>` : ''}</div>`);
-      }
     } else if (isWit && w.id === camId) {
       // witness's own view: reticle on the target; the sight line runs straight into the lens, so no 3D line
       const tp = proj(to);
       if (tp.on) {
         const x = tp.x.toFixed(1), y = tp.y.toFixed(1);
         svg.push(`<g class="slo-ret ${r.visible ? 'ok' : 'bad'}"><circle cx="${x}" cy="${y}" r="11"/><line x1="${(tp.x - 18).toFixed(1)}" y1="${y}" x2="${(tp.x - 7).toFixed(1)}" y2="${y}"/><line x1="${(tp.x + 7).toFixed(1)}" y1="${y}" x2="${(tp.x + 18).toFixed(1)}" y2="${y}"/><line x1="${x}" y1="${(tp.y - 18).toFixed(1)}" x2="${x}" y2="${(tp.y - 7).toFixed(1)}"/><line x1="${x}" y1="${(tp.y + 7).toFixed(1)}" x2="${x}" y2="${(tp.y + 18).toFixed(1)}"/></g>`);
-        const l1 = `${tgtShort} · ${fmtM(r.distance)}`;
-        const l2 = r.visible ? 'in view at this instant' : `hidden behind ${blkName} (${fmtM(r.distanceToBlocker || 0)} away)`;
-        const wd = Math.max(textW(l1, `600 11px ${MONO}`), textW(l2, `500 10px ${MONO}`)) + 16;
-        const hh = 33;
-        const rr = clampRect({ x: tp.x - wd / 2, y: tp.y + 24, w: wd, h: hh }, W, H);
-        for (let k = 0; k < 6 && placed.some((q) => rectsHit(q, rr)); k++) rr.y += 18;
-        placed.push(rr);
-        html.push(`<div class="slo-sight ${r.visible ? 'ok' : 'bad'}" style="transform:translate(${rr.x.toFixed(1)}px,${rr.y.toFixed(1)}px)"><b>${esc(l1)}</b><span>${esc(l2)}</span></div>`);
+        placed.push({ x: tp.x - 20, y: tp.y - 20, w: 40, h: 40 });
       }
     }
   }
 
-  // ---- vehicle labels: name + speed; leader to the vehicle ----
+  // ---- vehicle tags: "A · 74 mph", small, with a leader to the vehicle ----
   const vlabels = [];
   for (const v of info.vehicles) {
     if (!v.primary) continue;
@@ -731,28 +739,28 @@ function update(cam) {
     const moving = mps * MPH >= 0.5;
     const hidden = isWit && hiddenFromCam(cam, v.id, c);
     const inf = isInf(v.o);
-    const l1 = v.name;
+    const l1 = v.name.replace(/^Vehicle\s+/, '');
     const l2 = moving ? fmtMph(mps) : 'stopped';
-    const fw = textW(l1, `600 11px ${MONO}`) + textW(l2, `700 12px ${MONO}`) + 26 + (hidden ? textW(' not in view', `500 10px ${MONO}`) : 0) + (inf ? textW('INFERRED', `700 8px ${MONO}`) + 18 : 0);
-    vlabels.push({ v, s, l1, l2, hidden, w: fw, h: 22, inf, mps, dist: cam.isOrthographicCamera ? 0 : cam.position.distanceTo(c) });
+    const fw = textW(l1, `700 11px ${MONO}`) + textW(' · ' + l2, `600 11px ${MONO}`) + 14;
+    vlabels.push({ v, s, l1, l2, hidden, w: fw, h: 19, inf, mps, dist: cam.isOrthographicCamera ? 0 : cam.position.distanceTo(c) });
   }
   // nearer vehicles first get the best spot; overhead labels go below the vehicle, perspective above
   vlabels.sort((a, b) => a.dist - b.dist);
   for (const L of vlabels) {
-    const gap = overhead ? 8 : 26;
+    const gap = overhead ? 8 : 18;
     const q = { x: L.s.x - L.w / 2, y: overhead ? L.s.y + gap : L.s.y - gap - L.h, w: L.w, h: L.h };
     q.x = Math.max(6, Math.min(W - L.w - 6, q.x));
     for (let k = 0; k < 10 && placed.some((z) => rectsHit(z, q)); k++) q.y += overhead ? L.h + 4 : -(L.h + 4);
     q.y = Math.max(4, Math.min(H - L.h - 30, q.y));
     placed.push(q);
     const ly = overhead ? q.y : q.y + L.h;
-    svg.push(`<line class="slo-lead${L.hidden ? ' hid' : ''}" x1="${L.s.x.toFixed(1)}" y1="${L.s.y.toFixed(1)}" x2="${(q.x + q.w / 2).toFixed(1)}" y2="${ly.toFixed(1)}"/><circle class="slo-anc" cx="${L.s.x.toFixed(1)}" cy="${L.s.y.toFixed(1)}" r="2.2"/>`);
-    html.push(`<div class="slo-veh${L.hidden ? ' hid' : ''}${L.inf ? ' inf' : ''}" style="transform:translate(${q.x.toFixed(1)}px,${q.y.toFixed(1)}px)" title="${esc((L.v.o.label || L.v.id) + (L.v.o.citation ? '\nSource: ' + L.v.o.citation : '') + '\nSpeed: model position change over t±0.05 s')}"><span class="n">${esc(L.l1)}</span><b>${esc(L.l2)}</b>${L.hidden ? '<em>not in view</em>' : ''}${L.inf ? '<i class="tag-inferred">inferred</i>' : ''}</div>`);
+    svg.push(`<line class="slo-lead${L.hidden ? ' hid' : ''}" x1="${L.s.x.toFixed(1)}" y1="${L.s.y.toFixed(1)}" x2="${(q.x + q.w / 2).toFixed(1)}" y2="${ly.toFixed(1)}"/><circle class="slo-anc" cx="${L.s.x.toFixed(1)}" cy="${L.s.y.toFixed(1)}" r="2"/>`);
+    html.push(`<div class="slo-veh${L.hidden ? ' hid' : ''}${L.inf ? ' inf' : ''}" style="transform:translate(${q.x.toFixed(1)}px,${q.y.toFixed(1)}px)" title="${esc((L.v.o.label || L.v.id) + (L.hidden ? '\n(not in view from this camera)' : '') + (L.inf ? '\nPosition inferred' : '') + (L.v.o.citation ? '\nSource: ' + L.v.o.citation : '') + '\nSpeed: model position change over t±0.05 s')}"><b>${esc(L.l1)}</b><span>· ${esc(L.l2)}</span></div>`);
   }
 
-  // ---- gap between the fastest vehicle and the nearest other unit (overhead + chase, before impact) ----
+  // ---- (full) gap: thin dimension line between the fastest vehicle and the nearest other unit, before impact ----
   const imp = info.impact;
-  if ((overhead || isChase) && info.vehicles.length > 1 && (!imp || t < imp.t - 0.02)) {
+  if (full && (overhead || isChase) && info.vehicles.length > 1 && (!imp || t < imp.t - 0.02)) {
     let fast = null, fv = 0;
     for (const v of info.vehicles) { const s = speeds.get(v.id) || 0; if (s > fv) { fv = s; fast = v; } }
     if (fast && fv * MPH > 3) {
@@ -769,24 +777,22 @@ function update(cam) {
         const p1 = fb.clampPoint(p2, new THREE.Vector3());
         p2.copy(best.ob.clampPoint(p1, new THREE.Vector3()));
         const gd = p1.distanceTo(p2);
-        p1.y = p2.y = overhead ? 6.3 : 0.8;
+        p1.y = p2.y = overhead ? 6.3 : 0.15;
         const a = proj(p1), b = proj(p2);
         if (a.on && b.on && Math.hypot(a.x - b.x, a.y - b.y) > 24) {
-          const ang = Math.atan2(b.y - a.y, b.x - a.x), nx = -Math.sin(ang) * 6, ny = Math.cos(ang) * 6;
-          svg.push(`<g class="slo-gap"><line x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}"/><line x1="${(a.x - nx).toFixed(1)}" y1="${(a.y - ny).toFixed(1)}" x2="${(a.x + nx).toFixed(1)}" y2="${(a.y + ny).toFixed(1)}"/><line x1="${(b.x - nx).toFixed(1)}" y1="${(b.y - ny).toFixed(1)}" x2="${(b.x + nx).toFixed(1)}" y2="${(b.y + ny).toFixed(1)}"/></g>`);
-          const l = `gap ${fmtM(gd)}` + (fv > 0.5 ? ` · ${(gd / fv).toFixed(2)} s at ${fmtMph(fv)}` : '');
-          const wd = textW(l, `600 11px ${MONO}`) + 14;
-          const rr = clampRect({ x: (a.x + b.x) / 2 - wd / 2, y: (a.y + b.y) / 2 - 22, w: wd, h: 19 }, W, H);
-          for (let k = 0; k < 6 && placed.some((q) => rectsHit(q, rr)); k++) rr.y -= 22;
-          placed.push(rr);
-          html.push(`<div class="slo-gaplbl" style="transform:translate(${rr.x.toFixed(1)}px,${rr.y.toFixed(1)}px)" title="Closest distance between the two vehicles' bounding boxes at this instant; time = gap / current speed">${esc(l)}</div>`);
+          const ang = Math.atan2(b.y - a.y, b.x - a.x), nx = -Math.sin(ang) * 5, ny = Math.cos(ang) * 5;
+          let deg = ang * 180 / Math.PI;
+          if (deg > 90) deg -= 180; else if (deg < -90) deg += 180;
+          const l = `${Math.round(gd)} m · ${(gd / fv).toFixed(2)} s`;
+          const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+          svg.push(`<g class="slo-gap"><line x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}"/><line x1="${(a.x - nx).toFixed(1)}" y1="${(a.y - ny).toFixed(1)}" x2="${(a.x + nx).toFixed(1)}" y2="${(a.y + ny).toFixed(1)}"/><line x1="${(b.x - nx).toFixed(1)}" y1="${(b.y - ny).toFixed(1)}" x2="${(b.x + nx).toFixed(1)}" y2="${(b.y + ny).toFixed(1)}"/><text x="${mx.toFixed(1)}" y="${(my - 5).toFixed(1)}" transform="rotate(${deg.toFixed(1)} ${mx.toFixed(1)} ${my.toFixed(1)})"><title>Closest distance between the two vehicles' bounding boxes at this instant; time = gap / current speed (${fmtMph(fv)})</title>${esc(l)}</text></g>`);
         }
       }
     }
   }
 
-  // ---- road / street labels (overhead only), along the road axis, placed last in free space ----
-  if (overhead) {
+  // ---- (full) road / street labels (overhead only), along the road axis, placed last in free space ----
+  if (full && overhead) {
     for (const rd of info.roads) {
       const a = proj(rd.axis.a), b = proj(rd.axis.b);
       // clip segment to the viewport (inset)

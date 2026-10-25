@@ -51,10 +51,13 @@ function mats(T) {
   const c = cacheFor(T);
   if (c.mats.chrome) return c.mats;
   const S = (o) => new T.MeshStandardMaterial(o);
+  const P = (o) => new (T.MeshPhysicalMaterial || T.MeshStandardMaterial)(o);
   const m = c.mats;
-  m.chrome = S({ color: 0xe8eaec, metalness: 1.0, roughness: 0.14 });
-  m.alum = S({ color: 0xc9cdd2, metalness: 0.9, roughness: 0.3 });
-  m.alumDull = S({ color: 0xa9adb2, metalness: 0.75, roughness: 0.45 });
+  // Env-map-friendly metals: physical materials whose look comes from scene.environment (IBL); with no env map they
+  // fall back to a mid-grey base so they never read as black voids.
+  m.chrome = P({ color: 0xeceef0, metalness: 1.0, roughness: 0.07, envMapIntensity: 1.25 });
+  m.alum = P({ color: 0xd2d6da, metalness: 1.0, roughness: 0.2, clearcoat: 0.6, clearcoatRoughness: 0.08, envMapIntensity: 1.1 });
+  m.alumDull = P({ color: 0xb2b6bb, metalness: 0.8, roughness: 0.42, envMapIntensity: 0.9 });
   m.frame = S({ color: 0x1b1c1e, metalness: 0.35, roughness: 0.55 });
   m.steelDark = S({ color: 0x2a2c2f, metalness: 0.5, roughness: 0.5 });
   m.trim = S({ color: 0x151617, metalness: 0.0, roughness: 0.55 });
@@ -62,20 +65,24 @@ function mats(T) {
   m.rubber = S({ color: 0x111112, metalness: 0.0, roughness: 0.9 });
   m.tire = S({ color: 0x18191a, metalness: 0.0, roughness: 0.88 });
   m.hole = S({ color: 0x050505, metalness: 0.0, roughness: 1.0 });
-  m.glass = new T.MeshPhysicalMaterial({ color: 0x1a252d, metalness: 0.05, roughness: 0.04, clearcoat: 1, clearcoatRoughness: 0.02, transparent: true, opacity: 0.88 });
-  m.panelWhite = S({ color: 0xe9ebea, metalness: 0.25, roughness: 0.42 });
-  m.frp = S({ color: 0xf2f2ee, metalness: 0.05, roughness: 0.38 });
+  m.well = S({ color: 0x0a0a0b, metalness: 0.0, roughness: 0.95, side: T.BackSide });
+  m.glass = P({ color: 0x1a252d, metalness: 0.05, roughness: 0.04, clearcoat: 1, clearcoatRoughness: 0.02, transparent: true, opacity: 0.88 });
+  m.panelWhite = P({ color: 0xe9ebea, metalness: 0.2, roughness: 0.38, clearcoat: 0.35, clearcoatRoughness: 0.2, envMapIntensity: 0.9 });
+  m.frp = P({ color: 0xf2f2ee, metalness: 0.0, roughness: 0.32, clearcoat: 0.5, clearcoatRoughness: 0.15, envMapIntensity: 0.9 });
   m.wood = S({ color: 0x8a6440, metalness: 0.0, roughness: 0.82 });
-  m.rimWhite = S({ color: 0xd8d8d2, metalness: 0.3, roughness: 0.4 });
+  m.rimWhite = P({ color: 0xd8d8d2, metalness: 0.3, roughness: 0.35, clearcoat: 0.6 });
+  // DOT-C2 retroreflective sheeting: bright under light, slight self-lit floor so it reads at night in headlamps
   m.reflRed = S({ color: 0xb4121a, metalness: 0.1, roughness: 0.3, emissive: 0x200000 });
   m.reflWhite = S({ color: 0xf4f4f4, metalness: 0.1, roughness: 0.25, emissive: 0x111111 });
-  m.yellowBus = new T.MeshPhysicalMaterial({ color: 0xf2a900, metalness: 0.1, roughness: 0.32, clearcoat: 1, clearcoatRoughness: 0.08 });
+  m.reflAmber = S({ color: 0xd07a0c, metalness: 0.1, roughness: 0.3, emissive: 0x1a0d00 });
+  m.yellowBus = P({ color: 0xf2a900, metalness: 0.1, roughness: 0.32, clearcoat: 1, clearcoatRoughness: 0.08 });
   m.redSign = S({ color: 0xb01018, metalness: 0.1, roughness: 0.35 });
   m.ledSign = S({ color: 0x1a1408, metalness: 0.2, roughness: 0.3, emissive: 0x3a2400, emissiveIntensity: 1 });
+  m.flapPrint = S({ color: 0xd8d8d8, metalness: 0.6, roughness: 0.3 });
   for (const k in m) m[k].name = 'heavy_' + k;
-  if (SHARED && SHARED.getMaterials) {            // library-wide look: share glass/chrome/rubber/trim with the car models
+  if (SHARED && SHARED.getMaterials) {            // library-wide look: share glass/rubber/trim with the car models
     const sm = SHARED.getMaterials(T);
-    m.glass = sm.glass; m.chrome = sm.chrome; m.rubber = sm.rubber; m.trim = sm.trim; m.tire = sm.rubber;
+    m.glass = sm.glass; m.rubber = sm.rubber; m.trim = sm.trim; m.tire = sm.rubber;
   }
   return m;
 }
@@ -361,6 +368,103 @@ function lampMesh(T, geo, mat, name, pos, rot = [0, 0, 0]) {
   m.name = name; m.position.set(...pos); m.rotation.set(...rot);
   m.castShadow = false; m.receiveShadow = false;
   return m;
+}
+
+// ---------------------------------------------------------------- contact shadow (baked soft AO footprint, no DOM needed)
+// A ground-hugging plane (y = 0.006) with a procedurally baked alpha texture: soft footprint under the body plus darker
+// contact blobs under every tyre. It never casts/receives shadows and is invisible to raycasts (LOS code is unaffected).
+// spec: { L, W, rects: [[x0,x1,z0,z1,alpha,soft]], blobs: [[x,z,rx,rz,alpha]] } in vehicle-local metres.
+function contactShadow(T, key, spec) {
+  const c = cacheFor(T);
+  c.shadow = c.shadow || {};
+  if (!c.shadow[key]) {
+    const pad = 0.7, PW = spec.W + 2 * pad, PL = spec.L + 2 * pad;
+    const nx = 48, nz = Math.max(64, Math.min(320, Math.round(nx * PL / PW)));
+    const data = new Uint8Array(nx * nz * 4);
+    const sm = (e0, e1, x) => { const t = Math.max(0, Math.min(1, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t); };
+    for (let j = 0; j < nz; j++) for (let i = 0; i < nx; i++) {
+      const x = -PW / 2 + (i + 0.5) / nx * PW, z = -PL / 2 + (j + 0.5) / nz * PL;
+      let keep = 1;
+      for (const [x0, x1, z0, z1, a, soft = 0.45] of spec.rects) {
+        const fx = sm(x0 - soft, x0 + soft * 0.4, x) * (1 - sm(x1 - soft * 0.4, x1 + soft, x));
+        const fz = sm(z0 - soft, z0 + soft * 0.4, z) * (1 - sm(z1 - soft * 0.4, z1 + soft, z));
+        keep *= 1 - a * fx * fz;
+      }
+      for (const [bx, bz, rx, rz, a] of spec.blobs) {
+        const d = Math.hypot((x - bx) / rx, (z - bz) / rz);
+        keep *= 1 - a * Math.exp(-d * d * 2.2);
+      }
+      const k = (j * nx + i) * 4;
+      data[k] = data[k + 1] = data[k + 2] = 0; data[k + 3] = Math.round((1 - keep) * 255);
+    }
+    const tex = new T.DataTexture(data, nx, nz, T.RGBAFormat);
+    tex.magFilter = T.LinearFilter; tex.minFilter = T.LinearFilter; tex.needsUpdate = true;
+    const geo = new T.PlaneGeometry(PW, PL); geo.rotateX(-Math.PI / 2);
+    // PlaneGeometry uv.v runs +y -> after rotateX(-90deg) +y maps to -z, so v=1 is the front (-Z): flip to match data rows (row 0 = -Z)
+    const uv = geo.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setY(i, 1 - uv.getY(i));
+    const mat = new T.MeshBasicMaterial({ color: 0x000000, map: tex, transparent: true, depthWrite: false, toneMapped: false,
+      polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2, opacity: 0.85 });
+    mat.name = 'heavy_contact_shadow';
+    c.shadow[key] = { geo, mat };
+  }
+  const { geo, mat } = c.shadow[key];
+  const m = new T.Mesh(geo, mat);
+  m.position.y = 0.006; m.renderOrder = -1;
+  m.castShadow = false; m.receiveShadow = false;
+  m.raycast = () => {};
+  m.userData.noOcclude = true;
+  return m;
+}
+function addContactShadow(T, root, key, spec, opts) {
+  if (opts && opts.contactShadow === false) { root.userData.contactShadow = null; return; }
+  const m = contactShadow(T, key, spec);
+  m.name = root.name + '_contact_shadow';
+  root.add(m);
+  root.userData.contactShadow = m;
+}
+// blobs for a row of wheels at ±x (dual = wider blob)
+const wheelBlobs = (x, zs, dual, R = 0.51) => zs.flatMap(z => [-1, 1].map(s => [s * x, z, dual ? 0.42 : 0.26, R * 0.55, 0.75]));
+
+// ---------------------------------------------------------------- lamp glare halos (night "star" glow, additive sprites)
+function haloTex(T) {
+  const c = cacheFor(T);
+  if (!c.halo) {
+    const n = 64, d = new Uint8Array(n * n * 4);
+    for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
+      const x = (i + 0.5) / n * 2 - 1, y = (j + 0.5) / n * 2 - 1, r = Math.hypot(x, y);
+      const core = Math.exp(-r * r * 18), glow = Math.max(0, 1 - r) ** 2.4 * 0.55;
+      const streak = Math.exp(-(y * y) * 900) * Math.max(0, 1 - Math.abs(x)) * 0.35 + Math.exp(-(x * x) * 900) * Math.max(0, 1 - Math.abs(y)) * 0.2;
+      const v = Math.min(1, core + glow + streak);
+      const k = (j * n + i) * 4; d[k] = d[k + 1] = d[k + 2] = 255; d[k + 3] = Math.round(v * 255);
+    }
+    c.halo = new T.DataTexture(d, n, n, T.RGBAFormat);
+    c.halo.magFilter = T.LinearFilter; c.halo.minFilter = T.LinearFilter; c.halo.needsUpdate = true;
+  }
+  return c.halo;
+}
+const HALO_COLOR = { head: 0xfff1d8, tail: 0xff2a14, marker: 0xff2a14, amber: 0xffa020 };
+const HALO_SIZE = { head: 1.1, tail: 0.6, marker: 0.42, amber: 0.42 };
+function haloSprite(T, kind) {
+  const c = cacheFor(T);
+  c.haloMat = c.haloMat || {};
+  if (!c.haloMat[kind]) {
+    c.haloMat[kind] = new T.SpriteMaterial({ map: haloTex(T), color: HALO_COLOR[kind], blending: T.AdditiveBlending, transparent: true,
+      depthWrite: false, toneMapped: false, opacity: kind === 'head' ? 0.9 : 0.8 });
+    c.haloMat[kind].name = 'heavy_halo_' + kind;
+  }
+  const sp = new T.Sprite(c.haloMat[kind]);
+  sp.scale.setScalar(HALO_SIZE[kind] || 0.4);
+  sp.raycast = () => {};
+  sp.castShadow = false; sp.visible = false;
+  sp.userData.noOcclude = true;
+  return sp;
+}
+// wheel-well liner: dark inside of an arch cut through a body side profile, so you never see through the body
+function wheelWell(B, T, z, R, archR, halfW, inset = 0.25) {
+  const g = new T.CylinderGeometry(archR - 0.02, archR - 0.02, halfW * 2 - 0.04, 24, 1, true, 0, Math.PI);
+  g.rotateZ(Math.PI / 2);                                  // axis -> X, half-shell (x>=0 half) -> top (y>=0)
+  B.add('well', g, [0, R, z]);
+  void inset;
 }
 
 // ---------------------------------------------------------------- TRUCK TRACTOR (conventional long-nose, mid-roof sleeper)

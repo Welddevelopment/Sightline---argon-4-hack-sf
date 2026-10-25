@@ -26,7 +26,7 @@
 .slo-hud[hidden] { display: none; }
 #stageWrap:has(.ao-stage) .slo-hud { top: 54px; }
 #stageWrap:has(.ao-stage) .sl-banner { top: 56px; }
-.slo-box { box-sizing: border-box; min-width: 178px; padding: 6px 11px 7px; background: var(--slo-bg); border: 1px solid var(--slo-rule); border-radius: 2px; box-shadow: 0 2px 10px rgba(0, 0, 0, .35); }
+.slo-box { box-sizing: border-box; min-width: 196px; max-width: 330px; padding: 6px 11px 7px; background: var(--slo-bg); border: 1px solid var(--slo-rule); border-radius: 2px; box-shadow: 0 2px 10px rgba(0, 0, 0, .35); }
 .slo-panel { border-left: 3px solid var(--slo-accent); }
 .slo-t { font: 700 20px/1.15 var(--slo-mono); letter-spacing: .01em; }
 .slo-clock { font: 500 12px/1.5 var(--slo-mono); color: var(--slo-dim); }
@@ -49,8 +49,10 @@
 .slo-sig.green i { background: #2fd27a; box-shadow: 0 0 6px #2fd27a; } .slo-sig.green b { color: #6fe3a3; }
 .slo-sig.flashing i { animation: slo-blink 1s steps(2) infinite; }
 @keyframes slo-blink { 50% { opacity: .2; } }
+.slo-sec + .slo-sec { margin-top: 6px; padding-top: 5px; border-top: 1px solid rgba(255, 255, 255, .1); }
+.slo-units .slo-sig:first-of-type { border-top: none; margin-top: 1px; padding-top: 1px; }
 /* state trigger: "VEHICLE A NOW HIDDEN FROM WITNESS B" */
-.slo-state { display: flex; flex-direction: column; gap: 1px; max-width: 340px; border-left: 3px solid; }
+.slo-state { display: flex; flex-direction: column; gap: 1px; margin-left: -11px; margin-right: -11px; margin-bottom: -7px; padding: 5px 11px 7px 8px !important; border-left: 3px solid; }
 .slo-state b { font: 700 11.5px/1.35 var(--slo-mono); letter-spacing: .05em; white-space: normal; }
 .slo-state span { font: 500 10.5px/1.4 var(--slo-mono); color: var(--slo-dim); white-space: normal; }
 .slo-state.bad { border-left-color: var(--slo-blocked); } .slo-state.bad b { color: var(--slo-blocked-fg); }
@@ -79,14 +81,13 @@
 /* the viewer's own eye panel / verdict banner / vehicle sprites step aside while callouts are on */
 #stage.slo-on .sl-eye, #stage.slo-on .sl-banner { display: none !important; }
 
-/* vehicle labels */
-.slo-veh { display: flex; align-items: baseline; gap: 8px; height: 22px; box-sizing: border-box; padding: 0 8px; background: rgba(6, 9, 13, .82); border: 1px solid rgba(255, 255, 255, .22); border-radius: 2px; font: 600 11px/20px ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
-.slo-veh .n { color: #c9d1dc; }
-.slo-veh b { font: 700 12px/20px ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #fff; font-variant-numeric: tabular-nums; }
-.slo-veh em { font: 500 10px/20px ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-style: normal; color: #8794a7; margin-left: -4px; }
-.slo-veh.hid { border-style: dashed; background: rgba(6, 9, 13, .62); }
-.slo-veh.hid .n, .slo-veh.hid b { color: #a9b2bf; }
-.slo-veh.inf { border: 1px dashed #f5a524; }
+/* vehicle tags: "A · 74 mph" */
+.slo-veh { display: flex; align-items: baseline; gap: 5px; height: 19px; box-sizing: border-box; padding: 0 6px; background: rgba(6, 9, 13, .78); border: 1px solid rgba(255, 255, 255, .22); border-radius: 2px; font: 600 11px/17px var(--slo-mono); font-variant-numeric: tabular-nums; }
+.slo-veh b { font: 700 11px/17px var(--slo-mono); color: #fff; }
+.slo-veh span { color: #d5dbe4; }
+.slo-veh.hid { border-style: dashed; background: rgba(6, 9, 13, .55); }
+.slo-veh.hid b, .slo-veh.hid span { color: #a9b2bf; }
+.slo-veh.inf { border: 1px dashed var(--slo-inferred); }
 .slo-lead { stroke: rgba(255, 255, 255, .7); stroke-width: 1; }
 .slo-lead.hid { stroke-dasharray: 3 3; stroke: rgba(255, 255, 255, .45); }
 .slo-anc { fill: #fff; stroke: rgba(0, 0, 0, .6); stroke-width: 1; }
@@ -104,13 +105,14 @@
 .slo-ret.bad circle, .slo-ret.bad line { stroke: var(--slo-blocked); }
 
 /* stopping distance / brake point tags */
-.slo-mark { display: flex; flex-direction: column; padding: 3px 7px 4px; background: rgba(6, 9, 13, .82); border: 1px solid rgba(255, 255, 255, .25); border-top: 2px solid #f2f4f7; border-radius: 2px; font: 600 11px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.slo-mark { display: flex; flex-direction: column; padding: 1px 6px 2px; background: rgba(6, 9, 13, .82); border: 1px solid rgba(255, 255, 255, .25); border-top: 2px solid #f2f4f7; border-radius: 2px; font: 600 10px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
 .slo-mark span { font: 500 10px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #b9c2d0; }
 .slo-mark.brake { border-top-color: #e2b052; } .slo-mark.brake b { color: #f2c46b; }
 .slo-mark.none { border-top-color: #ff4d4d; } .slo-mark.none b { color: #ff9a9a; }
 
 /* vehicle gap */
-.slo-gap line { stroke: #4dd2ff; stroke-width: 1.4; }
+.slo-gap line { stroke: #4dd2ff; stroke-width: 1.2; }
+.slo-gap text { fill: #bfefff; font: 600 10.5px var(--slo-mono); text-anchor: middle; paint-order: stroke; stroke: rgba(0, 0, 0, .85); stroke-width: 3px; stroke-linejoin: round; font-variant-numeric: tabular-nums; }
 .slo-gaplbl { padding: 0 7px; height: 19px; line-height: 18px; background: rgba(6, 9, 13, .84); border: 1px solid rgba(77, 210, 255, .7); border-radius: 2px; font: 600 11px/18px ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #9fe6ff; }
 
 /* street / lane labels on the plan */
@@ -119,8 +121,14 @@
 .slo-road span { font: 500 9px/1.2 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: rgba(222, 228, 236, .78); }
 .slo-road.inf b { color: #ffd28a; }
 
-/* toggle (app only; exports use ?callouts=0|1) */
-.slo-toggle { position: absolute; top: 12px; right: 12px; z-index: 4; padding: 4px 10px; font: 600 11px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #e8ecf2; background: rgba(6, 9, 13, .78); border: 1px solid rgba(255, 255, 255, .25); border-radius: 2px; cursor: pointer; }
-.slo-toggle:hover { border-color: #e2b052; }
-.slo-toggle.off { color: #8794a7; }
+/* callout density toggle (app only; exports use ?callouts=0|min|full) */
+.slo-toggle { position: absolute; top: 12px; right: 12px; z-index: 5; display: flex; align-items: center; gap: 0; font: 600 10.5px/1 var(--slo-mono); color: #e8ecf2; background: rgba(6, 9, 13, .82); border: 1px solid rgba(255, 255, 255, .22); border-radius: 2px; overflow: hidden; }
+.slo-toggle span { padding: 0 8px; color: var(--slo-faint); letter-spacing: .06em; text-transform: uppercase; font-size: 9.5px; }
+.slo-toggle button { font: inherit; color: var(--slo-dim); background: transparent; border: 0; border-left: 1px solid rgba(255, 255, 255, .14); padding: 6px 9px; cursor: pointer; }
+.slo-toggle button:hover { color: #fff; }
+.slo-toggle button.on { color: #10141a; background: var(--slo-accent); }
 html.clean .slo-toggle { display: none; }
+.slo-card-s { margin-top: 6px; padding-top: 5px; border-top: 1px solid rgba(255, 255, 255, .1); font: 500 11px/1.45 var(--slo-mono); color: var(--slo-dim); }
+.slo-card-s b { font: 700 9.5px/1 var(--slo-mono); letter-spacing: .12em; color: var(--slo-faint); margin-right: 4px; }
+.slo-card-s.warn { color: #f2c46b; }
+.slo-card-s .citation { color: var(--slo-faint); }

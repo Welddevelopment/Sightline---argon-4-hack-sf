@@ -1,11 +1,12 @@
 // Sightline shot rig (owner: SHOT RIG). Renders a case world as a short film in a forensic studio's shot grammar:
-// title cards, constant-speed orbits, top-down tracking, chase (with freeze), witness POV (with pan), aerial dissolve.
-// Loads the world through the viewer itself (import './viewer.js', ?world=...) and draws the world's own scene with a
-// film camera on the viewer's renderer, so lighting/assets/overlays are exactly what the app shows. viewer.js is not edited.
+// title cards, constant-speed orbits, top-down tracking, chase (with freeze), witness eye view (with pan), aerial dissolve.
+// Loads the world through the viewer itself (import './viewer.js', ?world=...) and draws the viewer's own scene with a
+// film camera on the viewer's renderer, so lighting/assets/overlays match the app. viewer.js is not edited.
 // Deterministic: render/film.mjs calls film.frame(i) for every frame index; no wall clock is involved.
-//   URL: film.html?world=/cases/demo/worlds/world_v2.js&quality=interactive[&plan=/cases/demo/plan/shot_plan.json][&play=1]
-//   API: await film.ready; film.setup(plan|null, {aerial}) -> timeline; film.frame(i) -> { key, same, shot, ... }
-// Plan schema (all fields optional unless noted) is documented in status/shot_rig.md.
+//   URL: film.html?world=/cases/demo/worlds/world_v2.js&quality=interactive[&plan=/cases/demo/plan/shot_plan.json&play=1]
+//   API: film.setup(plan|null, {aerial, fallbackImage, fps}) -> timeline; film.frame(i) -> { key, same, shot, ... }
+// Plan schemas (ARGON-SHOTS keyframed plan, and a simple typed form used by the built-in default) are in status/shot_rig.md.
+// Transitions (fade / dissolve) are applied by render/film.mjs at assembly (ffmpeg), not here.
 import * as THREE from 'three';
 import './viewer.js';
 
@@ -18,31 +19,36 @@ const world = sl.world;
 const scene = world.root.parent;
 const stage = document.getElementById('stage');
 
-// ---- grab the viewer's renderer from the first render (scene.onBeforeRender receives it) ----
+// ---- grab the viewer's renderer from one render (scene.onBeforeRender receives it) ----
 const renderer = await new Promise((res) => {
   const prev = scene.onBeforeRender;
   scene.onBeforeRender = function (r, s, c, rt) { scene.onBeforeRender = prev; if (prev) prev.call(this, r, s, c, rt); res(r); };
   sl.renderFrame();
 });
-// viewer-initiated renders (inside sl.setTime / sl.setCamera) are suppressed while we drive it: we render once per frame ourselves
+// viewer-initiated renders (inside sl.setTime / sl.setCamera) are suppressed while we drive it; we render once per frame
 const viewerRender = renderer.render;
 let suppress = false;
 renderer.render = function (s, c) { if (suppress && s === scene) return; return viewerRender.call(this, s, c); };
 
 const persp = new THREE.PerspectiveCamera(50, 16 / 9, 0.2, 4000);
 const ortho = new THREE.OrthographicCamera(-50, 50, 50, -50, 0.1, 3000);
-const _b = new THREE.Box3(), _v = new THREE.Vector3();
+const _b = new THREE.Box3();
 const hasOverlays = () => !!(sl.overlays && typeof sl.overlays.set === 'function');
 
 // ---------- DOM chrome ----------
 const el = (tag, id, html = '') => { const e = document.createElement(tag); e.id = id; e.innerHTML = html; stage.appendChild(e); return e; };
-const aerialImg = el('img', 'film-aerial');
-const blackEl = el('div', 'film-black');
+const imgEl = el('img', 'film-img');
 const titleEl = el('div', 'film-title');
-const ltEl = el('div', 'film-lt', '<div class="row"><div class="no"></div><div class="tx"><div class="tt"></div><div class="cp"></div></div></div>');
-const trEl = el('div', 'film-tr', '<div class="b">SIMULATED RECONSTRUCTION</div><br><div class="m"></div>');
-const stampEl = el('div', 'film-stamp');
+const hudEl = el('div', 'film-hud');
+const ltEl = el('div', 'film-lt');
+const trEl = el('div', 'film-tr');
+const wmEl = el('div', 'film-wm');
+const lblEl = el('div', 'film-labels');
+const sbEl = el('div', 'film-scale');
+const bannerEl = el('div', 'film-banner');
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const styleProp = (style, k) => { const m = String(style || '').match(new RegExp('(?:^|;)\\s*' + k + '\\s*:\\s*([^;]+)')); return m ? m[1].trim() : null; };
+const W = () => stage.clientWidth || innerWidth, H = () => stage.clientHeight || innerHeight;
 
 // ---------- world helpers ----------
 const clampT = (t) => Math.max(0, Math.min(world.duration, Number(t) || 0));
@@ -61,12 +67,12 @@ function objCenter(id, out = new THREE.Vector3()) {
 const vehicles = () => Object.entries(world.objects).filter(([, o]) => o.kind === 'vehicle' && o.node).map(([id]) => id);
 const witness = (id) => (world.witnesses || []).find((w) => w.id === id) || null;
 const eyeOf = (w) => new THREE.Vector3(w.position[0], w.eyeHeight != null ? w.eyeHeight : (w.position[1] || 1.6), w.position[2]);
+const ALL_WITNESSES = (world.witnesses || []).slice();
 
 let impactT = null, impactP = null, primary = null, roi = null;
 function analyze() {
   const oi = hasOverlays() && sl.overlays.info ? sl.overlays.info() : null;
   impactT = oi && oi.impact ? oi.impact.t : Number.isFinite(+(world.meta || {}).impactT) ? +world.meta.impactT : world.duration * 0.5;
-  // primary = fastest vehicle over the run-up to impact
   let best = -1;
   for (const id of vehicles()) {
     const a = withTime(Math.max(0, impactT - 3), () => objCenter(id)), b = withTime(impactT, () => objCenter(id));
@@ -78,9 +84,9 @@ function analyze() {
   impactP.y = 0;
   roi = new THREE.Box3().setFromCenterAndSize(impactP, new THREE.Vector3(30, 2, 30));
   for (const id of vehicles()) for (let k = -4; k <= 1; k++) { const p = withTime(impactT + k, () => objCenter(id)); if (p && p.distanceTo(impactP) < 150) roi.expandByPoint(p); }
-  for (const w of world.witnesses || []) { const p = eyeOf(w); if (p.distanceTo(impactP) < 120) roi.expandByPoint(p); }
+  for (const w of ALL_WITNESSES) { const p = eyeOf(w); if (p.distanceTo(impactP) < 120) roi.expandByPoint(p); }
 }
-// a point spec: [x,y,z] | [x,z] | {x,y,z} | object id | witness id | 'impact' | 'roi'
+// point spec: [x,y,z] | [x,z] | {x,y,z} | object id | witness id | 'impact' | 'roi' | 'primary'
 function point(spec, out = new THREE.Vector3()) {
   if (spec == null) return out.copy(impactP);
   if (Array.isArray(spec)) return spec.length === 2 ? out.set(+spec[0], 0, +spec[1]) : out.set(+spec[0], +spec[1], +spec[2]);
@@ -93,7 +99,7 @@ function point(spec, out = new THREE.Vector3()) {
   if (w) return out.copy(eyeOf(w));
   return out.copy(impactP);
 }
-function headingOf(id, t) { // unit XZ travel direction of an object around t (velocity, fallback to overall)
+function headingOf(id, t) {
   const p = (tt) => withTime(tt, () => objCenter(id));
   let d = p(Math.min(world.duration, t + 0.25)).sub(p(Math.max(0, t - 0.25))); d.y = 0;
   if (d.lengthSq() < 1e-4) { d = p(Math.min(world.duration, t)).sub(p(Math.max(0, t - 2))); d.y = 0; }
@@ -101,290 +107,489 @@ function headingOf(id, t) { // unit XZ travel direction of an object around t (v
   return d.normalize();
 }
 
-// ---------- easing ----------
-const ease = { linear: (u) => u, inout: (u) => 0.5 - 0.5 * Math.cos(Math.PI * u), in: (u) => 1 - Math.cos(Math.PI * u / 2), out: (u) => Math.sin(Math.PI * u / 2) };
+// ---------- easing / interpolation ----------
+const EASE = { linear: (u) => u, inout: (u) => 0.5 - 0.5 * Math.cos(Math.PI * u), in: (u) => 1 - Math.cos(Math.PI * u / 2), out: (u) => Math.sin(Math.PI * u / 2) };
+const easeFn = (n) => EASE[String(n || 'linear').toLowerCase().replace(/[-_ ]/g, '').replace('easeinout', 'inout').replace('easein', 'in').replace('easeout', 'out')] || EASE.linear;
 const num = (...xs) => { for (const x of xs) if (x != null && x !== '' && Number.isFinite(+x)) return +x; return undefined; };
 const lerp = (a, b, u) => a + (b - a) * u;
+const clamp01 = (u) => Math.max(0, Math.min(1, u));
+function piecewise(map, s) { // [[s, v], ...] piecewise linear, clamped
+  if (!map.length) return 0;
+  if (s <= map[0][0]) return +map[0][1];
+  for (let i = 0; i < map.length - 1; i++) { const [s0, v0] = map[i], [s1, v1] = map[i + 1]; if (s <= s1) return s1 > s0 ? lerp(+v0, +v1, (s - s0) / (s1 - s0)) : +v1; }
+  return +map[map.length - 1][1];
+}
+const cr = (p0, p1, p2, p3, v) => 0.5 * (2 * p1 + (-p0 + p2) * v + (2 * p0 - 5 * p1 + 4 * p2 - p3) * v * v + (-p0 + 3 * p1 - 3 * p2 + p3) * v * v * v);
+function aspect() { return W() / H(); }
 
-// ---------- default plan (case-agnostic: derived from the world) ----------
+// ---------- default plan (case-agnostic: derived from the world), simple typed form ----------
 function defaultPlan() {
   const m = world.meta || {};
-  const ws = world.witnesses || [];
+  const ws = ALL_WITNESSES;
   const failing = ws.find((w) => { try { const r = sl.sightline(w.id, w.observationTime != null ? w.observationTime : impactT); return r && !r.visible; } catch (_) { return false; } }) || ws[0];
   const others = vehicles().filter((v) => v !== primary);
-  const T = impactT;
+  const T = impactT, t0 = Math.max(0, T - 6);
   const shots = [
-    { id: 'title', type: 'title', duration: 2.5, text: m.title || 'Reconstruction', sub: 'Kinematic reconstruction · simulated', note: m.source || '' },
-    { id: 'aerial', type: 'aerial', t: Math.max(0, T - 6), holdStart: 2, duration: 3, holdEnd: 1.5,
-      overlay: { title: 'Scene overview', caption: 'Top-down, north up. Positions at t = ' + Math.max(0, T - 6).toFixed(1) + ' s.' } },
-    { id: 'orbit', type: 'orbit', target: 'impact', radius: 46, height: 22, startDeg: 200, sweepDeg: 100, duration: 8, t: Math.max(0, T - 6), fov: 50,
-      sightline: failing && failing.id, overlay: { title: 'Area of impact', caption: 'Orbit at constant angular speed; scene frozen at t = ' + Math.max(0, T - 6).toFixed(1) + ' s.' } },
+    { id: 'title', type: 'title', duration: 3, text: m.title || 'Reconstruction', sub: 'Kinematic reconstruction · simulated', note: m.source || '', transitionIn: 'fade 0.5', transitionOut: 'fade 0.5' },
+    { id: 'aerial', type: 'aerial', t: t0, holdStart: 2, duration: 3, holdEnd: 1.5, transitionIn: 'fade 0.5', transitionOut: 'dissolve 1',
+      overlay: { title: 'Scene overview', caption: 'Top-down, north up. Positions at t = ' + t0.toFixed(1) + ' s.' } },
+    { id: 'orbit', type: 'orbit', target: 'impact', radius: 46, height: 22, startDeg: 200, sweepDeg: 100, duration: 8, t: t0, fov: 50, transitionOut: 'dissolve 1',
+      overlay: { title: 'Area of impact', caption: 'Orbit at constant angular speed; scene frozen at t = ' + t0.toFixed(1) + ' s.' } },
     { id: 'topdown', type: 'topdown', frame: [primary, 'impact', ...others.slice(0, 1)], margin: 14, minHalf: 22, sceneTime: [Math.max(0, T - 7), Math.min(world.duration, T + 1)],
-      sightline: failing && failing.id, overlay: { title: 'Top-down tracking', caption: 'Vehicle paths to impact (real time). Witness sight lines: green clear, red blocked.' } },
-    { id: 'chase', type: 'chase', vehicle: primary, offset: [11, 3.6, 0], lookAhead: 18, fov: 55, sceneTime: [Math.max(0, T - 6), T], freezeAt: T,
+      overlay: { title: 'Top-down tracking', caption: 'Vehicle paths to impact, real time.' }, transitionOut: 'fade 0.5' },
+    { id: 'chase', type: 'chase', vehicle: primary, offset: [11, 3.6, 0], lookAhead: 18, fov: 55, sceneTime: [t0, T], freezeAt: T, transitionIn: 'fade 0.5', transitionOut: 'fade 0.5',
       overlay: { title: 'Chase view', caption: 'Camera follows ' + ((world.objects[primary] || {}).label || primary || '').replace(/\s*\(.*$/, '') + '; frozen at impact.' } },
   ];
   if (failing) {
     const ot = failing.observationTime != null ? failing.observationTime : T - 1;
-    shots.push({ id: 'pov_' + failing.id, type: 'pov', witness: failing.id, lookAt: failing.lookAt, fov: 60,
-      sceneTime: [Math.max(0, Math.min(ot, T) - 4), Math.min(world.duration, Math.max(ot, T))],
-      overlay: { title: 'Eye view: ' + String(failing.name || failing.id).replace(/\s*\(fictional\)/i, ''), caption: failing.claim ? '“' + failing.claim + '”' : 'Eye height ' + (failing.eyeHeight || 1.6) + ' m.' } });
+    shots.push({ id: 'pov_' + failing.id, type: 'pov', witness: failing.id, lookAt: failing.lookAt, fov: 60, transitionIn: 'fade 0.5',
+      sceneTime: [Math.max(0, Math.min(ot, T) - 4), Math.min(world.duration, Math.max(ot, T))], sightline: failing.id,
+      overlay: { title: 'Eye view: ' + String(failing.name || failing.id).replace(/\s*\(fictional\)/i, ''), caption: failing.claim ? '“' + failing.claim + '”' : '' } });
     shots.push({ id: 'sight_' + failing.id, type: 'topdown', frame: [failing.id, failing.lookAt || primary], margin: 10, minHalf: 18, t: ot, duration: 0, holdStart: 4, holdEnd: 0,
-      sightline: failing.id, overlay: { title: 'Sight line at t = ' + ot.toFixed(1) + ' s', caption: 'Ray from the witness’s eye to the target, checked against every modeled object.' } });
+      sightline: failing.id, transitionOut: 'fade 0.5', overlay: { title: 'Sight line at t = ' + ot.toFixed(1) + ' s', caption: 'Ray from the witness’s eye to the target, checked against every modeled object.' } });
   }
-  shots.push({ id: 'end', type: 'title', duration: 2.5, text: 'Simulated reconstruction', sub: 'Fictional witnesses · motion fitted to cited evidence', note: 'Not a crash-physics simulation. Generated by Sightline.' });
+  shots.push({ id: 'end', type: 'title', duration: 3, text: 'Simulated reconstruction', sub: 'Fictional witnesses · motion fitted to cited evidence', note: 'Not a crash-physics simulation. Generated by Sightline.', transitionIn: 'fade 0.5', transitionOut: 'fade 0.5' });
   return { title: m.title, fps: 12, shots };
 }
 
-// ---------- plan normalisation ----------
-const TYPE_ALIAS = { card: 'title', title_card: 'title', text: 'title', orbit: 'orbit', topdown: 'topdown', top_down: 'topdown', overhead: 'topdown', tracking: 'topdown',
-  chase: 'chase', follow: 'chase', pov: 'pov', eye: 'pov', witness: 'pov', aerial: 'aerial', aerial_dissolve: 'aerial', dissolve: 'aerial', keyframes: 'keyframes', path: 'keyframes', static: 'keyframes' };
-let plan = null, shots = [], fps = 12, nFrames = 0, aerial = null;
+// ---------- normalisation: every shot becomes { total, tAt(s), poseAt(s,t), ovs[], mode, sel, ... } ----------
+const TYPE = { title: 'title', title_card: 'title', card: 'title', text: 'title', orbit: 'orbit', topdown: 'topdown', top_down: 'topdown', top_down_tracking: 'topdown',
+  overhead: 'topdown', tracking: 'topdown', chase: 'chase', follow: 'chase', pov: 'pov', eye: 'pov', witness: 'pov', witness_eye: 'pov', eye_view: 'pov',
+  aerial: 'aerial', aerial_dissolve: 'aerial', dissolve: 'aerial', keyframes: 'keyframes', path: 'keyframes', static: 'keyframes' };
+let plan = null, shots = [], fps = 12, nFrames = 0, aerial = null, fallbackImage = null;
+
+function parseTransition(x) {
+  if (!x) return { kind: 'cut', d: 0 };
+  if (typeof x === 'object') return { kind: String(x.kind || x.type || 'cut').toLowerCase(), d: num(x.d, x.duration, x.sec) ?? 0.5 };
+  const m = String(x).toLowerCase().match(/(fade|dissolve|cut|crossfade|xfade)\s*([\d.]+)?/);
+  if (!m) return { kind: 'cut', d: 0 };
+  const kind = m[1] === 'crossfade' || m[1] === 'xfade' ? 'dissolve' : m[1];
+  return { kind, d: kind === 'cut' ? 0 : (m[2] ? +m[2] : 0.5) };
+}
+
+function camKeys(s) {
+  const c = s.camera || {};
+  const ks = s.keyframes || s.keys || c.keyframes || c.keys;
+  return Array.isArray(ks) && ks.length ? ks : null;
+}
+const isV2 = (s) => s.durationSec != null || s.sceneTimeMap !== undefined || (camKeys(s) || []).some((k) => k.s != null);
 
 function normShot(s, i) {
-  const type = TYPE_ALIAS[String(s.type || s.kind || 'keyframes').toLowerCase()] || 'keyframes';
-  const sh = { ...s, type, index: i, id: s.id || type + '_' + (i + 1) };
-  const st = s.sceneTime || s.scene_time || s.timeRange || s.t_range || s.sceneT;
-  let t0 = Array.isArray(st) ? +st[0] : num(s.t, s.time, s.sceneT0, s.sceneStart);
-  let t1 = Array.isArray(st) ? +st[1] : num(s.sceneT1, s.sceneEnd);
-  if (t0 == null) t0 = type === 'title' ? 0 : impactT;
-  if (t1 == null) t1 = t0;
-  if (s.freezeAt != null) t1 = Math.min(t1, +s.freezeAt);
-  sh.t0 = clampT(t0); sh.t1 = clampT(Math.max(t0, t1));
-  sh.speed = num(s.speed, s.playbackRate) || 1;
-  const holds = s.holds || s.hold || {};
-  const hs = typeof holds === 'number' ? holds : num(holds.start, holds[0]);
-  const he = typeof holds === 'number' ? holds : num(holds.end, holds[1]);
-  if (type === 'title') { sh.holdStart = 0; sh.holdEnd = 0; sh.motion = num(s.duration, s.seconds) ?? 2; }
-  else {
-    sh.holdStart = num(s.holdStart, s.hold_start, hs) ?? 3;
-    sh.holdEnd = num(s.holdEnd, s.hold_end, s.freezeHold, he) ?? 3;
-    // motion length: explicit duration, else the scene-time span at playback speed
-    const span = (sh.t1 - sh.t0) / sh.speed;
-    sh.motion = num(s.duration, s.motionDuration, s.seconds) ?? (span > 0 ? span : (type === 'aerial' ? 2.5 : 6));
-    if (type === 'aerial' && s.dissolve != null) sh.motion = +s.dissolve;
+  const type = TYPE[String(s.type || s.kind || 'keyframes').toLowerCase()] || 'keyframes';
+  const sh = { src: s, type, index: i, id: s.id || type + '_' + (i + 1), tin: parseTransition(s.transitionIn), tout: parseTransition(s.transitionOut) };
+  if (isV2(s)) normV2(s, sh); else normSimple(s, sh);
+  sh.sel = sh.sel || null;
+  // mode for the viewer's HUD/x-ray/rays + overlays.js; witness views detected by camera position at a witness eye
+  if (!sh.mode && type !== 'title') {
+    const p0 = sh.poseAt(0, sh.tAt(0));
+    const atEye = ALL_WITNESSES.find((w) => eyeOf(w).distanceTo(p0.pos) < 1.5);
+    if (type === 'pov' && (sh.sel || atEye) && s.xray !== false) sh.mode = sh.sel && witness(sh.sel) && eyeOf(witness(sh.sel)).distanceTo(p0.pos) < 1.5 ? sh.sel : atEye ? atEye.id : 'chase_' + primary;
+    else if (p0.cam === 'ortho') sh.mode = 'overhead';
+    else sh.mode = 'chase_' + ((s.camera && s.camera.follow && s.camera.follow.target) || s.vehicle || primary);
   }
-  sh.total = sh.holdStart + sh.motion + sh.holdEnd;
-  // overlay text
-  const ov = s.overlay != null ? s.overlay : s.overlayText != null ? s.overlayText : s.caption != null ? s.caption : null;
-  sh.ov = typeof ov === 'string' ? { title: s.label || '', caption: ov } : Array.isArray(ov) ? { title: s.label || '', items: ov } : { ...(ov || {}) };
-  if (sh.ov.text && !sh.ov.caption) sh.ov.caption = sh.ov.text;
-  if (sh.ov.title == null) sh.ov.title = s.label || s.name || '';
-  sh.hud = s.hud != null ? !!s.hud : sh.ov.hud != null ? !!sh.ov.hud : true;
-  sh.ease = ease[s.easing] || (type === 'orbit' ? ease.linear : ease.inout);
+  if (sh.mode && !sh.mode.startsWith('chase_') && sh.mode !== 'overhead' && !sh.sel) sh.sel = sh.mode;
+  // key frame second in the shot
+  if (sh.keyS == null) sh.keyS = defaultKeyS(sh);
   return sh;
 }
 
-function setup(p, opts = {}) {
-  analyze();
-  aerial = opts.aerial || null;
-  plan = p && Array.isArray(p.shots) && p.shots.length ? p : defaultPlan();
-  fps = num(opts.fps, plan.fps) || 12;
-  shots = plan.shots.map(normShot);
-  let f = 0, no = 0;
-  for (const s of shots) {
-    s.no = s.type === 'title' ? null : ++no;
-    s.start = f; s.n = Math.max(1, Math.round(s.total * fps)); f += s.n;
-    // key frame (local frame index): chase/pov -> end of motion (freeze / critical instant); aerial -> end of dissolve; else mid motion
-    const kf = s.keyAt != null ? (+s.keyAt <= 1 ? s.holdStart + s.motion * +s.keyAt : +s.keyAt)
-      : s.type === 'chase' || s.type === 'pov' ? s.holdStart + s.motion + Math.min(0.5, s.holdEnd / 2)
-      : s.type === 'aerial' ? s.holdStart + s.motion * 0.55 : s.type === 'title' ? s.motion / 2 : s.holdStart + s.motion / 2;
-    s.key = s.start + Math.min(s.n - 1, Math.max(0, Math.round(kf * fps)));
+function normV2(s, sh) {
+  const keys = camKeys(s) || [];
+  const c = s.camera || {};
+  const lastS = keys.reduce((m, k) => Math.max(m, num(k.s, k.time) ?? 0), 0);
+  sh.total = num(s.durationSec, s.duration) ?? (lastS || (num(s.holdStartSec) ?? 0) + (num(s.holdEndSec) ?? 0)) ?? 3;
+  const stm = Array.isArray(s.sceneTimeMap) ? s.sceneTimeMap.filter((p) => Array.isArray(p) && p.length >= 2) : null;
+  const tFixed = num(s.freezeAtT) ?? 0;
+  sh.tAt = (sec) => clampT(stm && stm.length ? piecewise(stm, sec) : sh.type === 'title' ? 0 : tFixed);
+  sh.freezeAt = num(s.freezeAtT);
+  sh.ovs = (Array.isArray(s.overlays) ? s.overlays : s.overlay ? [].concat(s.overlay) : []).map((o) => (typeof o === 'string' ? { kind: 'lower_third', text: o } : o));
+  const sight = sh.ovs.find((o) => /sight/i.test(o.kind || ''));
+  if (sight) sh.sel = sight.fromWitness || sight.witness || null;
+  sh.rays = !!sight;
+  const proj = String(c.projection || '').toLowerCase();
+  const K = keys.map((k, j) => ({ s: num(k.s, k.time) ?? (keys.length > 1 ? sh.total * j / (keys.length - 1) : 0), pos: k.position || k.pos || k.eye, look: k.lookAt || k.target,
+    fov: num(k.fovDeg, k.fov), half: num(k.orthoHeightM, k.orthoHalf) , ease: easeFn(k.ease) })).sort((a, b) => a.s - b.s);
+  const fov0 = num(c.fovDeg, c.fov) || 45;
+  const follow = c.follow && !keys.length ? c.follow : null;
+  sh.poseAt = (sec, t) => {
+    if (follow) return chasePose({ vehicle: follow.target, offset: [num(follow.offsetLocal && follow.offsetLocal[2]) ?? 12, num(follow.offsetLocal && follow.offsetLocal[1]) ?? 3, num(follow.offsetLocal && follow.offsetLocal[0]) ?? 0], lookAhead: follow.lookAheadM, fov: fov0 }, t);
+    if (!K.length) return { cam: 'persp', pos: point([impactP.x - 30, 15, impactP.z + 30]), target: point('impact'), fov: fov0 };
+    let i = 0; while (i < K.length - 1 && K[i + 1].s <= sec) i++;
+    const a = K[i], b = K[Math.min(i + 1, K.length - 1)];
+    const v = b.s > a.s ? a.ease(clamp01((sec - a.s) / (b.s - a.s))) : 0;
+    const P = (k) => point(k.pos);
+    const k0 = K[Math.max(0, i - 1)], k3 = K[Math.min(K.length - 1, i + 2)];
+    const pa = P(a), pb = P(b), p0 = P(k0), p3 = P(k3);
+    const pos = new THREE.Vector3(cr(p0.x, pa.x, pb.x, p3.x, v), cr(p0.y, pa.y, pb.y, p3.y, v), cr(p0.z, pa.z, pb.z, p3.z, v));
+    const target = point(a.look).lerp(point(b.look), v);
+    const fov = lerp(a.fov || fov0, b.fov || fov0, v) || fov0;
+    // top-down plan views (camera within 10 deg of vertical) render orthographic so plan overlays measure correctly
+    const dir = target.clone().sub(pos);
+    const steep = dir.y < 0 && Math.abs(dir.y) / dir.length() > Math.cos(10 * Math.PI / 180);
+    if ((proj === 'orthographic' && sh.type !== 'title') || (steep && (sh.type === 'topdown' || s.forceOrtho))) {
+      const half = proj === 'orthographic' && (a.half || num(c.orthoHeightM)) ? lerp(a.half || +c.orthoHeightM, b.half || +c.orthoHeightM, v) / 2 : dir.length() * Math.tan(fov * Math.PI / 360);
+      return { cam: 'ortho', pos: new THREE.Vector3(target.x, 400, target.z), target: new THREE.Vector3(target.x, 0, target.z), up: [0, 0, -1], half };
+    }
+    return { cam: 'persp', pos, target, fov, up: steep ? [0, 0, -1] : [0, 1, 0] };
+  };
+  // image dissolve (aerial_dissolve): photo for holdStartSec, then cross-dissolves into the 3D
+  if (sh.type === 'aerial') {
+    const hs = num(s.holdStartSec) ?? 2.5;
+    const dd = num(s.dissolveSec) ?? Math.min(2, Math.max(0.5, sh.total - hs - (num(s.holdEndSec) ?? 0)));
+    sh.imgOpacity = (sec) => 1 - clamp01((sec - hs) / dd);
   }
-  nFrames = f;
-  if (aerial && aerial.url) { aerialImg.src = aerial.url; }
-  return info();
+  if (sh.type === 'title') {
+    const tc = sh.ovs.find((o) => /title/i.test(o.kind || ''));
+    sh.card = tc ? { text: tc.text, style: tc.style } : { text: s.text || s.title || '' };
+  }
 }
-const info = () => ({ fps, frames: nFrames, seconds: +(nFrames / fps).toFixed(2), impactT, primary, aerial: !!(aerial && aerial.url), planTitle: plan && plan.title,
-  shots: shots.map((s) => ({ id: s.id, type: s.type, start: s.start, n: s.n, key: s.key, t0: s.t0, t1: s.t1, holdStart: s.holdStart, motion: s.motion, holdEnd: s.holdEnd })) });
 
-// ---------- camera solving ----------
-// returns { cam: 'persp'|'ortho', pos, target, up, fov, half, mode, aerialOpacity }
-function poseFor(s, u, t, tau) {
-  const fov = num(s.fov, s.camera && s.camera.fov) || 50;
-  // explicit camera keyframes override the type's built-in move
-  const keys = s.keyframes || s.keys || (s.camera && (s.camera.keyframes || s.camera.keys));
-  if (Array.isArray(keys) && keys.length) return keyPose(s, keys, u, t, fov);
-  switch (s.type) {
+function normSimple(s, sh) {
+  const type = sh.type;
+  const st = s.sceneTime || s.scene_time || s.timeRange;
+  let t0 = Array.isArray(st) ? +st[0] : num(s.t, s.time);
+  let t1 = Array.isArray(st) ? +st[1] : undefined;
+  if (t0 == null) t0 = type === 'title' ? 0 : impactT;
+  if (t1 == null) t1 = t0;
+  if (s.freezeAt != null) t1 = Math.min(t1, +s.freezeAt);
+  t0 = clampT(t0); t1 = clampT(Math.max(t0, t1));
+  const speed = num(s.speed) || 1;
+  let hs, he, motion;
+  if (type === 'title') { hs = 0; he = 0; motion = num(s.duration) ?? 2; }
+  else {
+    hs = num(s.holdStart) ?? 3; he = num(s.holdEnd, s.freezeHold) ?? 3;
+    const span = (t1 - t0) / speed;
+    motion = num(s.duration) ?? (span > 0 ? span : 6);
+  }
+  sh.total = hs + motion + he;
+  sh.freezeAt = num(s.freezeAt);
+  const um = (sec) => (motion > 0 ? clamp01((sec - hs) / motion) : sec >= hs ? 1 : 0);
+  const ez = EASE[s.easing] || (type === 'orbit' ? EASE.linear : EASE.inout);
+  sh.tAt = (sec) => (type === 'title' ? 0 : clampT(t0 + (t1 - t0) * um(sec)));
+  sh.poseAt = (sec, t) => simplePose(s, type, ez(um(sec)), t, sh);
+  sh.sel = s.sightline || (type === 'pov' && s.witness) || null;
+  sh.rays = !!s.sightline;
+  if (s.mode) sh.mode = s.mode;
+  else if (type === 'pov' && s.witness) sh.mode = s.witness;
+  const ov = s.overlay || {};
+  sh.ovs = [];
+  if (type === 'title') sh.card = { text: [s.text || s.title || '', s.sub ? '—' + s.sub : null, s.note ? '~' + s.note : null].filter(Boolean).join('\n') };
+  else if (ov.title || ov.caption) sh.ovs.push({ kind: 'lower_third', title: ov.title, text: ov.caption || '' });
+  if (type === 'aerial') sh.imgOpacity = (sec) => 1 - um(sec);
+  sh.keyS = s.keyAt != null ? +s.keyAt : type === 'chase' || type === 'pov' ? hs + motion + Math.min(0.5, he / 2) : type === 'aerial' ? hs + motion * 0.55 : type === 'title' ? motion / 2 : hs + motion / 2;
+}
+
+function defaultKeyS(sh) {
+  if (sh.type === 'title') return sh.total / 2;
+  if (sh.type === 'aerial') { for (let s = 0; s < sh.total; s += 0.1) if (sh.imgOpacity && sh.imgOpacity(s) <= 0.45) return s; return sh.total / 2; }
+  if (sh.type === 'chase' || sh.type === 'pov') {
+    // the decisive instant: longest frozen-time stretch after the first (e.g. observation-time hold or impact freeze)
+    const segs = []; let st = null;
+    for (let s = 0; s <= sh.total + 1e-6; s += 0.1) {
+      const flat = Math.abs(sh.tAt(Math.min(sh.total, s + 0.05)) - sh.tAt(Math.max(0, s - 0.05))) < 1e-4;
+      if (flat && st == null) st = s; if ((!flat || s + 0.1 > sh.total) && st != null) { segs.push([st, s]); st = null; }
+    }
+    const later = segs.filter((g) => g[0] > 0.2).sort((a, b) => (b[1] - b[0]) - (a[1] - a[0]));
+    if (later.length) return (later[0][0] + later[0][1]) / 2;
+  }
+  return sh.total / 2;
+}
+
+function chasePose(s, t) {
+  const vid = s.vehicle || primary;
+  const p = point(vid);
+  const d = headingOf(vid, t);
+  const off = s.offset || [11, 3.6, 0];
+  const right = new THREE.Vector3(-d.z, 0, d.x);
+  const pos = p.clone().addScaledVector(d, -(+off[0])).add(new THREE.Vector3(0, +off[1], 0)).addScaledVector(right, +off[2] || 0);
+  const tgt = p.clone().addScaledVector(d, num(s.lookAhead) ?? 16); tgt.y = num(s.targetHeight) ?? 1.0;
+  return { cam: 'persp', pos, target: tgt, fov: num(s.fov) || 55 };
+}
+
+function simplePose(s, type, u, t, sh) {
+  const fov = num(s.fov) || 50;
+  switch (type) {
     case 'orbit': {
-      const c = point(s.target || s.center || 'impact');
+      const c = point(s.target || 'impact');
       const r = num(s.radius) ?? 45;
-      const elevDeg = num(s.elevationDeg, s.elevation);
-      const h = num(s.height) ?? (elevDeg != null ? r * Math.tan(elevDeg * Math.PI / 180) : r * 0.45);
-      const a0 = num(s.startDeg, s.azimuthDeg, s.bearingDeg) ?? 200, sw = num(s.sweepDeg, s.sweep) ?? 90;
-      const az = (a0 + sw * u) * Math.PI / 180; // compass bearing from target to camera: 0 = north (-Z), 90 = east (+X)
-      const pos = new THREE.Vector3(c.x + Math.sin(az) * r, c.y + h, c.z - Math.cos(az) * r);
+      const h = num(s.height) ?? r * 0.45;
+      const az = ((num(s.startDeg) ?? 200) + (num(s.sweepDeg) ?? 90) * u) * Math.PI / 180; // compass bearing target->camera: 0 = north (-Z), 90 = east
       const tgt = c.clone(); tgt.y += num(s.targetHeight) ?? 1;
-      return { cam: 'persp', pos, target: tgt, fov, mode: s.mode || modeVeh(s) };
+      return { cam: 'persp', pos: new THREE.Vector3(c.x + Math.sin(az) * r, c.y + h, c.z - Math.cos(az) * r), target: tgt, fov };
     }
     case 'topdown': {
       let c, half;
-      const ids = s.frame || s.fit;
-      if (Array.isArray(ids) && ids.length) {
+      if (Array.isArray(s.frame) && s.frame.length) {
         const b = new THREE.Box3();
-        for (const id of ids.filter(Boolean)) b.expandByPoint(point(id));
+        for (const id of s.frame.filter(Boolean)) b.expandByPoint(point(id));
         b.expandByScalar(num(s.margin) ?? 12);
         c = b.getCenter(new THREE.Vector3());
-        const sz = b.getSize(new THREE.Vector3()), a = aspect();
-        half = Math.max(sz.z / 2, sz.x / 2 / a, num(s.minHalf) ?? 20);
+        const sz = b.getSize(new THREE.Vector3());
+        half = Math.max(sz.z / 2, sz.x / 2 / aspect(), num(s.minHalf) ?? 20);
       } else {
-        c = s.follow ? point(s.follow) : s.center ? point(Array.isArray(s.center) && s.centerEnd ? lerpArr(s.center, s.centerEnd, u) : s.center) : roi.getCenter(new THREE.Vector3());
-        if (s.offset) { c.x += +s.offset[0] || 0; c.z += +(s.offset.length === 2 ? s.offset[1] : s.offset[2]) || 0; }
-        half = num(s.halfHeight, s.half) ?? (s.height ? +s.height * Math.tan(fov * Math.PI / 360) : 40);
+        c = s.follow ? point(s.follow) : s.center ? point(s.center) : roi.getCenter(new THREE.Vector3());
+        half = num(s.halfHeight) ?? 40;
         if (s.halfHeightEnd != null) half = lerp(half, +s.halfHeightEnd, u);
       }
-      if (s.ortho === false || s.perspective) {
-        const hgt = half / Math.tan(fov * Math.PI / 360);
-        return { cam: 'persp', pos: new THREE.Vector3(c.x, hgt, c.z + 0.001), target: new THREE.Vector3(c.x, 0, c.z), up: [0, 0, -1], fov, mode: s.mode || 'overhead' };
-      }
-      return { cam: 'ortho', pos: new THREE.Vector3(c.x, 400, c.z), target: new THREE.Vector3(c.x, 0, c.z), up: [0, 0, -1], half, mode: s.mode || 'overhead' };
+      return { cam: 'ortho', pos: new THREE.Vector3(c.x, 400, c.z), target: new THREE.Vector3(c.x, 0, c.z), up: [0, 0, -1], half };
     }
-    case 'chase': {
-      const vid = s.vehicle || s.target || primary;
-      const p = point(vid);
-      const d = headingOf(vid, t);
-      const off = s.offset || [11, 3.6, 0]; // [behind, up, right]
-      const right = new THREE.Vector3(-d.z, 0, d.x);
-      const pos = p.clone().addScaledVector(d, -(+off[0])).add(new THREE.Vector3(0, +off[1], 0)).addScaledVector(right, +off[2] || 0);
-      const tgt = p.clone().addScaledVector(d, num(s.lookAhead) ?? 16); tgt.y = num(s.targetHeight) ?? 1.0;
-      return { cam: 'persp', pos, target: tgt, fov: num(s.fov) || 55, mode: s.mode || 'chase_' + vid };
-    }
+    case 'chase': return chasePose(s, t);
     case 'pov': {
       const w = s.witness ? witness(s.witness) : null;
       const pos = s.position ? point(s.position) : w ? eyeOf(w) : point('roi').setY(1.6);
       const look = s.lookAt != null ? s.lookAt : w ? w.lookAt : 'impact';
-      // tracking an object follows it in time unless track:false (then aimed where it was at the shot's first instant)
-      let tgt = s.track === false && typeof look === 'string' ? withTime(s.t0, () => point(look)) : point(look);
+      let tgt = s.track === false && typeof look === 'string' ? withTime(sh.tAt(0), () => point(look)) : point(look);
       if (s.panTo != null) {
         const a = tgt.clone().sub(pos), b = point(s.panTo).sub(pos);
         const ya = Math.atan2(a.x, -a.z), yb = Math.atan2(b.x, -b.z);
         let dy = yb - ya; if (dy > Math.PI) dy -= 2 * Math.PI; if (dy < -Math.PI) dy += 2 * Math.PI;
-        const yaw = ya + dy * u, pa = Math.atan2(a.y, Math.hypot(a.x, a.z)), pb = Math.atan2(b.y, Math.hypot(b.x, b.z)), pitch = lerp(pa, pb, u);
+        const yaw = ya + dy * u, pitch = lerp(Math.atan2(a.y, Math.hypot(a.x, a.z)), Math.atan2(b.y, Math.hypot(b.x, b.z)), u);
         tgt = pos.clone().add(new THREE.Vector3(Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), -Math.cos(yaw) * Math.cos(pitch)).multiplyScalar(30));
       }
-      return { cam: 'persp', pos, target: tgt, fov: num(s.fov) || (w ? 60 : 50), mode: s.mode || (w ? w.id : modeVeh(s)) };
+      return { cam: 'persp', pos, target: tgt, fov: num(s.fov) || 60 };
     }
     case 'aerial': {
-      const bx = aerialBounds();
+      const bx = imageBoundsBox();
       const c = new THREE.Vector3((bx.x0 + bx.x1) / 2, 0, (bx.z0 + bx.z1) / 2);
-      const a = aspect();
-      let half = Math.max((bx.z1 - bx.z0) / 2, (bx.x1 - bx.x0) / 2 / a);
-      if (!(aerial && aerial.url)) half *= lerp(num(s.zoomFrom) ?? 2.6, 1, u); // no photo: establishing push-in
-      return { cam: 'ortho', pos: new THREE.Vector3(c.x, 400, c.z), target: c, up: [0, 0, -1], half, mode: s.mode || 'overhead', aerialOpacity: aerial && aerial.url ? 1 - u : 0 };
+      let half = Math.max((bx.z1 - bx.z0) / 2, (bx.x1 - bx.x0) / 2 / aspect());
+      if (!(aerial && aerial.url)) half *= lerp(num(s.zoomFrom) ?? 2.6, 1, u);
+      return { cam: 'ortho', pos: new THREE.Vector3(c.x, 400, c.z), target: c, up: [0, 0, -1], half };
     }
-    default: {
-      const pos = point(s.position || (s.camera && s.camera.position) || [impactP.x - 30, 15, impactP.z + 30]);
-      return { cam: 'persp', pos, target: point(s.lookAt || s.target || (s.camera && (s.camera.target || s.camera.lookAt)) || 'impact'), fov, mode: s.mode || modeVeh(s) };
-    }
+    default:
+      return { cam: 'persp', pos: point(s.position || [impactP.x - 30, 15, impactP.z + 30]), target: point(s.lookAt || s.target || 'impact'), fov };
   }
 }
-const lerpArr = (a, b, u) => a.map((x, i) => lerp(+x, +b[i], u));
-const aspect = () => (stage.clientWidth || innerWidth) / (stage.clientHeight || innerHeight);
-const modeVeh = (s) => 'chase_' + (s.vehicle || primary);
-function aerialBounds() {
+
+// ---------- aerial photo registration ----------
+// bounds.json: { boundsMeters:{minX,maxX,minZ,maxZ} (image-local, top = north = -Z), calibration:{rotationDeg, offsetX, offsetZ} } (world = rotY(rot)*local + offset)
+function aerialCorners() {
   const b = aerial && aerial.bounds;
-  if (b) {
-    const g = (...ks) => { for (const k of ks) if (b[k] != null) return +b[k]; return undefined; };
-    let x0 = g('xmin', 'minX', 'x0', 'west'), x1 = g('xmax', 'maxX', 'x1', 'east'), z0 = g('zmin', 'minZ', 'z0', 'north'), z1 = g('zmax', 'maxZ', 'z1', 'south');
-    if (Array.isArray(b.x) && Array.isArray(b.z)) { [x0, x1] = b.x; [z0, z1] = b.z; }
-    if (Array.isArray(b.bounds)) { x0 = b.bounds[0][0]; z0 = b.bounds[0][1]; x1 = b.bounds[1][0]; z1 = b.bounds[1][1]; }
-    if (Array.isArray(b.min) && Array.isArray(b.max)) { x0 = b.min[0]; x1 = b.max[0]; z0 = b.min[b.min.length - 1]; z1 = b.max[b.max.length - 1]; }
-    if ([x0, x1, z0, z1].every(Number.isFinite)) return { x0: Math.min(x0, x1), x1: Math.max(x0, x1), z0: Math.min(z0, z1), z1: Math.max(z0, z1) };
-  }
+  if (!b) return null;
+  const bm = b.boundsMeters || b.bounds || b;
+  const g = (...ks) => { for (const k of ks) if (bm[k] != null) return +bm[k]; return undefined; };
+  const x0 = g('minX', 'xmin', 'west'), x1 = g('maxX', 'xmax', 'east'), z0 = g('minZ', 'zmin', 'north'), z1 = g('maxZ', 'zmax', 'south');
+  if (![x0, x1, z0, z1].every(Number.isFinite)) return null;
+  const cal = b.calibration || {};
+  const r = (num(cal.rotationDeg) ?? 0) * Math.PI / 180, cs = Math.cos(r), sn = Math.sin(r), ox = num(cal.offsetX) ?? 0, oz = num(cal.offsetZ) ?? 0;
+  const w = (x, z) => new THREE.Vector3(cs * x + sn * z + ox, 0, -sn * x + cs * z + oz);
+  return [w(x0, z0), w(x1, z0), w(x1, z1), w(x0, z1)]; // TL, TR, BR, BL of the image
+}
+function imageBoundsBox() {
+  const cs = aerialCorners();
+  if (cs) { const b = new THREE.Box3().setFromPoints(cs); const c = b.getCenter(new THREE.Vector3()); const hz = Math.min(b.max.z - c.z, 160), hx = Math.min(b.max.x - c.x, 160 * aspect()); return { x0: c.x - hx, x1: c.x + hx, z0: c.z - hz, z1: c.z + hz }; }
   const r = roi.clone().expandByScalar(10);
   return { x0: r.min.x, x1: r.max.x, z0: r.min.z, z1: r.max.z };
 }
-// keyframes: [{u|at (0..1 of motion) | time (s from motion start) | sceneT, position, target|lookAt, fov}], smooth (Catmull-Rom) through positions
-function keyPose(s, keys, u, t, fov) {
-  const ks = keys.map((k, i) => {
-    let ku = num(k.u, k.at);
-    if (ku == null && num(k.time, k.s) != null) ku = num(k.time, k.s) / Math.max(1e-6, s.motion);
-    if (ku == null && num(k.sceneT, k.t) != null && s.t1 > s.t0) ku = (num(k.sceneT, k.t) - s.t0) / (s.t1 - s.t0);
-    if (ku == null) ku = keys.length > 1 ? i / (keys.length - 1) : 0;
-    return { u: Math.max(0, Math.min(1, ku)), pos: point(k.position || k.pos || k.eye), tgt: point(k.target || k.lookAt || 'impact'), fov: num(k.fov) ?? fov };
-  }).sort((a, b) => a.u - b.u);
-  if (ks.length === 1 || u <= ks[0].u) return { cam: 'persp', pos: ks[0].pos, target: ks[0].tgt, fov: ks[0].fov, mode: s.mode || modeVeh(s) };
-  const L = ks[ks.length - 1];
-  if (u >= L.u) return { cam: 'persp', pos: L.pos, target: L.tgt, fov: L.fov, mode: s.mode || modeVeh(s) };
-  let i = 0; while (ks[i + 1].u < u) i++;
-  const a = ks[i], b = ks[i + 1], v = (u - a.u) / Math.max(1e-6, b.u - a.u);
-  const p0 = (ks[i - 1] || a).pos, p3 = (ks[i + 2] || b).pos;
-  const pos = new THREE.CatmullRomCurve3([p0, a.pos, b.pos, p3]).getPoint((1 + v) / 3);
-  return { cam: 'persp', pos, target: a.tgt.clone().lerp(b.tgt, v), fov: lerp(a.fov, b.fov, v), mode: s.mode || modeVeh(s) };
+// CSS matrix3d mapping the w x h element rect onto 4 screen points (projective; exact for a ground-plane photo)
+function quadMatrix(w, h, d) {
+  const s = [[0, 0], [w, 0], [w, h], [0, h]];
+  const A = [], B = [];
+  for (let i = 0; i < 4; i++) {
+    const [x, y] = s[i], [X, Y] = d[i];
+    A.push([x, y, 1, 0, 0, 0, -x * X, -y * X]); B.push(X);
+    A.push([0, 0, 0, x, y, 1, -x * Y, -y * Y]); B.push(Y);
+  }
+  for (let c = 0; c < 8; c++) { // gaussian elimination
+    let p = c; for (let r = c + 1; r < 8; r++) if (Math.abs(A[r][c]) > Math.abs(A[p][c])) p = r;
+    [A[c], A[p]] = [A[p], A[c]]; [B[c], B[p]] = [B[p], B[c]];
+    for (let r = 0; r < 8; r++) { if (r === c) continue; const f = A[r][c] / A[c][c]; for (let k = c; k < 8; k++) A[r][k] -= f * A[c][k]; B[r] -= f * B[c]; }
+  }
+  const m = B.map((b, i) => b / A[i][i]);
+  return `matrix3d(${m[0]},${m[3]},0,${m[6]},${m[1]},${m[4]},0,${m[7]},0,0,1,0,${m[2]},${m[5]},0,1)`;
+}
+function placeImage(cam, op) {
+  if (!(op > 0)) { imgEl.style.opacity = '0'; return; }
+  const cs = aerial && aerial.url ? aerialCorners() : null;
+  if (cs && imgEl.naturalWidth) {
+    const pts = [];
+    for (const c of cs) {
+      const v = c.clone().applyMatrix4(cam.matrixWorldInverse);
+      if (!cam.isOrthographicCamera && v.z > -0.5) { imgEl.style.opacity = '0'; return; }
+      const p = c.clone().project(cam);
+      pts.push([(p.x + 1) / 2 * W(), (1 - p.y) / 2 * H()]);
+    }
+    Object.assign(imgEl.style, { left: '0', top: '0', width: imgEl.naturalWidth + 'px', height: imgEl.naturalHeight + 'px', transformOrigin: '0 0',
+      transform: quadMatrix(imgEl.naturalWidth, imgEl.naturalHeight, pts), objectFit: 'fill', background: 'transparent', opacity: op.toFixed(3) });
+  } else { // unregistered exhibit (diagram): letterboxed full frame
+    Object.assign(imgEl.style, { left: '0', top: '0', width: W() + 'px', height: H() + 'px', transform: 'none', objectFit: 'contain', background: '#0b0e13', opacity: op.toFixed(3) });
+  }
+}
+
+// ---------- setup ----------
+function setup(p, opts = {}) {
+  analyze();
+  aerial = opts.aerial && opts.aerial.url ? opts.aerial : null;
+  fallbackImage = opts.fallbackImage || null;
+  plan = p && Array.isArray(p.shots) && p.shots.length ? p : defaultPlan();
+  fps = num(opts.fps) || Math.min(15, num(plan.fps) || 12);
+  shots = plan.shots.map(normShot);
+  let f = 0;
+  for (const s of shots) {
+    s.start = f; s.n = Math.max(1, Math.round(s.total * fps)); f += s.n;
+    s.key = s.start + Math.min(s.n - 1, Math.max(0, Math.round(s.keyS * fps)));
+  }
+  nFrames = f;
+  const src = aerial ? aerial.url : fallbackImage;
+  if (src && imgEl.getAttribute('src') !== src) imgEl.src = src;
+  return info();
+}
+const info = () => ({ fps, frames: nFrames, seconds: +(nFrames / fps).toFixed(2), impactT, primary, image: aerial ? 'aerial' : fallbackImage ? 'fallback' : null, planTitle: plan && plan.title,
+  shots: shots.map((s) => ({ id: s.id, type: s.type, start: s.start, n: s.n, key: s.key, keyS: +s.keyS.toFixed(2), total: s.total, mode: s.mode || null, sel: s.sel, tin: s.tin, tout: s.tout,
+    t0: +s.tAt(0).toFixed(3), t1: +s.tAt(s.total).toFixed(3) })) });
+
+// ---------- overlay rendering ----------
+const r3 = (x) => Math.round(x * 1000) / 1000;
+const active = (sh, sec) => sh.ovs.map((o, k) => ({ ...o, k })).filter((o) => (o.from == null || sec >= +o.from - 1e-6) && (o.to == null || sec < +o.to - 1e-6 || (+o.to >= sh.total - 1e-6)));
+function splitTitle(o) {
+  if (o.title != null) return { tt: o.title, cp: o.text || '' };
+  const t = String(o.text || '');
+  const i = t.indexOf(' — ');
+  return i > 0 ? { tt: t.slice(0, i), cp: t.slice(i + 3) } : { tt: '', cp: t };
+}
+function titleCardHtml(card) {
+  const lines = String(card.text || '').split('\n');
+  const out = [];
+  let first = true, list = [];
+  const flush = () => { if (list.length) { out.push(`<ul>${list.map((l) => `<li>${esc(l)}</li>`).join('')}</ul>`); list = []; } };
+  for (const raw of lines) {
+    const l = raw.trim();
+    if (/^[•*-]\s+/.test(l)) { list.push(l.replace(/^[•*-]\s+/, '')); continue; }
+    flush();
+    if (!l) { out.push('<div class="sp"></div>'); continue; }
+    if (l.startsWith('—')) { out.push(`<div class="rule"></div><div class="l2">${esc(l.slice(1))}</div>`); continue; }
+    if (l.startsWith('~')) { out.push(`<div class="l3">${esc(l.slice(1))}</div>`); continue; }
+    if (first) { out.push(`<div class="l1">${esc(l)}</div><div class="rule"></div>`); first = false; continue; }
+    if (/simulated|fictional/i.test(l)) { out.push(`<div class="kick">${esc(l)}</div>`); continue; }
+    if (/^claim:|^“|^"/i.test(l)) { out.push(`<div class="q">${esc(l)}</div>`); continue; }
+    out.push(`<div class="l2">${esc(l)}</div>`);
+  }
+  flush();
+  return `<div class="card">${out.join('')}</div>`;
+}
+function proj(cam, p) {
+  const v = p.clone().applyMatrix4(cam.matrixWorldInverse);
+  const front = cam.isOrthographicCamera || v.z < -0.1;
+  const q = p.clone().project(cam);
+  return { x: (q.x + 1) / 2 * W(), y: (1 - q.y) / 2 * H(), on: front && Math.abs(q.x) < 1.02 && Math.abs(q.y) < 1.02 };
+}
+function playback(sh, sec) {
+  const d = 0.05, a = sh.tAt(Math.max(0, sec - d)), b = sh.tAt(Math.min(sh.total, sec + d));
+  const span = Math.min(sh.total, sec + d) - Math.max(0, sec - d);
+  const slope = span > 0 ? (b - a) / span : 0;
+  if (Math.abs(slope) < 1e-3) return sh.freezeAt != null && Math.abs(sh.tAt(sec) - sh.freezeAt) < 1e-3 ? 'FREEZE' : 'TIME HELD';
+  if (Math.abs(slope - 1) < 0.02) return 'REAL TIME 1.0×';
+  return (Math.round(slope * 100) / 100) + '× ' + (slope < 1 ? 'SLOW MOTION' : 'FAST');
+}
+function drawChrome(sh, sec, t, cam, pose) {
+  const ovs = active(sh, sec);
+  // HUD (top-left) — the plan's static telemetry; overlays.js's live clock panel sits under it
+  const hud = ovs.filter((o) => /hud/i.test(o.kind || ''));
+  hudEl.innerHTML = hud.map((o) => `<div class="box">${String(o.text || '').split(/\s+\|\s+/).map((x, j) => `<div class="${j ? '' : 'h'}">${esc(x)}</div>`).join('')}</div>`).join('');
+  hudEl.style.display = hud.length ? 'block' : 'none';
+  stage.style.setProperty('--film-hud-h', (hud.length ? hudEl.offsetHeight + 8 : 0) + 'px');
+  // lower third: latest active one
+  const lts = ovs.filter((o) => /lower|caption|subtitle/i.test(o.kind || ''));
+  const lt = lts[lts.length - 1];
+  if (lt) {
+    const { tt, cp } = splitTitle(lt);
+    const bg = styleProp(lt.style, 'background');
+    const red = bg && /rgba?\(\s*1[5-9]\d|rgba?\(\s*2\d\d\s*,\s*[0-6]?\d\s*,/.test(bg);
+    ltEl.className = red ? 'alert' : '';
+    ltEl.innerHTML = `<div class="row"><div class="tx">${tt ? `<div class="tt">${esc(tt)}</div>` : ''}${cp ? `<div class="cp">${esc(cp)}</div>` : ''}</div></div>`;
+    ltEl.style.display = 'block';
+  } else ltEl.style.display = 'none';
+  // watermark
+  const wm = ovs.find((o) => /watermark/i.test(o.kind || ''));
+  wmEl.textContent = wm ? wm.text : 'SIMULATED RECONSTRUCTION';
+  wmEl.style.display = 'block';
+  // top-right: playback state + north arrow (when asked for, or in any plan view)
+  const pb = playback(sh, sec);
+  const wantN = ovs.some((o) => /north/i.test(o.kind || '')) || pose.cam === 'ortho';
+  let arrow = '';
+  if (wantN) {
+    const c = pose.target.clone(); c.y = 0;
+    const a = proj(cam, c), b = proj(cam, c.clone().add(new THREE.Vector3(0, 0, -10)));
+    const ang = Math.atan2(b.x - a.x, -(b.y - a.y)) * 180 / Math.PI;
+    if (Math.hypot(b.x - a.x, b.y - a.y) > 0.5) arrow = `<div class="na"><svg viewBox="-20 -24 40 48" width="34" height="40"><g transform="rotate(${ang.toFixed(1)})"><path d="M0,-18 L8,8 L0,3 L-8,8 Z" fill="#fff" stroke="#000" stroke-width="1"/></g><text x="0" y="23" text-anchor="middle">N</text></svg></div>`;
+  }
+  trEl.innerHTML = `<div class="pb ${pb === 'FREEZE' ? 'frz' : pb === 'TIME HELD' ? 'held' : ''}">${esc(pb)}${pb === 'FREEZE' || pb === 'TIME HELD' ? ` · t = ${t.toFixed(2)} s` : ''}</div>${arrow}`;
+  trEl.style.display = 'block';
+  // scale bar (bottom-left, above the lower third): metres from the overlay text, measured at the view target
+  const sb = ovs.find((o) => /scale/i.test(o.kind || '')) || (pose.cam === 'ortho' ? { text: 'auto' } : null);
+  if (sb) {
+    let m = parseFloat(String(sb.text).replace(/[^\d.]/g, ''));
+    const c = pose.target.clone(); c.y = 0;
+    const right = new THREE.Vector3(1, 0, 0).applyQuaternion(cam.quaternion); right.y = 0; right.normalize();
+    const pxPerM = (() => { const a = proj(cam, c), b = proj(cam, c.clone().addScaledVector(right, 10)); return Math.hypot(b.x - a.x, b.y - a.y) / 10; })();
+    if (!Number.isFinite(m) || m <= 0) { const nice = [5, 10, 20, 25, 50, 100, 200, 250, 500]; m = nice.find((x) => x * pxPerM > W() * 0.09) || 500; }
+    const px = m * pxPerM;
+    if (px > 12 && px < W() * 0.5) { sbEl.innerHTML = `<div class="bar" style="width:${px.toFixed(1)}px"><i></i><i></i><i></i></div><div class="lab">${m} m (${Math.round(m * 3.28084)} ft)</div>`; sbEl.style.display = 'block'; }
+    else sbEl.style.display = 'none';
+  } else sbEl.style.display = 'none';
+  // world-anchored labels / markers
+  const lbls = ovs.filter((o) => /label|marker|callout/i.test(o.kind || '') && (o.worldPos || o.object));
+  const html = [];
+  for (const o of lbls) {
+    const wp = o.worldPos ? point(o.worldPos) : point(o.object);
+    const sp = proj(cam, wp);
+    if (!sp.on) continue;
+    const gp = proj(cam, wp.clone().setY(0));
+    const col = styleProp(o.style, 'color') || '#fff';
+    const lines = String(o.text || '').split('\n');
+    html.push(`<div class="lb ${/marker/i.test(o.kind) ? 'mk' : ''}" style="left:${sp.x.toFixed(1)}px;top:${sp.y.toFixed(1)}px;--c:${esc(col)}"><div class="tx"><b>${esc(lines[0])}</b>${lines.slice(1).map((l) => `<span>${esc(l)}</span>`).join('')}</div></div>`);
+    if (gp.on && Math.hypot(gp.x - sp.x, gp.y - sp.y) > 4) html.push(`<svg class="ld" style="left:0;top:0" width="${W()}" height="${H()}"><line x1="${sp.x.toFixed(1)}" y1="${sp.y.toFixed(1)}" x2="${gp.x.toFixed(1)}" y2="${gp.y.toFixed(1)}" stroke="${esc(col)}"/><circle cx="${gp.x.toFixed(1)}" cy="${gp.y.toFixed(1)}" r="3" fill="${esc(col)}"/></svg>`);
+  }
+  lblEl.innerHTML = html.join('');
+  // own sight-line banner when the viewer's witness mode is not in use (xray:false), so the verdict is still on screen
+  const own = sh.sel && sh.mode && sh.mode !== sh.sel && sh.type === 'pov' ? sl.sightline(sh.sel) : null;
+  if (own) { bannerEl.className = own.visible ? 'ok' : 'bad'; bannerEl.textContent = own.visible ? 'LINE OF SIGHT: CLEAR' : 'LINE OF SIGHT BLOCKED — ' + String((world.objects[own.blockedBy] || {}).label || own.blockedBy || '').replace(/\s*\(.*$/, ''); bannerEl.style.display = 'block'; }
+  else bannerEl.style.display = 'none';
+  return ovs.map((o) => o.k).join(',') + '|' + pb;
 }
 
 // ---------- frame ----------
-let lastKey = null, lastMode = null, lastHud = null, lastSel = undefined, lastLR = null;
-const r3 = (x) => Math.round(x * 1000) / 1000;
+let lastKey = null, lastMode = null, lastHud = null, lastSel, lastLR = null;
 function shotAt(i) { for (const s of shots) if (i < s.start + s.n) return s; return shots[shots.length - 1]; }
+const hideAll = (v) => { for (const e of [hudEl, ltEl, trEl, lblEl, sbEl, bannerEl]) e.style.display = v ? 'none' : e.style.display; };
 
 function frame(i) {
-  const s = shotAt(i);
-  const tau = (i - s.start) / fps; // seconds into the shot
-  const um = s.motion > 0 ? Math.max(0, Math.min(1, (tau - s.holdStart) / s.motion)) : (tau >= s.holdStart ? 1 : 0); // motion progress
-  const phase = tau < s.holdStart ? 'hold-start' : tau < s.holdStart + s.motion ? 'motion' : 'hold-end';
-  const t = s.type === 'title' ? 0 : clampT(s.t0 + (s.t1 - s.t0) * um);
-  const u = s.ease(um);
-
-  // --- title card: pure DOM ---
-  if (s.type === 'title') {
-    const fi = Math.min(1, tau / 0.35), fo = Math.min(1, (s.total - tau) / 0.35), op = Math.max(0, Math.min(fi, fo));
-    const key = 'title|' + s.index + '|' + op.toFixed(3);
+  const sh = shotAt(i);
+  const sec = Math.min(sh.total, (i - sh.start) / fps);
+  if (sh.type === 'title') {
+    const key = 'title|' + sh.index + '|' + active(sh, sec).map((o) => o.k).join(',');
     const same = key === lastKey; lastKey = key;
     if (!same) {
-      const lines = Array.isArray(s.lines) ? s.lines : [s.text || s.title || ''];
-      titleEl.innerHTML = `<div style="opacity:${op.toFixed(3)}"><div class="l1">${lines.map(esc).join('<br>')}</div>${s.sub ? `<div class="rule"></div><div class="l2">${esc(s.sub)}</div>` : ''}${s.note ? `<div class="l3">${esc(s.note)}</div>` : ''}</div>`;
+      titleEl.innerHTML = titleCardHtml(sh.card || { text: '' });
+      const fs = parseFloat(String(styleProp(sh.card && sh.card.style, 'font') || '').match(/([\d.]+)%/) ? RegExp.$1 : '');
+      titleEl.style.setProperty('--fs', ((Number.isFinite(fs) ? fs : 5.6) * H() / 100).toFixed(1) + 'px');
       titleEl.style.display = 'flex';
+      hideAll(true); imgEl.style.opacity = '0';
+      const wm = (sh.ovs || []).find((o) => /watermark/i.test(o.kind || ''));
+      wmEl.textContent = wm ? wm.text : ''; wmEl.style.display = wm ? 'block' : 'none';
     }
-    return { key, same, shot: s.id, type: s.type, phase, t: null };
+    return { key, same, shot: sh.id, type: sh.type, t: null, sec: r3(sec) };
   }
   titleEl.style.display = 'none';
+  const t = sh.tAt(sec);
 
-  // --- drive the viewer (time, camera mode for its HUD/x-ray/rays); its own renders are suppressed ---
   suppress = true;
+  let pose;
   try {
-    const sel = s.sightline || (s.type === 'pov' && s.witness) || null;
-    const hud = s.hud;
+    const hud = sh.src.hud !== false;
     if (lastHud !== hud) { if (hasOverlays()) sl.overlays.set(hud); document.body.classList.toggle('nohud', !hud); lastHud = hud; }
-    if (sel !== lastSel && hasOverlays() && sl.overlays.selectWitness) { sl.overlays.selectWitness(sel); lastSel = sel; }
-    const lr = (s.labels ? 'L' : 'l') + (s.rays === false ? 'r' : 'R');
-    if (lr !== lastLR) { sl.setLabels(!!s.labels); sl.setRays(s.rays !== false); lastLR = lr; }
+    if (sh.sel !== lastSel && hasOverlays() && sl.overlays.selectWitness) { sl.overlays.selectWitness(sh.sel); lastSel = sh.sel; }
+    const lr = (sh.src.labels ? 'L' : 'l') + (sh.rays ? 'R' : 'r');
+    if (lr !== lastLR) { sl.setLabels(!!sh.src.labels); sl.setRays(!!sh.rays); lastLR = lr; }
+    world.witnesses = ALL_WITNESSES;
+    if (sh.mode !== lastMode) { sl.setCamera(sh.mode); lastMode = sh.mode; }
     sl.setTime(t);
-    const pose0 = poseFor(s, u, t, tau);
-    if (pose0.mode !== lastMode) { sl.setCamera(pose0.mode); lastMode = pose0.mode; }
-    var pose = pose0;
+    pose = sh.poseAt(sec, t);
   } finally { suppress = false; }
   world.setTime(t); world.root.updateMatrixWorld(true);
 
-  // --- chrome ---
-  const ov = s.ov || {};
-  let cap = ov.caption || '';
-  if (Array.isArray(ov.items)) { const it = ov.items.find((x) => { const a = x.at || x.range || [x.from, x.to]; return tau >= (+a[0] || 0) && tau < (a[1] == null ? 1e9 : +a[1]); }); if (it) cap = it.text || ''; }
-  const freeze = s.freezeAt != null && phase === 'hold-end';
-  const stamp = freeze ? `FREEZE · t = ${t.toFixed(2)} s` : (ov.stamp && phase !== 'hold-start' ? ov.stamp : '');
-  const fadeIn = num(s.fadeIn) ?? 0, fadeOut = num(s.fadeOut) ?? 0;
-  const black = Math.max(fadeIn > 0 ? 1 - Math.min(1, tau / fadeIn) : 0, fadeOut > 0 ? 1 - Math.min(1, (s.total - tau) / fadeOut) : 0);
-  const aop = pose.aerialOpacity || 0;
-  const key = [s.index, r3(t), pose.cam, ...pose.pos.toArray().map(r3), ...pose.target.toArray().map(r3), r3(pose.fov || 0), r3(pose.half || 0), cap, stamp, black.toFixed(3), aop.toFixed(3)].join('|');
-  const same = key === lastKey; lastKey = key;
-  const out = { key, same, shot: s.id, type: s.type, phase, t: r3(t), mode: pose.mode };
-  if (same) return out;
-
-  ltEl.style.display = ov.title || cap ? 'block' : 'none';
-  ltEl.querySelector('.no').textContent = String(s.no).padStart(2, '0');
-  ltEl.querySelector('.tt').textContent = ov.title || '';
-  ltEl.querySelector('.cp').textContent = cap;
-  ltEl.querySelector('.cp').style.display = cap ? 'block' : 'none';
-  trEl.style.display = 'block';
-  trEl.querySelector('.m').textContent = (s.t1 > s.t0 ? `scene ${s.t0.toFixed(1)}–${s.t1.toFixed(1)} s` : `scene t = ${s.t0.toFixed(2)} s`) + (s.speed !== 1 ? ` · ${s.speed}×` : s.t1 > s.t0 ? ' · real time' : ' · frozen');
-  stampEl.style.display = stamp ? 'block' : 'none';
-  stampEl.className = freeze ? 'freeze' : '';
-  stampEl.textContent = stamp;
-  blackEl.style.opacity = black.toFixed(3);
-
-  // --- camera ---
-  let cam;
+  // camera
   const a = aspect();
+  let cam;
   if (pose.cam === 'ortho') {
     const h = pose.half;
     ortho.left = -h * a; ortho.right = h * a; ortho.top = h; ortho.bottom = -h; ortho.zoom = 1;
@@ -397,33 +602,30 @@ function frame(i) {
     cam = persp;
   }
   cam.updateMatrixWorld(true);
-  if (s.fog === false || (s.fog == null && pose.cam === 'ortho')) scene.fog = null;
+  const op = sh.imgOpacity ? clamp01(sh.imgOpacity(sec)) : 0;
+  const ovKey = [sh.index, r3(t), pose.cam, ...pose.pos.toArray().map(r3), ...pose.target.toArray().map(r3), r3(pose.fov || 0), r3(pose.half || 0), op.toFixed(3),
+    active(sh, sec).map((o) => o.k).join(','), playback(sh, sec)].join('|');
+  const same = ovKey === lastKey; lastKey = ovKey;
+  const out = { key: ovKey, same, shot: sh.id, type: sh.type, t: r3(t), sec: r3(sec), mode: sh.mode };
+  if (same) return out;
 
-  // aerial photo registered to the world: project its bounds through the film camera
-  if (aop > 0) {
-    const bx = aerialBounds();
-    const p0 = new THREE.Vector3(bx.x0, 0, bx.z0).project(cam), p1 = new THREE.Vector3(bx.x1, 0, bx.z1).project(cam);
-    const W = stage.clientWidth, H = stage.clientHeight;
-    const L = (Math.min(p0.x, p1.x) + 1) / 2 * W, R = (Math.max(p0.x, p1.x) + 1) / 2 * W, T = (1 - Math.max(p0.y, p1.y)) / 2 * H, B = (1 - Math.min(p0.y, p1.y)) / 2 * H;
-    Object.assign(aerialImg.style, { left: L + 'px', top: T + 'px', width: (R - L) + 'px', height: (B - T) + 'px', opacity: aop.toFixed(3) });
-  } else aerialImg.style.opacity = '0';
-
-  renderer.render(scene, cam);
+  drawChrome(sh, sec, t, cam, pose);
+  placeImage(cam, op);
+  if (sh.src.fog === false || (sh.src.fog == null && (pose.cam === 'ortho' || pose.pos.y > 60))) scene.fog = null;
+  // witnesses not featured in this shot are hidden from overlays.js (it would otherwise draw the default/failing witness's ray everywhere)
+  if (!sh.sel) world.witnesses = [];
+  try { if (op < 0.999) renderer.render(scene, cam); } finally { world.witnesses = ALL_WITNESSES; }
   return out;
 }
 
-// ---------- interactive preview: film.html?world=...&play=1 ----------
-async function loadPlanParam() {
-  const p = params.get('plan');
-  if (!p) return null;
-  try { return await (await fetch(p, { cache: 'no-store' })).json(); } catch (_) { return null; }
-}
-window.film = { setup, frame, info, get shots() { return shots; }, poseFor, defaultPlan };
+// ---------- interactive preview: film.html?world=...&play=1[&plan=...] ----------
+window.film = { setup, frame, info, get shots() { return shots; }, defaultPlan };
 window.film.ready = Promise.resolve(window.film);
 if (params.get('play') === '1') {
-  const pl = await loadPlanParam();
-  setup(pl, { aerial: params.get('aerial') ? { url: params.get('aerial'), bounds: null } : null });
-  let i = 0, t0 = performance.now();
-  const tick = () => { const want = Math.floor((performance.now() - t0) / 1000 * fps); if (want !== i) { i = want % nFrames; frame(i); } requestAnimationFrame(tick); };
+  let pl = null;
+  try { if (params.get('plan')) pl = await (await fetch(params.get('plan'), { cache: 'no-store' })).json(); } catch (_) {}
+  setup(pl, {});
+  let i = -1; const t0 = performance.now();
+  const tick = () => { const want = Math.floor((performance.now() - t0) / 1000 * fps) % nFrames; if (want !== i) { i = want; frame(i); } requestAnimationFrame(tick); };
   tick();
 }
