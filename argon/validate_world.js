@@ -77,10 +77,20 @@ function approachCheck(THREE, world, objects, ids, rules = {}) {
     const c = veh.filter((v) => (role === 'car' ? !HEAVY.has(v.type) && !/truck|tractor|trailer/i.test(objects[v.id].label || '') : role === 'truck' ? HEAVY.has(v.type) : true));
     return c.sort((x, y) => y.speed - x.speed)[0] || null;
   };
+  // impact point: a mark_ object named/labelled impact|POI|AOI, else each vehicle's own centre at impactT
+  let poi = null;
+  for (const [oid, o] of Object.entries(objects)) if (!poi && oid.startsWith('mark_') && /impact|poi\b|aoi\b/i.test(`${oid} ${o.label || ''}`)) { o.node.updateMatrixWorld(true); o.node.getWorldPosition(p); poi = [p.x, p.z]; }
   for (const r of rules.minApproach || []) {
     const v = r.id ? veh.find((x) => x.id === r.id) : byRole(r.role || 'car');
     if (!v) { errors.push(`no ${r.id || r.role || 'car'} is moving at impact (meta.impactT=${ti}); cannot check that its path starts ≥ ${r.meters} m before impact (${r.citation || 'case rule'})`); continue; }
-    if (v.dist + (r.toleranceM ?? 1) < r.meters) errors.push(`${v.id} starts only ${v.dist.toFixed(0)} m before its impact position (t=0 → meta.impactT=${ti} s); the evidence (${r.citation || 'case rule'}) requires its path to start ≥ ${r.meters} m before impact${r.why ? ' (' + r.why + ')' : ''} — move its first keyframe back along the approach and keep its cited speed and impact time consistent (impactT ≈ ${r.meters} m / speed)`);
+    // measured like the published figure: the vehicle's FRONT at t=0 to the impact point (origins are footprint centres)
+    const half = (objects[v.id].node.userData?.dims?.length || 0) / 2;
+    const ux = (v.impact[0] - v.start[0]) / (v.dist || 1), uz = (v.impact[1] - v.start[1]) / (v.dist || 1);
+    const front0 = [v.start[0] + ux * half, v.start[1] + uz * half];
+    const P = poi || [v.impact[0], v.impact[1]];
+    const frontDist = poi ? Math.hypot(front0[0] - P[0], front0[1] - P[1]) : v.dist - half;
+    const st = stats.find((x) => x.id === v.id); if (st) st.frontStartToImpactM = Math.round(frontDist * 10) / 10;
+    if (frontDist + (r.toleranceM ?? 1) < r.meters) errors.push(`${v.id}'s front starts only ${frontDist.toFixed(1)} m before the impact point${poi ? ' (' + P.map((x) => x.toFixed(1)).join(', ') + ')' : ''} at t=0; the evidence (${r.citation || 'case rule'}) requires ≥ ${r.meters} m${r.why ? ' (' + r.why + ')' : ''}. Asset origins are footprint centres: at t=0 put its centre ${(r.meters + half).toFixed(1)} m back along the approach, and at meta.impactT its FRONT (centre + ${half.toFixed(2)} m along the heading) at the impact point, keeping the cited speed (impactT ≈ ${r.meters} m / speed)`);
   }
   const SR = /crest|hill|terrain|summit|curve|bend/i;
   for (const [oid, o] of Object.entries(objects)) {

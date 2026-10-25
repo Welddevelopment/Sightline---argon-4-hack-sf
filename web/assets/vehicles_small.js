@@ -13,6 +13,11 @@
 //             seat:'bench' + seatHeight (default 0.45) -> origin on the ground under the hips.
 //     userData: assetType 'pedestrian', dims, height, pose, eyeHeight, eye [x,y,z] local, joints, setGait(phase 0..1)
 //
+//   Photoreal option: web/models/pedestrian.glb (Microsoft Rocketbox Male_Adult_01, MIT) holds three static baked poses.
+//     const gltf = await new GLTFLoader().loadAsync('models/pedestrian.glb');
+//     createPedestrian(THREE, {height, pose, model: gltf.scene, matte})   -> same contract as the procedural figure
+//     (origin, facing -Z, userData.eyeHeight/eye scaled to `height`); matte:true swaps textures for a neutral matte
+//     mannequin finish. Without `model` (or if the pose is missing) the procedural mannequin below is used.
 // Proportions follow standard adult anthropometry expressed as fractions of stature (eye 0.93, shoulder 0.81,
 // elbow 0.63, wrist 0.485, hip joint 0.53, knee 0.285, ankle 0.044). Geometry/materials are cached per THREE.
 
@@ -328,8 +333,43 @@ function dimsOf(T, obj) {
   return { length: +s.z.toFixed(2), width: +s.x.toFixed(2), height: +s.y.toFixed(2) };
 }
 
+// ---------------------------------------------------------------- GLB figure (baked poses from web/models/pedestrian.glb)
+const MODEL_POSE = { standing: 'pedestrian_standing', walking: 'pedestrian_walking', seated: 'pedestrian_seated' };
+function pedestrianFromModel(T, opts, pose) {
+  const src = opts.model && (opts.model.scene || opts.model);
+  const node = src && src.getObjectByName && src.getObjectByName(MODEL_POSE[pose]);
+  if (!node || !node.isMesh) return null;
+  const meta = (src.userData && src.userData.height) ? src.userData : (src.children[0] && src.children[0].userData) || {};
+  const ud0 = node.userData || {};
+  const modelH = +meta.height || 1.823;
+  const H = +opts.height > 0.5 ? +opts.height : 1.7;
+  const k = H / modelH;
+  let material = node.material;
+  if (opts.matte) {
+    const grey = mat(T, 'mannequin', () => new T.MeshStandardMaterial({ color: 0xa9a49c, roughness: 0.85, metalness: 0 }));
+    material = Array.isArray(node.material) ? node.material.map(m => (m.alphaTest > 0 ? m : grey)) : grey;
+  }
+  const m = new T.Mesh(node.geometry, material);
+  m.name = 'figure_mesh'; m.castShadow = true; m.receiveShadow = true;
+  m.scale.setScalar(k);
+  const root = new T.Group(); root.name = opts.id || 'pedestrian'; root.add(m);
+  const eye = (ud0.eye || [0, (ud0.eyeHeight || 1.7), -0.08]).map(v => +(v * k).toFixed(3));
+  const box = new T.Box3().setFromObject(root), sz = box.getSize(new T.Vector3());
+  root.userData = {
+    assetType: 'pedestrian', height: H, pose, model: 'rocketbox_male_adult_01', dims: { length: +sz.z.toFixed(2), width: +sz.x.toFixed(2), height: +sz.y.toFixed(2) },
+    eyeHeight: eye[1], eye, origin: pose === 'seated' ? 'h-point' : 'ground', joints: null, setGait: () => {},
+  };
+  return root;
+}
+
 export function createPedestrian(THREE, opts = {}) {
   const T = THREE; ground.T = T;
+  if (opts.model) {
+    const pz = ['standing', 'walking', 'seated'].includes(opts.pose) ? opts.pose : 'standing';
+    const benchSeat = pz === 'seated' && (opts.seat === 'bench' || opts.seatHeight != null);
+    const fromModel = benchSeat ? null : pedestrianFromModel(T, opts, pz);
+    if (fromModel) return fromModel;
+  }
   const pose = ['standing', 'walking', 'seated'].includes(opts.pose) ? opts.pose : 'standing';
   const F = buildFigure(T, { ...opts, helmetFull: opts.helmet === 'full' });
   const { root, fig, j, H } = F;
@@ -638,4 +678,5 @@ export function createSmallVehicle(THREE, type, opts = {}) {
   return root;
 }
 
+export const PEDESTRIAN_MODEL_URL = 'models/pedestrian.glb';
 export default { createSmallVehicle, createPedestrian };

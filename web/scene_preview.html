@@ -27,7 +27,7 @@
 <div id="hud"><b>Scene kit preview</b> <span id="info">loading…</span>
   <div id="views">
     <a href="?view=eye">eye (EB shoulder)</a><a href="?view=driver">driver EB</a><a href="?view=intersection">at side road</a>
-    <a href="?view=crossover">crossover oblique</a><a href="?view=gas">gas station</a><a href="?view=crest">toward crest</a><a href="?view=overhead">overhead</a><a href="?view=wide">overhead wide</a>
+    <a href="?view=crossover">crossover oblique</a><a href="?view=store">store (median eye)</a><a href="?view=lot">lot oblique</a><a href="?view=crest">toward crest</a><a href="?view=overhead">overhead</a><a href="?view=wide">overhead wide</a>
   </div>
 </div>
 <script type="module">
@@ -72,34 +72,47 @@ scene.add(K.groundPlane({ id: 'ground', size: 4000, kind: 'pasture' }));
 scene.add(K.impactMarker({ id: 'mark_poi', position: [0, 0] }));
 scene.add(K.skidMark({ id: 'mark_demo_skid', points: [[-62, 0.15], [-40, 0.2], [-20, 0.35], [-4, 0.6]], pair: true, track: 1.62 }));
 
-// hammock tree lines and pines at the pasture edges
-scene.add(K.treeline({ id: 'occ_trees_n', points: [[-900, -170], [-400, -190], [0, -160], [500, -185], [900, -175]], depth: 22, spacing: 8, seed: 3 }));
-scene.add(K.treeline({ id: 'occ_trees_s', points: [[-900, 150], [-300, 170], [60, 95], [400, 140], [900, 160]], depth: 26, spacing: 8, seed: 5, pineRatio: 0.45 }));
-scene.add(K.treeline({ id: 'occ_trees_s2', points: [[-260, 60], [-180, 64]], depth: 10, spacing: 7, seed: 9, height: 11 }));
+// ---------------------------------------------------------------- site context (from the USGS NAIP aerial, cases/demo/exhibits/aerial)
+// Dense slash-pine / mixed forest both sides behind mown rights-of-way; a flat-roof store + paved lot on the north
+// side at the crossover; a small building + paved lot SW of the side road; open pasture SE with scattered oaks.
+const zN = zC - outer, zS = zC + outer;                 // outer pavement edges (north = WB, south = EB)
+scene.add(K.treeline({ id: 'forest_nw', points: [[-900, zN - 70], [-400, zN - 60], [-125, zN - 55]], depth: 70, spacing: 7, seed: 3, height: 15, pineRatio: 0.8 }));
+scene.add(K.treeline({ id: 'forest_ne', points: [[-20, zN - 75], [300, zN - 60], [900, zN - 62]], depth: 70, spacing: 7, seed: 4, height: 15, pineRatio: 0.75 }));
+scene.add(K.treeline({ id: 'forest_sw', points: [[-900, zS + 45], [-400, zS + 40], [-40, zS + 75]], depth: 60, spacing: 7, seed: 5, height: 14, pineRatio: 0.65 }));
+scene.add(K.treeline({ id: 'forest_se_far', points: [[230, zS + 40], [500, zS + 60], [900, zS + 55]], depth: 60, spacing: 7, seed: 8, height: 14, pineRatio: 0.7 }));
 
 // furniture (other agents' library; stubs if absent)
 const add = (o, x, z, ry = 0) => { o.position.set(x, K.roadHeight(x, z), z); o.rotation.y = ry; scene.add(o); return o; };
 try {
-  for (const zf of [zC - 36, zC + 36]) {
-    const pts = []; for (let x = -800; x <= 800; x += 50) pts.push([x, zf]);
-    const segs = zf > 0 ? [[-800, -14], [40, 800]] : [[-800, 800]];
-    for (const [a, b] of segs) { const p = pts.filter(([x]) => x >= a && x <= b); if (p.length > 1) { const f = K.fence({ id: 'fence_' + a, points: p.map(([x, z]) => [x, z]) }); f.position.y = 0; scene.add(f); } }
-  }
+  // pasture fence along the SE field
+  { const f = K.fence({ id: 'fence_se', points: [[30, zS + 24], [230, zS + 24]] }); scene.add(f); }
   // pole line (wood, crossarm + conductors spanning to the previous pole), south right-of-way
   let prev = null;
-  for (let x = -760; x <= 800; x += 46) { if (x > -8 && x < 30) continue; add(K.pole({ id: 'pole_' + x, height: 10.7, ...(prev !== null ? { span: x - prev } : {}), transformer: x === 68 }), x, zC + 31, Math.PI / 2); prev = x; }
+  for (let x = -760; x <= 800; x += 46) { if (x > -8 && x < 30) continue; add(K.pole({ id: 'pole_' + x, height: 10.7, ...(prev !== null ? { span: x - prev } : {}), transformer: x === 68 }), x, zS + 13, Math.PI / 2); prev = x; }
   // MUTCD signs: stop + street-name blades on the side road, speed limit and side-road warning on US-27A
   add(K.sign('stop', { id: 'sig_stop', streetName: 'NE 140TH CT', streetName2: 'US 27 ALT' }), 4.6, sideStart + 3.4, Math.PI);
-  add(K.sign('speed_limit', { id: 'sig_speed', speed: 60, rural: true }), -260, zC + outer + 2.5, Math.PI / 2);
-  add(K.sign('side_road_right', { id: 'sig_warn', rural: true }), -320, zC + outer + 2.5, Math.PI / 2);
-  add(K.sign('route_shield', { id: 'sig_route', text: '27', rural: true }), 120, zC - outer - 2.5, -Math.PI / 2);
-  add(K.sign('stop', { id: 'sig_stop_med_a', rural: true }), -100 + 65 * FT + 1.6, zC - 5.4, Math.PI);
-  // gas station on the SE corner (canopy toward the highway) + paved apron
-  scene.add(K.intersection({ id: 'apron_gas', width: 30, length: 9, position: [26, sideStart + 4.5] }));
-  add(K.building({ id: 'bld_gas', style: 'gas_station', w: 24, d: 28 }), 26, sideStart + 9 + 14, 0);
-  add(K.building({ id: 'bld_house', style: 'house', w: 12, d: 9 }), -38, sideStart + 40, 0);
-  for (const [x, z, h, k] of [[44, 18, 8, 'palm'], [8, 16, 9, 'palm'], [-22, 26, 12, 'oak'], [-40, 22, 18, 'pine'], [60, -64, 9, 'oak'], [-120, 52, 17, 'pine'], [140, 48, 10, 'oak'], [-14, 46, 11, 'oak'], [50, 46, 1.3, 'shrub'], [47, 44, 1.1, 'shrub']])
-    add(K.tree({ id: 'tree_' + x, kind: k, height: h, moss: k === 'oak' }), x, z, x);
+  add(K.sign('speed_limit', { id: 'sig_speed', speed: 60, rural: true }), -260, zS + 2.5, Math.PI / 2);
+  add(K.sign('side_road_right', { id: 'sig_warn', rural: true }), -320, zS + 2.5, Math.PI / 2);
+  add(K.sign('route_shield', { id: 'sig_route', text: '27', rural: true }), 120, zN - 2.5, -Math.PI / 2);
+  add(K.sign('stop', { id: 'sig_stop_med_a', rural: true }), 65 * FT + 1.6, zC - 5.4, Math.PI);
+  // north-side store: flat-roof commercial (storefront + awning facing the highway), lot with stalls, driveway apron
+  const storeZ = zN - 58;
+  scene.add(K.sitePad({ id: 'pad_store', position: [-66, storeZ], width: 24, depth: 40, paved: false, surface: 'concrete' }));
+  add(K.building({ id: 'bld_store', style: 'commercial', w: 20, d: 36, h: 5.6, color: '#e4ddd0' }), -66, storeZ, Math.PI);
+  scene.add(K.parkingLot({ id: 'lot_store', position: [-48, storeZ + 30], width: 44, depth: 22, rows: 2, heading: 0 }));
+  scene.add(K.driveway({ id: 'dw_store_w', position: [-62, zN], heading: 0, width: 7.3, length: zN - (storeZ + 41) + 0.5 }));
+  scene.add(K.driveway({ id: 'dw_store_e', position: [-30, zN], heading: 0, width: 7.3, length: zN - (storeZ + 41) + 0.5 }));
+  // small building + paved lot SW of the side road
+  scene.add(K.parkingLot({ id: 'lot_sw', position: [-16, zS + 16], width: 18, depth: 18, rows: 1, accessible: 0 }));
+  add(K.building({ id: 'bld_sw', style: 'commercial', w: 11, d: 9, h: 4.2, awning: false, color: '#cfc6b6', material: 'brick' }), -16, zS + 32, 0);
+  scene.add(K.driveway({ id: 'dw_sw', position: [-16, zS], heading: Math.PI, width: 7.3, length: 7.5 }));
+  // houses along the side road (south)
+  add(K.building({ id: 'house_1', style: 'house', w: 12, d: 9 }), -22, zS + 120, -Math.PI / 2);
+  add(K.building({ id: 'house_2', style: 'house', w: 13, d: 9, color: '#cfd6d8' }), 26, zS + 150, Math.PI / 2);
+  // scattered live oaks in the SE pasture, a few by the buildings; shrubs at the store
+  for (const [x, z, h, k] of [[60, zS + 60, 10, 'oak'], [110, zS + 85, 12, 'oak'], [150, zS + 52, 9, 'oak'], [190, zS + 110, 11, 'oak'], [85, zS + 130, 10, 'oak'], [-36, zS + 40, 11, 'oak'], [-80, storeZ + 26, 9, 'oak'], [-90, storeZ - 8, 17, 'pine'], [-40, storeZ - 14, 19, 'pine']])
+    add(K.tree({ id: 'tree_' + x + '_' + z, kind: k, height: h, moss: k === 'oak' }), x, z, x);
+  for (let i = 0; i < 6; i++) add(K.tree({ id: 'shrub_' + i, kind: 'shrub', height: 1.1 + (i % 3) * 0.2 }), -74 + i * 3.2, storeZ + 20.2, i);
 } catch (e) { console.warn('furniture', e); }
 
 // ---------------------------------------------------------------- environment (sun, sky, fog for 2016-05-07 16:36 EDT, Levy County FL)
@@ -122,8 +135,9 @@ const VIEWS = {
   driver: () => { cam.fov = 60; eye(-110, -0.4, 0, -0.2, 1.15); },   // driver eye, EB outside lane
   intersection: () => eye(-2.5, 30, 0, -40, 1.6),                    // on NE 140th Ct looking north across the highway
   crest: () => eye(60, -1.2, -400, -1.2, 1.6),
-  crossover: () => { cam.fov = 45; cam.position.set(-160, 34, 40); cam.lookAt(-100, 0, zC); },
-  gas: () => eye(-40, 2.6, 26, 18, 1.6),                       // looking west up to the crest
+  crossover: () => { cam.fov = 45; cam.position.set(-75, 30, 45); cam.lookAt(-5, 0, zC - 8); },
+  store: () => eye(-10, zC - 2, -60, zC - 60, 1.6),
+  lot: () => { cam.fov = 50; cam.position.set(-10, 22, zC - 10); cam.lookAt(-55, 0, zC - 70); },                       // looking west up to the crest
   overhead: () => { cam.position.set(0, 120, zC + 10); cam.up.set(0, 0, -1); cam.lookAt(0, 0, zC + 10); },
   wide: () => { cam.position.set(-60, 520, zC); cam.up.set(0, 0, -1); cam.lookAt(-60, 0, zC); },
 };

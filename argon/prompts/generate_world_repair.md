@@ -8,6 +8,7 @@ Fix EVERY error above and change nothing else: keep all evidence-based positions
 - Citations: a value not in the record (typical, assumed, estimated, approximated) has a citation starting with "inferred: ".
 - setTime(t) computes every pose from t alone (no state carried between calls), stays within the scene, and gives continuous speed: ≤ 0.8 g before impact (keyframes [t, x, z, headingDeg, speedMps] with cubic Hermite interpolation; speeds consistent with the distances), no teleports; post-impact deceleration may exceed 1 g.
 - A vehicle whose first visibility is limited by a cited sight restriction (crest, curve) starts at or behind it at t = 0 (path ≥ that distance before impact; meta.impactT ≈ distance / cited speed).
+- Origins are footprint centres: at meta.impactT the contacting surfaces (striking front = centre + L/2 along heading; struck side = centre ± W/2) meet at the point of impact.
 - No imports, require, fetch, eval, globals, DOM, async, Math.random or Date. No lights: lighting comes only from assets.environment({ date, timeOfDay, utcOffset, timeZone, lat, lon, weather }) with the case's values.
 
 Output the complete corrected module in exactly ONE ```js block and nothing after it. Keep it compact (≤ 220 lines).

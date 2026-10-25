@@ -529,7 +529,24 @@ function facadeMat(key, wM, hM, fb, draw, p = {}) {
   return memo(MAT, 'facade:' + key, () => {
     const ppm = Math.min(48, 1400 / Math.max(wM, hM));
     const t = ctex('facade:' + key, wM * ppm, hM * ppm, (g, W, H) => draw(painter(g, W, H, { x0: 0, y0: 0, x1: wM, y1: hM, w: wM, h: hM })));
-    return new THREE.MeshStandardMaterial({ color: t ? 0xffffff : fb, map: t, roughness: 0.85, side: THREE.FrontSide, shadowSide: THREE.DoubleSide, ...p });
+    // roughness + bump maps derived from the painted facade: glazing (dark, blue-grey) is glossy and recessed,
+    // mullions/trim stand proud, wall stays matte -> windows catch the sky/environment like real glass.
+    let rough = null, bump = null;
+    if (t && t.image) {
+      const W = t.image.width, H = t.image.height, src = t.image.getContext('2d').getImageData(0, 0, W, H).data;
+      const rc = document.createElement('canvas'); rc.width = W; rc.height = H; const rg = rc.getContext('2d'); const ri = rg.createImageData(W, H);
+      const bc = document.createElement('canvas'); bc.width = W; bc.height = H; const bg = bc.getContext('2d'); const bi = bg.createImageData(W, H);
+      for (let i = 0; i < src.length; i += 4) {
+        const r = src[i], g = src[i + 1], b = src[i + 2], L = 0.3 * r + 0.59 * g + 0.11 * b;
+        const glass = L < 125 && b >= r + 4;
+        const v = glass ? 22 : 200 + (L % 17); ri.data[i] = ri.data[i + 1] = ri.data[i + 2] = v; ri.data[i + 3] = 255;
+        const h = glass ? 40 : Math.min(255, 120 + L * 0.35); bi.data[i] = bi.data[i + 1] = bi.data[i + 2] = h; bi.data[i + 3] = 255;
+      }
+      rg.putImageData(ri, 0, 0); bg.putImageData(bi, 0, 0);
+      rough = new THREE.CanvasTexture(rc); bump = new THREE.CanvasTexture(bc);
+      for (const x of [rough, bump]) { x.anisotropy = 8; x.wrapS = t.wrapS; x.wrapT = t.wrapT; x.needsUpdate = true; }
+    }
+    return new THREE.MeshStandardMaterial({ color: t ? 0xffffff : fb, map: t, roughness: rough ? 1 : 0.85, roughnessMap: rough, bumpMap: bump, bumpScale: bump ? 1.5 : 1, side: THREE.FrontSide, shadowSide: THREE.DoubleSide, ...p });
   });
 }
 const PAINT = {

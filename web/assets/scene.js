@@ -802,6 +802,7 @@ export function parkingLot(opts = {}) {
     const o = new THREE.Object3D();
     for (let k = 0; k < nSt; k++) { o.position.set(u0 + (k + 0.5) * stallWidth, 0.06, -(s1 - 0.75)); o.updateMatrix(); ws.setMatrixAt(k, o.matrix); }
     ws.castShadow = ws.receiveShadow = true; ws.name = 'lot_wheel_stops'; g.add(ws);
+    if (opts.position) ws.position.y = profileH(opts.position[0], opts.position[opts.position.length > 2 ? 2 : 1]);
   }
   g.userData.stalls = nSt * rowsS.length;
   redrape(g);
