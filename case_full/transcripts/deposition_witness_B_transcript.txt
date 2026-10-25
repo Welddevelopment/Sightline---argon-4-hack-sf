@@ -1188,7 +1188,7 @@
 01:54:12 WITNESS B: Standing. I'd been standing a while. I had my bag at my feet.
 01:54:18 ATTORNEY: I'd like you to show us on the map.
 01:54:23 ATTORNEY: And please mark where you were standing when the car reached the intersection.
-01:54:30 WITNESS B: I was over by the corner, near the shelter.
+01:54:30 WITNESS B: Right about here.
 01:54:38 ATTORNEY: Thank you. Let the record reflect the witness has marked Exhibit 4. Would you put the number 2 next to that mark?
 01:54:48 WITNESS B: Number 2. Okay.
 01:54:50 ATTORNEY: And would you put your initials and today's date at the bottom of the page?
@@ -1215,7 +1215,7 @@
 01:56:50 OPPOSING COUNSEL: The mark you labeled number 2. How sure are you of that spot?
 01:56:56 WITNESS B: Roughly, yes. I'm sure of it roughly. I wasn't measuring where my feet were. But that's about where I was.
 01:57:06 OPPOSING COUNSEL: Could you have been a few feet one way or another from that mark?
-01:57:12 WITNESS B: A few feet, maybe. It's a little mark on a big picture. But that's the area.
+01:57:13 WITNESS B: A few feet, maybe. It's a little mark on a big picture. But that's the area.
 01:57:20 OPPOSING COUNSEL: And the mark you labeled number 1, for where the truck stopped. Same question. How sure are you of that one?
 01:57:30 WITNESS B: About the same. That's about where it was. I wouldn't swear to the exact foot.
 01:57:38 OPPOSING COUNSEL: You'd never seen a picture of the intersection from above before today, correct?

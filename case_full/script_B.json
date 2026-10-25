@@ -7147,8 +7147,8 @@
  {
   "t_start_sec": 6870,
   "speaker": "Witness B",
-  "text": "I was over by the corner, near the shelter.",
-  "dur_sec": 7.32,
+  "text": "Right about here.",
+  "dur_sec": 7.37,
   "exhibit": {
    "type": "map_mark",
    "x_m": 7.5,
@@ -7156,271 +7156,271 @@
   }
  },
  {
-  "t_start_sec": 6878.18,
+  "t_start_sec": 6878.24,
   "speaker": "Attorney",
   "text": "Thank you. Let the record reflect the witness has marked Exhibit 4. Would you put the number 2 next to that mark?",
   "dur_sec": 9.54
  },
  {
-  "t_start_sec": 6888.59,
+  "t_start_sec": 6888.65,
   "speaker": "Witness B",
   "text": "Number 2. Okay.",
   "dur_sec": 1.3
  },
  {
-  "t_start_sec": 6890.76,
+  "t_start_sec": 6890.81,
   "speaker": "Attorney",
   "text": "And would you put your initials and today's date at the bottom of the page?",
   "dur_sec": 6.5
  },
  {
-  "t_start_sec": 6898.13,
+  "t_start_sec": 6898.18,
   "speaker": "Witness B",
   "text": "Here?",
   "dur_sec": 0.43
  },
  {
-  "t_start_sec": 6899.43,
+  "t_start_sec": 6899.48,
   "speaker": "Attorney",
   "text": "Anywhere at the bottom is fine.",
   "dur_sec": 2.6
  },
  {
-  "t_start_sec": 6902.9,
+  "t_start_sec": 6902.95,
   "speaker": "Witness B",
   "text": "Okay. Done.",
   "dur_sec": 0.87
  },
  {
-  "t_start_sec": 6904.64,
+  "t_start_sec": 6904.69,
   "speaker": "Attorney",
   "text": "Were you in that same general spot the whole time the car was approaching, from when you first saw it?",
   "dur_sec": 8.67
  },
  {
-  "t_start_sec": 6914.18,
+  "t_start_sec": 6914.23,
   "speaker": "Opposing counsel",
   "text": "Object to form. Compound.",
   "dur_sec": 1.73
  },
  {
-  "t_start_sec": 6916.78,
+  "t_start_sec": 6916.83,
   "speaker": "Attorney",
   "text": "I'll rephrase. From when you first noticed the car until the collision, did you move from where you were?",
   "dur_sec": 8.24
  },
  {
-  "t_start_sec": 6925.88,
+  "t_start_sec": 6925.93,
   "speaker": "Witness B",
   "text": "No. I was just standing there waiting. I wasn't walking around.",
   "dur_sec": 4.77
  },
  {
-  "t_start_sec": 6931.52,
+  "t_start_sec": 6931.57,
   "speaker": "Attorney",
   "text": "Thank you. At this time I'll offer Exhibit 4, as marked by the witness, into the record.",
   "dur_sec": 7.37
  },
  {
-  "t_start_sec": 6939.76,
+  "t_start_sec": 6939.81,
   "speaker": "Opposing counsel",
   "text": "No objection to it being attached to the transcript, subject to the objection I made earlier as to scale and accuracy.",
-  "dur_sec": 9.11
+  "dur_sec": 9.1
  },
  {
-  "t_start_sec": 6949.73,
+  "t_start_sec": 6949.78,
   "speaker": "Attorney",
   "text": "Understood. I'll pass the witness. Counsel, do you have questions?",
   "dur_sec": 4.34
  },
  {
-  "t_start_sec": 6954.94,
+  "t_start_sec": 6954.98,
   "speaker": "Opposing counsel",
   "text": "Just a few. Ma'am, I represent the motor carrier. I'll be brief. You understand you're still under oath?",
-  "dur_sec": 7.81
+  "dur_sec": 7.8
  },
  {
-  "t_start_sec": 6963.61,
+  "t_start_sec": 6963.65,
   "speaker": "Witness B",
   "text": "Yes.",
   "dur_sec": 0.43
  },
  {
-  "t_start_sec": 6964.91,
+  "t_start_sec": 6964.95,
   "speaker": "Opposing counsel",
   "text": "Before today, had anyone shown you Exhibit 4?",
   "dur_sec": 3.47
  },
  {
-  "t_start_sec": 6969.25,
+  "t_start_sec": 6969.29,
   "speaker": "Witness B",
   "text": "No. Today's the first time.",
   "dur_sec": 2.17
  },
  {
-  "t_start_sec": 6972.28,
+  "t_start_sec": 6972.32,
   "speaker": "Opposing counsel",
   "text": "When you made the marks on Exhibit 4 a few minutes ago, did anyone help you decide where to put them?",
-  "dur_sec": 9.11
+  "dur_sec": 9.1
  },
  {
-  "t_start_sec": 6982.26,
+  "t_start_sec": 6982.29,
   "speaker": "Witness B",
   "text": "No. Nobody helped me. I did it myself.",
   "dur_sec": 3.47
  },
  {
-  "t_start_sec": 6986.59,
+  "t_start_sec": 6986.63,
   "speaker": "Opposing counsel",
   "text": "Did anyone point to a spot on the map or suggest a spot to you, either today or before today?",
   "dur_sec": 8.67
  },
  {
-  "t_start_sec": 6996.13,
+  "t_start_sec": 6996.17,
   "speaker": "Witness B",
   "text": "No.",
   "dur_sec": 0.43
  },
  {
-  "t_start_sec": 6997.44,
+  "t_start_sec": 6997.47,
   "speaker": "Opposing counsel",
   "text": "Did you discuss with anyone, before today, where you would mark on a map?",
   "dur_sec": 6.07
  },
  {
-  "t_start_sec": 7004.37,
+  "t_start_sec": 7004.41,
   "speaker": "Witness B",
   "text": "No. I didn't know there was going to be a map.",
   "dur_sec": 4.77
  },
  {
-  "t_start_sec": 7010.01,
+  "t_start_sec": 7010.04,
   "speaker": "Opposing counsel",
   "text": "The mark you labeled number 2. How sure are you of that spot?",
   "dur_sec": 5.64
  },
  {
-  "t_start_sec": 7016.52,
+  "t_start_sec": 7016.55,
   "speaker": "Witness B",
   "text": "Roughly, yes. I'm sure of it roughly. I wasn't measuring where my feet were. But that's about where I was.",
   "dur_sec": 8.67
  },
  {
-  "t_start_sec": 7026.06,
+  "t_start_sec": 7026.08,
   "speaker": "Opposing counsel",
   "text": "Could you have been a few feet one way or another from that mark?",
   "dur_sec": 6.07
  },
  {
-  "t_start_sec": 7032.99,
+  "t_start_sec": 7033.02,
   "speaker": "Witness B",
   "text": "A few feet, maybe. It's a little mark on a big picture. But that's the area.",
   "dur_sec": 6.94
  },
  {
-  "t_start_sec": 7040.8,
+  "t_start_sec": 7040.83,
   "speaker": "Opposing counsel",
   "text": "And the mark you labeled number 1, for where the truck stopped. Same question. How sure are you of that one?",
-  "dur_sec": 9.11
+  "dur_sec": 9.1
  },
  {
-  "t_start_sec": 7050.77,
+  "t_start_sec": 7050.8,
   "speaker": "Witness B",
   "text": "About the same. That's about where it was. I wouldn't swear to the exact foot.",
   "dur_sec": 6.5
  },
  {
-  "t_start_sec": 7058.15,
+  "t_start_sec": 7058.17,
   "speaker": "Opposing counsel",
   "text": "You'd never seen a picture of the intersection from above before today, correct?",
   "dur_sec": 5.64
  },
  {
-  "t_start_sec": 7064.65,
+  "t_start_sec": 7064.67,
   "speaker": "Witness B",
   "text": "Correct.",
   "dur_sec": 0.43
  },
  {
-  "t_start_sec": 7065.95,
+  "t_start_sec": 7065.97,
   "speaker": "Opposing counsel",
   "text": "So you were translating what you saw standing on the ground onto a picture from overhead.",
   "dur_sec": 6.94
  },
  {
-  "t_start_sec": 7073.76,
+  "t_start_sec": 7073.78,
   "speaker": "Attorney",
   "text": "Object to form.",
   "dur_sec": 1.3
  },
  {
-  "t_start_sec": 7075.93,
+  "t_start_sec": 7075.94,
   "speaker": "Opposing counsel",
   "text": "You can answer.",
   "dur_sec": 1.3
  },
  {
-  "t_start_sec": 7078.09,
+  "t_start_sec": 7078.11,
   "speaker": "Witness B",
   "text": "I guess so. But I know that corner. I've been to that store a hundred times.",
   "dur_sec": 6.94
  },
  {
-  "t_start_sec": 7085.9,
+  "t_start_sec": 7085.92,
   "speaker": "Opposing counsel",
   "text": "Before today, did you ever go back and stand in the spot you marked, to check what you could see from there?",
   "dur_sec": 9.54
  },
  {
-  "t_start_sec": 7096.31,
+  "t_start_sec": 7096.32,
   "speaker": "Witness B",
   "text": "No. I never did anything like that.",
-  "dur_sec": 3.04
+  "dur_sec": 3.03
  },
  {
-  "t_start_sec": 7100.21,
+  "t_start_sec": 7100.22,
   "speaker": "Opposing counsel",
   "text": "Has anyone, an investigator or anyone else, asked you to go out to the intersection with them?",
   "dur_sec": 7.37
  },
  {
-  "t_start_sec": 7108.45,
+  "t_start_sec": 7108.46,
   "speaker": "Witness B",
   "text": "No. Nobody's asked me to do that.",
-  "dur_sec": 3.04
+  "dur_sec": 3.03
  },
  {
-  "t_start_sec": 7112.35,
+  "t_start_sec": 7112.36,
   "speaker": "Opposing counsel",
   "text": "Did you bring any notes or drawings with you today?",
   "dur_sec": 4.34
  },
  {
-  "t_start_sec": 7117.56,
+  "t_start_sec": 7117.57,
   "speaker": "Witness B",
   "text": "No. Just my glasses and my water.",
-  "dur_sec": 3.04
+  "dur_sec": 3.03
  },
  {
-  "t_start_sec": 7121.46,
+  "t_start_sec": 7121.47,
   "speaker": "Opposing counsel",
   "text": "You mentioned earlier you wear reading glasses. Were you wearing them when you marked the exhibit?",
   "dur_sec": 6.94
  },
  {
-  "t_start_sec": 7129.26,
+  "t_start_sec": 7129.27,
   "speaker": "Witness B",
   "text": "Yes, to see the little lines on the map. I don't wear them for distance. I didn't have them on that day outside.",
   "dur_sec": 9.97
  },
  {
-  "t_start_sec": 7140.1,
+  "t_start_sec": 7140.11,
   "speaker": "Opposing counsel",
   "text": "Understood. Last thing. Other than your written statement and what you've told us here today, have you given any other statement about what you saw, written or recorded?",
   "dur_sec": 12.14
  },
  {
-  "t_start_sec": 7153.11,
+  "t_start_sec": 7153.12,
   "speaker": "Witness B",
   "text": "No. Just the deputy that day, and the written one, and today.",
   "dur_sec": 5.2
@@ -7429,7 +7429,7 @@
   "t_start_sec": 7159.19,
   "speaker": "Opposing counsel",
   "text": "Thank you, ma'am. I have nothing further.",
-  "dur_sec": 3.04
+  "dur_sec": 3.03
  },
  {
   "t_start_sec": 7163.09,

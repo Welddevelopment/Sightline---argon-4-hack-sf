@@ -6455,243 +6455,243 @@ ATTORNEY: I'd like you to show us on the map.
 ATTORNEY: And please mark where you were standing when the car reached the intersection.
 
 1615
-01:54:30,000 --> 01:54:38,180
-WITNESS B: I was over by the corner, near the shelter.
+01:54:30,000 --> 01:54:38,240
+WITNESS B: Right about here.
 
 1616
-01:54:38,180 --> 01:54:44,129
+01:54:38,240 --> 01:54:44,189
 ATTORNEY: Thank you. Let the record reflect the witness has marked Exhibit
 
 1617
-01:54:44,129 --> 01:54:48,590
+01:54:44,189 --> 01:54:48,650
 ATTORNEY: 4. Would you put the number 2 next to that mark?
 
 1618
-01:54:48,590 --> 01:54:50,760
+01:54:48,650 --> 01:54:50,810
 WITNESS B: Number 2. Okay.
 
 1619
-01:54:50,760 --> 01:54:58,130
+01:54:50,810 --> 01:54:58,180
 ATTORNEY: And would you put your initials and today's date at the bottom of the page?
 
 1620
-01:54:58,130 --> 01:54:59,430
+01:54:58,180 --> 01:54:59,480
 WITNESS B: Here?
 
 1621
-01:54:59,430 --> 01:55:02,900
+01:54:59,480 --> 01:55:02,950
 ATTORNEY: Anywhere at the bottom is fine.
 
 1622
-01:55:02,900 --> 01:55:04,640
+01:55:02,950 --> 01:55:04,690
 WITNESS B: Okay. Done.
 
 1623
-01:55:04,640 --> 01:55:09,268
+01:55:04,690 --> 01:55:09,318
 ATTORNEY: Were you in that same general spot the whole time
 
 1624
-01:55:09,268 --> 01:55:14,180
+01:55:09,318 --> 01:55:14,230
 ATTORNEY: the car was approaching, from when you first saw it?
 
 1625
-01:55:14,180 --> 01:55:16,780
+01:55:14,230 --> 01:55:16,830
 OPPOSING COUNSEL: Object to form. Compound.
 
 1626
-01:55:16,780 --> 01:55:21,680
+01:55:16,830 --> 01:55:21,730
 ATTORNEY: I'll rephrase. From when you first noticed the car until
 
 1627
-01:55:21,680 --> 01:55:25,880
+01:55:21,730 --> 01:55:25,930
 ATTORNEY: the collision, did you move from where you were?
 
 1628
-01:55:25,880 --> 01:55:31,520
+01:55:25,930 --> 01:55:31,570
 WITNESS B: No. I was just standing there waiting. I wasn't walking around.
 
 1629
-01:55:31,520 --> 01:55:35,782
+01:55:31,570 --> 01:55:35,832
 ATTORNEY: Thank you. At this time I'll offer Exhibit 4,
 
 1630
-01:55:35,782 --> 01:55:39,760
+01:55:35,832 --> 01:55:39,810
 ATTORNEY: as marked by the witness, into the record.
 
 1631
-01:55:39,760 --> 01:55:45,128
+01:55:39,810 --> 01:55:45,178
 OPPOSING COUNSEL: No objection to it being attached to the transcript, subject to
 
 1632
-01:55:45,128 --> 01:55:49,730
+01:55:45,178 --> 01:55:49,780
 OPPOSING COUNSEL: the objection I made earlier as to scale and accuracy.
 
 1633
-01:55:49,730 --> 01:55:54,940
+01:55:49,780 --> 01:55:54,980
 ATTORNEY: Understood. I'll pass the witness. Counsel, do you have questions?
 
 1634
-01:55:54,940 --> 01:55:59,065
+01:55:54,980 --> 01:55:59,105
 OPPOSING COUNSEL: Just a few. Ma'am, I represent the motor carrier.
 
 1635
-01:55:59,065 --> 01:56:03,610
+01:55:59,105 --> 01:56:03,650
 OPPOSING COUNSEL: I'll be brief. You understand you're still under oath?
 
 1636
-01:56:03,610 --> 01:56:04,910
+01:56:03,650 --> 01:56:04,950
 WITNESS B: Yes.
 
 1637
-01:56:04,910 --> 01:56:09,250
+01:56:04,950 --> 01:56:09,290
 OPPOSING COUNSEL: Before today, had anyone shown you Exhibit 4?
 
 1638
-01:56:09,250 --> 01:56:12,280
+01:56:09,290 --> 01:56:12,320
 WITNESS B: No. Today's the first time.
 
 1639
-01:56:12,280 --> 01:56:17,270
+01:56:12,320 --> 01:56:17,305
 OPPOSING COUNSEL: When you made the marks on Exhibit 4 a few minutes
 
 1640
-01:56:17,270 --> 01:56:22,260
+01:56:17,305 --> 01:56:22,290
 OPPOSING COUNSEL: ago, did anyone help you decide where to put them?
 
 1641
-01:56:22,260 --> 01:56:26,590
+01:56:22,290 --> 01:56:26,630
 WITNESS B: No. Nobody helped me. I did it myself.
 
 1642
-01:56:26,590 --> 01:56:30,738
+01:56:26,630 --> 01:56:30,778
 OPPOSING COUNSEL: Did anyone point to a spot on the map or
 
 1643
-01:56:30,738 --> 01:56:36,130
+01:56:30,778 --> 01:56:36,170
 OPPOSING COUNSEL: suggest a spot to you, either today or before today?
 
 1644
-01:56:36,130 --> 01:56:37,440
+01:56:36,170 --> 01:56:37,470
 WITNESS B: No.
 
 1645
-01:56:37,440 --> 01:56:44,370
+01:56:37,470 --> 01:56:44,410
 OPPOSING COUNSEL: Did you discuss with anyone, before today, where you would mark on a map?
 
 1646
-01:56:44,370 --> 01:56:50,010
+01:56:44,410 --> 01:56:50,040
 WITNESS B: No. I didn't know there was going to be a map.
 
 1647
-01:56:50,010 --> 01:56:56,520
+01:56:50,040 --> 01:56:56,550
 OPPOSING COUNSEL: The mark you labeled number 2. How sure are you of that spot?
 
 1648
-01:56:56,520 --> 01:57:01,608
+01:56:56,550 --> 01:57:01,633
 WITNESS B: Roughly, yes. I'm sure of it roughly. I wasn't measuring
 
 1649
-01:57:01,608 --> 01:57:06,060
+01:57:01,633 --> 01:57:06,080
 WITNESS B: where my feet were. But that's about where I was.
 
 1650
-01:57:06,060 --> 01:57:12,990
+01:57:06,080 --> 01:57:13,020
 OPPOSING COUNSEL: Could you have been a few feet one way or another from that mark?
 
 1651
-01:57:12,990 --> 01:57:20,800
+01:57:13,020 --> 01:57:20,830
 WITNESS B: A few feet, maybe. It's a little mark on a big picture. But that's the area.
 
 1652
-01:57:20,800 --> 01:57:25,832
+01:57:20,830 --> 01:57:25,862
 OPPOSING COUNSEL: And the mark you labeled number 1, for where the truck
 
 1653
-01:57:25,832 --> 01:57:30,770
+01:57:25,862 --> 01:57:30,800
 OPPOSING COUNSEL: stopped. Same question. How sure are you of that one?
 
 1654
-01:57:30,770 --> 01:57:38,150
+01:57:30,800 --> 01:57:38,170
 WITNESS B: About the same. That's about where it was. I wouldn't swear to the exact foot.
 
 1655
-01:57:38,150 --> 01:57:44,650
+01:57:38,170 --> 01:57:44,670
 OPPOSING COUNSEL: You'd never seen a picture of the intersection from above before today, correct?
 
 1656
-01:57:44,650 --> 01:57:45,950
+01:57:44,670 --> 01:57:45,970
 WITNESS B: Correct.
 
 1657
-01:57:45,950 --> 01:57:53,760
+01:57:45,970 --> 01:57:53,780
 OPPOSING COUNSEL: So you were translating what you saw standing on the ground onto a picture from overhead.
 
 1658
-01:57:53,760 --> 01:57:55,930
+01:57:53,780 --> 01:57:55,940
 ATTORNEY: Object to form.
 
 1659
-01:57:55,930 --> 01:57:58,090
+01:57:55,940 --> 01:57:58,110
 OPPOSING COUNSEL: You can answer.
 
 1660
-01:57:58,090 --> 01:58:05,900
+01:57:58,110 --> 01:58:05,920
 WITNESS B: I guess so. But I know that corner. I've been to that store a hundred times.
 
 1661
-01:58:05,900 --> 01:58:10,862
+01:58:05,920 --> 01:58:10,877
 OPPOSING COUNSEL: Before today, did you ever go back and stand in the
 
 1662
-01:58:10,862 --> 01:58:16,310
+01:58:10,877 --> 01:58:16,320
 OPPOSING COUNSEL: spot you marked, to check what you could see from there?
 
 1663
-01:58:16,310 --> 01:58:20,210
+01:58:16,320 --> 01:58:20,220
 WITNESS B: No. I never did anything like that.
 
 1664
-01:58:20,210 --> 01:58:24,906
+01:58:20,220 --> 01:58:24,916
 OPPOSING COUNSEL: Has anyone, an investigator or anyone else, asked you
 
 1665
-01:58:24,906 --> 01:58:28,450
+01:58:24,916 --> 01:58:28,460
 OPPOSING COUNSEL: to go out to the intersection with them?
 
 1666
-01:58:28,450 --> 01:58:32,350
+01:58:28,460 --> 01:58:32,360
 WITNESS B: No. Nobody's asked me to do that.
 
 1667
-01:58:32,350 --> 01:58:37,560
+01:58:32,360 --> 01:58:37,570
 OPPOSING COUNSEL: Did you bring any notes or drawings with you today?
 
 1668
-01:58:37,560 --> 01:58:41,460
+01:58:37,570 --> 01:58:41,470
 WITNESS B: No. Just my glasses and my water.
 
 1669
-01:58:41,460 --> 01:58:49,260
+01:58:41,470 --> 01:58:49,270
 OPPOSING COUNSEL: You mentioned earlier you wear reading glasses. Were you wearing them when you marked the exhibit?
 
 1670
-01:58:49,260 --> 01:58:54,436
+01:58:49,270 --> 01:58:54,446
 WITNESS B: Yes, to see the little lines on the map. I don't wear
 
 1671
-01:58:54,436 --> 01:59:00,100
+01:58:54,446 --> 01:59:00,110
 WITNESS B: them for distance. I didn't have them on that day outside.
 
 1672
-01:59:00,100 --> 01:59:06,760
+01:59:00,110 --> 01:59:06,770
 OPPOSING COUNSEL: Understood. Last thing. Other than your written statement and what you've told us here
 
 1673
-01:59:06,760 --> 01:59:13,110
+01:59:06,770 --> 01:59:13,120
 OPPOSING COUNSEL: today, have you given any other statement about what you saw, written or recorded?
 
 1674
-01:59:13,110 --> 01:59:19,190
+01:59:13,120 --> 01:59:19,190
 WITNESS B: No. Just the deputy that day, and the written one, and today.
 
 1675

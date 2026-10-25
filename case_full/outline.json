@@ -48,7 +48,7 @@
           "id": "B6",
           "start": 6000,
           "end": 7200,
-          "plan": "Exhibit 4 (aerial-style map of the intersection) introduced ~6400 s. ANCHOR at 6730 s: Attorney 'Using the pen, please mark where the truck came to a stop.' Witness B: 'It was down here. Down 140th, past the store. About here.' (exhibit map_mark x_m 0.0 z_m 40.0). ANCHOR at 6870 s (1:54:30): Attorney 'And please mark where you were standing when the car reached the intersection.' Witness B answers ONLY: 'I was over by the corner, near the shelter.' (exhibit map_mark x_m 7.5 z_m 6.5). The pen mark is shown on screen only; nobody reads coordinates or describes the mark's location aloud. Then Attorney offers Exhibit 4 as marked; Opposing counsel asks a few short questions (did anyone help her mark it \u2014 no; is she sure of the spot \u2014 'roughly, yes'); Videographer closes the record at ~7180 s."
+          "plan": "Exhibit 4 (aerial-style map of the intersection) introduced ~6400 s. ANCHOR at 6730 s: Attorney 'Using the pen, please mark where the truck came to a stop.' Witness B: 'It was down here. Down 140th, past the store. About here.' (exhibit map_mark x_m 0.0 z_m 40.0). ANCHOR at 6870 s (1:54:30): Attorney 'And please mark where you were standing when the car reached the intersection.' Witness B answers ONLY: 'Right about here.' (exhibit map_mark x_m 7.5 z_m 6.5). The pen mark is shown on screen only; nobody reads coordinates or describes the mark's location aloud. Then Attorney offers Exhibit 4 as marked; Opposing counsel asks a few short questions (did anyone help her mark it \u2014 no; is she sure of the spot \u2014 'roughly, yes'); Videographer closes the record at ~7180 s."
         }
       ],
       "note": "Original 20-min block 1:40-2:00 (follow-up topics) was cut to keep the whole case under the 1,048,576-token input limit; see case_full/segments_cut/."
@@ -80,7 +80,7 @@
     }
   },
   "consistency_rules": [
-    "The two decisive facts appear ONLY at the anchors: B's own claim (B3 at 2470 s, repeated ~3120 s), D's hearsay recount (D3 at 1880 s), and B's on-screen-only position mark (B7 at 8070 s). Nowhere else may anyone state B's precise position (only 'outside', 'out front of the store'; 'near the shelter' only at the B7 anchor).",
+    "The two decisive facts appear ONLY at the anchors: B's own claim (B3 at 2470 s, repeated ~3120 s), D's hearsay recount (D3 at 1880 s), and B's on-screen-only position mark (B7 at 8070 s). Nowhere else may anyone state B's precise position (only 'outside', 'out front of the store'; no spoken position detail even at the mark).",
     "No one ever discusses whether the trailer blocked B's view; no one computes geometry.",
     "Times of day: crash ~4:36 pm. B arrived ~4:10. Sister arrived ~5:00.",
     "No real names. Never a brand/manufacturer/model name. No injuries described graphically. No statements about any real person's attention, conduct, condition, phone use or any automation system."
