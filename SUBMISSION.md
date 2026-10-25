@@ -13,7 +13,7 @@ Sightline does the first pass in minutes. A lawyer uploads the case file: report
 
 The decisive fact is visual-only. Witness B swears nothing blocked her view. At 1:54:30 into her deposition she marks her position on a map with a pen and says only "Right about here." Argon found that moment. From her mark, the ray-cast shows the turning tractor blocking her view at 9.8 s, from 21 of 25 test positions. Then 22 Managed Agents reproduced every check in separate sandboxes (17/17 agree).
 
-Long decode lets one Argon response write an entire world: 16,798 tokens from the full 839k-token case, and 63,079 tokens for a hand-built world of the small case. The output is a cited PDF report for the expert. It's an analysis draft, not evidence.
+The rendered views hold up next to commercial forensic animations (side-by-side stills in the README). Long decode lets one Argon response write an entire world: 16,798 tokens from the full 839k-token case, and 63,079 tokens for a hand-built world of the small case. The output is a cited PDF report for the expert. It's an analysis draft, not evidence.
 
 ## Managed Agents
 

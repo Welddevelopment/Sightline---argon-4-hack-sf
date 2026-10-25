@@ -108,11 +108,19 @@ All numbers are measured. The file is given after each one.
 
 ---
 
-## 3. Self-correction round on the one-pass world (TODO)
+## 3. Self-correction on the one-pass world (World B)
 
-`status/onepass_full.md` as last read (14:25 local): world_v3 is valid. Checks after the observer-vehicle fix: A blocked by veh_truck_tractor (t = 7), **B clear 0/25** (Argon read her mark as (7.5, 12); scripted (7.5, 6.5)), C clear 0/25, D blocked by the store. The critique round was **waiting for the render lock** to make its input stills.
+- **Round 3 (Argon critique → world_v4):** Argon got the critique prompt, both depositions, Exhibit 4, the Depo Witness B 1:54:34 pen-mark frame and the checks. It re-measured her mark to (8.5, 9.0), up from (7.5, 12.0), and set her time to 9.9 s ("right up until it hit"). It also bound the two driver witnesses to their pickups. Result: **Witness B BLOCKED 25/25 (robust)** by the tractor (14) and the bench shelter (11). D is blocked by the store; A and C are clear. 326 s, 864k tokens in, 20.3k out. One mechanical edit after Argon: it read `driverEye` as `.x/.y/.z` where the contract gives an array, and we changed it to accept the array. Argon's untouched file is kept as `worlds/onepass/world_v4_argon_unfixed.js`, and the edit is recorded in the provenance.
+- **Error-driven rounds (new):** the loop now runs another round automatically while the *world* is wrong (`argon/world_errors.js`). That covers contract problems, motion over 1 g, and disagreement with known facts (the NTSB report, or witness marks the lawyer confirmed). Those errors go straight to Argon. A witness being BLOCKED or CLEAR is a finding, never an error. After 3 rounds with errors left, the case page asks the user whether to run more.
+- **Round 4 (→ world_v5):** given v4's four NTSB misses, Argon fixed three: **NTSB 8/12 → 11/12**, and B is still BLOCKED 25/25. But it pushed the turning truck to 1.05 g, so the check rejected v5 and kept v4. The next round gets that new error plus the remaining pole-strike timing. `TODO: round 5 result.`
 
-> **TODO, fill in when `status/onepass_full.md` reports the critique result:** did Argon's critique (watching the renders plus the 1:54:30 frame) move Witness B back to her mark? New B verdict and robustness, seconds, tokens. Until then, do not mention a one-pass self-correction on stage.
+Say on stage, only if asked: "The checks catch Argon's mistakes, including ones it introduces while fixing others, and send them back to it."
+
+---
+
+## 3b. Visual comparison with paid forensic animation (README, longer pitch)
+
+README section "Compared with what lawyers pay for today" puts four stills side by side, each against a commercial frame: witness view, chase view, in-vehicle driver view and the witness inside the store. The commercial frames are ESi/Demonstratives and Ziva, credited with timestamps, and they come from different crashes. Ours are World B v4 renders (`docs/compare/`). The line to use: "Each frame comes from a world Argon wrote in one pass from the case file, with the testimony check on screen; they normally take an animation studio weeks."
 
 ---
 
