@@ -24,13 +24,15 @@ h3 { font: 600 11px/1 var(--sans); letter-spacing: .08em; text-transform: upperc
 
 /* top bar */
 #top { display: flex; align-items: center; gap: 18px; padding: 0 16px; border-bottom: 1px solid var(--line); background: linear-gradient(#10151c, #0d1117); min-width: 0; }
-.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 0 1 300px; min-width: 150px; overflow: hidden; }
+.brand > div { min-width: 0; flex: 1; }
 .logo { width: 22px; height: 22px; border: 1.5px solid var(--accent); border-radius: 50%; position: relative; flex: none; }
 .logo::after { content: ""; position: absolute; left: 50%; top: 50%; width: 120%; height: 1.5px; background: var(--accent); transform: translate(-50%, -50%) rotate(-30deg); }
-.case-title { font: 600 15px/1.2 var(--serif); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 360px; }
+.case-title { font: 600 15px/1.2 var(--serif); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.case-sub { overflow: hidden; text-overflow: ellipsis; }
 .case-sub { font-size: 11px; color: var(--muted); white-space: nowrap; }
 .sim-badge { font: 700 10px/1 var(--sans); letter-spacing: .12em; color: var(--accent); border: 1px solid rgba(226,176,82,.5); background: rgba(226,176,82,.08); padding: 6px 9px; border-radius: 3px; white-space: nowrap; }
-#cams { display: flex; gap: 6px; margin-left: auto; overflow-x: auto; }
+#cams { display: flex; gap: 6px; margin-left: auto; overflow-x: auto; min-width: 0; flex: 0 1 auto; scrollbar-width: none; }
 #cams button { background: transparent; color: var(--text); border: 1px solid var(--line); border-radius: 4px; padding: 6px 11px; font: 500 12px var(--sans); cursor: pointer; white-space: nowrap; }
 #cams button:hover { border-color: var(--muted); }
 #cams button.active { background: var(--accent); color: #17130a; border-color: var(--accent); font-weight: 600; }
@@ -129,7 +131,7 @@ html.clean #stageWrap { position: fixed; inset: 0; }
 
 @media (max-width: 1100px) {
   #main { grid-template-columns: 220px minmax(0, 1fr) 290px; }
-  .case-title { max-width: 200px; }
+  .brand { flex-basis: 220px; width: 220px; }
 }
 @media (max-width: 800px) {
   body { overflow: auto; display: block; }
@@ -158,3 +160,5 @@ html.clean .casepick { display: none; }
 .grid2 label { display: flex; flex-direction: column; gap: 3px; }
 #mapPlace select, #mapPlace input { background: var(--bg); border: 1px solid var(--line); color: var(--text); border-radius: 4px; padding: 5px 6px; font: 12px var(--sans); width: 100%; min-width: 0; }
 #mapPlace .row { display: flex; gap: 8px; margin-top: 8px; }
+
+@media (max-width: 1200px) { .sim-badge { font-size: 9px; padding: 5px 7px; letter-spacing: .06em; } #top { gap: 10px; } }

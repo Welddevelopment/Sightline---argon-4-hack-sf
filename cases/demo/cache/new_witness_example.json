@@ -1,15 +1,15 @@
 {
   "name": "Live witness (fictional)",
   "position": [
-    -6.5,
+    -15,
     0,
-    -6.5
+    6
   ],
   "eyeHeight": 1.6,
-  "lookAt": "sig_north",
-  "observationTime": 6.5,
-  "claim": "I was on the opposite corner waiting to cross and saw the light change just before the crash.",
+  "lookAt": "veh_A",
+  "observationTime": 9.9,
+  "claim": "I was standing on the grass west of the side road and watched the car come down the hill into the truck.",
   "citation": "Live statement",
   "confidence": "medium",
-  "assumptions": "\"Opposite corner\" resolved to the corner diagonally across from the bus stop, on the sidewalk; looking at sig_north at the time the light changed (t=6.5s)."
+  "assumptions": "\"West of the side road\" resolved to the roadside south of the eastbound shoulder, about 15 m west of NE 140th Ct; observation time = the final seconds before impact (t=9.9s)."
 }

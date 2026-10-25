@@ -544,6 +544,7 @@ async function loadState(allowWorldSwap) {
 function afterWorld() {
   const m = sl.world.meta || {};
   $('caseTitle').textContent = (caseInfo && caseInfo.title) || m.title || 'Sightline';
+  $('caseTitle').title = $('caseTitle').textContent;
   $('caseSub').textContent = [m.caseId, m.timeOfDay, m.lighting].filter(Boolean).join(' · ');
   renderCameras();
   setupTimeline();

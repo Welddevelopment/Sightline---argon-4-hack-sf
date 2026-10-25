@@ -454,53 +454,46 @@ function updateHighlight() {
 // ---------- cameras ----------
 function halfNow() { return viewHalf * zoom; }
 
-function computeBounds() {
-  // Fit to static scene content (buildings, occluders, signals, marks, witnesses) plus vehicles near the action.
-  // Roads are long strips, so they only contribute their intersection area (they are excluded from the extent).
-  const T = world.duration || 10;
-  const stat = new THREE.Box3();
-  const vehBoxes = [];
-  const times = [0, T * 0.25, T * 0.5, T * 0.7, T * 0.85, T];
-  world.setTime(0);
-  world.root.updateMatrixWorld(true);
-  for (const [id, o] of Object.entries(world.objects)) {
-    if (o.kind === 'road' || id.startsWith('road_')) continue;
-    if (o.kind === 'vehicle') continue;
-    const nb = nodeBox(o.node, new THREE.Box3());
-    if (nb.isEmpty()) continue;
-    const s = nb.getSize(_v);
-    if (s.x > 150 || s.z > 150) continue;  // giant planes / long strips
-    stat.union(nb);
-  }
-  for (const w of world.witnesses || []) {
-    const p = w.position || [0, 0, 0];
-    stat.expandByPoint(_v.set(p[0], 0, p[2]));
-  }
-  if (stat.isEmpty()) stat.set(new THREE.Vector3(-30, 0, -30), new THREE.Vector3(30, 5, 30));
-  const c = stat.getCenter(new THREE.Vector3());
-  const sz = stat.getSize(new THREE.Vector3());
-  const reach = Math.max(sz.x, sz.z, 40) * 0.75;  // vehicles farther than this from the static centre are ignored
-  const b = stat.clone();
-  for (const t of times) {
-    world.setTime(t);
-    world.root.updateMatrixWorld(true);
-    for (const o of Object.values(world.objects)) {
-      if (o.kind !== 'vehicle') continue;
-      const nb = nodeBox(o.node, new THREE.Box3());
-      if (nb.isEmpty()) continue;
-      const vc = nb.getCenter(new THREE.Vector3());
-      if (Math.hypot(vc.x - c.x, vc.z - c.z) <= reach) b.union(nb);
-    }
-  }
-  world.setTime(0);
-  bounds = b;
-}
+function computeBounds() { /* superseded by fitOverhead (region of interest at the current time) */ }
 
-function fitOverhead() {
+function fitOverhead(t) {
   const { a } = size();
-  const s = bounds.getSize(new THREE.Vector3());
-  viewHalf = Math.max(s.z / 2, s.x / 2 / a, 12) * 1.18;
-  const c = bounds.getCenter(new THREE.Vector3());
+  const tt = t != null ? t : curT;
+  const prev = curT;
+  world.setTime(tt);
+  world.root.updateMatrixWorld(true);
+  const wits = world.witnesses || [];
+  const pts = wits.map((w) => new THREE.Vector3((w.position || [0, 0, 0])[0], 0, (w.position || [0, 0, 0])[2]));
+  const boxOf = (o) => nodeBox(o.node, new THREE.Box3());
+  const centreOf = (bx) => bx.getCenter(new THREE.Vector3());
+  // reference point: impact mark if there is one, else the witnesses' centroid, else origin
+  let ref = null;
+  const entries = Object.entries(world.objects);
+  const impact = entries.find(([id]) => /^mark_impact/.test(id)) || entries.find(([id]) => /impact|poi|aoi/i.test(id) && id.startsWith('mark_'));
+  if (impact) ref = centreOf(boxOf(impact[1]));
+  else if (pts.length) { ref = new THREE.Vector3(); pts.forEach((p) => ref.add(p)); ref.multiplyScalar(1 / pts.length); }
+  else ref = new THREE.Vector3();
+  const roi = new THREE.Box3();
+  pts.forEach((p) => roi.expandByPoint(p));
+  const near = (bx, r) => { const c = centreOf(bx); return Math.hypot(c.x - ref.x, c.z - ref.z) <= r; };
+  for (const [id, o] of entries) {
+    if (!o.node) continue;
+    const bx = boxOf(o);
+    if (bx.isEmpty()) continue;
+    const sz = bx.getSize(new THREE.Vector3());
+    if (o.kind === 'vehicle') { roi.union(bx); continue; }
+    if (o.kind === 'road' || id.startsWith('road_')) continue;
+    if (sz.x > 150 || sz.z > 150) continue;
+    if (o.kind === 'mark' || id.startsWith('mark_')) { if (near(bx, 120)) roi.union(bx); continue; }
+    if (o.kind === 'occluder' || o.kind === 'building' || o.kind === 'signal') { if (near(bx, 60)) roi.union(bx); }
+  }
+  if (roi.isEmpty()) roi.set(new THREE.Vector3(-30, 0, -30), new THREE.Vector3(30, 5, 30));
+  world.setTime(prev);
+  world.root.updateMatrixWorld(true);
+  bounds = roi;
+  const s = roi.getSize(new THREE.Vector3());
+  viewHalf = Math.max(s.z / 2, s.x / 2 / a, 12) * 1.2;
+  const c = roi.getCenter(new THREE.Vector3());
   pan.set(c.x, c.z);
   zoom = 1;
 }
@@ -591,7 +584,7 @@ function ghostMaterial(m) {
 function applyXray(w, res) {
   clearXray();
   if (res.visible) return;
-  for (const id of res.blockers) {
+  for (const id of (res.blockedBy ? [res.blockedBy] : [])) {
     const o = world.objects[id];
     if (!o) continue;
     o.node.traverse((m) => {
@@ -675,8 +668,8 @@ async function loadWorld(url) {
     if (o.node) { nodeToId.set(o.node, id); if (!o.node.name) o.node.name = id; }
   }
   world.setTime(0);
-  computeBounds();
-  fitOverhead();
+  { const ts = (world.witnesses || []).map((w) => w.observationTime).filter((x) => x != null).sort((p, q) => p - q);
+    fitOverhead(ts.length ? ts[Math.floor(ts.length / 2)] : world.duration * 0.5); }
   const kind = (world.meta.lighting || 'day').toLowerCase();
   setupLighting(kind);
   addHeadlights();
@@ -695,7 +688,9 @@ async function loadWorld(url) {
 function setCamera(id) {
   if (!world) { camId = id; return; }
   const ok = sl.cameras().some((c) => c.id === id);
+  const was = camId;
   camId = ok ? id : 'overhead';
+  if (camId === 'overhead' && was !== 'overhead') fitOverhead(curT);
   renderFrame();
   emit('camera', camId);
 }
@@ -853,7 +848,7 @@ window.addEventListener('resize', () => renderFrame());
     }
     const cam = params.get('cam');
     if (cam) setCamera(cam);
-    if (params.has('t')) setTime(parseFloat(params.get('t')));
+    if (params.has('t')) { setTime(parseFloat(params.get('t'))); if (camId === 'overhead') { fitOverhead(curT); renderFrame(); } }
     else renderFrame();
     if (params.has('rays') && params.get('rays') === '0') sl.setRays(false);
     resolveReady && resolveReady(sl);

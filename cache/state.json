@@ -5,54 +5,83 @@
     {
       "id": "F1",
       "severity": "high",
-      "summary": "Witness B could not have seen Signal for northbound Main St (NE corner) from where she marked she was standing.",
-      "detail": "Her eye-level render at t=6.5s shows the Bus shelter with solid ad panel (SE corner) filling the direction of the signal head. The ray-cast check agrees (blocked by occ_shelter, 22.8 m to the signal). She testified \"The light was red for the northbound truck. I am certain of that. I saw it clearly.\" (Depo 01:50) and that nothing was between her and the signal (Depo 02:20).",
+      "summary": "Witness B could not have watched the car up to impact from where she marked she was standing: Vehicle T's tractor, then its semitrailer, block her view from about t=9.1s.",
+      "detail": "Her eye-level render at t=9.9s shows the tractor filling the direction of the approaching car; the overhead render shows the truck crossing between her X and the eastbound lanes. The ray-cast agrees (blocked by veh_T_tractor, 28.3 m to the car). She testified \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\" (Depo 27:46).",
       "evidence": [
         {
           "source": "deposition.mp4",
-          "citation": "Depo 01:16-01:36 (marked position on Exhibit 4)"
+          "citation": "Depo 27:04 (position marked on Exhibit 4)"
         },
         {
           "source": "deposition.mp4",
-          "citation": "Depo 01:50 (claim about the signal)"
+          "citation": "Depo 27:46 (claim)"
         },
         {
           "source": "deposition.mp4",
-          "citation": "Depo 02:20 (\"nothing that I recall\" between her and the signal)"
+          "citation": "Depo 28:17 (repeats: until it went under the trailer)"
         },
         {
-          "source": "Police report",
-          "citation": "p.3; Exhibit 1"
+          "source": "NTSB/HAR-17/02 via facts.md (F19)",
+          "citation": "p.1, p.21"
+        },
+        {
+          "source": "NTSB/HAR-17/02 via facts.md (F30)",
+          "citation": "p.1–2, p.29–30"
         },
         {
           "source": "Render",
-          "citation": "wit_B.png @ t=6.5s"
+          "citation": "wit_B.png @ t=9.9s"
         },
         {
           "source": "Independent check",
-          "citation": "sightline wit_B→sig_north: blocked by occ_shelter"
+          "citation": "sightline wit_B→veh_A from marked position @ t=9.9s: blocked by veh_T_tractor"
         }
       ],
       "involves": [
         "wit_B",
-        "occ_shelter",
-        "sig_north"
+        "veh_T_tractor",
+        "veh_T_trailer",
+        "veh_A"
       ],
       "status": "contradiction"
     },
     {
       "id": "F2",
-      "severity": "low",
-      "summary": "Witness A had a clear line of sight to Pickup truck (Vehicle A), northbound Main St at t=7s.",
-      "detail": "The eye-level render and the ray-cast agree; the testimony is physically possible.",
+      "severity": "medium",
+      "summary": "Her account of seeing the car come over the crest and down the grade is physically possible: the view from her mark is clear until about t=9s.",
       "evidence": [
         {
           "source": "deposition.mp4",
-          "citation": "Depo 12:03"
+          "citation": "Depo 14:57"
+        },
+        {
+          "source": "NTSB/HAR-17/02 via facts.md (F28)",
+          "citation": "p.29"
         },
         {
           "source": "Independent check",
-          "citation": "sightline wit_A→veh_A: clear"
+          "citation": "sightline wit_B→veh_A from marked position @ t=8.5s: clear"
+        }
+      ],
+      "involves": [
+        "wit_B",
+        "veh_A",
+        "occ_crest"
+      ],
+      "status": "consistent"
+    },
+    {
+      "id": "F3",
+      "severity": "low",
+      "summary": "Witness A had a clear line of sight to the passenger sedan at t=2s, consistent with the statement.",
+      "evidence": [
+        {
+          "source": "witness_A.md",
+          "citation": "written statement"
+        },
+        {
+          "source": "Independent check",
+          "citation": "sightline wit_A→veh_A @ t=2s: clear"
         }
       ],
       "involves": [
@@ -62,44 +91,43 @@
       "status": "consistent"
     },
     {
-      "id": "F3",
+      "id": "F4",
       "severity": "low",
-      "summary": "Witness C had a clear line of sight to Sedan (Vehicle B), eastbound Oak Ave at t=7.5s.",
-      "detail": "The eye-level render and the ray-cast agree; the testimony is physically possible.",
+      "summary": "Witness C had a clear line of sight to the truck-tractor at t=5s, consistent with the statement.",
       "evidence": [
         {
-          "source": "deposition.mp4",
-          "citation": "Depo 41:50"
+          "source": "witness_C.md",
+          "citation": "written statement"
         },
         {
           "source": "Independent check",
-          "citation": "sightline wit_C→veh_B: clear"
+          "citation": "sightline wit_C→veh_T_tractor @ t=5s: clear"
         }
       ],
       "involves": [
         "wit_C",
-        "veh_B"
+        "veh_T_tractor"
       ],
       "status": "consistent"
     },
     {
-      "id": "F4",
+      "id": "F5",
       "severity": "low",
-      "summary": "Vehicle A's speed in the world is consistent with the 31 m skid marks.",
+      "summary": "No skid evidence to test: NTSB found no pre-impact tire marks and no braking.",
       "evidence": [
         {
-          "source": "Police report p.3",
-          "citation": "skid measurement"
+          "source": "NTSB/HAR-17/02 via facts.md (F22)",
+          "citation": "p.5"
         },
         {
-          "source": "Independent check",
-          "citation": "skid_vs_speed veh_A: pass"
+          "source": "NTSB/HAR-17/02 via facts.md (F18)",
+          "citation": "p.15"
         }
       ],
       "involves": [
         "veh_A"
       ],
-      "status": "consistent"
+      "status": "unverifiable"
     }
   ],
   "checks": [
@@ -107,21 +135,21 @@
       "check": "sightline",
       "subject": "wit_A",
       "pass": true,
-      "detail": "From Witness A's marked position (Deposition 12:03) the line of sight to veh_A is clear at t=7s (distance 13.5 m). Claim: \"The pickup was going really fast and only braked right before the intersection.\"",
-      "citation": "Deposition 12:03",
+      "detail": "From Witness A's marked position (Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account) the line of sight to veh_A is clear at t=2s (distance 639.5 m). Claim: \"Saw the car come over the hill and approach before the truck began its turn; once the truck pulled across, the trailer blocked my view of the car.\"",
+      "citation": "Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account",
       "blockedBy": null,
       "target": "veh_A",
-      "t": 7,
-      "distance": 13.463019091859973,
+      "t": 2,
+      "distance": 639.5053092869902,
       "from": [
-        -6,
-        1.65,
-        6.5
+        357.2,
+        1.5,
+        -34.75
       ],
       "to": [
-        1.7999999999999998,
-        1.2499999845027925,
-        17.465987554953195
+        -281.36,
+        0.7225000005960465,
+        0
       ],
       "hitPoint": null
     },
@@ -129,66 +157,56 @@
       "check": "sightline",
       "subject": "wit_B",
       "pass": false,
-      "detail": "From Witness B's marked position (Deposition 27:14) the line of sight to sig_north is blocked by occ_shelter at t=6.5s (distance 22.8 m). Claim: \"I was at the bus stop and looked up; the light was green for the pickup.\"",
-      "citation": "Deposition 27:14",
-      "blockedBy": "occ_shelter",
-      "target": "sig_north",
-      "t": 6.5,
-      "distance": 22.84180651231055,
+      "detail": "From Witness B's marked position (Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter') the line of sight to veh_A is blocked by veh_T_tractor at t=9.9s (distance 28.3 m). Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
+      "citation": "Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter'",
+      "blockedBy": "veh_T_tractor",
+      "target": "veh_A",
+      "t": 9.9,
+      "distance": 28.288872905242325,
       "from": [
-        7,
+        7.5,
         1.6,
-        16.5
+        6.5
       ],
       "to": [
-        5.4,
-        5.349999976158141,
-        -5.97499999832362
+        -20.01799999999999,
+        0.7225000005960465,
+        0
       ],
       "hitPoint": [
-        6.8505005553137215,
-        1.9503893212557495,
-        14.39999998807907
+        1.2500000000000007,
+        1.400698633757006,
+        5.02369358238244
       ]
     },
     {
       "check": "sightline",
       "subject": "wit_C",
       "pass": true,
-      "detail": "From Witness C's marked position (Deposition 41:50) the line of sight to veh_B is clear at t=7.5s (distance 8.9 m). Claim: \"The red car went through when its light turned green; it was not speeding.\"",
-      "citation": "Deposition 41:50",
+      "detail": "From Witness C's marked position (Witness C statement (fictional); consistent with NTSB/HAR-17/02 p.1-2 and p.5) the line of sight to veh_T_tractor is clear at t=5s (distance 29.3 m). Claim: \"The truck was barely creeping when it started across; I never heard brakes before the bang.\"",
+      "citation": "Witness C statement (fictional); consistent with NTSB/HAR-17/02 p.1-2 and p.5",
       "blockedBy": null,
-      "target": "veh_B",
-      "t": 7.5,
-      "distance": 8.87232353830585,
+      "target": "veh_T_tractor",
+      "t": 5,
+      "distance": 29.256337783756777,
       "from": [
-        -7,
-        1.7,
-        -7
+        -18,
+        1.6,
+        -40.5
       ],
       "to": [
-        -7.924999975785612,
-        1.0499999898672103,
-        1.8
+        0.7799999971564597,
+        3.8500000238418584,
+        -18.179999988423177
       ],
       "hitPoint": null
-    },
-    {
-      "check": "skid_vs_speed",
-      "subject": "veh_A",
-      "pass": true,
-      "detail": "A 31 m skid (mu 0.7) means Pickup truck (Vehicle A), northbound Main St was going at least 46.2 mph (20.6 m/s) when it started braking. In the reconstructed world veh_A moves at 53.7 mph at t=2.2s (peak pre-braking speed). That is consistent with the skid (skid gives a minimum; 10% tolerance).",
-      "citation": "Police report p.3",
-      "t": 2.2000000000000006,
-      "requiredMph": 46.15651219241678,
-      "actualMph": 53.68647100930655
     }
   ],
   "loopLog": [
     {
       "round": 1,
       "world": "/cases/demo/worlds/world_v1.js",
-      "startedAt": "2026-10-25T18:23:32.975Z",
+      "startedAt": "2026-10-25T18:30:22.188Z",
       "contractProblems": [],
       "renders": {
         "videos": [],
@@ -199,21 +217,21 @@
           "check": "sightline",
           "subject": "wit_A",
           "pass": true,
-          "detail": "From Witness A's marked position (Deposition 12:03) the line of sight to veh_A is clear at t=7s (distance 13.5 m). Claim: \"The pickup was going really fast and only braked right before the intersection.\"",
-          "citation": "Deposition 12:03",
+          "detail": "From Witness A's marked position (Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account) the line of sight to veh_A is clear at t=2s (distance 639.5 m). Claim: \"Saw the car come over the hill and approach before the truck began its turn; once the truck pulled across, the trailer blocked my view of the car.\"",
+          "citation": "Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account",
           "blockedBy": null,
           "target": "veh_A",
-          "t": 7,
-          "distance": 13.463019091859973,
+          "t": 2,
+          "distance": 639.5053092869902,
           "from": [
-            -6,
-            1.65,
-            6.5
+            357.2,
+            1.5,
+            -34.75
           ],
           "to": [
-            1.7999999999999998,
-            1.2499999845027925,
-            17.465987554953195
+            -281.36,
+            0.7225000005960465,
+            0
           ],
           "hitPoint": null
         },
@@ -221,21 +239,21 @@
           "check": "sightline",
           "subject": "wit_B",
           "pass": true,
-          "detail": "From Witness B's marked position (Depo 00:44 (spoken: \"on the corner near the crossing\")) the line of sight to sig_north is clear at t=6.5s (distance 12.1 m). Claim: \"I was at the bus stop and looked up; the light was green for the pickup.\"",
-          "citation": "Depo 00:44 (spoken: \"on the corner near the crossing\")",
+          "detail": "From Witness B's marked position (Deposition of Witness B (fictional): position marked on Exhibit 4 at 27:04; claim 'clear view of the car the whole way in' (27:46) evaluated mid-approach at t=8.5s) the line of sight to veh_A is clear at t=8.5s (distance 74.1 m). Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
+          "citation": "Deposition of Witness B (fictional): position marked on Exhibit 4 at 27:04; claim 'clear view of the car the whole way in' (27:46) evaluated mid-approach at t=8.5s",
           "blockedBy": null,
-          "target": "sig_north",
-          "t": 6.5,
-          "distance": 12.07261880383511,
+          "target": "veh_A",
+          "t": 8.5,
+          "distance": 74.12077243424379,
           "from": [
-            5.5,
+            7.5,
             1.6,
-            5.5
+            6.5
           ],
           "to": [
-            5.4,
-            5.349999976158141,
-            -5.97499999832362
+            -66.33,
+            0.7225000005960465,
+            0
           ],
           "hitPoint": null
         },
@@ -243,110 +261,149 @@
           "check": "sightline",
           "subject": "wit_C",
           "pass": true,
-          "detail": "From Witness C's marked position (Deposition 41:50) the line of sight to veh_B is clear at t=7.5s (distance 8.9 m). Claim: \"The red car went through when its light turned green; it was not speeding.\"",
-          "citation": "Deposition 41:50",
+          "detail": "From Witness C's marked position (Witness C statement (fictional); consistent with NTSB/HAR-17/02 p.1-2 and p.5) the line of sight to veh_T_tractor is clear at t=5s (distance 29.3 m). Claim: \"The truck was barely creeping when it started across; I never heard brakes before the bang.\"",
+          "citation": "Witness C statement (fictional); consistent with NTSB/HAR-17/02 p.1-2 and p.5",
           "blockedBy": null,
-          "target": "veh_B",
-          "t": 7.5,
-          "distance": 8.87232353830585,
+          "target": "veh_T_tractor",
+          "t": 5,
+          "distance": 29.256337783756777,
           "from": [
-            -7,
-            1.7,
-            -7
+            -18,
+            1.6,
+            -40.5
           ],
           "to": [
-            -7.924999975785612,
-            1.0499999898672103,
-            1.8
+            0.7799999971564597,
+            3.8500000238418584,
+            -18.179999988423177
           ],
           "hitPoint": null
-        },
-        {
-          "check": "skid_vs_speed",
-          "subject": "veh_A",
-          "pass": true,
-          "detail": "A 31 m skid (mu 0.7) means Pickup truck (Vehicle A), northbound Main St was going at least 46.2 mph (20.6 m/s) when it started braking. In the reconstructed world veh_A moves at 53.7 mph at t=2.2s (peak pre-braking speed). That is consistent with the skid (skid gives a minimum; 10% tolerance).",
-          "citation": "Police report p.3",
-          "t": 2.2000000000000006,
-          "requiredMph": 46.15651219241678,
-          "actualMph": 53.68647100930655
         }
       ],
       "critique": {
         "verdict": "world_patched",
-        "summary": "The generated world put Witness B where she said she was (\"on the corner near the crossing\"), not where she marked on Exhibit 4. In the deposition video she marks a spot about 11.1 m away, behind the Bus shelter with solid ad panel (SE corner). Moving her there blocks her view of the signal, so the world is patched and her claim must be re-tested.",
+        "summary": "World v1 tests Witness B's claim at t=8.5s, while the car is still well up the approach. She testified she watched the car \"right up until the moment it hit\" (Depo 27:46). Re-timed to the moment she describes, the turning truck stands between her marked position and the car from about t=9.1s to impact. The world is patched and her claim must be re-tested.",
         "findings": [
           {
             "id": "F1",
             "severity": "high",
-            "summary": "Witness B is placed from her vague spoken description, not from the position she physically marked on Exhibit 4.",
-            "detail": "At Depo 00:44 she says only \"I was waiting for the early bus, over on the corner near the crossing. I had a good view of everything from where I was standing.\". At Depo 01:16-01:36 the video shows her marking a red X on Exhibit 4 at approx (x 7, z 16.5) m in the world frame, 11.1 m from where world_v1 places her [5.5, 0, 5.5]. The mark is the controlling evidence of position; the transcript never states it.",
+            "summary": "The world checks Witness B's claim at the wrong moment: t=8.5s, 1.9 s before impact, instead of the final seconds she describes.",
+            "detail": "Her claim is not limited to the approach. At Depo 27:46 she says \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\" and at Depo 28:17 \"Yes. I saw it clearly, the whole time, right up until it went under the trailer. I'll never forget it.\". The wit_B render at t=8.5s shows the car clearly, but at that moment the truck has not yet crossed in front of her. The observation time must cover the last seconds before impact (t≈9.9s; impact t=10.43s per the timeline built from HAR-17/02 p.29).",
             "evidence": [
               {
                 "source": "deposition.mp4",
-                "citation": "Depo 01:16-01:36 (witness marks red X on Exhibit 4)"
+                "citation": "Depo 27:46"
               },
               {
                 "source": "deposition.mp4",
-                "citation": "Depo 00:44 (spoken: \"on the corner near the crossing\")"
+                "citation": "Depo 28:17"
               },
               {
-                "source": "Exhibit 4 (map)",
-                "citation": "red X at approx (7, 16.5) m"
+                "source": "NTSB/HAR-17/02 via facts.md (F28)",
+                "citation": "p.29"
               },
               {
                 "source": "Render",
-                "citation": "wit_B.png @ t=6.5s shows an unobstructed view only because of the wrong position"
+                "citation": "wit_B.png @ t=8.5s (clear: truck not yet in the eastbound lanes)"
+              },
+              {
+                "source": "Independent check",
+                "citation": "sightline wit_B→veh_A @ t=8.5s: clear (world v1)"
               }
             ],
             "involves": [
-              "wit_B"
+              "wit_B",
+              "veh_A"
             ],
             "status": "contradiction"
           },
           {
             "id": "F2",
             "severity": "high",
-            "summary": "From her marked position, the Bus shelter with solid ad panel (SE corner) stands between Witness B and Signal for northbound Main St (NE corner) at the moment she describes.",
-            "detail": "The Bus shelter with solid ad panel (SE corner) is documented at Police report p.3; Exhibit 1. A sight line from her marked spot (eye 1.6 m) to the signal head at t=6.5s passes through it (independent check: blocked by occ_shelter at 22.8 m). In world_v1 the check reads \"clear\" only because she was misplaced.",
+            "summary": "From the position she marked on Exhibit 4, the Truck-tractor (Vehicle T), then the Refrigerated van semitrailer (Vehicle T) block her view of the car from about t=9.1s until impact.",
+            "detail": "In the video at Depo 27:04 she says only \"I was over by the corner, near the shelter.\" while marking an X at about (7.5, 6.5) m in the world frame, in front of the store near the bench shelter; at Depo 27:24 she says she was standing (eye 1.6 m). The truck turns left across both eastbound lanes (HAR-17/02 p.1, p.21), so its tractor and then its trailer pass between her and the westbound-facing view of the approaching car. The independent ray-cast agrees: clear at t=9s, blocked by veh_T_tractor then veh_T_trailer from t=9.1s. NTSB records the same effect for the real westbound witness: the semitrailer blocked his view of the car (HAR-17/02 p.1–2, p.29–30).",
             "evidence": [
               {
-                "source": "Police report",
-                "citation": "p.3; Exhibit 1"
+                "source": "deposition.mp4",
+                "citation": "Depo 27:04 (X marked on Exhibit 4 at approx (7.5, 6.5) m)"
+              },
+              {
+                "source": "map.png (Exhibit 4)",
+                "citation": "X south of the eastbound shoulder, east of NE 140th Ct, at approx (7.5, 6.5) m"
+              },
+              {
+                "source": "NTSB/HAR-17/02 via facts.md (F19)",
+                "citation": "p.1, p.21"
+              },
+              {
+                "source": "NTSB/HAR-17/02 via facts.md (F30)",
+                "citation": "p.1–2, p.29–30"
               },
               {
                 "source": "Independent check",
-                "citation": "sightline wit_B→sig_north from marked position: blocked by occ_shelter"
+                "citation": "sightline wit_B→veh_A from marked position @ t=9s: clear"
               },
               {
                 "source": "Independent check",
-                "citation": "sightline wit_B→sig_north in world_v1: clear (wrong position)"
+                "citation": "sightline wit_B→veh_A from marked position @ t=9.9s: blocked by veh_T_tractor"
               }
             ],
             "involves": [
               "wit_B",
-              "occ_shelter",
-              "sig_north"
+              "veh_T_tractor",
+              "veh_T_trailer",
+              "veh_A"
             ],
             "status": "contradiction"
           },
           {
             "id": "F3",
-            "severity": "medium",
-            "summary": "Signal phasing and Vehicle A's skid physics in the world match the record.",
-            "detail": "Signal sig_north is red at t=6.5s per Signal timing sheet p.1; the skid-vs-speed check passes.",
+            "severity": "low",
+            "summary": "The bench shelter near her position is open-sided and does not block her view; the crest is the only fixed sight restriction on the approach.",
+            "detail": "She describes \"I went out front to wait. There's a little bench out there with a roof over it, kind of like a bus stop. I sat there for a while with my bags.\" (Depo 09:04). The world models it as a roof on thin posts (occludes: false). NTSB: The vertical crest west of the intersection limited line of sight between the opposing vehicles. It was the only sight restriction noted. No vegetation or other obstructions were reported..",
             "evidence": [
               {
-                "source": "Signal timing sheet",
-                "citation": "p.1"
+                "source": "deposition.mp4",
+                "citation": "Depo 09:04"
               },
               {
-                "source": "Independent check",
-                "citation": "skid_vs_speed veh_A: pass"
+                "source": "NTSB/HAR-17/02 via facts.md (F27)",
+                "citation": "p.29–30"
+              },
+              {
+                "source": "police_report.md",
+                "citation": "p.3 (Sight distance)"
               }
             ],
             "involves": [
-              "sig_north",
+              "occ_shelter",
+              "occ_crest"
+            ],
+            "status": "consistent"
+          },
+          {
+            "id": "F4",
+            "severity": "low",
+            "summary": "Vehicle A's motion in the world matches the record: about 74 mph, no braking, impact about 10.4 s after cresting.",
+            "evidence": [
+              {
+                "source": "NTSB/HAR-17/02 via facts.md (F17)",
+                "citation": "p.2, p.15"
+              },
+              {
+                "source": "NTSB/HAR-17/02 via facts.md (F18)",
+                "citation": "p.15"
+              },
+              {
+                "source": "NTSB/HAR-17/02 via facts.md (F28)",
+                "citation": "p.29"
+              },
+              {
+                "source": "NTSB/HAR-17/02 via facts.md (F21)",
+                "citation": "p.3, p.5"
+              }
+            ],
+            "involves": [
               "veh_A"
             ],
             "status": "consistent"
@@ -358,74 +415,123 @@
         {
           "id": "F1",
           "severity": "high",
-          "summary": "Witness B is placed from her vague spoken description, not from the position she physically marked on Exhibit 4.",
-          "detail": "At Depo 00:44 she says only \"I was waiting for the early bus, over on the corner near the crossing. I had a good view of everything from where I was standing.\". At Depo 01:16-01:36 the video shows her marking a red X on Exhibit 4 at approx (x 7, z 16.5) m in the world frame, 11.1 m from where world_v1 places her [5.5, 0, 5.5]. The mark is the controlling evidence of position; the transcript never states it.",
+          "summary": "The world checks Witness B's claim at the wrong moment: t=8.5s, 1.9 s before impact, instead of the final seconds she describes.",
+          "detail": "Her claim is not limited to the approach. At Depo 27:46 she says \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\" and at Depo 28:17 \"Yes. I saw it clearly, the whole time, right up until it went under the trailer. I'll never forget it.\". The wit_B render at t=8.5s shows the car clearly, but at that moment the truck has not yet crossed in front of her. The observation time must cover the last seconds before impact (t≈9.9s; impact t=10.43s per the timeline built from HAR-17/02 p.29).",
           "evidence": [
             {
               "source": "deposition.mp4",
-              "citation": "Depo 01:16-01:36 (witness marks red X on Exhibit 4)"
+              "citation": "Depo 27:46"
             },
             {
               "source": "deposition.mp4",
-              "citation": "Depo 00:44 (spoken: \"on the corner near the crossing\")"
+              "citation": "Depo 28:17"
             },
             {
-              "source": "Exhibit 4 (map)",
-              "citation": "red X at approx (7, 16.5) m"
+              "source": "NTSB/HAR-17/02 via facts.md (F28)",
+              "citation": "p.29"
             },
             {
               "source": "Render",
-              "citation": "wit_B.png @ t=6.5s shows an unobstructed view only because of the wrong position"
+              "citation": "wit_B.png @ t=8.5s (clear: truck not yet in the eastbound lanes)"
+            },
+            {
+              "source": "Independent check",
+              "citation": "sightline wit_B→veh_A @ t=8.5s: clear (world v1)"
             }
           ],
           "involves": [
-            "wit_B"
+            "wit_B",
+            "veh_A"
           ],
           "status": "contradiction"
         },
         {
           "id": "F2",
           "severity": "high",
-          "summary": "From her marked position, the Bus shelter with solid ad panel (SE corner) stands between Witness B and Signal for northbound Main St (NE corner) at the moment she describes.",
-          "detail": "The Bus shelter with solid ad panel (SE corner) is documented at Police report p.3; Exhibit 1. A sight line from her marked spot (eye 1.6 m) to the signal head at t=6.5s passes through it (independent check: blocked by occ_shelter at 22.8 m). In world_v1 the check reads \"clear\" only because she was misplaced.",
+          "summary": "From the position she marked on Exhibit 4, the Truck-tractor (Vehicle T), then the Refrigerated van semitrailer (Vehicle T) block her view of the car from about t=9.1s until impact.",
+          "detail": "In the video at Depo 27:04 she says only \"I was over by the corner, near the shelter.\" while marking an X at about (7.5, 6.5) m in the world frame, in front of the store near the bench shelter; at Depo 27:24 she says she was standing (eye 1.6 m). The truck turns left across both eastbound lanes (HAR-17/02 p.1, p.21), so its tractor and then its trailer pass between her and the westbound-facing view of the approaching car. The independent ray-cast agrees: clear at t=9s, blocked by veh_T_tractor then veh_T_trailer from t=9.1s. NTSB records the same effect for the real westbound witness: the semitrailer blocked his view of the car (HAR-17/02 p.1–2, p.29–30).",
           "evidence": [
             {
-              "source": "Police report",
-              "citation": "p.3; Exhibit 1"
+              "source": "deposition.mp4",
+              "citation": "Depo 27:04 (X marked on Exhibit 4 at approx (7.5, 6.5) m)"
+            },
+            {
+              "source": "map.png (Exhibit 4)",
+              "citation": "X south of the eastbound shoulder, east of NE 140th Ct, at approx (7.5, 6.5) m"
+            },
+            {
+              "source": "NTSB/HAR-17/02 via facts.md (F19)",
+              "citation": "p.1, p.21"
+            },
+            {
+              "source": "NTSB/HAR-17/02 via facts.md (F30)",
+              "citation": "p.1–2, p.29–30"
             },
             {
               "source": "Independent check",
-              "citation": "sightline wit_B→sig_north from marked position: blocked by occ_shelter"
+              "citation": "sightline wit_B→veh_A from marked position @ t=9s: clear"
             },
             {
               "source": "Independent check",
-              "citation": "sightline wit_B→sig_north in world_v1: clear (wrong position)"
+              "citation": "sightline wit_B→veh_A from marked position @ t=9.9s: blocked by veh_T_tractor"
             }
           ],
           "involves": [
             "wit_B",
-            "occ_shelter",
-            "sig_north"
+            "veh_T_tractor",
+            "veh_T_trailer",
+            "veh_A"
           ],
           "status": "contradiction"
         },
         {
           "id": "F3",
-          "severity": "medium",
-          "summary": "Signal phasing and Vehicle A's skid physics in the world match the record.",
-          "detail": "Signal sig_north is red at t=6.5s per Signal timing sheet p.1; the skid-vs-speed check passes.",
+          "severity": "low",
+          "summary": "The bench shelter near her position is open-sided and does not block her view; the crest is the only fixed sight restriction on the approach.",
+          "detail": "She describes \"I went out front to wait. There's a little bench out there with a roof over it, kind of like a bus stop. I sat there for a while with my bags.\" (Depo 09:04). The world models it as a roof on thin posts (occludes: false). NTSB: The vertical crest west of the intersection limited line of sight between the opposing vehicles. It was the only sight restriction noted. No vegetation or other obstructions were reported..",
           "evidence": [
             {
-              "source": "Signal timing sheet",
-              "citation": "p.1"
+              "source": "deposition.mp4",
+              "citation": "Depo 09:04"
             },
             {
-              "source": "Independent check",
-              "citation": "skid_vs_speed veh_A: pass"
+              "source": "NTSB/HAR-17/02 via facts.md (F27)",
+              "citation": "p.29–30"
+            },
+            {
+              "source": "police_report.md",
+              "citation": "p.3 (Sight distance)"
             }
           ],
           "involves": [
-            "sig_north",
+            "occ_shelter",
+            "occ_crest"
+          ],
+          "status": "consistent"
+        },
+        {
+          "id": "F4",
+          "severity": "low",
+          "summary": "Vehicle A's motion in the world matches the record: about 74 mph, no braking, impact about 10.4 s after cresting.",
+          "evidence": [
+            {
+              "source": "NTSB/HAR-17/02 via facts.md (F17)",
+              "citation": "p.2, p.15"
+            },
+            {
+              "source": "NTSB/HAR-17/02 via facts.md (F18)",
+              "citation": "p.15"
+            },
+            {
+              "source": "NTSB/HAR-17/02 via facts.md (F28)",
+              "citation": "p.29"
+            },
+            {
+              "source": "NTSB/HAR-17/02 via facts.md (F21)",
+              "citation": "p.3, p.5"
+            }
+          ],
+          "involves": [
             "veh_A"
           ],
           "status": "consistent"
@@ -435,12 +541,12 @@
         "world": "/cases/demo/worlds/world_v2.js",
         "problems": []
       },
-      "finishedAt": "2026-10-25T18:23:33.009Z"
+      "finishedAt": "2026-10-25T18:30:22.233Z"
     },
     {
       "round": 2,
       "world": "/cases/demo/worlds/world_v2.js",
-      "startedAt": "2026-10-25T18:23:33.010Z",
+      "startedAt": "2026-10-25T18:30:22.233Z",
       "contractProblems": [],
       "renders": {
         "videos": [],
@@ -451,21 +557,21 @@
           "check": "sightline",
           "subject": "wit_A",
           "pass": true,
-          "detail": "From Witness A's marked position (Deposition 12:03) the line of sight to veh_A is clear at t=7s (distance 13.5 m). Claim: \"The pickup was going really fast and only braked right before the intersection.\"",
-          "citation": "Deposition 12:03",
+          "detail": "From Witness A's marked position (Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account) the line of sight to veh_A is clear at t=2s (distance 639.5 m). Claim: \"Saw the car come over the hill and approach before the truck began its turn; once the truck pulled across, the trailer blocked my view of the car.\"",
+          "citation": "Witness A statement (fictional), modeled on NTSB/HAR-17/02 p.1-2, p.29-30 witness account",
           "blockedBy": null,
           "target": "veh_A",
-          "t": 7,
-          "distance": 13.463019091859973,
+          "t": 2,
+          "distance": 639.5053092869902,
           "from": [
-            -6,
-            1.65,
-            6.5
+            357.2,
+            1.5,
+            -34.75
           ],
           "to": [
-            1.7999999999999998,
-            1.2499999845027925,
-            17.465987554953195
+            -281.36,
+            0.7225000005960465,
+            0
           ],
           "hitPoint": null
         },
@@ -473,116 +579,135 @@
           "check": "sightline",
           "subject": "wit_B",
           "pass": false,
-          "detail": "From Witness B's marked position (Deposition 27:14) the line of sight to sig_north is blocked by occ_shelter at t=6.5s (distance 22.8 m). Claim: \"I was at the bus stop and looked up; the light was green for the pickup.\"",
-          "citation": "Deposition 27:14",
-          "blockedBy": "occ_shelter",
-          "target": "sig_north",
-          "t": 6.5,
-          "distance": 22.84180651231055,
+          "detail": "From Witness B's marked position (Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter') the line of sight to veh_A is blocked by veh_T_tractor at t=9.9s (distance 28.3 m). Claim: \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\"",
+          "citation": "Deposition of Witness B (fictional), claim at 27:46 (repeated shortly after); position marked on Exhibit 4 at 27:04 while saying only 'I was over by the corner, near the shelter'",
+          "blockedBy": "veh_T_tractor",
+          "target": "veh_A",
+          "t": 9.9,
+          "distance": 28.288872905242325,
           "from": [
-            7,
+            7.5,
             1.6,
-            16.5
+            6.5
           ],
           "to": [
-            5.4,
-            5.349999976158141,
-            -5.97499999832362
+            -20.01799999999999,
+            0.7225000005960465,
+            0
           ],
           "hitPoint": [
-            6.8505005553137215,
-            1.9503893212557495,
-            14.39999998807907
+            1.2500000000000007,
+            1.400698633757006,
+            5.02369358238244
           ]
         },
         {
           "check": "sightline",
           "subject": "wit_C",
           "pass": true,
-          "detail": "From Witness C's marked position (Deposition 41:50) the line of sight to veh_B is clear at t=7.5s (distance 8.9 m). Claim: \"The red car went through when its light turned green; it was not speeding.\"",
-          "citation": "Deposition 41:50",
+          "detail": "From Witness C's marked position (Witness C statement (fictional); consistent with NTSB/HAR-17/02 p.1-2 and p.5) the line of sight to veh_T_tractor is clear at t=5s (distance 29.3 m). Claim: \"The truck was barely creeping when it started across; I never heard brakes before the bang.\"",
+          "citation": "Witness C statement (fictional); consistent with NTSB/HAR-17/02 p.1-2 and p.5",
           "blockedBy": null,
-          "target": "veh_B",
-          "t": 7.5,
-          "distance": 8.87232353830585,
+          "target": "veh_T_tractor",
+          "t": 5,
+          "distance": 29.256337783756777,
           "from": [
-            -7,
-            1.7,
-            -7
+            -18,
+            1.6,
+            -40.5
           ],
           "to": [
-            -7.924999975785612,
-            1.0499999898672103,
-            1.8
+            0.7799999971564597,
+            3.8500000238418584,
+            -18.179999988423177
           ],
           "hitPoint": null
-        },
-        {
-          "check": "skid_vs_speed",
-          "subject": "veh_A",
-          "pass": true,
-          "detail": "A 31 m skid (mu 0.7) means Pickup truck (Vehicle A), northbound Main St was going at least 46.2 mph (20.6 m/s) when it started braking. In the reconstructed world veh_A moves at 53.7 mph at t=2.2s (peak pre-braking speed). That is consistent with the skid (skid gives a minimum; 10% tolerance).",
-          "citation": "Police report p.3",
-          "t": 2.2000000000000006,
-          "requiredMph": 46.15651219241678,
-          "actualMph": 53.68647100930655
         }
       ],
       "critique": {
         "verdict": "contradiction_found",
-        "summary": "With Witness B at her marked position the world matches the evidence. Her claim that she \"saw the light clearly\" and that nothing was between her and the signal is contradicted: the Bus shelter with solid ad panel (SE corner) blocks her line of sight to the signal head at t=6.5s. No further patch is needed; the contradiction is in the testimony.",
+        "summary": "With Witness B at her Exhibit 4 mark and her claim tested at the moment she describes, the world matches the evidence. Her testimony that she watched the car \"the whole way in\" with \"nothing in the way\" is contradicted: the truck's truck-tractor and then its refrigerated van semitrailer block her line of sight for about the last 1.3 s before impact. No further patch is needed; the contradiction is in the testimony.",
         "findings": [
           {
             "id": "F1",
             "severity": "high",
-            "summary": "Witness B could not have seen Signal for northbound Main St (NE corner) from where she marked she was standing.",
-            "detail": "Her eye-level render at t=6.5s shows the Bus shelter with solid ad panel (SE corner) filling the direction of the signal head. The ray-cast check agrees (blocked by occ_shelter, 22.8 m to the signal). She testified \"The light was red for the northbound truck. I am certain of that. I saw it clearly.\" (Depo 01:50) and that nothing was between her and the signal (Depo 02:20).",
+            "summary": "Witness B could not have watched the car up to impact from where she marked she was standing: Vehicle T's tractor, then its semitrailer, block her view from about t=9.1s.",
+            "detail": "Her eye-level render at t=9.9s shows the tractor filling the direction of the approaching car; the overhead render shows the truck crossing between her X and the eastbound lanes. The ray-cast agrees (blocked by veh_T_tractor, 28.3 m to the car). She testified \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\" (Depo 27:46).",
             "evidence": [
               {
                 "source": "deposition.mp4",
-                "citation": "Depo 01:16-01:36 (marked position on Exhibit 4)"
+                "citation": "Depo 27:04 (position marked on Exhibit 4)"
               },
               {
                 "source": "deposition.mp4",
-                "citation": "Depo 01:50 (claim about the signal)"
+                "citation": "Depo 27:46 (claim)"
               },
               {
                 "source": "deposition.mp4",
-                "citation": "Depo 02:20 (\"nothing that I recall\" between her and the signal)"
+                "citation": "Depo 28:17 (repeats: until it went under the trailer)"
               },
               {
-                "source": "Police report",
-                "citation": "p.3; Exhibit 1"
+                "source": "NTSB/HAR-17/02 via facts.md (F19)",
+                "citation": "p.1, p.21"
+              },
+              {
+                "source": "NTSB/HAR-17/02 via facts.md (F30)",
+                "citation": "p.1–2, p.29–30"
               },
               {
                 "source": "Render",
-                "citation": "wit_B.png @ t=6.5s"
+                "citation": "wit_B.png @ t=9.9s"
               },
               {
                 "source": "Independent check",
-                "citation": "sightline wit_B→sig_north: blocked by occ_shelter"
+                "citation": "sightline wit_B→veh_A from marked position @ t=9.9s: blocked by veh_T_tractor"
               }
             ],
             "involves": [
               "wit_B",
-              "occ_shelter",
-              "sig_north"
+              "veh_T_tractor",
+              "veh_T_trailer",
+              "veh_A"
             ],
             "status": "contradiction"
           },
           {
             "id": "F2",
-            "severity": "low",
-            "summary": "Witness A had a clear line of sight to Pickup truck (Vehicle A), northbound Main St at t=7s.",
-            "detail": "The eye-level render and the ray-cast agree; the testimony is physically possible.",
+            "severity": "medium",
+            "summary": "Her account of seeing the car come over the crest and down the grade is physically possible: the view from her mark is clear until about t=9s.",
             "evidence": [
               {
                 "source": "deposition.mp4",
-                "citation": "Depo 12:03"
+                "citation": "Depo 14:57"
+              },
+              {
+                "source": "NTSB/HAR-17/02 via facts.md (F28)",
+                "citation": "p.29"
               },
               {
                 "source": "Independent check",
-                "citation": "sightline wit_A→veh_A: clear"
+                "citation": "sightline wit_B→veh_A from marked position @ t=8.5s: clear"
+              }
+            ],
+            "involves": [
+              "wit_B",
+              "veh_A",
+              "occ_crest"
+            ],
+            "status": "consistent"
+          },
+          {
+            "id": "F3",
+            "severity": "low",
+            "summary": "Witness A had a clear line of sight to the passenger sedan at t=2s, consistent with the statement.",
+            "evidence": [
+              {
+                "source": "witness_A.md",
+                "citation": "written statement"
+              },
+              {
+                "source": "Independent check",
+                "citation": "sightline wit_A→veh_A @ t=2s: clear"
               }
             ],
             "involves": [
@@ -592,44 +717,43 @@
             "status": "consistent"
           },
           {
-            "id": "F3",
+            "id": "F4",
             "severity": "low",
-            "summary": "Witness C had a clear line of sight to Sedan (Vehicle B), eastbound Oak Ave at t=7.5s.",
-            "detail": "The eye-level render and the ray-cast agree; the testimony is physically possible.",
+            "summary": "Witness C had a clear line of sight to the truck-tractor at t=5s, consistent with the statement.",
             "evidence": [
               {
-                "source": "deposition.mp4",
-                "citation": "Depo 41:50"
+                "source": "witness_C.md",
+                "citation": "written statement"
               },
               {
                 "source": "Independent check",
-                "citation": "sightline wit_C→veh_B: clear"
+                "citation": "sightline wit_C→veh_T_tractor @ t=5s: clear"
               }
             ],
             "involves": [
               "wit_C",
-              "veh_B"
+              "veh_T_tractor"
             ],
             "status": "consistent"
           },
           {
-            "id": "F4",
+            "id": "F5",
             "severity": "low",
-            "summary": "Vehicle A's speed in the world is consistent with the 31 m skid marks.",
+            "summary": "No skid evidence to test: NTSB found no pre-impact tire marks and no braking.",
             "evidence": [
               {
-                "source": "Police report p.3",
-                "citation": "skid measurement"
+                "source": "NTSB/HAR-17/02 via facts.md (F22)",
+                "citation": "p.5"
               },
               {
-                "source": "Independent check",
-                "citation": "skid_vs_speed veh_A: pass"
+                "source": "NTSB/HAR-17/02 via facts.md (F18)",
+                "citation": "p.15"
               }
             ],
             "involves": [
               "veh_A"
             ],
-            "status": "consistent"
+            "status": "unverifiable"
           }
         ],
         "patched": false
@@ -638,54 +762,83 @@
         {
           "id": "F1",
           "severity": "high",
-          "summary": "Witness B could not have seen Signal for northbound Main St (NE corner) from where she marked she was standing.",
-          "detail": "Her eye-level render at t=6.5s shows the Bus shelter with solid ad panel (SE corner) filling the direction of the signal head. The ray-cast check agrees (blocked by occ_shelter, 22.8 m to the signal). She testified \"The light was red for the northbound truck. I am certain of that. I saw it clearly.\" (Depo 01:50) and that nothing was between her and the signal (Depo 02:20).",
+          "summary": "Witness B could not have watched the car up to impact from where she marked she was standing: Vehicle T's tractor, then its semitrailer, block her view from about t=9.1s.",
+          "detail": "Her eye-level render at t=9.9s shows the tractor filling the direction of the approaching car; the overhead render shows the truck crossing between her X and the eastbound lanes. The ray-cast agrees (blocked by veh_T_tractor, 28.3 m to the car). She testified \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\" (Depo 27:46).",
           "evidence": [
             {
               "source": "deposition.mp4",
-              "citation": "Depo 01:16-01:36 (marked position on Exhibit 4)"
+              "citation": "Depo 27:04 (position marked on Exhibit 4)"
             },
             {
               "source": "deposition.mp4",
-              "citation": "Depo 01:50 (claim about the signal)"
+              "citation": "Depo 27:46 (claim)"
             },
             {
               "source": "deposition.mp4",
-              "citation": "Depo 02:20 (\"nothing that I recall\" between her and the signal)"
+              "citation": "Depo 28:17 (repeats: until it went under the trailer)"
             },
             {
-              "source": "Police report",
-              "citation": "p.3; Exhibit 1"
+              "source": "NTSB/HAR-17/02 via facts.md (F19)",
+              "citation": "p.1, p.21"
+            },
+            {
+              "source": "NTSB/HAR-17/02 via facts.md (F30)",
+              "citation": "p.1–2, p.29–30"
             },
             {
               "source": "Render",
-              "citation": "wit_B.png @ t=6.5s"
+              "citation": "wit_B.png @ t=9.9s"
             },
             {
               "source": "Independent check",
-              "citation": "sightline wit_B→sig_north: blocked by occ_shelter"
+              "citation": "sightline wit_B→veh_A from marked position @ t=9.9s: blocked by veh_T_tractor"
             }
           ],
           "involves": [
             "wit_B",
-            "occ_shelter",
-            "sig_north"
+            "veh_T_tractor",
+            "veh_T_trailer",
+            "veh_A"
           ],
           "status": "contradiction"
         },
         {
           "id": "F2",
-          "severity": "low",
-          "summary": "Witness A had a clear line of sight to Pickup truck (Vehicle A), northbound Main St at t=7s.",
-          "detail": "The eye-level render and the ray-cast agree; the testimony is physically possible.",
+          "severity": "medium",
+          "summary": "Her account of seeing the car come over the crest and down the grade is physically possible: the view from her mark is clear until about t=9s.",
           "evidence": [
             {
               "source": "deposition.mp4",
-              "citation": "Depo 12:03"
+              "citation": "Depo 14:57"
+            },
+            {
+              "source": "NTSB/HAR-17/02 via facts.md (F28)",
+              "citation": "p.29"
             },
             {
               "source": "Independent check",
-              "citation": "sightline wit_A→veh_A: clear"
+              "citation": "sightline wit_B→veh_A from marked position @ t=8.5s: clear"
+            }
+          ],
+          "involves": [
+            "wit_B",
+            "veh_A",
+            "occ_crest"
+          ],
+          "status": "consistent"
+        },
+        {
+          "id": "F3",
+          "severity": "low",
+          "summary": "Witness A had a clear line of sight to the passenger sedan at t=2s, consistent with the statement.",
+          "evidence": [
+            {
+              "source": "witness_A.md",
+              "citation": "written statement"
+            },
+            {
+              "source": "Independent check",
+              "citation": "sightline wit_A→veh_A @ t=2s: clear"
             }
           ],
           "involves": [
@@ -695,50 +848,49 @@
           "status": "consistent"
         },
         {
-          "id": "F3",
+          "id": "F4",
           "severity": "low",
-          "summary": "Witness C had a clear line of sight to Sedan (Vehicle B), eastbound Oak Ave at t=7.5s.",
-          "detail": "The eye-level render and the ray-cast agree; the testimony is physically possible.",
+          "summary": "Witness C had a clear line of sight to the truck-tractor at t=5s, consistent with the statement.",
           "evidence": [
             {
-              "source": "deposition.mp4",
-              "citation": "Depo 41:50"
+              "source": "witness_C.md",
+              "citation": "written statement"
             },
             {
               "source": "Independent check",
-              "citation": "sightline wit_C→veh_B: clear"
+              "citation": "sightline wit_C→veh_T_tractor @ t=5s: clear"
             }
           ],
           "involves": [
             "wit_C",
-            "veh_B"
+            "veh_T_tractor"
           ],
           "status": "consistent"
         },
         {
-          "id": "F4",
+          "id": "F5",
           "severity": "low",
-          "summary": "Vehicle A's speed in the world is consistent with the 31 m skid marks.",
+          "summary": "No skid evidence to test: NTSB found no pre-impact tire marks and no braking.",
           "evidence": [
             {
-              "source": "Police report p.3",
-              "citation": "skid measurement"
+              "source": "NTSB/HAR-17/02 via facts.md (F22)",
+              "citation": "p.5"
             },
             {
-              "source": "Independent check",
-              "citation": "skid_vs_speed veh_A: pass"
+              "source": "NTSB/HAR-17/02 via facts.md (F18)",
+              "citation": "p.15"
             }
           ],
           "involves": [
             "veh_A"
           ],
-          "status": "consistent"
+          "status": "unverifiable"
         }
       ],
-      "finishedAt": "2026-10-25T18:23:33.023Z"
+      "finishedAt": "2026-10-25T18:30:22.249Z"
     }
   ],
   "verdict": "contradiction_found",
   "mode": "mock",
-  "updatedAt": "2026-10-25T18:23:33.023Z"
+  "updatedAt": "2026-10-25T18:30:22.249Z"
 }

@@ -45,10 +45,10 @@
       "textPath": "text/witness_C.txt"
     },
     {
-      "name": "deposition_script.json",
+      "name": "deposition_transcript.txt",
       "type": "text",
-      "size": 35441,
-      "textPath": "text/deposition_script.txt"
+      "size": 20708,
+      "textPath": "text/deposition_transcript.txt"
     }
   ],
   "status": "done"

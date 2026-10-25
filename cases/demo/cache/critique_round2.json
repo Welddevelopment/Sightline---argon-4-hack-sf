@@ -1,59 +1,88 @@
 {
   "round": 2,
   "verdict": "contradiction_found",
-  "summary": "With Witness B at her marked position the world matches the evidence. Her claim that she \"saw the light clearly\" and that nothing was between her and the signal is contradicted: the Bus shelter with solid ad panel (SE corner) blocks her line of sight to the signal head at t=6.5s. No further patch is needed; the contradiction is in the testimony.",
+  "summary": "With Witness B at her Exhibit 4 mark and her claim tested at the moment she describes, the world matches the evidence. Her testimony that she watched the car \"the whole way in\" with \"nothing in the way\" is contradicted: the truck-tractor and then the refrigerated van semitrailer of Vehicle T block her line of sight for about the last 1.3 s before impact. No further patch is needed; the contradiction is in the testimony.",
   "findings": [
     {
       "id": "F1",
       "severity": "high",
-      "summary": "Witness B could not have seen Signal for northbound Main St (NE corner) from where she marked she was standing.",
-      "detail": "Her eye-level render at t=6.5s shows the Bus shelter with solid ad panel (SE corner) filling the direction of the signal head. The ray-cast check agrees (blocked by occ_shelter, 22.8 m to the signal). She testified \"The light was red for the northbound truck. I am certain of that. I saw it clearly.\" (Depo 01:50) and that nothing was between her and the signal (Depo 02:20).",
+      "summary": "Witness B could not have watched the car up to impact from where she marked she was standing: Vehicle T's tractor, then its semitrailer, block her view from about t=9.1s.",
+      "detail": "Her eye-level render at t=9.9s shows the tractor filling the direction of the approaching car; the overhead render shows the truck crossing between her X and the eastbound lanes. The ray-cast agrees (blocked by veh_T_tractor, 28.3 m to the car). She testified \"I had a clear view of the car the whole way in. I watched it right up until the moment it hit. Nothing was in the way.\" (Depo 27:46).",
       "evidence": [
         {
           "source": "deposition.mp4",
-          "citation": "Depo 01:16-01:36 (marked position on Exhibit 4)"
+          "citation": "Depo 27:04 (position marked on Exhibit 4)"
         },
         {
           "source": "deposition.mp4",
-          "citation": "Depo 01:50 (claim about the signal)"
+          "citation": "Depo 27:46 (claim)"
         },
         {
           "source": "deposition.mp4",
-          "citation": "Depo 02:20 (\"nothing that I recall\" between her and the signal)"
+          "citation": "Depo 28:17 (repeats: until it went under the trailer)"
         },
         {
-          "source": "Police report",
-          "citation": "p.3; Exhibit 1"
+          "source": "NTSB/HAR-17/02 via facts.md (F19)",
+          "citation": "p.1, p.21"
+        },
+        {
+          "source": "NTSB/HAR-17/02 via facts.md (F30)",
+          "citation": "p.1–2, p.29–30"
         },
         {
           "source": "Render",
-          "citation": "wit_B.png @ t=6.5s"
+          "citation": "wit_B.png @ t=9.9s"
         },
         {
           "source": "Independent check",
-          "citation": "sightline wit_B→sig_north: blocked by occ_shelter"
+          "citation": "sightline wit_B→veh_A from marked position @ t=9.9s: blocked by veh_T_tractor"
         }
       ],
       "involves": [
         "wit_B",
-        "occ_shelter",
-        "sig_north"
+        "veh_T_tractor",
+        "veh_T_trailer",
+        "veh_A"
       ],
       "status": "contradiction"
     },
     {
       "id": "F2",
-      "severity": "low",
-      "summary": "Witness A had a clear line of sight to Pickup truck (Vehicle A), northbound Main St at t=7s.",
-      "detail": "The eye-level render and the ray-cast agree; the testimony is physically possible.",
+      "severity": "medium",
+      "summary": "Her account of seeing the car come over the crest and down the grade is physically possible: the view from her mark is clear until about t=9s.",
       "evidence": [
         {
           "source": "deposition.mp4",
-          "citation": "Depo 12:03"
+          "citation": "Depo 14:57"
+        },
+        {
+          "source": "NTSB/HAR-17/02 via facts.md (F28)",
+          "citation": "p.29"
         },
         {
           "source": "Independent check",
-          "citation": "sightline wit_A→veh_A: clear"
+          "citation": "sightline wit_B→veh_A from marked position @ t=8.5s: clear"
+        }
+      ],
+      "involves": [
+        "wit_B",
+        "veh_A",
+        "occ_crest"
+      ],
+      "status": "consistent"
+    },
+    {
+      "id": "F3",
+      "severity": "low",
+      "summary": "Witness A had a clear line of sight to the passenger sedan at t=2s, consistent with the statement.",
+      "evidence": [
+        {
+          "source": "witness_A.md",
+          "citation": "written statement"
+        },
+        {
+          "source": "Independent check",
+          "citation": "sightline wit_A→veh_A @ t=2s: clear"
         }
       ],
       "involves": [
@@ -63,44 +92,43 @@
       "status": "consistent"
     },
     {
-      "id": "F3",
+      "id": "F4",
       "severity": "low",
-      "summary": "Witness C had a clear line of sight to Sedan (Vehicle B), eastbound Oak Ave at t=7.5s.",
-      "detail": "The eye-level render and the ray-cast agree; the testimony is physically possible.",
+      "summary": "Witness C had a clear line of sight to the truck-tractor at t=5s, consistent with the statement.",
       "evidence": [
         {
-          "source": "deposition.mp4",
-          "citation": "Depo 41:50"
+          "source": "witness_C.md",
+          "citation": "written statement"
         },
         {
           "source": "Independent check",
-          "citation": "sightline wit_C→veh_B: clear"
+          "citation": "sightline wit_C→veh_T_tractor @ t=5s: clear"
         }
       ],
       "involves": [
         "wit_C",
-        "veh_B"
+        "veh_T_tractor"
       ],
       "status": "consistent"
     },
     {
-      "id": "F4",
+      "id": "F5",
       "severity": "low",
-      "summary": "Vehicle A's speed in the world is consistent with the 31 m skid marks.",
+      "summary": "No skid evidence to test: NTSB found no pre-impact tire marks and no braking.",
       "evidence": [
         {
-          "source": "Police report p.3",
-          "citation": "skid measurement"
+          "source": "NTSB/HAR-17/02 via facts.md (F22)",
+          "citation": "p.5"
         },
         {
-          "source": "Independent check",
-          "citation": "skid_vs_speed veh_A: pass"
+          "source": "NTSB/HAR-17/02 via facts.md (F18)",
+          "citation": "p.15"
         }
       ],
       "involves": [
         "veh_A"
       ],
-      "status": "consistent"
+      "status": "unverifiable"
     }
   ],
   "patch": null
