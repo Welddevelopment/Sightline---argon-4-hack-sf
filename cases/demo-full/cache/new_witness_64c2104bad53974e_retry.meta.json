@@ -1,0 +1,24 @@
+{
+  "name": "new_witness_64c2104bad53974e_retry",
+  "model": "gemini-4-argon",
+  "seconds": 4.846,
+  "finishReason": "STOP",
+  "usage": {
+    "promptTokenCount": 7051,
+    "candidatesTokenCount": 225,
+    "totalTokenCount": 7276,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 7051
+      }
+    ],
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 225
+      }
+    ]
+  },
+  "at": "2026-10-26T00:12:44.064Z"
+}

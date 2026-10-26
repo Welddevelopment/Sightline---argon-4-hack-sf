@@ -20,5 +20,49 @@
     "model": "gemini-4-argon",
     "seconds": 5.518,
     "at": "2026-10-25T23:24:46.713Z"
+  },
+  "17accb767695d94b": {
+    "statement": "I was standing on the far side of the highway at the northeast corner of the intersection and watched the black car go straight under the trailer.",
+    "witness": {
+      "name": "Witness F (NE Corner Pedestrian)",
+      "position": [
+        8.5,
+        0,
+        -40
+      ],
+      "eyeHeight": 1.6,
+      "lookAt": "veh_car_a",
+      "observationTime": 10.43,
+      "claim": "Standing on the far side of the highway at the northeast corner of the intersection and watched the black car go straight under the trailer.",
+      "confidence": "medium",
+      "assumptions": "Mapped 'far side of the highway at the northeast corner of the intersection' to [8.5, 0, -40] m, placing the pedestrian north of the westbound lanes of US-27A (which run around z = -31 to -35 m) and just east of the NE 140th Court alignment (x = 0 m). Set observationTime to the moment of impact at t = 10.43 s when the car went under the trailer.",
+      "citation": "Live statement",
+      "model": "gemini-4-argon"
+    },
+    "model": "gemini-4-argon",
+    "seconds": 7.291,
+    "at": "2026-10-26T00:12:16.869Z"
+  },
+  "64c2104bad53974e": {
+    "statement": "I was sitting inside the bus shelter in front of the store, on the bench facing the store, when I heard the crash.",
+    "witness": {
+      "name": "Witness G (Bus Shelter Sitter)",
+      "position": [
+        8.5,
+        0,
+        6.1
+      ],
+      "eyeHeight": 1.2,
+      "lookAt": "veh_car_a",
+      "observationTime": 10.43,
+      "claim": "Sitting on the bench inside the bus shelter in front of the store facing the store when they heard the crash.",
+      "confidence": "high",
+      "assumptions": "Mapped 'inside the bus shelter in front of the store' directly to the center of occ_bench_shelter at [8.5, 0, 8.1] m with a seated eye height of 1.2 m. Set observationTime to impact at t=10.43 s ('when I heard the crash') and lookAt to veh_car_a to test line of sight to the collision. [position was inside occ_bench_shelter; moved to its nearest face]",
+      "citation": "Live statement",
+      "model": "gemini-4-argon"
+    },
+    "model": "gemini-4-argon",
+    "seconds": 9.501,
+    "at": "2026-10-26T00:12:40.725Z"
   }
 }
