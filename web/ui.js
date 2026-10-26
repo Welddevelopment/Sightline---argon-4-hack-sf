@@ -211,9 +211,19 @@ function witnessTime(id) {
   return w && w.observationTime != null && Number.isFinite(Number(w.observationTime)) ? Number(w.observationTime) : null;
 }
 // selecting a witness camera jumps to that witness's observation time (scrubbing stays free afterwards)
+// overhead / chase / other views: the case's key moment (the contradicted witness's checked time, else just before impact)
+function keyTime() {
+  const st = (state && state.findings ? state : (caseInfo && caseInfo.state)) || {};
+  const f = (st.findings || []).find((x) => x && x.status === 'contradiction');
+  const wid = f && (f.involves || []).find((x) => /^wit_/.test(String(x)));
+  const t = wid ? witnessTime(wid) : null;
+  if (t != null) return t;
+  const it = sl.world && sl.world.meta && Number(sl.world.meta.impactT);
+  return Number.isFinite(it) ? Math.max(0, it - 0.5) : null;
+}
 function selectCamera(id) {
   sl.setCamera(id);
-  const t = witnessTime(id);
+  const t = witnessTime(id) ?? keyTime();
   if (t != null) { pause(); sl.setTime(t); }
 }
 function markActiveCamera() {
