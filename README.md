@@ -173,6 +173,8 @@ World modules follow a fixed contract (`SPEC.md`). Each is a plain ES module tha
 
 ## Managed Agents verification
 
+![Managed Agents panel: 23 sandboxed agents, verdicts vs local checks](docs/walkthrough/8_managed_agents.png)
+
 `argon/fleet.mjs`: Argon (gemini-4-argon) reads the current checks and findings and plans verification jobs. Each job runs as its own Google-hosted Managed Agent: the Antigravity agent on gemini-3.8-flash, in a 10-vCPU Linux sandbox that mounts the public repo and receives the exact world file inline. The jobs cover sightline, robustness discs, gaze, perception-reaction time, speed and time what-ifs, and a CPU software render with pixel visibility. Argon then merges the returned result files against the local checks.
 
 Live run on demo-full (world_v4): **23 agents, 23 ok, 492 s wall against an 8,135 s sequential estimate (16.5×), all 9 check verdicts reproduced, no code drift**. Witness B stays blocked within 0.5–3 m of her mark (23/25 at 5 m), across t = 7.9–11.9 s, and with Vehicle A's speed scaled ×0.7–1.3. Reported disagreement: pixel renders of the two driving witnesses count their own cab as blocking, while the ray-cast excludes it. The API key is never placed in a prompt, source, environment variable or sandbox. Results: `cases/demo-full/cache/fleet/`.
